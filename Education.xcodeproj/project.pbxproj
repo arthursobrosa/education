@@ -12,6 +12,7 @@
 		683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453C2C1B6F3A00663912 /* ViewController.swift */; };
 		683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		683B45452C1B6F3B00663912 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 683B45442C1B6F3B00663912 /* Base */; };
+		68CEF7842C2C83EB008FDAB4 /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68CEF7822C2C83EB008FDAB4 /* DataBase.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		683B45412C1B6F3B00663912 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		683B45442C1B6F3B00663912 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		683B45462C1B6F3B00663912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68CEF7832C2C83EB008FDAB4 /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 				683B45382C1B6F3A00663912 /* AppDelegate.swift */,
 				683B453A2C1B6F3A00663912 /* SceneDelegate.swift */,
 				683B453C2C1B6F3A00663912 /* ViewController.swift */,
+				68CEF7822C2C83EB008FDAB4 /* DataBase.xcdatamodeld */,
 				683B45412C1B6F3B00663912 /* Assets.xcassets */,
 				683B45432C1B6F3B00663912 /* LaunchScreen.storyboard */,
 				683B45462C1B6F3B00663912 /* Info.plist */,
@@ -136,6 +139,7 @@
 			files = (
 				683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
+				68CEF7842C2C83EB008FDAB4 /* DataBase.xcdatamodeld in Sources */,
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +353,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		68CEF7822C2C83EB008FDAB4 /* DataBase.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				68CEF7832C2C83EB008FDAB4 /* DataBase.xcdatamodel */,
+			);
+			currentVersion = 68CEF7832C2C83EB008FDAB4 /* DataBase.xcdatamodel */;
+			name = DataBase.xcdatamodeld;
+			path = /Users/arthursobrosa/Desktop/Education/Education/DataBase.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 683B452D2C1B6F3A00663912 /* Project object */;
 }
