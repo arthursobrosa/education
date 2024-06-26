@@ -14,6 +14,7 @@
 		683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		683B45452C1B6F3B00663912 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 683B45442C1B6F3B00663912 /* Base */; };
 		684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF962C2C871700A3F392 /* Coordinator.swift */; };
+		CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		683B45442C1B6F3B00663912 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		683B45462C1B6F3B00663912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		684EDF962C2C871700A3F392 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				683B453A2C1B6F3A00663912 /* SceneDelegate.swift */,
 				683B453C2C1B6F3A00663912 /* ViewController.swift */,
 				684EDF962C2C871700A3F392 /* Coordinator.swift */,
+				CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */,
 				31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */,
 				683B45412C1B6F3B00663912 /* Assets.xcassets */,
 				683B45432C1B6F3B00663912 /* LaunchScreen.storyboard */,
@@ -144,6 +147,7 @@
 				683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
+				CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */,
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
