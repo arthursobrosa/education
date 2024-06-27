@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow()
         window?.frame = windowScene.coordinateSpace.bounds
         window?.windowScene = windowScene
-        window?.rootViewController = ViewController()
+        window?.rootViewController = ThemeListViewController(viewModel: ThemeListViewModel())
         window?.makeKeyAndVisible()
     }
 

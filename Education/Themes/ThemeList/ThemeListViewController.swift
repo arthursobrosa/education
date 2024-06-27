@@ -30,6 +30,11 @@ class ThemeListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.viewModel.onFetchThemes = { [weak self] themes in
+            self?.themeListView?.tableView.reloadData()
+        }
+        
         setupUI()
         fetchDataFromCoreData()
     }
@@ -37,11 +42,7 @@ class ThemeListViewController: UIViewController {
     // MARK: - Fetch Data
     
     private func fetchDataFromCoreData() {
-        viewModel.fetchItems { [weak self] in
-            DispatchQueue.main.async {
-                self?.themeListView?.tableView.reloadData()
-            }
-        }
+        self.viewModel.fetchItems()
     }
     
     // MARK: - UI Setup
@@ -82,7 +83,7 @@ class ThemeListViewController: UIViewController {
         let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
             if let itemName = alertController.textFields?.first?.text, !itemName.isEmpty {
                 
-                self?.viewModel.addNewItem(name: itemName, id: "7")
+                self?.viewModel.addNewItem(name: itemName)
                 self?.themeListView?.tableView.reloadData()
             }
         }
