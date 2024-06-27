@@ -84,7 +84,9 @@ class ThemeListViewController: UIViewController {
             if let itemName = alertController.textFields?.first?.text, !itemName.isEmpty {
                 
                 self?.viewModel.addNewItem(name: itemName)
-                self?.themeListView?.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self?.themeListView?.tableView.reloadData()
+                }
             }
         }
         
@@ -110,6 +112,20 @@ extension ThemeListViewController: UITableViewDataSource {
         cell.textLabel?.text = viewModel.items[indexPath.row].name
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if let itemId = viewModel.items[indexPath.row].id {
+                self.viewModel.removeItem(id: itemId)
+                DispatchQueue.main.async {
+                    self.themeListView?.tableView.reloadData()
+                }
+            } else {
+                print("Error: Item ID not found.")
+            }
+        }
+    }
+
 }
 
 // MARK: - UITableViewDelegate
