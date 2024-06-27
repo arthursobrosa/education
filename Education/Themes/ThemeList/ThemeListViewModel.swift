@@ -13,7 +13,7 @@ struct ThemeModel {
 }
 
 class ThemeListViewModel {
-    var onFetchThemes: (([Theme]) -> Void)?
+    var onFetchThemes: (() -> Void)?
     
     var items: [Theme] = []
     
@@ -25,7 +25,7 @@ class ThemeListViewModel {
     func fetchItems() {
         if let themes = CoreDataManager.shared.fetchThemes() {
             self.items = themes
-            self.onFetchThemes?(themes)
+            self.onFetchThemes?()
         }
     }
 }

@@ -31,7 +31,7 @@ class ThemeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.viewModel.onFetchThemes = { [weak self] themes in
+        self.viewModel.onFetchThemes = { [weak self] in
             self?.themeListView?.tableView.reloadData()
         }
         
