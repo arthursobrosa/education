@@ -22,6 +22,16 @@ class ThemeListViewModel {
         self.fetchItems()
     }
     
+    func removeItem(id: String) {
+        guard let theme = CoreDataManager.shared.fetchTheme(id) else {
+            print("Error: Theme not found.")
+            return
+        }
+        
+        CoreDataManager.shared.deleteTheme(theme)
+        self.fetchItems()
+    }
+    
     func fetchItems() {
         if let themes = CoreDataManager.shared.fetchThemes() {
             self.items = themes
