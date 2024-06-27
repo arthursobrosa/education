@@ -17,12 +17,7 @@
 		683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		683B45452C1B6F3B00663912 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 683B45442C1B6F3B00663912 /* Base */; };
 		684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF962C2C871700A3F392 /* Coordinator.swift */; };
-		684EDF992C2C885400A3F392 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF982C2C885400A3F392 /* CoreDataManager.swift */; };
-		684EDF9B2C2C8C6C00A3F392 /* Subject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */; };
-		684EDF9D2C2C8DB500A3F392 /* Theme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */; };
-		684EDF9F2C2C8EC000A3F392 /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
-		684EDFA12C2C947300A3F392 /* FocusSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */; };
-		684EDFA32C2CA0CA00A3F392 /* Test+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */; };
+		CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +33,7 @@
 		683B45442C1B6F3B00663912 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		683B45462C1B6F3B00663912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		684EDF962C2C871700A3F392 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		684EDF982C2C885400A3F392 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subject+Extension.swift"; sourceTree = "<group>"; };
 		684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Extension.swift"; sourceTree = "<group>"; };
@@ -100,6 +96,7 @@
 				683B453A2C1B6F3A00663912 /* SceneDelegate.swift */,
 				683B453C2C1B6F3A00663912 /* ViewController.swift */,
 				684EDF962C2C871700A3F392 /* Coordinator.swift */,
+				CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */,
 				31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */,
 				683B45412C1B6F3B00663912 /* Assets.xcassets */,
 				683B45432C1B6F3B00663912 /* LaunchScreen.storyboard */,
@@ -208,6 +205,7 @@
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
 				684EDF9F2C2C8EC000A3F392 /* Schedule+Extension.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
+				CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */,
 				684EDFA12C2C947300A3F392 /* FocusSession+Extension.swift in Sources */,
 				30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */,
 				30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */,
