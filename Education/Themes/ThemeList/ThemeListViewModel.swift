@@ -22,7 +22,7 @@ class ThemeListViewModel {
         self.fetchItems()
     }
     
-    func fetchItems() {
+    @objc func fetchItems() {
         if let themes = CoreDataManager.shared.fetchThemes() {
             self.items = themes
             self.onFetchThemes?()

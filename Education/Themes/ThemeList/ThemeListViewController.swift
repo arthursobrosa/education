@@ -12,14 +12,21 @@ class ThemeListViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var viewModel: ThemeListViewModel!
-    private var themeListView: ThemeListView?
+    private var viewModel: ThemeListViewModel
+    private lazy var themeListView: ThemeListView = {
+        let themeListView = ThemeListView()
+        
+        themeListView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return themeListView
+    }()
     
     // MARK: - Initialization
     
     init(viewModel: ThemeListViewModel) {
-        super.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,27 +39,18 @@ class ThemeListViewController: UIViewController {
         super.viewDidLoad()
         
         self.viewModel.onFetchThemes = { [weak self] in
-            self?.themeListView?.tableView.reloadData()
+            self?.themeListView.tableView.reloadData()
         }
         
-        setupUI()
-        fetchDataFromCoreData()
-    }
-    
-    // MARK: - Fetch Data
-    
-    private func fetchDataFromCoreData() {
         self.viewModel.fetchItems()
+        
+        setupUI()
     }
     
     // MARK: - UI Setup
     
     private func setupUI() {
         view.backgroundColor = .white
-        
-        themeListView = ThemeListView()
-        guard let themeListView = themeListView else { return }
-        themeListView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(themeListView)
         
         NSLayoutConstraint.activate([
@@ -84,7 +82,7 @@ class ThemeListViewController: UIViewController {
             if let itemName = alertController.textFields?.first?.text, !itemName.isEmpty {
                 
                 self?.viewModel.addNewItem(name: itemName)
-                self?.themeListView?.tableView.reloadData()
+                self?.themeListView.tableView.reloadData()
             }
         }
         
