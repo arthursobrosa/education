@@ -133,6 +133,14 @@ extension ThemeListViewController: UITableViewDataSource {
 extension ThemeListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vm = ThemePageViewModel(themeId: viewModel.items[indexPath.row].unwrappedID)
+        
+        let themePageViewController = ThemePageViewController(viewModel: vm)
+        
+        navigationController?.pushViewController(themePageViewController, animated: true)
+        
         print("Selected item: \(viewModel.items[indexPath.row])")
+        
     }
 }

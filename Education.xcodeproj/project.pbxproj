@@ -10,6 +10,9 @@
 		30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A32C2C885A00B7114F /* ThemeListViewController.swift */; };
 		30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A52C2C886600B7114F /* ThemeListView.swift */; };
 		30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */; };
+		30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */; };
+		30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216BA2C2DEF4800B7114F /* ThemePageView.swift */; };
+		30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */; };
 		31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */; };
 		683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B45382C1B6F3A00663912 /* AppDelegate.swift */; };
 		683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453A2C1B6F3A00663912 /* SceneDelegate.swift */; };
@@ -30,6 +33,9 @@
 		30F216A32C2C885A00B7114F /* ThemeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListViewController.swift; sourceTree = "<group>"; };
 		30F216A52C2C886600B7114F /* ThemeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListView.swift; sourceTree = "<group>"; };
 		30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListViewModel.swift; sourceTree = "<group>"; };
+		30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageViewController.swift; sourceTree = "<group>"; };
+		30F216BA2C2DEF4800B7114F /* ThemePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageView.swift; sourceTree = "<group>"; };
+		30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageViewModel.swift; sourceTree = "<group>"; };
 		31AA70A12C2C8632002367CA /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
 		683B45352C1B6F3A00663912 /* Education.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Education.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		683B45382C1B6F3A00663912 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +68,7 @@
 		30F216A12C2C883900B7114F /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				30F216B72C2DEF2200B7114F /* ThemePage */,
 				30F216A22C2C884400B7114F /* ThemeList */,
 			);
 			path = Themes;
@@ -75,6 +82,16 @@
 				30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */,
 			);
 			path = ThemeList;
+			sourceTree = "<group>";
+		};
+		30F216B72C2DEF2200B7114F /* ThemePage */ = {
+			isa = PBXGroup;
+			children = (
+				30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */,
+				30F216BA2C2DEF4800B7114F /* ThemePageView.swift */,
+				30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */,
+			);
+			path = ThemePage;
 			sourceTree = "<group>";
 		};
 		683B452C2C1B6F3A00663912 = {
@@ -205,12 +222,15 @@
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
 				683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
+				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
+				30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */,
 				CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */,
 				30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */,
+				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
 				68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
 				30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */,
