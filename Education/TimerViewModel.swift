@@ -100,11 +100,7 @@ class TimerView: UIView{
     
     private lazy var timerLabel: UILabel = {
         
-//        var minutes = vm.timerValue/60
-//        var seconds = vm.timerValue%60
-        
         let lbl = UILabel()
-//        lbl.text = String(format: "%02i:%02i", minutes, seconds)
         lbl.textAlignment = .center
         
         lbl.translatesAutoresizingMaskIntoConstraints = false

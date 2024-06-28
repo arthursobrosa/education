@@ -27,6 +27,7 @@
 		68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */; };
 		68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */; };
 		CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */; };
+		CE42E2F22C2F429C00A29B2D /* TimerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSession+Extension.swift"; sourceTree = "<group>"; };
 		684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+Extension.swift"; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
+		CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 				684EDFA62C2CAA7B00A3F392 /* CoreData */,
 				683B453C2C1B6F3A00663912 /* ViewController.swift */,
 				684EDF962C2C871700A3F392 /* Coordinator.swift */,
+				CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */,
 				CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */,
 				31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */,
 				683B45412C1B6F3B00663912 /* Assets.xcassets */,
@@ -222,6 +225,7 @@
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
 				683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
+				CE42E2F22C2F429C00A29B2D /* TimerPickerView.swift in Sources */,
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
