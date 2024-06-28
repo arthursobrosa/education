@@ -9,6 +9,8 @@ import Foundation
 import CoreData
 
 class CoreDataManager {
+    static let shared = CoreDataManager()
+    
     // MARK: - Subject CRUD
     func createSubject(name: String) {
         guard let subject = NSEntityDescription.insertNewObject(forEntityName: "Subject", into: AppDelegate.shared.context) as? Subject else {

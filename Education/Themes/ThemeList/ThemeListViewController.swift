@@ -30,6 +30,11 @@ class ThemeListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.viewModel.onFetchThemes = { [weak self] in
+            self?.themeListView?.tableView.reloadData()
+        }
+        
         setupUI()
         fetchDataFromCoreData()
     }
@@ -37,11 +42,7 @@ class ThemeListViewController: UIViewController {
     // MARK: - Fetch Data
     
     private func fetchDataFromCoreData() {
-        viewModel.fetchItems { [weak self] in
-            DispatchQueue.main.async {
-                self?.themeListView?.tableView.reloadData()
-            }
-        }
+        self.viewModel.fetchItems()
     }
     
     // MARK: - UI Setup
@@ -82,8 +83,10 @@ class ThemeListViewController: UIViewController {
         let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
             if let itemName = alertController.textFields?.first?.text, !itemName.isEmpty {
                 
-                self?.viewModel.addNewItem(name: itemName, id: "7")
-                self?.themeListView?.tableView.reloadData()
+                self?.viewModel.addNewItem(name: itemName)
+                DispatchQueue.main.async {
+                    self?.themeListView?.tableView.reloadData()
+                }
             }
         }
         
@@ -109,6 +112,20 @@ extension ThemeListViewController: UITableViewDataSource {
         cell.textLabel?.text = viewModel.items[indexPath.row].name
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if let itemId = viewModel.items[indexPath.row].id {
+                self.viewModel.removeItem(id: itemId)
+                DispatchQueue.main.async {
+                    self.themeListView?.tableView.reloadData()
+                }
+            } else {
+                print("Error: Item ID not found.")
+            }
+        }
+    }
+
 }
 
 // MARK: - UITableViewDelegate
@@ -116,6 +133,14 @@ extension ThemeListViewController: UITableViewDataSource {
 extension ThemeListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vm = ThemePageViewModel(themeId: viewModel.items[indexPath.row].unwrappedID)
+        
+        let themePageViewController = ThemePageViewController(viewModel: vm)
+        
+        navigationController?.pushViewController(themePageViewController, animated: true)
+        
         print("Selected item: \(viewModel.items[indexPath.row])")
+        
     }
 }

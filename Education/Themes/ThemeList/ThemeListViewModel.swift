@@ -13,32 +13,30 @@ struct ThemeModel {
 }
 
 class ThemeListViewModel {
- 
-    var items: [ThemeModel] = []
+    var onFetchThemes: (() -> Void)?
     
-    func addNewItem(name: String, id: String) {
-            let newItem = ThemeModel(id: id, name: name)
-            items.append(newItem)
+    var items: [Theme] = []
+    
+    func addNewItem(name: String) {
+        CoreDataManager.shared.createTheme(name: name)
+        self.fetchItems()
+    }
+    
+    func removeItem(id: String) {
+        guard let theme = CoreDataManager.shared.fetchTheme(id) else {
+            print("Error: Theme not found.")
+            return
         }
-    
-    func fetchItems(completion: @escaping () -> Void) {
         
-            let fetchedItems = [
-                ThemeModel(id: "1", name: "Matematica"),
-                ThemeModel(id: "2", name: "Geografia"),
-                ThemeModel(id: "1", name: "Física"),
-                ThemeModel(id: "2", name: "Química")
-            ]
-            
-            DispatchQueue.main.async {
-                self.items = fetchedItems
-                completion()
-            }
-            
+        CoreDataManager.shared.deleteTheme(theme)
+        self.fetchItems()
+    }
+    
+    func fetchItems() {
+        if let themes = CoreDataManager.shared.fetchThemes() {
+            self.items = themes
+            self.onFetchThemes?()
         }
-    
-    init() {
-        
     }
 }
 
