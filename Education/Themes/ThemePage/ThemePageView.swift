@@ -11,20 +11,12 @@ import UIKit
 class ThemePageView: UIView {
     
     // MARK: - UI Components
-     lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = "Theme"
-        return label
-    }()
-    
     lazy var placeholderView: UIView = {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .lightGray // Adjust color as needed
-            return view
-        }()
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .lightGray // Adjust color as needed
+        return view
+    }()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -43,6 +35,9 @@ class ThemePageView: UIView {
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = .systemBackground
+        
         setupUI()
     }
     
@@ -52,31 +47,27 @@ class ThemePageView: UIView {
     
     // MARK: - UI Setup
     private func setupUI() {
+
+        addSubview(placeholderView)
+        addSubview(tableView)
+        addSubview(addThemeButton)
+        
+        NSLayoutConstraint.activate([
+            placeholderView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            placeholderView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            placeholderView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            placeholderView.heightAnchor.constraint(equalToConstant: 200), // Adjust height as needed
             
-            addSubview(titleLabel)
-            addSubview(placeholderView)
-            addSubview(tableView)
-            addSubview(addThemeButton)
+            tableView.topAnchor.constraint(equalTo: placeholderView.bottomAnchor, constant: 20),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -20),
             
-            NSLayoutConstraint.activate([
-                titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-                titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-                
-                placeholderView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-                placeholderView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                placeholderView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-                placeholderView.heightAnchor.constraint(equalToConstant: 200), // Adjust height as needed
-                
-                tableView.topAnchor.constraint(equalTo: placeholderView.bottomAnchor, constant: 20),
-                tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -20),
-                
-                addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-                addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
-            ])
-        }
+            addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
+    }
     
     
     // MARK: - Button Action
@@ -90,6 +81,15 @@ class ThemePageView: UIView {
         tableView.dataSource = dataSourceDelegate
         tableView.delegate = dataSourceDelegate
         tableView.reloadData()
+    }
+    
+    // MARK: - Reload Table
+    func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.tableView.reloadData()
+        }
     }
 }
 

@@ -20,7 +20,16 @@
 		683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		683B45452C1B6F3B00663912 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 683B45442C1B6F3B00663912 /* Base */; };
 		684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF962C2C871700A3F392 /* Coordinator.swift */; };
-		68D47D522C2DDCC5000E011C /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF982C2C885400A3F392 /* CoreDataManager.swift */; };
+		68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BC42C2F256E00272451 /* CoreDataStack.swift */; };
+		68825BC72C2F281400272451 /* SubjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BC62C2F281400272451 /* SubjectManager.swift */; };
+		68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCA2C2F2D3300272451 /* ScheduleManager.swift */; };
+		68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCC2C2F300000272451 /* FocusSessionManager.swift */; };
+		68825BCF2C2F342100272451 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCE2C2F342100272451 /* ThemeManager.swift */; };
+		68825BD12C2F348300272451 /* TestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD02C2F348300272451 /* TestManager.swift */; };
+		68825BD32C2F370B00272451 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD22C2F370B00272451 /* Box.swift */; };
+		68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD42C2F37F100272451 /* ThemeListCoordinator.swift */; };
+		68825BD72C2F469D00272451 /* ShowingThemePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD62C2F469D00272451 /* ShowingThemePage.swift */; };
+		68825BD92C2F48FD00272451 /* ThemePageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD82C2F48FD00272451 /* ThemePageCoordinator.swift */; };
 		68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */; };
 		68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */; };
 		68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
@@ -45,12 +54,21 @@
 		683B45442C1B6F3B00663912 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		683B45462C1B6F3B00663912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		684EDF962C2C871700A3F392 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
-		684EDF982C2C885400A3F392 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subject+Extension.swift"; sourceTree = "<group>"; };
 		684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Extension.swift"; sourceTree = "<group>"; };
 		684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Schedule+Extension.swift"; sourceTree = "<group>"; };
 		684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSession+Extension.swift"; sourceTree = "<group>"; };
 		684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+Extension.swift"; sourceTree = "<group>"; };
+		68825BC42C2F256E00272451 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		68825BC62C2F281400272451 /* SubjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectManager.swift; sourceTree = "<group>"; };
+		68825BCA2C2F2D3300272451 /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
+		68825BCC2C2F300000272451 /* FocusSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionManager.swift; sourceTree = "<group>"; };
+		68825BCE2C2F342100272451 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		68825BD02C2F348300272451 /* TestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestManager.swift; sourceTree = "<group>"; };
+		68825BD22C2F370B00272451 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		68825BD42C2F37F100272451 /* ThemeListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListCoordinator.swift; sourceTree = "<group>"; };
+		68825BD62C2F469D00272451 /* ShowingThemePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingThemePage.swift; sourceTree = "<group>"; };
+		68825BD82C2F48FD00272451 /* ThemePageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageCoordinator.swift; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,9 +95,10 @@
 		30F216A22C2C884400B7114F /* ThemeList */ = {
 			isa = PBXGroup;
 			children = (
+				68825BD42C2F37F100272451 /* ThemeListCoordinator.swift */,
+				30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */,
 				30F216A32C2C885A00B7114F /* ThemeListViewController.swift */,
 				30F216A52C2C886600B7114F /* ThemeListView.swift */,
-				30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */,
 			);
 			path = ThemeList;
 			sourceTree = "<group>";
@@ -87,9 +106,10 @@
 		30F216B72C2DEF2200B7114F /* ThemePage */ = {
 			isa = PBXGroup;
 			children = (
+				68825BD82C2F48FD00272451 /* ThemePageCoordinator.swift */,
+				30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */,
 				30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */,
 				30F216BA2C2DEF4800B7114F /* ThemePageView.swift */,
-				30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */,
 			);
 			path = ThemePage;
 			sourceTree = "<group>";
@@ -115,6 +135,14 @@
 			children = (
 				683B45382C1B6F3A00663912 /* AppDelegate.swift */,
 				683B453A2C1B6F3A00663912 /* SceneDelegate.swift */,
+				68825BC42C2F256E00272451 /* CoreDataStack.swift */,
+				68825BC62C2F281400272451 /* SubjectManager.swift */,
+				68825BCA2C2F2D3300272451 /* ScheduleManager.swift */,
+				68825BCC2C2F300000272451 /* FocusSessionManager.swift */,
+				68825BCE2C2F342100272451 /* ThemeManager.swift */,
+				68825BD02C2F348300272451 /* TestManager.swift */,
+				68825BD22C2F370B00272451 /* Box.swift */,
+				68825BD62C2F469D00272451 /* ShowingThemePage.swift */,
 				30F216A12C2C883900B7114F /* Themes */,
 				684EDFA62C2CAA7B00A3F392 /* CoreData */,
 				683B453C2C1B6F3A00663912 /* ViewController.swift */,
@@ -132,7 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				684EDFA72C2CAA8300A3F392 /* Extensions */,
-				684EDF982C2C885400A3F392 /* CoreDataManager.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -219,24 +246,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68825BCF2C2F342100272451 /* ThemeManager.swift in Sources */,
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
 				683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */,
+				68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
+				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
+				68825BD92C2F48FD00272451 /* ThemePageCoordinator.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
+				68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */,
 				30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */,
 				CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */,
 				30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */,
 				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
 				68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */,
+				68825BD72C2F469D00272451 /* ShowingThemePage.swift in Sources */,
+				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
+				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
 				30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */,
+				68825BD32C2F370B00272451 /* Box.swift in Sources */,
 				68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */,
-				68D47D522C2DDCC5000E011C /* CoreDataManager.swift in Sources */,
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
+				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
