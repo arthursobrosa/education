@@ -18,6 +18,8 @@ class ThemeManager {
      Contexts are passed in so they can be overriden via unit testing.
     */
     
+    lazy var testManager = TestManager(mainContext: self.mainContext, backgroundContext: self.mainContext)
+    
     // MARK: - Init
     init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
         self.mainContext = mainContext
@@ -40,7 +42,11 @@ class ThemeManager {
     func deleteTheme(_ theme: Theme) {
         let objectID = theme.objectID
         backgroundContext.performAndWait {
-            // TODO: delete tests
+            if let tests = self.testManager.fetchTests(themeID: theme.unwrappedID) {
+                tests.forEach { test in
+                    self.testManager.deleteTest(test)
+                }
+            }
             
             if let themeInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(themeInContext)

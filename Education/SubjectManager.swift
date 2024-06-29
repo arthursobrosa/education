@@ -18,6 +18,8 @@ class SubjectManager {
      Contexts are passed in so they can be overriden via unit testing.
     */
     
+    lazy var scheduleManager = ScheduleManager(mainContext: self.mainContext, backgroundContext: self.backgroundContext)
+    
     // MARK: - Init
     init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
         self.mainContext = mainContext
@@ -40,7 +42,11 @@ class SubjectManager {
     func deleteSubject(_ subject: Subject) {
         let objectID = subject.objectID
         backgroundContext.performAndWait {
-            // TODO: delete schedules
+            if let schedules = self.scheduleManager.fetchSchedules(subjectID: subject.unwrappedID) {
+                schedules.forEach { schedule in
+                    self.scheduleManager.deleteSchedule(schedule)
+                }
+            }
             
             if let subjectInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(subjectInContext)
@@ -48,11 +54,6 @@ class SubjectManager {
             }
             
         }
-        
-//        guard let schedules = self.fetchSchedules(subjectID: subject.unwrappedID) else { return }
-//        schedules.forEach { schedule in
-//            self.deleteSchedule(schedule)
-//        }
     }
     
     // MARK: - Update

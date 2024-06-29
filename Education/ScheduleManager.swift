@@ -18,6 +18,8 @@ class ScheduleManager {
      Contexts are passed in so they can be overriden via unit testing.
     */
     
+    lazy var focusSessionManager = FocusSessionManager(mainContext: self.mainContext, backgroundContext: self.backgroundContext)
+    
     // MARK: - Init
     init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
         self.mainContext = mainContext
@@ -43,7 +45,11 @@ class ScheduleManager {
     func deleteSchedule(_ schedule: Schedule) {
         let objectID = schedule.objectID
         backgroundContext.performAndWait {
-            // TODO: delete focus sessions
+            if let focusSessions = self.focusSessionManager.fetchFocusSessions(hasSchedule: true, scheduleID: schedule.unwrappedID) {
+                focusSessions.forEach { focusSession in
+                    self.focusSessionManager.deleteFocusSession(focusSession)
+                }
+            }
             
             if let scheduleInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(scheduleInContext)
