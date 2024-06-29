@@ -8,60 +8,30 @@
 import Foundation
 
 class ThemePageViewModel {
-    var onFetchThemes: (() -> Void)?
-    var onFetchInfo: (() -> Void)?
+    let testManager: TestManager
     
-    private var theme: Theme? {
-            didSet {
-                // Notify view controller that theme is fetched
-                self.onFetchInfo?()
-                print("Busquei")
-            }
-        }
-    
-    var themeId: String
-    
-    var items: [Test] = []
-    
-    init(themeId: String) {
-            self.themeId = themeId
-        }
-    
-    func addNewItem() {
-        CoreDataManager.shared.createTest(themeID: self.themeId, date: Date.now, rightQuestions: 25, totalQuestions: 30)
-        self.fetchItems()
+    init(testManager: TestManager = TestManager(mainContext: CoreDataStack.shared.mainContext, backgroundContext: CoreDataStack.shared.backgroundContext), theme: Theme) {
+        self.testManager = testManager
+        self.theme = theme
     }
     
-    func removeItem(id: String) {
-//        guard let theme = CoreDataManager.shared.fetchTheme(id) else {
-//            print("Error: Theme not found.")
-//            return
-//        }
-//        
-//        CoreDataManager.shared.deleteTheme(theme)
-//        self.fetchItems()
+    var tests = Box([Test]())
+    
+    var theme: Theme
+    
+    func addNewTest(date: Date, rightQuestions: Int, totalQuestions: Int) {
+        self.testManager.createTest(themeID: self.theme.unwrappedID, date: date, rightQuestions: rightQuestions, totalQuestions: totalQuestions)
+        self.fetchTests()
     }
     
-    func fetchItems() {
-        if let themes = CoreDataManager.shared.fetchTests(from: self.themeId) {
-            self.items = themes
-            self.onFetchThemes?()
-        }
+    func removeTest(_ test: Test) {
+        self.testManager.deleteTest(test)
+        self.fetchTests()
     }
     
-    func fetchInfo() {
-        if let info = CoreDataManager.shared.fetchTheme(self.themeId) {
-            self.theme = info
-            self.onFetchInfo?()
+    func fetchTests() {
+        if let tests = self.testManager.fetchTests(themeID: self.theme.unwrappedID) {
+            self.tests.value = tests
         }
-        
     }
-    
-    func getFetchedTheme() -> Theme? {
-            return self.theme
-        }
 }
-
-
-
-

@@ -7,35 +7,28 @@
 
 import Foundation
 
-struct ThemeModel {
-    let id: String
-    let name: String
-}
-
 class ThemeListViewModel {
-    var onFetchThemes: (() -> Void)?
+    let themeManager: ThemeManager
     
-    var items: [Theme] = []
+    init(themeManager: ThemeManager = ThemeManager(mainContext: CoreDataStack.shared.mainContext, backgroundContext: CoreDataStack.shared.backgroundContext)) {
+        self.themeManager = themeManager
+    }
+    
+    var themes = Box([Theme]())
     
     func addNewItem(name: String) {
-        CoreDataManager.shared.createTheme(name: name)
-        self.fetchItems()
+        self.themeManager.createTheme(name: name)
+        self.fetchThemes()
     }
     
-    func removeItem(id: String) {
-        guard let theme = CoreDataManager.shared.fetchTheme(id) else {
-            print("Error: Theme not found.")
-            return
-        }
-        
-        CoreDataManager.shared.deleteTheme(theme)
-        self.fetchItems()
+    func removeTheme(theme: Theme) {
+        self.themeManager.deleteTheme(theme)
+        self.fetchThemes()
     }
     
-    func fetchItems() {
-        if let themes = CoreDataManager.shared.fetchThemes() {
-            self.items = themes
-            self.onFetchThemes?()
+    func fetchThemes() {
+        if let themes = self.themeManager.fetchThemes() {
+            self.themes.value = themes
         }
     }
 }

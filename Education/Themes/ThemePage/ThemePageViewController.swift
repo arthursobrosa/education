@@ -12,8 +12,17 @@ class ThemePageViewController: UIViewController {
     
     // MARK: - Properties
     
+    weak var coordinator: Coordinator?
+    private var tests = [Test]()
     private var viewModel: ThemePageViewModel!
-    private var themePageView: ThemePageView?
+    private lazy var themePageView: ThemePageView = {
+        let themeView = ThemePageView()
+        themeView.tableView.delegate = self
+        themeView.tableView.dataSource = self
+        themeView.addThemeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
+        return themeView
+    }()
     
     // MARK: - Initialization
     
@@ -28,61 +37,29 @@ class ThemePageViewController: UIViewController {
     
     // MARK: - View Lifecycle
     
+    override func loadView() {
+        super.loadView()
+        
+        self.view = self.themePageView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.viewModel.onFetchThemes = { [weak self] in
-            self?.themePageView?.tableView.reloadData()
+        self.viewModel.tests.bind { [weak self] tests in
+            guard let self = self else { return }
+            
+            self.tests = tests
+            self.themePageView.reloadTable()
         }
         
-        self.viewModel.onFetchInfo = { [weak self] in
-               self?.updateViewWithFetchedInfo()
-           }
-        
-        setupUI()
         fetchDataFromCoreData()
     }
-    
-    // MARK: - Update UI with Fetched Theme
-        
-        private func updateViewWithFetchedInfo() {
-            guard let fetchedTheme = viewModel.getFetchedTheme() else { return }
-            
-            // Update the title label in the view with the fetched theme's name
-            DispatchQueue.main.async { [weak self] in
-                self?.themePageView?.titleLabel.text = fetchedTheme.name
-            }
-        }
     
     // MARK: - Fetch Data
     
     private func fetchDataFromCoreData() {
-        self.viewModel.fetchInfo()
-        self.viewModel.fetchItems()
-    }
-    
-    // MARK: - UI Setup
-    
-    private func setupUI() {
-        view.backgroundColor = .white
-        
-        themePageView = ThemePageView()
-        guard let themePageView = themePageView else { return }
-        themePageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(themePageView)
-        
-        NSLayoutConstraint.activate([
-            themePageView.topAnchor.constraint(equalTo: view.topAnchor),
-            themePageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            themePageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            themePageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        themePageView.tableView.delegate = self
-        themePageView.tableView.dataSource = self
-        
-        themePageView.addThemeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
+        self.viewModel.fetchTests()
     }
     
     @objc private func buttonTapped() {
@@ -90,10 +67,8 @@ class ThemePageViewController: UIViewController {
     }
     
     private func showAddItemAlert() {
-        self.viewModel.addNewItem()
+        self.viewModel.addNewTest(date: Date.now, rightQuestions: 25, totalQuestions: 30)
     }
-    
-  
 }
 
 // MARK: - UITableViewDataSource
@@ -101,28 +76,24 @@ class ThemePageViewController: UIViewController {
 extension ThemePageViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items.count
+        return self.tests.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let test = self.tests[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = String(viewModel.items[indexPath.row].rightQuestions)
+        cell.textLabel?.text = String(test.rightQuestions)
         return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let test = self.tests[indexPath.row]
+        
         if editingStyle == .delete {
-            if let itemId = viewModel.items[indexPath.row].id {
-                self.viewModel.removeItem(id: itemId)
-                DispatchQueue.main.async {
-                    self.themePageView?.tableView.reloadData()
-                }
-            } else {
-                print("Error: Item ID not found.")
-            }
+            self.viewModel.removeTest(test)
         }
     }
-
 }
 
 // MARK: - UITableViewDelegate
@@ -130,7 +101,8 @@ extension ThemePageViewController: UITableViewDataSource {
 extension ThemePageViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Selected item: \(viewModel.items[indexPath.row])")
+        let test = self.tests[indexPath.row]
+        print("Selected test: \(test)")
     }
 }
 

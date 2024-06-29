@@ -12,13 +12,17 @@ class ThemeListViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var viewModel: ThemeListViewModel
+    weak var coordinator: ShowingThemePage?
+    private var themes = [Theme]()
+    private var viewModel: ThemeListViewModel!
     private lazy var themeListView: ThemeListView = {
-        let themeListView = ThemeListView()
+        let themeView = ThemeListView()
         
-        themeListView.translatesAutoresizingMaskIntoConstraints = false
+        themeView.tableView.delegate = self
+        themeView.tableView.dataSource = self
+        themeView.addThemeButton.addTarget(self, action: #selector(addItemButtonTapped), for: .touchUpInside)
         
-        return themeListView
+        return themeView
     }()
     
     // MARK: - Initialization
@@ -34,35 +38,23 @@ class ThemeListViewController: UIViewController {
     }
     
     // MARK: - View Lifecycle
+    override func loadView() {
+        super.loadView()
+        
+        self.view = self.themeListView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.viewModel.onFetchThemes = { [weak self] in
-            self?.themeListView.tableView.reloadData()
+        self.viewModel.themes.bind { [weak self] themes in
+            guard let self = self else { return }
+            
+            self.themes = themes
+            self.themeListView.reloadTable()
         }
         
-        self.viewModel.fetchItems()
-        
-        setupUI()
-    }
-    
-    // MARK: - UI Setup
-    
-    private func setupUI() {
-        view.backgroundColor = .white
-        view.addSubview(themeListView)
-        
-        NSLayoutConstraint.activate([
-            themeListView.topAnchor.constraint(equalTo: view.topAnchor),
-            themeListView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            themeListView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            themeListView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        themeListView.tableView.delegate = self
-        themeListView.tableView.dataSource = self
-        themeListView.addThemeButton.addTarget(self, action: #selector(addItemButtonTapped), for: .touchUpInside)
+        self.viewModel.fetchThemes()
     }
     
     // MARK: - User Actions
@@ -79,13 +71,10 @@ class ThemeListViewController: UIViewController {
         }
         
         let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            
             if let itemName = alertController.textFields?.first?.text, !itemName.isEmpty {
-                
-                self?.viewModel.addNewItem(name: itemName)
-                
-                DispatchQueue.main.async {
-                    self?.themeListView.tableView.reloadData()
-                }
+                self.viewModel.addNewItem(name: itemName)
             }
         }
         
@@ -103,25 +92,22 @@ class ThemeListViewController: UIViewController {
 extension ThemeListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items.count
+        return self.themes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let theme = self.themes[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = viewModel.items[indexPath.row].name
+        cell.textLabel?.text = theme.name
         return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let theme = self.themes[indexPath.row]
+        
         if editingStyle == .delete {
-            if let itemId = viewModel.items[indexPath.row].id {
-                self.viewModel.removeItem(id: itemId)
-                DispatchQueue.main.async {
-                    self.themeListView.tableView.reloadData()
-                }
-            } else {
-                print("Error: Item ID not found.")
-            }
+            self.viewModel.removeTheme(theme: theme)
         }
     }
 
@@ -132,14 +118,9 @@ extension ThemeListViewController: UITableViewDataSource {
 extension ThemeListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let vm = ThemePageViewModel(themeId: viewModel.items[indexPath.row].unwrappedID)
-        
-        let themePageViewController = ThemePageViewController(viewModel: vm)
-        
-        navigationController?.pushViewController(themePageViewController, animated: true)
-        
-        print("Selected item: \(viewModel.items[indexPath.row])")
-        
+        let theme = self.themes[indexPath.row]
+        self.coordinator?.showThemePage(theme: theme)
+
+        print("Selected theme: \(theme)")
     }
 }
