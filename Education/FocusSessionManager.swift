@@ -61,11 +61,13 @@ class FocusSessionManager {
     }
     
     // MARK: - Fetch
-    func fetchFocusSessions(hasSchedule: Bool, scheduleID: String? = nil) -> [FocusSession]? {
+    func fetchFocusSessions(scheduleID: String?) -> [FocusSession]? {
         let fetchRequest = NSFetchRequest<FocusSession>(entityName: "FocusSession")
         
         if let scheduleID = scheduleID {
             fetchRequest.predicate = NSPredicate(format: "scheduleID == %@", scheduleID)
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "scheduleID == nil", #keyPath(FocusSession.scheduleID))
         }
         
         var focusSessions: [FocusSession]?
@@ -78,24 +80,10 @@ class FocusSessionManager {
             }
         }
         
-        if !hasSchedule {
-            guard let allFocusSessions = focusSessions else { return nil }
-            
-            let filteredFocusSessions = allFocusSessions.compactMap { focusSession in
-                if focusSession.scheduleID == nil {
-                    return focusSession
-                }
-                
-                return nil
-            }
-            
-            return filteredFocusSessions
-        }
-        
         return focusSessions
     }
     
-    func fetchFocusSession(from id: String) -> FocusSession? {
+    func fetchFocusSession(withID id: String) -> FocusSession? {
         let fetchRequest = NSFetchRequest<FocusSession>(entityName: "FocusSession")
         fetchRequest.predicate = NSPredicate(format: "id == %@", id)
         fetchRequest.fetchLimit = 1
