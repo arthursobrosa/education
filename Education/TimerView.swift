@@ -48,11 +48,13 @@ class TimerView: UIView{
         return btn
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, totalTimeInMinutes: Int) {
         super.init(frame: frame)
         
         createTimer()
         vm.startTimer()
+        
+        vm.totalTimeInMinutes = totalTimeInMinutes
         
         vm.onChangeSecond = { [weak self] time in
             self?.timerLabel.text = String(format: "%02i:%02i", time/60, time%60)

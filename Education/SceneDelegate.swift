@@ -19,14 +19,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
                 
-                let themeListViewModel = ThemeListViewModel()
-                let themeListViewController = ThemeListViewController(viewModel: themeListViewModel)
-                let navigationController = UINavigationController(rootViewController: themeListViewController)
-                
-                window = UIWindow(windowScene: windowScene)
-                window?.frame = windowScene.coordinateSpace.bounds // Set the frame to be full screen
-                window?.rootViewController = navigationController
-                window?.makeKeyAndVisible()
+//        let themeListViewModel = ThemeListViewModel()
+//        let themeListViewController = ThemeListViewController(viewModel: themeListViewModel)
+//        let navigationController = UINavigationController(rootViewController: themeListViewController)
+        
+        window = UIWindow(windowScene: windowScene)
+        window?.frame = windowScene.coordinateSpace.bounds // Set the frame to be full screen
+        window?.backgroundColor = .systemBackground
+        window?.rootViewController = UINavigationController(rootViewController: ViewController())
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
