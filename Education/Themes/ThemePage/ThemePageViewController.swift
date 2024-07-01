@@ -44,15 +44,14 @@ class ThemePageViewController: UIViewController {
     }
     
     // MARK: - Update UI with Fetched Theme
+    
+    private func updateViewWithFetchedInfo() {
+        guard let fetchedTheme = viewModel.getFetchedTheme() else { return }
         
-        private func updateViewWithFetchedInfo() {
-            guard let fetchedTheme = viewModel.getFetchedTheme() else { return }
-            
-            // Update the title label in the view with the fetched theme's name
-            DispatchQueue.main.async { [weak self] in
-                self?.themePageView?.titleLabel.text = fetchedTheme.name
-            }
+        DispatchQueue.main.async { [weak self] in
+            self?.themePageView?.titleLabel.text = fetchedTheme.name
         }
+    }
     
     // MARK: - Fetch Data
     
@@ -66,7 +65,7 @@ class ThemePageViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
-        themePageView = ThemePageView()
+        themePageView = ThemePageView(themeId: self.viewModel.themeId)
         guard let themePageView = themePageView else { return }
         themePageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(themePageView)
@@ -81,7 +80,6 @@ class ThemePageViewController: UIViewController {
         themePageView.tableView.delegate = self
         themePageView.tableView.dataSource = self
         themePageView.tableView.register(TestTableViewCell.self, forCellReuseIdentifier: TestTableViewCell.identifier)
-        
         themePageView.addThemeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
     }

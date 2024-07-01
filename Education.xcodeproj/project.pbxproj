@@ -17,6 +17,8 @@
 		310B8A1B2C2F26BE005339E8 /* ThemeRightQuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1A2C2F26BE005339E8 /* ThemeRightQuestionsView.swift */; };
 		310B8A1D2C2F26CC005339E8 /* ThemeRightQuestionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1C2C2F26CC005339E8 /* ThemeRightQuestionsViewModel.swift */; };
 		310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */; };
+		30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216BF2C2F26FE00B7114F /* ChartView.swift */; };
+		30F216C22C2F282100B7114F /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216C12C2F282100B7114F /* ChartViewModel.swift */; };
 		31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */; };
 		683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B45382C1B6F3A00663912 /* AppDelegate.swift */; };
 		683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453A2C1B6F3A00663912 /* SceneDelegate.swift */; };
@@ -45,6 +47,8 @@
 		310B8A1A2C2F26BE005339E8 /* ThemeRightQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeRightQuestionsView.swift; sourceTree = "<group>"; };
 		310B8A1C2C2F26CC005339E8 /* ThemeRightQuestionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeRightQuestionsViewModel.swift; sourceTree = "<group>"; };
 		310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableViewCell.swift; sourceTree = "<group>"; };
+		30F216BF2C2F26FE00B7114F /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		30F216C12C2F282100B7114F /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
 		31AA70A12C2C8632002367CA /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
 		683B45352C1B6F3A00663912 /* Education.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Education.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		683B45382C1B6F3A00663912 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 		30F216B72C2DEF2200B7114F /* ThemePage */ = {
 			isa = PBXGroup;
 			children = (
+				30F216BE2C2F26EA00B7114F /* Chart */,
 				30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */,
 				30F216BA2C2DEF4800B7114F /* ThemePageView.swift */,
 				30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */,
@@ -114,6 +119,15 @@
 				310B8A1C2C2F26CC005339E8 /* ThemeRightQuestionsViewModel.swift */,
 			);
 			path = ThemeRightQuestions;
+			sourceTree = "<group>";
+		};
+		30F216BE2C2F26EA00B7114F /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				30F216BF2C2F26FE00B7114F /* ChartView.swift */,
+				30F216C12C2F282100B7114F /* ChartViewModel.swift */,
+			);
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		683B452C2C1B6F3A00663912 = {
@@ -250,11 +264,13 @@
 				310B8A1D2C2F26CC005339E8 /* ThemeRightQuestionsViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				310B8A192C2F2694005339E8 /* ThemeRigthQuestionsViewController.swift in Sources */,
+				30F216C22C2F282100B7114F /* ChartViewModel.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
 				30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */,
 				CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */,
+				30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */,
 				30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */,
 				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
 				68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */,
