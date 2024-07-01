@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     }
     
     override func loadView() {
-        self.view = TimerView(frame: .zero, totalTimeInMinutes: 3)
+        self.view = TimerPickerView(frame: .zero)
     }
 
 
