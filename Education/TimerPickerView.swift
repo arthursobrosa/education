@@ -1,5 +1,5 @@
 //
-//  TimerPickerViewModel.swift
+//  TimerPickerView.swift
 //  Education
 //
 //  Created by Lucas Cunha on 28/06/24.
@@ -42,6 +42,17 @@ class TimerPickerView: UIView {
         return button
     }()
     
+    private lazy var startButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .green
+        button.layer.cornerRadius = 8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Start", for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(startButtonClicked), for: .touchUpInside)
+        return button
+    }()
+    
     private var selectedTime: TimeInterval = 0 // Variable to hold the selected time
     
     override init(frame: CGRect) {
@@ -50,6 +61,7 @@ class TimerPickerView: UIView {
         self.addSubview(timerButton)
         self.addSubview(timePicker)
         self.addSubview(saveButton)
+        self.addSubview(startButton)
         
         setConstraints()
     }
@@ -69,7 +81,12 @@ class TimerPickerView: UIView {
             saveButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             saveButton.topAnchor.constraint(equalTo: timePicker.bottomAnchor, constant: 10),
             saveButton.widthAnchor.constraint(equalTo: self.widthAnchor),
-            saveButton.heightAnchor.constraint(equalToConstant: 50)
+            saveButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            startButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 10),
+            startButton.widthAnchor.constraint(equalTo: self.widthAnchor),
+            startButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -97,6 +114,14 @@ class TimerPickerView: UIView {
         saveButton.isHidden = true // Hide the save button
     }
     
+    @objc func startButtonClicked() {
+        print("click")
+        let timerViewController = TimerViewController()
+        timerViewController.totalTimeInMinutes = Int(selectedTime / 60)
+        let parentViewController = self.parentViewController
+        parentViewController?.navigationController?.pushViewController(timerViewController, animated: true)
+    }
+    
     func getSelectedTime() -> TimeInterval {
         return selectedTime
     }
@@ -105,5 +130,19 @@ class TimerPickerView: UIView {
         let hours = Int(selectedTime) / 3600
         let minutes = (Int(selectedTime) % 3600) / 60
         print("Selected time is \(hours) hours and \(minutes) minutes.")
+    }
+}
+
+// Extension to get the parent view controller
+extension UIView {
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder!.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
     }
 }

@@ -25,7 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         window?.frame = windowScene.coordinateSpace.bounds // Set the frame to be full screen
-        window?.rootViewController = ViewController()
+        window?.backgroundColor = .systemBackground
+        window?.rootViewController = UINavigationController(rootViewController: ViewController())
         window?.makeKeyAndVisible()
     }
 
