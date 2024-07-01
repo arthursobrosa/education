@@ -44,15 +44,14 @@ class ThemePageViewController: UIViewController {
     }
     
     // MARK: - Update UI with Fetched Theme
+    
+    private func updateViewWithFetchedInfo() {
+        guard let fetchedTheme = viewModel.getFetchedTheme() else { return }
         
-        private func updateViewWithFetchedInfo() {
-            guard let fetchedTheme = viewModel.getFetchedTheme() else { return }
-            
-            // Update the title label in the view with the fetched theme's name
-            DispatchQueue.main.async { [weak self] in
-                self?.themePageView?.titleLabel.text = fetchedTheme.name
-            }
+        DispatchQueue.main.async { [weak self] in
+            self?.themePageView?.titleLabel.text = fetchedTheme.name
         }
+    }
     
     // MARK: - Fetch Data
     
@@ -66,7 +65,7 @@ class ThemePageViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
-        themePageView = ThemePageView()
+        themePageView = ThemePageView(themeId: self.viewModel.themeId)
         guard let themePageView = themePageView else { return }
         themePageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(themePageView)
@@ -80,17 +79,21 @@ class ThemePageViewController: UIViewController {
         
         themePageView.tableView.delegate = self
         themePageView.tableView.dataSource = self
-        
+        themePageView.tableView.register(TestTableViewCell.self, forCellReuseIdentifier: TestTableViewCell.identifier)
         themePageView.addThemeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
     }
     
     @objc private func buttonTapped() {
-        showAddItemAlert()
+        presentAddItemSheet()
     }
     
-    private func showAddItemAlert() {
-        self.viewModel.addNewItem()
+    private func presentAddItemSheet() {
+        let vc = ThemeRigthQuestionsViewController(themeId: viewModel.themeId)
+        vc.onTestAdded = { [weak self] in
+            self?.viewModel.fetchItems() // Update table view when test is added
+        }
+        self.present(vc, animated: true)
     }
     
   
@@ -105,8 +108,11 @@ extension ThemePageViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = String(viewModel.items[indexPath.row].rightQuestions)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TestTableViewCell.identifier, for: indexPath) as? TestTableViewCell else {
+            return UITableViewCell()
+        }
+        let item = viewModel.items[indexPath.row]
+        cell.configure(with: item)
         return cell
     }
     

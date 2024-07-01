@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class ThemePageView: UIView {
     
@@ -19,17 +20,16 @@ class ThemePageView: UIView {
         return label
     }()
     
-    lazy var placeholderView: UIView = {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .lightGray // Adjust color as needed
-            return view
-        }()
+    lazy var chartView: UIHostingController<ChartView> = {
+        let hostingController = UIHostingController(rootView: ChartView(vm: self.chartViewModel))
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        return hostingController
+    }()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TestCell")
         return tableView
     }()
     
@@ -40,9 +40,12 @@ class ThemePageView: UIView {
         return button
     }()
     
+    private let chartViewModel: ChartViewModel
+    
     // MARK: - Initialization
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init( themeId: String) {
+        self.chartViewModel = ChartViewModel(themeId: themeId)
+        super.init(frame: .zero)
         setupUI()
     }
     
@@ -54,7 +57,7 @@ class ThemePageView: UIView {
     private func setupUI() {
             
             addSubview(titleLabel)
-            addSubview(placeholderView)
+            addSubview(chartView.view)
             addSubview(tableView)
             addSubview(addThemeButton)
             
@@ -62,12 +65,12 @@ class ThemePageView: UIView {
                 titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
                 titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
                 
-                placeholderView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-                placeholderView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                placeholderView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-                placeholderView.heightAnchor.constraint(equalToConstant: 200), // Adjust height as needed
+                chartView.view.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+                chartView.view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+                chartView.view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+                chartView.view.heightAnchor.constraint(equalToConstant: 200),
                 
-                tableView.topAnchor.constraint(equalTo: placeholderView.bottomAnchor, constant: 20),
+                tableView.topAnchor.constraint(equalTo: chartView.view.bottomAnchor, constant: 20),
                 tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -20),

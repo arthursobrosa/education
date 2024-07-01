@@ -18,32 +18,47 @@ class TimerViewModel{
     var timerValue: Int = 0
     var totalPausedTime: Int = 0
     var isPaused = false
+    var pauseEntry: Date?
+    
     
     init(timerStart: Date, totalTimeInMinutes: Int) {
         self.timerStart = timerStart
         self.totalTimeInMinutes = totalTimeInMinutes
     }
     
-    func timerReset(){
-        timerStart = Date()
-    }
-    
     func timerPause(){
-        totalPausedTime += 1
+        
+        if(pauseEntry == nil){
+            pauseEntry = Date()
+        }
+        
         print(totalPausedTime)
     }
     
     func timerUpdate(){
-        let finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInMinutes * 60) + Double(totalPausedTime)
-        if(finalTime > Date().timeIntervalSince1970){
-            timerValue = Int(finalTime - Date().timeIntervalSince1970)
+        var finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInMinutes * 60) + Double(totalPausedTime)
+        
+        if(pauseEntry != nil){
+            guard let pauseTime = pauseEntry else {
+                return
+            }
+            let pausedTime = Date().timeIntervalSince1970 - pauseTime.timeIntervalSince1970
+            totalPausedTime += Int(pausedTime.rounded(.up))
+            pauseEntry = nil
+            finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInMinutes * 60) + Double(totalPausedTime) 
+            timerValue = Int(finalTime.rounded(.up) - Date().timeIntervalSince1970.rounded(.up))
+            self.onChangeSecond?(timerValue)
         }
         else{
-            timerValue = 0
+            if(finalTime > Date().timeIntervalSince1970){
+                timerValue = Int(finalTime.rounded(.up) - Date().timeIntervalSince1970.rounded(.up))
+            }
+            else{
+                timerValue = 0
+            }
+            self.onChangeSecond?(timerValue)
         }
-        
         print(timerValue)
-        self.onChangeSecond?(timerValue)
     }
     
     
@@ -70,18 +85,15 @@ class TimerViewModel{
         deinit {
             timer?.cancel()
         }
-    
-//    func addObservers() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(activeAgain), name: UIApplication.didBecomeActiveNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(goingAway), name: UIApplication.didEnterBackgroundNotification, object: nil)
-//    }
-//    
-//    
-//    @objc func activeAgain() {
-//        print("Saiu do background")
-//    }
-//    
-//    @objc func goingAway() {
-//        print("Entrou em background")
-//    }
 }
+
+
+
+
+
+
+
+
+
+
+
