@@ -12,13 +12,16 @@ class ThemePageViewController: UIViewController {
     
     // MARK: - Properties
     
-    weak var coordinator: Coordinator?
+    weak var coordinator: ShowingThemeRightQuestions?
     private var tests = [Test]()
     private var viewModel: ThemePageViewModel!
     private lazy var themePageView: ThemePageView = {
         let themeView = ThemePageView()
+        
         themeView.tableView.delegate = self
         themeView.tableView.dataSource = self
+        themeView.tableView.register(TestTableViewCell.self, forCellReuseIdentifier: TestTableViewCell.identifier)
+        
         themeView.addThemeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
         return themeView
@@ -52,22 +55,18 @@ class ThemePageViewController: UIViewController {
             self.tests = tests
             self.themePageView.reloadTable()
         }
-        
-        fetchDataFromCoreData()
     }
     
-    // MARK: - Fetch Data
-    
-    private func fetchDataFromCoreData() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         self.viewModel.fetchTests()
     }
     
-    @objc private func buttonTapped() {
-        showAddItemAlert()
-    }
+    // MARK: - Button method
     
-    private func showAddItemAlert() {
-        self.viewModel.addNewTest(date: Date.now, rightQuestions: 25, totalQuestions: 30)
+    @objc private func buttonTapped() {
+        self.coordinator?.showThemeRightQuestions(viewModel: self.viewModel, themeID: self.viewModel.themeID)
     }
 }
 
@@ -82,8 +81,12 @@ extension ThemePageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let test = self.tests[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = String(test.rightQuestions)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TestTableViewCell.identifier, for: indexPath) as? TestTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        cell.test = test
+        
         return cell
     }
     

@@ -49,7 +49,7 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigatio
         }
         
         if let themePageViewController = fromViewController as? ThemePageViewController {
-            self.childDidFinish(themePageViewController.coordinator)
+            self.childDidFinish(themePageViewController.coordinator as? Coordinator)
         }
     }
 }

@@ -10,17 +10,17 @@ import Foundation
 class ThemePageViewModel {
     let testManager: TestManager
     
-    init(testManager: TestManager = TestManager(mainContext: CoreDataStack.shared.mainContext, backgroundContext: CoreDataStack.shared.backgroundContext), theme: Theme) {
+    init(testManager: TestManager = TestManager(mainContext: CoreDataStack.shared.mainContext, backgroundContext: CoreDataStack.shared.backgroundContext), themeID: String) {
         self.testManager = testManager
-        self.theme = theme
+        self.themeID = themeID
     }
     
     var tests = Box([Test]())
     
-    var theme: Theme
+    var themeID: String
     
     func addNewTest(date: Date, rightQuestions: Int, totalQuestions: Int) {
-        self.testManager.createTest(themeID: self.theme.unwrappedID, date: date, rightQuestions: rightQuestions, totalQuestions: totalQuestions)
+        self.testManager.createTest(themeID: self.themeID, date: date, rightQuestions: rightQuestions, totalQuestions: totalQuestions)
         self.fetchTests()
     }
     
@@ -30,7 +30,7 @@ class ThemePageViewModel {
     }
     
     func fetchTests() {
-        if let tests = self.testManager.fetchTests(themeID: self.theme.unwrappedID) {
+        if let tests = self.testManager.fetchTests(themeID: self.themeID) {
             self.tests.value = tests
         }
     }

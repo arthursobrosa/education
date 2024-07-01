@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemePageCoordinator: Coordinator {
+class ThemePageCoordinator: Coordinator, ShowingThemeRightQuestions {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -19,10 +19,17 @@ class ThemePageCoordinator: Coordinator {
     }
     
     func start() {
-        let viewModel = ThemePageViewModel(theme: self.theme)
+        let viewModel = ThemePageViewModel(themeID: self.theme.unwrappedID)
         let vc = ThemePageViewController(viewModel: viewModel)
-        vc.title = theme.unwrappedName
+        vc.title = self.theme.unwrappedName
         vc.coordinator = self
         self.navigationController.pushViewController(vc, animated: true)
+    }
+    
+    func showThemeRightQuestions(viewModel: ThemePageViewModel, themeID: String) {
+        let vc = ThemeRigthQuestionsViewController(viewModel: viewModel)
+        vc.title = "New Test"
+        vc.modalPresentationStyle = .pageSheet
+        self.navigationController.present(UINavigationController(rootViewController: vc), animated: true)
     }
 }
