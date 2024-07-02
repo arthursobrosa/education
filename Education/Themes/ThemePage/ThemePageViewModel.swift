@@ -21,7 +21,11 @@ class ThemePageViewModel: ObservableObject {
     var themeID: String
     
     var limits: [Int] = [7, 15, 30]
-    @Published var selectedLimit: Int = 7
+    @Published var selectedLimit: Int = 7 {
+        didSet {
+            self.getLimitedItems()
+        }
+    }
     @Published var limitedItems = [BarMark]()
     
     func addNewTest(date: Date, rightQuestions: Int, totalQuestions: Int) {
