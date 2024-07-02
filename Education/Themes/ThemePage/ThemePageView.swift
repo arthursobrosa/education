@@ -48,8 +48,19 @@ class ThemePageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI Setup
-    private func setupUI() {
+    // MARK: - Reload Table
+    func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.testsTableView.reloadData()
+        }
+    }
+}
+
+// MARK: - UI Setup
+extension ThemePageView: ViewCodeProtocol {
+    func setupUI() {
 
         addSubview(chartView.view)
         addSubview(testsTableView)
@@ -70,15 +81,6 @@ class ThemePageView: UIView {
             addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
-    }
-    
-    // MARK: - Reload Table
-    func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            self.testsTableView.reloadData()
-        }
     }
 }
 

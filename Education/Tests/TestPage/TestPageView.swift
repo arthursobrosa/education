@@ -52,9 +52,12 @@ class TestPageView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
+}
+
+// MARK: - UI Setup
+
+extension TestPageView: ViewCodeProtocol {
+    func setupUI() {
 
         addSubview(datePicker)
         addSubview(rightQuestionsTextField)
@@ -80,6 +83,5 @@ class TestPageView: UIView {
             addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
     }
-    
 }
 

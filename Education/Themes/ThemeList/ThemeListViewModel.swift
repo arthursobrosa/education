@@ -10,7 +10,7 @@ import Foundation
 class ThemeListViewModel {
     let themeManager: ThemeManager
     
-    init(themeManager: ThemeManager = ThemeManager(mainContext: CoreDataStack.shared.mainContext, backgroundContext: CoreDataStack.shared.backgroundContext)) {
+    init(themeManager: ThemeManager = ThemeManager()) {
         self.themeManager = themeManager
     }
     

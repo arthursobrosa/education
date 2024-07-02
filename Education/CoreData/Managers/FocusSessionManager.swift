@@ -8,17 +8,7 @@
 import UIKit
 import CoreData
 
-class FocusSessionManager {
-    // MARK: - Contexts
-    let mainContext: NSManagedObjectContext
-    let backgroundContext: NSManagedObjectContext
-    
-    // MARK: - Init
-    init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
-        self.mainContext = mainContext
-        self.backgroundContext = backgroundContext
-    }
-    
+final class FocusSessionManager: ObjectManager {    
     // MARK: - Create
     func createFocusSession(date: Date, totalTime: Int, scheduleID: String? = nil) {
         backgroundContext.performAndWait {

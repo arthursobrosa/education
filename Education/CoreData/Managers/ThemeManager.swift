@@ -8,18 +8,8 @@
 import UIKit
 import CoreData
 
-class ThemeManager {
-    // MARK: - Contexts
-    let mainContext: NSManagedObjectContext
-    let backgroundContext: NSManagedObjectContext
-    
-    lazy var testManager = TestManager(mainContext: self.mainContext, backgroundContext: self.mainContext)
-    
-    // MARK: - Init
-    init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
-        self.mainContext = mainContext
-        self.backgroundContext = backgroundContext
-    }
+final class ThemeManager: ObjectManager {
+    lazy var testManager = TestManager()
     
     // MARK: - Create
     func createTheme(name: String) {

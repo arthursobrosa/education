@@ -20,6 +20,8 @@
 		31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */; };
 		682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCE2C2F342100272451 /* ThemeManager.swift */; };
 		682927512C30AE4000FE29AA /* (null) in Sources */ = {isa = PBXBuildFile; };
+		6833B2152C345467009EA63D /* ObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6833B2142C345467009EA63D /* ObjectManager.swift */; };
+		6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */; };
 		683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B45382C1B6F3A00663912 /* AppDelegate.swift */; };
 		683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453A2C1B6F3A00663912 /* SceneDelegate.swift */; };
 		683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453C2C1B6F3A00663912 /* ViewController.swift */; };
@@ -59,6 +61,8 @@
 		310B8A1A2C2F26BE005339E8 /* TestPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageView.swift; sourceTree = "<group>"; };
 		310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableViewCell.swift; sourceTree = "<group>"; };
 		31AA70A12C2C8632002367CA /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
+		6833B2142C345467009EA63D /* ObjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
+		6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCodeProtocol.swift; sourceTree = "<group>"; };
 		683B45352C1B6F3A00663912 /* Education.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Education.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		683B45382C1B6F3A00663912 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		683B453A2C1B6F3A00663912 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,7 +110,6 @@
 			children = (
 				30F216A22C2C884400B7114F /* ThemeList */,
 				30F216B72C2DEF2200B7114F /* ThemePage */,
-				310B8A172C2F2637005339E8 /* TestPage */,
 			);
 			path = Themes;
 			sourceTree = "<group>";
@@ -152,6 +155,67 @@
 			path = TestPage;
 			sourceTree = "<group>";
 		};
+		6833B2162C345670009EA63D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				683B45382C1B6F3A00663912 /* AppDelegate.swift */,
+				683B453A2C1B6F3A00663912 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6833B2172C34567E009EA63D /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				310B8A172C2F2637005339E8 /* TestPage */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		6833B2182C34569D009EA63D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				6833B2142C345467009EA63D /* ObjectManager.swift */,
+				68825BC62C2F281400272451 /* SubjectManager.swift */,
+				68825BCA2C2F2D3300272451 /* ScheduleManager.swift */,
+				68825BCC2C2F300000272451 /* FocusSessionManager.swift */,
+				68825BCE2C2F342100272451 /* ThemeManager.swift */,
+				68825BD02C2F348300272451 /* TestManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		6833B2192C3456B9009EA63D /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				684EDF962C2C871700A3F392 /* Coordinator.swift */,
+				68825BD62C2F469D00272451 /* ShowingThemePage.swift */,
+				6881123D2C33388A003012D0 /* ShowingTestPage.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		6833B21A2C3456C9009EA63D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */,
+				68825BD22C2F370B00272451 /* Box.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		6833B21D2C345700009EA63D /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				683B453C2C1B6F3A00663912 /* ViewController.swift */,
+				CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */,
+				CE3010042C3329F1007BCA07 /* TimerView.swift */,
+				CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */,
+				CE3010062C332A33007BCA07 /* TimerViewController.swift */,
+			);
+			path = Timer;
+			sourceTree = "<group>";
+		};
 		683B452C2C1B6F3A00663912 = {
 			isa = PBXGroup;
 			children = (
@@ -172,26 +236,13 @@
 			isa = PBXGroup;
 			children = (
 				68D47D582C2DE227000E011C /* Education.entitlements */,
-				683B45382C1B6F3A00663912 /* AppDelegate.swift */,
-				683B453A2C1B6F3A00663912 /* SceneDelegate.swift */,
-				68825BC42C2F256E00272451 /* CoreDataStack.swift */,
-				68825BC62C2F281400272451 /* SubjectManager.swift */,
-				68825BCA2C2F2D3300272451 /* ScheduleManager.swift */,
-				68825BCC2C2F300000272451 /* FocusSessionManager.swift */,
-				68825BCE2C2F342100272451 /* ThemeManager.swift */,
-				68825BD02C2F348300272451 /* TestManager.swift */,
-				68825BD22C2F370B00272451 /* Box.swift */,
-				68825BD62C2F469D00272451 /* ShowingThemePage.swift */,
-				6881123D2C33388A003012D0 /* ShowingTestPage.swift */,
-				30F216A12C2C883900B7114F /* Themes */,
+				6833B2162C345670009EA63D /* App */,
+				6833B21A2C3456C9009EA63D /* Utils */,
 				684EDFA62C2CAA7B00A3F392 /* CoreData */,
-				683B453C2C1B6F3A00663912 /* ViewController.swift */,
-				684EDF962C2C871700A3F392 /* Coordinator.swift */,
-				CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */,
-				CE3010042C3329F1007BCA07 /* TimerView.swift */,
-				CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */,
-				CE3010062C332A33007BCA07 /* TimerViewController.swift */,
-				31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */,
+				6833B2192C3456B9009EA63D /* Coordinator */,
+				6833B2172C34567E009EA63D /* Tests */,
+				30F216A12C2C883900B7114F /* Themes */,
+				6833B21D2C345700009EA63D /* Timer */,
 				683B45412C1B6F3B00663912 /* Assets.xcassets */,
 				683B45432C1B6F3B00663912 /* LaunchScreen.storyboard */,
 				683B45462C1B6F3B00663912 /* Info.plist */,
@@ -202,6 +253,9 @@
 		684EDFA62C2CAA7B00A3F392 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */,
+				68825BC42C2F256E00272451 /* CoreDataStack.swift */,
+				6833B2182C34569D009EA63D /* Managers */,
 				684EDFA72C2CAA8300A3F392 /* Extensions */,
 			);
 			path = CoreData;
@@ -290,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
+				6833B2152C345467009EA63D /* ObjectManager.swift in Sources */,
 				683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */,
 				68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
@@ -307,6 +362,7 @@
 				CE3010072C332A33007BCA07 /* TimerViewController.swift in Sources */,
 				CE3010052C3329F1007BCA07 /* TimerView.swift in Sources */,
 				CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */,
+				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
 				682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */,
 				30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */,
@@ -547,8 +603,7 @@
 				31AA70A12C2C8632002367CA /* DataBase.xcdatamodel */,
 			);
 			currentVersion = 31AA70A12C2C8632002367CA /* DataBase.xcdatamodel */;
-			name = DataBase.xcdatamodeld;
-			path = ../DataBase.xcdatamodeld;
+			path = DataBase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

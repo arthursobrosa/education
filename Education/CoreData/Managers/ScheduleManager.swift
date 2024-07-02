@@ -8,18 +8,8 @@
 import UIKit
 import CoreData
 
-class ScheduleManager {
-    // MARK: - Contexts
-    let mainContext: NSManagedObjectContext
-    let backgroundContext: NSManagedObjectContext
-    
-    lazy var focusSessionManager = FocusSessionManager(mainContext: self.mainContext, backgroundContext: self.backgroundContext)
-    
-    // MARK: - Init
-    init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
-        self.mainContext = mainContext
-        self.backgroundContext = backgroundContext
-    }
+final class ScheduleManager: ObjectManager {
+    lazy var focusSessionManager = FocusSessionManager()
     
     // MARK: - Create
     func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date) {

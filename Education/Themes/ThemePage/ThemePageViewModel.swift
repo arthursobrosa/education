@@ -11,7 +11,7 @@ import Charts
 class ThemePageViewModel: ObservableObject {
     let testManager: TestManager
     
-    init(testManager: TestManager = TestManager(mainContext: CoreDataStack.shared.mainContext, backgroundContext: CoreDataStack.shared.backgroundContext), themeID: String) {
+    init(testManager: TestManager = TestManager(), themeID: String) {
         self.testManager = testManager
         self.themeID = themeID
     }

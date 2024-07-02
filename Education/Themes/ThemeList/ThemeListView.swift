@@ -46,9 +46,12 @@ class ThemeListView: UIView {
             self.tableView.reloadData()
         }
     }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
+}
+
+// MARK: - UI Setup
+
+extension ThemeListView: ViewCodeProtocol {
+    func setupUI() {
         
         addSubview(tableView)
         addSubview(addThemeButton)

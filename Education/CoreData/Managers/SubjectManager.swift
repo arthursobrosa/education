@@ -8,18 +8,8 @@
 import UIKit
 import CoreData
 
-class SubjectManager {
-    // MARK: - Contexts
-    let mainContext: NSManagedObjectContext
-    let backgroundContext: NSManagedObjectContext
-    
-    lazy var scheduleManager = ScheduleManager(mainContext: self.mainContext, backgroundContext: self.backgroundContext)
-    
-    // MARK: - Init
-    init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
-        self.mainContext = mainContext
-        self.backgroundContext = backgroundContext
-    }
+final class SubjectManager: ObjectManager {
+    lazy var scheduleManager = ScheduleManager()
     
     // MARK: - Create
     func createSubject(name: String) {

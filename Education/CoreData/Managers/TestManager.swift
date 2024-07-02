@@ -8,17 +8,7 @@
 import UIKit
 import CoreData
 
-class TestManager {
-    // MARK: - Contexts
-    let mainContext: NSManagedObjectContext
-    let backgroundContext: NSManagedObjectContext
-
-    // MARK: - Init
-    init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
-        self.mainContext = mainContext
-        self.backgroundContext = backgroundContext
-    }
-    
+final class TestManager: ObjectManager {
     // MARK: - Create
     func createTest(themeID: String, date: Date, rightQuestions: Int, totalQuestions: Int) {
         backgroundContext.performAndWait {
