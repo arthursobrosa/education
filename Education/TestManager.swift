@@ -12,12 +12,7 @@ class TestManager {
     // MARK: - Contexts
     let mainContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
-    
-    /*
-     Note: All fetches should always be done on mainContext. Updates, creates, deletes can be background.
-     Contexts are passed in so they can be overriden via unit testing.
-    */
-    
+
     // MARK: - Init
     init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
         self.mainContext = mainContext
@@ -25,7 +20,7 @@ class TestManager {
     }
     
     // MARK: - Create
-    func createTest(themeID: String, date: Date, rightQuestions: Int, totalQuestions: Int)  {
+    func createTest(themeID: String, date: Date, rightQuestions: Int, totalQuestions: Int) {
         backgroundContext.performAndWait {
             guard let test = NSEntityDescription.insertNewObject(forEntityName: "Test", into: backgroundContext) as? Test else { return }
             
@@ -36,6 +31,7 @@ class TestManager {
             test.id = UUID().uuidString
             
             try? backgroundContext.save()
+            CoreDataStack.shared.saveMainContext()
         }
     }
     
@@ -46,6 +42,7 @@ class TestManager {
             if let testInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(testInContext)
                 try? backgroundContext.save()
+                CoreDataStack.shared.saveMainContext()
             }
         }
     }

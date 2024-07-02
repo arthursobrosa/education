@@ -12,17 +12,17 @@ class ThemePageViewController: UIViewController {
     
     // MARK: - Properties
     
-    weak var coordinator: ShowingThemeRightQuestions?
+    weak var coordinator: ShowingTestPage?
     private var tests = [Test]()
     private var viewModel: ThemePageViewModel!
     private lazy var themePageView: ThemePageView = {
-        let themeView = ThemePageView()
+        let themeView = ThemePageView(viewModel: self.viewModel)
         
-        themeView.tableView.delegate = self
-        themeView.tableView.dataSource = self
-        themeView.tableView.register(TestTableViewCell.self, forCellReuseIdentifier: TestTableViewCell.identifier)
+        themeView.testsTableView.delegate = self
+        themeView.testsTableView.dataSource = self
+        themeView.testsTableView.register(TestTableViewCell.self, forCellReuseIdentifier: TestTableViewCell.identifier)
         
-        themeView.addThemeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        themeView.addTestButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
         return themeView
     }()
@@ -66,7 +66,7 @@ class ThemePageViewController: UIViewController {
     // MARK: - Button method
     
     @objc private func buttonTapped() {
-        self.coordinator?.showThemeRightQuestions(viewModel: self.viewModel, themeID: self.viewModel.themeID)
+        self.coordinator?.showTestPage(viewModel: self.viewModel)
     }
 }
 

@@ -13,11 +13,6 @@ class SubjectManager {
     let mainContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
     
-    /*
-     Note: All fetches should always be done on mainContext. Updates, creates, deletes can be background.
-     Contexts are passed in so they can be overriden via unit testing.
-    */
-    
     lazy var scheduleManager = ScheduleManager(mainContext: self.mainContext, backgroundContext: self.backgroundContext)
     
     // MARK: - Init
@@ -35,6 +30,7 @@ class SubjectManager {
             subject.id = UUID().uuidString
             
             try? backgroundContext.save()
+            CoreDataStack.shared.saveMainContext()
         }
     }
     
@@ -51,8 +47,8 @@ class SubjectManager {
             if let subjectInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(subjectInContext)
                 try? backgroundContext.save()
+                CoreDataStack.shared.saveMainContext()
             }
-            
         }
     }
     
@@ -68,13 +64,6 @@ class SubjectManager {
     }
     
     // MARK: - Fetch
-    
-    /*
-     Rule: Managed object retrieved from a context are bound to the same queue that the context is bound to.
-     
-     So if we want the results of our fetches to be used in the UI, we should do those fetching from the main UI context.
-    */
-    
     func fetchSubject(withName name: String) -> Subject? {
         let fetchRequest = NSFetchRequest<Subject>(entityName: "Subject")
         fetchRequest.fetchLimit = 1

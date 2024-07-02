@@ -1,5 +1,5 @@
 //
-//  ThemeRightQuestionsView.swift
+//  TestPageView.swift
 //  Education
 //
 //  Created by Leandro Silva on 28/06/24.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ThemeRightQuestionsView: UIView {
+class TestPageView: UIView {
     
     // MARK: - UI Components
     lazy var datePicker: UIDatePicker = {
@@ -74,8 +74,6 @@ class ThemeRightQuestionsView: UIView {
             totalQuestionsTextField.topAnchor.constraint(equalTo: rightQuestionsTextField.bottomAnchor, constant: 20),
             totalQuestionsTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             totalQuestionsTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            
-            
             
             addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),

@@ -13,11 +13,6 @@ class ThemeManager {
     let mainContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
     
-    /*
-     Note: All fetches should always be done on mainContext. Updates, creates, deletes can be background.
-     Contexts are passed in so they can be overriden via unit testing.
-    */
-    
     lazy var testManager = TestManager(mainContext: self.mainContext, backgroundContext: self.mainContext)
     
     // MARK: - Init
@@ -29,12 +24,13 @@ class ThemeManager {
     // MARK: - Create
     func createTheme(name: String) {
         backgroundContext.performAndWait {
-            guard let theme = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: backgroundContext) as? Theme else { return }
+            guard let theme = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: self.backgroundContext) as? Theme else { return }
             
             theme.name = name
             theme.id = UUID().uuidString
             
             try? backgroundContext.save()
+            CoreDataStack.shared.saveMainContext()
         }
     }
     
@@ -51,6 +47,7 @@ class ThemeManager {
             if let themeInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(themeInContext)
                 try? backgroundContext.save()
+                CoreDataStack.shared.saveMainContext()
             }
         }
     }

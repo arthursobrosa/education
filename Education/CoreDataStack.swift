@@ -36,9 +36,21 @@ class CoreDataStack {
         }
         
         mainContext = persistentContainer.viewContext
+        mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        backgroundContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
         backgroundContext.parent = self.mainContext
+        backgroundContext.automaticallyMergesChangesFromParent = true
+    }
+    
+    func saveMainContext() {
+        guard self.mainContext.hasChanges else { return }
+        
+        do {
+            try self.mainContext.save()
+        } catch {
+            fatalError("Error saving main context \(error)")
+        }
     }
 }

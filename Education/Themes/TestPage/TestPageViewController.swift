@@ -1,5 +1,5 @@
 //
-//  ThemeRigthQuestionsViewController.swift
+//  TestPageViewController.swift
 //  Education
 //
 //  Created by Leandro Silva on 28/06/24.
@@ -8,17 +8,15 @@
 import Foundation
 import UIKit
 
-class ThemeRigthQuestionsViewController: UIViewController {
+class TestPageViewController: UIViewController {
     // MARK: - Properties
     
     private var viewModel: ThemePageViewModel!
-    private lazy var themeRightQuestionsView: ThemeRightQuestionsView = {
-        let view = ThemeRightQuestionsView()
-        view.addTestButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        return view
+    private lazy var themeRightQuestionsView: TestPageView = {
+        let testView = TestPageView()
+        testView.addTestButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        return testView
     }()
-    
-    var onTestAdded: (() -> Void)?
     
     // MARK: - Initialization
     

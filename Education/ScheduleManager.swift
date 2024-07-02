@@ -13,11 +13,6 @@ class ScheduleManager {
     let mainContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
     
-    /*
-     Note: All fetches should always be done on mainContext. Updates, creates, deletes can be background.
-     Contexts are passed in so they can be overriden via unit testing.
-    */
-    
     lazy var focusSessionManager = FocusSessionManager(mainContext: self.mainContext, backgroundContext: self.backgroundContext)
     
     // MARK: - Init
@@ -38,6 +33,7 @@ class ScheduleManager {
             schedule.id = UUID().uuidString
             
             try? backgroundContext.save()
+            CoreDataStack.shared.saveMainContext()
         }
     }
     
@@ -54,6 +50,7 @@ class ScheduleManager {
             if let scheduleInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(scheduleInContext)
                 try? backgroundContext.save()
+                CoreDataStack.shared.saveMainContext()
             }
         }
     }

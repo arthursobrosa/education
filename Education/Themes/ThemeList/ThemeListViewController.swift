@@ -53,6 +53,10 @@ class ThemeListViewController: UIViewController {
             self.themes = themes
             self.themeListView.reloadTable()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         self.viewModel.fetchThemes()
     }

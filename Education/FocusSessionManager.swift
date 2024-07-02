@@ -13,11 +13,6 @@ class FocusSessionManager {
     let mainContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
     
-    /*
-     Note: All fetches should always be done on mainContext. Updates, creates, deletes can be background.
-     Contexts are passed in so they can be overriden via unit testing.
-    */
-    
     // MARK: - Init
     init(mainContext: NSManagedObjectContext, backgroundContext: NSManagedObjectContext) {
         self.mainContext = mainContext
@@ -35,6 +30,7 @@ class FocusSessionManager {
             focusSession.id = UUID().uuidString
             
             try? backgroundContext.save()
+            CoreDataStack.shared.saveMainContext()
         }
     }
     
@@ -45,6 +41,7 @@ class FocusSessionManager {
             if let focusSessionInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(focusSessionInContext)
                 try? backgroundContext.save()
+                CoreDataStack.shared.saveMainContext()
             }
         }
     }
