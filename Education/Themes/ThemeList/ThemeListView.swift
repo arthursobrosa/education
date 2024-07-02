@@ -11,14 +11,6 @@ import UIKit
 class ThemeListView: UIView {
     
     // MARK: - UI Components
-     lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-         label.text = "Theme List"
-        return label
-    }()
-    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,6 +28,9 @@ class ThemeListView: UIView {
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = .systemBackground
+        
         setupUI()
     }
     
@@ -43,18 +38,26 @@ class ThemeListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI Setup
-    private func setupUI() {
+    // MARK: - Reload table
+    func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.tableView.reloadData()
+        }
+    }
+}
+
+// MARK: - UI Setup
+
+extension ThemeListView: ViewCodeProtocol {
+    func setupUI() {
         
-        addSubview(titleLabel)
         addSubview(tableView)
         addSubview(addThemeButton)
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            
-            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -20),
@@ -63,19 +66,5 @@ class ThemeListView: UIView {
             addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
-    }
-    
-    
-    // MARK: - Button Action
-    func addAction(for target: Any?, action: Selector, event: UIControl.Event) {
-        addThemeButton.addTarget(target, action: action, for: event)
-    }
-    
-    // MARK: - Table View Setup
-    func setTableViewDataSourceDelegate<D: UITableViewDataSource & UITableViewDelegate>(_ dataSourceDelegate: D, forRowHeight height: CGFloat) {
-        tableView.rowHeight = height
-        tableView.dataSource = dataSourceDelegate
-        tableView.delegate = dataSourceDelegate
-        tableView.reloadData()
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ThemeRightQuestionsView.swift
+//  TestPageView.swift
 //  Education
 //
 //  Created by Leandro Silva on 28/06/24.
@@ -8,17 +8,9 @@
 import Foundation
 import UIKit
 
-class ThemeRightQuestionsView: UIView {
+class TestPageView: UIView {
     
     // MARK: - UI Components
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = "New test"
-        return label
-    }()
-    
     lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
         date.translatesAutoresizingMaskIntoConstraints = false
@@ -51,27 +43,30 @@ class ThemeRightQuestionsView: UIView {
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = .systemBackground
+        
         setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
-        
-        addSubview(titleLabel)
+}
+
+// MARK: - UI Setup
+
+extension TestPageView: ViewCodeProtocol {
+    func setupUI() {
+
         addSubview(datePicker)
         addSubview(rightQuestionsTextField)
         addSubview(totalQuestionsTextField)
         addSubview(addTestButton)
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            datePicker.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            datePicker.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
             datePicker.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             datePicker.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             
@@ -83,13 +78,10 @@ class ThemeRightQuestionsView: UIView {
             totalQuestionsTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             totalQuestionsTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             
-            
-            
             addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
     }
-    
 }
 

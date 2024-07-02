@@ -10,18 +10,12 @@ import Charts
 
 struct ChartView: View {
     
-    @StateObject var vm: ChartViewModel
-    @State private var selectedLimit: Int = 7
-    let limits = [7, 15, 30]
-    
-    private var limitedItems: [BarMark] {
-        vm.limitedItems(for: selectedLimit)
-    }
+    @StateObject var viewModel: ThemePageViewModel
     
     var body: some View {
         VStack {
-            Picker("Entries", selection: $selectedLimit) {
-                ForEach(limits, id: \.self) { limit in
+            Picker("Entries", selection: $viewModel.selectedLimit) {
+                ForEach(viewModel.limits, id: \.self) { limit in
                     Text("\(limit)").tag(limit)
                 }
             }
@@ -29,17 +23,13 @@ struct ChartView: View {
             .padding()
             
             Chart {
-                ForEach(Array(limitedItems.enumerated()), id: \.offset) { index, result in
+                ForEach(Array(viewModel.limitedItems.enumerated()), id: \.offset) { index, result in
                     result
                 }
             }
         }
         .onAppear {
-            vm.fetchItems()
+            self.viewModel.getLimitedItems()
         }
     }
 }
-
-//#Preview {
-//    ChartView()
-//}

@@ -6,62 +6,63 @@
 //
 
 import Foundation
+import Charts
 
-class ThemePageViewModel {
-    var onFetchThemes: (() -> Void)?
-    var onFetchInfo: (() -> Void)?
+class ThemePageViewModel: ObservableObject {
+    let testManager: TestManager
     
-    private var theme: Theme? {
-            didSet {
-                // Notify view controller that theme is fetched
-                self.onFetchInfo?()
-                print("Busquei")
-            }
-        }
-    
-    var themeId: String
-    
-    var items: [Test] = []
-    
-    init(themeId: String) {
-            self.themeId = themeId
-        }
-    
-    func addNewItem() {
-        CoreDataManager.shared.createTest(themeID: self.themeId, date: Date.now, rightQuestions: 25, totalQuestions: 30)
-        self.fetchItems()
+    init(testManager: TestManager = TestManager(), themeID: String) {
+        self.testManager = testManager
+        self.themeID = themeID
     }
     
-    func removeItem(id: String) {
-//        guard let theme = CoreDataManager.shared.fetchTheme(id) else {
-//            print("Error: Theme not found.")
-//            return
-//        }
-//        
-//        CoreDataManager.shared.deleteTheme(theme)
-//        self.fetchItems()
+    var tests = Box([Test]())
+    
+    var themeID: String
+    
+    var limits: [Int] = [7, 15, 30]
+    @Published var selectedLimit: Int = 7 {
+        didSet {
+            self.getLimitedItems()
+        }
+    }
+    @Published var limitedItems = [BarMark]()
+    
+    func addNewTest(date: Date, rightQuestions: Int, totalQuestions: Int) {
+        self.testManager.createTest(themeID: self.themeID, date: date, rightQuestions: rightQuestions, totalQuestions: totalQuestions)
+        self.fetchTests()
     }
     
-    func fetchItems() {
-        if let themes = CoreDataManager.shared.fetchTests(from: self.themeId) {
-            self.items = themes
-            self.onFetchThemes?()
+    func removeTest(_ test: Test) {
+        self.testManager.deleteTest(test)
+        self.fetchTests()
+    }
+    
+    func fetchTests() {
+        if let tests = self.testManager.fetchTests(themeID: self.themeID) {
+            self.tests.value = tests
+            self.getLimitedItems()
         }
     }
     
-    func fetchInfo() {
-        if let info = CoreDataManager.shared.fetchTheme(self.themeId) {
-            self.theme = info
-            self.onFetchInfo?()
+    func getLimitedItems() {
+        var limitedItems: [BarMark] = []
+        let itemsToShow = self.tests.value.prefix(self.selectedLimit)
+        for (index, item) in itemsToShow.enumerated() {
+            let bar = BarMark(
+                x: .value("Index", index),
+                y: .value("Test", (Double(item.rightQuestions) / Double(item.totalQuestions)))
+            )
+            limitedItems.append(bar)
         }
-        
+        while (limitedItems.count < self.selectedLimit) {
+            let additionalBar = BarMark(
+                x: .value("Index", limitedItems.count),
+                y: .value("Test", 0)
+            )
+            limitedItems.append(additionalBar)
+            
+        }
+        self.limitedItems = limitedItems
     }
-    
-    func getFetchedTheme() -> Theme? {
-            return self.theme
-        }
 }
-
-
-
-

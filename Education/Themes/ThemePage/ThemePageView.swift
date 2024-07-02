@@ -12,87 +12,75 @@ import SwiftUI
 class ThemePageView: UIView {
     
     // MARK: - UI Components
-     lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = "Theme"
-        return label
-    }()
-    
     lazy var chartView: UIHostingController<ChartView> = {
-        let hostingController = UIHostingController(rootView: ChartView(vm: self.chartViewModel))
+        let hostingController = UIHostingController(rootView: ChartView(viewModel: self.viewModel))
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         return hostingController
     }()
     
-    lazy var tableView: UITableView = {
+    lazy var testsTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TestCell")
         return tableView
     }()
     
-    lazy var addThemeButton: UIButton = {
+    lazy var addTestButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add Item", for: .normal)
+        button.setTitle("Add Test", for: .normal)
         return button
     }()
     
-    private let chartViewModel: ChartViewModel
+    private var viewModel: ThemePageViewModel
     
     // MARK: - Initialization
-    init( themeId: String) {
-        self.chartViewModel = ChartViewModel(themeId: themeId)
+        
+    init(viewModel: ThemePageViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
         setupUI()
+        
+        self.backgroundColor = .systemBackground
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI Setup
-    private func setupUI() {
+    // MARK: - Reload Table
+    func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             
-            addSubview(titleLabel)
-            addSubview(chartView.view)
-            addSubview(tableView)
-            addSubview(addThemeButton)
-            
-            NSLayoutConstraint.activate([
-                titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-                titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-                
-                chartView.view.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-                chartView.view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                chartView.view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-                chartView.view.heightAnchor.constraint(equalToConstant: 200),
-                
-                tableView.topAnchor.constraint(equalTo: chartView.view.bottomAnchor, constant: 20),
-                tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -20),
-                
-                addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-                addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
-            ])
+            self.testsTableView.reloadData()
         }
-    
-    
-    // MARK: - Button Action
-    func addAction(for target: Any?, action: Selector, event: UIControl.Event) {
-        addThemeButton.addTarget(target, action: action, for: event)
     }
-    
-    // MARK: - Table View Setup
-    func setTableViewDataSourceDelegate<D: UITableViewDataSource & UITableViewDelegate>(_ dataSourceDelegate: D, forRowHeight height: CGFloat) {
-        tableView.rowHeight = height
-        tableView.dataSource = dataSourceDelegate
-        tableView.delegate = dataSourceDelegate
-        tableView.reloadData()
+}
+
+// MARK: - UI Setup
+extension ThemePageView: ViewCodeProtocol {
+    func setupUI() {
+
+        addSubview(chartView.view)
+        addSubview(testsTableView)
+        addSubview(addTestButton)
+            
+        NSLayoutConstraint.activate([
+            chartView.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            chartView.view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            chartView.view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            chartView.view.heightAnchor.constraint(equalToConstant: 200),
+            
+            testsTableView.topAnchor.constraint(equalTo: chartView.view.bottomAnchor, constant: 20),
+            testsTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            testsTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            testsTableView.bottomAnchor.constraint(equalTo: addTestButton.topAnchor, constant: -20),
+            
+            addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
     }
 }
 

@@ -11,6 +11,15 @@ import UIKit
 class TestTableViewCell: UITableViewCell {
     static let identifier = "TestCell"
     
+    var test: Test? {
+        didSet {
+            guard let test = test else { return }
+            
+            self.dateLabel.text = formatDate(test.date ?? Date.now)
+            self.questionsLabel.text = "\(test.rightQuestions) / \(test.totalQuestions)"
+        }
+    }
+    
     
     // MARK: - UI Components
     
@@ -57,12 +66,6 @@ class TestTableViewCell: UITableViewCell {
     }
     
     // MARK: - Helper Methods
-    
-    func configure(with test: Test) {
-        dateLabel.text = formatDate(test.date ?? Date.now)
-        questionsLabel.text = "\(test.rightQuestions) / \(test.totalQuestions)"
-    }
-    
     private func formatDate(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
