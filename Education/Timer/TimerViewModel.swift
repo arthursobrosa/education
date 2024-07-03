@@ -27,73 +27,54 @@ class TimerViewModel{
     }
     
     func timerPause(){
-        
-        if(pauseEntry == nil){
+        if pauseEntry == nil {
             pauseEntry = Date()
         }
-        
-        print(totalPausedTime)
     }
     
-    func timerUpdate(){
+    func timerUpdate() {
         var finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInMinutes * 60) + Double(totalPausedTime)
         
-        if(pauseEntry != nil){
-            guard let pauseTime = pauseEntry else {
-                return
-            }
+        if pauseEntry != nil {
+            guard let pauseTime = pauseEntry else { return }
             let pausedTime = Date().timeIntervalSince1970 - pauseTime.timeIntervalSince1970
             totalPausedTime += Int(pausedTime.rounded(.up))
             pauseEntry = nil
-            finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInMinutes * 60) + Double(totalPausedTime) 
+            finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInMinutes * 60) + Double(totalPausedTime)
             timerValue = Int(finalTime.rounded(.up) - Date().timeIntervalSince1970.rounded(.up))
             self.onChangeSecond?(timerValue)
-        }
-        else{
-            if(finalTime > Date().timeIntervalSince1970){
+        } else {
+            if finalTime > Date().timeIntervalSince1970 {
                 timerValue = Int(finalTime.rounded(.up) - Date().timeIntervalSince1970.rounded(.up))
-            }
-            else{
+            } else {
                 timerValue = 0
             }
+            
             self.onChangeSecond?(timerValue)
         }
-        print(timerValue)
     }
     
-    
     func startTimer() {
-            timer = DispatchSource.makeTimerSource()
-            timer?.schedule(deadline: .now(), repeating: 1.0)
-            timer?.setEventHandler { [weak self] in
-                self?.timerAction()
-            }
-            
-            timer?.resume()
+        timer = DispatchSource.makeTimerSource()
+        timer?.schedule(deadline: .now(), repeating: 1.0)
+        timer?.setEventHandler { [weak self] in
+            self?.timerAction()
         }
         
-        func timerAction() {
-            DispatchQueue.main.async {
-                if(self.isPaused){
-                    self.timerPause()
-                }else{
-                    self.timerUpdate()
-                }
+        timer?.resume()
+    }
+    
+    func timerAction() {
+        DispatchQueue.main.async {
+            if self.isPaused {
+                self.timerPause()
+            } else {
+                self.timerUpdate()
             }
         }
-        
-        deinit {
-            timer?.cancel()
-        }
+    }
+    
+    deinit {
+        timer?.cancel()
+    }
 }
-
-
-
-
-
-
-
-
-
-
-

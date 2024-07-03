@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TimerCoordinator: Coordinator {
+class TimerCoordinator: Coordinator, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -23,5 +23,9 @@ class TimerCoordinator: Coordinator {
         let vc = TimerViewController(totalTimeInMinutes: self.totalTimeInMinutes, viewModel: viewModel)
         vc.coordinator = self
         self.navigationController.pushViewController(vc, animated: true)
+    }
+    
+    func dismiss() {
+        self.navigationController.popViewController(animated: true)
     }
 }

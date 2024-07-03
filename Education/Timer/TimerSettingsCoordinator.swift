@@ -51,7 +51,7 @@ class TimerSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINavigatio
         }
         
         if let timerViewController = fromViewController as? TimerViewController {
-            self.childDidFinish(timerViewController.coordinator)
+            self.childDidFinish(timerViewController.coordinator as? Coordinator)
         }
     }
 }

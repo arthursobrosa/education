@@ -49,6 +49,7 @@
 		68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD42C2F37F100272451 /* ThemeListCoordinator.swift */; };
 		68825BD72C2F469D00272451 /* ShowingThemePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD62C2F469D00272451 /* ShowingThemePage.swift */; };
 		68825BD92C2F48FD00272451 /* ThemePageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD82C2F48FD00272451 /* ThemePageCoordinator.swift */; };
+		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
 		68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */; };
 		68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */; };
 		68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
@@ -120,6 +121,7 @@
 		68825BD42C2F37F100272451 /* ThemeListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListCoordinator.swift; sourceTree = "<group>"; };
 		68825BD62C2F469D00272451 /* ShowingThemePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingThemePage.swift; sourceTree = "<group>"; };
 		68825BD82C2F48FD00272451 /* ThemePageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageCoordinator.swift; sourceTree = "<group>"; };
+		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		CE3010042C3329F1007BCA07 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				68825BD62C2F469D00272451 /* ShowingThemePage.swift */,
 				6881123D2C33388A003012D0 /* ShowingTestPage.swift */,
 				317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */,
+				68BBC96C2C35E13D00D82350 /* Dismissing.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -254,8 +257,8 @@
 				683B453C2C1B6F3A00663912 /* TimerSettingsViewController.swift */,
 				CE42E2F12C2F429C00A29B2D /* TimerSettingsView.swift */,
 				317C11292C35C4A100C5E7A5 /* TimerCoordinator.swift */,
-				CE3010062C332A33007BCA07 /* TimerViewController.swift */,
 				CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */,
+				CE3010062C332A33007BCA07 /* TimerViewController.swift */,
 				CE3010042C3329F1007BCA07 /* TimerView.swift */,
 			);
 			path = Timer;
@@ -455,6 +458,7 @@
 				683B453D2C1B6F3A00663912 /* TimerSettingsViewController.swift in Sources */,
 				68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
+				68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */,
 				317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */,
 				CE42E2F22C2F429C00A29B2D /* TimerSettingsView.swift in Sources */,
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,

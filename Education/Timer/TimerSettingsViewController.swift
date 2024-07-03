@@ -36,4 +36,3 @@ class TimerSettingsViewController: UIViewController {
         self.coordinator?.showTimer(Int(self.viewModel.selectedTime/60))
     }
 }
-
