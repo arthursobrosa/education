@@ -43,39 +43,91 @@ class TestManagerTest: XCTestCase {
         XCTAssertEqual(test.rightQuestions, 25)
         XCTAssertEqual(test.totalQuestions, 30)
     }
+    
+    func test_fetch_single_test() {
         
-//    func test_delete_test() {
-//        testManager.createTest(name: "Math + Geo")
-//        testManager.createTest(name: "Math + Science")
-//        
-//        var tests = testManager.fetchTests()!
-//        
-//        XCTAssertEqual(tests.count, 2)
-//        
-//        let test = testManager.fetchTest(withName: "Math + Geo")!
-//        
-//        testManager.deleteTest(test)
-//        
-//        tests = testManager.fetchTests()!
-//        
-//        XCTAssertEqual(tests.count, 1)
-//    }
-//    
-//    func test_update_test() {
-//        testManager.createTest(name: "Math + Geo")
-//        
-//        let test = testManager.fetchTest(withName: "Math + Geo")!
-//        
-//        XCTAssertEqual(test.unwrappedName, "Math + Geo")
-//        
-//        test.name = "Just math"
-//        
-//        testManager.updateTest(test)
-//        
-//        let testUpdated = testManager.fetchTest(withName: "Just math")!
-//        
-//        XCTAssertEqual(testUpdated.unwrappedName, "Just math")
-//        
-//    }
+        themeManager.createTheme(name: "Math")
+        
+        let theme = themeManager.fetchTheme(withName: "Math")!
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = "2023-11-13 09:12:22"
+        let date = format.date(from: dateString)!
+
+        testManager.createTest(themeID: theme.unwrappedID, date: date, rightQuestions: 25, totalQuestions: 30)
+        
+        
+        
+        let test = testManager.fetchTests(themeID: theme.unwrappedID)!.first!
+        
+        let testId = test.id!
+        
+        let individualTest = testManager.fetchTest(id: testId)!
+        
+        XCTAssertEqual(test.date, individualTest.date)
+        XCTAssertEqual(test.rightQuestions, individualTest.rightQuestions)
+        XCTAssertEqual(test.totalQuestions, individualTest.totalQuestions)
+    }
+        
+    func test_delete_test() {
+        themeManager.createTheme(name: "Math")
+        
+        let theme = themeManager.fetchTheme(withName: "Math")!
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateStringA = "2023-11-13 09:12:22"
+        let dateStringB = "2023-11-13 10:12:22"
+        let dateA = format.date(from: dateStringA)!
+        let dateB = format.date(from: dateStringB)!
+        
+        testManager.createTest(themeID: theme.unwrappedID, date: dateA, rightQuestions: 25, totalQuestions: 30)
+        testManager.createTest(themeID: theme.unwrappedID, date: dateB, rightQuestions: 10, totalQuestions: 15)
+        
+        var tests = testManager.fetchTests(themeID: theme.unwrappedID)!
+        
+        XCTAssertEqual(tests.count, 2)
+        
+        let test = testManager.fetchTests(themeID: theme.unwrappedID)!.first!
+        
+        testManager.deleteTest(test)
+        
+        tests = testManager.fetchTests(themeID: theme.unwrappedID)!
+        
+        XCTAssertEqual(tests.count, 1)
+        
+    }
+    
+    func test_update_test() {
+        themeManager.createTheme(name: "Math")
+        
+        let theme = themeManager.fetchTheme(withName: "Math")!
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = "2023-11-13 09:12:22"
+        let date = format.date(from: dateString)!
+
+        testManager.createTest(themeID: theme.unwrappedID, date: date, rightQuestions: 25, totalQuestions: 30)
+        
+        var test = testManager.fetchTests(themeID: theme.unwrappedID)!.first!
+        
+        test.rightQuestions = 7
+        test.totalQuestions = 20
+        
+        let dateStringB = "2023-11-13 10:12:22"
+        let dateB = format.date(from: dateString)!
+        test.date = dateB
+        
+        testManager.updateTest(test)
+        
+        let testUpdated = testManager.fetchTests(themeID: theme.unwrappedID)!.first!
+        
+        XCTAssertEqual(testUpdated.date, dateB)
+        XCTAssertEqual(testUpdated.rightQuestions, 7)
+        XCTAssertEqual(testUpdated.totalQuestions, 20)
+        
+    }
 }
 

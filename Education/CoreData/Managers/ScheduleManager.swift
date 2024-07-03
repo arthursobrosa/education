@@ -82,7 +82,7 @@ final class ScheduleManager: ObjectManager {
         if let subjectID = subjectID {
             fetchRequest.predicate = NSPredicate(format: "subjectID == %@", subjectID)
         } else if let dayOfTheWeek = dayOfTheWeek {
-            fetchRequest.predicate = NSPredicate(format: "dayOfTheWeek == %@", dayOfTheWeek)
+            fetchRequest.predicate = NSPredicate(format: "dayOfTheWeek == %d", dayOfTheWeek)
         } else {
             print("Found nil on arguments")
             return nil

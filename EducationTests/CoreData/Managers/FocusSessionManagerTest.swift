@@ -51,6 +51,35 @@ class FocusSessionManagerTest: XCTestCase {
         XCTAssertEqual(focusSession.scheduleID, schedule.unwrappedID)
     }
     
+    func test_fetch_single_focusSession() {
+        
+        subjectManager.createSubject(name: "Math")
+        
+        let subject = subjectManager.fetchSubject(withName: "Math")!
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateStringA = "2023-11-13 09:12:22"
+        let dateStringB = "2023-11-13 10:12:22"
+        let dateA = format.date(from: dateStringA)!
+        let dateB = format.date(from: dateStringB)!
+        
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
+        
+        let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
+        
+        focusSessionManager.createFocusSession(date: dateA, totalTime: 20, scheduleID: schedule.unwrappedID)
+        
+        let focusSession = focusSessionManager.fetchFocusSessions(scheduleID: schedule.unwrappedID)!.first!
+        
+        let focusSessionId = focusSession.id!
+        
+        let individualFocusSession = focusSessionManager.fetchFocusSession(withID: focusSessionId)!
+        
+        XCTAssertEqual(focusSession.id, individualFocusSession.id)
+       
+    }
+    
     func test_create_focusSession_without_schedule() {
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
