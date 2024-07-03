@@ -1,14 +1,15 @@
 //
-//  ThemeListCoordinator.swift
+//  TimerSettingsCoordinator.swift
 //  Education
 //
-//  Created by Arthur Sobrosa on 28/06/24.
+//  Created by Leandro Silva on 03/07/24.
 //
 
 import UIKit
 
-class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigationControllerDelegate {
+class TimerSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINavigationControllerDelegate {
     var childCoordinators = [Coordinator]()
+    
     var navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
@@ -18,15 +19,16 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigatio
     func start() {
         self.navigationController.delegate = self
         
-        let viewModel = ThemeListViewModel()
-        let vc = ThemeListViewController(viewModel: viewModel)
-        vc.title = "Themes"
+        let viewModel = TimerSettingsViewModel()
+        let vc = TimerSettingsViewController(viewModel: viewModel)
         vc.coordinator = self
-        self.navigationController.pushViewController(vc, animated: false)
+        vc.title = "Timer"
+        navigationController.pushViewController(vc, animated: false)
+        
     }
     
-    func showThemePage(theme: Theme) {
-        let child = ThemePageCoordinator(navigationController: self.navigationController, theme: theme)
+    func showTimer(_ totalTimeInMinutes: Int) {
+        let child = TimerCoordinator(navigationController: self.navigationController, totalTimeInMinutes: totalTimeInMinutes)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -48,8 +50,8 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigatio
             return
         }
         
-        if let themePageViewController = fromViewController as? ThemePageViewController {
-            self.childDidFinish(themePageViewController.coordinator as? Coordinator)
+        if let timerViewController = fromViewController as? TimerViewController {
+            self.childDidFinish(timerViewController.coordinator)
         }
     }
 }
