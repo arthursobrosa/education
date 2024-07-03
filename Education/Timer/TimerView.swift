@@ -9,16 +9,11 @@ import Foundation
 import UIKit
 
 class TimerView: UIView{
+    private let viewModel: TimerViewModel
     
-    var vm = TimerViewModel(timerStart: Date(), totalTimeInMinutes: 2)
-    
-    private lazy var timerLabel: UILabel = {
-        
-//        var minutes = vm.timerValue/60
-//        var seconds = vm.timerValue%60
-        
+    // MARK: - Properties
+    private let timerLabel: UILabel = {
         let lbl = UILabel()
-//        lbl.text = String(format: "%02i:%02i", minutes, seconds)
         lbl.textAlignment = .center
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -48,42 +43,47 @@ class TimerView: UIView{
         return btn
     }()
     
-    init(frame: CGRect, totalTimeInMinutes: Int) {
+    // MARK: Initializer
+    init(frame: CGRect, totalTimeInMinutes: Int, viewModel: TimerViewModel) {
+        self.viewModel = viewModel
+        
         super.init(frame: frame)
+    
+        viewModel.startTimer()
         
-        createTimer()
-        vm.startTimer()
+        viewModel.totalTimeInMinutes = totalTimeInMinutes
         
-        vm.totalTimeInMinutes = totalTimeInMinutes
-        
-        vm.onChangeSecond = { [weak self] time in
+        viewModel.onChangeSecond = { [weak self] time in
             self?.timerLabel.text = String(format: "%02i:%02i", time/60, time%60)
         }
         
+        self.setupUI()
+        
+        self.backgroundColor = .systemBackground
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func createTimer(){
-        self.addSubview(timerLabel)
-        self.addSubview(timerPauseButton)
-        self.addSubview(timerResetButton)
-        setConstraints()
-    }
-    
+    // MARK: - Methods
     @objc func togglePause(){
-        vm.isPaused = !(vm.isPaused)
-        print(vm.isPaused)
+        viewModel.isPaused = !(viewModel.isPaused)
+        print(viewModel.isPaused)
     }
     
     @objc func timerReset(){
-        vm.timerStart = Date()
-        vm.totalPausedTime = 0
+        viewModel.timerStart = Date()
+        viewModel.totalPausedTime = 0
     }
-    
-    func setConstraints() {
+}
+
+extension TimerView: ViewCodeProtocol {
+    func setupUI() {
+        self.addSubview(timerLabel)
+        self.addSubview(timerPauseButton)
+        self.addSubview(timerResetButton)
+        
         NSLayoutConstraint.activate([
             timerLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             timerLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
@@ -101,5 +101,4 @@ class TimerView: UIView{
             timerResetButton.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
-    
 }

@@ -8,10 +8,25 @@
 import UIKit
 
 class TimerViewController: UIViewController {
+    weak var coordinator: Coordinator?
+    private let viewModel: TimerViewModel
+    private let totalTimeInMinutes: Int
     
-    var totalTimeInMinutes: Int = 0
+    private lazy var timerView: TimerView =  {
+        let timerView = TimerView(frame: .zero, totalTimeInMinutes: self.totalTimeInMinutes, viewModel: self.viewModel)
+        return timerView
+    }()
     
-    private lazy var timerView: TimerView = TimerView(frame: .zero, totalTimeInMinutes: self.totalTimeInMinutes)
+    init(totalTimeInMinutes: Int = 0, viewModel: TimerViewModel) {
+        self.totalTimeInMinutes = totalTimeInMinutes
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         super.loadView()
