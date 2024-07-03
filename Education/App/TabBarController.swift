@@ -16,7 +16,9 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         themeList.start()
+        themeList.navigationController.tabBarItem = UITabBarItem(title: "Themes", image: UIImage(systemName: "list.bullet.clipboard"), tag: 1)
         timer.start()
+        timer.navigationController.tabBarItem = UITabBarItem(title: "Timer", image: UIImage(systemName: "timer"), tag: 1)
         
         self.viewControllers = [themeList.navigationController, timer.navigationController]
         
