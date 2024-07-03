@@ -104,7 +104,43 @@ extension ThemeListViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = theme.name
+        //cell.accessoryType = .disclosureIndicator
+        cell.accessoryView = createAccessoryView()
         return cell
+    }
+    
+    private func createAccessoryView() -> UIView {
+        let containerView = UIView()
+        
+        let detailsLabel = UILabel()
+        detailsLabel.text = "Detail"
+        detailsLabel.textColor = .secondaryLabel
+        detailsLabel.font = UIFont.systemFont(ofSize: 17)
+        detailsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        chevronImageView.tintColor = .secondaryLabel
+        chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.addSubview(detailsLabel)
+        containerView.addSubview(chevronImageView)
+        
+        NSLayoutConstraint.activate([
+            detailsLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            detailsLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            chevronImageView.leadingAnchor.constraint(equalTo: detailsLabel.trailingAnchor, constant: 0),
+            chevronImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            chevronImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            chevronImageView.widthAnchor.constraint(equalToConstant: 10),
+            chevronImageView.heightAnchor.constraint(equalToConstant: 14) 
+        ])
+        
+        containerView.frame.size = CGSize(width: 63, height: 20)
+        
+        return containerView
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

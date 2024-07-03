@@ -12,7 +12,7 @@ class ThemeListView: UIView {
     
     // MARK: - UI Components
     lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
@@ -21,7 +21,12 @@ class ThemeListView: UIView {
     lazy var addThemeButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add Item", for: .normal)
+        button.setTitle("Add new theme", for: .normal)
+        button.setTitleColor(.label, for: .normal)
+        button.backgroundColor = .systemGray
+        button.layer.cornerRadius = 8
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16) 
+        
         return button
     }()
     
@@ -64,7 +69,9 @@ extension ThemeListView: ViewCodeProtocol {
             
             addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            addThemeButton.widthAnchor.constraint(equalToConstant: 120),
+            addThemeButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
 }
