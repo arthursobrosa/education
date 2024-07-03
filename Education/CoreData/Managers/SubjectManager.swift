@@ -28,16 +28,20 @@ final class SubjectManager: ObjectManager {
     func deleteSubject(_ subject: Subject) {
         let objectID = subject.objectID
         backgroundContext.performAndWait {
-            if let schedules = self.scheduleManager.fetchSchedules(subjectID: subject.unwrappedID) {
-                schedules.forEach { schedule in
-                    self.scheduleManager.deleteSchedule(schedule)
-                }
+            guard let schedules = self.scheduleManager.fetchSchedules(subjectID: subject.unwrappedID) else { return }
+            
+            schedules.forEach { schedule in
+                self.scheduleManager.deleteSchedule(schedule)
             }
             
-            if let subjectInContext = try? backgroundContext.existingObject(with: objectID) {
+            do {
+                let subjectInContext = try backgroundContext.existingObject(with: objectID)
                 backgroundContext.delete(subjectInContext)
+                
                 try? backgroundContext.save()
                 CoreDataStack.shared.saveMainContext()
+            } catch let error {
+                print("Failed to get object \(error)")
             }
         }
     }
@@ -47,6 +51,7 @@ final class SubjectManager: ObjectManager {
         backgroundContext.performAndWait {
             do {
                 try backgroundContext.save()
+                CoreDataStack.shared.saveMainContext()
             } catch let error {
                 print("Failed to update \(error)")
             }
