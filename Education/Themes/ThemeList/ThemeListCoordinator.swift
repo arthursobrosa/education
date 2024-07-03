@@ -17,6 +17,7 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigatio
     
     func start() {
         self.navigationController.delegate = self
+        self.navigationController.navigationBar.prefersLargeTitles = true
         
         let viewModel = ThemeListViewModel()
         let vc = ThemeListViewController(viewModel: viewModel)
