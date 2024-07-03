@@ -8,11 +8,11 @@
 import Foundation
 
 class TimerSettingsViewModel {
-    var selectedTime: TimeInterval = 0 // Variable to hold the selected time
+    var selectedTime: TimeInterval = 60 // Variable to hold the selected time
     
-    func printSelectedTime() {
-        let hours = Int(selectedTime) / 3600
-        let minutes = (Int(selectedTime) % 3600) / 60
-        print("Selected time is \(hours) hours and \(minutes) minutes.")
+    func getTimeString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: date)
     }
 }

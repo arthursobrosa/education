@@ -12,7 +12,7 @@ class TimerView: UIView{
     private let viewModel: TimerViewModel
     
     // MARK: - Properties
-    private let timerLabel: UILabel = {
+    let timerLabel: UILabel = {
         let lbl = UILabel()
         lbl.textAlignment = .center
         
@@ -52,10 +52,6 @@ class TimerView: UIView{
         viewModel.startTimer()
         
         viewModel.totalTimeInMinutes = totalTimeInMinutes
-        
-        viewModel.onChangeSecond = { [weak self] time in
-            self?.timerLabel.text = String(format: "%02i:%02i", time/60, time%60)
-        }
         
         self.setupUI()
         
