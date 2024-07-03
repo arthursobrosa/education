@@ -8,7 +8,6 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var coordinator: Coordinator?
     var window: UIWindow?
     
     
@@ -19,13 +18,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let navigationController = UINavigationController()
-        coordinator = ThemeListCoordinator(navigationController: navigationController)
-        coordinator?.start()
-        
         window = UIWindow(windowScene: windowScene)
         window?.frame = windowScene.coordinateSpace.bounds // Set the frame to be full screen
-        window?.rootViewController = coordinator?.navigationController
+        window?.rootViewController = TabBarController()
         window?.makeKeyAndVisible()
     }
     
