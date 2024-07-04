@@ -24,7 +24,7 @@ class ThemeListView: UIView {
         button.setTitle("Add new theme", for: .normal)
         button.setTitleColor(.label, for: .normal)
         button.backgroundColor = .systemGray
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = 14
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16) 
         
         return button
@@ -70,8 +70,8 @@ extension ThemeListView: ViewCodeProtocol {
             addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            addThemeButton.widthAnchor.constraint(equalToConstant: 120),
-            addThemeButton.heightAnchor.constraint(equalToConstant: 60)
+            addThemeButton.widthAnchor.constraint(equalToConstant: 264),
+            addThemeButton.heightAnchor.constraint(equalToConstant: 56)
         ])
     }
 }

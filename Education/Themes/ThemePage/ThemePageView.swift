@@ -19,7 +19,7 @@ class ThemePageView: UIView {
     }()
     
     lazy var testsTableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TestCell")
         return tableView
@@ -29,6 +29,10 @@ class ThemePageView: UIView {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Add Test", for: .normal)
+        button.setTitleColor(.label, for: .normal)
+        button.backgroundColor = .systemGray
+        button.layer.cornerRadius = 14
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return button
     }()
     
@@ -79,7 +83,9 @@ extension ThemePageView: ViewCodeProtocol {
             
             addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            addTestButton.widthAnchor.constraint(equalToConstant: 264),
+            addTestButton.heightAnchor.constraint(equalToConstant: 56)
         ])
     }
 }

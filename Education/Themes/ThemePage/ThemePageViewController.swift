@@ -51,8 +51,7 @@ class ThemePageViewController: UIViewController {
         
         self.viewModel.tests.bind { [weak self] tests in
             guard let self = self else { return }
-            
-            self.tests = tests
+            self.tests = tests.sorted{$0.date! > $1.date!}
             self.themePageView.reloadTable()
         }
     }

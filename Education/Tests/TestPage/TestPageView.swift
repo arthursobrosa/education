@@ -36,7 +36,11 @@ class TestPageView: UIView {
     lazy var addTestButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add Item", for: .normal)
+        button.setTitle("Add Test", for: .normal)
+        button.setTitleColor(.label, for: .normal)
+        button.backgroundColor = .systemGray
+        button.layer.cornerRadius = 14
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return button
     }()
     
@@ -81,6 +85,8 @@ extension TestPageView: ViewCodeProtocol {
             addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            addTestButton.widthAnchor.constraint(equalToConstant: 264),
+            addTestButton.heightAnchor.constraint(equalToConstant: 56)
         ])
     }
 }
