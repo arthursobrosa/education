@@ -47,7 +47,7 @@ class ThemePageViewModel: ObservableObject {
     
     func getLimitedItems() {
         var limitedItems: [BarMark] = []
-        let itemsToShow = self.tests.value.prefix(self.selectedLimit)
+        let itemsToShow = self.tests.value.sorted{$0.date! < $1.date!}.suffix(self.selectedLimit)
         for (index, item) in itemsToShow.enumerated() {
             let bar = BarMark(
                 x: .value("Index", index),
@@ -63,6 +63,7 @@ class ThemePageViewModel: ObservableObject {
             limitedItems.append(additionalBar)
             
         }
+        
         self.limitedItems = limitedItems
     }
 }
