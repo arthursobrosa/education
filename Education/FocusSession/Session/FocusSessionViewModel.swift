@@ -1,29 +1,28 @@
 //
-//  TimerViewModel.swift
+//  FocusSessionViewModel.swift
 //  Education
 //
 //  Created by Lucas Cunha on 26/06/24.
 //
 
 import Foundation
-import UIKit
 
-class TimerViewModel{
+class FocusSessionViewModel{
     var onChangeSecond: ((Int) -> Void)?
     
     var timer: DispatchSourceTimer?
     
     var timerStart: Date
-    var totalTimeInMinutes: Int
+    var totalTimeInSeconds: Int
     var timerValue: Int = 0
     var totalPausedTime: Int = 0
     var isPaused = false
     var pauseEntry: Date?
     
     
-    init(timerStart: Date, totalTimeInMinutes: Int) {
+    init(timerStart: Date, totalTimeInSeconds: Int) {
         self.timerStart = timerStart
-        self.totalTimeInMinutes = totalTimeInMinutes
+        self.totalTimeInSeconds = totalTimeInSeconds
     }
     
     func timerPause(){
@@ -33,14 +32,14 @@ class TimerViewModel{
     }
     
     func timerUpdate() {
-        var finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInMinutes * 60) + Double(totalPausedTime)
+        var finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInSeconds) + Double(totalPausedTime)
         
         if pauseEntry != nil {
             guard let pauseTime = pauseEntry else { return }
             let pausedTime = Date().timeIntervalSince1970 - pauseTime.timeIntervalSince1970
             totalPausedTime += Int(pausedTime.rounded(.up))
             pauseEntry = nil
-            finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInMinutes * 60) + Double(totalPausedTime)
+            finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInSeconds) + Double(totalPausedTime)
             timerValue = Int(finalTime.rounded(.up) - Date().timeIntervalSince1970.rounded(.up))
             self.onChangeSecond?(timerValue)
         } else {

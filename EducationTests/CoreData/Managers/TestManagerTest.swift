@@ -111,13 +111,13 @@ class TestManagerTest: XCTestCase {
 
         testManager.createTest(themeID: theme.unwrappedID, date: date, rightQuestions: 25, totalQuestions: 30)
         
-        var test = testManager.fetchTests(themeID: theme.unwrappedID)!.first!
+        let test = testManager.fetchTests(themeID: theme.unwrappedID)!.first!
         
         test.rightQuestions = 7
         test.totalQuestions = 20
         
         let dateStringB = "2023-11-13 10:12:22"
-        let dateB = format.date(from: dateString)!
+        let dateB = format.date(from: dateStringB)!
         test.date = dateB
         
         testManager.updateTest(test)

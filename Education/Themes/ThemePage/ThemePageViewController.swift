@@ -103,8 +103,7 @@ extension ThemePageViewController: UITableViewDataSource {
 extension ThemePageViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let test = self.tests[indexPath.row]
-        print("Selected test: \(test)")
+        let _ = self.tests[indexPath.row]
     }
 }
 

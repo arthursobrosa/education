@@ -1,5 +1,5 @@
 //
-//  TimerCoordinator.swift
+//  FocusSessionCoordinator.swift
 //  Education
 //
 //  Created by Leandro Silva on 03/07/24.
@@ -7,20 +7,21 @@
 
 import UIKit
 
-class TimerCoordinator: Coordinator, Dismissing {
+class FocusSessionCoordinator: Coordinator, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    var totalTimeInMinutes: Int
+    var totalTimeInSeconds: Int
     
-    init(navigationController: UINavigationController, totalTimeInMinutes: Int) {
+    init(navigationController: UINavigationController, totalTimeInSeconds: Int) {
         self.navigationController = navigationController
-        self.totalTimeInMinutes = totalTimeInMinutes
+        self.totalTimeInSeconds = totalTimeInSeconds
     }
     
     func start() {
-        let viewModel = TimerViewModel(timerStart: Date(), totalTimeInMinutes: 2)
-        let vc = TimerViewController(totalTimeInMinutes: self.totalTimeInMinutes, viewModel: viewModel)
+        let viewModel = FocusSessionViewModel(timerStart: Date(), totalTimeInSeconds: self.totalTimeInSeconds)
+        let vc = FocusSessionViewController(viewModel: viewModel)
+        vc.title = "Focus Session"
         vc.coordinator = self
         self.navigationController.pushViewController(vc, animated: true)
     }

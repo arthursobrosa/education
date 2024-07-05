@@ -20,7 +20,7 @@ class ThemeListViewController: UIViewController {
         
         themeView.tableView.delegate = self
         themeView.tableView.dataSource = self
-        themeView.addThemeButton.addTarget(self, action: #selector(addItemButtonTapped), for: .touchUpInside)
+        themeView.addThemeButton.addTarget(self, action: #selector(addThemeButtonTapped), for: .touchUpInside)
         
         return themeView
     }()
@@ -63,22 +63,22 @@ class ThemeListViewController: UIViewController {
     
     // MARK: - User Actions
     
-    @objc private func addItemButtonTapped() {
-        showAddItemAlert()
+    @objc private func addThemeButtonTapped() {
+        showAddThemeAlert()
     }
     
-    private func showAddItemAlert() {
-        let alertController = UIAlertController(title: "Add Item", message: "Enter item name:", preferredStyle: .alert)
+    private func showAddThemeAlert() {
+        let alertController = UIAlertController(title: "Add Theme", message: "Enter theme name:", preferredStyle: .alert)
         
         alertController.addTextField { textField in
-            textField.placeholder = "Item name"
+            textField.placeholder = "Theme name"
         }
         
         let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
             guard let self = self else { return }
             
-            if let itemName = alertController.textFields?.first?.text, !itemName.isEmpty {
-                self.viewModel.addNewItem(name: itemName)
+            if let themeName = alertController.textFields?.first?.text, !themeName.isEmpty {
+                self.viewModel.addTheme(name: themeName)
             }
         }
         
@@ -104,8 +104,13 @@ extension ThemeListViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = theme.name
-        //cell.accessoryType = .disclosureIndicator
         cell.accessoryView = createAccessoryView()
+        
+        if self.traitCollection.userInterfaceStyle == .light {
+            cell.backgroundColor = .systemGray5
+        }
+        
+        
         return cell
     }
     
@@ -160,7 +165,5 @@ extension ThemeListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let theme = self.themes[indexPath.row]
         self.coordinator?.showThemePage(theme: theme)
-
-        print("Selected theme: \(theme)")
     }
 }

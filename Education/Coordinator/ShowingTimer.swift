@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ShowingTimer: AnyObject {
-    func showTimer(_ totalTimeInMinutes: Int)
+    func showTimer(_ totalTimeInSeconds: Int)
 }
