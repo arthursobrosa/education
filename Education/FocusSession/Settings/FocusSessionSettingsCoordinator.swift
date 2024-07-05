@@ -1,5 +1,5 @@
 //
-//  TimerSettingsCoordinator.swift
+//  FocusSessionSettingsCoordinator.swift
 //  Education
 //
 //  Created by Leandro Silva on 03/07/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TimerSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINavigationControllerDelegate {
+class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINavigationControllerDelegate {
     var childCoordinators = [Coordinator]()
     
     var navigationController: UINavigationController
@@ -19,16 +19,15 @@ class TimerSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINavigatio
     func start() {
         self.navigationController.delegate = self
         
-        let viewModel = TimerSettingsViewModel()
-        let vc = TimerSettingsViewController(viewModel: viewModel)
+        let viewModel = FocusSessionSettingsViewModel()
+        let vc = FocusSessionSettingsViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = "Timer"
+        vc.title = "New Focus Session"
         navigationController.pushViewController(vc, animated: false)
-        
     }
     
-    func showTimer(_ totalTimeInMinutes: Int) {
-        let child = TimerCoordinator(navigationController: self.navigationController, totalTimeInMinutes: totalTimeInMinutes)
+    func showTimer(_ totalTimeInSeconds: Int) {
+        let child = FocusSessionCoordinator(navigationController: self.navigationController, totalTimeInSeconds: totalTimeInSeconds)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -50,7 +49,7 @@ class TimerSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINavigatio
             return
         }
         
-        if let timerViewController = fromViewController as? TimerViewController {
+        if let timerViewController = fromViewController as? FocusSessionViewController {
             self.childDidFinish(timerViewController.coordinator as? Coordinator)
         }
     }

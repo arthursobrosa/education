@@ -12,29 +12,20 @@ import SwiftUI
 class ThemePageView: UIView {
     
     // MARK: - UI Components
-    lazy var chartView: UIHostingController<ChartView> = {
+    private lazy var chartView: UIHostingController<ChartView> = {
         let hostingController = UIHostingController(rootView: ChartView(viewModel: self.viewModel))
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         return hostingController
     }()
     
     lazy var testsTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TestCell")
         return tableView
     }()
     
-    lazy var addTestButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add Test", for: .normal)
-        button.setTitleColor(.label, for: .normal)
-        button.backgroundColor = .systemGray
-        button.layer.cornerRadius = 14
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        return button
-    }()
+    let addTestButton = ButtonComponent(frame: .zero, title: "Add Test")
     
     private var viewModel: ThemePageViewModel
     
@@ -69,23 +60,24 @@ extension ThemePageView: ViewCodeProtocol {
         addSubview(chartView.view)
         addSubview(testsTableView)
         addSubview(addTestButton)
+        
+        let padding = 20.0
             
         NSLayoutConstraint.activate([
-            chartView.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            chartView.view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            chartView.view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            chartView.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
+            chartView.view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            chartView.view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             chartView.view.heightAnchor.constraint(equalToConstant: 200),
             
-            testsTableView.topAnchor.constraint(equalTo: chartView.view.bottomAnchor, constant: 20),
+            testsTableView.topAnchor.constraint(equalTo: chartView.view.bottomAnchor, constant: padding),
             testsTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             testsTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            testsTableView.bottomAnchor.constraint(equalTo: addTestButton.topAnchor, constant: -20),
+            testsTableView.bottomAnchor.constraint(equalTo: addTestButton.topAnchor, constant: -padding),
             
-            addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            addTestButton.widthAnchor.constraint(equalToConstant: 264),
-            addTestButton.heightAnchor.constraint(equalToConstant: 56)
+            addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            addTestButton.heightAnchor.constraint(equalTo: addTestButton.widthAnchor, multiplier: 0.16)
         ])
     }
 }
