@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		302E06992C3F143E00FAD574 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E06982C3F143E00FAD574 /* ScheduleView.swift */; };
+		302E069B2C3F147300FAD574 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E069A2C3F147300FAD574 /* TaskView.swift */; };
+		302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */; };
 		30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A32C2C885A00B7114F /* ThemeListViewController.swift */; };
 		30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A52C2C886600B7114F /* ThemeListView.swift */; };
 		30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */; };
@@ -79,6 +82,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		302E06982C3F143E00FAD574 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
+		302E069A2C3F147300FAD574 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
 		30F216A32C2C885A00B7114F /* ThemeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListViewController.swift; sourceTree = "<group>"; };
 		30F216A52C2C886600B7114F /* ThemeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListView.swift; sourceTree = "<group>"; };
 		30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListViewModel.swift; sourceTree = "<group>"; };
@@ -161,6 +167,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		302E06972C3F142600FAD574 /* ScheduleView */ = {
+			isa = PBXGroup;
+			children = (
+				302E06982C3F143E00FAD574 /* ScheduleView.swift */,
+				302E069A2C3F147300FAD574 /* TaskView.swift */,
+				302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */,
+			);
+			path = ScheduleView;
+			sourceTree = "<group>";
+		};
 		30F216A12C2C883900B7114F /* Themes */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,6 +310,7 @@
 		683B45372C1B6F3A00663912 /* Education */ = {
 			isa = PBXGroup;
 			children = (
+				302E06972C3F142600FAD574 /* ScheduleView */,
 				68D47D582C2DE227000E011C /* Education.entitlements */,
 				6833B2162C345670009EA63D /* App */,
 				6833B21A2C3456C9009EA63D /* Utils */,
@@ -521,6 +538,7 @@
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
 				317C112A2C35C4A100C5E7A5 /* FocusSessionCoordinator.swift in Sources */,
 				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
+				302E069B2C3F147300FAD574 /* TaskView.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
 				68825BD92C2F48FD00272451 /* ThemePageCoordinator.swift in Sources */,
@@ -536,6 +554,7 @@
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
 				682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */,
+				302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */,
 				317C112E2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift in Sources */,
 				30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */,
 				30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */,
@@ -543,6 +562,7 @@
 				68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */,
 				68825BD72C2F469D00272451 /* ShowingThemePage.swift in Sources */,
 				317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */,
+				302E06992C3F143E00FAD574 /* ScheduleView.swift in Sources */,
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
