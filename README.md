@@ -17,9 +17,13 @@
 
 ---
 
-### ViewCode Protocol
+### ViewCode protocol
 
 <p>
   <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewCodeProtocol.png" width="400" alt="ViewCode protocol image">
 </p>
+
+#### This protocol will be used wheen setting up the layout of a view.
+#### We can create an extension to View, for instance, and conform this extension to the ViewCodeProtocol. By doing so, the View will automatically contain a setupUI() method.
+
   
