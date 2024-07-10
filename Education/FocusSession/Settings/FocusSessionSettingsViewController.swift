@@ -20,7 +20,6 @@ class FocusSessionSettingsViewController: UIViewController {
         view.startButton.addTarget(self, action: #selector(startButtonClicked), for: .touchUpInside)
         return view
     }()
-    private lazy var subjectPopover = self.createSubjectPopover(forTableView: self.timerSettingsView.tableView)
     
     lazy var selectedSubject: String = self.viewModel.selectedSubject.value
     
@@ -56,6 +55,8 @@ class FocusSessionSettingsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.viewModel.selectedTime = 0
+        self.viewModel.selectedSubject.value = self.viewModel.subjects[0]
+        self.reloadTable()
         
         guard let cell = self.timerSettingsView.tableView.cellForRow(at: IndexPath(row: 0, section: 1)),
               let datePicker = cell.accessoryView as? UIDatePicker else { return }
@@ -158,7 +159,7 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
         let row = indexPath.row
         
         if section == 0 && row == 0 {
-            if let popover = self.subjectPopover {
+            if let popover = self.createSubjectPopover(forTableView: tableView) {
                 self.present(popover, animated: true)
             }
         }

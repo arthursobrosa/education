@@ -15,6 +15,7 @@ class FocusSessionViewController: UIViewController {
     // MARK: - Properties
     private lazy var focusSessionView = FocusSessionView(viewModel: self.viewModel)
     
+    // MARK: - Initializer
     init(viewModel: FocusSessionViewModel) {
         self.viewModel = viewModel
         
@@ -25,6 +26,7 @@ class FocusSessionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func loadView() {
         super.loadView()
         
@@ -53,9 +55,17 @@ class FocusSessionViewController: UIViewController {
         super.viewWillAppear(animated)
         
         DispatchQueue.main.async {
-            self.focusSessionView.setupLayers()
-            self.viewModel.startFocusSession()
+            if self.viewModel.timerState.value == nil {
+                self.viewModel.startFocusSession()
+                self.focusSessionView.setupLayers()
+            }
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.viewModel.timerState.value = .reseting
     }
     
     // MARK: - Auxiliar Methods
