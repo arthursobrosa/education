@@ -46,9 +46,23 @@
 ### ViewModel
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewModel.png" width="400" alt="ViewCode protocol example image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewModel.png" width="400" alt="ViewModel example image">
 </p>
 
 #### The ViewModel will be responsible for any business logics, as seen in the method example above (changeText()).
 #### The boxes are created within a ViewModel and are used to keep track of a property's state (just like a @Published property in SwiftUI).
+
+---
+
+### ViewController
+
+<p>
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewController1.png" width="400" alt="ViewController example 1 image">
+</p>
+
+<p>
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewController2.png" width="400" alt="ViewController example 2 image">
+</p>
+
+
   
