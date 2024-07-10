@@ -38,4 +38,17 @@
 
 #### Delegates will be used to connect a ViewController with a View.
 #### Since a View cannot contain any business logics, it will delegate any non-visual stuff to a ViewController.
+
+---
+
+## MVVM example
+
+### ViewModel
+
+<p>
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewModel.png" width="400" alt="ViewCode protocol example image">
+</p>
+
+#### The ViewModel will be responsible for any business logics, as seen in its method example (changeText()).
+#### The boxes are created within a ViewModel and are used to keep track of a property's state (just like a @Published property in SwiftUI).
   
