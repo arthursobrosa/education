@@ -45,7 +45,7 @@
   <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewControllerDelegate.png" width="500" alt="Delegate example image">
 </p>
 
-#### - Delegates will be used to connect a ViewController with a View;
+#### - Delegates will be used to connect a ViewController to a View;
 #### - Since a View cannot contain any business logics, it will delegate any non-visual stuff to a ViewController;
 
 ---
