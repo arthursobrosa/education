@@ -46,7 +46,7 @@
 </p>
 
 #### - Delegates will be used to connect a ViewController to a View;
-#### - Since a View cannot contain any business logics, it will delegate any non-visual stuff to a ViewController;
+#### - Since a View cannot contain any business logics, it will delegate any non-visual tasks to a ViewController;
 
 ---
 
