@@ -94,7 +94,7 @@
 
 #### - View has an instance of the ViewController delegate and that's how they are connected to each other;
 #### - View contains two subviews (properties): a label (myLabel) and a button (myButton);
-#### - setupUI() method is called within View's initializer to set its layout;
+#### - setupUI() method is called within View's initializer to set subviews layout;
 #### - View contains a method that serves as the target for when myButton is tapped (@objc onTapMyButton());
 #### - When the button is tapped, the View calls its delegate and some logics will be performed by the ViewController. In that case, myLabel's text will be updated;
 
