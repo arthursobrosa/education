@@ -8,7 +8,7 @@
 
 ### Box
 
-<p align="center">
+<p>
   <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/Box.png" width="200" alt="Box code example image">
 </p>
   
