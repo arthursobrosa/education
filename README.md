@@ -35,7 +35,7 @@
 </p>
 
 #### - This protocol will be used when setting up the layout of a view;
-#### - We can create an extension to a view and subscribe this extension to the ViewCodeProtocol. By doing so, the View will automatically contain a setupUI() method;
+#### - For example, we can create an extension to a view and subscribe this extension to the ViewCodeProtocol. By doing so, the View will automatically contain a setupUI() method;
 
 ---
 
