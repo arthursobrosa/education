@@ -28,8 +28,6 @@ extension FocusSessionSettingsViewController {
                 }
                 
                 return "Apps"
-            case 3:
-                return "Study Goals"
             default:
                 return String()
         }

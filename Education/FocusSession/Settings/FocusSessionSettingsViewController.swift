@@ -104,12 +104,12 @@ extension FocusSessionSettingsViewController {
 // MARK: - UITableViewDataSource & UITableViewDelegate
 extension FocusSessionSettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-            case 0, 3:
+            case 0:
                 return 1
             case 1:
                 return 2
@@ -148,8 +148,6 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
                 return "Timer"
             case 2:
                 return "App Blocking"
-            case 3:
-                return "Goals"
             default:
                 return String()
         }
