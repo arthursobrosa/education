@@ -8,18 +8,20 @@
 import Foundation
 
 class FocusSessionSettingsViewModel {
-    var selectedTime: TimeInterval = 60 // Variable to hold the selected time
+    // MARK: - Properties
+    var selectedTime: TimeInterval = 0 // Variable to hold the selected time
     
     var selectedSubject = Box(String())
     var subjects = ["None", "Option 1", "Option 2", "Option 3"]
-    var isOpened: Bool = false
     var alarmWhenFinished: Bool = true
     var blockApps: Bool = false
     
+    // MARK: - Initializer
     init() {
         self.selectedSubject.value = self.subjects[0]
     }
     
+    // MARK: - Methods
     func getTotalSeconds(fromDate date: Date) -> TimeInterval {
         let currentDate = Date()
         let calendar = Calendar.current

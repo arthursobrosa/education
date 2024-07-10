@@ -8,6 +8,7 @@
 import UIKit
 
 class FocusSessionSettingsView: UIView {
+    // MARK: - Properties
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.register(UITableViewCell.self, forCellReuseIdentifier: "defaultCell")
@@ -18,6 +19,7 @@ class FocusSessionSettingsView: UIView {
     
     let startButton = ButtonComponent(frame: .zero, title: "Start")
     
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -29,6 +31,7 @@ class FocusSessionSettingsView: UIView {
     }
 }
 
+// MARK: - UI Setup
 extension FocusSessionSettingsView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(tableView)
