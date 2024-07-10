@@ -71,5 +71,23 @@
 #### - Inside viewDidLoad() method, we create the connection between ViewController and ViewModel by providing an implementation to the closure present inside the ViewModel's box property;
 #### - Inside viewWillAppear() method, we change an information inside myView;
 
+---
+
+### View
+
+<p>
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View1.png" width="400" alt="View example 1 image">
+</p>
+
+<p>
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View2.png" width="400" alt="View example 1 image">
+</p>
+
+
+
+
+
+
+
 
   
