@@ -3,6 +3,10 @@
 ## Architecture 
 
 <p>
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/architecture.png" width="400" alt="Architecture image">
+</p>
+
+<p>
   <a href="https://github.com/arthursobrosa/Architecture">Example project</a> with architecture implemented
 </p>
 
@@ -80,11 +84,11 @@
 </p>
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View2.png" width="400" alt="View example 1 image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View2.png" width="400" alt="View example 2 image">
 </p>
 
 #### - View has an instance of the ViewController delegate and that's how they are connected to each other;
-#### - View contains two subviews (properties), a label (myLabel) and a button (myButton); 
+#### - View contains two subviews (properties), a label (myLabel) and a button (myButton);
 #### - setupUI() method is called within View's initializer to set its layout;
 #### - View contains a method that serves as the target for when myButton is tapped (@objc onTapMyButton());
 #### - When the button is tapped, the View calls its delegate and some logics will be performed by the ViewController. In that case, myLabel's text will be updated;
