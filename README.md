@@ -2,9 +2,16 @@
 
 ## Architecture 
 
+### Rules
+
 <p>
   <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/architecture.png" width="400" alt="Architecture image">
 </p>
+
+#### - ViewModel does bussiness logics only and is connected to ViewController via a binding Box;
+#### - ViewController is injected with a ViewModel and controls any delegate methods from the View;
+#### - View is used exclusively with the purpose of creating visual stuff;
+#### - View contains a delegate to connect itself to the ViewController;
 
 <p>
   <a href="https://github.com/arthursobrosa/Architecture">Example project</a> with architecture implemented
