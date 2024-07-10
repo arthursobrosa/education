@@ -85,11 +85,11 @@
 ### View
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View1.png" width="600" alt="View example 1 image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View1.png" width="800" alt="View example 1 image">
 </p>
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View2.png" width="800" alt="View example 2 image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View2.png" width="1000" alt="View example 2 image">
 </p>
 
 #### - View has an instance of the ViewController delegate and that's how they are connected to each other;
