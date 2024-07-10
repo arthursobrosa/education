@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FocusSessionCoordinator: Coordinator, Dismissing {
+class FocusSessionCoordinator: Coordinator, Dismissing, HidingBackButton {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -19,7 +19,7 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
     }
     
     func start() {
-        let viewModel = FocusSessionViewModel(timerStart: Date(), totalTimeInSeconds: self.totalTimeInSeconds)
+        let viewModel = FocusSessionViewModel(totalSeconds: self.totalTimeInSeconds)
         let vc = FocusSessionViewController(viewModel: viewModel)
         vc.title = "Focus Session"
         vc.coordinator = self
@@ -28,5 +28,9 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
     
     func dismiss() {
         self.navigationController.popViewController(animated: true)
+    }
+    
+    func hideBackButton(_ isHidden: Bool) {
+        self.navigationController.topViewController?.navigationItem.hidesBackButton = isHidden
     }
 }

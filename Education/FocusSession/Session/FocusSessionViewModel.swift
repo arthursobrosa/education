@@ -7,73 +7,57 @@
 
 import Foundation
 
-class FocusSessionViewModel{
-    var onChangeSecond: ((Int) -> Void)?
+class FocusSessionViewModel {
+    // MARK: - Properties
+    var countdownTimer = Timer()
     
-    var timer: DispatchSourceTimer?
-    
-    var timerStart: Date
-    var totalTimeInSeconds: Int
-    var timerValue: Int = 0
-    var totalPausedTime: Int = 0
-    var isPaused = false
-    var pauseEntry: Date?
-    
-    
-    init(timerStart: Date, totalTimeInSeconds: Int) {
-        self.timerStart = timerStart
-        self.totalTimeInSeconds = totalTimeInSeconds
-    }
-    
-    func timerPause(){
-        if pauseEntry == nil {
-            pauseEntry = Date()
+    var totalSeconds: Int {
+        didSet {
+            self.timerSeconds.value = totalSeconds
         }
     }
     
-    func timerUpdate() {
-        var finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInSeconds) + Double(totalPausedTime)
+    var timerSeconds: Box<Int>
+    
+    enum TimerState: String {
+        case starting = "pause"
+        case reseting = "play"
         
-        if pauseEntry != nil {
-            guard let pauseTime = pauseEntry else { return }
-            let pausedTime = Date().timeIntervalSince1970 - pauseTime.timeIntervalSince1970
-            totalPausedTime += Int(pausedTime.rounded(.up))
-            pauseEntry = nil
-            finalTime = timerStart.timeIntervalSince1970 + Double(totalTimeInSeconds) + Double(totalPausedTime)
-            timerValue = Int(finalTime.rounded(.up) - Date().timeIntervalSince1970.rounded(.up))
-            self.onChangeSecond?(timerValue)
-        } else {
-            if finalTime > Date().timeIntervalSince1970 {
-                timerValue = Int(finalTime.rounded(.up) - Date().timeIntervalSince1970.rounded(.up))
-            } else {
-                timerValue = 0
-            }
-            
-            self.onChangeSecond?(timerValue)
+        var imageName: String {
+            return "\(self.rawValue).fill"
         }
     }
     
-    func startTimer() {
-        timer = DispatchSource.makeTimerSource()
-        timer?.schedule(deadline: .now(), repeating: 1.0)
-        timer?.setEventHandler { [weak self] in
-            self?.timerAction()
+    var timerState: Box<TimerState?>
+    
+    // MARK: - Initializer
+    init(totalSeconds: Int) {
+        self.totalSeconds = totalSeconds
+        self.timerSeconds = Box(totalSeconds)
+        self.timerState = Box(nil)
+    }
+    
+    // MARK: - Methods
+    func startFocusSession() {
+        self.timerState.value = .starting
+    }
+    
+    func startCountownTimer() {
+        self.countdownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            self.timerSeconds.value -= 1
         }
+    }
+    
+    func getTimerString() -> String {
+        let seconds = self.timerSeconds.value % 60
+        let minutes = self.timerSeconds.value / 60 % 60
+        let hours = self.timerSeconds.value / 3600
         
-        timer?.resume()
+        return "\(hours)h \(minutes)m \(seconds)s"
     }
     
-    func timerAction() {
-        DispatchQueue.main.async {
-            if self.isPaused {
-                self.timerPause()
-            } else {
-                self.timerUpdate()
-            }
-        }
-    }
-    
-    deinit {
-        timer?.cancel()
+    @objc func pauseResumeButtonTapped() {
+        let newTimerState: TimerState = self.timerState.value == .starting ? .reseting : .starting
+        self.timerState.value = newTimerState
     }
 }

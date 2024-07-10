@@ -8,16 +8,13 @@
 import UIKit
 
 class FocusSessionViewController: UIViewController {
-    // MARK: - Properties
-    weak var coordinator: Dismissing?
+    // MARK: - Coordinator and ViewModel
+    weak var coordinator: (Dismissing & HidingBackButton)?
     private let viewModel: FocusSessionViewModel
     
-    private lazy var timerView: FocusSessionView =  {
-        let timerView = FocusSessionView(frame: .zero, viewModel: self.viewModel)
-        return timerView
-    }()
+    // MARK: - Properties
+    private lazy var focusSessionView = FocusSessionView(viewModel: self.viewModel)
     
-    // MARK: - Initializer
     init(viewModel: FocusSessionViewModel) {
         self.viewModel = viewModel
         
@@ -28,40 +25,51 @@ class FocusSessionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Life cycle
     override func loadView() {
         super.loadView()
         
-        self.view = self.timerView
+        self.view = self.focusSessionView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.viewModel.onChangeSecond = { [weak self] time in
+        self.coordinator?.hideBackButton(true)
+        
+        self.focusSessionView.onTimerFinished = { [weak self] in
             guard let self = self else { return }
             
-            self.timerView.timerLabel.text = String(format: "%02i:%02i:%02i", time / 3600, (time - (time / 3600) * 3600)/60, time % 60)
+            self.showEndTimeAlert()
+        }
+        
+        self.focusSessionView.onChangeTimerState = { [weak self] isPaused in
+            guard let self = self else { return }
             
-            if time == 0 {
-                self.showEndTimeAlert()
-            }
+            self.coordinator?.hideBackButton(!isPaused)
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        DispatchQueue.main.async {
+            self.focusSessionView.setupLayers()
+            self.viewModel.startFocusSession()
         }
     }
     
-    // MARK: - Methods
+    // MARK: - Auxiliar Methods
     private func showEndTimeAlert() {
         let alertController = UIAlertController(title: "Time's up!", message: "Your timer is finished", preferredStyle: .alert)
-        
+
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            
-            self.viewModel.timer?.cancel()
+
             self.coordinator?.dismiss()
         }
-        
+
         alertController.addAction(okAction)
-        
+
         present(alertController, animated: true, completion: nil)
     }
 }
