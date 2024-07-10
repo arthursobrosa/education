@@ -1,6 +1,4 @@
-# Education
-
-## Architecture 
+# Architecture
 
 ### Rules
 
