@@ -11,7 +11,7 @@
 #### - View is used exclusively with the purpose of creating visual stuff;
 #### - View contains a delegate to connect itself to the ViewController;
 
-<p align="center">
+<p>
   <a href="https://github.com/arthursobrosa/Architecture">Example project</a> with this architecture implemented
 </p>
 
