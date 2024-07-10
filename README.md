@@ -73,7 +73,7 @@
   <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewController2.png" width="600" alt="ViewController example 2 image">
 </p>
 
-#### - ViewController has an instance of ViewModel (let viewModel: ViewModel) and sets its value from the initializer;
+#### - ViewController has an instance of ViewModel (let viewModel: ViewModel) and sets its value inside the initializer;
 #### - ViewController also has an instance of View (lazy var myView: View) and sets its delegate inside the closure initializer (myView.delegate = self);
 #### - (Make sure the ViewController conforms to the correct delegate protocol);
 #### - Inside loadView() method, the ViewController's view is set equal to myView. That automatically makes myView fit perfectly inside the ViewController (no need to set any constraints);
