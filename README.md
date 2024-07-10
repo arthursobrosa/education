@@ -3,7 +3,7 @@
 ### Rules
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/architecture.png" width="400" alt="Architecture image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/architecture.png" width="500" alt="Architecture image">
 </p>
 
 #### - ViewModel does bussiness logics only and is connected to ViewController via a binding Box;
@@ -31,7 +31,7 @@
 ### ViewCode protocol
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewCodeProtocol.png" width="400" alt="ViewCode protocol example image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewCodeProtocol.png" width="500" alt="ViewCode protocol example image">
 </p>
 
 #### - This protocol will be used when setting up the layout of a view;
@@ -42,7 +42,7 @@
 ### Delegate
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewControllerDelegate.png" width="400" alt="Delegate example image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewControllerDelegate.png" width="500" alt="Delegate example image">
 </p>
 
 #### - Delegates will be used to connect a ViewController with a View;
@@ -66,11 +66,11 @@
 ### ViewController
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewController1.png" width="400" alt="ViewController example 1 image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewController1.png" width="600" alt="ViewController example 1 image">
 </p>
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewController2.png" width="400" alt="ViewController example 2 image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewController2.png" width="600" alt="ViewController example 2 image">
 </p>
 
 #### - ViewController has an instance of ViewModel (let viewModel: ViewModel) and sets its value from the initializer;
@@ -85,11 +85,11 @@
 ### View
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View1.png" width="400" alt="View example 1 image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View1.png" width="600" alt="View example 1 image">
 </p>
 
 <p>
-  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View2.png" width="400" alt="View example 2 image">
+  <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/View2.png" width="600" alt="View example 2 image">
 </p>
 
 #### - View has an instance of the ViewController delegate and that's how they are connected to each other;
