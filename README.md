@@ -64,5 +64,8 @@
   <img src="https://github.com/arthursobrosa/Education/blob/architecture/README-images/ViewController2.png" width="400" alt="ViewController example 2 image">
 </p>
 
+#### ViewController has an instance of ViewModel (let viewModel: ViewModel) and sets its value from the initializer.
+#### ViewController also has an instance of View (lazy var myView: View) nad
+
 
   
