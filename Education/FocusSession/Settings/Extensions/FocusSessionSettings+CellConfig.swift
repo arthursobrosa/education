@@ -39,7 +39,7 @@ extension FocusSessionSettingsViewController {
         
         switch section {
             case 0:
-                return UIImageView(image: UIImage(systemName: "chevron.right"))
+                return UIImageView(image: UIImage(systemName: "chevron.down"))
             case 1:
                 if row == 0 {
                     let datePicker = UIDatePicker()
