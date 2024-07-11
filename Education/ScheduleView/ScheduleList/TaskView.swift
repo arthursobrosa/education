@@ -19,10 +19,12 @@ class TaskView: UIView {
         setupView()
         
         subjectNameLabel.text = task.subjectName
+        subjectNameLabel.textColor = .white
         subjectNameLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         timeLabel.text = "\(formatter.string(from: task.startTime)) - \(formatter.string(from: task.endTime))"
+        timeLabel.textColor = .white
         self.backgroundColor = bgColor
     }
     

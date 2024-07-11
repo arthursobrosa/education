@@ -11,15 +11,11 @@ class FocusSessionSettingsViewModel {
     // MARK: - Properties
     var selectedTime: TimeInterval = 0 // Variable to hold the selected time
     
-    var selectedSubject = Box(String())
-    var subjects = ["None", "Option 1", "Option 2", "Option 3"]
+    var schedules = ["None", "Option 1", "Option 2", "Option 3"]
+    lazy var selectedSchedule = self.schedules[0]
+    
     var alarmWhenFinished: Bool = true
     var blockApps: Bool = false
-    
-    // MARK: - Initializer
-    init() {
-        self.selectedSubject.value = self.subjects[0]
-    }
     
     // MARK: - Methods
     func getTotalSeconds(fromDate date: Date) -> TimeInterval {

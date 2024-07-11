@@ -55,7 +55,7 @@ extension ThemeListView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
+            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor/*, constant: padding*/),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -padding),

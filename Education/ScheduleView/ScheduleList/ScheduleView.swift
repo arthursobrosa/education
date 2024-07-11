@@ -10,16 +10,18 @@ import UIKit
 
 class ScheduleView: UIView {
     
-    private let viewModel = ScheduleViewModel()
+    private let viewModel: ScheduleViewModel
     private let daysStackView = UIStackView()
     private let tasksScrollView = UIScrollView()
     private var taskViews = [TaskView]()
     private var dayViews = [UIView]()
     
-    private let taskColors: [UIColor] = [.systemIndigo, .systemRed, .systemOrange, .systemPurple]
+    private let taskColors: [UIColor] = [.systemIndigo, .systemGreen, .systemOrange, .systemPurple]
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: ScheduleViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(frame: .zero)
         
         setupView()
         updateTasks()
@@ -42,7 +44,7 @@ class ScheduleView: UIView {
         tasksScrollView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            daysStackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            daysStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
             daysStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             daysStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             
