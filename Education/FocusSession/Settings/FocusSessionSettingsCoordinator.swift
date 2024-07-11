@@ -18,11 +18,12 @@ class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINa
     
     func start() {
         self.navigationController.delegate = self
+        self.navigationController.navigationBar.prefersLargeTitles = true
         
         let viewModel = FocusSessionSettingsViewModel()
         let vc = FocusSessionSettingsViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = "New Focus Session"
+        vc.title = "Focus Session"
         navigationController.pushViewController(vc, animated: false)
     }
     

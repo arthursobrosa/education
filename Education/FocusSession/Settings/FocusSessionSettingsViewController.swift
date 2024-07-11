@@ -21,8 +21,6 @@ class FocusSessionSettingsViewController: UIViewController {
         return view
     }()
     
-    lazy var selectedSubject: String = self.viewModel.selectedSubject.value
-    
     // MARK: - Initializer
     init(viewModel: FocusSessionSettingsViewModel) {
         self.viewModel = viewModel
@@ -43,19 +41,13 @@ class FocusSessionSettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.viewModel.selectedSubject.bind { [weak self] selectedSubject in
-            guard let self = self else { return }
-            
-            self.selectedSubject = selectedSubject
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.viewModel.selectedTime = 0
-        self.viewModel.selectedSubject.value = self.viewModel.subjects[0]
+        self.viewModel.selectedSchedule = self.viewModel.schedules[0]
         self.reloadTable()
         
         guard let cell = self.timerSettingsView.tableView.cellForRow(at: IndexPath(row: 0, section: 1)),
@@ -125,10 +117,6 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
         cell.textLabel?.text = self.createCellTitle(for: indexPath)
@@ -144,7 +132,7 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
             case 0:
-                return "Subject"
+                return "Schedule"
             case 1:
                 return "Timer"
             case 2:
@@ -159,7 +147,7 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
         let row = indexPath.row
         
         if section == 0 && row == 0 {
-            if let popover = self.createSubjectPopover(forTableView: tableView) {
+            if let popover = self.createSchedulePopover(forTableView: tableView, at: indexPath) {
                 self.present(popover, animated: true)
             }
         }
@@ -167,5 +155,8 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
 }
 
 #Preview {
-    FocusSessionSettingsViewController(viewModel: FocusSessionSettingsViewModel())
+    let coordinator = FocusSessionSettingsCoordinator(navigationController: UINavigationController())
+    coordinator.start()
+    
+    return coordinator.navigationController
 }

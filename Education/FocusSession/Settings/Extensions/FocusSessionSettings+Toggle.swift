@@ -23,8 +23,8 @@ extension FocusSessionSettingsViewController {
                 selector = #selector(subjectToggleSwitched(_:))
                 toggle.tag = row - 1
                 
-                if let selectedData = self.viewModel.subjects.first(where: { $0 == self.viewModel.subjects[row - 1] }) {
-                    isOn = selectedData == self.viewModel.selectedSubject.value
+                if let selectedData = self.viewModel.schedules.first(where: { $0 == self.viewModel.schedules[row - 1] }) {
+                    isOn = selectedData == self.viewModel.selectedSchedule
                 }
             case 1:
                 selector = #selector(alarmToggleSwiched(_:))
@@ -58,11 +58,11 @@ extension FocusSessionSettingsViewController {
             self.selectNoneToggle()
         }
         
-        self.viewModel.selectedSubject.value = self.viewModel.subjects[(sender.isOn ? sender.tag : 0)]
+        self.viewModel.selectedSchedule = self.viewModel.schedules[(sender.isOn ? sender.tag : 0)]
     }
     
     func unselectedToggles(_ tag: Int) {
-        for i in 0..<self.viewModel.subjects.count {
+        for i in 0..<self.viewModel.schedules.count {
             let indexPath = IndexPath(row: i + 1, section: 0)
             let cell = self.timerSettingsView.tableView.cellForRow(at: indexPath)
             let toggle = cell?.accessoryView as! UISwitch
@@ -78,6 +78,6 @@ extension FocusSessionSettingsViewController {
         let cell = self.timerSettingsView.tableView.cellForRow(at: indexPath)
         let toggle = cell?.accessoryView as! UISwitch
         toggle.isOn = true
-        self.viewModel.selectedSubject.value = self.viewModel.subjects[toggle.tag]
+        self.viewModel.selectedSchedule = self.viewModel.schedules[toggle.tag]
     }
 }

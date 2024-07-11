@@ -15,7 +15,7 @@ extension FocusSessionSettingsViewController {
         
         switch section {
             case 0:
-                return self.selectedSubject
+                return self.viewModel.selectedSchedule
             case 1:
                 if row == 0 {
                     return "Ends at"

@@ -17,7 +17,7 @@ class StudyTimeViewModel {
     var subjects = Box([Subject]())
     
     func fetchSubjects() {
-        //addSubjects()
+//        addSubjects()
         if let subjects = self.subjectmanager.fetchSubjects() {
             self.subjects.value = subjects
         }
