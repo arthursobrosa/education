@@ -36,7 +36,7 @@ class ScheduleCreationView: UIView {
     }
     
     @objc private func didTapSaveButton() {
-        self.delegate?.dismissVC()
+        self.delegate?.saveSchedule()
     }
 }
 

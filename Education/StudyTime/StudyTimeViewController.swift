@@ -67,12 +67,14 @@ extension StudyTimeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let subject = self.subjects[indexPath.row]
+        let totalTime = self.viewModel.getTotalTimeOneSubject(subject)
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
-            return UITableViewCell()
+            fatalError("Could not dequeue cell")
         }
         
         cell.subject = subject
+        cell.totalTime = totalTime
         
         return cell
     }

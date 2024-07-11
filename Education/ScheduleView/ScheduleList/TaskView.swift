@@ -10,21 +10,42 @@ import UIKit
 
 class TaskView: UIView {
     
-    private let subjectNameLabel = UILabel()
-    private let timeLabel = UILabel()
+    private let subjectNameLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.textColor = .white
+        lbl.font = .boldSystemFont(ofSize: 18.0)
+        
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
     
-    init(task: ScheduleTask, bgColor: UIColor) {
+    private let timeLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.textColor = .white
+        
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
+    
+    var schedule: Schedule? {
+        didSet {
+            guard let schedule = schedule else { return }
+            
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            timeLabel.text = "\(formatter.string(from: schedule.unwrappedStartTime)) - \(formatter.string(from: schedule.unwrappedEndTime))"
+            timeLabel.textColor = .white
+        }
+    }
+    
+    init(subjectName: String, bgColor: UIColor) {
         super.init(frame: .zero)
         
+        self.subjectNameLabel.text = subjectName
         setupView()
-        
-        subjectNameLabel.text = task.subjectName
-        subjectNameLabel.textColor = .white
-        subjectNameLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        timeLabel.text = "\(formatter.string(from: task.startTime)) - \(formatter.string(from: task.endTime))"
-        timeLabel.textColor = .white
+
         self.backgroundColor = bgColor
     }
     
@@ -35,9 +56,6 @@ class TaskView: UIView {
     private func setupView() {
         addSubview(subjectNameLabel)
         addSubview(timeLabel)
-        
-        subjectNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        timeLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             subjectNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),

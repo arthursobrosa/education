@@ -3,7 +3,7 @@
     <entity name="FocusSession" representedClassName="FocusSession" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="scheduleID" optional="YES" attributeType="String"/>
+        <attribute name="subjectID" optional="YES" attributeType="String"/>
         <attribute name="totalTime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="Schedule" representedClassName="Schedule" syncable="YES" codeGenerationType="class">

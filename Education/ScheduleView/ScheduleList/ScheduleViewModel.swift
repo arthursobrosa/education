@@ -7,20 +7,11 @@
 
 import Foundation
 
-struct ScheduleTask {
-    var id = UUID()
-    var dayOfTheWeek: Int
-    var startTime: Date
-    var endTime: Date
-    var subjectName: String
-}
-
 class ScheduleViewModel {
-    var tasks: [ScheduleTask] = [
-        ScheduleTask(dayOfTheWeek: 0, startTime: Date(), endTime: Date().addingTimeInterval(3600), subjectName: "Math"),
-        ScheduleTask(dayOfTheWeek: 3, startTime: Date(), endTime: Date().addingTimeInterval(3600), subjectName: "Science"),
-        ScheduleTask(dayOfTheWeek: 3, startTime: Date().addingTimeInterval(3600), endTime: Date().addingTimeInterval(7200), subjectName: "Geography")
-    ]
+    private let subjectManager: SubjectManager
+    private let scheduleManager: ScheduleManager
+    
+    var schedules = [Schedule]()
     
     var selectedDay: Int = Calendar.current.component(.weekday, from: Date()) - 1
     
@@ -30,8 +21,23 @@ class ScheduleViewModel {
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
     
-    func tasks(for day: Int) -> [ScheduleTask] {
-        return tasks.filter { $0.dayOfTheWeek == day }
+    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager()) {
+        self.subjectManager = subjectManager
+        self.scheduleManager = scheduleManager
+    }
+    
+    func fetchSchedules(withDay day: Int) {
+        if let schedules = self.scheduleManager.fetchSchedules(dayOfTheWeek: day) {
+            self.schedules = schedules
+        }
+    }
+    
+    func getSubjectName(fromSchedule schedule: Schedule) -> String {
+        if let subject = self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID) {
+            return subject.unwrappedName
+        }
+        
+        return String()
     }
     
     func dayAbbreviation(_ date: Date) -> String {

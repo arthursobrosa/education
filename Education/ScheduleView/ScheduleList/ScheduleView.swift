@@ -110,6 +110,7 @@ class ScheduleView: UIView {
     @objc private func dayViewTapped(_ sender: UITapGestureRecognizer) {
         guard let view = sender.view else { return }
         viewModel.selectedDay = view.tag
+        self.viewModel.fetchSchedules(withDay: view.tag)
         updateTasks()
         updateDayViews()
     }
@@ -118,12 +119,14 @@ class ScheduleView: UIView {
         taskViews.forEach { $0.removeFromSuperview() }
         taskViews = []
         
-        let tasks = viewModel.tasks(for: viewModel.selectedDay)
+        let tasks = self.viewModel.schedules
         var lastView: UIView? = nil
         
         for (index, task) in tasks.enumerated() {
             let color = taskColors[index % taskColors.count]
-            let taskView = TaskView(task: task, bgColor: color)
+            let subjectName = self.viewModel.getSubjectName(fromSchedule: task)
+            let taskView = TaskView(subjectName: subjectName, bgColor: color)
+            taskView.schedule = task
             tasksScrollView.addSubview(taskView)
             taskView.translatesAutoresizingMaskIntoConstraints = false
             

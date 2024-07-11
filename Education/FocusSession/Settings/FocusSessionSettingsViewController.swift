@@ -132,7 +132,7 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
             case 0:
-                return "Schedule"
+                return "Subject" 
             case 1:
                 return "Timer"
             case 2:

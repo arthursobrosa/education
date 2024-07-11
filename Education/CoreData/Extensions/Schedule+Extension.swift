@@ -12,7 +12,19 @@ extension Schedule {
         return id ?? String()
     }
     
+    var unwrappedSubjectID: String {
+        return subjectID ?? String()
+    }
+    
     var unwrappedDay: Int {
         return Int(dayOfTheWeek)
+    }
+    
+    var unwrappedStartTime: Date {
+        return startTime ?? Date()
+    }
+    
+    var unwrappedEndTime: Date {
+        return endTime ?? Date()
     }
 }

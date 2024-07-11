@@ -15,20 +15,27 @@ class SubjectTimeTableViewCell: UITableViewCell{
             guard let subject = subject else { return }
             
             self.subjectName.text = subject.unwrappedName
-            self.totalHours.text = String(50)
+        }
+    }
+    
+    var totalTime: Int? {
+        didSet {
+            guard let totalTime = totalTime else { return }
+            
+            self.totalHours.text = "\(totalTime)"
         }
     }
     
     // MARK: - UI Components
     
-    lazy var subjectName: UILabel = {
+    private lazy var subjectName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         return label
     }()
     
-    lazy var totalHours: UILabel = {
+    private lazy var totalHours: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right
@@ -36,9 +43,9 @@ class SubjectTimeTableViewCell: UITableViewCell{
     }()
     
     // MARK: - Initialization
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         setupUI()
     }
     
