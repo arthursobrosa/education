@@ -7,13 +7,21 @@
 
 import UIKit
 
+protocol FocusSessionDelegate: AnyObject {
+    func saveFocusSession()
+}
+
 class FocusSessionViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
     weak var coordinator: Dismissing?
     private let viewModel: FocusSessionViewModel
     
     // MARK: - Properties
-    private lazy var focusSessionView = FocusSessionView(viewModel: self.viewModel)
+    private lazy var focusSessionView: FocusSessionView = {
+        let view = FocusSessionView(viewModel: self.viewModel)
+        view.delegate = self
+        return view
+    }()
     
     // MARK: - Initializer
     init(viewModel: FocusSessionViewModel) {
@@ -36,10 +44,8 @@ class FocusSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.focusSessionView.finishButton.isEnabled = false
         
-        
-//        self.coordinator?.hideBackButton(true)
-//        
         self.focusSessionView.onTimerFinished = { [weak self] in
             guard let self = self else { return }
             
@@ -49,7 +55,7 @@ class FocusSessionViewController: UIViewController {
         self.focusSessionView.onChangeTimerState = { [weak self] isPaused in
             guard let self = self else { return }
             
-//            self.coordinator?.hideBackButton(!isPaused)
+            self.focusSessionView.finishButton.isEnabled = isPaused
         }
     }
 
@@ -77,11 +83,19 @@ class FocusSessionViewController: UIViewController {
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
             guard let self = self else { return }
 
+            self.viewModel.saveFocusSession()
             self.coordinator?.dismiss()
         }
 
         alertController.addAction(okAction)
 
         present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension FocusSessionViewController: FocusSessionDelegate {
+    func saveFocusSession() {
+        self.viewModel.saveFocusSession()
+        self.coordinator?.dismiss()
     }
 }

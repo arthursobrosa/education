@@ -62,11 +62,15 @@ class StudyTimeViewController: UIViewController{
 // MARK: - UITableViewDataSource
 extension StudyTimeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.subjects.count
+        return self.subjects.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let subject = self.subjects[indexPath.row]
+        let row = indexPath.row
+        
+        var subject: Subject? = nil
+        
+        subject = row <= (self.subjects.count - 1) ? self.subjects[indexPath.row] : nil
         let totalTime = self.viewModel.getTotalTimeOneSubject(subject)
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {

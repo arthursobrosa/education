@@ -25,6 +25,7 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
         let vc = FocusSessionViewController(viewModel: viewModel)
         vc.title = "Focus Session"
         vc.coordinator = self
+        vc.navigationItem.hidesBackButton = true
         self.navigationController.pushViewController(vc, animated: true)
     }
     

@@ -20,7 +20,7 @@ class FocusSessionSettingsViewModel {
                 self.subjectID = nil
             } else {
                 if let subject = self.subjectManager.fetchSubject(withName: selectedSubject) {
-                    self.subjectID = subject.unwrappedName
+                    self.subjectID = subject.unwrappedID
                 }
             }
         }

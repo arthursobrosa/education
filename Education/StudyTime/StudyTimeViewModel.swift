@@ -29,8 +29,8 @@ class StudyTimeViewModel {
         return self.getTime(from: self.focusSessions)
     }
     
-    func getTotalTimeOneSubject(_ subject: Subject) -> Int {
-        if let focusSessions = self.focusSessionManager.fetchFocusSessions(subjectID: subject.unwrappedID) {
+    func getTotalTimeOneSubject(_ subject: Subject?) -> Int {
+        if let focusSessions = self.focusSessionManager.fetchFocusSessions(subjectID: subject?.unwrappedID) {
             return self.getTime(from: focusSessions)
         }
         

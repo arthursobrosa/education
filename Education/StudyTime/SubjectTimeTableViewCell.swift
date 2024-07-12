@@ -12,9 +12,11 @@ class SubjectTimeTableViewCell: UITableViewCell{
     
     var subject: Subject? {
         didSet {
-            guard let subject = subject else { return }
-            
-            self.subjectName.text = subject.unwrappedName
+            if let subject = subject {
+                self.subjectName.text = subject.unwrappedName
+            } else {
+                self.subjectName.text = "Other"
+            }
         }
     }
     

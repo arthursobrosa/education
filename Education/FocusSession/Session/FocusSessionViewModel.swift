@@ -71,6 +71,6 @@ class FocusSessionViewModel {
     }
     
     func saveFocusSession() {
-        self.focusSessionManager.createFocusSession(date: self.date, totalTime: self.totalSeconds, subjectID: self.subjectID)
+        self.focusSessionManager.createFocusSession(date: self.date, totalTime: (self.totalSeconds - self.timerSeconds.value), subjectID: self.subjectID)
     }
 }
