@@ -7,11 +7,19 @@
 
 import UIKit
 
+protocol ScheduleDelegate: AnyObject {
+    func onSelectTask(_ schedule: Schedule?)
+}
+
 class ScheduleViewController: UIViewController {
-    weak var coordinator: ShowingScheduleCreation?
+    weak var coordinator: ShowingScheduleDetails?
     private let viewModel: ScheduleViewModel
     
-    private lazy var scheduleView = ScheduleView(viewModel: self.viewModel)
+    private lazy var scheduleView: ScheduleView = {
+        let view = ScheduleView(viewModel: self.viewModel)
+        view.delegate = self
+        return view
+    }()
     
     init(viewModel: ScheduleViewModel) {
         self.viewModel = viewModel
@@ -37,7 +45,19 @@ class ScheduleViewController: UIViewController {
     }
     
     @objc private func addScheduleButtonTapped() {
-        self.coordinator?.showScheduleCreation()
+        self.coordinator?.showScheduleDetails(schedule: nil, title: nil)
+    }
+}
+
+extension ScheduleViewController: ScheduleDelegate {
+    func onSelectTask(_ schedule: Schedule?) {
+        var subjectName: String? = nil
+        
+        if let schedule = schedule {
+            subjectName = self.viewModel.getSubjectName(fromSchedule: schedule)
+        }
+        
+        self.coordinator?.showScheduleDetails(schedule: schedule, title: subjectName)
     }
 }
 

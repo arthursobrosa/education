@@ -5,10 +5,10 @@
 //  Created by Eduardo Dalencon on 10/07/24.
 //
 
-import Foundation
 import UIKit
 
 class ScheduleView: UIView {
+    weak var delegate: ScheduleDelegate?
     
     private let viewModel: ScheduleViewModel
     private let daysStackView = UIStackView()
@@ -126,6 +126,7 @@ class ScheduleView: UIView {
             let color = taskColors[index % taskColors.count]
             let subjectName = self.viewModel.getSubjectName(fromSchedule: task)
             let taskView = TaskView(subjectName: subjectName, bgColor: color)
+            taskView.delegate = self.delegate
             taskView.schedule = task
             tasksScrollView.addSubview(taskView)
             taskView.translatesAutoresizingMaskIntoConstraints = false

@@ -62,6 +62,12 @@ class FocusSessionView: UIView {
         return bttn
     }()
     
+    lazy var finishButton: ButtonComponent = {
+        let bttn = ButtonComponent(frame: .zero, title: "Finish")
+        bttn.addTarget(self, action: #selector(self.didTapFinishButton(_:)), for: .touchUpInside)
+        return bttn
+    }()
+    
     // MARK: - Initializer
     init(frame: CGRect = .zero, viewModel: FocusSessionViewModel) {
         self.viewModel = viewModel
@@ -139,6 +145,10 @@ class FocusSessionView: UIView {
         self.timerCircleFillLayer.strokeEnd = 1 - (CGFloat(self.viewModel.timerSeconds.value) / CGFloat(self.viewModel.totalSeconds))
         self.timerEndAnimation.duration = Double(self.viewModel.timerSeconds.value) + 1
     }
+    
+    @objc private func didTapFinishButton(_ sender: UIButton) {
+        
+    }
 }
 
 // MARK: - UI Setup
@@ -148,6 +158,7 @@ extension FocusSessionView: ViewCodeProtocol {
         timerContainerView.addSubview(timerLabel)
         
         self.addSubview(pauseResumeButton)
+        self.addSubview(finishButton)
         
         let padding = 20.0
         
@@ -163,7 +174,12 @@ extension FocusSessionView: ViewCodeProtocol {
             timerLabel.heightAnchor.constraint(equalTo: timerLabel.widthAnchor),
             
             pauseResumeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: padding * 4),
-            pauseResumeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            pauseResumeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            finishButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            finishButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            finishButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            finishButton.heightAnchor.constraint(equalTo: finishButton.widthAnchor, multiplier: 0.16)
         ])
     }
     

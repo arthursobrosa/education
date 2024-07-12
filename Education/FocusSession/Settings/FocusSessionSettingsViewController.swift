@@ -47,7 +47,7 @@ class FocusSessionSettingsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.viewModel.selectedTime = 0
-        self.viewModel.selectedSchedule = self.viewModel.schedules[0]
+        self.viewModel.selectedSubject = self.viewModel.subjects[0]
         self.reloadTable()
         
         guard let cell = self.timerSettingsView.tableView.cellForRow(at: IndexPath(row: 0, section: 1)),
@@ -84,7 +84,7 @@ extension FocusSessionSettingsViewController {
             return
         }
         
-        self.coordinator?.showTimer(Int(self.viewModel.selectedTime))
+        self.coordinator?.showTimer(totalTimeInSeconds: Int(self.viewModel.selectedTime), subjectID: self.viewModel.subjectID)
     }
     
     @objc func timerPickerChange(_ sender: UIDatePicker) {

@@ -9,7 +9,7 @@ import UIKit
 
 class FocusSessionViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (Dismissing & HidingBackButton)?
+    weak var coordinator: Dismissing?
     private let viewModel: FocusSessionViewModel
     
     // MARK: - Properties
@@ -36,8 +36,10 @@ class FocusSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.coordinator?.hideBackButton(true)
         
+        
+//        self.coordinator?.hideBackButton(true)
+//        
         self.focusSessionView.onTimerFinished = { [weak self] in
             guard let self = self else { return }
             
@@ -47,7 +49,7 @@ class FocusSessionViewController: UIViewController {
         self.focusSessionView.onChangeTimerState = { [weak self] isPaused in
             guard let self = self else { return }
             
-            self.coordinator?.hideBackButton(!isPaused)
+//            self.coordinator?.hideBackButton(!isPaused)
         }
     }
 

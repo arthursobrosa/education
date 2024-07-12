@@ -18,7 +18,8 @@ class StudyTimeView: UIView {
     }()
     
     lazy var studyTimeTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = .systemBackground
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SubjectTimeCell")
         return tableView

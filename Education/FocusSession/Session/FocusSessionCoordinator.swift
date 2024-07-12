@@ -7,19 +7,21 @@
 
 import UIKit
 
-class FocusSessionCoordinator: Coordinator, Dismissing, HidingBackButton {
+class FocusSessionCoordinator: Coordinator, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var totalTimeInSeconds: Int
+    var subjectID: String?
     
-    init(navigationController: UINavigationController, totalTimeInSeconds: Int) {
+    init(navigationController: UINavigationController, totalTimeInSeconds: Int, subjectID: String?) {
         self.navigationController = navigationController
         self.totalTimeInSeconds = totalTimeInSeconds
+        self.subjectID = subjectID
     }
     
     func start() {
-        let viewModel = FocusSessionViewModel(totalSeconds: self.totalTimeInSeconds)
+        let viewModel = FocusSessionViewModel(totalSeconds: self.totalTimeInSeconds, subjectID: self.subjectID)
         let vc = FocusSessionViewController(viewModel: viewModel)
         vc.title = "Focus Session"
         vc.coordinator = self
@@ -28,9 +30,5 @@ class FocusSessionCoordinator: Coordinator, Dismissing, HidingBackButton {
     
     func dismiss() {
         self.navigationController.popViewController(animated: true)
-    }
-    
-    func hideBackButton(_ isHidden: Bool) {
-        self.navigationController.topViewController?.navigationItem.hidesBackButton = isHidden
     }
 }

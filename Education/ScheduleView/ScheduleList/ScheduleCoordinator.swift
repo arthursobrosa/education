@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ScheduleCoordinator: Coordinator, ShowingScheduleCreation {
+class ScheduleCoordinator: Coordinator, ShowingScheduleDetails {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -25,11 +25,11 @@ class ScheduleCoordinator: Coordinator, ShowingScheduleCreation {
         self.navigationController.pushViewController(vc, animated: false)
     }
     
-    func showScheduleCreation() {
-        let viewModel = ScheduleCreationViewModel()
-        let vc = ScheduleCreationViewController(viewModel: viewModel)
+    func showScheduleDetails(schedule: Schedule?, title: String?) {
+        let viewModel = ScheduleDetailsViewModel(schedule: schedule)
+        let vc = ScheduleDetailsViewController(viewModel: viewModel)
         vc.modalPresentationStyle = .pageSheet
-        vc.title = "New Schedule"
+        vc.title = "\(title ?? "New") Schedule"
         
         self.navigationController.present(UINavigationController(rootViewController: vc), animated: true)
     }

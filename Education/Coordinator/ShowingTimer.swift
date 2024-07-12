@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ShowingTimer: AnyObject {
-    func showTimer(_ totalTimeInSeconds: Int)
+    func showTimer(totalTimeInSeconds: Int, subjectID: String?)
 }

@@ -1,5 +1,5 @@
 //
-//  ScheduleCreationViewController.swift
+//  ScheduleDetailsViewController.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 10/07/24.
@@ -7,15 +7,15 @@
 
 import UIKit
 
-protocol ScheduleCreationDelegate: AnyObject {
+protocol ScheduleDetailsDelegate: AnyObject {
     func saveSchedule()
 }
 
-class ScheduleCreationViewController: UIViewController {
-    private let viewModel: ScheduleCreationViewModel
+class ScheduleDetailsViewController: UIViewController {
+    private let viewModel: ScheduleDetailsViewModel
     
-    private lazy var scheduleCreationView: ScheduleCreationView = {
-        let view = ScheduleCreationView()
+    private lazy var scheduleDetailsView: ScheduleDetailsView = {
+        let view = ScheduleDetailsView()
         view.delegate = self
         view.tableView.delegate = self
         view.tableView.dataSource = self
@@ -23,7 +23,7 @@ class ScheduleCreationViewController: UIViewController {
         return view
     }()
     
-    init(viewModel: ScheduleCreationViewModel = ScheduleCreationViewModel()) {
+    init(viewModel: ScheduleDetailsViewModel = ScheduleDetailsViewModel()) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -36,18 +36,14 @@ class ScheduleCreationViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.view = self.scheduleCreationView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        self.view = self.scheduleDetailsView
     }
     
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            self.scheduleCreationView.tableView.reloadData()
+            self.scheduleDetailsView.tableView.reloadData()
         }
     }
     
@@ -77,6 +73,8 @@ class ScheduleCreationViewController: UIViewController {
             if let subjectName = alertController.textFields?.first?.text, !subjectName.isEmpty {
                 self.viewModel.addSubject(name: subjectName)
             }
+            
+            self.reloadTable()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -88,14 +86,14 @@ class ScheduleCreationViewController: UIViewController {
     }
 }
 
-extension ScheduleCreationViewController: ScheduleCreationDelegate {
+extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
     func saveSchedule() {
-        self.viewModel.addSchedule()
+        self.viewModel.saveSchedule()
         self.dismiss(animated: true)
     }
 }
 
-extension ScheduleCreationViewController: UITableViewDataSource, UITableViewDelegate {
+extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
@@ -132,6 +130,7 @@ extension ScheduleCreationViewController: UITableViewDataSource, UITableViewDele
             cell.textLabel?.text = row == 0 ? "Start" : "End"
             let datePicker = UIDatePicker()
             datePicker.datePickerMode = .time
+            datePicker.date = row == 0 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
             datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
             datePicker.tag = row
             cell.accessoryView = datePicker
@@ -177,7 +176,7 @@ extension ScheduleCreationViewController: UITableViewDataSource, UITableViewDele
     }
 }
 
-extension ScheduleCreationViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension ScheduleDetailsViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -210,7 +209,7 @@ extension ScheduleCreationViewController: UIPickerViewDelegate, UIPickerViewData
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let tableRow = pickerView.tag == 0 ? 1 : 0
-        let cell = self.scheduleCreationView.tableView.cellForRow(at: IndexPath(row: tableRow, section: pickerView.tag))
+        let cell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: tableRow, section: pickerView.tag))
         
         switch pickerView.tag {
             case 0:
@@ -226,7 +225,7 @@ extension ScheduleCreationViewController: UIPickerViewDelegate, UIPickerViewData
 }
 
 // MARK: - Popover Creation
-extension ScheduleCreationViewController {
+extension ScheduleDetailsViewController {
     func createDayPopover(forTableView tableView: UITableView, at indexPath: IndexPath) -> Popover? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
         
@@ -246,8 +245,8 @@ extension ScheduleCreationViewController {
         
         popoverVC.view = dayPicker
         
-        let items = section == 0 ? self.viewModel.days : self.viewModel.subjectsNames
-        let selectedItem = section == 0 ? self.viewModel.selectedDay : self.viewModel.selectedSubjectName
+        let items = section == 0 ? self.viewModel.subjectsNames : self.viewModel.days
+        let selectedItem = section == 0 ? self.viewModel.selectedSubjectName : self.viewModel.selectedDay
         
         if let selectedIndex = items.firstIndex(where: { $0 == selectedItem }) {
             dayPicker.selectRow(selectedIndex, inComponent: 0, animated: true)
@@ -258,12 +257,12 @@ extension ScheduleCreationViewController {
 }
 
 // MARK: - Popover Delegate
-extension ScheduleCreationViewController: UIPopoverPresentationControllerDelegate {
+extension ScheduleDetailsViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
 }
 
 #Preview {
-    ScheduleCreationViewController()
+    ScheduleDetailsViewController()
 }

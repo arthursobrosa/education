@@ -46,6 +46,10 @@ class SubjectTimeTableViewCell: UITableViewCell{
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        if self.traitCollection.userInterfaceStyle == .light {
+            self.backgroundColor = .systemGray5
+        }
+        
         setupUI()
     }
     

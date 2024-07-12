@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class TaskView: UIView {
+    weak var delegate: ScheduleDelegate?
     
     private let subjectNameLabel: UILabel = {
         let lbl = UILabel()
@@ -47,10 +48,17 @@ class TaskView: UIView {
         setupView()
 
         self.backgroundColor = bgColor
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(taskViewTapped))
+        self.addGestureRecognizer(tapGesture)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func taskViewTapped() {
+        self.delegate?.onSelectTask(self.schedule)
     }
     
     private func setupView() {
