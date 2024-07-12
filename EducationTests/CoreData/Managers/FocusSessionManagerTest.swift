@@ -10,7 +10,6 @@ import CoreData
 @testable import Education
 
 class FocusSessionManagerTest: XCTestCase {
-    var scheduleManager: ScheduleManager!
     var subjectManager: SubjectManager!
     var focusSessionManager: FocusSessionManager!
     var coreDataStack: CoreDataTestStack!
@@ -18,15 +17,13 @@ class FocusSessionManagerTest: XCTestCase {
     override func setUp() {
         super.setUp()
         coreDataStack = CoreDataTestStack()
-        scheduleManager = ScheduleManager(mainContext: coreDataStack.mainContext,
-                                          backgroundContext: coreDataStack.mainContext)
         subjectManager = SubjectManager(mainContext: coreDataStack.mainContext,
                                         backgroundContext: coreDataStack.mainContext)
         focusSessionManager = FocusSessionManager(mainContext: coreDataStack.mainContext,
                                                  backgroundContext: coreDataStack.mainContext)
     }
     
-    func test_create_focusSession_with_schedule() {
+    func test_create_focusSession_with_subject() {
         subjectManager.createSubject(name: "Math")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
@@ -34,21 +31,15 @@ class FocusSessionManagerTest: XCTestCase {
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateStringA = "2023-11-13 09:12:22"
-        let dateStringB = "2023-11-13 10:12:22"
         let dateA = format.date(from: dateStringA)!
-        let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
+        focusSessionManager.createFocusSession(date: dateA, totalTime: 20, subjectID: subject.unwrappedID)
         
-        let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
-        
-        focusSessionManager.createFocusSession(date: dateA, totalTime: 20, scheduleID: schedule.unwrappedID)
-        
-        let focusSession = focusSessionManager.fetchFocusSessions(scheduleID: schedule.unwrappedID)!.first!
+        let focusSession = focusSessionManager.fetchFocusSessions(subjectID: subject.unwrappedID)!.first!
         
         XCTAssertEqual(focusSession.totalTime, 20)
         XCTAssertEqual(focusSession.date, dateA)
-        XCTAssertEqual(focusSession.scheduleID, schedule.unwrappedID)
+        XCTAssertEqual(focusSession.subjectID, subject.unwrappedID)
     }
     
     func test_fetch_single_focusSession() {
@@ -60,27 +51,20 @@ class FocusSessionManagerTest: XCTestCase {
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateStringA = "2023-11-13 09:12:22"
-        let dateStringB = "2023-11-13 10:12:22"
         let dateA = format.date(from: dateStringA)!
-        let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
+        focusSessionManager.createFocusSession(date: dateA, totalTime: 20, subjectID: subject.unwrappedID)
         
-        let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
-        
-        focusSessionManager.createFocusSession(date: dateA, totalTime: 20, scheduleID: schedule.unwrappedID)
-        
-        let focusSession = focusSessionManager.fetchFocusSessions(scheduleID: schedule.unwrappedID)!.first!
+        let focusSession = focusSessionManager.fetchFocusSessions(subjectID: subject.unwrappedID)!.first!
         
         let focusSessionId = focusSession.id!
         
         let individualFocusSession = focusSessionManager.fetchFocusSession(withID: focusSessionId)!
         
         XCTAssertEqual(focusSession.id, individualFocusSession.id)
-       
     }
     
-    func test_create_focusSession_without_schedule() {
+    func test_create_focusSession_without_subject() {
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateStringA = "2023-11-13 09:12:22"
@@ -88,7 +72,7 @@ class FocusSessionManagerTest: XCTestCase {
         
         focusSessionManager.createFocusSession(date: dateA, totalTime: 20)
         
-        let focusSession = focusSessionManager.fetchFocusSessions(scheduleID: nil)!.first!
+        let focusSession = focusSessionManager.fetchFocusSessions(subjectID: nil)!.first!
         
         XCTAssertEqual(focusSession.date, dateA)
         XCTAssertEqual(focusSession.totalTime, 20)
@@ -105,13 +89,13 @@ class FocusSessionManagerTest: XCTestCase {
         focusSessionManager.createFocusSession(date: dateA, totalTime: 20)
         focusSessionManager.createFocusSession(date: dateB, totalTime: 20)
         
-        var focusSessions = focusSessionManager.fetchFocusSessions(scheduleID: nil)!
+        var focusSessions = focusSessionManager.fetchFocusSessions(subjectID: nil)!
         
         XCTAssertEqual(focusSessions.count, 2)
         
         if !focusSessions.isEmpty {
             focusSessionManager.deleteFocusSession(focusSessions[0])
-            focusSessions = focusSessionManager.fetchFocusSessions(scheduleID: nil)!
+            focusSessions = focusSessionManager.fetchFocusSessions(subjectID: nil)!
         }
         
         XCTAssertEqual(focusSessions.count, 1)
@@ -127,7 +111,7 @@ class FocusSessionManagerTest: XCTestCase {
         
         focusSessionManager.createFocusSession(date: dateA, totalTime: 20)
         
-        var focusSession = focusSessionManager.fetchFocusSessions(scheduleID: nil)!.first!
+        var focusSession = focusSessionManager.fetchFocusSessions(subjectID: nil)!.first!
         
         XCTAssertEqual(focusSession.date, dateA)
         XCTAssertEqual(focusSession.totalTime, 20)
@@ -137,7 +121,7 @@ class FocusSessionManagerTest: XCTestCase {
         
         focusSessionManager.updateFocusSession(focusSession)
         
-        focusSession = focusSessionManager.fetchFocusSessions(scheduleID: nil)!.first!
+        focusSession = focusSessionManager.fetchFocusSessions(subjectID: nil)!.first!
         
         XCTAssertEqual(focusSession.date, dateB)
         XCTAssertEqual(focusSession.totalTime, 30)

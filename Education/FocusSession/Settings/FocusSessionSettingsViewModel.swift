@@ -8,14 +8,37 @@
 import Foundation
 
 class FocusSessionSettingsViewModel {
+    private let subjectManager: SubjectManager
+    
     // MARK: - Properties
     var selectedTime: TimeInterval = 0 // Variable to hold the selected time
     
-    var schedules = ["None", "Option 1", "Option 2", "Option 3"]
-    lazy var selectedSchedule = self.schedules[0]
+    var subjects = ["None"]
+    lazy var selectedSubject = self.subjects[0] {
+        didSet {
+            if selectedSubject == self.subjects[0] {
+                self.subjectID = nil
+            } else {
+                if let subject = self.subjectManager.fetchSubject(withName: selectedSubject) {
+                    self.subjectID = subject.unwrappedID
+                }
+            }
+        }
+    }
     
     var alarmWhenFinished: Bool = true
     var blockApps: Bool = false
+    
+    var subjectID: String? = nil
+    
+    init(subjectManager: SubjectManager = SubjectManager()) {
+        self.subjectManager = subjectManager
+        
+        if let subjects = self.subjectManager.fetchSubjects() {
+            let subjectsNames = subjects.map { $0.unwrappedName }
+            self.subjects.append(contentsOf: subjectsNames)
+        }
+    }
     
     // MARK: - Methods
     func getTotalSeconds(fromDate date: Date) -> TimeInterval {

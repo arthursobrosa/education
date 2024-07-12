@@ -8,6 +8,8 @@
 import UIKit
 
 class FocusSessionView: UIView {
+    weak var delegate: FocusSessionDelegate?
+    
     // MARK: - Properties
     let viewModel: FocusSessionViewModel
     
@@ -59,6 +61,12 @@ class FocusSessionView: UIView {
         bttn.tintColor = .label
         bttn.setImage(UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .semibold, scale: .default)), for: .normal)
         bttn.addTarget(self.viewModel, action: #selector(self.viewModel.pauseResumeButtonTapped), for: .touchUpInside)
+        return bttn
+    }()
+    
+    lazy var finishButton: ButtonComponent = {
+        let bttn = ButtonComponent(frame: .zero, title: "Finish")
+        bttn.addTarget(self, action: #selector(self.didTapFinishButton(_:)), for: .touchUpInside)
         return bttn
     }()
     
@@ -139,6 +147,10 @@ class FocusSessionView: UIView {
         self.timerCircleFillLayer.strokeEnd = 1 - (CGFloat(self.viewModel.timerSeconds.value) / CGFloat(self.viewModel.totalSeconds))
         self.timerEndAnimation.duration = Double(self.viewModel.timerSeconds.value) + 1
     }
+    
+    @objc private func didTapFinishButton(_ sender: UIButton) {
+        self.delegate?.saveFocusSession()
+    }
 }
 
 // MARK: - UI Setup
@@ -148,11 +160,12 @@ extension FocusSessionView: ViewCodeProtocol {
         timerContainerView.addSubview(timerLabel)
         
         self.addSubview(pauseResumeButton)
+        self.addSubview(finishButton)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            timerContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            timerContainerView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
             timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.385),
             timerContainerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: padding),
             timerContainerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
@@ -162,8 +175,13 @@ extension FocusSessionView: ViewCodeProtocol {
             timerLabel.widthAnchor.constraint(equalTo: timerContainerView.widthAnchor, multiplier: 1),
             timerLabel.heightAnchor.constraint(equalTo: timerLabel.widthAnchor),
             
-            pauseResumeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: padding * 4),
-            pauseResumeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            pauseResumeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: padding * 2),
+            pauseResumeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            finishButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            finishButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            finishButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            finishButton.heightAnchor.constraint(equalTo: finishButton.widthAnchor, multiplier: 0.16)
         ])
     }
     

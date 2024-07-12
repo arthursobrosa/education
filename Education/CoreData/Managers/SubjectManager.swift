@@ -59,10 +59,19 @@ final class SubjectManager: ObjectManager {
     }
     
     // MARK: - Fetch
-    func fetchSubject(withName name: String) -> Subject? {
+    func fetchSubject(withID id: String? = nil, withName name: String? = nil) -> Subject? {
         let fetchRequest = NSFetchRequest<Subject>(entityName: "Subject")
+        
+        if let id = id {
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id)
+        } else if let name = name {
+            fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        } else {
+            print("Found nil on arguments")
+            return nil
+        }
+        
         fetchRequest.fetchLimit = 1
-        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
         
         var subject: Subject?
         

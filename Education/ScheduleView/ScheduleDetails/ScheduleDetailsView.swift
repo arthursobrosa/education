@@ -1,5 +1,5 @@
 //
-//  ScheduleCreationView.swift
+//  ScheduleDetailsView.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 10/07/24.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ScheduleCreationView: UIView {
-    weak var delegate: ScheduleCreationDelegate?
+class ScheduleDetailsView: UIView {
+    weak var delegate: ScheduleDetailsDelegate?
     
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
@@ -36,11 +36,11 @@ class ScheduleCreationView: UIView {
     }
     
     @objc private func didTapSaveButton() {
-        self.delegate?.dismissVC()
+        self.delegate?.saveSchedule()
     }
 }
 
-extension ScheduleCreationView: ViewCodeProtocol {
+extension ScheduleDetailsView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(tableView)
         self.addSubview(saveButton)

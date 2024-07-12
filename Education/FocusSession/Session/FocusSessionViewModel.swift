@@ -8,6 +8,8 @@
 import Foundation
 
 class FocusSessionViewModel {
+    private let focusSessionManager: FocusSessionManager
+    
     // MARK: - Properties
     var countdownTimer = Timer()
     
@@ -30,11 +32,18 @@ class FocusSessionViewModel {
     
     var timerState: Box<TimerState?>
     
+    private let subjectID: String?
+    private let date: Date
+    
     // MARK: - Initializer
-    init(totalSeconds: Int) {
+    init(totalSeconds: Int, subjectID: String?, focusSessionManager: FocusSessionManager = FocusSessionManager()) {
+        self.focusSessionManager = focusSessionManager
+        
         self.totalSeconds = totalSeconds
         self.timerSeconds = Box(totalSeconds)
         self.timerState = Box(nil)
+        self.subjectID = subjectID
+        self.date = Date.now
     }
     
     // MARK: - Methods
@@ -59,5 +68,9 @@ class FocusSessionViewModel {
     @objc func pauseResumeButtonTapped() {
         let newTimerState: TimerState = self.timerState.value == .starting ? .reseting : .starting
         self.timerState.value = newTimerState
+    }
+    
+    func saveFocusSession() {
+        self.focusSessionManager.createFocusSession(date: self.date, totalTime: (self.totalSeconds - self.timerSeconds.value), subjectID: self.subjectID)
     }
 }

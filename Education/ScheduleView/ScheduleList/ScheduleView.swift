@@ -5,10 +5,10 @@
 //  Created by Eduardo Dalencon on 10/07/24.
 //
 
-import Foundation
 import UIKit
 
 class ScheduleView: UIView {
+    weak var delegate: ScheduleDelegate?
     
     private let viewModel: ScheduleViewModel
     private let daysStackView = UIStackView()
@@ -110,6 +110,7 @@ class ScheduleView: UIView {
     @objc private func dayViewTapped(_ sender: UITapGestureRecognizer) {
         guard let view = sender.view else { return }
         viewModel.selectedDay = view.tag
+        self.viewModel.fetchSchedules(withDay: view.tag)
         updateTasks()
         updateDayViews()
     }
@@ -118,12 +119,15 @@ class ScheduleView: UIView {
         taskViews.forEach { $0.removeFromSuperview() }
         taskViews = []
         
-        let tasks = viewModel.tasks(for: viewModel.selectedDay)
+        let tasks = self.viewModel.schedules
         var lastView: UIView? = nil
         
         for (index, task) in tasks.enumerated() {
             let color = taskColors[index % taskColors.count]
-            let taskView = TaskView(task: task, bgColor: color)
+            let subjectName = self.viewModel.getSubjectName(fromSchedule: task)
+            let taskView = TaskView(subjectName: subjectName, bgColor: color)
+            taskView.delegate = self.delegate
+            taskView.schedule = task
             tasksScrollView.addSubview(taskView)
             taskView.translatesAutoresizingMaskIntoConstraints = false
             
