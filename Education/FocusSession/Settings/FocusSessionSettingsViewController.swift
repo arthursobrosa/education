@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import FamilyControls
+import SwiftUI
 
 class FocusSessionSettingsViewController: UIViewController {
+    // MARK: - BlockApps Model
+    var model = BlockAppsMonitor.shared
+    
     // MARK: - Coordinator and ViewModel
     weak var coordinator: ShowingTimer?
     let viewModel: FocusSessionSettingsViewModel
@@ -24,7 +29,6 @@ class FocusSessionSettingsViewController: UIViewController {
     // MARK: - Initializer
     init(viewModel: FocusSessionSettingsViewModel) {
         self.viewModel = viewModel
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,6 +63,29 @@ class FocusSessionSettingsViewController: UIViewController {
     }
     
     // MARK: - Auxiliar Methods
+    func createFamilyPicker() {
+        // Create the SwiftUI view
+        let swiftUIView = FamilyActivityPickerView()
+        
+        // Create the hosting controller with the SwiftUI view
+        let hostingController = UIHostingController(rootView: swiftUIView)
+        
+        let swiftuiView = hostingController.view!
+            swiftuiView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the hosting controller as a child view controller
+        addChild(hostingController)
+        hostingController.view.frame = view.bounds
+        view.addSubview(hostingController.view)
+        
+        NSLayoutConstraint.activate([
+            swiftuiView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            swiftuiView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+        
+        hostingController.didMove(toParent: self)
+    }
+    
     func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -87,6 +114,8 @@ extension FocusSessionSettingsViewController {
         }
         
         self.coordinator?.showTimer(totalTimeInSeconds: Int(self.viewModel.selectedTime), subjectID: self.viewModel.subjectID)
+        
+        self.model.apllyShields()
     }
     
     @objc func timerPickerChange(_ sender: UIDatePicker) {
@@ -153,6 +182,11 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
                 self.present(popover, animated: true)
             }
         }
+        
+        if section == 2 && row == 1 {
+            self.createFamilyPicker()
+        }
+        
     }
 }
 

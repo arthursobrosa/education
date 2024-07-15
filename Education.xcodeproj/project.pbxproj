@@ -77,16 +77,18 @@
 		68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
 		68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */; };
 		68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */; };
-		CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */; };
-		CE3010052C3329F1007BCA07 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010042C3329F1007BCA07 /* TimerView.swift */; };
-		CE3010072C332A33007BCA07 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010062C332A33007BCA07 /* TimerViewController.swift */; };
-		CE30102C2C35C1DF007BCA07 /* AppBlockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30102B2C35C1DF007BCA07 /* AppBlockViewModel.swift */; };
-		CE30102E2C35C208007BCA07 /* AppBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30102D2C35C208007BCA07 /* AppBlockView.swift */; };
-		CE42E2F22C2F429C00A29B2D /* TimerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */; };
 		68DE198A2C3DBAD800872751 /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE19892C3DBAD800872751 /* Popover.swift */; };
 		CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */; };
 		CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010042C3329F1007BCA07 /* FocusSessionView.swift */; };
 		CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */; };
+		CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */; };
+		CE3B7D332C4591CE00EE5070 /* BlockAppsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D322C4591CE00EE5070 /* BlockAppsViewModel.swift */; };
+		CE3B7D3B2C45922A00EE5070 /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE3B7D3A2C45922A00EE5070 /* DeviceActivity.framework */; };
+		CE3B7D3E2C45922A00EE5070 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D3D2C45922A00EE5070 /* DeviceActivityMonitorExtension.swift */; };
+		CE3B7D432C45922A00EE5070 /* Monitor.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CE3B7D382C45922A00EE5070 /* Monitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CE3B7D482C45931000EE5070 /* MyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */; };
+		CE3B7D492C45931500EE5070 /* BlockAppsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D322C4591CE00EE5070 /* BlockAppsViewModel.swift */; };
+		CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D4A2C45992000EE5070 /* FamilyActivityPickerView.swift */; };
 		CE42E2F22C2F429C00A29B2D /* FocusSessionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42E2F12C2F429C00A29B2D /* FocusSessionSettingsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -98,7 +100,28 @@
 			remoteGlobalIDString = 683B45342C1B6F3A00663912;
 			remoteInfo = Education;
 		};
+		CE3B7D412C45922A00EE5070 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 683B452D2C1B6F3A00663912 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE3B7D372C45922A00EE5070;
+			remoteInfo = Monitor;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CE3B7D472C45922A00EE5070 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CE3B7D432C45922A00EE5070 /* Monitor.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		302E06982C3F143E00FAD574 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
@@ -174,16 +197,18 @@
 		68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Popover.swift"; sourceTree = "<group>"; };
 		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
-		CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
-		CE3010042C3329F1007BCA07 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
-		CE3010062C332A33007BCA07 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
-		CE30102B2C35C1DF007BCA07 /* AppBlockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBlockViewModel.swift; sourceTree = "<group>"; };
-		CE30102D2C35C208007BCA07 /* AppBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBlockView.swift; sourceTree = "<group>"; };
-		CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerPickerView.swift; sourceTree = "<group>"; };
 		68DE19892C3DBAD800872751 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
 		CE3010042C3329F1007BCA07 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewController.swift; sourceTree = "<group>"; };
+		CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMonitor.swift; sourceTree = "<group>"; };
+		CE3B7D322C4591CE00EE5070 /* BlockAppsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockAppsViewModel.swift; sourceTree = "<group>"; };
+		CE3B7D382C45922A00EE5070 /* Monitor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Monitor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE3B7D3A2C45922A00EE5070 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
+		CE3B7D3D2C45922A00EE5070 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
+		CE3B7D3F2C45922A00EE5070 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE3B7D402C45922A00EE5070 /* Monitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Monitor.entitlements; sourceTree = "<group>"; };
+		CE3B7D4A2C45992000EE5070 /* FamilyActivityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyActivityPickerView.swift; sourceTree = "<group>"; };
 		CE42E2F12C2F429C00A29B2D /* FocusSessionSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -199,6 +224,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE3B7D352C45922A00EE5070 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE3B7D3B2C45922A00EE5070 /* DeviceActivity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +385,9 @@
 			isa = PBXGroup;
 			children = (
 				683B45372C1B6F3A00663912 /* Education */,
+				CE3B7D3C2C45922A00EE5070 /* Monitor */,
 				684BF8822C346E9A005E63BE /* EducationTests */,
+				CE3B7D392C45922A00EE5070 /* Frameworks */,
 				683B45362C1B6F3A00663912 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -362,6 +397,7 @@
 			children = (
 				683B45352C1B6F3A00663912 /* Education.app */,
 				684BF8812C346E9A005E63BE /* EducationTests.xctest */,
+				CE3B7D382C45922A00EE5070 /* Monitor.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -369,6 +405,7 @@
 		683B45372C1B6F3A00663912 /* Education */ = {
 			isa = PBXGroup;
 			children = (
+				CE3B7D2D2C45912100EE5070 /* BlockApps */,
 				68D47D582C2DE227000E011C /* Education.entitlements */,
 				6833B2162C345670009EA63D /* App */,
 				6833B21A2C3456C9009EA63D /* Utils */,
@@ -383,8 +420,6 @@
 				683B45412C1B6F3B00663912 /* Assets.xcassets */,
 				683B45432C1B6F3B00663912 /* LaunchScreen.storyboard */,
 				683B45462C1B6F3B00663912 /* Info.plist */,
-				CE30102B2C35C1DF007BCA07 /* AppBlockViewModel.swift */,
-				CE30102D2C35C208007BCA07 /* AppBlockView.swift */,
 			);
 			path = Education;
 			sourceTree = "<group>";
@@ -507,6 +542,34 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		CE3B7D2D2C45912100EE5070 /* BlockApps */ = {
+			isa = PBXGroup;
+			children = (
+				CE3B7D322C4591CE00EE5070 /* BlockAppsViewModel.swift */,
+				CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */,
+				CE3B7D4A2C45992000EE5070 /* FamilyActivityPickerView.swift */,
+			);
+			path = BlockApps;
+			sourceTree = "<group>";
+		};
+		CE3B7D392C45922A00EE5070 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE3B7D3A2C45922A00EE5070 /* DeviceActivity.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE3B7D3C2C45922A00EE5070 /* Monitor */ = {
+			isa = PBXGroup;
+			children = (
+				CE3B7D3D2C45922A00EE5070 /* DeviceActivityMonitorExtension.swift */,
+				CE3B7D3F2C45922A00EE5070 /* Info.plist */,
+				CE3B7D402C45922A00EE5070 /* Monitor.entitlements */,
+			);
+			path = Monitor;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -517,10 +580,12 @@
 				683B45312C1B6F3A00663912 /* Sources */,
 				683B45322C1B6F3A00663912 /* Frameworks */,
 				683B45332C1B6F3A00663912 /* Resources */,
+				CE3B7D472C45922A00EE5070 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CE3B7D422C45922A00EE5070 /* PBXTargetDependency */,
 			);
 			name = Education;
 			productName = Education;
@@ -545,6 +610,23 @@
 			productReference = 684BF8812C346E9A005E63BE /* EducationTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		CE3B7D372C45922A00EE5070 /* Monitor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE3B7D442C45922A00EE5070 /* Build configuration list for PBXNativeTarget "Monitor" */;
+			buildPhases = (
+				CE3B7D342C45922A00EE5070 /* Sources */,
+				CE3B7D352C45922A00EE5070 /* Frameworks */,
+				CE3B7D362C45922A00EE5070 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Monitor;
+			productName = Monitor;
+			productReference = CE3B7D382C45922A00EE5070 /* Monitor.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -563,6 +645,9 @@
 						LastSwiftMigration = 1540;
 						TestTargetID = 683B45342C1B6F3A00663912;
 					};
+					CE3B7D372C45922A00EE5070 = {
+						CreatedOnToolsVersion = 15.4;
+					};
 				};
 			};
 			buildConfigurationList = 683B45302C1B6F3A00663912 /* Build configuration list for PBXProject "Education" */;
@@ -580,6 +665,7 @@
 			targets = (
 				683B45342C1B6F3A00663912 /* Education */,
 				684BF8802C346E9A005E63BE /* EducationTests */,
+				CE3B7D372C45922A00EE5070 /* Monitor */,
 			);
 		};
 /* End PBXProject section */
@@ -601,6 +687,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CE3B7D362C45922A00EE5070 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -609,7 +702,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
-				CE30102C2C35C1DF007BCA07 /* AppBlockViewModel.swift in Sources */,
 				317C11352C3EF7C700C5E7A5 /* StudyTimeView.swift in Sources */,
 				6833B2152C345467009EA63D /* ObjectManager.swift in Sources */,
 				683B453D2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift in Sources */,
@@ -621,6 +713,7 @@
 				317C11372C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift in Sources */,
 				688C306D2C3EDB2000E11EA7 /* FocusSessionSettings+Picker.swift in Sources */,
 				317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */,
+				CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */,
 				6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */,
 				CE42E2F22C2F429C00A29B2D /* FocusSessionSettingsView.swift in Sources */,
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
@@ -631,8 +724,8 @@
 				302E069B2C3F147300FAD574 /* TaskView.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
 				6874A25E2C3F71B200CAC9E4 /* ScheduleViewController.swift in Sources */,
+				CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
-				CE30102E2C35C208007BCA07 /* AppBlockView.swift in Sources */,
 				68825BD92C2F48FD00272451 /* ThemePageCoordinator.swift in Sources */,
 				6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
@@ -666,6 +759,7 @@
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
 				68AA61A92C3C26220053AD33 /* FocusSessionSettings+Popover.swift in Sources */,
 				6881123E2C33388A003012D0 /* ShowingTestPage.swift in Sources */,
+				CE3B7D332C4591CE00EE5070 /* BlockAppsViewModel.swift in Sources */,
 				30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */,
 				68825BD32C2F370B00272451 /* Box.swift in Sources */,
 				68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */,
@@ -693,6 +787,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CE3B7D342C45922A00EE5070 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE3B7D492C45931500EE5070 /* BlockAppsViewModel.swift in Sources */,
+				CE3B7D482C45931000EE5070 /* MyMonitor.swift in Sources */,
+				CE3B7D3E2C45922A00EE5070 /* DeviceActivityMonitorExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -700,6 +804,11 @@
 			isa = PBXTargetDependency;
 			target = 683B45342C1B6F3A00663912 /* Education */;
 			targetProxy = 684BF8852C346E9A005E63BE /* PBXContainerItemProxy */;
+		};
+		CE3B7D422C45922A00EE5070 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE3B7D372C45922A00EE5070 /* Monitor */;
+			targetProxy = CE3B7D412C45922A00EE5070 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -837,12 +946,14 @@
 		683B454A2C1B6F3B00663912 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Education/Education.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Education/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -854,8 +965,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.Education;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -865,12 +977,13 @@
 		683B454B2C1B6F3B00663912 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Education/Education.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = D95QWWTUDS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Education/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -882,7 +995,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.Education;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -931,6 +1044,62 @@
 			};
 			name = Release;
 		};
+		CE3B7D452C45922A00EE5070 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Monitor/Monitor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D95QWWTUDS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Monitor/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Monitor;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = Monitor.DeviceActivityMonitorExtension;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.Education.Monitor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CE3B7D462C45922A00EE5070 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Monitor/Monitor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D95QWWTUDS;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Monitor/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Monitor;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = Monitor.DeviceActivityMonitorExtension;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.Education.Monitor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -957,6 +1126,15 @@
 			buildConfigurations = (
 				684BF8872C346E9A005E63BE /* Debug */,
 				684BF8882C346E9A005E63BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE3B7D442C45922A00EE5070 /* Build configuration list for PBXNativeTarget "Monitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE3B7D452C45922A00EE5070 /* Debug */,
+				CE3B7D462C45922A00EE5070 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -94,6 +94,7 @@ class FocusSessionView: UIView {
     
     @objc private func didTapFinishButton(_ sender: UIButton) {
         self.delegate?.saveFocusSession()
+        self.delegate?.unblockApps()
     }
     
     func startAnimation(timerDuration: Double, timerString: String) {
