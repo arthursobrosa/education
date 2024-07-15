@@ -9,17 +9,17 @@ import Charts
 
 struct StudyTimeChartView: View {
     
-    @StateObject var viewModel: StudyTimeChartViewModel = StudyTimeChartViewModel()
+    @StateObject var viewModel: StudyTimeViewModel = StudyTimeViewModel()
     
     var body: some View {
         VStack {
             Picker("Date Range", selection: $viewModel.selectedDateRange) {
-                            Text("Última semana").tag(DateRange.lastWeek)
-                            Text("Último Mês").tag(DateRange.lastMonth)
-                            Text("Último Ano").tag(DateRange.lastYear)
-                        }
-                        .pickerStyle(SegmentedPickerStyle())
-                        .padding()
+                Text("Last week").tag(DateRange.lastWeek)
+                Text("Last month").tag(DateRange.lastMonth)
+                Text("Last year").tag(DateRange.lastYear)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
             
             Chart(viewModel.aggregatedTimes) { session in
                 SectorMark(
@@ -39,9 +39,9 @@ struct StudyTimeChartView: View {
         .onAppear {
             viewModel.aggregateTimes()
         }
-        .onChange(of: viewModel.selectedDateRange) { _ in
-                    viewModel.aggregateTimes()
-                }
+        .onChange(of: viewModel.selectedDateRange) { _, _ in
+            viewModel.aggregateTimes()
+        }
         .padding()
     }
 }

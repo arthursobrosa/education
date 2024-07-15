@@ -9,7 +9,7 @@ import UIKit
 
 class StudyTimeViewController: UIViewController{
     // MARK: - Properties
-
+    
     private var subjects = [Subject]()
     private var viewModel: StudyTimeViewModel!
     private lazy var studyTimeView: StudyTimeView = {
@@ -48,6 +48,13 @@ class StudyTimeViewController: UIViewController{
             
             self.subjects = subjects
             self.studyTimeView.reloadTable()
+            
+        }
+        
+        self.viewModel.focusSessions.bind{[weak self] sessions in
+            guard let self = self else { return }
+            
+            self.studyTimeView.reloadTable()
         }
         
     }
@@ -56,6 +63,7 @@ class StudyTimeViewController: UIViewController{
         super.viewWillAppear(animated)
         
         self.viewModel.fetchSubjects()
+        self.viewModel.fetchFocusSessions()
     }
 }
 
@@ -99,7 +107,7 @@ extension StudyTimeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let _ = self.subjects[indexPath.row]
     }
-
+    
 }
 
 
