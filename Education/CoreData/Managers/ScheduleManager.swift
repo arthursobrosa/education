@@ -31,7 +31,7 @@ final class ScheduleManager: ObjectManager {
     func deleteSchedule(_ schedule: Schedule) {
         let objectID = schedule.objectID
         backgroundContext.performAndWait {
-            if let focusSessions = self.focusSessionManager.fetchFocusSessions(scheduleID: schedule.unwrappedID) {
+            if let focusSessions = self.focusSessionManager.fetchFocusSessions(subjectID: schedule.unwrappedID) {
                 focusSessions.forEach { focusSession in
                     self.focusSessionManager.deleteFocusSession(focusSession)
                 }
@@ -82,7 +82,7 @@ final class ScheduleManager: ObjectManager {
         if let subjectID = subjectID {
             fetchRequest.predicate = NSPredicate(format: "subjectID == %@", subjectID)
         } else if let dayOfTheWeek = dayOfTheWeek {
-            fetchRequest.predicate = NSPredicate(format: "dayOfTheWeek == %@", dayOfTheWeek)
+            fetchRequest.predicate = NSPredicate(format: "dayOfTheWeek == %d", dayOfTheWeek)
         } else {
             print("Found nil on arguments")
             return nil

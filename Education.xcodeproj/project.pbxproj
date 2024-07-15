@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		302E06992C3F143E00FAD574 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E06982C3F143E00FAD574 /* ScheduleView.swift */; };
+		302E069B2C3F147300FAD574 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E069A2C3F147300FAD574 /* TaskView.swift */; };
+		302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */; };
+		302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */; };
+		302E06AB2C45889700FAD574 /* StudyTimeChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E06AA2C45889700FAD574 /* StudyTimeChartViewModel.swift */; };
 		30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A32C2C885A00B7114F /* ThemeListViewController.swift */; };
 		30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A52C2C886600B7114F /* ThemeListView.swift */; };
 		30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */; };
@@ -17,18 +22,41 @@
 		310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A182C2F2694005339E8 /* TestPageViewController.swift */; };
 		310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1A2C2F26BE005339E8 /* TestPageView.swift */; };
 		310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */; };
+		317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11252C35BBBD00C5E7A5 /* TabBarController.swift */; };
+		317C11282C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11272C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift */; };
+		317C112A2C35C4A100C5E7A5 /* FocusSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11292C35C4A100C5E7A5 /* FocusSessionCoordinator.swift */; };
+		317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */; };
+		317C112E2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C112D2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift */; };
+		317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */; };
+		317C11332C3EF78200C5E7A5 /* StudyTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11322C3EF78200C5E7A5 /* StudyTimeViewModel.swift */; };
+		317C11352C3EF7C700C5E7A5 /* StudyTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11342C3EF7C700C5E7A5 /* StudyTimeView.swift */; };
+		317C11372C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11362C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift */; };
+		317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11382C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift */; };
 		31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */; };
 		682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCE2C2F342100272451 /* ThemeManager.swift */; };
 		682927512C30AE4000FE29AA /* (null) in Sources */ = {isa = PBXBuildFile; };
+		68333DD22C3F81590064BF87 /* ScheduleDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68333DD12C3F81590064BF87 /* ScheduleDetailsViewModel.swift */; };
+		68333DD82C3F95AD0064BF87 /* ShowingScheduleDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */; };
 		6833B2152C345467009EA63D /* ObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6833B2142C345467009EA63D /* ObjectManager.swift */; };
 		6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */; };
 		683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B45382C1B6F3A00663912 /* AppDelegate.swift */; };
 		683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453A2C1B6F3A00663912 /* SceneDelegate.swift */; };
-		683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453C2C1B6F3A00663912 /* ViewController.swift */; };
+		683B453D2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453C2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift */; };
 		683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		683B45452C1B6F3B00663912 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 683B45442C1B6F3B00663912 /* Base */; };
+		684BF88B2C346F1F005E63BE /* CoreDataTestStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF88A2C346F1F005E63BE /* CoreDataTestStack.swift */; };
+		684BF8912C346FE3005E63BE /* SubjectManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8902C346FE3005E63BE /* SubjectManagerTest.swift */; };
+		684BF8932C347856005E63BE /* ScheduleManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8922C347856005E63BE /* ScheduleManagerTest.swift */; };
+		684BF8952C348BF2005E63BE /* FocusSessionManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8942C348BF2005E63BE /* FocusSessionManagerTest.swift */; };
+		684BF8972C349074005E63BE /* ThemeManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8962C349074005E63BE /* ThemeManagerTest.swift */; };
+		684BF8992C34961C005E63BE /* TestManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8982C34961C005E63BE /* TestManagerTest.swift */; };
 		684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF962C2C871700A3F392 /* Coordinator.swift */; };
+		6874A25E2C3F71B200CAC9E4 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A25D2C3F71B200CAC9E4 /* ScheduleViewController.swift */; };
+		6874A2602C3F727200CAC9E4 /* ScheduleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */; };
+		6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */; };
+		6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */; };
 		6881123E2C33388A003012D0 /* ShowingTestPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881123D2C33388A003012D0 /* ShowingTestPage.swift */; };
+		6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881FA782C456101000FECAE /* FocusSessionViewController+Delegate.swift */; };
 		68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BC42C2F256E00272451 /* CoreDataStack.swift */; };
 		68825BC72C2F281400272451 /* SubjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BC62C2F281400272451 /* SubjectManager.swift */; };
 		68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCA2C2F2D3300272451 /* ScheduleManager.swift */; };
@@ -38,6 +66,12 @@
 		68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD42C2F37F100272451 /* ThemeListCoordinator.swift */; };
 		68825BD72C2F469D00272451 /* ShowingThemePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD62C2F469D00272451 /* ShowingThemePage.swift */; };
 		68825BD92C2F48FD00272451 /* ThemePageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BD82C2F48FD00272451 /* ThemePageCoordinator.swift */; };
+		6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6887D5B22C3859DF00F037F2 /* ButtonComponent.swift */; };
+		688C306D2C3EDB2000E11EA7 /* FocusSessionSettings+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C306C2C3EDB1F00E11EA7 /* FocusSessionSettings+Picker.swift */; };
+		68AA61A52C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A42C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift */; };
+		68AA61A72C3C25980053AD33 /* FocusSessionSettings+Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */; };
+		68AA61A92C3C26220053AD33 /* FocusSessionSettings+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */; };
+		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
 		68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */; };
 		68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */; };
 		68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
@@ -49,9 +83,29 @@
 		CE30102C2C35C1DF007BCA07 /* AppBlockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30102B2C35C1DF007BCA07 /* AppBlockViewModel.swift */; };
 		CE30102E2C35C208007BCA07 /* AppBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30102D2C35C208007BCA07 /* AppBlockView.swift */; };
 		CE42E2F22C2F429C00A29B2D /* TimerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */; };
+		68DE198A2C3DBAD800872751 /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE19892C3DBAD800872751 /* Popover.swift */; };
+		CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */; };
+		CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010042C3329F1007BCA07 /* FocusSessionView.swift */; };
+		CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */; };
+		CE42E2F22C2F429C00A29B2D /* FocusSessionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42E2F12C2F429C00A29B2D /* FocusSessionSettingsView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		684BF8852C346E9A005E63BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 683B452D2C1B6F3A00663912 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 683B45342C1B6F3A00663912;
+			remoteInfo = Education;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		302E06982C3F143E00FAD574 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
+		302E069A2C3F147300FAD574 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
+		302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeChartView.swift; sourceTree = "<group>"; };
+		302E06AA2C45889700FAD574 /* StudyTimeChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeChartViewModel.swift; sourceTree = "<group>"; };
 		30F216A32C2C885A00B7114F /* ThemeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListViewController.swift; sourceTree = "<group>"; };
 		30F216A52C2C886600B7114F /* ThemeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListView.swift; sourceTree = "<group>"; };
 		30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListViewModel.swift; sourceTree = "<group>"; };
@@ -62,23 +116,47 @@
 		310B8A182C2F2694005339E8 /* TestPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageViewController.swift; sourceTree = "<group>"; };
 		310B8A1A2C2F26BE005339E8 /* TestPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageView.swift; sourceTree = "<group>"; };
 		310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableViewCell.swift; sourceTree = "<group>"; };
+		317C11252C35BBBD00C5E7A5 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		317C11272C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsCoordinator.swift; sourceTree = "<group>"; };
+		317C11292C35C4A100C5E7A5 /* FocusSessionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionCoordinator.swift; sourceTree = "<group>"; };
+		317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTimer.swift; sourceTree = "<group>"; };
+		317C112D2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsViewModel.swift; sourceTree = "<group>"; };
+		317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeViewController.swift; sourceTree = "<group>"; };
+		317C11322C3EF78200C5E7A5 /* StudyTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeViewModel.swift; sourceTree = "<group>"; };
+		317C11342C3EF7C700C5E7A5 /* StudyTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeView.swift; sourceTree = "<group>"; };
+		317C11362C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeCoordinator.swift; sourceTree = "<group>"; };
+		317C11382C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectTimeTableViewCell.swift; sourceTree = "<group>"; };
 		31AA70A12C2C8632002367CA /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
+		68333DD12C3F81590064BF87 /* ScheduleDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsViewModel.swift; sourceTree = "<group>"; };
+		68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetails.swift; sourceTree = "<group>"; };
 		6833B2142C345467009EA63D /* ObjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
 		6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCodeProtocol.swift; sourceTree = "<group>"; };
 		683B45352C1B6F3A00663912 /* Education.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Education.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		683B45382C1B6F3A00663912 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		683B453A2C1B6F3A00663912 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		683B453C2C1B6F3A00663912 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		683B453C2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsViewController.swift; sourceTree = "<group>"; };
 		683B45412C1B6F3B00663912 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		683B45442C1B6F3B00663912 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		683B45462C1B6F3B00663912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		684BF8812C346E9A005E63BE /* EducationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EducationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		684BF88A2C346F1F005E63BE /* CoreDataTestStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestStack.swift; sourceTree = "<group>"; };
+		684BF8902C346FE3005E63BE /* SubjectManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectManagerTest.swift; sourceTree = "<group>"; };
+		684BF8922C347856005E63BE /* ScheduleManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManagerTest.swift; sourceTree = "<group>"; };
+		684BF8942C348BF2005E63BE /* FocusSessionManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionManagerTest.swift; sourceTree = "<group>"; };
+		684BF8962C349074005E63BE /* ThemeManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManagerTest.swift; sourceTree = "<group>"; };
+		684BF8982C34961C005E63BE /* TestManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestManagerTest.swift; sourceTree = "<group>"; };
 		684EDF962C2C871700A3F392 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subject+Extension.swift"; sourceTree = "<group>"; };
 		684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Extension.swift"; sourceTree = "<group>"; };
 		684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Schedule+Extension.swift"; sourceTree = "<group>"; };
 		684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSession+Extension.swift"; sourceTree = "<group>"; };
 		684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+Extension.swift"; sourceTree = "<group>"; };
+		6874A25D2C3F71B200CAC9E4 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCoordinator.swift; sourceTree = "<group>"; };
+		6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsViewController.swift; sourceTree = "<group>"; };
+		6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsView.swift; sourceTree = "<group>"; };
 		6881123D2C33388A003012D0 /* ShowingTestPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTestPage.swift; sourceTree = "<group>"; };
+		6881FA782C456101000FECAE /* FocusSessionViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionViewController+Delegate.swift"; sourceTree = "<group>"; };
 		68825BC42C2F256E00272451 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		68825BC62C2F281400272451 /* SubjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectManager.swift; sourceTree = "<group>"; };
 		68825BCA2C2F2D3300272451 /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
@@ -89,6 +167,12 @@
 		68825BD42C2F37F100272451 /* ThemeListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListCoordinator.swift; sourceTree = "<group>"; };
 		68825BD62C2F469D00272451 /* ShowingThemePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingThemePage.swift; sourceTree = "<group>"; };
 		68825BD82C2F48FD00272451 /* ThemePageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageCoordinator.swift; sourceTree = "<group>"; };
+		6887D5B22C3859DF00F037F2 /* ButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
+		688C306C2C3EDB1F00E11EA7 /* FocusSessionSettings+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Picker.swift"; sourceTree = "<group>"; };
+		68AA61A42C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+CellConfig.swift"; sourceTree = "<group>"; };
+		68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Toggle.swift"; sourceTree = "<group>"; };
+		68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Popover.swift"; sourceTree = "<group>"; };
+		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		CE3010042C3329F1007BCA07 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
@@ -96,6 +180,11 @@
 		CE30102B2C35C1DF007BCA07 /* AppBlockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBlockViewModel.swift; sourceTree = "<group>"; };
 		CE30102D2C35C208007BCA07 /* AppBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBlockView.swift; sourceTree = "<group>"; };
 		CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerPickerView.swift; sourceTree = "<group>"; };
+		68DE19892C3DBAD800872751 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
+		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
+		CE3010042C3329F1007BCA07 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
+		CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewController.swift; sourceTree = "<group>"; };
+		CE42E2F12C2F429C00A29B2D /* FocusSessionSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,9 +195,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		684BF87E2C346E9A005E63BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		302E06972C3F142600FAD574 /* ScheduleView */ = {
+			isa = PBXGroup;
+			children = (
+				6874A2632C3F78BD00CAC9E4 /* ScheduleList */,
+				6874A2642C3F78D400CAC9E4 /* ScheduleDetails */,
+			);
+			path = ScheduleView;
+			sourceTree = "<group>";
+		};
+		302E06A72C45882D00FAD574 /* StudyTimeChart */ = {
+			isa = PBXGroup;
+			children = (
+				302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */,
+				302E06AA2C45889700FAD574 /* StudyTimeChartViewModel.swift */,
+			);
+			path = StudyTimeChart;
+			sourceTree = "<group>";
+		};
 		30F216A12C2C883900B7114F /* Themes */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,11 +273,25 @@
 			path = TestPage;
 			sourceTree = "<group>";
 		};
+		317C112F2C3EF70500C5E7A5 /* StudyTime */ = {
+			isa = PBXGroup;
+			children = (
+				302E06A72C45882D00FAD574 /* StudyTimeChart */,
+				317C11362C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift */,
+				317C11322C3EF78200C5E7A5 /* StudyTimeViewModel.swift */,
+				317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */,
+				317C11342C3EF7C700C5E7A5 /* StudyTimeView.swift */,
+				317C11382C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift */,
+			);
+			path = StudyTime;
+			sourceTree = "<group>";
+		};
 		6833B2162C345670009EA63D /* App */ = {
 			isa = PBXGroup;
 			children = (
 				683B45382C1B6F3A00663912 /* AppDelegate.swift */,
 				683B453A2C1B6F3A00663912 /* SceneDelegate.swift */,
+				317C11252C35BBBD00C5E7A5 /* TabBarController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -195,6 +323,9 @@
 				684EDF962C2C871700A3F392 /* Coordinator.swift */,
 				68825BD62C2F469D00272451 /* ShowingThemePage.swift */,
 				6881123D2C33388A003012D0 /* ShowingTestPage.swift */,
+				317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */,
+				68BBC96C2C35E13D00D82350 /* Dismissing.swift */,
+				68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -208,22 +339,20 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		6833B21D2C345700009EA63D /* Timer */ = {
+		6833B21D2C345700009EA63D /* FocusSession */ = {
 			isa = PBXGroup;
 			children = (
-				683B453C2C1B6F3A00663912 /* ViewController.swift */,
-				CE42E2F12C2F429C00A29B2D /* TimerPickerView.swift */,
-				CE3010042C3329F1007BCA07 /* TimerView.swift */,
-				CE128FBA2C2C886B003C0D4A /* TimerViewModel.swift */,
-				CE3010062C332A33007BCA07 /* TimerViewController.swift */,
+				6887D5B52C38699A00F037F2 /* Settings */,
+				6887D5B62C3869A700F037F2 /* Session */,
 			);
-			path = Timer;
+			path = FocusSession;
 			sourceTree = "<group>";
 		};
 		683B452C2C1B6F3A00663912 = {
 			isa = PBXGroup;
 			children = (
 				683B45372C1B6F3A00663912 /* Education */,
+				684BF8822C346E9A005E63BE /* EducationTests */,
 				683B45362C1B6F3A00663912 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -232,6 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				683B45352C1B6F3A00663912 /* Education.app */,
+				684BF8812C346E9A005E63BE /* EducationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -244,9 +374,12 @@
 				6833B21A2C3456C9009EA63D /* Utils */,
 				684EDFA62C2CAA7B00A3F392 /* CoreData */,
 				6833B2192C3456B9009EA63D /* Coordinator */,
-				6833B2172C34567E009EA63D /* Tests */,
 				30F216A12C2C883900B7114F /* Themes */,
-				6833B21D2C345700009EA63D /* Timer */,
+				6833B21D2C345700009EA63D /* FocusSession */,
+				317C112F2C3EF70500C5E7A5 /* StudyTime */,
+				302E06972C3F142600FAD574 /* ScheduleView */,
+				6833B2172C34567E009EA63D /* Tests */,
+				6887D5B42C38697400F037F2 /* Components */,
 				683B45412C1B6F3B00663912 /* Assets.xcassets */,
 				683B45432C1B6F3B00663912 /* LaunchScreen.storyboard */,
 				683B45462C1B6F3B00663912 /* Info.plist */,
@@ -254,6 +387,35 @@
 				CE30102D2C35C208007BCA07 /* AppBlockView.swift */,
 			);
 			path = Education;
+			sourceTree = "<group>";
+		};
+		684BF8822C346E9A005E63BE /* EducationTests */ = {
+			isa = PBXGroup;
+			children = (
+				684BF88C2C346F51005E63BE /* CoreData */,
+			);
+			path = EducationTests;
+			sourceTree = "<group>";
+		};
+		684BF88C2C346F51005E63BE /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				684BF88D2C346F61005E63BE /* Managers */,
+				684BF88A2C346F1F005E63BE /* CoreDataTestStack.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		684BF88D2C346F61005E63BE /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				684BF8902C346FE3005E63BE /* SubjectManagerTest.swift */,
+				684BF8922C347856005E63BE /* ScheduleManagerTest.swift */,
+				684BF8942C348BF2005E63BE /* FocusSessionManagerTest.swift */,
+				684BF8962C349074005E63BE /* ThemeManagerTest.swift */,
+				684BF8982C34961C005E63BE /* TestManagerTest.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		684EDFA62C2CAA7B00A3F392 /* CoreData */ = {
@@ -279,6 +441,72 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		6874A2632C3F78BD00CAC9E4 /* ScheduleList */ = {
+			isa = PBXGroup;
+			children = (
+				6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */,
+				302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */,
+				6874A25D2C3F71B200CAC9E4 /* ScheduleViewController.swift */,
+				302E06982C3F143E00FAD574 /* ScheduleView.swift */,
+				302E069A2C3F147300FAD574 /* TaskView.swift */,
+			);
+			path = ScheduleList;
+			sourceTree = "<group>";
+		};
+		6874A2642C3F78D400CAC9E4 /* ScheduleDetails */ = {
+			isa = PBXGroup;
+			children = (
+				68333DD12C3F81590064BF87 /* ScheduleDetailsViewModel.swift */,
+				6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */,
+				6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */,
+			);
+			path = ScheduleDetails;
+			sourceTree = "<group>";
+		};
+		6887D5B42C38697400F037F2 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6887D5B22C3859DF00F037F2 /* ButtonComponent.swift */,
+				68DE19892C3DBAD800872751 /* Popover.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		6887D5B52C38699A00F037F2 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				317C11272C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift */,
+				317C112D2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift */,
+				683B453C2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift */,
+				CE42E2F12C2F429C00A29B2D /* FocusSessionSettingsView.swift */,
+				68AA61AA2C3C268C0053AD33 /* Extensions */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		6887D5B62C3869A700F037F2 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				317C11292C35C4A100C5E7A5 /* FocusSessionCoordinator.swift */,
+				CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */,
+				CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */,
+				6881FA782C456101000FECAE /* FocusSessionViewController+Delegate.swift */,
+				CE3010042C3329F1007BCA07 /* FocusSessionView.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		68AA61AA2C3C268C0053AD33 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				688C306C2C3EDB1F00E11EA7 /* FocusSessionSettings+Picker.swift */,
+				68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */,
+				68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */,
+				68AA61A42C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -299,6 +527,24 @@
 			productReference = 683B45352C1B6F3A00663912 /* Education.app */;
 			productType = "com.apple.product-type.application";
 		};
+		684BF8802C346E9A005E63BE /* EducationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 684BF8892C346E9A005E63BE /* Build configuration list for PBXNativeTarget "EducationTests" */;
+			buildPhases = (
+				684BF87D2C346E9A005E63BE /* Sources */,
+				684BF87E2C346E9A005E63BE /* Frameworks */,
+				684BF87F2C346E9A005E63BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				684BF8862C346E9A005E63BE /* PBXTargetDependency */,
+			);
+			name = EducationTests;
+			productName = EducationTests;
+			productReference = 684BF8812C346E9A005E63BE /* EducationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -311,6 +557,11 @@
 				TargetAttributes = {
 					683B45342C1B6F3A00663912 = {
 						CreatedOnToolsVersion = 15.4;
+					};
+					684BF8802C346E9A005E63BE = {
+						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1540;
+						TestTargetID = 683B45342C1B6F3A00663912;
 					};
 				};
 			};
@@ -328,6 +579,7 @@
 			projectRoot = "";
 			targets = (
 				683B45342C1B6F3A00663912 /* Education */,
+				684BF8802C346E9A005E63BE /* EducationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -342,6 +594,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		684BF87F2C346E9A005E63BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -351,48 +610,98 @@
 			files = (
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
 				CE30102C2C35C1DF007BCA07 /* AppBlockViewModel.swift in Sources */,
+				317C11352C3EF7C700C5E7A5 /* StudyTimeView.swift in Sources */,
 				6833B2152C345467009EA63D /* ObjectManager.swift in Sources */,
-				683B453D2C1B6F3A00663912 /* ViewController.swift in Sources */,
+				683B453D2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift in Sources */,
 				68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */,
+				68AA61A52C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
-				CE42E2F22C2F429C00A29B2D /* TimerPickerView.swift in Sources */,
+				317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */,
+				68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */,
+				317C11372C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift in Sources */,
+				688C306D2C3EDB2000E11EA7 /* FocusSessionSettings+Picker.swift in Sources */,
+				317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */,
+				6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */,
+				CE42E2F22C2F429C00A29B2D /* FocusSessionSettingsView.swift in Sources */,
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
+				317C112A2C35C4A100C5E7A5 /* FocusSessionCoordinator.swift in Sources */,
+				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
+				302E069B2C3F147300FAD574 /* TaskView.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
+				6874A25E2C3F71B200CAC9E4 /* ScheduleViewController.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
 				CE30102E2C35C208007BCA07 /* AppBlockView.swift in Sources */,
 				68825BD92C2F48FD00272451 /* ThemePageCoordinator.swift in Sources */,
+				6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
+				6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
 				68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */,
 				30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */,
-				CE3010072C332A33007BCA07 /* TimerViewController.swift in Sources */,
-				CE3010052C3329F1007BCA07 /* TimerView.swift in Sources */,
-				CE128FBB2C2C886B003C0D4A /* TimerViewModel.swift in Sources */,
+				CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */,
+				CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */,
+				6874A2602C3F727200CAC9E4 /* ScheduleCoordinator.swift in Sources */,
+				CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */,
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
 				682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */,
+				302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */,
+				317C112E2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift in Sources */,
 				30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */,
+				68333DD82C3F95AD0064BF87 /* ShowingScheduleDetails.swift in Sources */,
+				68333DD22C3F81590064BF87 /* ScheduleDetailsViewModel.swift in Sources */,
+				302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */,
 				30F216A62C2C886600B7114F /* ThemeListView.swift in Sources */,
+				317C11332C3EF78200C5E7A5 /* StudyTimeViewModel.swift in Sources */,
 				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
 				68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */,
 				68825BD72C2F469D00272451 /* ShowingThemePage.swift in Sources */,
+				317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */,
+				302E06992C3F143E00FAD574 /* ScheduleView.swift in Sources */,
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
+				317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */,
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
+				68AA61A92C3C26220053AD33 /* FocusSessionSettings+Popover.swift in Sources */,
 				6881123E2C33388A003012D0 /* ShowingTestPage.swift in Sources */,
 				30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */,
 				68825BD32C2F370B00272451 /* Box.swift in Sources */,
 				68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */,
+				6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */,
+				68AA61A72C3C25980053AD33 /* FocusSessionSettings+Toggle.swift in Sources */,
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
+				317C11282C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift in Sources */,
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
 				310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */,
+				302E06AB2C45889700FAD574 /* StudyTimeChartViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		684BF87D2C346E9A005E63BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				684BF8932C347856005E63BE /* ScheduleManagerTest.swift in Sources */,
+				684BF8992C34961C005E63BE /* TestManagerTest.swift in Sources */,
+				684BF8912C346FE3005E63BE /* SubjectManagerTest.swift in Sources */,
+				684BF88B2C346F1F005E63BE /* CoreDataTestStack.swift in Sources */,
+				684BF8972C349074005E63BE /* ThemeManagerTest.swift in Sources */,
+				684BF8952C348BF2005E63BE /* FocusSessionManagerTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		684BF8862C346E9A005E63BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 683B45342C1B6F3A00663912 /* Education */;
+			targetProxy = 684BF8852C346E9A005E63BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		683B45432C1B6F3B00663912 /* LaunchScreen.storyboard */ = {
@@ -533,7 +842,7 @@
 				CODE_SIGN_ENTITLEMENTS = Education/Education.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D95QWWTUDS;
+				DEVELOPMENT_TEAM = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Education/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -561,7 +870,7 @@
 				CODE_SIGN_ENTITLEMENTS = Education/Education.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D95QWWTUDS;
+				DEVELOPMENT_TEAM = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Education/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -578,6 +887,47 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		684BF8872C346E9A005E63BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N7QW85QF8V;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.EducationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Education.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Education";
+			};
+			name = Debug;
+		};
+		684BF8882C346E9A005E63BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N7QW85QF8V;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.EducationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Education.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Education";
 			};
 			name = Release;
 		};
@@ -598,6 +948,15 @@
 			buildConfigurations = (
 				683B454A2C1B6F3B00663912 /* Debug */,
 				683B454B2C1B6F3B00663912 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		684BF8892C346E9A005E63BE /* Build configuration list for PBXNativeTarget "EducationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				684BF8872C346E9A005E63BE /* Debug */,
+				684BF8882C346E9A005E63BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

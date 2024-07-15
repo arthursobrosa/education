@@ -16,7 +16,7 @@ class ThemeListViewModel {
     
     var themes = Box([Theme]())
     
-    func addNewItem(name: String) {
+    func addTheme(name: String) {
         self.themeManager.createTheme(name: name)
         self.fetchThemes()
     }

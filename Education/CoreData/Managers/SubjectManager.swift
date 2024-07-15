@@ -28,16 +28,20 @@ final class SubjectManager: ObjectManager {
     func deleteSubject(_ subject: Subject) {
         let objectID = subject.objectID
         backgroundContext.performAndWait {
-            if let schedules = self.scheduleManager.fetchSchedules(subjectID: subject.unwrappedID) {
-                schedules.forEach { schedule in
-                    self.scheduleManager.deleteSchedule(schedule)
-                }
+            guard let schedules = self.scheduleManager.fetchSchedules(subjectID: subject.unwrappedID) else { return }
+            
+            schedules.forEach { schedule in
+                self.scheduleManager.deleteSchedule(schedule)
             }
             
-            if let subjectInContext = try? backgroundContext.existingObject(with: objectID) {
+            do {
+                let subjectInContext = try backgroundContext.existingObject(with: objectID)
                 backgroundContext.delete(subjectInContext)
+                
                 try? backgroundContext.save()
                 CoreDataStack.shared.saveMainContext()
+            } catch let error {
+                print("Failed to get object \(error)")
             }
         }
     }
@@ -47,6 +51,7 @@ final class SubjectManager: ObjectManager {
         backgroundContext.performAndWait {
             do {
                 try backgroundContext.save()
+                CoreDataStack.shared.saveMainContext()
             } catch let error {
                 print("Failed to update \(error)")
             }
@@ -54,10 +59,19 @@ final class SubjectManager: ObjectManager {
     }
     
     // MARK: - Fetch
-    func fetchSubject(withName name: String) -> Subject? {
+    func fetchSubject(withID id: String? = nil, withName name: String? = nil) -> Subject? {
         let fetchRequest = NSFetchRequest<Subject>(entityName: "Subject")
+        
+        if let id = id {
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id)
+        } else if let name = name {
+            fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        } else {
+            print("Found nil on arguments")
+            return nil
+        }
+        
         fetchRequest.fetchLimit = 1
-        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
         
         var subject: Subject?
         

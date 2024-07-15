@@ -17,10 +17,11 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigatio
     
     func start() {
         self.navigationController.delegate = self
+        self.navigationController.navigationBar.prefersLargeTitles = true
         
         let viewModel = ThemeListViewModel()
         let vc = ThemeListViewController(viewModel: viewModel)
-        vc.title = "Theme List"
+        vc.title = "Themes"
         vc.coordinator = self
         self.navigationController.pushViewController(vc, animated: false)
     }

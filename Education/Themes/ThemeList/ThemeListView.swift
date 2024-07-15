@@ -12,18 +12,14 @@ class ThemeListView: UIView {
     
     // MARK: - UI Components
     lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = .systemBackground
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
     
-    lazy var addThemeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add Item", for: .normal)
-        return button
-    }()
+    let addThemeButton = ButtonComponent(frame: .zero, title: "Add New Theme")
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -56,15 +52,18 @@ extension ThemeListView: ViewCodeProtocol {
         addSubview(tableView)
         addSubview(addThemeButton)
         
+        let padding = 20.0
+        
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor/*, constant: padding*/),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -20),
+            tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -padding),
             
-            addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            addThemeButton.heightAnchor.constraint(equalTo: addThemeButton.widthAnchor, multiplier: 0.16)
         ])
     }
 }

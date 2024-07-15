@@ -10,13 +10,13 @@ import CoreData
 
 final class FocusSessionManager: ObjectManager {    
     // MARK: - Create
-    func createFocusSession(date: Date, totalTime: Int, scheduleID: String? = nil) {
+    func createFocusSession(date: Date, totalTime: Int, subjectID: String? = nil) {
         backgroundContext.performAndWait {
             guard let focusSession = NSEntityDescription.insertNewObject(forEntityName: "FocusSession", into: backgroundContext) as? FocusSession else { return }
             
             focusSession.date = date
             focusSession.totalTime = Int16(totalTime)
-            focusSession.scheduleID = scheduleID
+            focusSession.subjectID = subjectID
             focusSession.id = UUID().uuidString
             
             try? backgroundContext.save()
@@ -48,13 +48,15 @@ final class FocusSessionManager: ObjectManager {
     }
     
     // MARK: - Fetch
-    func fetchFocusSessions(scheduleID: String?) -> [FocusSession]? {
+    func fetchFocusSessions(subjectID: String? = nil, allSessions: Bool = false) -> [FocusSession]? {
         let fetchRequest = NSFetchRequest<FocusSession>(entityName: "FocusSession")
         
-        if let scheduleID = scheduleID {
-            fetchRequest.predicate = NSPredicate(format: "scheduleID == %@", scheduleID)
-        } else {
-            fetchRequest.predicate = NSPredicate(format: "scheduleID == nil", #keyPath(FocusSession.scheduleID))
+        if !allSessions {
+            if let subjectID = subjectID {
+                fetchRequest.predicate = NSPredicate(format: "subjectID == %@", subjectID)
+            } else {
+                fetchRequest.predicate = NSPredicate(format: "subjectID == nil", #keyPath(FocusSession.subjectID))
+            }
         }
         
         var focusSessions: [FocusSession]?
