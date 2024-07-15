@@ -28,7 +28,7 @@ class ScheduleDetailsViewModel {
         
         self.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
         
-        var selectedWeekday: Int = 0
+        var selectedWeekday: Int = Calendar.current.component(.weekday, from: Date()) - 1
         var selectedSubjectName: String = String()
         var selectedStartTime: Date = Date()
         var selectedEndTime: Date = Date()

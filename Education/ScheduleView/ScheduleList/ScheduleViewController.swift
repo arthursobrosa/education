@@ -12,7 +12,7 @@ protocol ScheduleDelegate: AnyObject {
 }
 
 class ScheduleViewController: UIViewController {
-    weak var coordinator: ShowingScheduleDetails?
+    weak var coordinator: ScheduleCoordinator?
     private let viewModel: ScheduleViewModel
     
     private lazy var scheduleView: ScheduleView = {
@@ -44,6 +44,13 @@ class ScheduleViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [addScheduleButton]
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.viewModel.fetchSchedules(withDay: self.viewModel.selectedDay)
+        self.scheduleView.updateTasks()
+    }
+    
     @objc private func addScheduleButtonTapped() {
         self.coordinator?.showScheduleDetails(schedule: nil, title: nil)
     }
@@ -58,6 +65,14 @@ extension ScheduleViewController: ScheduleDelegate {
         }
         
         self.coordinator?.showScheduleDetails(schedule: schedule, title: subjectName)
+    }
+}
+
+extension ScheduleViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        self.viewModel.fetchSchedules(withDay: self.viewModel.selectedDay)
+        self.scheduleView.updateTasks()
+        return nil
     }
 }
 

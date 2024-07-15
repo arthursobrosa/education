@@ -115,7 +115,7 @@ class ScheduleView: UIView {
         updateDayViews()
     }
     
-    private func updateTasks() {
+    func updateTasks() {
         taskViews.forEach { $0.removeFromSuperview() }
         taskViews = []
         
