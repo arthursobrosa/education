@@ -13,13 +13,13 @@ class FocusSessionSettingsViewModel {
     // MARK: - Properties
     var selectedTime: TimeInterval = 0 // Variable to hold the selected time
     
-    var subjects = ["None"]
-    lazy var selectedSubject = self.subjects[0] {
+    var subjectsNames = [String]()
+    lazy var selectedSubjectName = self.subjectsNames[0] {
         didSet {
-            if selectedSubject == self.subjects[0] {
+            if selectedSubjectName == self.subjectsNames[0] {
                 self.subjectID = nil
             } else {
-                if let subject = self.subjectManager.fetchSubject(withName: selectedSubject) {
+                if let subject = self.subjectManager.fetchSubject(withName: selectedSubjectName) {
                     self.subjectID = subject.unwrappedID
                 }
             }
@@ -33,14 +33,18 @@ class FocusSessionSettingsViewModel {
     
     init(subjectManager: SubjectManager = SubjectManager()) {
         self.subjectManager = subjectManager
-        
-        if let subjects = self.subjectManager.fetchSubjects() {
-            let subjectsNames = subjects.map { $0.unwrappedName }
-            self.subjects.append(contentsOf: subjectsNames)
-        }
     }
     
     // MARK: - Methods
+    func fetchSubjects() {
+        if let subjects = self.subjectManager.fetchSubjects() {
+            let subjectsNames = subjects.map { $0.unwrappedName }
+            var allSubjectsNames = ["None"]
+            allSubjectsNames.append(contentsOf: subjectsNames)
+            self.subjectsNames = allSubjectsNames
+        }
+    }
+    
     func getTotalSeconds(fromDate date: Date) -> TimeInterval {
         let currentDate = Date()
         let calendar = Calendar.current

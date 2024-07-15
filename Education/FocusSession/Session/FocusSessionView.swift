@@ -11,23 +11,15 @@ class FocusSessionView: UIView {
     weak var delegate: FocusSessionDelegate?
     
     // MARK: - Properties
-    let viewModel: FocusSessionViewModel
-    
-    var onTimerFinished: (() -> Void)?
-    var onChangeTimerState: ((Bool) -> Void)?
-    
     private let timerContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    private lazy var timerLabel: UILabel = {
+    private let timerLabel: UILabel = {
         let lbl = UILabel()
         lbl.textAlignment = .center
-        
-        lbl.text = self.viewModel.getTimerString()
-        
         lbl.font = .systemFont(ofSize: 50)
         lbl.textColor = .label
         
@@ -39,7 +31,7 @@ class FocusSessionView: UIView {
     private let timerTrackLayer = CAShapeLayer()
     private let timerCircleFillLayer = CAShapeLayer()
     
-    private lazy var timerEndAnimation: CABasicAnimation = {
+    private let timerEndAnimation: CABasicAnimation = {
         let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
         strokeEnd.toValue = 1
         strokeEnd.fillMode = .forwards
@@ -47,7 +39,7 @@ class FocusSessionView: UIView {
         return strokeEnd
     }()
     
-    private lazy var timerResetAnimation: CABasicAnimation = {
+    private let timerResetAnimation: CABasicAnimation = {
         let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
         strokeEnd.toValue = 0
         strokeEnd.fillMode = .forwards
@@ -57,59 +49,31 @@ class FocusSessionView: UIView {
     
     private lazy var pauseResumeButton: UIButton = {
         let bttn = UIButton(configuration: .plain())
-        bttn.translatesAutoresizingMaskIntoConstraints = false
         bttn.tintColor = .label
         bttn.setImage(UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .semibold, scale: .default)), for: .normal)
-        bttn.addTarget(self.viewModel, action: #selector(self.viewModel.pauseResumeButtonTapped), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(pauseResumeButtonTapped), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
         return bttn
     }()
     
-    lazy var finishButton: ButtonComponent = {
+    private lazy var finishButton: ButtonComponent = {
         let bttn = ButtonComponent(frame: .zero, title: "Finish")
-        bttn.addTarget(self, action: #selector(self.didTapFinishButton(_:)), for: .touchUpInside)
+        bttn.isEnabled = false
+        bttn.alpha = 0.5
+        
+        bttn.addTarget(self, action: #selector(didTapFinishButton(_:)), for: .touchUpInside)
+        
         return bttn
     }()
     
     // MARK: - Initializer
-    init(frame: CGRect = .zero, viewModel: FocusSessionViewModel) {
-        self.viewModel = viewModel
-        
-        super.init(frame: frame)
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
         
         self.backgroundColor = .systemBackground
         self.setupUI()
-        
-        self.viewModel.timerSeconds.bind { [weak self] timerSeconds in
-            guard let self = self else { return }
-            
-            self.updateLabels()
-            
-            if timerSeconds == 0 {
-                self.hidePauseResumeButton()
-                
-                self.resetTimer()
-                
-                self.onTimerFinished?()
-            }
-        }
-        
-        self.viewModel.timerState.bind { [weak self] timerState in
-            guard let self = self else { return }
-            
-            guard let timerState = timerState else { return }
-            
-            switch timerState {
-                case .starting:
-                    self.startTimer()
-                    self.onChangeTimerState?(false)
-                case .reseting:
-                    self.resetTimer()
-                    self.redefineAnimation()
-                    self.onChangeTimerState?(true)
-            }
-            
-            self.changePauseResumeImage(to: timerState.imageName)
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -117,39 +81,47 @@ class FocusSessionView: UIView {
     }
     
     // MARK: - Auxiliar methods
-    private func startTimer() {
-        self.timerEndAnimation.duration = Double(self.viewModel.timerSeconds.value)
+    @objc private func pauseResumeButtonTapped() {
+        self.finishButton.isEnabled.toggle()
+        self.changeButtonAlpha()
+        self.delegate?.pauseResumeButtonTapped()
+    }
+    
+    private func changeButtonAlpha() {
+        let isEnabled = self.finishButton.isEnabled
+        self.finishButton.alpha = isEnabled ? 1 : 0.5
+    }
+    
+    @objc private func didTapFinishButton(_ sender: UIButton) {
+        self.delegate?.saveFocusSession()
+    }
+    
+    func startAnimation(timerDuration: Double, timerString: String) {
+        self.timerEndAnimation.duration = timerDuration
         
-        self.updateLabels()
-        
-        self.viewModel.startCountownTimer()
+        self.updateLabels(timerString: timerString)
         
         self.timerCircleFillLayer.add(self.timerEndAnimation, forKey: "timerEnd")
     }
     
-    private func resetTimer() {
-        self.viewModel.countdownTimer.invalidate()
+    func resetAnimations() {
         self.timerCircleFillLayer.removeAllAnimations()
     }
     
-    private func changePauseResumeImage(to imageName: String) {
+    func changePauseResumeImage(to imageName: String) {
         UIView.transition(with: self.pauseResumeButton, duration: 0.3, options: .transitionCrossDissolve) {
             self.pauseResumeButton.setImage(UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .semibold, scale: .default)), for: .normal)
         }
     }
     
-    private func hidePauseResumeButton() {
+    func hidePauseResumeButton() {
         self.pauseResumeButton.isEnabled = false
         self.timerCircleFillLayer.strokeColor = UIColor.clear.cgColor
     }
     
-    private func redefineAnimation() {
-        self.timerCircleFillLayer.strokeEnd = 1 - (CGFloat(self.viewModel.timerSeconds.value) / CGFloat(self.viewModel.totalSeconds))
-        self.timerEndAnimation.duration = Double(self.viewModel.timerSeconds.value) + 1
-    }
-    
-    @objc private func didTapFinishButton(_ sender: UIButton) {
-        self.delegate?.saveFocusSession()
+    func redefineAnimation(timerDuration: Double, strokeEnd: CGFloat) {
+        self.timerCircleFillLayer.strokeEnd = strokeEnd
+        self.timerEndAnimation.duration = timerDuration
     }
 }
 
@@ -165,7 +137,7 @@ extension FocusSessionView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            timerContainerView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
+            timerContainerView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding * 2),
             timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.385),
             timerContainerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: padding),
             timerContainerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
@@ -188,6 +160,13 @@ extension FocusSessionView: ViewCodeProtocol {
     func setupLayers() {
         let arcPath = UIBezierPath(arcCenter: CGPoint(x: self.timerLabel.frame.width / 2, y: self.timerLabel.frame.height / 2), radius: self.timerLabel.frame.width / 2, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: false)
         
+        self.timerTrackLayer.path = arcPath.cgPath
+        self.timerTrackLayer.strokeColor = UIColor.systemGray5.cgColor
+        self.timerTrackLayer.lineWidth = 20
+        self.timerTrackLayer.fillColor = UIColor.clear.cgColor
+        self.timerTrackLayer.lineCap = .round
+        self.timerTrackLayer.strokeEnd = 1
+        
         self.timerCircleFillLayer.path = arcPath.cgPath
         self.timerCircleFillLayer.strokeColor = UIColor.label.cgColor
         self.timerCircleFillLayer.lineWidth = 20
@@ -195,6 +174,7 @@ extension FocusSessionView: ViewCodeProtocol {
         self.timerCircleFillLayer.lineCap = .round
         self.timerCircleFillLayer.strokeEnd = 0
         
+        self.timerLabel.layer.addSublayer(timerTrackLayer)
         self.timerLabel.layer.addSublayer(timerCircleFillLayer)
         
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
@@ -202,12 +182,7 @@ extension FocusSessionView: ViewCodeProtocol {
         }
     }
     
-    private func updateLabels() {
-        let seconds = self.viewModel.timerSeconds.value % 60
-        let minutes = self.viewModel.timerSeconds.value / 60 % 60
-        let hours = self.viewModel.timerSeconds.value / 3600
-        
-        let timeString = "\(hours)h \(minutes)m \(seconds)s"
-        self.timerLabel.text = timeString
+    func updateLabels(timerString: String) {
+        self.timerLabel.text = timerString
     }
 }

@@ -25,7 +25,7 @@ extension FocusSessionSettingsViewController {
         
         popoverVC.view = subjectPicker
         
-        if let selectedIndex = self.viewModel.subjects.firstIndex(where: { $0 == self.viewModel.selectedSubject }) {
+        if let selectedIndex = self.viewModel.subjectsNames.firstIndex(where: { $0 == self.viewModel.selectedSubjectName }) {
             subjectPicker.selectRow(selectedIndex, inComponent: 0, animated: true)
         }
         

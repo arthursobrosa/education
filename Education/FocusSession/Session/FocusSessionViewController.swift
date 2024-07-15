@@ -7,18 +7,14 @@
 
 import UIKit
 
-protocol FocusSessionDelegate: AnyObject {
-    func saveFocusSession()
-}
-
 class FocusSessionViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
     weak var coordinator: Dismissing?
-    private let viewModel: FocusSessionViewModel
+    let viewModel: FocusSessionViewModel
     
     // MARK: - Properties
     private lazy var focusSessionView: FocusSessionView = {
-        let view = FocusSessionView(viewModel: self.viewModel)
+        let view = FocusSessionView()
         view.delegate = self
         return view
     }()
@@ -44,18 +40,44 @@ class FocusSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.focusSessionView.finishButton.isEnabled = false
+        self.updateViewLabels()
         
-        self.focusSessionView.onTimerFinished = { [weak self] in
+        self.viewModel.timerSeconds.bind { [weak self] timerSeconds in
             guard let self = self else { return }
             
-            self.showEndTimeAlert()
+            self.updateViewLabels()
+            
+            if timerSeconds <= 0 {
+                self.handleTimerEnd()
+            }
         }
         
-        self.focusSessionView.onChangeTimerState = { [weak self] isPaused in
+        self.viewModel.timerState.bind { [weak self] timerState in
             guard let self = self else { return }
             
-            self.focusSessionView.finishButton.isEnabled = isPaused
+            guard let timerState = timerState else { return }
+            
+            switch timerState {
+                case .starting:
+                    self.start()
+                case .reseting:
+                    self.restart()
+            }
+            
+            self.updateButton(imageName: timerState.imageName)
+        }
+        
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            sceneDelegate.timeInBackground.bind { [weak self] timeInBackground in
+                guard let self = self else { return }
+                
+                if timeInBackground > 0 && self.viewModel.timerState.value == .starting {
+                    self.viewModel.timerSeconds.value -= timeInBackground
+                    
+                    self.restart()
+                    self.start()
+                }
+            }
         }
     }
 
@@ -64,8 +86,8 @@ class FocusSessionViewController: UIViewController {
         
         DispatchQueue.main.async {
             if self.viewModel.timerState.value == nil {
-                self.viewModel.startFocusSession()
                 self.focusSessionView.setupLayers()
+                self.viewModel.timerState.value = .starting
             }
         }
     }
@@ -75,9 +97,11 @@ class FocusSessionViewController: UIViewController {
         
         self.viewModel.timerState.value = .reseting
     }
-    
-    // MARK: - Auxiliar Methods
-    private func showEndTimeAlert() {
+}
+
+// MARK: - Private Methods
+private extension FocusSessionViewController {
+    func showEndTimeAlert() {
         let alertController = UIAlertController(title: "Time's up!", message: "Your timer is finished", preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
@@ -91,11 +115,56 @@ class FocusSessionViewController: UIViewController {
 
         present(alertController, animated: true, completion: nil)
     }
-}
-
-extension FocusSessionViewController: FocusSessionDelegate {
-    func saveFocusSession() {
-        self.viewModel.saveFocusSession()
-        self.coordinator?.dismiss()
+    
+    func updateViewLabels() {
+        let timerString = self.viewModel.getTimerString()
+        
+        self.focusSessionView.updateLabels(timerString: timerString)
+    }
+    
+    func handleTimerEnd() {
+        self.focusSessionView.hidePauseResumeButton()
+        
+        self.resetTimer()
+        
+        self.focusSessionView.resetAnimations()
+        
+        self.showEndTimeAlert()
+    }
+    
+    func startAnimation() {
+        let timerDuration = Double(self.viewModel.timerSeconds.value)
+        let timerString = self.viewModel.getTimerString()
+        self.focusSessionView.startAnimation(timerDuration: timerDuration, timerString: timerString)
+    }
+    
+    func restartAnimation() {
+        let timerDuration = Double(self.viewModel.timerSeconds.value) + 1
+        let strokeEnd = self.viewModel.getStrokeEnd()
+        
+        self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
+    }
+    
+    func updateButton(imageName: String) {
+        self.focusSessionView.changePauseResumeImage(to: imageName)
+    }
+    
+    func startTimer() {
+        self.viewModel.startCountownTimer()
+    }
+    
+    func resetTimer() {
+        self.viewModel.countdownTimer.invalidate()
+        self.focusSessionView.resetAnimations()
+    }
+    
+    func start() {
+        self.startAnimation()
+        self.startTimer()
+    }
+    
+    func restart() {
+        self.resetTimer()
+        self.restartAnimation()
     }
 }

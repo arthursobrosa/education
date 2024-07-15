@@ -14,16 +14,16 @@ extension FocusSessionSettingsViewController: UIPickerViewDelegate, UIPickerView
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.viewModel.subjects.count
+        return self.viewModel.subjectsNames.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.viewModel.subjects[row]
+        return self.viewModel.subjectsNames[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.viewModel.selectedSubject = self.viewModel.subjects[row]
+        self.viewModel.selectedSubjectName = self.viewModel.subjectsNames[row]
         let cell = self.timerSettingsView.tableView.cellForRow(at: IndexPath(row: 0, section: 0))
-        cell?.textLabel?.text = self.viewModel.selectedSubject
+        cell?.textLabel?.text = self.viewModel.selectedSubjectName
     }
 }

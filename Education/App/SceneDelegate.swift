@@ -9,6 +9,8 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    var timeInBackground = Box(Int())
+    private var date = Date()
     
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -44,6 +46,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
+        let currentDate = Date.now
+        self.timeInBackground.value = Int(currentDate.timeIntervalSince1970 - self.date.timeIntervalSince1970)
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
@@ -51,5 +55,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
         CoreDataStack.shared.saveMainContext()
+        self.date = Date.now
     }
 }

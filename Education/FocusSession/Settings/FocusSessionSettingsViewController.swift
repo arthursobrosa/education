@@ -46,8 +46,10 @@ class FocusSessionSettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.viewModel.fetchSubjects()
+        
         self.viewModel.selectedTime = 0
-        self.viewModel.selectedSubject = self.viewModel.subjects[0]
+        self.viewModel.selectedSubjectName = self.viewModel.subjectsNames[0]
         self.reloadTable()
         
         guard let cell = self.timerSettingsView.tableView.cellForRow(at: IndexPath(row: 0, section: 1)),

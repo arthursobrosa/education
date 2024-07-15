@@ -9,6 +9,7 @@
 #### - ViewModel does bussiness logics only and is connected to ViewController via a binding Box;
 #### - ViewController is injected with a ViewModel and controls any delegate methods from the View;
 #### - View is used exclusively to create visual stuff;
+#### - View shouldn't have any references to a ViewModel;
 #### - View contains a delegate to connect itself to the ViewController;
 
 <p>

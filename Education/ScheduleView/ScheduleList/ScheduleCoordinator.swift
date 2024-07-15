@@ -31,7 +31,13 @@ class ScheduleCoordinator: Coordinator, ShowingScheduleDetails {
         vc.modalPresentationStyle = .pageSheet
         vc.title = "\(title ?? "New") Schedule"
         
-        self.navigationController.present(UINavigationController(rootViewController: vc), animated: true)
+        let nav = UINavigationController(rootViewController: vc)
+        
+        if let scheduleVC = self.navigationController.viewControllers.first as? ScheduleViewController {
+            nav.transitioningDelegate = scheduleVC
+        }
+        
+        self.navigationController.present(nav, animated: true)
     }
 }
 
