@@ -33,11 +33,13 @@ class ScheduleDetailsViewModel {
         var selectedStartTime: Date = Date()
         var selectedEndTime: Date = Date()
         
+        self.subjectsNames = [String]()
+        
         if let subjects = self.subjectManager.fetchSubjects() {
             self.subjectsNames = subjects.map({ $0.unwrappedName })
-            selectedSubjectName = self.subjectsNames[0]
-        } else {
-            self.subjectsNames = [String]()
+            if !subjectsNames.isEmpty {
+                selectedSubjectName = self.subjectsNames[0]
+            }
         }
         
         if let schedule = schedule {
@@ -67,6 +69,7 @@ class ScheduleDetailsViewModel {
     func addSubject(name: String) {
         self.subjectManager.createSubject(name: name)
         self.fetchSubjects()
+        self.selectedSubjectName = name
     }
     
     func saveSchedule() {

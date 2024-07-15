@@ -15,7 +15,7 @@ extension FocusSessionSettingsViewController {
         
         switch section {
             case 0:
-                return self.viewModel.selectedSubject
+                return self.viewModel.selectedSubjectName
             case 1:
                 if row == 0 {
                     return "Ends at"

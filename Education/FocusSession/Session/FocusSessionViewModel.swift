@@ -58,14 +58,24 @@ class FocusSessionViewModel {
     }
     
     func getTimerString() -> String {
-        let seconds = self.timerSeconds.value % 60
-        let minutes = self.timerSeconds.value / 60 % 60
-        let hours = self.timerSeconds.value / 3600
+        var seconds = Int()
+        var minutes = Int()
+        var hours = Int()
+        
+        if self.timerSeconds.value > 0 {
+            seconds = self.timerSeconds.value % 60
+            minutes = self.timerSeconds.value / 60 % 60
+            hours = self.timerSeconds.value / 3600
+        }
         
         return "\(hours)h \(minutes)m \(seconds)s"
     }
     
-    @objc func pauseResumeButtonTapped() {
+    func getStrokeEnd() -> CGFloat {
+        return 1 - (CGFloat(self.timerSeconds.value) / CGFloat(self.totalSeconds))
+    }
+    
+    func pauseResumeButtonTapped() {
         let newTimerState: TimerState = self.timerState.value == .starting ? .reseting : .starting
         self.timerState.value = newTimerState
     }
