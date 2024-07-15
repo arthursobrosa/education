@@ -8,6 +8,9 @@
 import UIKit
 
 class FocusSessionViewController: UIViewController {
+    // MARK: - BlockApps Model
+    var model = BlockAppsMonitor.shared
+    
     // MARK: - Coordinator and ViewModel
     weak var coordinator: Dismissing?
     let viewModel: FocusSessionViewModel
@@ -108,6 +111,7 @@ private extension FocusSessionViewController {
             guard let self = self else { return }
 
             self.viewModel.saveFocusSession()
+            self.unblockApps()
             self.coordinator?.dismiss()
         }
 
