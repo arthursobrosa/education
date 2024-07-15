@@ -34,6 +34,15 @@ struct FamilyActivityPickerView: View {
         VStack {
             Text("")
             .familyActivityPicker(isPresented: $isPresented, selection: $pickerDelegate.selectionToDiscourage)
+            .onAppear {
+                Task {
+                    do {
+                        try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+                    } catch {
+                        print("Failed to request authorization: \(error)")
+                    }
+                }
+            }
         }
     }
 }

@@ -111,6 +111,7 @@ private extension FocusSessionViewController {
             guard let self = self else { return }
 
             self.viewModel.saveFocusSession()
+            self.unblockApps()
             self.coordinator?.dismiss()
         }
 

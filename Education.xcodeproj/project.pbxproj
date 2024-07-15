@@ -953,7 +953,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Education/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -965,7 +965,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.Education;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -983,7 +983,7 @@
 				CODE_SIGN_ENTITLEMENTS = Education/Education.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D95QWWTUDS;
+				DEVELOPMENT_TEAM = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Education/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -995,7 +995,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.Education;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1050,7 +1050,7 @@
 				CODE_SIGN_ENTITLEMENTS = Monitor/Monitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D95QWWTUDS;
+				DEVELOPMENT_TEAM = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Monitor/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Monitor;
@@ -1063,7 +1063,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.Education.Monitor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.Monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1078,7 +1078,7 @@
 				CODE_SIGN_ENTITLEMENTS = Monitor/Monitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D95QWWTUDS;
+				DEVELOPMENT_TEAM = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Monitor/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Monitor;
@@ -1091,7 +1091,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucas.Education.Monitor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.Monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
