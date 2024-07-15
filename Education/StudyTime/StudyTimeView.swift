@@ -6,15 +6,15 @@
 //
 
 import UIKit
+import SwiftUI
 
 class StudyTimeView: UIView {
     
     // MARK: - UI Components
-    lazy var placeholder: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .lightGray
-        return view
+    private lazy var chartView: UIHostingController<StudyTimeChartView> = {
+        let hostingController = UIHostingController(rootView: StudyTimeChartView(viewModel: self.viewModel))
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        return hostingController
     }()
     
     lazy var studyTimeTableView: UITableView = {
@@ -28,7 +28,7 @@ class StudyTimeView: UIView {
     private var viewModel: StudyTimeViewModel
     
     // MARK: - Initialization
-        
+    
     init(viewModel: StudyTimeViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -54,18 +54,18 @@ class StudyTimeView: UIView {
 // MARK: - UI Setup
 extension StudyTimeView: ViewCodeProtocol {
     func setupUI() {
-        addSubview(placeholder)
+        addSubview(chartView.view)
         addSubview(studyTimeTableView)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            placeholder.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
-            placeholder.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            placeholder.widthAnchor.constraint(equalToConstant: 200),
-            placeholder.heightAnchor.constraint(equalToConstant: 200),
+            chartView.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
+            chartView.view.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            chartView.view.widthAnchor.constraint(equalToConstant: 300),
+            chartView.view.heightAnchor.constraint(equalToConstant: 300),
             
-            studyTimeTableView.topAnchor.constraint(equalTo: placeholder.bottomAnchor, constant: padding),
+            studyTimeTableView.topAnchor.constraint(equalTo: chartView.view.bottomAnchor, constant: padding),
             studyTimeTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             studyTimeTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             studyTimeTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
