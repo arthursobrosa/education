@@ -121,7 +121,8 @@ extension FocusSessionSettingsViewController {
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension FocusSessionSettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
+//        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -129,13 +130,14 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
             case 0:
                 return 1
             case 1:
-                return 2
-            case 2:
-                if self.viewModel.blockApps {
-                    return 2
-                }
-                
                 return 1
+//                return 2
+//            case 2:
+//                if self.viewModel.blockApps {
+//                    return 2
+//                }
+//                
+//                return 1
             default:
                 return 0
         }
@@ -159,8 +161,8 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
                 return "Subject" 
             case 1:
                 return "Timer"
-            case 2:
-                return "App Blocking"
+//            case 2:
+//                return "App Blocking"
             default:
                 return String()
         }
@@ -176,9 +178,9 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
             }
         }
         
-        if section == 2 && row == 1 {
-            self.createFamilyPicker()
-        }
+//        if section == 2 && row == 1 {
+//            self.createFamilyPicker()
+//        }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
