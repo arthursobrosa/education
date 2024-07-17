@@ -114,10 +114,6 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Themes"
-    }
-    
     private func createAccessoryView() -> UIView {
         let containerView = UIView()
         

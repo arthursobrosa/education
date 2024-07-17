@@ -10,17 +10,18 @@ import UIKit
 class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigationControllerDelegate {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    let themeListViewModel: ThemeListViewModel
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, themeListViewModel: ThemeListViewModel) {
         self.navigationController = navigationController
+        self.themeListViewModel = themeListViewModel
     }
     
     func start() {
         self.navigationController.delegate = self
         self.navigationController.navigationBar.prefersLargeTitles = true
         
-        let viewModel = ThemeListViewModel()
-        let vc = ThemeListViewController(viewModel: viewModel)
+        let vc = ThemeListViewController(viewModel: self.themeListViewModel)
         vc.title = "Themes"
         vc.coordinator = self
         self.navigationController.pushViewController(vc, animated: false)

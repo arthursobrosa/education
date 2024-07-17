@@ -6,28 +6,39 @@
 //
 
 import UIKit
+import Combine
+import Lottie
 
 class SplashView: UIView {
-    private let messageLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 30)
-        label.textColor = .label
-        label.numberOfLines = -1
-        label.lineBreakMode = .byWordWrapping
-        label.textAlignment = .center
-        label.text = "'Deus me guia, Zé Povinho me vigia...' \n- Lucas Cunha"
+    private let animationView: LottieAnimationView = {
+        let animation = LottieAnimationView(name: "loading")
+        animation.contentMode = .scaleAspectFit
+        animation.loopMode = .loop
         
-        label.translatesAutoresizingMaskIntoConstraints = false
+        animation.translatesAutoresizingMaskIntoConstraints = false
         
-        return label
+        return animation
+    }()
+    
+    private let sealImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "sealSplash")
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .systemBackground
+        self.backgroundColor = UIColor(named: "sealBackgroundColor")
         
         self.setupUI()
+        
+        self.animationView.play()
     }
     
     required init?(coder: NSCoder) {
@@ -37,15 +48,21 @@ class SplashView: UIView {
 
 extension SplashView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(messageLabel)
+        self.addSubview(sealImageView)
+        self.addSubview(animationView)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding)
+            sealImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            sealImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            sealImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6),
+            sealImageView.heightAnchor.constraint(equalTo: sealImageView.widthAnchor),
+            
+            animationView.topAnchor.constraint(equalTo: sealImageView.bottomAnchor, constant: padding * 3),
+            animationView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            animationView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)
         ])
     }
 }
