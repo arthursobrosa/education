@@ -8,8 +8,10 @@
 import UIKit
 
 class ScheduleDetailsView: UIView {
+    // MARK: - Delegate
     weak var delegate: ScheduleDetailsDelegate?
     
+    // MARK: - UI Components
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -18,11 +20,12 @@ class ScheduleDetailsView: UIView {
     }()
     
     private lazy var saveButton: ButtonComponent = {
-        let bttn = ButtonComponent(frame: .zero, title: "Save")
+        let bttn = ButtonComponent(title: "Save")
         bttn.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         return bttn
     }()
     
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -35,11 +38,13 @@ class ScheduleDetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Methods
     @objc private func didTapSaveButton() {
         self.delegate?.saveSchedule()
     }
 }
 
+// MARK: - UI Setup
 extension ScheduleDetailsView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(tableView)

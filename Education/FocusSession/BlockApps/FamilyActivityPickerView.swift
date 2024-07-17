@@ -10,7 +10,6 @@ import UIKit
 import FamilyControls
 
 class FamilyActivityPickerDelegate: ObservableObject {
-    
     @Published var selectionToDiscourage = FamilyActivitySelection() {
         willSet {
             do {
@@ -22,11 +21,9 @@ class FamilyActivityPickerDelegate: ObservableObject {
             }
         }
     }
-    
 }
 
 struct FamilyActivityPickerView: View {
-    
     @State var isPresented: Bool = true
     @StateObject var pickerDelegate: BlockAppsMonitor = BlockAppsMonitor()
 

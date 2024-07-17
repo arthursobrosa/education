@@ -5,7 +5,6 @@
 //  Created by Lucas Cunha on 10/07/24.
 //
 
-import Foundation
 import FamilyControls
 import ManagedSettingsUI
 import ManagedSettings
@@ -17,11 +16,9 @@ class BlockAppsMonitor: ObservableObject {
     let store = ManagedSettingsStore()
     let center = AuthorizationCenter.shared
     
-    init() {}
-    
     func requestAuthorization() {
         let isAuthorized = center.authorizationStatus.description
-            print(isAuthorized)
+        print(isAuthorized)
     }
     
     func apllyShields(){
@@ -53,9 +50,9 @@ class BlockAppsMonitor: ObservableObject {
     }
     
     func removeShields(){
-            store.shield.applications =  nil
-            store.shield.applicationCategories = nil
-            store.shield.webDomainCategories = nil
+        store.shield.applications =  nil
+        store.shield.applicationCategories = nil
+        store.shield.webDomainCategories = nil
     }
     
     var selectionToDiscourage = FamilyActivitySelection() {
@@ -90,20 +87,18 @@ class BlockAppsMonitor: ObservableObject {
             print("Error starting monitoring: \(error.localizedDescription)")
         }
         
-//        store.dateAndTime.requireAutomaticDateAndTime = true
-//        store.account.lockAccounts = true
-//        store.passcode.lockPasscode = true
-//        store.siri.denySiri = true
-//        store.appStore.denyInAppPurchases = true
-//        store.appStore.maximumRating = 5
-//        store.appStore.requirePasswordForPurchases = true
-//        store.media.denyExplicitContent = true
-//        store.gameCenter.denyMultiplayerGaming = true
-//        store.media.denyMusicService = false
+        //        store.dateAndTime.requireAutomaticDateAndTime = true
+        //        store.account.lockAccounts = true
+        //        store.passcode.lockPasscode = true
+        //        store.siri.denySiri = true
+        //        store.appStore.denyInAppPurchases = true
+        //        store.appStore.maximumRating = 5
+        //        store.appStore.requirePasswordForPurchases = true
+        //        store.media.denyExplicitContent = true
+        //        store.gameCenter.denyMultiplayerGaming = true
+        //        store.media.denyMusicService = false
     }
 }
-
-
 
 // Implement Threshold Function
 class MyMonitorExtension: DeviceActivityMonitor {
@@ -134,12 +129,12 @@ class MyShieldConfiguration: ShieldConfigurationDataSource {
 class MyShieldActionExtension: ShieldActionDelegate {
     override func handle(action: ShieldAction, for application: ManagedSettings.ApplicationToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
-        case .primaryButtonPressed:
-            completionHandler(.defer)
-        case .secondaryButtonPressed:
-            completionHandler(.close)
-        @unknown default:
-            fatalError()
+            case .primaryButtonPressed:
+                completionHandler(.defer)
+            case .secondaryButtonPressed:
+                completionHandler(.close)
+            @unknown default:
+                fatalError()
         }
     }
 }
@@ -151,18 +146,18 @@ extension DeviceActivityName {
 class Observer: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         switch response.notification.request.identifier {
-        case "start":
-            NotificationCenter.default.post(name: Notification.Name("start"), object: nil)
-        case "end":
-            NotificationCenter.default.post(name: Notification.Name("end"), object: nil)
-        default:
-            break
+            case "start":
+                NotificationCenter.default.post(name: Notification.Name("start"), object: nil)
+            case "end":
+                NotificationCenter.default.post(name: Notification.Name("end"), object: nil)
+            default:
+                break
         }
         completionHandler()
     }
 }
 
-func createBlockNotification(){
+func createBlockNotification() {
     print("Firing notifications:")
     
     let content = UNMutableNotificationContent()

@@ -20,9 +20,13 @@ class FocusSessionSettingsViewController: UIViewController {
     // MARK: - Properties
     lazy var timerSettingsView: FocusSessionSettingsView = {
         let view = FocusSessionSettingsView()
+        
+        view.delegate = self
+        
+        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.startButton.addTarget(self, action: #selector(startButtonClicked), for: .touchUpInside)
+        
         return view
     }()
     
@@ -62,7 +66,7 @@ class FocusSessionSettingsViewController: UIViewController {
         datePicker.date = Date.now
     }
     
-    // MARK: - Auxiliar Methods
+    // MARK: - Methods
     func createFamilyPicker() {
         // Create the SwiftUI view
         let swiftUIView = FamilyActivityPickerView()
@@ -94,7 +98,7 @@ class FocusSessionSettingsViewController: UIViewController {
         }
     }
     
-    private func showInvalidDateAlert() {
+    func showInvalidDateAlert() {
         let alertController = UIAlertController(title: "Invalid date", message: "You chose an invalid date", preferredStyle: .alert)
         
         let chooseAgainAction = UIAlertAction(title: "Choose again", style: .default)
@@ -107,17 +111,6 @@ class FocusSessionSettingsViewController: UIViewController {
 
 // MARK: - Button Actions
 extension FocusSessionSettingsViewController {
-    @objc private func startButtonClicked() {
-        if self.viewModel.selectedTime <= 0 {
-            self.showInvalidDateAlert()
-            return
-        }
-        
-        self.coordinator?.showTimer(totalTimeInSeconds: Int(self.viewModel.selectedTime), subjectID: self.viewModel.subjectID)
-        
-        self.model.apllyShields()
-    }
-    
     @objc func timerPickerChange(_ sender: UIDatePicker) {
         let totalTime = self.viewModel.getTotalSeconds(fromDate: sender.date)
         
@@ -125,7 +118,7 @@ extension FocusSessionSettingsViewController {
     }
 }
 
-// MARK: - UITableViewDataSource & UITableViewDelegate
+// MARK: - UITableViewDataSource and UITableViewDelegate
 extension FocusSessionSettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
@@ -149,7 +142,7 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         cell.textLabel?.text = self.createCellTitle(for: indexPath)
         cell.accessoryView = self.createAccessoryView(for: indexPath)
         
@@ -187,6 +180,7 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
             self.createFamilyPicker()
         }
         
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

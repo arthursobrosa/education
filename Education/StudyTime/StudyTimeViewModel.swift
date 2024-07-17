@@ -5,79 +5,80 @@
 //  Created by Leandro Silva on 10/07/24.
 //
 
-import UIKit
 import Foundation
 
-enum DateRange: Int {
-    case lastWeek
-    case lastMonth
-    case lastYear
+enum DateRange: String, CaseIterable {
+    case lastWeek = "Last week"
+    case lastMonth = "Last month"
+    case lastYear = "Last year"
 }
 
-struct SubjectTime : Identifiable{
+struct SubjectTime: Identifiable {
     var id = UUID()
     var subject: String
     let totalTime: Int
 }
 
 class StudyTimeViewModel : ObservableObject {
+    // MARK: - Subject and FocusSession Handlers
     private let subjectManager: SubjectManager
     private let focusSessionManager: FocusSessionManager
     
-    
+    // MARK: - Properties
+    var dateRanges: [DateRange] = DateRange.allCases
     @Published var selectedDateRange: DateRange = .lastWeek {
         didSet {
-            fetchFocusSessions()
+            self.fetchFocusSessions()
         }
     }
     @Published var aggregatedTimes: [SubjectTime] = []
     
-    init(subjectmanager: SubjectManager = SubjectManager(), focusSessionManager: FocusSessionManager = FocusSessionManager()) {
-        self.subjectManager = subjectmanager
-        self.focusSessionManager = focusSessionManager
-    }
-    
     var subjects = Box([Subject]())
     var focusSessions = Box([FocusSession]())
     
+    // MARK: - Initializer
+    init(subjectManager: SubjectManager = SubjectManager(), focusSessionManager: FocusSessionManager = FocusSessionManager()) {
+        self.subjectManager = subjectManager
+        self.focusSessionManager = focusSessionManager
+    }
+    
+    // MARK: - Methods
     func fetchFocusSessions() {
         if let focusSessions = self.focusSessionManager.fetchFocusSessions(allSessions: true) {
-            
             let calendar = Calendar.current
             let now = Date()
             var startDate: Date
             
             switch selectedDateRange {
-            case .lastWeek:
-                startDate = calendar.date(byAdding: .weekOfYear, value: -1, to: now) ?? now
-            case .lastMonth:
-                startDate = calendar.date(byAdding: .month, value: -1, to: now) ?? now
-            case .lastYear:
-                startDate = calendar.date(byAdding: .year, value: -1, to: now) ?? now
+                case .lastWeek:
+                    startDate = calendar.date(byAdding: .weekOfYear, value: -1, to: now) ?? now
+                case .lastMonth:
+                    startDate = calendar.date(byAdding: .month, value: -1, to: now) ?? now
+                case .lastYear:
+                    startDate = calendar.date(byAdding: .year, value: -1, to: now) ?? now
             }
             
             let filteredSessions = focusSessions.filter { $0.date! >= startDate }
-            
             
             self.focusSessions.value = filteredSessions
         }
     }
     
-    
-    func getTotalTimeOneSubject(_ subject: Subject?) -> Int {
+    func getTotalTime(forSubject subject: Subject?) -> Int {
+        let focusSessions = self.focusSessions.value.filter { $0.subjectID == subject?.unwrappedID }
         
+        return self.getTime(from: focusSessions)
+    }
+    
+    private func getTime(from focusSessions: [FocusSession]) -> Int {
         var totalTime: Int = 0
         
-        for session in focusSessions.value {
-            if session.unwrappedSubjectID == subject?.unwrappedID{
-                totalTime += session.unwrappedTotalTime
-            }
+        focusSessions.forEach { focusSession in
+            totalTime += focusSession.unwrappedTotalTime
         }
         
         return totalTime
     }
-    
-    
     
     func fetchSubjects() {
         if let subjects = self.subjectManager.fetchSubjects() {
@@ -90,9 +91,8 @@ class StudyTimeViewModel : ObservableObject {
         self.fetchSubjects()
     }
     
-    func aggregateTimes() {
-        aggregatedTimes = []
-        
+    func updateAggregatedTimes() {
+        self.aggregatedTimes = []
         
         var subjectTotals: [String: Int] = [:]
         
@@ -102,17 +102,15 @@ class StudyTimeViewModel : ObservableObject {
         
         let times = subjectTotals.map { SubjectTime(subject: $0.key, totalTime: $0.value) }
         
-        
-        for total in times {
-            aggregatedTimes.append(SubjectTime(subject: idToName(subjectId: total.subject)
-                                               , totalTime: total.totalTime))
-            
+        for time in times {
+            aggregatedTimes.append(SubjectTime(
+                subject: idToName(subjectId: time.subject),
+                totalTime: time.totalTime))
         }
-        
     }
     
-    func idToName(subjectId: String) -> String{
+    private func idToName(subjectId: String) -> String {
         let subject = self.subjectManager.fetchSubject(withID: subjectId)
-        return subject?.unwrappedName ?? "Teste"
+        return subject?.unwrappedName ?? "Other"
     }
 }

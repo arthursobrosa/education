@@ -59,7 +59,7 @@ class FocusSessionView: UIView {
     }()
     
     private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(frame: .zero, title: "Finish")
+        let bttn = ButtonComponent(title: "Finish")
         bttn.isEnabled = false
         bttn.alpha = 0.5
         

@@ -9,30 +9,41 @@ import UIKit
 import SwiftUI
 
 class StudyTimeView: UIView {
+    // MARK: - Delegate
+    weak var delegate: StudyTimeDelegate? {
+        didSet {
+            delegate?.setPicker(self.picker)
+        }
+    }
     
     // MARK: - UI Components
-    private lazy var chartView: UIHostingController<StudyTimeChartView> = {
-        let hostingController = UIHostingController(rootView: StudyTimeChartView(viewModel: self.viewModel))
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        return hostingController
+    private let picker: UISegmentedControl = {
+        let picker = UISegmentedControl()
+        
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        
+        return picker
     }()
     
-    lazy var studyTimeTableView: UITableView = {
+    var chartHostingController: UIHostingController<StudyTimeChartView>? {
+        didSet {
+            chartHostingController?.view.translatesAutoresizingMaskIntoConstraints = false
+            self.setupUI()
+        }
+    }
+    
+    let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .systemBackground
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SubjectTimeCell")
+        
         return tableView
     }()
     
-    private var viewModel: StudyTimeViewModel
-    
     // MARK: - Initialization
-    
-    init(viewModel: StudyTimeViewModel) {
-        self.viewModel = viewModel
+    override init(frame: CGRect) {
         super.init(frame: .zero)
-        setupUI()
         
         self.backgroundColor = .systemBackground
     }
@@ -40,36 +51,32 @@ class StudyTimeView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Reload Table
-    func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            self.studyTimeTableView.reloadData()
-        }
-    }
 }
 
 // MARK: - UI Setup
 extension StudyTimeView: ViewCodeProtocol {
     func setupUI() {
-        addSubview(chartView.view)
-        addSubview(studyTimeTableView)
+        guard let chartHostingController = self.chartHostingController else { return }
+        
+        self.addSubview(picker)
+        self.addSubview(chartHostingController.view)
+        self.addSubview(tableView)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            chartView.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
-            chartView.view.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            chartView.view.widthAnchor.constraint(equalToConstant: 300),
-            chartView.view.heightAnchor.constraint(equalToConstant: 300),
+            picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
+            picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            picker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
-            studyTimeTableView.topAnchor.constraint(equalTo: chartView.view.bottomAnchor, constant: padding),
-            studyTimeTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            studyTimeTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            studyTimeTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            chartHostingController.view.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
+            chartHostingController.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            chartHostingController.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            
+            tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding),
+            tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
         ])
-        
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 class FocusSessionSettingsViewModel {
+    // MARK: - Subjects Handler
     private let subjectManager: SubjectManager
     
     // MARK: - Properties
@@ -31,6 +32,7 @@ class FocusSessionSettingsViewModel {
     
     var subjectID: String? = nil
     
+    // MARK: - Initializer
     init(subjectManager: SubjectManager = SubjectManager()) {
         self.subjectManager = subjectManager
     }

@@ -8,16 +8,24 @@
 import UIKit
 
 class FocusSessionSettingsView: UIView {
-    // MARK: - Properties
+    // MARK: - Delegate
+    weak var delegate: FocusSessionSettingsDelegate?
+    
+    // MARK: - UI Components
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "defaultCell")
-        table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = .systemBackground
+        
+        table.translatesAutoresizingMaskIntoConstraints = false
+        
         return table
     }()
     
-    let startButton = ButtonComponent(frame: .zero, title: "Start")
+    private lazy var startButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: "Start")
+        bttn.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+        return bttn
+    }()
     
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -28,6 +36,11 @@ class FocusSessionSettingsView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    @objc private func startButtonTapped() {
+        self.delegate?.startButtonTapped()
     }
 }
 

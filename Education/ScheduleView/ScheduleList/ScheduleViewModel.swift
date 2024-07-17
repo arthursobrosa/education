@@ -8,9 +8,11 @@
 import Foundation
 
 class ScheduleViewModel {
+    // MARK: - Subject and Schedule Handlers
     private let subjectManager: SubjectManager
     private let scheduleManager: ScheduleManager
     
+    // MARK: - Properties
     var schedules = [Schedule]()
     
     var selectedDay: Int = Calendar.current.component(.weekday, from: Date()) - 1
@@ -21,23 +23,25 @@ class ScheduleViewModel {
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
     
+    // MARK: - Initializer
     init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager()) {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
     }
     
-    func fetchSchedules(withDay day: Int) {
-        if let schedules = self.scheduleManager.fetchSchedules(dayOfTheWeek: day) {
+    // MARK: - Methods
+    func fetchSchedules() {
+        if let schedules = self.scheduleManager.fetchSchedules(dayOfTheWeek: self.selectedDay) {
             self.schedules = schedules
         }
     }
     
-    func getSubjectName(fromSchedule schedule: Schedule) -> String {
-        if let subject = self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID) {
-            return subject.unwrappedName
-        }
-        
-        return String()
+    func removeSchedule(_ schedule: Schedule) {
+        self.scheduleManager.deleteSchedule(schedule)
+    }
+    
+    func getSubject(fromSchedule schedule: Schedule) -> Subject? {
+        return self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID)
     }
     
     func dayAbbreviation(_ date: Date) -> String {
@@ -52,4 +56,3 @@ class ScheduleViewModel {
         return formatter.string(from: date)
     }
 }
-

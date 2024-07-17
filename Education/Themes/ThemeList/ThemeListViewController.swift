@@ -5,28 +5,28 @@
 //  Created by Eduardo Dalencon on 26/06/24.
 //
 
-import Foundation
 import UIKit
 
 class ThemeListViewController: UIViewController {
+    // MARK: - Coordinator and ViewModel
+    weak var coordinator: ShowingThemePage?
+    private let viewModel: ThemeListViewModel
     
     // MARK: - Properties
-    
-    weak var coordinator: ShowingThemePage?
     private var themes = [Theme]()
-    private var viewModel: ThemeListViewModel!
     private lazy var themeListView: ThemeListView = {
         let themeView = ThemeListView()
         
+        themeView.delegate = self
+        
         themeView.tableView.delegate = self
         themeView.tableView.dataSource = self
-        themeView.addThemeButton.addTarget(self, action: #selector(addThemeButtonTapped), for: .touchUpInside)
+        themeView.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
         
         return themeView
     }()
     
     // MARK: - Initialization
-    
     init(viewModel: ThemeListViewModel) {
         self.viewModel = viewModel
         
@@ -37,7 +37,7 @@ class ThemeListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - View Lifecycle
+    // MARK: - Lifecycle
     override func loadView() {
         super.loadView()
         
@@ -51,7 +51,7 @@ class ThemeListViewController: UIViewController {
             guard let self = self else { return }
             
             self.themes = themes
-            self.themeListView.reloadTable()
+            self.reloadTable()
         }
     }
     
@@ -61,13 +61,16 @@ class ThemeListViewController: UIViewController {
         self.viewModel.fetchThemes()
     }
     
-    // MARK: - User Actions
-    
-    @objc private func addThemeButtonTapped() {
-        showAddThemeAlert()
+    // MARK: - Methods
+    private func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.themeListView.tableView.reloadData()
+        }
     }
     
-    private func showAddThemeAlert() {
+    func showAddThemeAlert() {
         let alertController = UIAlertController(title: "Add Theme", message: "Enter theme name:", preferredStyle: .alert)
         
         alertController.addTextField { textField in
@@ -91,10 +94,8 @@ class ThemeListViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
-
-extension ThemeListViewController: UITableViewDataSource {
-    
+// MARK: - UITableViewDataSource and UITableViewDelegate
+extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.themes.count
     }
@@ -102,14 +103,13 @@ extension ThemeListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let theme = self.themes[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         cell.textLabel?.text = theme.name
         cell.accessoryView = createAccessoryView()
         
         if self.traitCollection.userInterfaceStyle == .light {
             cell.backgroundColor = .systemGray5
         }
-        
         
         return cell
     }
@@ -159,15 +159,11 @@ extension ThemeListViewController: UITableViewDataSource {
             self.viewModel.removeTheme(theme: theme)
         }
     }
-
-}
-
-// MARK: - UITableViewDelegate
-
-extension ThemeListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let theme = self.themes[indexPath.row]
         self.coordinator?.showThemePage(theme: theme)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
