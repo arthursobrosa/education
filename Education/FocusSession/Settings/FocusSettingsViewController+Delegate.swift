@@ -19,7 +19,5 @@ extension FocusSessionSettingsViewController: FocusSessionSettingsDelegate {
         }
         
         self.coordinator?.showTimer(totalTimeInSeconds: Int(self.viewModel.selectedTime), subjectID: self.viewModel.subjectID)
-        
-        self.model.apllyShields()
     }
 }

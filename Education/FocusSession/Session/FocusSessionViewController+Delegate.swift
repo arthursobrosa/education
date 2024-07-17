@@ -10,7 +10,6 @@ import Foundation
 protocol FocusSessionDelegate: AnyObject {
     func pauseResumeButtonTapped()
     func saveFocusSession()
-    func unblockApps()
 }
 
 extension FocusSessionViewController: FocusSessionDelegate {
@@ -21,9 +20,5 @@ extension FocusSessionViewController: FocusSessionDelegate {
     func saveFocusSession() {
         self.viewModel.saveFocusSession()
         self.coordinator?.dismiss()
-    }
-    
-    func unblockApps() {
-        self.model.removeShields()
     }
 }

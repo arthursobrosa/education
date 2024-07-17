@@ -10,9 +10,6 @@ import FamilyControls
 import SwiftUI
 
 class FocusSessionSettingsViewController: UIViewController {
-    // MARK: - BlockApps Model
-    var model = BlockAppsMonitor.shared
-    
     // MARK: - Coordinator and ViewModel
     weak var coordinator: ShowingTimer?
     let viewModel: FocusSessionSettingsViewModel
@@ -64,30 +61,6 @@ class FocusSessionSettingsViewController: UIViewController {
               let datePicker = cell.accessoryView as? UIDatePicker else { return }
         
         datePicker.date = Date.now
-    }
-    
-    // MARK: - Methods
-    func createFamilyPicker() {
-        // Create the SwiftUI view
-        let swiftUIView = FamilyActivityPickerView()
-        
-        // Create the hosting controller with the SwiftUI view
-        let hostingController = UIHostingController(rootView: swiftUIView)
-        
-        let swiftuiView = hostingController.view!
-            swiftuiView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Add the hosting controller as a child view controller
-        addChild(hostingController)
-        hostingController.view.frame = view.bounds
-        view.addSubview(hostingController.view)
-        
-        NSLayoutConstraint.activate([
-            swiftuiView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            swiftuiView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-        
-        hostingController.didMove(toParent: self)
     }
     
     func reloadTable() {
