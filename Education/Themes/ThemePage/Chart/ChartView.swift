@@ -9,23 +9,14 @@ import SwiftUI
 import Charts
 
 struct ChartView: View {
+    // MARK: - ViewModel
+    @ObservedObject var viewModel: ThemePageViewModel
     
-    @StateObject var viewModel: ThemePageViewModel
-    
+    // MARK: - UI Components
     var body: some View {
-        VStack {
-            Picker("Entries", selection: $viewModel.selectedLimit) {
-                ForEach(viewModel.limits, id: \.self) { limit in
-                    Text("\(limit)").tag(limit)
-                }
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
-            Chart {
-                ForEach(Array(viewModel.limitedItems.enumerated()), id: \.offset) { index, result in
-                    result
-                }
+        Chart {
+            ForEach(Array(viewModel.limitedItems.enumerated()), id: \.offset) { index, result in
+                result
             }
         }
         .onAppear {

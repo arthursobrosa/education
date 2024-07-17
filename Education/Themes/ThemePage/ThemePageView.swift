@@ -5,37 +5,52 @@
 //  Created by Eduardo Dalencon on 27/06/24.
 //
 
-import Foundation
 import UIKit
 import SwiftUI
 
 class ThemePageView: UIView {
+    // MARK: - Delegate
+    weak var delegate: ThemePageDelegate? {
+        didSet {
+            delegate?.setLimitsPicker(self.picker)
+        }
+    }
     
     // MARK: - UI Components
-    private lazy var chartView: UIHostingController<ChartView> = {
-        let hostingController = UIHostingController(rootView: ChartView(viewModel: self.viewModel))
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        return hostingController
+    private let picker: UISegmentedControl = {
+        let picker = UISegmentedControl()
+        
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        
+        return picker
     }()
     
-    lazy var testsTableView: UITableView = {
+    var chartHostingController: UIHostingController<ChartView>? {
+        didSet {
+            chartHostingController?.view.translatesAutoresizingMaskIntoConstraints = false
+            self.setupUI()
+        }
+    }
+    
+    let testsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .systemBackground
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TestCell")
+        
         return tableView
     }()
     
-    let addTestButton = ButtonComponent(frame: .zero, title: "Add Test")
-    
-    private var viewModel: ThemePageViewModel
+    private lazy var addTestButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: "Add Test")
+        bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
+        
+        return bttn
+    }()
     
     // MARK: - Initialization
-        
-    init(viewModel: ThemePageViewModel) {
-        self.viewModel = viewModel
-        super.init(frame: .zero)
-        setupUI()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         self.backgroundColor = .systemBackground
     }
@@ -44,42 +59,43 @@ class ThemePageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Reload Table
-    func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            self.testsTableView.reloadData()
-        }
+    // MARK: - Methods
+    @objc private func addTestButtonTapped() {
+        self.delegate?.addTest()
     }
 }
 
 // MARK: - UI Setup
 extension ThemePageView: ViewCodeProtocol {
     func setupUI() {
-
-        addSubview(chartView.view)
-        addSubview(testsTableView)
-        addSubview(addTestButton)
+        guard let chartHostingController = self.chartHostingController else { return }
+        
+        self.addSubview(picker)
+        self.addSubview(chartHostingController.view)
+        self.addSubview(testsTableView)
+        self.addSubview(addTestButton)
         
         let padding = 20.0
             
         NSLayoutConstraint.activate([
-            chartView.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
-            chartView.view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            chartView.view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            chartView.view.heightAnchor.constraint(equalToConstant: 200),
+            picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
+            picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            picker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
-            testsTableView.topAnchor.constraint(equalTo: chartView.view.bottomAnchor, constant: padding),
-            testsTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            testsTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            chartHostingController.view.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
+            chartHostingController.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            chartHostingController.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            chartHostingController.view.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2),
+            
+            testsTableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding),
+            testsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            testsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             testsTableView.bottomAnchor.constraint(equalTo: addTestButton.topAnchor, constant: -padding),
             
-            addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            addTestButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            addTestButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            addTestButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
             addTestButton.heightAnchor.constraint(equalTo: addTestButton.widthAnchor, multiplier: 0.16)
         ])
     }
 }
-

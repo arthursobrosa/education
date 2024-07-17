@@ -7,22 +7,24 @@
 
 import UIKit
 
-protocol ScheduleDetailsDelegate: AnyObject {
-    func saveSchedule()
-}
-
 class ScheduleDetailsViewController: UIViewController {
-    private let viewModel: ScheduleDetailsViewModel
+    // MARK: - ViewModel
+    let viewModel: ScheduleDetailsViewModel
     
-    private lazy var scheduleDetailsView: ScheduleDetailsView = {
+    // MARK: - Properties
+    lazy var scheduleDetailsView: ScheduleDetailsView = {
         let view = ScheduleDetailsView()
+        
         view.delegate = self
+        
         view.tableView.delegate = self
         view.tableView.dataSource = self
         view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "defaultCell")
+        
         return view
     }()
     
+    // MARK: - Initializer
     init(viewModel: ScheduleDetailsViewModel = ScheduleDetailsViewModel()) {
         self.viewModel = viewModel
         
@@ -33,12 +35,14 @@ class ScheduleDetailsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func loadView() {
         super.loadView()
         
         self.view = self.scheduleDetailsView
     }
     
+    // MARK: - Methods
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -82,17 +86,11 @@ class ScheduleDetailsViewController: UIViewController {
         alertController.addAction(addAction)
         alertController.addAction(cancelAction)
         
-        present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
-extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
-    func saveSchedule() {
-        self.viewModel.saveSchedule()
-        self.dismiss(animated: true)
-    }
-}
-
+// MARK: - UITableViewDataSource and UITableViewDelegate
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
@@ -114,31 +112,14 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
-        
-        let section = indexPath.section
-        let row = indexPath.row
-        
-        if section == 0 {
-            cell.textLabel?.text = self.viewModel.subjectsNames.isEmpty ?  "Add Subject" : (row == 0 ? "Add Subject" : self.viewModel.selectedSubjectName)
-            let systemName = self.viewModel.subjectsNames.isEmpty ? "plus" : (row == 0 ? "plus" : "chevron.down")
-            cell.accessoryView = UIImageView(image: UIImage(systemName: systemName))
-        } else if section == 1 {
-            cell.textLabel?.text = self.viewModel.selectedDay
-            cell.accessoryView = UIImageView(image: UIImage(systemName: "chevron.down"))
-        } else if section == 2 {
-            cell.textLabel?.text = row == 0 ? "Start" : "End"
-            let datePicker = UIDatePicker()
-            datePicker.datePickerMode = .time
-            datePicker.date = row == 0 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
-            datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
-            datePicker.tag = row
-            cell.accessoryView = datePicker
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
+        cell.textLabel?.text = self.createCellTitle(for: indexPath)
+        cell.accessoryView = self.createAccessoryView(for: indexPath)
         
         if self.traitCollection.userInterfaceStyle == .light {
             cell.backgroundColor = .systemGray5
         }
+        
         return cell
     }
     
@@ -156,110 +137,30 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         let section = indexPath.section
         let row = indexPath.row
         
-        if section == 0 {
-            if self.viewModel.subjectsNames.isEmpty {
-                self.showAddSubjectAlert()
-            } else {
+        switch section {
+            case 0:
+                if self.viewModel.subjectsNames.isEmpty {
+                    self.showAddSubjectAlert()
+                    break
+                }
+                
                 if row == 0 {
                     self.showAddSubjectAlert()
-                } else {
-                    if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
-                        self.present(popover, animated: true)
-                    }
+                    break
                 }
-            }
-        } else if section == 1 {
-            if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
-                self.present(popover, animated: true)
-            }
-        }
-    }
-}
-
-extension ScheduleDetailsViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch pickerView.tag {
-            case 0:
-                return self.viewModel.subjectsNames.count
+                
+                if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
+                    self.present(popover, animated: true)
+                }
             case 1:
-                return self.viewModel.days.count
+                if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
+                    self.present(popover, animated: true)
+                }
             default:
                 break
         }
         
-        return 0
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch pickerView.tag {
-            case 0:
-                return self.viewModel.subjectsNames[row]
-            case 1:
-                return self.viewModel.days[row]
-            default:
-                break
-        }
-        
-        return String()
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let tableRow = pickerView.tag == 0 ? 1 : 0
-        let cell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: tableRow, section: pickerView.tag))
-        
-        switch pickerView.tag {
-            case 0:
-                self.viewModel.selectedSubjectName = self.viewModel.subjectsNames[row]
-                cell?.textLabel?.text = self.viewModel.selectedSubjectName
-            case 1:
-                self.viewModel.selectedDay = self.viewModel.days[row]
-                cell?.textLabel?.text = self.viewModel.selectedDay
-            default:
-                break
-        }
-    }
-}
-
-// MARK: - Popover Creation
-extension ScheduleDetailsViewController {
-    func createDayPopover(forTableView tableView: UITableView, at indexPath: IndexPath) -> Popover? {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
-        
-        let section = indexPath.section
-        
-        let popoverVC = Popover(contentSize: CGSize(width: 200, height: 150))
-        let sourceRect = CGRect(x: cell.bounds.midX,
-                                y: cell.bounds.midY,
-                                width: 0,
-                                height: 0)
-        popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: .up, sourceRect: sourceRect, delegate: self)
-        
-        let dayPicker = UIPickerView()
-        dayPicker.delegate = self
-        dayPicker.dataSource = self
-        dayPicker.tag = section
-        
-        popoverVC.view = dayPicker
-        
-        let items = section == 0 ? self.viewModel.subjectsNames : self.viewModel.days
-        let selectedItem = section == 0 ? self.viewModel.selectedSubjectName : self.viewModel.selectedDay
-        
-        if let selectedIndex = items.firstIndex(where: { $0 == selectedItem }) {
-            dayPicker.selectRow(selectedIndex, inComponent: 0, animated: true)
-        }
-        
-        return popoverVC
-    }
-}
-
-// MARK: - Popover Delegate
-extension ScheduleDetailsViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

@@ -5,21 +5,27 @@
 //  Created by Eduardo Dalencon on 26/06/24.
 //
 
-import Foundation
 import UIKit
 
 class ThemeListView: UIView {
+    // MARK: - Delegate
+    weak var delegate: ThemeDelegate?
     
     // MARK: - UI Components
-    lazy var tableView: UITableView = {
+    let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .systemBackground
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        
         return tableView
     }()
     
-    let addThemeButton = ButtonComponent(frame: .zero, title: "Add New Theme")
+    private lazy var addThemeButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: "Add New Theme")
+        bttn.addTarget(self, action: #selector(addThemeButtonTapped), for: .touchUpInside)
+        return bttn
+    }()
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -27,42 +33,36 @@ class ThemeListView: UIView {
         
         self.backgroundColor = .systemBackground
         
-        setupUI()
+        self.setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Reload table
-    func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            self.tableView.reloadData()
-        }
+    // MARK: - Methods
+    @objc private func addThemeButtonTapped() {
+        self.delegate?.addTheme()
     }
 }
 
 // MARK: - UI Setup
-
 extension ThemeListView: ViewCodeProtocol {
     func setupUI() {
-        
-        addSubview(tableView)
-        addSubview(addThemeButton)
+        self.addSubview(tableView)
+        self.addSubview(addThemeButton)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor/*, constant: padding*/),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -padding),
             
-            addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            addThemeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            addThemeButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            addThemeButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
             addThemeButton.heightAnchor.constraint(equalTo: addThemeButton.widthAnchor, multiplier: 0.16)
         ])
     }

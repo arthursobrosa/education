@@ -8,8 +8,8 @@
 import UIKit
 
 class ButtonComponent: UIButton {
-    init(frame: CGRect, title: String) {
-        super.init(frame: frame)
+    init(title: String) {
+        super.init(frame: .zero)
         
         self.setTitle(title, for: .normal)
         self.setTitleColor(.label, for: .normal)

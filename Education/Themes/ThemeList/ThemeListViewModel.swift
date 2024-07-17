@@ -8,14 +8,18 @@
 import Foundation
 
 class ThemeListViewModel {
-    let themeManager: ThemeManager
+    // MARK: - Themes Handler
+    private let themeManager: ThemeManager
     
+    // MARK: - Properties
+    var themes = Box([Theme]())
+    
+    // MARK: - Initializer
     init(themeManager: ThemeManager = ThemeManager()) {
         self.themeManager = themeManager
     }
     
-    var themes = Box([Theme]())
-    
+    // MARK: - Methods
     func addTheme(name: String) {
         self.themeManager.createTheme(name: name)
         self.fetchThemes()

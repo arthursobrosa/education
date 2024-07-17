@@ -9,13 +9,10 @@ import Foundation
 import Charts
 
 class ThemePageViewModel: ObservableObject {
-    let testManager: TestManager
+    // MARK: - Tests Handler
+    private let testManager: TestManager
     
-    init(testManager: TestManager = TestManager(), themeID: String) {
-        self.testManager = testManager
-        self.themeID = themeID
-    }
-    
+    // MARK: - Properties
     var tests = Box([Test]())
     
     var themeID: String
@@ -28,6 +25,13 @@ class ThemePageViewModel: ObservableObject {
     }
     @Published var limitedItems = [BarMark]()
     
+    // MARK: - Initializer
+    init(testManager: TestManager = TestManager(), themeID: String) {
+        self.testManager = testManager
+        self.themeID = themeID
+    }
+    
+    // MARK: - Methods
     func addNewTest(date: Date, rightQuestions: Int, totalQuestions: Int) {
         self.testManager.createTest(themeID: self.themeID, date: date, rightQuestions: rightQuestions, totalQuestions: totalQuestions)
         self.fetchTests()
@@ -48,20 +52,23 @@ class ThemePageViewModel: ObservableObject {
     func getLimitedItems() {
         var limitedItems: [BarMark] = []
         let itemsToShow = self.tests.value.sorted{$0.date! < $1.date!}.suffix(self.selectedLimit)
+        
         for (index, item) in itemsToShow.enumerated() {
             let bar = BarMark(
                 x: .value("Index", index),
                 y: .value("Test", (Double(item.rightQuestions) / Double(item.totalQuestions)))
             )
+            
             limitedItems.append(bar)
         }
+        
         while (limitedItems.count < self.selectedLimit) {
             let additionalBar = BarMark(
                 x: .value("Index", limitedItems.count),
                 y: .value("Test", 0)
             )
-            limitedItems.append(additionalBar)
             
+            limitedItems.append(additionalBar)
         }
         
         self.limitedItems = limitedItems

@@ -6,23 +6,31 @@
 //
 
 import UIKit
+import SwiftUI
 
-class StudyTimeViewController: UIViewController{
-    // MARK: - Properties
+class StudyTimeViewController: UIViewController {
+    // MARK: - Coordinator and ViewModel
+    weak var coordinator: StudyTimeCoordinator?
+    let viewModel: StudyTimeViewModel
     
+    // MARK: - Properties
     private var subjects = [Subject]()
-    private var viewModel: StudyTimeViewModel!
     private lazy var studyTimeView: StudyTimeView = {
-        let vw = StudyTimeView(viewModel: self.viewModel)
+        let view = StudyTimeView()
         
-        vw.studyTimeTableView.delegate = self
-        vw.studyTimeTableView.dataSource = self
-        vw.studyTimeTableView.register(SubjectTimeTableViewCell.self, forCellReuseIdentifier: SubjectTimeTableViewCell.identifier)
-        return vw
+        view.delegate = self
+        
+        let studyTimeChartView = StudyTimeChartView(viewModel: self.viewModel)
+        view.chartHostingController = UIHostingController(rootView: studyTimeChartView)
+        
+        view.tableView.delegate = self
+        view.tableView.dataSource = self
+        view.tableView.register(SubjectTimeTableViewCell.self, forCellReuseIdentifier: SubjectTimeTableViewCell.identifier)
+        
+        return view
     }()
     
     // MARK: - Initialization
-    
     init(viewModel: StudyTimeViewModel) {
         self.viewModel = viewModel
         
@@ -33,7 +41,7 @@ class StudyTimeViewController: UIViewController{
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - View Lifecycle
+    // MARK: - Lifecycle
     override func loadView() {
         super.loadView()
         
@@ -47,16 +55,15 @@ class StudyTimeViewController: UIViewController{
             guard let self = self else { return }
             
             self.subjects = subjects
-            self.studyTimeView.reloadTable()
+            self.reloadTable()
             
         }
         
-        self.viewModel.focusSessions.bind{[weak self] sessions in
+        self.viewModel.focusSessions.bind { [weak self] _ in
             guard let self = self else { return }
             
-            self.studyTimeView.reloadTable()
+            self.reloadTable()
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,10 +72,19 @@ class StudyTimeViewController: UIViewController{
         self.viewModel.fetchSubjects()
         self.viewModel.fetchFocusSessions()
     }
+    
+    // MARK: - Methods
+    private func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.studyTimeView.tableView.reloadData()
+        }
+    }
 }
 
-// MARK: - UITableViewDataSource
-extension StudyTimeViewController: UITableViewDataSource {
+// MARK: - UITableViewDataSource and UITableViewDelegate
+extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.subjects.count + 1
     }
@@ -79,7 +95,7 @@ extension StudyTimeViewController: UITableViewDataSource {
         var subject: Subject? = nil
         
         subject = row <= (self.subjects.count - 1) ? self.subjects[indexPath.row] : nil
-        let totalTime = self.viewModel.getTotalTimeOneSubject(subject)
+        let totalTime = self.viewModel.getTotalTime(forSubject: subject)
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
             fatalError("Could not dequeue cell")
@@ -99,15 +115,9 @@ extension StudyTimeViewController: UITableViewDataSource {
         }
     }
     
-}
-
-// MARK: - UITableViewDelegate
-extension StudyTimeViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let _ = self.subjects[indexPath.row]
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    
 }
-
-

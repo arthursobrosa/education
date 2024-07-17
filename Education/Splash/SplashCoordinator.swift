@@ -1,13 +1,13 @@
 //
-//  StudyTimeCoordinator.swift
+//  SplashCoordinator.swift
 //  Education
 //
-//  Created by Leandro Silva on 10/07/24.
+//  Created by Arthur Sobrosa on 17/07/24.
 //
 
 import UIKit
 
-class StudyTimeCoordinator: Coordinator {
+class SplashCoordinator: Coordinator, ShowingTabBar {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -16,12 +16,16 @@ class StudyTimeCoordinator: Coordinator {
     }
     
     func start() {
-        self.navigationController.navigationBar.prefersLargeTitles = true
-        
-        let viewModel = StudyTimeViewModel()
-        let vc = StudyTimeViewController(viewModel: viewModel)
+        let vc = SplashViewController()
         vc.coordinator = self
-        vc.title = "Study Time"
+        
         self.navigationController.pushViewController(vc, animated: false)
+    }
+    
+    func showTabBar() {
+        let tabBar = TabBarController()
+        tabBar.modalPresentationStyle = .fullScreen
+        
+        self.navigationController.present(tabBar, animated: false)
     }
 }

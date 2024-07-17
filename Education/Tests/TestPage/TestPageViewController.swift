@@ -9,20 +9,23 @@ import Foundation
 import UIKit
 
 class TestPageViewController: UIViewController {
-    // MARK: - Properties
+    // MARK: - ViewModel
+    let viewModel: ThemePageViewModel
     
-    private var viewModel: ThemePageViewModel!
+    // MARK: - Properties
     private lazy var themeRightQuestionsView: TestPageView = {
-        let testView = TestPageView()
-        testView.addTestButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        return testView
+        let view = TestPageView()
+        
+        view.delegate = self
+        
+        return view
     }()
     
     // MARK: - Initialization
-    
     init(viewModel: ThemePageViewModel) {
-        super.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,34 +33,20 @@ class TestPageViewController: UIViewController {
     }
     
     // MARK: - View Lifecycle
-    
     override func loadView() {
         super.loadView()
         
         self.view = self.themeRightQuestionsView
     }
-    
-    // MARK: - UI Setup
-    
-    @objc private func buttonTapped() {
-        if Int(self.themeRightQuestionsView.rightQuestionsTextField.text ?? "0") ?? 0 <= Int(self.themeRightQuestionsView.totalQuestionsTextField.text ?? "0") ?? 0{
-            self.viewModel.addNewTest(
-                date: self.themeRightQuestionsView.datePicker.date,
-                rightQuestions: Int(self.themeRightQuestionsView.rightQuestionsTextField.text ?? "0") ?? 0,
-                totalQuestions: Int(self.themeRightQuestionsView.totalQuestionsTextField.text ?? "0") ?? 0
-            )
-            self.dismiss(animated: true)
-        }else {
-            showWrongQuestionsAlert()
-        }
-    }
-    
+
     // MARK: - Methods
-    private func showWrongQuestionsAlert() {
+    func showWrongQuestionsAlert() {
         let alertController = UIAlertController(title: "Invalid Number of Hits!", message: "The number of correct answers cannot be greater than the total number of questions. Please review your entry.", preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        
         alertController.addAction(okAction)
-        present(alertController, animated: true, completion: nil)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
 }

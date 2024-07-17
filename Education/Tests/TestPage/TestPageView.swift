@@ -5,43 +5,62 @@
 //  Created by Leandro Silva on 28/06/24.
 //
 
-import Foundation
 import UIKit
 
 class TestPageView: UIView {
+    // MARK: - Delegate
+    weak var delegate: TestDelegate?
     
     // MARK: - UI Components
-    lazy var datePicker: UIDatePicker = {
+    let datePicker: UIDatePicker = {
         let date = UIDatePicker()
-        date.translatesAutoresizingMaskIntoConstraints = false
         date.preferredDatePickerStyle = .inline
         date.datePickerMode = .date
+        
+        date.translatesAutoresizingMaskIntoConstraints = false
+        
         return date
     }()
     
-    lazy var rightQuestionsTextField: UITextField = {
+    private lazy var rightQuestionsTextField: UITextField = {
         let rightQuestions = UITextField()
-        rightQuestions.translatesAutoresizingMaskIntoConstraints = false
         rightQuestions.placeholder = "rightQuestions"
+        rightQuestions.keyboardType = .numberPad
+        
+        let toolbar = self.createToolbar(withTag: 0)
+        rightQuestions.inputAccessoryView = toolbar
+        
+        rightQuestions.translatesAutoresizingMaskIntoConstraints = false
+        
         return rightQuestions
     }()
     
-    lazy var totalQuestionsTextField: UITextField = {
+    private lazy var totalQuestionsTextField: UITextField = {
         let totalQuestions = UITextField()
-        totalQuestions.translatesAutoresizingMaskIntoConstraints = false
         totalQuestions.placeholder = "totalQuestions"
+        totalQuestions.keyboardType = .numberPad
+        
+        let toolbar = self.createToolbar(withTag: 1)
+        totalQuestions.inputAccessoryView = toolbar
+        
+        totalQuestions.translatesAutoresizingMaskIntoConstraints = false
+        
         return totalQuestions
     }()
     
-    lazy var addTestButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add Test", for: .normal)
-        button.setTitleColor(.label, for: .normal)
-        button.backgroundColor = .systemGray
-        button.layer.cornerRadius = 14
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        return button
+    private lazy var addTestButton: UIButton = {
+        let bttn = UIButton(type: .system)
+        bttn.setTitle("Add Test", for: .normal)
+        bttn.setTitleColor(.label, for: .normal)
+        bttn.backgroundColor = .systemGray
+        bttn.layer.cornerRadius = 14
+        bttn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
     }()
     
     // MARK: - Initialization
@@ -56,38 +75,69 @@ class TestPageView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-// MARK: - UI Setup
-
-extension TestPageView: ViewCodeProtocol {
-    func setupUI() {
-
-        addSubview(datePicker)
-        addSubview(rightQuestionsTextField)
-        addSubview(totalQuestionsTextField)
-        addSubview(addTestButton)
+    
+    // MARK: - Methods
+    @objc private func addTestButtonTapped() {
+        let totalQuestions = Int(self.totalQuestionsTextField.text ?? "0") ?? 0
+        let rightQuestions = Int(self.rightQuestionsTextField.text ?? "0") ?? 0
+        let date = self.datePicker.date
         
-        NSLayoutConstraint.activate([
-            
-            datePicker.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            datePicker.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            datePicker.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            
-            rightQuestionsTextField.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 20),
-            rightQuestionsTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            rightQuestionsTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            
-            totalQuestionsTextField.topAnchor.constraint(equalTo: rightQuestionsTextField.bottomAnchor, constant: 20),
-            totalQuestionsTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            totalQuestionsTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            
-            addTestButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            addTestButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            addTestButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            addTestButton.widthAnchor.constraint(equalToConstant: 264),
-            addTestButton.heightAnchor.constraint(equalToConstant: 56)
-        ])
+        self.delegate?.addTestTapped(totalQuestions: totalQuestions, rightQuestions: rightQuestions, date: date)
+    }
+    
+    @objc func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
+        switch sender.tag {
+            case 0:
+                self.rightQuestionsTextField.resignFirstResponder()
+            case 1:
+                self.totalQuestionsTextField.resignFirstResponder()
+            default:
+                break
+        }
     }
 }
 
+// MARK: - UI Setup
+extension TestPageView: ViewCodeProtocol {
+    func setupUI() {
+        self.addSubview(datePicker)
+        self.addSubview(rightQuestionsTextField)
+        self.addSubview(totalQuestionsTextField)
+        self.addSubview(addTestButton)
+        
+        let padding = 20.0
+        
+        NSLayoutConstraint.activate([
+            datePicker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
+            datePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            datePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            
+            rightQuestionsTextField.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 20),
+            rightQuestionsTextField.leadingAnchor.constraint(equalTo: datePicker.leadingAnchor),
+            rightQuestionsTextField.trailingAnchor.constraint(equalTo: datePicker.trailingAnchor),
+            
+            totalQuestionsTextField.topAnchor.constraint(equalTo: rightQuestionsTextField.bottomAnchor, constant: padding),
+            totalQuestionsTextField.leadingAnchor.constraint(equalTo: datePicker.leadingAnchor),
+            totalQuestionsTextField.trailingAnchor.constraint(equalTo: datePicker.trailingAnchor),
+            
+            addTestButton.leadingAnchor.constraint(equalTo: datePicker.leadingAnchor),
+            addTestButton.trailingAnchor.constraint(equalTo: datePicker.trailingAnchor),
+            addTestButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            addTestButton.heightAnchor.constraint(equalTo: addTestButton.widthAnchor, multiplier: 0.16)
+        ])
+    }
+    
+    private func createToolbar(withTag tag: Int) -> UIToolbar {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
+        doneButton.tag = tag
+        
+        toolbar.setItems([flexSpace, doneButton], animated: false)
+        
+        return toolbar
+    }
+}

@@ -8,9 +8,11 @@
 import Foundation
 
 class ScheduleDetailsViewModel {
+    // MARK: - Subject and Schedule Handlers
     private let subjectManager: SubjectManager
     private let scheduleManager: ScheduleManager
     
+    // MARK: - Properties
     var subjectsNames: [String]
     var selectedSubjectName: String
     
@@ -22,6 +24,7 @@ class ScheduleDetailsViewModel {
     
     private var scheduleID: String?
     
+    // MARK: - Initializer
     init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), schedule: Schedule? = nil) {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
@@ -60,6 +63,7 @@ class ScheduleDetailsViewModel {
         self.scheduleID = schedule?.unwrappedID
     }
     
+    // MARK: - Methods
     func fetchSubjects() {
         if let subjects = self.subjectManager.fetchSubjects() {
             self.subjectsNames = subjects.map({ $0.unwrappedName })
