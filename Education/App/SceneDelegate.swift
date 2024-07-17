@@ -8,6 +8,7 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var coordinator: Coordinator?
     var window: UIWindow?
     var timeInBackground = Box(Int())
     private var date = Date()
@@ -21,8 +22,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        window?.frame = windowScene.coordinateSpace.bounds // Set the frame to be full screen
-        window?.rootViewController = TabBarController()
+        window?.frame = windowScene.coordinateSpace.bounds
+        
+        coordinator = SplashCoordinator(navigationController: UINavigationController())
+        coordinator?.start()
+        
+        window?.rootViewController = coordinator?.navigationController
         window?.makeKeyAndVisible()
     }
     
