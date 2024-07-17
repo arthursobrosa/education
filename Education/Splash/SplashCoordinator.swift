@@ -10,9 +10,11 @@ import UIKit
 class SplashCoordinator: Coordinator, ShowingTabBar {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    let themeListViewModel: ThemeListViewModel
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, themeListViewModel: ThemeListViewModel) {
         self.navigationController = navigationController
+        self.themeListViewModel = themeListViewModel
     }
     
     func start() {
@@ -23,7 +25,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     }
     
     func showTabBar() {
-        let tabBar = TabBarController()
+        let tabBar = TabBarController(themeListViewModel: self.themeListViewModel)
         tabBar.modalPresentationStyle = .fullScreen
         
         self.navigationController.present(tabBar, animated: false)

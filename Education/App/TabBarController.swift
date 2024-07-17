@@ -8,10 +8,21 @@
 import UIKit
 
 class TabBarController: UITabBarController {
-    private let themeList = ThemeListCoordinator(navigationController: UINavigationController())
+    let themeListViewModel: ThemeListViewModel
+    private lazy var themeList = ThemeListCoordinator(navigationController: UINavigationController(), themeListViewModel: self.themeListViewModel)
     private let timerSettings = FocusSessionSettingsCoordinator(navigationController: UINavigationController())
     private let studytime = StudyTimeCoordinator(navigationController: UINavigationController())
     private let schedule = ScheduleCoordinator(navigationController: UINavigationController())
+    
+    init(themeListViewModel: ThemeListViewModel) {
+        self.themeListViewModel = themeListViewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
