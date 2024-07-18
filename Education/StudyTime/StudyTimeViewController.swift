@@ -107,17 +107,11 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let subject = self.subjects[indexPath.row]
-        
-        if editingStyle == .delete {
-            self.viewModel.removeSubject(subject: subject)
-        }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let _ = self.subjects[indexPath.row]
-        
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

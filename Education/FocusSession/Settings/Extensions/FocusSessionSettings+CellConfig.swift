@@ -18,16 +18,16 @@ extension FocusSessionSettingsViewController {
                 return self.viewModel.selectedSubjectName
             case 1:
                 if row == 0 {
-                    return "Ends at"
+                    return String(localized: "focusEndsAt")
                 }
                 
-                return "Alarm when finished"
+                return String(localized: "focusAlarmWhenFinished")
             case 2:
                 if row == 0 {
-                    return "Block"
+                    return String(localized: "focusBlock")
                 }
                 
-                return "Apps"
+                return String(localized: "focusApps")
             default:
                 return String()
         }

@@ -24,7 +24,7 @@ class TestPageView: UIView {
     
     private lazy var rightQuestionsTextField: UITextField = {
         let rightQuestions = UITextField()
-        rightQuestions.placeholder = "rightQuestions"
+        rightQuestions.placeholder = String(localized: "rightQuestions")
         rightQuestions.keyboardType = .numberPad
         
         let toolbar = self.createToolbar(withTag: 0)
@@ -37,7 +37,7 @@ class TestPageView: UIView {
     
     private lazy var totalQuestionsTextField: UITextField = {
         let totalQuestions = UITextField()
-        totalQuestions.placeholder = "totalQuestions"
+        totalQuestions.placeholder = String(localized: "totalQuestions")
         totalQuestions.keyboardType = .numberPad
         
         let toolbar = self.createToolbar(withTag: 1)
@@ -50,7 +50,7 @@ class TestPageView: UIView {
     
     private lazy var addTestButton: UIButton = {
         let bttn = UIButton(type: .system)
-        bttn.setTitle("Add Test", for: .normal)
+        bttn.setTitle(String(localized: "addTest"), for: .normal)
         bttn.setTitleColor(.label, for: .normal)
         bttn.backgroundColor = .systemGray
         bttn.layer.cornerRadius = 14

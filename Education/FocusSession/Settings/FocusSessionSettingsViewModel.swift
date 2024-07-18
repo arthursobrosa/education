@@ -41,7 +41,7 @@ class FocusSessionSettingsViewModel {
     func fetchSubjects() {
         if let subjects = self.subjectManager.fetchSubjects() {
             let subjectsNames = subjects.map { $0.unwrappedName }
-            var allSubjectsNames = ["None"]
+            var allSubjectsNames = [String(localized: "noneSubject")]
             allSubjectsNames.append(contentsOf: subjectsNames)
             self.subjectsNames = allSubjectsNames
         }

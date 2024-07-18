@@ -14,16 +14,18 @@ class ThemeListViewController: UIViewController {
     
     // MARK: - Properties
     private var themes = [Theme]()
-    private lazy var themeListView: ThemeListView = {
-        let themeView = ThemeListView()
+    
+    private lazy var themeListTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = .systemBackground
         
-        themeView.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
         
-        themeView.tableView.delegate = self
-        themeView.tableView.dataSource = self
-        themeView.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
-        return themeView
+        return tableView
     }()
     
     // MARK: - Initialization
@@ -41,11 +43,14 @@ class ThemeListViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.view = self.themeListView
+        self.view = self.themeListTableView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let addThemeButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addThemeButtonTapped))
+        self.navigationItem.rightBarButtonItems = [addThemeButton]
         
         self.viewModel.themes.bind { [weak self] themes in
             guard let self = self else { return }
@@ -66,18 +71,22 @@ class ThemeListViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            self.themeListView.tableView.reloadData()
+            self.themeListTableView.reloadData()
         }
     }
     
-    func showAddThemeAlert() {
-        let alertController = UIAlertController(title: "Add Theme", message: "Enter theme name:", preferredStyle: .alert)
+    @objc private func addThemeButtonTapped() {
+        self.showAddThemeAlert()
+    }
+    
+    private func showAddThemeAlert() {
+        let alertController = UIAlertController(title: String(localized: "themeAlertTitle"), message: String(localized: "themeAlertMessage"), preferredStyle: .alert)
         
         alertController.addTextField { textField in
-            textField.placeholder = "Theme name"
+            textField.placeholder = String(localized: "themeAlertPlaceholder")
         }
         
-        let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
+        let addAction = UIAlertAction(title: String(localized: "add"), style: .default) { [weak self] _ in
             guard let self = self else { return }
             
             if let themeName = alertController.textFields?.first?.text, !themeName.isEmpty {
@@ -85,12 +94,12 @@ class ThemeListViewController: UIViewController {
             }
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
         
         alertController.addAction(addAction)
         alertController.addAction(cancelAction)
         
-        present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -118,7 +127,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         let containerView = UIView()
         
         let detailsLabel = UILabel()
-        detailsLabel.text = "Detail"
+        detailsLabel.text = String(localized: "themeTableViewDetail")
         detailsLabel.textColor = .secondaryLabel
         detailsLabel.font = UIFont.systemFont(ofSize: 17)
         detailsLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -136,14 +145,14 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         ])
         
         NSLayoutConstraint.activate([
-            chevronImageView.leadingAnchor.constraint(equalTo: detailsLabel.trailingAnchor, constant: 0),
+            chevronImageView.leadingAnchor.constraint(equalTo: detailsLabel.trailingAnchor, constant: 4),
             chevronImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             chevronImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             chevronImageView.widthAnchor.constraint(equalToConstant: 10),
             chevronImageView.heightAnchor.constraint(equalToConstant: 14) 
         ])
         
-        containerView.frame.size = CGSize(width: 63, height: 20)
+        containerView.frame.size = CGSize(width: 74, height: 20)
         
         return containerView
     }

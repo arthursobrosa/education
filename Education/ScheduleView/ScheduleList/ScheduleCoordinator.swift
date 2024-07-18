@@ -15,23 +15,13 @@ class ScheduleCoordinator: Coordinator, ShowingScheduleDetails {
         self.navigationController = navigationController
     }
     
-//    func start() {
-//        self.navigationController.navigationBar.prefersLargeTitles = true
-//        
-//        let viewModel = ScheduleViewModel()
-//        let vc = ScheduleViewController(viewModel: viewModel)
-//        vc.title = "Schedule"
-//        vc.coordinator = self
-//        self.navigationController.pushViewController(vc, animated: false)
-//    }
-    
     func start() {
         self.navigationController.navigationBar.prefersLargeTitles = true
         
         let viewModel = ScheduleViewModel()
         let vc = ScheduleViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = "Schedule"
+        vc.title = String(localized: "schedule")
         
         self.navigationController.pushViewController(vc, animated: false)
     }
@@ -40,7 +30,7 @@ class ScheduleCoordinator: Coordinator, ShowingScheduleDetails {
         let viewModel = ScheduleDetailsViewModel(schedule: schedule)
         let vc = ScheduleDetailsViewController(viewModel: viewModel)
         vc.modalPresentationStyle = .pageSheet
-        vc.title = "\(title ?? "New") Schedule"
+        vc.title = "\(title ?? String(localized: "newSchedule")) \(String(localized: "schedule"))"
         
         let nav = UINavigationController(rootViewController: vc)
         

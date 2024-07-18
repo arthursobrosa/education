@@ -29,7 +29,15 @@ class ScheduleDetailsViewModel {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
         
-        self.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        self.days = [
+            String(localized: "sunday"),
+            String(localized: "monday"),
+            String(localized: "tuesday"),
+            String(localized: "wednesday"),
+            String(localized: "thursday"),
+            String(localized: "friday"),
+            String(localized: "saturday")
+        ]
         
         var selectedWeekday: Int = Calendar.current.component(.weekday, from: Date()) - 1
         var selectedSubjectName: String = String()

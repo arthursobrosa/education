@@ -23,7 +23,7 @@ class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINa
         let viewModel = FocusSessionSettingsViewModel()
         let vc = FocusSessionSettingsViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = "Focus Session"
+        vc.title = String(localized: "newFocusSession")
         navigationController.pushViewController(vc, animated: false)
     }
     

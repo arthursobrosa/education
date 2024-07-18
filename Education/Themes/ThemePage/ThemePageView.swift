@@ -42,7 +42,7 @@ class ThemePageView: UIView {
     }()
     
     private lazy var addTestButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: "Add Test")
+        let bttn = ButtonComponent(title: String(localized: "addTest"))
         bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
         
         return bttn

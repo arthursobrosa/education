@@ -99,9 +99,9 @@ class FocusSessionSettingsViewController: UIViewController {
     }
     
     func showInvalidDateAlert() {
-        let alertController = UIAlertController(title: "Invalid date", message: "You chose an invalid date", preferredStyle: .alert)
+        let alertController = UIAlertController(title: String(localized: "focusInvalidDateAlertTitle"), message: String(localized: "focusInvalidDateAlertMessage"), preferredStyle: .alert)
         
-        let chooseAgainAction = UIAlertAction(title: "Choose again", style: .default)
+        let chooseAgainAction = UIAlertAction(title: String(localized: "focusInvalidDateAction"), style: .default)
 
         alertController.addAction(chooseAgainAction)
 
@@ -114,7 +114,7 @@ extension FocusSessionSettingsViewController {
     @objc func timerPickerChange(_ sender: UIDatePicker) {
         let totalTime = self.viewModel.getTotalSeconds(fromDate: sender.date)
         
-        self.viewModel.selectedTime = TimeInterval(totalTime) // Update the selectedTime variable
+        self.viewModel.selectedTime = TimeInterval(totalTime)
     }
 }
 
@@ -156,11 +156,11 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
             case 0:
-                return "Subject" 
+                return String(localized: "focusTableSubjectHeader")
             case 1:
-                return "Timer"
+                return String(localized: "focusTableTimerHeader")
             case 2:
-                return "App Blocking"
+                return String(localized: "focusTableAppBlockingHeader")
             default:
                 return String()
         }

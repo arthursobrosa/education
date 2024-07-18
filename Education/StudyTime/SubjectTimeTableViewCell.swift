@@ -15,7 +15,7 @@ class SubjectTimeTableViewCell: UITableViewCell{
             if let subject = subject {
                 self.subjectName.text = subject.unwrappedName
             } else {
-                self.subjectName.text = "Other"
+                self.subjectName.text = String(localized: "studyTimeOther")
             }
         }
     }
@@ -29,7 +29,6 @@ class SubjectTimeTableViewCell: UITableViewCell{
     }
     
     // MARK: - UI Components
-    
     private lazy var subjectName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
