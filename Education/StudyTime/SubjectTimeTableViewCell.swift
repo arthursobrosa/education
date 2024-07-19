@@ -20,11 +20,11 @@ class SubjectTimeTableViewCell: UITableViewCell{
         }
     }
     
-    var totalTime: Int? {
+    var totalTime: String? {
         didSet {
             guard let totalTime = totalTime else { return }
             
-            self.totalHours.text = "\(totalTime)"
+            self.totalHours.text = totalTime
         }
     }
     

@@ -75,10 +75,20 @@ class StudyTimeViewModel : ObservableObject {
         }
     }
     
-    func getTotalTime(forSubject subject: Subject?) -> Int {
+    func getTotalTime(forSubject subject: Subject?) -> String {
         let focusSessions = self.focusSessions.value.filter { $0.subjectID == subject?.unwrappedID }
+        let totalTime = self.getTime(from: focusSessions)
         
-        return self.getTime(from: focusSessions)
+        let hours = totalTime / 3600
+        let minutes = (totalTime / 60) % 60
+        
+        if totalTime >= 3600 {
+            return "\(hours)h\(minutes)m"
+        } else if totalTime >= 60 {
+            return "\(minutes)m"
+        } else {
+            return "\(totalTime)s"
+        }
     }
     
     private func getTime(from focusSessions: [FocusSession]) -> Int {
