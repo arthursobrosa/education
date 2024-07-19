@@ -16,8 +16,8 @@ final class TestManager: ObjectManager {
             
             test.themeID = themeID
             test.date = date
-            test.rightQuestions = Int16(rightQuestions)
-            test.totalQuestions = Int16(totalQuestions)
+            test.rightQuestions = Int64(rightQuestions)
+            test.totalQuestions = Int64(totalQuestions)
             test.id = UUID().uuidString
             
             try? backgroundContext.save()
