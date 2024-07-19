@@ -28,7 +28,7 @@ class ThemePageCoordinator: Coordinator, ShowingTestPage {
     
     func showTestPage(viewModel: ThemePageViewModel) {
         let vc = TestPageViewController(viewModel: viewModel)
-        vc.title = "New Test"
+        vc.title = String(localized: "newTest")
         vc.modalPresentationStyle = .pageSheet
         self.navigationController.present(UINavigationController(rootViewController: vc), animated: true)
     }

@@ -13,11 +13,13 @@ protocol FocusSessionSettingsDelegate: AnyObject {
 
 extension FocusSessionSettingsViewController: FocusSessionSettingsDelegate {
     func startButtonTapped() {
-        if self.viewModel.selectedTime <= 0 {
+        let selectedTime = self.viewModel.getSelectedTime()
+        
+        if selectedTime <= 0 {
             self.showInvalidDateAlert()
             return
         }
         
-        self.coordinator?.showTimer(totalTimeInSeconds: Int(self.viewModel.selectedTime), subjectID: self.viewModel.subjectID)
+        self.coordinator?.showTimer(totalTimeInSeconds: Int(selectedTime), subjectID: self.viewModel.subjectID)
     }
 }

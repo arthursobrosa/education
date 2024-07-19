@@ -1,0 +1,73 @@
+// MARK: - General
+"add" = "Adicionar";
+"cancel" = "Cancelar";
+"save" = "Salvar";
+
+// MARK: - TabBar
+"themesTabTitle" = "Temas";
+"timerTabTitle" = "Cronômetro";
+"studyTimeTabTitle" = "Tempo Estudado";
+"scheduleTabTitle" = "Cronograma";
+
+// MARK: - ThemeList
+"themesTitle" = "Temas";
+"themeAlertTitle" = "Adicinar Tema";
+"themeAlertMessage" = "Insira o nome do tema:";
+"themeAlertPlaceholder" = "Nome do tema";
+"themeTableViewDetail" = "Detalhe";
+
+// MARK: - ThemePage
+"newTest" = "Novo Teste";
+"addTest" = "Adicionar Teste";
+
+// MARK: - TestPage
+"rightQuestions" = "Questões Corretas";
+"totalQuestions" = "Total de Questões";
+
+// MARK: - FocusSession
+"newFocusSession" = "Novo Foco";
+"noneSubject" = "Nenhuma";
+"focusInvalidDateAlertTitle" = "Data Inválida";
+"focusInvalidDateAlertMessage" = "Você escolheu uma data inválida";
+"focusInvalidDateAction" = "Escolha denovo";
+"focusTableSubjectHeader" = "Matéria";
+"focusTableTimerHeader" = "Cronômetro";
+"focusTableAppBlockingHeader" = "Bloqueio de Apps";
+"focusStartButton" = "Iniciar";
+"focusEndsAt" = "Termina às";
+"focusAlarmWhenFinished" = "Alarme ao finalizar";
+"focusBlock" = "Bloquear";
+"focusApps" = "Apps";
+"focusSession" = "Foco";
+"timerAlertTitle" = "Tempo esgotado!";
+"timerAlertMessage" = "O seu cronômetro foi finalizado";
+"focusFinish" = "Finalizar";
+
+// MARK: - StudyTime
+"studyTime" = "Tempo Estudado";
+"studyTimeOther" = "Outro";
+"studyTimeLastWeek" = "Semana";
+"studyTimeLastMonth" = "Mês";
+"studyTimeLastYear" = "Ano";
+
+// MARK: - ScheduleList
+"schedule" = "Cronograma";
+"newSchedule" = "Novo";
+
+// MARK: - ScheduleDetails
+"sunday" = "Domingo";
+"monday" = "Segunda";
+"tuesday" = "Terça";
+"wednesday" = "Quarta";
+"thursday" = "Quinta";
+"friday" = "Sexta";
+"saturday" = "Sábado";
+"addSubjectAlertTitle" = "Adicionar Matéria";
+"addSubjectAlertMessage" = "Insira o nome da matéria:";
+"addSubjectAlertPlaceholder" = "Nome da matéria";
+"scheduleTableDayHeader" = "Dia";
+"scheduleStartDate" = "Início";
+"scheduleEndDate"= "Fim";
+"invalidDateAlertTitle" = "Data Inválida";
+"invalidDateAlertMessage1" = "Já existe um cronograma no(a) %@ com horários conflitantes";
+"invalidDateAlertMessage2" = "Horário de início não pode ser igual ou maior que horário de fim";

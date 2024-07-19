@@ -17,18 +17,17 @@ extension FocusSessionSettingsViewController {
             case 0:
                 return self.viewModel.selectedSubjectName
             case 1:
-                return "Ends at"
-//                if row == 0 {
-//                    return "Ends at"
-//                }
-//                
-//                return "Alarm when finished"
-//            case 2:
-//                if row == 0 {
-//                    return "Block"
-//                }
-//                
-//                return "Apps"
+                if row == 0 {
+                    return String(localized: "focusEndsAt")
+                }
+                
+                return String(localized: "focusAlarmWhenFinished")
+            case 2:
+                if row == 0 {
+                    return String(localized: "focusBlock")
+                }
+                
+                return String(localized: "focusApps")
             default:
                 return String()
         }
@@ -42,28 +41,24 @@ extension FocusSessionSettingsViewController {
             case 0:
                 return UIImageView(image: UIImage(systemName: "chevron.down"))
             case 1:
-                let datePicker = UIDatePicker()
-                datePicker.minimumDate = Date.now
-                datePicker.datePickerMode = .time
-                datePicker.addTarget(self, action: #selector(timerPickerChange(_:)), for: .valueChanged)
-                return datePicker
-//                if row == 0 {
-//                    let datePicker = UIDatePicker()
-//                    datePicker.minimumDate = Date.now
-//                    datePicker.datePickerMode = .time
-//                    datePicker.addTarget(self, action: #selector(timerPickerChange(_:)), for: .valueChanged)
-//                    return datePicker
-//                } else {
-//                    let toggle = self.createToggle(for: indexPath)
-//                    return toggle
-//                }
-//            case 2:
-//                if row == 0 {
-//                    let toggle = self.createToggle(for: indexPath)
-//                    return toggle
-//                } else {
-//                    return UIImageView(image: UIImage(systemName: "chevron.right"))
-//                }
+                if row == 0 {
+                    let datePicker = UIDatePicker()
+                    datePicker.setDate(self.viewModel.selectedDate, animated: false)
+                    datePicker.minimumDate = Date.now
+                    datePicker.datePickerMode = .time
+                    datePicker.addTarget(self, action: #selector(timerPickerChange(_:)), for: .valueChanged)
+                    return datePicker
+                } else {
+                    let toggle = self.createToggle(for: indexPath)
+                    return toggle
+                }
+            case 2:
+                if row == 0 {
+                    let toggle = self.createToggle(for: indexPath)
+                    return toggle
+                } else {
+                    return UIImageView(image: UIImage(systemName: "chevron.right"))
+                }
             default:
                 return nil
         }

@@ -29,9 +29,6 @@ extension FocusSessionSettingsViewController {
             case 1:
                 selector = #selector(alarmToggleSwiched(_:))
                 isOn = self.viewModel.alarmWhenFinished
-//            case 2:
-//                selector = #selector(blockAppToggleSwitched(_:))
-//                isOn = self.viewModel.blockApps
             default:
                 break
         }

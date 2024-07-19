@@ -78,7 +78,7 @@ class ScheduleViewController: UIViewController {
     }
     
     @objc private func addScheduleButtonTapped() {
-        self.coordinator?.showScheduleDetails(schedule: nil, title: nil)
+        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
     }
 }
 
@@ -115,7 +115,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
         let subjectName = subject?.unwrappedName
         
-        self.coordinator?.showScheduleDetails(schedule: schedule, title: subjectName)
+        self.coordinator?.showScheduleDetails(schedule: schedule, title: subjectName, selectedDay: self.viewModel.selectedDay)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }

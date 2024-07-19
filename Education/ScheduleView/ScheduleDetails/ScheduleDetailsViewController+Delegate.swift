@@ -13,6 +13,18 @@ protocol ScheduleDetailsDelegate: AnyObject {
 
 extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
     func saveSchedule() {
+        if self.viewModel.selectedStartTime >= self.viewModel.selectedEndTime {
+            self.showInvalidDatesAlert(forExistingSchedule: false)
+            return
+        }
+        
+        if !self.viewModel.isNewScheduleAvailable() {
+            self.showInvalidDatesAlert(forExistingSchedule: true)
+            return
+        }
+        
+        guard self.viewModel.isNewScheduleAvailable() else { return }
+        
         self.viewModel.saveSchedule()
         self.dismiss(animated: true)
     }

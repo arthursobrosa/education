@@ -25,16 +25,25 @@ class ScheduleDetailsViewModel {
     private var scheduleID: String?
     
     // MARK: - Initializer
-    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), schedule: Schedule? = nil) {
+    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), schedule: Schedule? = nil, selectedDay: Int) {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
         
-        self.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        self.days = [
+            String(localized: "sunday"),
+            String(localized: "monday"),
+            String(localized: "tuesday"),
+            String(localized: "wednesday"),
+            String(localized: "thursday"),
+            String(localized: "friday"),
+            String(localized: "saturday")
+        ]
         
-        var selectedWeekday: Int = Calendar.current.component(.weekday, from: Date()) - 1
+        let currentDate = Date.now
+        
         var selectedSubjectName: String = String()
-        var selectedStartTime: Date = Date()
-        var selectedEndTime: Date = Date()
+        var selectedStartTime: Date = currentDate
+        var selectedEndTime: Date = currentDate
         
         self.subjectsNames = [String]()
         
@@ -46,8 +55,6 @@ class ScheduleDetailsViewModel {
         }
         
         if let schedule = schedule {
-            selectedWeekday = schedule.unwrappedDay
-            
             if let subject = self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID) {
                 selectedSubjectName = subject.unwrappedName
             }
@@ -56,7 +63,7 @@ class ScheduleDetailsViewModel {
             selectedEndTime = schedule.unwrappedEndTime
         }
         
-        self.selectedDay = self.days[selectedWeekday]
+        self.selectedDay = self.days[selectedDay]
         self.selectedSubjectName = selectedSubjectName
         self.selectedStartTime = selectedStartTime
         self.selectedEndTime = selectedEndTime
@@ -110,5 +117,77 @@ class ScheduleDetailsViewModel {
             
             self.scheduleManager.updateSchedule(schedule)
         }
+    }
+    
+    func isNewScheduleAvailable() -> Bool {
+        var isAvailable: Bool = true
+        
+        var allSchedules = [Schedule]()
+        
+        if let subjects = self.subjectManager.fetchSubjects() {
+            subjects.forEach { subject in
+                if let schedules = self.scheduleManager.fetchSchedules(subjectID: subject.unwrappedID) {
+                    allSchedules.append(contentsOf: schedules)
+                }
+            }
+        }
+        
+        var filteredSchedules = allSchedules
+        
+        if let selectedIndex = self.days.firstIndex(where: { $0 == self.selectedDay }) {
+            let dayOfWeek = Int(selectedIndex)
+            filteredSchedules = filteredSchedules.filter { $0.dayOfTheWeek == dayOfWeek }
+        }
+        
+        if !filteredSchedules.isEmpty {
+            isAvailable = self.isTimeSlotAvailable(existingSchedules: filteredSchedules)
+        }
+        
+        return isAvailable
+    }
+    
+    private func isTimeSlotAvailable(existingSchedules: [Schedule]) -> Bool {
+        guard let newStartTime = self.formatDate(self.selectedStartTime),
+              let newEndTime = self.formatDate(self.selectedEndTime) else { return false }
+        
+        for schedule in existingSchedules {
+            if let existingStartTime = self.formatDate(schedule.unwrappedStartTime),
+               let existingEndTime = self.formatDate(schedule.unwrappedEndTime) {
+                if (newStartTime < existingEndTime && newEndTime > existingStartTime) {
+                    if schedule.unwrappedID != self.scheduleID {
+                        return false
+                    }
+                }
+            }
+            
+            break
+        }
+        
+        return true
+    }
+    
+    private func getMinuteFrom(date: Date) -> Int? {
+        return Calendar.current.dateComponents([.minute], from: date).minute
+    }
+    
+    private func getHourFrom(date: Date) -> Int? {
+        return Calendar.current.dateComponents([.hour], from: date).hour
+    }
+    
+    private func formatDate(_ date: Date) -> Date? {
+        guard let firstDateHour = self.getHourFrom(date: date),
+              let firstDateMinute = self.getMinuteFrom(date: date) else { return nil }
+        
+        let dateComponents = DateComponents(
+            year: 0,
+            month: 1,
+            hour: firstDateHour,
+            minute: firstDateMinute,
+            second: 0
+        )
+        
+        guard let returnedDate = Calendar.current.date(from: dateComponents) else { return nil }
+        
+        return returnedDate
     }
 }

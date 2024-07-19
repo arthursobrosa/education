@@ -19,13 +19,27 @@ class ScheduleDetailsViewController: UIViewController {
         
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "defaultCell")
+        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
         
         return view
     }()
     
+    var isPopoverOpen: Bool = false {
+        didSet {
+            guard let startTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 0, section: 2)),
+                  let endTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 2)),
+                  let startDatePicker = startTimerCell.accessoryView as? UIDatePicker,
+                  let endDatePicker = endTimerCell.accessoryView as? UIDatePicker else { return }
+            
+            let isEnabled = !isPopoverOpen
+            
+            startDatePicker.isEnabled = isEnabled
+            endDatePicker.isEnabled = isEnabled
+        }
+    }
+    
     // MARK: - Initializer
-    init(viewModel: ScheduleDetailsViewModel = ScheduleDetailsViewModel()) {
+    init(viewModel: ScheduleDetailsViewModel) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -65,13 +79,13 @@ class ScheduleDetailsViewController: UIViewController {
     }
     
     private func showAddSubjectAlert() {
-        let alertController = UIAlertController(title: "Add Subject", message: "Enter subject name:", preferredStyle: .alert)
+        let alertController = UIAlertController(title: String(localized: "addSubjectAlertTitle"), message: String(localized: "addSubjectAlertMessage"), preferredStyle: .alert)
         
         alertController.addTextField { textField in
-            textField.placeholder = "Subject name"
+            textField.placeholder = String(localized: "addSubjectAlertPlaceholder")
         }
         
-        let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
+        let addAction = UIAlertAction(title: String(localized: "add"), style: .default) { [weak self] _ in
             guard let self = self else { return }
             
             if let subjectName = alertController.textFields?.first?.text, !subjectName.isEmpty {
@@ -81,10 +95,22 @@ class ScheduleDetailsViewController: UIViewController {
             self.reloadTable()
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
         
         alertController.addAction(addAction)
         alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func showInvalidDatesAlert(forExistingSchedule: Bool) {
+        let message = forExistingSchedule ? String(format: NSLocalizedString("invalidDateAlertMessage1", comment: ""), self.viewModel.selectedDay.lowercased()) : String(localized: "invalidDateAlertMessage2")
+        
+        let alertController = UIAlertController(title: String(localized: "invalidDateAlertTitle"), message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .cancel)
+        
+        alertController.addAction(okAction)
         
         self.present(alertController, animated: true, completion: nil)
     }
@@ -125,12 +151,12 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "Subject"
+            return String(localized: "focusTableSubjectHeader")
         } else if section == 1 {
-            return "Day"
+            return String(localized: "scheduleTableDayHeader")
         }
         
-        return "Timer"
+        return String(localized: "timerTabTitle")
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -150,10 +176,12 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                 }
                 
                 if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
+                    self.isPopoverOpen.toggle()
                     self.present(popover, animated: true)
                 }
             case 1:
                 if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
+                    self.isPopoverOpen.toggle()
                     self.present(popover, animated: true)
                 }
             default:
@@ -162,8 +190,4 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
-}
-
-#Preview {
-    ScheduleDetailsViewController()
 }

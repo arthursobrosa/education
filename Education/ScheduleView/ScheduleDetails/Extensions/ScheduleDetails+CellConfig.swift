@@ -14,11 +14,11 @@ extension ScheduleDetailsViewController {
         
         switch section {
             case 0:
-                return self.viewModel.subjectsNames.isEmpty ?  "Add Subject" : (row == 0 ? "Add Subject" : self.viewModel.selectedSubjectName)
+                return self.viewModel.subjectsNames.isEmpty ? String(localized: "addSubjectAlertTitle") : (row == 0 ? String(localized: "addSubjectAlertTitle") : self.viewModel.selectedSubjectName)
             case 1:
                 return self.viewModel.selectedDay
             case 2:
-                return row == 0 ? "Start" : "End"
+                return row == 0 ? String(localized: "scheduleStartDate") : String(localized: "scheduleEndDate")
             default:
                 return String()
         }
