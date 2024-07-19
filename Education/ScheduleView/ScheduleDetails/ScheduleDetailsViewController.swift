@@ -114,6 +114,16 @@ class ScheduleDetailsViewController: UIViewController {
         
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    func showNoSubjectAlert() {
+        let alertController = UIAlertController(title: String(localized: "noSubjectAlertTitle"), message: String(localized: "noSubjectAlertMessage"), preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .cancel)
+        
+        alertController.addAction(okAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate

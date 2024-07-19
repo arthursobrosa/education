@@ -73,7 +73,7 @@ extension StudyTimeView: ViewCodeProtocol {
             chartHostingController.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             chartHostingController.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             
-            tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding),
+            tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding / 2),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),

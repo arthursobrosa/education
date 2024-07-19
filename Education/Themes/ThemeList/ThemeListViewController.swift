@@ -28,6 +28,8 @@ class ThemeListViewController: UIViewController {
         return tableView
     }()
     
+    private let emptyView = EmptyView(object: String(localized: "emptyTheme"))
+    
     // MARK: - Initialization
     init(viewModel: ThemeListViewModel) {
         self.viewModel = viewModel
@@ -40,12 +42,6 @@ class ThemeListViewController: UIViewController {
     }
     
     // MARK: - Lifecycle
-    override func loadView() {
-        super.loadView()
-        
-        self.view = self.themeListTableView
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,6 +50,8 @@ class ThemeListViewController: UIViewController {
         
         self.viewModel.themes.bind { [weak self] themes in
             guard let self = self else { return }
+            
+            self.setView(isEmpty: themes.isEmpty)
             
             self.themes = themes
             self.reloadTable()
@@ -67,6 +65,10 @@ class ThemeListViewController: UIViewController {
     }
     
     // MARK: - Methods
+    private func setView(isEmpty: Bool) {
+        self.view = isEmpty ? self.emptyView : self.themeListTableView
+    }
+    
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }

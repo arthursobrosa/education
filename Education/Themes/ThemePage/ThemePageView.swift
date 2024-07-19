@@ -41,13 +41,6 @@ class ThemePageView: UIView {
         return tableView
     }()
     
-    private lazy var addTestButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "addTest"))
-        bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
-        
-        return bttn
-    }()
-    
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -57,11 +50,6 @@ class ThemePageView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Methods
-    @objc private func addTestButtonTapped() {
-        self.delegate?.addTest()
     }
 }
 
@@ -73,7 +61,6 @@ extension ThemePageView: ViewCodeProtocol {
         self.addSubview(picker)
         self.addSubview(chartHostingController.view)
         self.addSubview(testsTableView)
-        self.addSubview(addTestButton)
         
         let padding = 20.0
             
@@ -85,17 +72,12 @@ extension ThemePageView: ViewCodeProtocol {
             chartHostingController.view.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
             chartHostingController.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             chartHostingController.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            chartHostingController.view.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.2),
+            chartHostingController.view.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),
             
-            testsTableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding),
+            testsTableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding / 2),
             testsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             testsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            testsTableView.bottomAnchor.constraint(equalTo: addTestButton.topAnchor, constant: -padding),
-            
-            addTestButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            addTestButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            addTestButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            addTestButton.heightAnchor.constraint(equalTo: addTestButton.widthAnchor, multiplier: 0.16)
+            testsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
