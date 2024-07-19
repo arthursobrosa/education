@@ -18,6 +18,11 @@ extension TestPageViewController: TestDelegate {
             return
         }
         
+        if totalQuestions == 0 {
+            self.showWrongQuestionsAlert()
+            return
+        }
+        
         self.viewModel.addNewTest(
             date: date,
             rightQuestions: rightQuestions,
