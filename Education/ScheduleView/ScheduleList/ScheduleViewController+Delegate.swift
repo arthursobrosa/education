@@ -7,12 +7,9 @@
 
 import UIKit
 
+// MARK: - Schedule
 protocol ScheduleDelegate: AnyObject {
     func setPicker(_ picker: UIStackView)
-}
-
-protocol DayDelegate: AnyObject {
-    func dayTapped(_ dayView: DayView)
 }
 
 extension ScheduleViewController: ScheduleDelegate {
@@ -35,6 +32,11 @@ extension ScheduleViewController: ScheduleDelegate {
     }
 }
 
+// MARK: - Day
+protocol DayDelegate: AnyObject {
+    func dayTapped(_ dayView: DayView)
+}
+
 extension ScheduleViewController: DayDelegate {
     func dayTapped(_ dayView: DayView) {
         self.unselectDays()
@@ -43,7 +45,7 @@ extension ScheduleViewController: DayDelegate {
         
         dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true)
         self.viewModel.selectedDay = dayView.tag
-        self.viewModel.fetchSchedules()
-        self.reloadTable()
+        
+        self.loadSchedules()
     }
 }

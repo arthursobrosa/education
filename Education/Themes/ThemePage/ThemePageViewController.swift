@@ -15,6 +15,15 @@ class ThemePageViewController: UIViewController {
     
     // MARK: - Properties
     private var tests = [Test]()
+    
+    private var contentView: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     private lazy var themePageView: ThemePageView = {
         let themeView = ThemePageView()
         
@@ -27,8 +36,19 @@ class ThemePageViewController: UIViewController {
         themeView.testsTableView.dataSource = self
         themeView.testsTableView.register(TestTableViewCell.self, forCellReuseIdentifier: TestTableViewCell.identifier)
         
+        themeView.translatesAutoresizingMaskIntoConstraints = false
+        
         return themeView
     }()
+    
+    private lazy var addTestButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: String(localized: "addTest"))
+        bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
+        
+        return bttn
+    }()
+    
+    private let emptyView = EmptyView(object: String(localized: "emptyTest"))
     
     // MARK: - Initialization
     init(viewModel: ThemePageViewModel) {
@@ -42,18 +62,17 @@ class ThemePageViewController: UIViewController {
     }
     
     // MARK: - Lifecycle
-    override func loadView() {
-        super.loadView()
-        
-        self.view = self.themePageView
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setupUI()
+        
         self.viewModel.tests.bind { [weak self] tests in
             guard let self = self else { return }
-            self.tests = tests.sorted{$0.date! > $1.date!}
+            
+            self.setContentView(isEmpty: tests.isEmpty)
+            
+            self.tests = tests.sorted { $0.date! > $1.date! }
             self.reloadTable()
         }
     }
@@ -64,13 +83,17 @@ class ThemePageViewController: UIViewController {
         self.viewModel.fetchTests()
     }
     
-    // MARK: - Button method
+    // MARK: - Methods
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
             self.themePageView.testsTableView.reloadData()
         }
+    }
+    
+    @objc private func addTestButtonTapped() {
+        self.coordinator?.showTestPage(viewModel: self.viewModel)
     }
 }
 
@@ -104,5 +127,46 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
         let _ = self.tests[indexPath.row]
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension ThemePageViewController: ViewCodeProtocol {
+    func setupUI() {
+        self.view.addSubview(contentView)
+        self.view.addSubview(addTestButton)
+        
+        let padding = 20.0
+        
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: addTestButton.topAnchor, constant: -padding),
+            
+            addTestButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: padding),
+            addTestButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -padding),
+            addTestButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            addTestButton.heightAnchor.constraint(equalTo: addTestButton.widthAnchor, multiplier: 0.16)
+        ])
+    }
+    
+    private func setContentView(isEmpty: Bool) {
+        self.view.removeConstraints(self.emptyView.constraints)
+        self.view.removeConstraints(self.themePageView.constraints)
+        
+        self.addContentSubview(isEmpty ? self.emptyView : self.themePageView)
+    }
+    
+    private func addContentSubview(_ subview: UIView) {
+        self.contentView.addSubview(subview)
+        
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            subview.topAnchor.constraint(equalTo: contentView.topAnchor),
+            subview.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            subview.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            subview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
     }
 }

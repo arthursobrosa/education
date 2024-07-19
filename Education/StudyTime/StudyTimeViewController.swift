@@ -15,6 +15,7 @@ class StudyTimeViewController: UIViewController {
     
     // MARK: - Properties
     private var subjects = [Subject]()
+    
     private lazy var studyTimeView: StudyTimeView = {
         let view = StudyTimeView()
         
@@ -30,6 +31,8 @@ class StudyTimeViewController: UIViewController {
         return view
     }()
     
+    private let emptyView = EmptyView(object: String(localized: "emptyStudyTime"))
+    
     // MARK: - Initialization
     init(viewModel: StudyTimeViewModel) {
         self.viewModel = viewModel
@@ -42,12 +45,6 @@ class StudyTimeViewController: UIViewController {
     }
     
     // MARK: - Lifecycle
-    override func loadView() {
-        super.loadView()
-        
-        self.view = self.studyTimeView
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,11 +53,12 @@ class StudyTimeViewController: UIViewController {
             
             self.subjects = subjects
             self.reloadTable()
-            
         }
         
-        self.viewModel.focusSessions.bind { [weak self] _ in
+        self.viewModel.focusSessions.bind { [weak self] focusSessions in
             guard let self = self else { return }
+            
+            self.setView(isEmpty: focusSessions.isEmpty)
             
             self.reloadTable()
         }
@@ -74,6 +72,10 @@ class StudyTimeViewController: UIViewController {
     }
     
     // MARK: - Methods
+    private func setView(isEmpty: Bool) {
+        self.view = isEmpty ? self.emptyView : self.studyTimeView
+    }
+    
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }

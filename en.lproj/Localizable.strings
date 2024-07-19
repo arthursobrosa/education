@@ -3,6 +3,13 @@
 "cancel" = "Cancel";
 "save" = "Save";
 
+// MARK: - EmptyView
+"emptyMessage" = "There are no %@s in here... Why don't you try adding one?";
+"emptyTheme" = "theme";
+"emptyTest" = "test";
+"emptyStudyTime" = "study time";
+"emptySchedule" = "schedule";
+
 // MARK: - TabBar
 "themesTabTitle" = "Themes";
 "timerTabTitle" = "Timer";
@@ -71,3 +78,5 @@
 "invalidDateAlertTitle" = "Invalid Date";
 "invalidDateAlertMessage1" = "There is an existing schedule at %@ with conflicting dates";
 "invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date";
+"noSubjectAlertTitle" = "Invalid Schedule";
+"noSubjectAlertMessage" = "You cannot create a schedule before assigning it to a subject";
