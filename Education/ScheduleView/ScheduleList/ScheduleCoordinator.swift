@@ -26,8 +26,8 @@ class ScheduleCoordinator: Coordinator, ShowingScheduleDetails {
         self.navigationController.pushViewController(vc, animated: false)
     }
     
-    func showScheduleDetails(schedule: Schedule?, title: String?) {
-        let viewModel = ScheduleDetailsViewModel(schedule: schedule)
+    func showScheduleDetails(schedule: Schedule?, title: String?, selectedDay: Int) {
+        let viewModel = ScheduleDetailsViewModel(schedule: schedule, selectedDay: selectedDay)
         let vc = ScheduleDetailsViewController(viewModel: viewModel)
         vc.modalPresentationStyle = .pageSheet
         vc.title = "\(title ?? String(localized: "newSchedule")) \(String(localized: "schedule"))"

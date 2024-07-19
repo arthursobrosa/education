@@ -32,7 +32,8 @@ class ScheduleViewModel {
     // MARK: - Methods
     func fetchSchedules() {
         if let schedules = self.scheduleManager.fetchSchedules(dayOfTheWeek: self.selectedDay) {
-            self.schedules = schedules
+            let orderedSchedules = schedules.sorted { $0.unwrappedStartTime < $1.unwrappedStartTime }
+            self.schedules = orderedSchedules
         }
     }
     

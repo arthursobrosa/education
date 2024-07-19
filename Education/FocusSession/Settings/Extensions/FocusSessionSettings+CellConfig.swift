@@ -43,6 +43,7 @@ extension FocusSessionSettingsViewController {
             case 1:
                 if row == 0 {
                     let datePicker = UIDatePicker()
+                    datePicker.setDate(self.viewModel.selectedDate, animated: false)
                     datePicker.minimumDate = Date.now
                     datePicker.datePickerMode = .time
                     datePicker.addTarget(self, action: #selector(timerPickerChange(_:)), for: .valueChanged)

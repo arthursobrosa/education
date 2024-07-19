@@ -58,7 +58,7 @@ class FocusSessionView: UIView {
         return bttn
     }()
     
-    private lazy var finishButton: ButtonComponent = {
+    lazy var finishButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String(localized: "focusFinish"))
         bttn.isEnabled = false
         bttn.alpha = 0.5
@@ -87,7 +87,7 @@ class FocusSessionView: UIView {
         self.delegate?.pauseResumeButtonTapped()
     }
     
-    private func changeButtonAlpha() {
+    func changeButtonAlpha() {
         let isEnabled = self.finishButton.isEnabled
         self.finishButton.alpha = isEnabled ? 1 : 0.5
     }

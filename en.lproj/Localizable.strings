@@ -68,3 +68,6 @@
 "scheduleTableDayHeader" = "Day";
 "scheduleStartDate" = "Start";
 "scheduleEndDate"= "End";
+"invalidDateAlertTitle" = "Invalid Date";
+"invalidDateAlertMessage1" = "There is an existing schedule at %@ with conflicting dates";
+"invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date";

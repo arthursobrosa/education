@@ -68,3 +68,6 @@
 "scheduleTableDayHeader" = "Dia";
 "scheduleStartDate" = "Início";
 "scheduleEndDate"= "Fim";
+"invalidDateAlertTitle" = "Data Inválida";
+"invalidDateAlertMessage1" = "Já existe um cronograma no(a) %@ com horários conflitantes";
+"invalidDateAlertMessage2" = "Horário de início não pode ser igual ou maior que horário de fim";

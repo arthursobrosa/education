@@ -88,9 +88,17 @@ class FocusSessionViewController: UIViewController {
         super.viewWillAppear(animated)
         
         DispatchQueue.main.async {
-            if self.viewModel.timerState.value == nil {
-                self.focusSessionView.setupLayers()
-                self.viewModel.timerState.value = .starting
+            let timerState = self.viewModel.timerState.value
+            
+            switch timerState {
+                case .reseting:
+                    self.focusSessionView.finishButton.isEnabled = true
+                    self.focusSessionView.changeButtonAlpha()
+                case nil:
+                    self.focusSessionView.setupLayers()
+                    self.viewModel.timerState.value = .starting
+                default:
+                    break
             }
         }
     }

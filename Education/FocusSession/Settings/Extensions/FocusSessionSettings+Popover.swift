@@ -38,4 +38,8 @@ extension FocusSessionSettingsViewController: UIPopoverPresentationControllerDel
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.isPopoverOpen.toggle()
+    }
 }
