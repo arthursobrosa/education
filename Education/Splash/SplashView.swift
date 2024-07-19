@@ -55,7 +55,7 @@ extension SplashView: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             sealImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            sealImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            sealImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: padding / 2),
             sealImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6),
             sealImageView.heightAnchor.constraint(equalTo: sealImageView.widthAnchor),
             
