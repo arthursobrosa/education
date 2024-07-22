@@ -22,7 +22,7 @@ class FocusSessionSettingsView: UIView {
     }()
     
     private lazy var startButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: "Start")
+        let bttn = ButtonComponent(title: String(localized: "focusStartButton"))
         bttn.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         return bttn
     }()

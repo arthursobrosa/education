@@ -23,7 +23,7 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
     func start() {
         let viewModel = FocusSessionViewModel(totalSeconds: self.totalTimeInSeconds, subjectID: self.subjectID)
         let vc = FocusSessionViewController(viewModel: viewModel)
-        vc.title = "Focus Session"
+        vc.title = String(localized: "focusSession")
         vc.coordinator = self
         vc.navigationItem.hidesBackButton = true
         self.navigationController.pushViewController(vc, animated: true)

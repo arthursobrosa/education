@@ -28,20 +28,19 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         themeList.start()
-        themeList.navigationController.tabBarItem = UITabBarItem(title: "Themes", image: UIImage(systemName: "list.bullet.clipboard"), tag: 1)
+        themeList.navigationController.tabBarItem = UITabBarItem(title: String(localized: "themesTabTitle"), image: UIImage(systemName: "list.bullet.clipboard"), tag: 1)
         
         timerSettings.start()
-        timerSettings.navigationController.tabBarItem = UITabBarItem(title: "Timer", image: UIImage(systemName: "timer"), tag: 2)
+        timerSettings.navigationController.tabBarItem = UITabBarItem(title: String(localized: "timerTabTitle"), image: UIImage(systemName: "timer"), tag: 2)
         
         studytime.start()
-        studytime.navigationController.tabBarItem = UITabBarItem(title: "Study Time", image: UIImage(systemName: "calendar.badge.clock"), tag: 3)
+        studytime.navigationController.tabBarItem = UITabBarItem(title: String(localized: "studyTimeTabTitle"), image: UIImage(systemName: "calendar.badge.clock"), tag: 3)
         
         schedule.start()
-        schedule.navigationController.tabBarItem = UITabBarItem(title: "Schedule", image: UIImage(systemName: "checklist"), tag: 4)
+        schedule.navigationController.tabBarItem = UITabBarItem(title: String(localized: "scheduleTabTitle"), image: UIImage(systemName: "checklist"), tag: 4)
         
         self.viewControllers = [themeList.navigationController, timerSettings.navigationController, studytime.navigationController, schedule.navigationController]
         
         self.view.backgroundColor = .systemBackground
     }
 }
-

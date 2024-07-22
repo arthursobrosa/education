@@ -12,7 +12,7 @@ class FocusSessionSettingsViewModel {
     private let subjectManager: SubjectManager
     
     // MARK: - Properties
-    var selectedTime: TimeInterval = 0 // Variable to hold the selected time
+    var selectedDate: Date = Date.now
     
     var subjectsNames = [String]()
     lazy var selectedSubjectName = self.subjectsNames[0] {
@@ -41,13 +41,13 @@ class FocusSessionSettingsViewModel {
     func fetchSubjects() {
         if let subjects = self.subjectManager.fetchSubjects() {
             let subjectsNames = subjects.map { $0.unwrappedName }
-            var allSubjectsNames = ["None"]
+            var allSubjectsNames = [String(localized: "noneSubject")]
             allSubjectsNames.append(contentsOf: subjectsNames)
             self.subjectsNames = allSubjectsNames
         }
     }
     
-    func getTotalSeconds(fromDate date: Date) -> TimeInterval {
+    func getSelectedTime() -> TimeInterval {
         let currentDate = Date()
         let calendar = Calendar.current
         
@@ -55,8 +55,8 @@ class FocusSessionSettingsViewModel {
         let currentMinutes = calendar.component(.minute, from: currentDate)
         let currentSeconds = calendar.component(.second, from: currentDate)
         
-        let selectedHour = calendar.component(.hour, from: date)
-        let selectedMinutes = calendar.component(.minute, from: date)
+        let selectedHour = calendar.component(.hour, from: self.selectedDate)
+        let selectedMinutes = calendar.component(.minute, from: self.selectedDate)
         
         let currentTotalTime = currentHour * 3600 + currentMinutes * 60 + currentSeconds
         let selectedTotalTime = selectedHour * 3600 + selectedMinutes * 60

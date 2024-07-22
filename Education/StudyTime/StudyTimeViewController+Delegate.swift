@@ -13,8 +13,8 @@ protocol StudyTimeDelegate: AnyObject {
 
 extension StudyTimeViewController: StudyTimeDelegate {
     func setPicker(_ picker: UISegmentedControl) {
-        let dateRanges = self.viewModel.dateRanges.map { $0.rawValue }
-        let selectedDateRange = self.viewModel.selectedDateRange.rawValue
+        let dateRanges = self.viewModel.dateRanges.map { $0.name }
+        let selectedDateRange = self.viewModel.selectedDateRange.name
         
         for (index, dateRange) in dateRanges.enumerated() {
             let action = UIAction(title: dateRange) { _ in

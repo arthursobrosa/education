@@ -30,6 +30,15 @@ class FocusSessionSettingsViewController: UIViewController {
         return view
     }()
     
+    var isPopoverOpen: Bool = false {
+        didSet {
+            guard let timerCell = self.timerSettingsView.tableView.cellForRow(at: IndexPath(row: 0, section: 1)),
+                  let datePicker = timerCell.accessoryView as? UIDatePicker else { return }
+            
+            datePicker.isEnabled = !isPopoverOpen
+        }
+    }
+    
     // MARK: - Initializer
     init(viewModel: FocusSessionSettingsViewModel) {
         self.viewModel = viewModel
@@ -56,7 +65,7 @@ class FocusSessionSettingsViewController: UIViewController {
         
         self.viewModel.fetchSubjects()
         
-        self.viewModel.selectedTime = 0
+        self.viewModel.selectedDate = Date.now
         self.viewModel.selectedSubjectName = self.viewModel.subjectsNames[0]
         self.reloadTable()
         
@@ -99,9 +108,9 @@ class FocusSessionSettingsViewController: UIViewController {
     }
     
     func showInvalidDateAlert() {
-        let alertController = UIAlertController(title: "Invalid date", message: "You chose an invalid date", preferredStyle: .alert)
+        let alertController = UIAlertController(title: String(localized: "focusInvalidDateAlertTitle"), message: String(localized: "focusInvalidDateAlertMessage"), preferredStyle: .alert)
         
-        let chooseAgainAction = UIAlertAction(title: "Choose again", style: .default)
+        let chooseAgainAction = UIAlertAction(title: String(localized: "focusInvalidDateAction"), style: .default)
 
         alertController.addAction(chooseAgainAction)
 
@@ -112,9 +121,7 @@ class FocusSessionSettingsViewController: UIViewController {
 // MARK: - Button Actions
 extension FocusSessionSettingsViewController {
     @objc func timerPickerChange(_ sender: UIDatePicker) {
-        let totalTime = self.viewModel.getTotalSeconds(fromDate: sender.date)
-        
-        self.viewModel.selectedTime = TimeInterval(totalTime) // Update the selectedTime variable
+        self.viewModel.selectedDate = sender.date
     }
 }
 
@@ -156,11 +163,11 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
             case 0:
-                return "Subject" 
+                return String(localized: "focusTableSubjectHeader")
             case 1:
-                return "Timer"
+                return String(localized: "focusTableTimerHeader")
             case 2:
-                return "App Blocking"
+                return String(localized: "focusTableAppBlockingHeader")
             default:
                 return String()
         }
@@ -172,6 +179,7 @@ extension FocusSessionSettingsViewController: UITableViewDataSource, UITableView
         
         if section == 0 && row == 0 {
             if let popover = self.createSchedulePopover(forTableView: tableView, at: indexPath) {
+                self.isPopoverOpen.toggle()
                 self.present(popover, animated: true)
             }
         }

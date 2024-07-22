@@ -15,21 +15,20 @@ class SubjectTimeTableViewCell: UITableViewCell{
             if let subject = subject {
                 self.subjectName.text = subject.unwrappedName
             } else {
-                self.subjectName.text = "Other"
+                self.subjectName.text = String(localized: "studyTimeOther")
             }
         }
     }
     
-    var totalTime: Int? {
+    var totalTime: String? {
         didSet {
             guard let totalTime = totalTime else { return }
             
-            self.totalHours.text = "\(totalTime)"
+            self.totalHours.text = totalTime
         }
     }
     
     // MARK: - UI Components
-    
     private lazy var subjectName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

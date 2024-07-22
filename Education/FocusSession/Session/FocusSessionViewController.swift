@@ -88,9 +88,17 @@ class FocusSessionViewController: UIViewController {
         super.viewWillAppear(animated)
         
         DispatchQueue.main.async {
-            if self.viewModel.timerState.value == nil {
-                self.focusSessionView.setupLayers()
-                self.viewModel.timerState.value = .starting
+            let timerState = self.viewModel.timerState.value
+            
+            switch timerState {
+                case .reseting:
+                    self.focusSessionView.finishButton.isEnabled = true
+                    self.focusSessionView.changeButtonAlpha()
+                case nil:
+                    self.focusSessionView.setupLayers()
+                    self.viewModel.timerState.value = .starting
+                default:
+                    break
             }
         }
     }
@@ -105,7 +113,7 @@ class FocusSessionViewController: UIViewController {
 // MARK: - Private Methods
 private extension FocusSessionViewController {
     func showEndTimeAlert() {
-        let alertController = UIAlertController(title: "Time's up!", message: "Your timer is finished", preferredStyle: .alert)
+        let alertController = UIAlertController(title: String(localized: "timerAlertTitle"), message: String(localized: "timerAlertMessage"), preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
             guard let self = self else { return }

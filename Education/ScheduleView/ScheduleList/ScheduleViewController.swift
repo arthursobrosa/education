@@ -55,11 +55,11 @@ class ScheduleViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.viewModel.fetchSchedules()
+        self.loadSchedules()
     }
     
     // MARK: - Methods
-    func reloadTable() {
+    private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
@@ -78,7 +78,15 @@ class ScheduleViewController: UIViewController {
     }
     
     @objc private func addScheduleButtonTapped() {
-        self.coordinator?.showScheduleDetails(schedule: nil, title: nil)
+        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
+    }
+    
+    func loadSchedules() {
+        self.viewModel.fetchSchedules()
+        
+        self.setContentView(isEmpty: self.viewModel.schedules.isEmpty)
+        
+        self.reloadTable()
     }
 }
 
@@ -115,7 +123,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
         let subjectName = subject?.unwrappedName
         
-        self.coordinator?.showScheduleDetails(schedule: schedule, title: subjectName)
+        self.coordinator?.showScheduleDetails(schedule: schedule, title: subjectName, selectedDay: self.viewModel.selectedDay)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -125,8 +133,8 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         
         if editingStyle == .delete {
             self.viewModel.removeSchedule(schedule)
-            self.viewModel.fetchSchedules()
-            self.reloadTable()
+            
+            self.loadSchedules()
         }
     }
 }
@@ -134,9 +142,31 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: - Sheet Delegate
 extension ScheduleViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.viewModel.fetchSchedules()
-        self.reloadTable()
+        self.loadSchedules()
         
         return nil
+    }
+}
+
+// MARK: - UI Setup
+extension ScheduleViewController {
+    func setContentView(isEmpty: Bool) {
+        self.scheduleView.removeConstraints(self.scheduleView.emptyView.constraints)
+        self.scheduleView.removeConstraints(self.scheduleView.tableView.constraints)
+        
+        self.addContentSubview(isEmpty ? self.scheduleView.emptyView : self.scheduleView.tableView)
+    }
+    
+    private func addContentSubview(_ subview: UIView) {
+        self.scheduleView.contentView.addSubview(subview)
+        
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            subview.topAnchor.constraint(equalTo: self.scheduleView.contentView.topAnchor),
+            subview.leadingAnchor.constraint(equalTo: self.scheduleView.contentView.leadingAnchor),
+            subview.trailingAnchor.constraint(equalTo: self.scheduleView.contentView.trailingAnchor),
+            subview.bottomAnchor.constraint(equalTo: self.scheduleView.contentView.bottomAnchor)
+        ])
     }
 }

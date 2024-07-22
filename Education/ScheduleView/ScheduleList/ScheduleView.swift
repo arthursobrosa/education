@@ -28,6 +28,14 @@ class ScheduleView: UIView {
         return stack
     }()
     
+    let contentView: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     let tableView: UITableView = {
         let table = UITableView()
 
@@ -35,6 +43,8 @@ class ScheduleView: UIView {
         
         return table
     }()
+    
+    let emptyView = EmptyView(object: String(localized: "emptySchedule"))
     
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -52,7 +62,7 @@ class ScheduleView: UIView {
 extension ScheduleView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(picker)
-        self.addSubview(tableView)
+        self.addSubview(contentView)
         
         let padding = 20.0
         
@@ -61,10 +71,10 @@ extension ScheduleView: ViewCodeProtocol {
             picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             picker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
-            tableView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
-            tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            contentView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
+            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
         ])
     }
 }

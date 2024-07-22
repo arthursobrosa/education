@@ -8,9 +8,20 @@
 import Foundation
 
 enum DateRange: String, CaseIterable {
-    case lastWeek = "Last week"
-    case lastMonth = "Last month"
-    case lastYear = "Last year"
+    case lastWeek
+    case lastMonth
+    case lastYear
+    
+    var name: String {
+        switch self {
+            case .lastWeek:
+                return String(localized: "studyTimeLastWeek")
+            case .lastMonth:
+                return String(localized: "studyTimeLastMonth")
+            case .lastYear:
+                return String(localized: "studyTimeLastYear")
+        }
+    }
 }
 
 struct SubjectTime: Identifiable {
@@ -64,10 +75,20 @@ class StudyTimeViewModel : ObservableObject {
         }
     }
     
-    func getTotalTime(forSubject subject: Subject?) -> Int {
+    func getTotalTime(forSubject subject: Subject?) -> String {
         let focusSessions = self.focusSessions.value.filter { $0.subjectID == subject?.unwrappedID }
+        let totalTime = self.getTime(from: focusSessions)
         
-        return self.getTime(from: focusSessions)
+        let hours = totalTime / 3600
+        let minutes = (totalTime / 60) % 60
+        
+        if totalTime >= 3600 {
+            return "\(hours)h\(minutes)m"
+        } else if totalTime >= 60 {
+            return "\(minutes)m"
+        } else {
+            return "\(totalTime)s"
+        }
     }
     
     private func getTime(from focusSessions: [FocusSession]) -> Int {
@@ -86,24 +107,19 @@ class StudyTimeViewModel : ObservableObject {
         }
     }
     
-    func removeSubject(subject: Subject) {
-        self.subjectManager.deleteSubject(subject)
-        self.fetchSubjects()
-    }
-    
     func updateAggregatedTimes() {
         self.aggregatedTimes = []
         
         var subjectTotals: [String: Int] = [:]
         
-        for session in focusSessions.value {
+        for session in self.focusSessions.value {
             subjectTotals[session.unwrappedSubjectID, default: 0] += session.unwrappedTotalTime
         }
         
         let times = subjectTotals.map { SubjectTime(subject: $0.key, totalTime: $0.value) }
         
         for time in times {
-            aggregatedTimes.append(SubjectTime(
+            self.aggregatedTimes.append(SubjectTime(
                 subject: idToName(subjectId: time.subject),
                 totalTime: time.totalTime))
         }
@@ -111,6 +127,6 @@ class StudyTimeViewModel : ObservableObject {
     
     private func idToName(subjectId: String) -> String {
         let subject = self.subjectManager.fetchSubject(withID: subjectId)
-        return subject?.unwrappedName ?? "Other"
+        return subject?.unwrappedName ?? String(localized: "studyTimeOther")
     }
 }

@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ShowingScheduleDetails: AnyObject {
-    func showScheduleDetails(schedule: Schedule?, title: String?)
+    func showScheduleDetails(schedule: Schedule?, title: String?, selectedDay: Int)
 }

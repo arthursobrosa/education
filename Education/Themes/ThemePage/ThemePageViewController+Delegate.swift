@@ -9,15 +9,10 @@ import UIKit
 import SwiftUI
 
 protocol ThemePageDelegate: AnyObject {
-    func addTest()
     func setLimitsPicker(_ picker: UISegmentedControl)
 }
 
 extension ThemePageViewController: ThemePageDelegate {
-    func addTest() {
-        self.coordinator?.showTestPage(viewModel: self.viewModel)
-    }
-    
     func setLimitsPicker(_ picker: UISegmentedControl) {
         let limits = self.viewModel.limits.map { String($0) }
         let selectedLimit = String(self.viewModel.selectedLimit)
