@@ -1,8 +1,8 @@
 //
 //  DeviceActivityMonitorExtension.swift
-//  Monitor
+//  Education
 //
-//  Created by Lucas Cunha on 15/07/24.
+//  Created by Arthur Sobrosa on 29/07/24.
 //
 
 import DeviceActivity
