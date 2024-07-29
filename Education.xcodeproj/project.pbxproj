@@ -78,6 +78,7 @@
 		68AA61A72C3C25980053AD33 /* FocusSessionSettings+Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */; };
 		68AA61A92C3C26220053AD33 /* FocusSessionSettings+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */; };
 		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
+		68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */; };
 		68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */; };
 		68C2CFFB2C47220000E2347A /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2CFFA2C47220000E2347A /* ScheduleView.swift */; };
 		68C2CFFD2C47232500E2347A /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2CFFC2C47232500E2347A /* ScheduleViewController.swift */; };
@@ -206,6 +207,7 @@
 		68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Toggle.swift"; sourceTree = "<group>"; };
 		68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Popover.swift"; sourceTree = "<group>"; };
 		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
+		68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
 		68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudyTimeViewController+Delegate.swift"; sourceTree = "<group>"; };
 		68C2CFFA2C47220000E2347A /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		68C2CFFC2C47232500E2347A /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -591,6 +593,7 @@
 				CE3B7D322C4591CE00EE5070 /* BlockAppsViewModel.swift */,
 				CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */,
 				CE3B7D4A2C45992000EE5070 /* FamilyActivityPickerView.swift */,
+				68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */,
 			);
 			path = BlockApps;
 			sourceTree = "<group>";
@@ -748,6 +751,7 @@
 				6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
 				68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */,
+				68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */,
 				30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */,
 				CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */,
 				CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */,
