@@ -1,0 +1,82 @@
+// MARK: - General
+"add" = "Add";
+"cancel" = "Cancel";
+"save" = "Save";
+
+// MARK: - EmptyView
+"emptyMessage" = "There are no %@s in here... Why don't you try adding one?";
+"emptyTheme" = "theme";
+"emptyTest" = "test";
+"emptyStudyTime" = "study time";
+"emptySchedule" = "schedule";
+
+// MARK: - TabBar
+"themesTabTitle" = "Themes";
+"timerTabTitle" = "Timer";
+"studyTimeTabTitle" = "Study Time";
+"scheduleTabTitle" = "Schedule";
+
+// MARK: - ThemeList
+"themesTitle" = "Themes";
+"themeAlertTitle" = "Add Theme";
+"themeAlertMessage" = "Enter theme name:";
+"themeAlertPlaceholder" = "Theme name";
+"themeTableViewDetail" = "Detail";
+
+// MARK: - ThemePage
+"newTest" = "New Test";
+"addTest" = "Add Test";
+
+// MARK: - TestPage
+"rightQuestions" = "Right Questions";
+"totalQuestions" = "Total Questions";
+
+// MARK: - FocusSession
+"newFocusSession" = "New Focus";
+"noneSubject" = "None";
+"focusInvalidDateAlertTitle" = "Invalid Date";
+"focusInvalidDateAlertMessage" = "You chose an invalid date";
+"focusInvalidDateAction" = "Choose again";
+"focusTableSubjectHeader" = "Subject";
+"focusTableTimerHeader" = "Timer";
+"focusTableAppBlockingHeader" = "App Blocking";
+"focusStartButton" = "Start";
+"focusEndsAt" = "Ends At";
+"focusAlarmWhenFinished" = "Alarm when finished";
+"focusBlock" = "Block";
+"focusApps" = "Apps";
+"focusSession" = "Focus";
+"timerAlertTitle" = "Time's up!";
+"timerAlertMessage" = "Your timer is finished";
+"focusFinish" = "Finish";
+
+// MARK: - StudyTime
+"studyTime" = "Study Time";
+"studyTimeOther" = "Other";
+"studyTimeLastWeek" = "Last week";
+"studyTimeLastMonth" = "Last month";
+"studyTimeLastYear" = "Last year";
+
+// MARK: - ScheduleList
+"schedule" = "Schedule";
+"newSchedule" = "New";
+
+// MARK: - ScheduleDetails
+"sunday" = "Sunday";
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"addSubjectAlertTitle" = "Add Subject";
+"addSubjectAlertMessage" = "Enter subject name:";
+"addSubjectAlertPlaceholder" = "Subject name";
+"scheduleTableDayHeader" = "Day";
+"scheduleStartDate" = "Start";
+"scheduleEndDate"= "End";
+"invalidDateAlertTitle" = "Invalid Date";
+"invalidDateAlertMessage1" = "There is an existing schedule at %@ with conflicting dates";
+"invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date";
+"noSubjectAlertTitle" = "Invalid Schedule";
+"noSubjectAlertMessage" = "You cannot create a schedule before assigning it to a subject";

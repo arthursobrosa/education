@@ -5,22 +5,23 @@
 //  Created by Arthur Sobrosa on 26/06/24.
 //
 
-import Foundation
+import UIKit
 import CoreData
 
 class CoreDataManager {
     static let shared = CoreDataManager()
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     // MARK: - Subject CRUD
     func createSubject(name: String) {
-        guard let subject = NSEntityDescription.insertNewObject(forEntityName: "Subject", into: AppDelegate.shared.context) as? Subject else {
+        guard let subject = NSEntityDescription.insertNewObject(forEntityName: "Subject", into: self.appDelegate.context) as? Subject else {
             return
         }
         
         subject.name = name
         subject.id = UUID().uuidString
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func fetchSubject(_ id: String) -> Subject? {
@@ -29,7 +30,7 @@ class CoreDataManager {
         fetchRequest.predicate = NSPredicate(format: "id == %@", id)
         
         do {
-            let subjects = try AppDelegate.shared.context.fetch(fetchRequest)
+            let subjects = try self.appDelegate.context.fetch(fetchRequest)
             return subjects.first
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -41,7 +42,7 @@ class CoreDataManager {
         let fetchRequest = NSFetchRequest<Subject>(entityName: "Subject")
         
         do {
-            let subjects = try AppDelegate.shared.context.fetch(fetchRequest)
+            let subjects = try self.appDelegate.context.fetch(fetchRequest)
             return subjects
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -56,7 +57,7 @@ class CoreDataManager {
         
         subjectToUpdate.name = subject.name
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func deleteSubject(_ subject: Subject) {
@@ -65,13 +66,13 @@ class CoreDataManager {
             self.deleteSchedule(schedule)
         }
         
-        AppDelegate.shared.context.delete(subject)
-        AppDelegate.shared.saveContext()
+        self.appDelegate.context.delete(subject)
+        self.appDelegate.saveContext()
     }
     
     // MARK: - Schedule CRUD
     func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date) {
-        guard let schedule = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: AppDelegate.shared.context) as? Schedule else {
+        guard let schedule = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: self.appDelegate.context) as? Schedule else {
             return
         }
         
@@ -81,7 +82,7 @@ class CoreDataManager {
         schedule.endTime = endTime
         schedule.id = UUID().uuidString
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func fetchSchedule(from id: String) -> Schedule? {
@@ -90,7 +91,7 @@ class CoreDataManager {
         fetchRequest.fetchLimit = 1
         
         do {
-            let schedules = try AppDelegate.shared.context.fetch(fetchRequest)
+            let schedules = try self.appDelegate.context.fetch(fetchRequest)
             return schedules.first
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -111,7 +112,7 @@ class CoreDataManager {
         }
         
         do {
-            let schedules = try AppDelegate.shared.context.fetch(fetchRequest)
+            let schedules = try self.appDelegate.context.fetch(fetchRequest)
             return schedules
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -128,7 +129,7 @@ class CoreDataManager {
         scheduleToUpdate.startTime = schedule.startTime
         scheduleToUpdate.endTime = schedule.endTime
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func deleteSchedule(_ schedule: Schedule) {
@@ -137,13 +138,13 @@ class CoreDataManager {
             self.deleteFocusSession(focusSession)
         }
         
-        AppDelegate.shared.context.delete(schedule)
-        AppDelegate.shared.saveContext()
+        self.appDelegate.delete(schedule)
+        self.appDelegate.saveContext()
     }
     
     // MARK: - FocusSession CRUD
     func createFocusSession(date: Date, totalTime: Int, scheduleID: String? = nil) {
-        guard let focusSession = NSEntityDescription.insertNewObject(forEntityName: "FocusSession", into: AppDelegate.shared.context) as? FocusSession else {
+        guard let focusSession = NSEntityDescription.insertNewObject(forEntityName: "FocusSession", into: self.appDelegate.context) as? FocusSession else {
             return
         }
         
@@ -152,14 +153,14 @@ class CoreDataManager {
         focusSession.scheduleID = scheduleID
         focusSession.id = UUID().uuidString
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func fetchAllFocusSessions() -> [FocusSession]? {
         let fetchRequest = NSFetchRequest<FocusSession>(entityName: "FocusSession")
         
         do {
-            let focusSessions = try AppDelegate.shared.context.fetch(fetchRequest)
+            let focusSessions = try self.appDelegate.context.fetch(fetchRequest)
             return focusSessions
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -197,7 +198,7 @@ class CoreDataManager {
         fetchRequest.fetchLimit = 1
         
         do {
-            let focusSessions = try AppDelegate.shared.context.fetch(fetchRequest)
+            let focusSessions = try self.appDelegate.context.fetch(fetchRequest)
             return focusSessions.first
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -213,24 +214,24 @@ class CoreDataManager {
         focusSessionToUpdate.date = focusSession.date
         focusSessionToUpdate.totalTime = focusSession.totalTime
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func deleteFocusSession(_ focusSession: FocusSession) {
-        AppDelegate.shared.context.delete(focusSession)
-        AppDelegate.shared.saveContext()
+        self.appDelegate.delete(focusSession)
+        self.appDelegate.saveContext()
     }
     
     // MARK: - Theme CRUD
     func createTheme(name: String) {
-        guard let theme = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: AppDelegate.shared.context) as? Theme else {
+        guard let theme = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: self.appDelegate.context) as? Theme else {
             return
         }
         
         theme.name = name
         theme.id = UUID().uuidString
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func fetchTheme(_ id: String) -> Theme? {
@@ -239,7 +240,7 @@ class CoreDataManager {
         fetchRequest.predicate = NSPredicate(format: "id == %@", id)
         
         do {
-            let themes = try AppDelegate.shared.context.fetch(fetchRequest)
+            let themes = try self.appDelegate.context.fetch(fetchRequest)
             return themes.first
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -251,7 +252,7 @@ class CoreDataManager {
         let fetchRequest = NSFetchRequest<Theme>(entityName: "Theme")
         
         do {
-            let themes = try AppDelegate.shared.context.fetch(fetchRequest)
+            let themes = try self.appDelegate.context.fetch(fetchRequest)
             return themes
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -266,7 +267,7 @@ class CoreDataManager {
         
         themeToUpdate.name = theme.name
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func deleteTheme(_ theme: Theme) {
@@ -275,13 +276,13 @@ class CoreDataManager {
             self.deleteTest(test)
         }
         
-        AppDelegate.shared.context.delete(theme)
-        AppDelegate.shared.saveContext()
+        self.appDelegate.context.delete(theme)
+        self.appDelegate.saveContext()
     }
     
     // MARK: - Test CRUD
     func createTest(themeID: String, date: Date, rightQuestions: Int, totalQuestions: Int)  {
-        guard let test = NSEntityDescription.insertNewObject(forEntityName: "Test", into: AppDelegate.shared.context) as? Test else {
+        guard let test = NSEntityDescription.insertNewObject(forEntityName: "Test", into: self.appDelegate.context) as? Test else {
             return
         }
         
@@ -291,7 +292,7 @@ class CoreDataManager {
         test.totalQuestions = Int16(totalQuestions)
         test.id = UUID().uuidString
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func fetchTests(from themeID: String) -> [Test]? {
@@ -299,7 +300,7 @@ class CoreDataManager {
         fetchRequest.predicate = NSPredicate(format: "themeID == %@", themeID)
         
         do {
-            let themes = try AppDelegate.shared.context.fetch(fetchRequest)
+            let themes = try self.appDelegate.context.fetch(fetchRequest)
             return themes
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -313,7 +314,7 @@ class CoreDataManager {
         fetchRequest.fetchLimit = 1
         
         do {
-            let tests = try AppDelegate.shared.context.fetch(fetchRequest)
+            let tests = try self.appDelegate.context.fetch(fetchRequest)
             return tests.first
         } catch let fetchError {
             print("Failed to fetch companies: \(fetchError)")
@@ -330,11 +331,11 @@ class CoreDataManager {
         testToUpdate.rightQuestions = test.rightQuestions
         testToUpdate.totalQuestions = test.totalQuestions
         
-        AppDelegate.shared.saveContext()
+        self.appDelegate.saveContext()
     }
     
     func deleteTest(_ test: Test) {
-        AppDelegate.shared.context.delete(test)
-        AppDelegate.shared.saveContext()
+        self.appDelegate.context.delete(test)
+        self.appDelegate.saveContext()
     }
 }

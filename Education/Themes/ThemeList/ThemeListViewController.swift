@@ -5,142 +5,172 @@
 //  Created by Eduardo Dalencon on 26/06/24.
 //
 
-import Foundation
 import UIKit
 
 class ThemeListViewController: UIViewController {
+    // MARK: - Coordinator and ViewModel
+    weak var coordinator: ShowingThemePage?
+    private let viewModel: ThemeListViewModel
     
     // MARK: - Properties
+    private var themes = [Theme]()
     
-    private var viewModel: ThemeListViewModel!
-    private var themeListView: ThemeListView?
+    private lazy var themeListTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = .systemBackground
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tableView
+    }()
+    
+    private let emptyView = EmptyView(object: String(localized: "emptyTheme"))
     
     // MARK: - Initialization
-    
     init(viewModel: ThemeListViewModel) {
-        super.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - View Lifecycle
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.viewModel.onFetchThemes = { [weak self] in
-            self?.themeListView?.tableView.reloadData()
+        let addThemeButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addThemeButtonTapped))
+        self.navigationItem.rightBarButtonItems = [addThemeButton]
+        
+        self.viewModel.themes.bind { [weak self] themes in
+            guard let self = self else { return }
+            
+            self.setView(isEmpty: themes.isEmpty)
+            
+            self.themes = themes
+            self.reloadTable()
         }
-        
-        setupUI()
-        fetchDataFromCoreData()
     }
     
-    // MARK: - Fetch Data
-    
-    private func fetchDataFromCoreData() {
-        self.viewModel.fetchItems()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.viewModel.fetchThemes()
     }
     
-    // MARK: - UI Setup
-    
-    private func setupUI() {
-        view.backgroundColor = .white
-        
-        themeListView = ThemeListView()
-        guard let themeListView = themeListView else { return }
-        themeListView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(themeListView)
-        
-        NSLayoutConstraint.activate([
-            themeListView.topAnchor.constraint(equalTo: view.topAnchor),
-            themeListView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            themeListView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            themeListView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        themeListView.tableView.delegate = self
-        themeListView.tableView.dataSource = self
-        themeListView.addThemeButton.addTarget(self, action: #selector(addItemButtonTapped), for: .touchUpInside)
+    // MARK: - Methods
+    private func setView(isEmpty: Bool) {
+        self.view = isEmpty ? self.emptyView : self.themeListTableView
     }
     
-    // MARK: - User Actions
-    
-    @objc private func addItemButtonTapped() {
-        showAddItemAlert()
+    private func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.themeListTableView.reloadData()
+        }
     }
     
-    private func showAddItemAlert() {
-        let alertController = UIAlertController(title: "Add Item", message: "Enter item name:", preferredStyle: .alert)
+    @objc private func addThemeButtonTapped() {
+        self.showAddThemeAlert()
+    }
+    
+    private func showAddThemeAlert() {
+        let alertController = UIAlertController(title: String(localized: "themeAlertTitle"), message: String(localized: "themeAlertMessage"), preferredStyle: .alert)
         
         alertController.addTextField { textField in
-            textField.placeholder = "Item name"
+            textField.placeholder = String(localized: "themeAlertPlaceholder")
         }
         
-        let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
-            if let itemName = alertController.textFields?.first?.text, !itemName.isEmpty {
-                
-                self?.viewModel.addNewItem(name: itemName)
-                DispatchQueue.main.async {
-                    self?.themeListView?.tableView.reloadData()
-                }
+        let addAction = UIAlertAction(title: String(localized: "add"), style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            
+            if let themeName = alertController.textFields?.first?.text, !themeName.isEmpty {
+                self.viewModel.addTheme(name: themeName)
             }
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
         
         alertController.addAction(addAction)
         alertController.addAction(cancelAction)
         
-        present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
-// MARK: - UITableViewDataSource
-
-extension ThemeListViewController: UITableViewDataSource {
-    
+// MARK: - UITableViewDataSource and UITableViewDelegate
+extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items.count
+        return self.themes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = viewModel.items[indexPath.row].name
+        let theme = self.themes[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
+        cell.textLabel?.text = theme.name
+        cell.accessoryView = createAccessoryView()
+        
+        if self.traitCollection.userInterfaceStyle == .light {
+            cell.backgroundColor = .systemGray5
+        }
+        
         return cell
     }
     
+    private func createAccessoryView() -> UIView {
+        let containerView = UIView()
+        
+        let detailsLabel = UILabel()
+        detailsLabel.text = String(localized: "themeTableViewDetail")
+        detailsLabel.textColor = .secondaryLabel
+        detailsLabel.font = UIFont.systemFont(ofSize: 17)
+        detailsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        chevronImageView.tintColor = .secondaryLabel
+        chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.addSubview(detailsLabel)
+        containerView.addSubview(chevronImageView)
+        
+        NSLayoutConstraint.activate([
+            detailsLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            detailsLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            chevronImageView.leadingAnchor.constraint(equalTo: detailsLabel.trailingAnchor, constant: 4),
+            chevronImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            chevronImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            chevronImageView.widthAnchor.constraint(equalToConstant: 10),
+            chevronImageView.heightAnchor.constraint(equalToConstant: 14) 
+        ])
+        
+        containerView.frame.size = CGSize(width: 74, height: 20)
+        
+        return containerView
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let theme = self.themes[indexPath.row]
+        
         if editingStyle == .delete {
-            if let itemId = viewModel.items[indexPath.row].id {
-                self.viewModel.removeItem(id: itemId)
-                DispatchQueue.main.async {
-                    self.themeListView?.tableView.reloadData()
-                }
-            } else {
-                print("Error: Item ID not found.")
-            }
+            self.viewModel.removeTheme(theme: theme)
         }
     }
-
-}
-
-// MARK: - UITableViewDelegate
-
-extension ThemeListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let theme = self.themes[indexPath.row]
+        self.coordinator?.showThemePage(theme: theme)
         
-        let vm = ThemePageViewModel(themeId: viewModel.items[indexPath.row].unwrappedID)
-        
-        let themePageViewController = ThemePageViewController(viewModel: vm)
-        
-        navigationController?.pushViewController(themePageViewController, animated: true)
-        
-        print("Selected item: \(viewModel.items[indexPath.row])")
-        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

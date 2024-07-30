@@ -5,91 +5,79 @@
 //  Created by Eduardo Dalencon on 27/06/24.
 //
 
-import Foundation
 import UIKit
+import SwiftUI
 
 class ThemePageView: UIView {
+    // MARK: - Delegate
+    weak var delegate: ThemePageDelegate? {
+        didSet {
+            delegate?.setLimitsPicker(self.picker)
+        }
+    }
     
     // MARK: - UI Components
-     lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = "Theme"
-        return label
+    private let picker: UISegmentedControl = {
+        let picker = UISegmentedControl()
+        
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        
+        return picker
     }()
     
-    lazy var placeholderView: UIView = {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .lightGray // Adjust color as needed
-            return view
-        }()
+    var chartHostingController: UIHostingController<ChartView>? {
+        didSet {
+            chartHostingController?.view.translatesAutoresizingMaskIntoConstraints = false
+            self.setupUI()
+        }
+    }
     
-    lazy var tableView: UITableView = {
-        let tableView = UITableView()
+    let testsTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = .systemBackground
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TestCell")
+        
         return tableView
-    }()
-    
-    lazy var addThemeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add Item", for: .normal)
-        return button
     }()
     
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
+        
+        self.backgroundColor = .systemBackground
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
-            
-            addSubview(titleLabel)
-            addSubview(placeholderView)
-            addSubview(tableView)
-            addSubview(addThemeButton)
-            
-            NSLayoutConstraint.activate([
-                titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-                titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-                
-                placeholderView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-                placeholderView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                placeholderView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-                placeholderView.heightAnchor.constraint(equalToConstant: 200), // Adjust height as needed
-                
-                tableView.topAnchor.constraint(equalTo: placeholderView.bottomAnchor, constant: 20),
-                tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: addThemeButton.topAnchor, constant: -20),
-                
-                addThemeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                addThemeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-                addThemeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
-            ])
-        }
-    
-    
-    // MARK: - Button Action
-    func addAction(for target: Any?, action: Selector, event: UIControl.Event) {
-        addThemeButton.addTarget(target, action: action, for: event)
-    }
-    
-    // MARK: - Table View Setup
-    func setTableViewDataSourceDelegate<D: UITableViewDataSource & UITableViewDelegate>(_ dataSourceDelegate: D, forRowHeight height: CGFloat) {
-        tableView.rowHeight = height
-        tableView.dataSource = dataSourceDelegate
-        tableView.delegate = dataSourceDelegate
-        tableView.reloadData()
-    }
 }
 
+// MARK: - UI Setup
+extension ThemePageView: ViewCodeProtocol {
+    func setupUI() {
+        guard let chartHostingController = self.chartHostingController else { return }
+        
+        self.addSubview(picker)
+        self.addSubview(chartHostingController.view)
+        self.addSubview(testsTableView)
+        
+        let padding = 20.0
+            
+        NSLayoutConstraint.activate([
+            picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
+            picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            picker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            chartHostingController.view.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
+            chartHostingController.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            chartHostingController.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            chartHostingController.view.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),
+            
+            testsTableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding / 2),
+            testsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            testsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            testsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+}
