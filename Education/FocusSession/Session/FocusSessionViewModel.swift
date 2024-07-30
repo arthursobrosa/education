@@ -100,6 +100,18 @@ class FocusSessionViewModel {
     }
     
     func saveFocusSession() {
-        self.focusSessionManager.createFocusSession(date: self.date, totalTime: (self.totalSeconds - self.timerSeconds.value), subjectID: self.subjectID)
+        var totalTime: Int = 0
+        
+        if self.isPomodoro {
+            if self.isAtWorkTime {
+                totalTime = (self.workTime * self.currentLoop) + (self.totalSeconds - self.timerSeconds.value)
+            } else {
+                totalTime = self.workTime * (self.currentLoop + 1)
+            }
+        } else {
+            totalTime = self.totalSeconds - self.timerSeconds.value
+        }
+        
+        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subjectID)
     }
 }
