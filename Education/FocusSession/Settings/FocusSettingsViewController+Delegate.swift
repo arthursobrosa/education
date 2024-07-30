@@ -22,6 +22,8 @@ extension FocusSessionSettingsViewController: FocusSessionSettingsDelegate {
         
         self.coordinator?.showTimer(totalTimeInSeconds: Int(selectedTime), subjectID: self.viewModel.subjectID)
         
-        self.model.apllyShields()
+        if self.viewModel.blockApps {
+            self.model.apllyShields()
+        }
     }
 }

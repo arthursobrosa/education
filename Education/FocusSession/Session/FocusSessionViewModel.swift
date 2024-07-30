@@ -36,15 +36,33 @@ class FocusSessionViewModel {
     private let subjectID: String?
     private let date: Date
     
+    var isPomodoro: Bool
+    let workTime: Int
+    let restTime: Int
+    let numberOfLoops: Int
+    var currentLoop: Int
+    var isAtWorkTime: Bool
+    
+    
     // MARK: - Initializer
     init(totalSeconds: Int, subjectID: String?, focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.focusSessionManager = focusSessionManager
         
-        self.totalSeconds = totalSeconds
-        self.timerSeconds = Box(totalSeconds)
+//        self.totalSeconds = totalSeconds
+//        self.timerSeconds = Box(totalSeconds)
         self.timerState = Box(nil)
         self.subjectID = subjectID
         self.date = Date.now
+        
+        self.isPomodoro = true
+        self.workTime = 10
+        self.restTime = 5
+        self.numberOfLoops = 3
+        self.currentLoop = 0
+        self.isAtWorkTime = true
+        
+        self.totalSeconds = self.workTime
+        self.timerSeconds = Box(self.totalSeconds)
     }
     
     // MARK: - Methods

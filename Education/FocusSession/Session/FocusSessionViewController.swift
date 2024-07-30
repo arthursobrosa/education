@@ -51,6 +51,32 @@ class FocusSessionViewController: UIViewController {
             self.updateViewLabels()
             
             if timerSeconds <= 0 {
+                if self.viewModel.isPomodoro {
+                    if self.viewModel.isAtWorkTime {
+                        if self.viewModel.currentLoop >= self.viewModel.numberOfLoops - 1 {
+                            self.handleTimerEnd()
+                            return
+                        }
+                        
+                        self.viewModel.isAtWorkTime.toggle()
+                        
+                        self.viewModel.totalSeconds = self.viewModel.restTime
+                        self.viewModel.timerSeconds.value = self.viewModel.totalSeconds
+                    } else {
+                        self.viewModel.currentLoop += 1
+                        self.viewModel.isAtWorkTime.toggle()
+                        
+                        self.viewModel.totalSeconds = self.viewModel.workTime
+                        self.viewModel.timerSeconds.value = self.viewModel.totalSeconds
+                    }
+                    
+                    self.viewModel.timerState.value = .reseting
+                    self.viewModel.timerState.value = .starting
+                    
+                    return
+                }
+                
+                
                 self.handleTimerEnd()
             }
         }
