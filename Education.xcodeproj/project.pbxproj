@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */; };
 		302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */; };
+		30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EE4DBB2C59722400BB64D8 /* AudioService.swift */; };
+		30EE4DBF2C59728E00BB64D8 /* alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30EE4DBE2C59728E00BB64D8 /* alarm.mp3 */; };
 		30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A32C2C885A00B7114F /* ThemeListViewController.swift */; };
 		30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */; };
 		30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */; };
@@ -132,6 +134,8 @@
 /* Begin PBXFileReference section */
 		302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
 		302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeChartView.swift; sourceTree = "<group>"; };
+		30EE4DBB2C59722400BB64D8 /* AudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioService.swift; sourceTree = "<group>"; };
+		30EE4DBE2C59728E00BB64D8 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm.mp3; sourceTree = "<group>"; };
 		30F216A32C2C885A00B7114F /* ThemeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListViewController.swift; sourceTree = "<group>"; };
 		30F216A72C2C887A00B7114F /* ThemeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListViewModel.swift; sourceTree = "<group>"; };
 		30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageViewController.swift; sourceTree = "<group>"; };
@@ -269,6 +273,14 @@
 			path = StudyTimeChart;
 			sourceTree = "<group>";
 		};
+		30EE4DBD2C59727B00BB64D8 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				30EE4DBE2C59728E00BB64D8 /* alarm.mp3 */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 		30F216A12C2C883900B7114F /* Themes */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,6 +398,7 @@
 				68825BD22C2F370B00272451 /* Box.swift */,
 				68833D992C46B28D00BA4850 /* DefaultCell.swift */,
 				683812F52C48329D0062067A /* UserDefaults.swift */,
+				30EE4DBB2C59722400BB64D8 /* AudioService.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -433,6 +446,7 @@
 		683B45372C1B6F3A00663912 /* Education */ = {
 			isa = PBXGroup;
 			children = (
+				30EE4DBD2C59727B00BB64D8 /* Audio */,
 				68D47D582C2DE227000E011C /* Education.entitlements */,
 				6833B2162C345670009EA63D /* App */,
 				6833B21A2C3456C9009EA63D /* Utils */,
@@ -700,6 +714,7 @@
 				68C8D9AB2C4987FF0092E80D /* Localizable.strings in Resources */,
 				683B45452C1B6F3B00663912 /* Base in Resources */,
 				683812FF2C483EDE0062067A /* loading.json in Resources */,
+				30EE4DBF2C59728E00BB64D8 /* alarm.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -740,6 +755,7 @@
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
 				317C112A2C35C4A100C5E7A5 /* FocusSessionCoordinator.swift in Sources */,
+				30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
 				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
