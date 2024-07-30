@@ -20,7 +20,18 @@ extension FocusSessionSettingsViewController: FocusSessionSettingsDelegate {
             return
         }
         
-        self.coordinator?.showTimer(totalTimeInSeconds: Int(selectedTime), subjectID: self.viewModel.subjectID)
+        var totalTimeInSeconds: Int
+        
+        switch self.viewModel.timerCase {
+            case .stopwatch:
+                totalTimeInSeconds = 0
+            case .timer:
+                totalTimeInSeconds = Int(selectedTime)
+            case .pomodoro(let workTime, let restTime, let numberOfLoops):
+                totalTimeInSeconds = workTime
+        }
+        
+        self.coordinator?.showTimer(totalTimeInSeconds: totalTimeInSeconds, subjectID: self.viewModel.subjectID, timerCase: self.viewModel.timerCase)
         
         if self.viewModel.blockApps {
             self.model.apllyShields()

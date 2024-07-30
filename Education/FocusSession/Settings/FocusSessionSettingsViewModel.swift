@@ -29,6 +29,7 @@ class FocusSessionSettingsViewModel {
     
     var alarmWhenFinished: Bool = true
     var blockApps: Bool = false
+    var timerCase: TimerCase = .timer
     
     var subjectID: String? = nil
     
@@ -65,4 +66,10 @@ class FocusSessionSettingsViewModel {
         
         return TimeInterval(totalTime)
     }
+}
+
+enum TimerCase {
+    case stopwatch
+    case timer
+    case pomodoro(workTime: Int, restTime: Int, numberOfLoops: Int)
 }

@@ -51,33 +51,33 @@ class FocusSessionViewController: UIViewController {
             self.updateViewLabels()
             
             if timerSeconds <= 0 {
-                if self.viewModel.isPomodoro {
-                    if self.viewModel.isAtWorkTime {
-                        if self.viewModel.currentLoop >= self.viewModel.numberOfLoops - 1 {
-                            self.handleTimerEnd()
-                            return
+                switch self.viewModel.timerCase {
+                    case .stopwatch:
+                        return
+                    case .timer:
+                        self.handleTimerEnd()
+                    case .pomodoro:
+                        if self.viewModel.isAtWorkTime {
+                            if self.viewModel.currentLoop >= self.viewModel.numberOfLoops - 1 {
+                                self.handleTimerEnd()
+                                return
+                            }
+                            
+                            self.viewModel.isAtWorkTime.toggle()
+                            
+                            self.viewModel.totalSeconds = self.viewModel.restTime
+                            self.viewModel.timerSeconds.value = self.viewModel.totalSeconds
+                        } else {
+                            self.viewModel.currentLoop += 1
+                            self.viewModel.isAtWorkTime.toggle()
+                            
+                            self.viewModel.totalSeconds = self.viewModel.workTime
+                            self.viewModel.timerSeconds.value = self.viewModel.totalSeconds
                         }
                         
-                        self.viewModel.isAtWorkTime.toggle()
-                        
-                        self.viewModel.totalSeconds = self.viewModel.restTime
-                        self.viewModel.timerSeconds.value = self.viewModel.totalSeconds
-                    } else {
-                        self.viewModel.currentLoop += 1
-                        self.viewModel.isAtWorkTime.toggle()
-                        
-                        self.viewModel.totalSeconds = self.viewModel.workTime
-                        self.viewModel.timerSeconds.value = self.viewModel.totalSeconds
-                    }
-                    
-                    self.viewModel.timerState.value = .reseting
-                    self.viewModel.timerState.value = .starting
-                    
-                    return
+                        self.viewModel.timerState.value = .reseting
+                        self.viewModel.timerState.value = .starting
                 }
-                
-                
-                self.handleTimerEnd()
             }
         }
         
@@ -100,11 +100,21 @@ class FocusSessionViewController: UIViewController {
             sceneDelegate.timeInBackground.bind { [weak self] timeInBackground in
                 guard let self = self else { return }
                 
-                if timeInBackground > 0 && self.viewModel.timerState.value == .starting {
-                    self.viewModel.timerSeconds.value -= timeInBackground
-                    
-                    self.restart()
-                    self.start()
+                switch self.viewModel.timerCase {
+                    case .stopwatch:
+                        if timeInBackground > 0 && self.viewModel.timerState.value == .starting {
+                            self.viewModel.timerSeconds.value += timeInBackground
+                            
+                            self.restart()
+                            self.start()
+                        }
+                    case .timer, .pomodoro:
+                        if timeInBackground > 0 && self.viewModel.timerState.value == .starting {
+                            self.viewModel.timerSeconds.value -= timeInBackground
+                            
+                            self.restart()
+                            self.start()
+                        }
                 }
             }
         }
@@ -121,7 +131,13 @@ class FocusSessionViewController: UIViewController {
                     self.focusSessionView.finishButton.isEnabled = true
                     self.focusSessionView.changeButtonAlpha()
                 case nil:
-                    self.focusSessionView.setupLayers()
+                    switch self.viewModel.timerCase {
+                        case .timer, .pomodoro:
+                            self.focusSessionView.setupLayers()
+                        default:
+                            break
+                    }
+                    
                     self.viewModel.timerState.value = .starting
                 default:
                     break
@@ -187,18 +203,14 @@ private extension FocusSessionViewController {
         self.focusSessionView.changePauseResumeImage(to: imageName)
     }
     
-    func startTimer() {
-        self.viewModel.startCountownTimer()
-    }
-    
     func resetTimer() {
-        self.viewModel.countdownTimer.invalidate()
+        self.viewModel.timer.invalidate()
         self.focusSessionView.resetAnimations()
     }
     
     func start() {
         self.startAnimation()
-        self.startTimer()
+        self.viewModel.startTimer()
     }
     
     func restart() {

@@ -13,15 +13,17 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
     var navigationController: UINavigationController
     var totalTimeInSeconds: Int
     var subjectID: String?
+    var timerCase: TimerCase
     
-    init(navigationController: UINavigationController, totalTimeInSeconds: Int, subjectID: String?) {
+    init(navigationController: UINavigationController, totalTimeInSeconds: Int, subjectID: String?, timerCase: TimerCase) {
         self.navigationController = navigationController
         self.totalTimeInSeconds = totalTimeInSeconds
         self.subjectID = subjectID
+        self.timerCase = timerCase
     }
     
     func start() {
-        let viewModel = FocusSessionViewModel(totalSeconds: self.totalTimeInSeconds, subjectID: self.subjectID)
+        let viewModel = FocusSessionViewModel(totalSeconds: self.totalTimeInSeconds, subjectID: self.subjectID, timerCase: self.timerCase)
         let vc = FocusSessionViewController(viewModel: viewModel)
         vc.title = String(localized: "focusSession")
         vc.coordinator = self
