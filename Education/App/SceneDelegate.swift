@@ -31,8 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window?.rootViewController = coordinator?.navigationController
 //        window?.makeKeyAndVisible()
         
-        let controller = UIViewController()
-        controller.view = FocusSelectionView()
+        let controller = FocusSelectionViewController()
         
         window?.rootViewController = controller
         window?.makeKeyAndVisible()

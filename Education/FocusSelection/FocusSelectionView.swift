@@ -79,7 +79,6 @@ class FocusSelectionView: UIView {
     // MARK: - Auxiliar methods
     
     @objc private func didTapTimerButton(_ sender: UIButton) {
-        print("got here")
         self.delegate?.timerButtonTapped()
     }
     

@@ -16,7 +16,7 @@ class SelectionButton: UIButton {
         //self.titleLabel?.attributedText = attributedText(withString: title, boldString: bold, normalFont: UIFont.systemFont(ofSize: 16), boldFont: UIFont.boldSystemFont(ofSize: 16))
         self.setTitle(title, for: .normal)
         self.setTitleColor(.label, for: .normal)
-        self.backgroundColor = .systemRed
+        self.backgroundColor = UIColor(named: "focusSelectionColor")
         self.layer.cornerRadius = 14
         self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         self.titleLabel?.numberOfLines = 2

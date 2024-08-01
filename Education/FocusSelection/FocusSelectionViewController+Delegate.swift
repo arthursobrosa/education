@@ -54,7 +54,6 @@ class FocusSelectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("aqui")
         self.view.backgroundColor = .systemBackground
         self.setupFocusSelectionView()
     }
