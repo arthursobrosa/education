@@ -24,11 +24,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.frame = windowScene.coordinateSpace.bounds
 
-        let themeListViewModel = ThemeListViewModel()
-        coordinator = SplashCoordinator(navigationController: UINavigationController(), themeListViewModel: themeListViewModel)
-        coordinator?.start()
+//        let themeListViewModel = ThemeListViewModel()
+//        coordinator = SplashCoordinator(navigationController: UINavigationController(), themeListViewModel: themeListViewModel)
+//        coordinator?.start()
+//        
+//        window?.rootViewController = coordinator?.navigationController
+//        window?.makeKeyAndVisible()
         
-        window?.rootViewController = coordinator?.navigationController
+        let controller = UIViewController()
+        controller.view = FocusSelectionView()
+        
+        window?.rootViewController = controller
         window?.makeKeyAndVisible()
     }
     
