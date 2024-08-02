@@ -25,7 +25,7 @@ class ScheduleViewController: UIViewController {
         return view
     }()
     
-    private let scheduleColors: [UIColor] = [.systemIndigo, .systemGreen, .systemOrange, .systemPurple]
+    private let scheduleColors: [UIColor] = [UIColor(named: "ScheduleColor1")!, UIColor(named: "ScheduleColor2")!, UIColor(named: "ScheduleColor3")!, UIColor(named: "ScheduleColor4")!, UIColor(named: "ScheduleColor5")!, UIColor(named: "ScheduleColor6")!]
     
     // MARK: - Initializer
     init(viewModel: ScheduleViewModel) {
@@ -77,7 +77,7 @@ class ScheduleViewController: UIViewController {
         
         dayViews.forEach { dayView in
             if let dayOfWeek = dayView.dayOfWeek {
-                dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: false)
+                dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: false, isToday: dayOfWeek.isToday)
             }
         }
     }
@@ -139,15 +139,17 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.identifier, for: indexPath) as? ScheduleTableViewCell else { fatalError("Could not dequeue cell") }
         
+        cell.color = color
+        cell.delegate = self
         cell.subject = subject
         cell.schedule = schedule
-        cell.color = color
+       
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 100
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -203,4 +205,14 @@ extension ScheduleViewController {
             subview.bottomAnchor.constraint(equalTo: self.scheduleView.contentView.bottomAnchor)
         ])
     }
+}
+
+// MARK: Play Button delegate
+extension ScheduleViewController: ScheduleButtonDelegate{
+    //Temporario, até termos o fluxo definido
+    func didTapCircleView(in cell: ScheduleTableViewCell) {
+        print("click")
+    }
+    
+    
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class FocusSessionViewController: UIViewController {
     // MARK: - BlockApps Model
@@ -136,6 +137,11 @@ private extension FocusSessionViewController {
     
     func handleTimerEnd() {
         self.focusSessionView.hidePauseResumeButton()
+        
+        let audioService = AudioService()
+        if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
+            audioService.playAudio(from: url)
+        }
         
         self.resetTimer()
         

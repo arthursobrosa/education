@@ -101,8 +101,8 @@ extension ScheduleView: ViewCodeProtocol {
         overlayView.addSubview(btnCreateActivity)
         overlayView.addSubview(btnStartActivity)
         
-        let padding = 20.0
         let btnPadind = 10.0
+        let padding = 10.0
         
         NSLayoutConstraint.activate([
             picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
