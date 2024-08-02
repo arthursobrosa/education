@@ -29,6 +29,7 @@
 		317C11372C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11362C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift */; };
 		317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11382C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift */; };
 		31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */; };
+		31EB254B2C596883008F8893 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB254A2C596883008F8893 /* NotificationService.swift */; };
 		680038EE2C49F68600851926 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680038ED2C49F68600851926 /* EmptyView.swift */; };
 		682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCE2C2F342100272451 /* ThemeManager.swift */; };
 		682927512C30AE4000FE29AA /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -152,6 +153,7 @@
 		317C11362C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeCoordinator.swift; sourceTree = "<group>"; };
 		317C11382C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectTimeTableViewCell.swift; sourceTree = "<group>"; };
 		31AA70A12C2C8632002367CA /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
+		31EB254A2C596883008F8893 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		680038ED2C49F68600851926 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		68333DD12C3F81590064BF87 /* ScheduleDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsViewModel.swift; sourceTree = "<group>"; };
 		68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetails.swift; sourceTree = "<group>"; };
@@ -334,6 +336,14 @@
 			path = StudyTime;
 			sourceTree = "<group>";
 		};
+		31EB25492C596864008F8893 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				31EB254A2C596883008F8893 /* NotificationService.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		6833B2162C345670009EA63D /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,6 +443,7 @@
 		683B45372C1B6F3A00663912 /* Education */ = {
 			isa = PBXGroup;
 			children = (
+				31EB25492C596864008F8893 /* Notification */,
 				68D47D582C2DE227000E011C /* Education.entitlements */,
 				6833B2162C345670009EA63D /* App */,
 				6833B21A2C3456C9009EA63D /* Utils */,
@@ -742,6 +753,7 @@
 				317C112A2C35C4A100C5E7A5 /* FocusSessionCoordinator.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
 				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
+				31EB254B2C596883008F8893 /* NotificationService.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
 				CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
