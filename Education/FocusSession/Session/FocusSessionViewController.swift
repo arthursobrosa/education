@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class FocusSessionViewController: UIViewController {
     // MARK: - BlockApps Model
@@ -44,6 +45,7 @@ class FocusSessionViewController: UIViewController {
         super.viewDidLoad()
         
         self.updateViewLabels()
+        self.setNavigationTitle(isPaused: false)
         
         self.viewModel.timerSeconds.bind { [weak self] timerSeconds in
             guard let self = self else { return }
@@ -51,7 +53,36 @@ class FocusSessionViewController: UIViewController {
             self.updateViewLabels()
             
             if timerSeconds <= 0 {
-                self.handleTimerEnd()
+                switch self.viewModel.timerCase {
+                    case .stopwatch:
+                        return
+                    case .timer:
+                        self.handleTimerEnd()
+                    case .pomodoro:
+                        if self.viewModel.isAtWorkTime {
+                            if self.viewModel.currentLoop >= self.viewModel.numberOfLoops - 1 {
+                                self.handleTimerEnd()
+                                return
+                            }
+                            
+                            self.viewModel.isAtWorkTime.toggle()
+                            
+                            self.viewModel.totalSeconds = self.viewModel.restTime
+                            self.viewModel.timerSeconds.value = self.viewModel.totalSeconds
+                        } else {
+                            self.viewModel.currentLoop += 1
+                            self.viewModel.isAtWorkTime.toggle()
+                            
+                            self.viewModel.totalSeconds = self.viewModel.workTime
+                            self.viewModel.timerSeconds.value = self.viewModel.totalSeconds
+                        }
+                        
+                        self.viewModel.timerState.value = .reseting
+                        self.viewModel.timerState.value = .starting
+                        
+                        let isPaused = !(self.viewModel.timerState.value == .starting)
+                        self.setNavigationTitle(isPaused: isPaused)
+                }
             }
         }
         
@@ -74,11 +105,21 @@ class FocusSessionViewController: UIViewController {
             sceneDelegate.timeInBackground.bind { [weak self] timeInBackground in
                 guard let self = self else { return }
                 
-                if timeInBackground > 0 && self.viewModel.timerState.value == .starting {
-                    self.viewModel.timerSeconds.value -= timeInBackground
-                    
-                    self.restart()
-                    self.start()
+                switch self.viewModel.timerCase {
+                    case .stopwatch:
+                        if timeInBackground > 0 && self.viewModel.timerState.value == .starting {
+                            self.viewModel.timerSeconds.value += timeInBackground
+                            
+                            self.restart()
+                            self.start()
+                        }
+                    case .timer, .pomodoro:
+                        if timeInBackground > 0 && self.viewModel.timerState.value == .starting {
+                            self.viewModel.timerSeconds.value -= timeInBackground
+                            
+                            self.restart()
+                            self.start()
+                        }
                 }
             }
         }
@@ -94,9 +135,17 @@ class FocusSessionViewController: UIViewController {
                 case .reseting:
                     self.focusSessionView.finishButton.isEnabled = true
                     self.focusSessionView.changeButtonAlpha()
+                    self.setNavigationTitle(isPaused: true)
                 case nil:
-                    self.focusSessionView.setupLayers()
+                    switch self.viewModel.timerCase {
+                        case .timer, .pomodoro:
+                            self.focusSessionView.setupLayers()
+                        default:
+                            break
+                    }
+                    
                     self.viewModel.timerState.value = .starting
+                    self.setNavigationTitle(isPaused: false)
                 default:
                     break
             }
@@ -110,9 +159,32 @@ class FocusSessionViewController: UIViewController {
     }
 }
 
-// MARK: - Private Methods
-private extension FocusSessionViewController {
-    func showEndTimeAlert() {
+// MARK: - Auxiliar Methods
+extension FocusSessionViewController {
+    public func setNavigationTitle(isPaused: Bool) {
+        var title: String
+        
+        if isPaused {
+            title = "Paused"
+        } else if let subject = self.viewModel.subject {
+            title = "\(subject.unwrappedName) activity"
+        } else {
+            title = "New activity"
+            
+            switch self.viewModel.timerCase {
+                case .pomodoro:
+                    if !self.viewModel.isAtWorkTime {
+                        title = "Interval"
+                    }
+                default:
+                    break
+            }
+        }
+        
+        self.title = title
+    }
+    
+    private func showEndTimeAlert() {
         let alertController = UIAlertController(title: String(localized: "timerAlertTitle"), message: String(localized: "timerAlertMessage"), preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
@@ -128,14 +200,19 @@ private extension FocusSessionViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    func updateViewLabels() {
+    private func updateViewLabels() {
         let timerString = self.viewModel.getTimerString()
         
         self.focusSessionView.updateLabels(timerString: timerString)
     }
     
-    func handleTimerEnd() {
+    private func handleTimerEnd() {
         self.focusSessionView.hidePauseResumeButton()
+        
+        let audioService = AudioService()
+        if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
+            audioService.playAudio(from: url)
+        }
         
         self.resetTimer()
         
@@ -144,38 +221,34 @@ private extension FocusSessionViewController {
         self.showEndTimeAlert()
     }
     
-    func startAnimation() {
+    private func startAnimation() {
         let timerDuration = Double(self.viewModel.timerSeconds.value)
         let timerString = self.viewModel.getTimerString()
         self.focusSessionView.startAnimation(timerDuration: timerDuration, timerString: timerString)
     }
     
-    func restartAnimation() {
+    private func restartAnimation() {
         let timerDuration = Double(self.viewModel.timerSeconds.value) + 1
         let strokeEnd = self.viewModel.getStrokeEnd()
         
         self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
     }
     
-    func updateButton(imageName: String) {
+    private func updateButton(imageName: String) {
         self.focusSessionView.changePauseResumeImage(to: imageName)
     }
     
-    func startTimer() {
-        self.viewModel.startCountownTimer()
-    }
-    
-    func resetTimer() {
-        self.viewModel.countdownTimer.invalidate()
+    private func resetTimer() {
+        self.viewModel.timer.invalidate()
         self.focusSessionView.resetAnimations()
     }
     
-    func start() {
+    private func start() {
         self.startAnimation()
-        self.startTimer()
+        self.viewModel.startTimer()
     }
     
-    func restart() {
+    private func restart() {
         self.resetTimer()
         self.restartAnimation()
     }
