@@ -32,8 +32,22 @@ class ScheduleViewModel {
     // MARK: - Methods
     func fetchSchedules() {
         if let schedules = self.scheduleManager.fetchSchedules(dayOfTheWeek: self.selectedDay) {
-            let orderedSchedules = schedules.sorted { $0.unwrappedStartTime < $1.unwrappedStartTime }
+            let orderedSchedules = schedules.sorted {
+                let calendar = Calendar.current
+                let startTimeComponents1 = calendar.dateComponents([.hour, .minute], from: $0.unwrappedStartTime)
+                let startTimeComponents2 = calendar.dateComponents([.hour, .minute], from: $1.unwrappedStartTime)
+                
+                if let hour1 = startTimeComponents1.hour, let minute1 = startTimeComponents1.minute,
+                   let hour2 = startTimeComponents2.hour, let minute2 = startTimeComponents2.minute {
+                    if hour1 == hour2 {
+                        return minute1 < minute2
+                    }
+                    return hour1 < hour2
+                }
+                return false
+            }
             self.schedules = orderedSchedules
+            print(orderedSchedules)
         }
     }
     

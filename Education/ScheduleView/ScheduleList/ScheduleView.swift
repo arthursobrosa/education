@@ -64,7 +64,7 @@ extension ScheduleView: ViewCodeProtocol {
         self.addSubview(picker)
         self.addSubview(contentView)
         
-        let padding = 20.0
+        let padding = 10.0
         
         NSLayoutConstraint.activate([
             picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
