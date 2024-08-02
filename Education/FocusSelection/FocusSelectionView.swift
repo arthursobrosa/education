@@ -22,7 +22,7 @@ class FocusSelectionView: UIView {
         lbl.text = "De que forma você deseja contar o tempo?"
         lbl.textAlignment = .center
         lbl.font = .systemFont(ofSize: 20)
-        lbl.textColor = .label
+        lbl.textColor = .white
         lbl.numberOfLines = 2
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +68,7 @@ class FocusSelectionView: UIView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        self.backgroundColor = .systemBackground
+        self.backgroundColor = UIColor(named: "focusSelectionColor")
         self.setupUI()
     }
     
@@ -103,8 +103,8 @@ extension FocusSelectionView: ViewCodeProtocol {
         timerContainerView.addSubview(topLabel)
         
         self.addSubview(timerButton)
-        self.addSubview(pomodoroButton)
         self.addSubview(stopWatchButton)
+        self.addSubview(pomodoroButton)
         self.addSubview(finishButton)
         
         let padding = 20.0
@@ -117,18 +117,18 @@ extension FocusSelectionView: ViewCodeProtocol {
             
             timerButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             timerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            timerButton.bottomAnchor.constraint(equalTo: pomodoroButton.topAnchor, constant: -padding),
+            timerButton.bottomAnchor.constraint(equalTo: stopWatchButton.topAnchor, constant: -padding),
             timerButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.184),
-            
-            pomodoroButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            pomodoroButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            pomodoroButton.bottomAnchor.constraint(equalTo: stopWatchButton.topAnchor, constant: -padding),
-            pomodoroButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.184),
             
             stopWatchButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             stopWatchButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            stopWatchButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding * 5),
+            stopWatchButton.bottomAnchor.constraint(equalTo: pomodoroButton.topAnchor, constant: -padding),
             stopWatchButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.184),
+            
+            pomodoroButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            pomodoroButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            pomodoroButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding * 5),
+            pomodoroButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.184),
             
             finishButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             finishButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
