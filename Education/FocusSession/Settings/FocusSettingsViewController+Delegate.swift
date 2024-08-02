@@ -27,7 +27,7 @@ extension FocusSessionSettingsViewController: FocusSessionSettingsDelegate {
                 totalTimeInSeconds = 0
             case .timer:
                 totalTimeInSeconds = Int(selectedTime)
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
+            case .pomodoro(let workTime, _, _):
                 totalTimeInSeconds = workTime
         }
         
