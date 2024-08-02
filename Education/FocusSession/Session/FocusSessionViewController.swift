@@ -45,6 +45,7 @@ class FocusSessionViewController: UIViewController {
         super.viewDidLoad()
         
         self.updateViewLabels()
+        self.setNavigationTitle(isPaused: false)
         
         self.viewModel.timerSeconds.bind { [weak self] timerSeconds in
             guard let self = self else { return }
@@ -78,6 +79,9 @@ class FocusSessionViewController: UIViewController {
                         
                         self.viewModel.timerState.value = .reseting
                         self.viewModel.timerState.value = .starting
+                        
+                        let isPaused = !(self.viewModel.timerState.value == .starting)
+                        self.setNavigationTitle(isPaused: isPaused)
                 }
             }
         }
@@ -131,6 +135,7 @@ class FocusSessionViewController: UIViewController {
                 case .reseting:
                     self.focusSessionView.finishButton.isEnabled = true
                     self.focusSessionView.changeButtonAlpha()
+                    self.setNavigationTitle(isPaused: true)
                 case nil:
                     switch self.viewModel.timerCase {
                         case .timer, .pomodoro:
@@ -140,6 +145,7 @@ class FocusSessionViewController: UIViewController {
                     }
                     
                     self.viewModel.timerState.value = .starting
+                    self.setNavigationTitle(isPaused: false)
                 default:
                     break
             }
@@ -153,9 +159,32 @@ class FocusSessionViewController: UIViewController {
     }
 }
 
-// MARK: - Private Methods
-private extension FocusSessionViewController {
-    func showEndTimeAlert() {
+// MARK: - Auxiliar Methods
+extension FocusSessionViewController {
+    public func setNavigationTitle(isPaused: Bool) {
+        var title: String
+        
+        if isPaused {
+            title = "Paused"
+        } else if let subject = self.viewModel.subject {
+            title = "\(subject.unwrappedName) activity"
+        } else {
+            title = "New activity"
+            
+            switch self.viewModel.timerCase {
+                case .pomodoro:
+                    if !self.viewModel.isAtWorkTime {
+                        title = "Interval"
+                    }
+                default:
+                    break
+            }
+        }
+        
+        self.title = title
+    }
+    
+    private func showEndTimeAlert() {
         let alertController = UIAlertController(title: String(localized: "timerAlertTitle"), message: String(localized: "timerAlertMessage"), preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
@@ -171,13 +200,13 @@ private extension FocusSessionViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    func updateViewLabels() {
+    private func updateViewLabels() {
         let timerString = self.viewModel.getTimerString()
         
         self.focusSessionView.updateLabels(timerString: timerString)
     }
     
-    func handleTimerEnd() {
+    private func handleTimerEnd() {
         self.focusSessionView.hidePauseResumeButton()
         
         let audioService = AudioService()
@@ -192,34 +221,34 @@ private extension FocusSessionViewController {
         self.showEndTimeAlert()
     }
     
-    func startAnimation() {
+    private func startAnimation() {
         let timerDuration = Double(self.viewModel.timerSeconds.value)
         let timerString = self.viewModel.getTimerString()
         self.focusSessionView.startAnimation(timerDuration: timerDuration, timerString: timerString)
     }
     
-    func restartAnimation() {
+    private func restartAnimation() {
         let timerDuration = Double(self.viewModel.timerSeconds.value) + 1
         let strokeEnd = self.viewModel.getStrokeEnd()
         
         self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
     }
     
-    func updateButton(imageName: String) {
+    private func updateButton(imageName: String) {
         self.focusSessionView.changePauseResumeImage(to: imageName)
     }
     
-    func resetTimer() {
+    private func resetTimer() {
         self.viewModel.timer.invalidate()
         self.focusSessionView.resetAnimations()
     }
     
-    func start() {
+    private func start() {
         self.startAnimation()
         self.viewModel.startTimer()
     }
     
-    func restart() {
+    private func restart() {
         self.resetTimer()
         self.restartAnimation()
     }

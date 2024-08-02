@@ -10,7 +10,7 @@ import Foundation
 class FocusSessionViewModel {
     // MARK: - FocusSession Handler
     private let focusSessionManager: FocusSessionManager
-    
+   
     // MARK: - Properties
     var timer = Timer()
     
@@ -33,7 +33,7 @@ class FocusSessionViewModel {
     
     var timerState: Box<TimerState?>
     
-    private let subjectID: String?
+    let subject: Subject?
     private let date: Date
     
     var workTime = 0
@@ -44,13 +44,12 @@ class FocusSessionViewModel {
     
     var timerCase: TimerCase
     
-    
     // MARK: - Initializer
-    init(totalSeconds: Int, subjectID: String?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager()) {
+    init(totalSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.focusSessionManager = focusSessionManager
         
         self.timerState = Box(nil)
-        self.subjectID = subjectID
+        self.subject = subject
         self.date = Date.now
         
         self.totalSeconds = totalSeconds
@@ -122,6 +121,6 @@ class FocusSessionViewModel {
                 }
         }
         
-        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subjectID)
+        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
     }
 }

@@ -18,10 +18,10 @@ class FocusSessionSettingsViewModel {
     lazy var selectedSubjectName = self.subjectsNames[0] {
         didSet {
             if selectedSubjectName == self.subjectsNames[0] {
-                self.subjectID = nil
+                self.selectedSubject = nil
             } else {
                 if let subject = self.subjectManager.fetchSubject(withName: selectedSubjectName) {
-                    self.subjectID = subject.unwrappedID
+                    self.selectedSubject = subject
                 }
             }
         }
@@ -31,7 +31,7 @@ class FocusSessionSettingsViewModel {
     var blockApps: Bool = false
     var timerCase: TimerCase = .timer
     
-    var subjectID: String? = nil
+    var selectedSubject: Subject?
     
     // MARK: - Initializer
     init(subjectManager: SubjectManager = SubjectManager()) {

@@ -16,6 +16,9 @@ protocol FocusSessionDelegate: AnyObject {
 extension FocusSessionViewController: FocusSessionDelegate {
     func pauseResumeButtonTapped() {
         self.viewModel.pauseResumeButtonTapped()
+        
+        let isPaused = !(self.viewModel.timerState.value == .starting)
+        self.setNavigationTitle(isPaused: isPaused)
     }
     
     func saveFocusSession() {
