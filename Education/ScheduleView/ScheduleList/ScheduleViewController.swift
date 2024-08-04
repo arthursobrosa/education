@@ -25,7 +25,7 @@ class ScheduleViewController: UIViewController {
         return view
     }()
     
-    private let scheduleColors: [UIColor] = [.systemIndigo, .systemGreen, .systemOrange, .systemPurple]
+    private let scheduleColors: [UIColor] = [UIColor(named: "ScheduleColor1")!, UIColor(named: "ScheduleColor2")!, UIColor(named: "ScheduleColor3")!, UIColor(named: "ScheduleColor4")!, UIColor(named: "ScheduleColor5")!, UIColor(named: "ScheduleColor6")!]
     
     // MARK: - Initializer
     init(viewModel: ScheduleViewModel) {
@@ -50,6 +50,11 @@ class ScheduleViewController: UIViewController {
         
         let addScheduleButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addScheduleButtonTapped))
         self.navigationItem.rightBarButtonItems = [addScheduleButton]
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
+        self.scheduleView.overlayView.addGestureRecognizer(tapGesture)
+        
+        self.scheduleView.btnCreateActivity.addTarget(self, action: #selector(createActivityBtnTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,13 +77,20 @@ class ScheduleViewController: UIViewController {
         
         dayViews.forEach { dayView in
             if let dayOfWeek = dayView.dayOfWeek {
-                dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: false)
+                dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: false, isToday: dayOfWeek.isToday)
             }
         }
     }
     
     @objc private func addScheduleButtonTapped() {
-        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
+        let newAlpha: CGFloat = self.scheduleView.overlayView.alpha == 0 ? 1 : 0
+        
+        UIView.animate(withDuration: 0.3) {
+            self.scheduleView.overlayView.alpha = newAlpha
+            self.scheduleView.btnCreateActivity.alpha = newAlpha
+            self.scheduleView.btnStartActivity.alpha = newAlpha
+        }
+//        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
     }
     
     func loadSchedules() {
@@ -87,6 +99,28 @@ class ScheduleViewController: UIViewController {
         self.setContentView(isEmpty: self.viewModel.schedules.isEmpty)
         
         self.reloadTable()
+    }
+    
+    @objc private func createActivityBtnTapped() {
+        dismissButtons()
+        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
+        
+    }
+    
+    @objc func viewTapped(_ gesture: UITapGestureRecognizer) {
+        // Verifica se o toque foi fora dos botões e oculta a overlayView se necessário
+        dismissButtons()
+    }
+    
+    func dismissButtons() {
+        // Esconde a overlayView e os botões se eles estiverem visíveis
+        if self.scheduleView.overlayView.alpha == 1 {
+            UIView.animate(withDuration: 0.3) {
+                self.scheduleView.overlayView.alpha = 0
+                self.scheduleView.btnCreateActivity.alpha = 0
+                self.scheduleView.btnStartActivity.alpha = 0
+            }
+        }
     }
 }
 
@@ -105,15 +139,17 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.identifier, for: indexPath) as? ScheduleTableViewCell else { fatalError("Could not dequeue cell") }
         
+        cell.color = color
+        cell.delegate = self
         cell.subject = subject
         cell.schedule = schedule
-        cell.color = color
+       
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 100
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -169,4 +205,14 @@ extension ScheduleViewController {
             subview.bottomAnchor.constraint(equalTo: self.scheduleView.contentView.bottomAnchor)
         ])
     }
+}
+
+// MARK: Play Button delegate
+extension ScheduleViewController: ScheduleButtonDelegate{
+    //Temporario, até termos o fluxo definido
+    func didTapCircleView(in cell: ScheduleTableViewCell) {
+        print("click")
+    }
+    
+    
 }
