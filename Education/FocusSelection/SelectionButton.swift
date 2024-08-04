@@ -13,17 +13,17 @@ class SelectionButton: UIButton {
         super.init(frame: .zero)
         
         self.layer.borderWidth = 2.5
-        self.setTitleColor(.label, for: .normal)
+        self.layer.borderColor = UIColor.black.cgColor
+        self.setTitleColor(.black, for: .normal)
         
         let attributedText = attributedText(withString: title, boldString: bold, normalFont: UIFont.systemFont(ofSize: 16), boldFont: UIFont.boldSystemFont(ofSize: 16))
         
         self.setAttributedTitle(attributedText, for: .normal)
-        self.backgroundColor = UIColor(named: "focusSelectionColor")
+        self.backgroundColor = UIColor(named: "FocusSelectionColor")
         self.layer.cornerRadius = 14
         self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         self.titleLabel?.numberOfLines = 2
         self.titleLabel?.textAlignment = .center
-        self.titleLabel?.textColor = .black
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     

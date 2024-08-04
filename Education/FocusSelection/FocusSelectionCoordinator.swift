@@ -7,45 +7,26 @@
 
 import UIKit
 
-class FocusSettingsCoordinator: Coordinator, Dismissing {
-    weak var parentCoordinator: Coordinator?
+class FocusSelectionCoordinator: Coordinator, ShowingFocusPicker {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    var totalTimeInSeconds: Int
-    var subjectID: String?
     
-    init(navigationController: UINavigationController, totalTimeInSeconds: Int, subjectID: String?) {
+    init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.totalTimeInSeconds = totalTimeInSeconds
-        self.subjectID = subjectID
     }
     
     func start() {
-        let viewModel = FocusSessionViewModel(totalSeconds: self.totalTimeInSeconds, subjectID: self.subjectID)
-        let vc = FocusSessionViewController(viewModel: viewModel)
-        vc.title = String(localized: "focusSession")
+        let viewModel = FocusSelectionViewModel()
+        let vc = FocusSelectionViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.navigationItem.hidesBackButton = true
-        self.navigationController.pushViewController(vc, animated: true)
+        
+        self.navigationController.pushViewController(vc, animated: false)
     }
     
-    func showTimer(totalTimeInSeconds: Int, subjectID: String?) {
-        let child = FocusSessionCoordinator(navigationController: self.navigationController, totalTimeInSeconds: totalTimeInSeconds, subjectID: subjectID)
+    func showFocusPicker() {
+        let child = FocusPickerCoordinator(navigationController: self.navigationController)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
-    }
-    
-    func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                self.childCoordinators.remove(at: index)
-                break
-            }
-        }
-    }
-    
-    func dismiss() {
-        self.navigationController.popViewController(animated: true)
     }
 }

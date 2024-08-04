@@ -11,19 +11,14 @@ class FocusSelectionView: UIView {
     weak var delegate: FocusSelectionDelegate?
     
     // MARK: - Properties
-    private let timerContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let topLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "De que forma você deseja contar o tempo?"
         lbl.textAlignment = .center
-        lbl.font = .systemFont(ofSize: 20)
+        lbl.font = .boldSystemFont(ofSize: 20)
         lbl.textColor = .white
-        lbl.numberOfLines = 2
+        lbl.numberOfLines = -1
+        lbl.lineBreakMode = .byWordWrapping
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -54,12 +49,10 @@ class FocusSelectionView: UIView {
         return bttn
     }()
     
-    lazy var finishButton: ButtonComponent = {
+    private lazy var finishButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String("Continuar"))
-        bttn.isEnabled = false
-        bttn.alpha = 0.5
         
-        bttn.addTarget(self, action: #selector(didTapFinishButton(_:)), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
         
         return bttn
     }()
@@ -68,7 +61,7 @@ class FocusSelectionView: UIView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        self.backgroundColor = UIColor(named: "focusSelectionColor")
+        self.backgroundColor = UIColor(named: "FocusSelectionColor")
         self.setupUI()
     }
     
@@ -77,31 +70,46 @@ class FocusSelectionView: UIView {
     }
     
     // MARK: - Auxiliar methods
+    private func changeButtonColors(_ button: UIButton, isSelected: Bool) {
+        let color: UIColor = isSelected ? .white : .black
+        
+        button.setTitleColor(color, for: .normal)
+        button.layer.borderColor = color.cgColor
+    }
     
     @objc private func didTapTimerButton(_ sender: UIButton) {
+        self.changeButtonColors(sender, isSelected: true)
+        self.changeButtonColors(self.pomodoroButton, isSelected: false)
+        self.changeButtonColors(self.stopWatchButton, isSelected: false)
+        
         self.delegate?.timerButtonTapped()
     }
     
     @objc private func didTapPomodoroButton(_ sender: UIButton) {
+        self.changeButtonColors(sender, isSelected: true)
+        self.changeButtonColors(self.timerButton, isSelected: false)
+        self.changeButtonColors(self.stopWatchButton, isSelected: false)
+        
         self.delegate?.pomodoroButtonTapped()
     }
     
     @objc private func didTapStopWatchButton(_ sender: UIButton) {
+        self.changeButtonColors(sender, isSelected: true)
+        self.changeButtonColors(self.pomodoroButton, isSelected: false)
+        self.changeButtonColors(self.timerButton, isSelected: false)
+        
         self.delegate?.stopWatchButtonTapped()
     }
     
-    @objc private func didTapFinishButton(_ sender: UIButton) {
-        self.delegate?.timerButtonTapped()
+    @objc private func didTapFinishButton() {
+        self.delegate?.finishButtonTapped()
     }
-    
 }
 
 // MARK: - UI Setup
 extension FocusSelectionView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(timerContainerView)
-        timerContainerView.addSubview(topLabel)
-        
+        self.addSubview(topLabel)
         self.addSubview(timerButton)
         self.addSubview(stopWatchButton)
         self.addSubview(pomodoroButton)
@@ -110,10 +118,9 @@ extension FocusSelectionView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            timerContainerView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding * 2),
-            timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.385),
-            timerContainerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            timerContainerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            topLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
+            topLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            topLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             
             timerButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             timerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
@@ -127,7 +134,7 @@ extension FocusSelectionView: ViewCodeProtocol {
             
             pomodoroButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             pomodoroButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            pomodoroButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding * 5),
+            pomodoroButton.bottomAnchor.constraint(equalTo: finishButton.topAnchor, constant: -padding),
             pomodoroButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.184),
             
             finishButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),

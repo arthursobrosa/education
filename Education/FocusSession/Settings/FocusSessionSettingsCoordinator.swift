@@ -9,7 +9,6 @@ import UIKit
 
 class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINavigationControllerDelegate {
     var childCoordinators = [Coordinator]()
-    
     var navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {

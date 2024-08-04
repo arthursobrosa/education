@@ -93,6 +93,14 @@
 		68C2D00C2C473FC100E2347A /* ScheduleDetails+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D00B2C473FC100E2347A /* ScheduleDetails+Popover.swift */; };
 		68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D00D2C47400A00E2347A /* ScheduleDetails+CellConfig.swift */; };
 		68C8D9AB2C4987FF0092E80D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C8D9A92C4987FF0092E80D /* Localizable.strings */; };
+		68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87D42C5D49F4006ED5FA /* FocusSelectionViewController.swift */; };
+		68CA87D72C5D4F74006ED5FA /* FocusSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87D62C5D4F74006ED5FA /* FocusSelectionViewModel.swift */; };
+		68CA87DA2C5D53A6006ED5FA /* FocusPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87D92C5D53A6006ED5FA /* FocusPickerCoordinator.swift */; };
+		68CA87DC2C5D5428006ED5FA /* FocusPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87DB2C5D5428006ED5FA /* FocusPickerViewModel.swift */; };
+		68CA87DE2C5D543D006ED5FA /* FocusPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87DD2C5D543D006ED5FA /* FocusPickerViewController.swift */; };
+		68CA87E02C5D54CD006ED5FA /* ShowingFocusPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87DF2C5D54CD006ED5FA /* ShowingFocusPicker.swift */; };
+		68CA87E22C5D56DD006ED5FA /* FocusPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87E12C5D56DD006ED5FA /* FocusPickerView.swift */; };
+		68CA87E42C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87E32C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift */; };
 		68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */; };
 		68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */; };
 		68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
@@ -229,6 +237,14 @@
 		68C2D00D2C47400A00E2347A /* ScheduleDetails+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+CellConfig.swift"; sourceTree = "<group>"; };
 		68C8D9AA2C4987FF0092E80D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68C8D9AC2C4988090092E80D /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		68CA87D42C5D49F4006ED5FA /* FocusSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionViewController.swift; sourceTree = "<group>"; };
+		68CA87D62C5D4F74006ED5FA /* FocusSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionViewModel.swift; sourceTree = "<group>"; };
+		68CA87D92C5D53A6006ED5FA /* FocusPickerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPickerCoordinator.swift; sourceTree = "<group>"; };
+		68CA87DB2C5D5428006ED5FA /* FocusPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPickerViewModel.swift; sourceTree = "<group>"; };
+		68CA87DD2C5D543D006ED5FA /* FocusPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPickerViewController.swift; sourceTree = "<group>"; };
+		68CA87DF2C5D54CD006ED5FA /* ShowingFocusPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusPicker.swift; sourceTree = "<group>"; };
+		68CA87E12C5D56DD006ED5FA /* FocusPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPickerView.swift; sourceTree = "<group>"; };
+		68CA87E32C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusPickerViewController+Delegate.swift"; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
 		68DE19892C3DBAD800872751 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
@@ -395,6 +411,7 @@
 				317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */,
 				68BBC96C2C35E13D00D82350 /* Dismissing.swift */,
 				68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */,
+				68CA87DF2C5D54CD006ED5FA /* ShowingFocusPicker.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -455,6 +472,7 @@
 			isa = PBXGroup;
 			children = (
 				CED3DB322C5BF9CA00297062 /* FocusSelection */,
+				68CA87D82C5D5387006ED5FA /* FocusPicker */,
 				30EE4DBD2C59727B00BB64D8 /* Audio */,
 				68D47D582C2DE227000E011C /* Education.entitlements */,
 				6833B2162C345670009EA63D /* App */,
@@ -610,6 +628,18 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		68CA87D82C5D5387006ED5FA /* FocusPicker */ = {
+			isa = PBXGroup;
+			children = (
+				68CA87D92C5D53A6006ED5FA /* FocusPickerCoordinator.swift */,
+				68CA87DB2C5D5428006ED5FA /* FocusPickerViewModel.swift */,
+				68CA87DD2C5D543D006ED5FA /* FocusPickerViewController.swift */,
+				68CA87E32C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift */,
+				68CA87E12C5D56DD006ED5FA /* FocusPickerView.swift */,
+			);
+			path = FocusPicker;
+			sourceTree = "<group>";
+		};
 		CE3B7D2D2C45912100EE5070 /* BlockApps */ = {
 			isa = PBXGroup;
 			children = (
@@ -632,10 +662,12 @@
 		CED3DB322C5BF9CA00297062 /* FocusSelection */ = {
 			isa = PBXGroup;
 			children = (
+				CED3DB392C5C17EC00297062 /* FocusSelectionCoordinator.swift */,
+				68CA87D62C5D4F74006ED5FA /* FocusSelectionViewModel.swift */,
+				68CA87D42C5D49F4006ED5FA /* FocusSelectionViewController.swift */,
+				CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */,
 				CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */,
 				CED3DB352C5BFD7E00297062 /* SelectionButton.swift */,
-				CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */,
-				CED3DB392C5C17EC00297062 /* FocusSelectionCoordinator.swift */,
 			);
 			path = FocusSelection;
 			sourceTree = "<group>";
@@ -767,6 +799,7 @@
 				68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */,
 				317C11372C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift in Sources */,
 				688C306D2C3EDB2000E11EA7 /* FocusSessionSettings+Picker.swift in Sources */,
+				68CA87DC2C5D5428006ED5FA /* FocusPickerViewModel.swift in Sources */,
 				317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */,
 				CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */,
 				6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */,
@@ -775,6 +808,7 @@
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
+				68CA87E42C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift in Sources */,
 				317C112A2C35C4A100C5E7A5 /* FocusSessionCoordinator.swift in Sources */,
 				30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
@@ -786,6 +820,7 @@
 				6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
 				6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */,
+				68CA87E02C5D54CD006ED5FA /* ShowingFocusPicker.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
 				68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */,
 				68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */,
@@ -798,6 +833,7 @@
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
 				CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */,
+				68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */,
 				680038EE2C49F68600851926 /* EmptyView.swift in Sources */,
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
 				683812F22C481ADA0062067A /* SplashView.swift in Sources */,
@@ -808,6 +844,8 @@
 				317C112E2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift in Sources */,
 				30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */,
 				683812F02C481A9C0062067A /* SplashViewController.swift in Sources */,
+				68CA87E22C5D56DD006ED5FA /* FocusPickerView.swift in Sources */,
+				68CA87DA2C5D53A6006ED5FA /* FocusPickerCoordinator.swift in Sources */,
 				68333DD82C3F95AD0064BF87 /* ShowingScheduleDetails.swift in Sources */,
 				68333DD22C3F81590064BF87 /* ScheduleDetailsViewModel.swift in Sources */,
 				302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */,
@@ -830,11 +868,13 @@
 				6881123E2C33388A003012D0 /* ShowingTestPage.swift in Sources */,
 				68C2CFFB2C47220000E2347A /* ScheduleView.swift in Sources */,
 				CE3B7D332C4591CE00EE5070 /* BlockAppsViewModel.swift in Sources */,
+				68CA87D72C5D4F74006ED5FA /* FocusSelectionViewModel.swift in Sources */,
 				30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */,
 				68825BD32C2F370B00272451 /* Box.swift in Sources */,
 				68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */,
 				683812F42C481C580062067A /* ShowingTabBar.swift in Sources */,
 				6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */,
+				68CA87DE2C5D543D006ED5FA /* FocusPickerViewController.swift in Sources */,
 				68AA61A72C3C25980053AD33 /* FocusSessionSettings+Toggle.swift in Sources */,
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
 				68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */,
