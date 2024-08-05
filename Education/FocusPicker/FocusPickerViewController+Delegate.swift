@@ -8,11 +8,16 @@
 import Foundation
 
 protocol FocusPickerDelegate: AnyObject {
-    func setDate(_ date: Date)
+    func startButtonTapped()
+    func cancelButtonTapped()
 }
 
 extension FocusPickerViewController: FocusPickerDelegate {
-    func setDate(_ date: Date) {
-        self.viewModel.setSelectedTime(date)
+    func startButtonTapped() {
+        self.viewModel.setSelectedTime()
+    }
+    
+    func cancelButtonTapped() {
+        self.coordinator?.dismiss()
     }
 }

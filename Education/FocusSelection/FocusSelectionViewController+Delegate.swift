@@ -8,29 +8,37 @@
 import UIKit
 
 protocol FocusSelectionDelegate: AnyObject {
-    func timerButtonTapped()
-    func pomodoroButtonTapped()
-    func stopWatchButtonTapped()
-    func finishButtonTapped()
+    func selectionButtonTapped(tag: Int)
+    func continueButtonTapped()
+    func cancelButtonTapped()
 }
 
 extension FocusSelectionViewController: FocusSelectionDelegate {
-    func timerButtonTapped() {
-        self.viewModel.selectedTimerCase = .timer
+    func selectionButtonTapped(tag: Int) {
+        var timerCase: TimerCase?
+        
+        switch tag {
+            case 0:
+                timerCase = .timer
+            case 1:
+                timerCase = .pomodoro(workTime: 0, restTime: 0, numberOfLoops: 0)
+            case 2:
+                timerCase = .stopwatch
+            default:
+                break
+        }
+        
+        self.viewModel.selectedTimerCase = timerCase
     }
     
-    func pomodoroButtonTapped() {
-        self.viewModel.selectedTimerCase = .pomodoro(workTime: 0, restTime: 0, numberOfLoops: 0)
-    }
-    
-    func stopWatchButtonTapped() {
-        self.viewModel.selectedTimerCase = .stopwatch
-    }
-    
-    func finishButtonTapped() {
+    func continueButtonTapped() {
         if self.viewModel.selectedTimerCase != nil {
             self.coordinator?.showFocusPicker()
         }
+    }
+    
+    func cancelButtonTapped() {
+        
     }
 }
 

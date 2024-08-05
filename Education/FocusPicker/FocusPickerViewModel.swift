@@ -10,15 +10,31 @@ import Foundation
 class FocusPickerViewModel {
     var isAlarmOn: Bool = false
     var isTimeCountOn: Bool = false
+    var selectedHours = Int()
+    var selectedMinutes = Int()
     var selectedTime = Int()
     
-    func setSelectedTime(_ date: Date)  {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.hour, .minute], from: date)
+    let hours: [Int] = {
+        var hours = [Int]()
         
-        guard let hour = components.hour,
-              let minute = components.minute else { return }
+        for hour in 0..<24 {
+            hours.append(hour)
+        }
         
-        self.selectedTime = (hour * 60 + minute) * 60
+        return hours
+    }()
+    
+    let minutes: [Int] = {
+        var minutes = [Int]()
+        
+        for minute in 0..<60 {
+            minutes.append(minute)
+        }
+        
+        return minutes
+    }()
+    
+    func setSelectedTime() {
+        self.selectedTime = self.selectedHours * 3600 + self.selectedMinutes * 60
     }
 }

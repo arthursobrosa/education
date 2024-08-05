@@ -24,7 +24,6 @@ class SelectionButton: UIButton {
         self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         self.titleLabel?.numberOfLines = 2
         self.titleLabel?.textAlignment = .center
-        self.translatesAutoresizingMaskIntoConstraints = false
     }
     
     required init?(coder: NSCoder) {

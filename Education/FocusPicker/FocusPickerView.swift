@@ -10,12 +10,8 @@ import UIKit
 class FocusPickerView: UIView {
     weak var delegate: FocusPickerDelegate?
     
-    private lazy var datePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .countDownTimer
-        picker.preferredDatePickerStyle = .wheels
-        picker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
-        
+    let datePicker: CustomDatePickerView = {
+        let picker = CustomDatePickerView()
         picker.translatesAutoresizingMaskIntoConstraints = false
         
         return picker
@@ -30,9 +26,25 @@ class FocusPickerView: UIView {
         return tableView
     }()
     
-    private lazy var startButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: "Começar")
+    private lazy var startButton: ActionButton = {
+        let titleColor = self.backgroundColor?.getDarkerColor()
+        let bttn = ActionButton(title: "Começar", titleColor: titleColor)
+        
         bttn.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        let bttn = UIButton(configuration: .plain())
+        bttn.setTitle("Cancel", for: .normal)
+        bttn.setTitleColor(self.backgroundColor?.getDarkerColor(), for: .normal)
+        
+        bttn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()
@@ -50,11 +62,11 @@ class FocusPickerView: UIView {
     }
     
     @objc private func startButtonTapped() {
-        
+        self.delegate?.startButtonTapped()
     }
     
-    @objc private func datePickerChanged(_ sender: UIDatePicker) {
-        self.delegate?.setDate(sender.date)
+    @objc private func cancelButtonTapped() {
+        self.delegate?.cancelButtonTapped()
     }
 }
 
@@ -63,23 +75,29 @@ extension FocusPickerView: ViewCodeProtocol {
         self.addSubview(datePicker)
         self.addSubview(settingsTableView)
         self.addSubview(startButton)
+        self.addSubview(cancelButton)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            datePicker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            datePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            datePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            datePicker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding * 4),
+            datePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding * 2.5),
+            datePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -(padding * 2.5)),
+            datePicker.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),
             
-            settingsTableView.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: padding * 2),
+            settingsTableView.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: padding * 3.5),
             settingsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             settingsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            settingsTableView.bottomAnchor.constraint(equalTo: startButton.topAnchor, constant: -padding),
             
-            startButton.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: padding),
-            startButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            startButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            startButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: 0.16)
+            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(padding * 2)),
+            startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: (70/330)),
+            startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            cancelButton.topAnchor.constraint(equalTo: startButton.bottomAnchor, constant: padding),
+            cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            cancelButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
         ])
     }
 }

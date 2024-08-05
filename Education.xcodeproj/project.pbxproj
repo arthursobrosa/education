@@ -77,6 +77,7 @@
 		6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6887D5B22C3859DF00F037F2 /* ButtonComponent.swift */; };
 		688C306D2C3EDB2000E11EA7 /* FocusSessionSettings+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C306C2C3EDB1F00E11EA7 /* FocusSessionSettings+Picker.swift */; };
 		689A4C382C46DCA50006B095 /* FocusSettingsViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689A4C372C46DCA50006B095 /* FocusSettingsViewController+Delegate.swift */; };
+		68A451412C61143B00209786 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A451402C61143B00209786 /* CustomDatePicker.swift */; };
 		68AA61A52C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A42C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift */; };
 		68AA61A72C3C25980053AD33 /* FocusSessionSettings+Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */; };
 		68AA61A92C3C26220053AD33 /* FocusSessionSettings+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */; };
@@ -102,6 +103,8 @@
 		68CA87E02C5D54CD006ED5FA /* ShowingFocusPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87DF2C5D54CD006ED5FA /* ShowingFocusPicker.swift */; };
 		68CA87E22C5D56DD006ED5FA /* FocusPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87E12C5D56DD006ED5FA /* FocusPickerView.swift */; };
 		68CA87E42C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87E32C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift */; };
+		68D218E22C60319D00FA5CD7 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D218E12C60319D00FA5CD7 /* ActionButton.swift */; };
+		68D218E42C60321C00FA5CD7 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D218E32C60321C00FA5CD7 /* UIColor+Extension.swift */; };
 		68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9A2C2C8C6C00A3F392 /* Subject+Extension.swift */; };
 		68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9C2C2C8DB500A3F392 /* Theme+Extension.swift */; };
 		68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
@@ -221,6 +224,7 @@
 		6887D5B22C3859DF00F037F2 /* ButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
 		688C306C2C3EDB1F00E11EA7 /* FocusSessionSettings+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Picker.swift"; sourceTree = "<group>"; };
 		689A4C372C46DCA50006B095 /* FocusSettingsViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSettingsViewController+Delegate.swift"; sourceTree = "<group>"; };
+		68A451402C61143B00209786 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		68AA61A42C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+CellConfig.swift"; sourceTree = "<group>"; };
 		68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Toggle.swift"; sourceTree = "<group>"; };
 		68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Popover.swift"; sourceTree = "<group>"; };
@@ -247,6 +251,8 @@
 		68CA87DF2C5D54CD006ED5FA /* ShowingFocusPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusPicker.swift; sourceTree = "<group>"; };
 		68CA87E12C5D56DD006ED5FA /* FocusPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPickerView.swift; sourceTree = "<group>"; };
 		68CA87E32C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusPickerViewController+Delegate.swift"; sourceTree = "<group>"; };
+		68D218E12C60319D00FA5CD7 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		68D218E32C60321C00FA5CD7 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
 		68DE19892C3DBAD800872751 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
@@ -434,6 +440,7 @@
 				68833D992C46B28D00BA4850 /* DefaultCell.swift */,
 				683812F52C48329D0062067A /* UserDefaults.swift */,
 				30EE4DBB2C59722400BB64D8 /* AudioService.swift */,
+				68D218E32C60321C00FA5CD7 /* UIColor+Extension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -589,6 +596,8 @@
 				6887D5B22C3859DF00F037F2 /* ButtonComponent.swift */,
 				68DE19892C3DBAD800872751 /* Popover.swift */,
 				680038ED2C49F68600851926 /* EmptyView.swift */,
+				68D218E12C60319D00FA5CD7 /* ActionButton.swift */,
+				68A451402C61143B00209786 /* CustomDatePicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -816,6 +825,7 @@
 				6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */,
 				68C2CFFD2C47232500E2347A /* ScheduleViewController.swift in Sources */,
 				CE42E2F22C2F429C00A29B2D /* FocusSessionSettingsView.swift in Sources */,
+				68D218E42C60321C00FA5CD7 /* UIColor+Extension.swift in Sources */,
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
@@ -846,6 +856,7 @@
 				682927512C30AE4000FE29AA /* (null) in Sources */,
 				CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */,
 				68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */,
+				68A451412C61143B00209786 /* CustomDatePicker.swift in Sources */,
 				680038EE2C49F68600851926 /* EmptyView.swift in Sources */,
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
 				683812F22C481ADA0062067A /* SplashView.swift in Sources */,
@@ -885,6 +896,7 @@
 				68825BD32C2F370B00272451 /* Box.swift in Sources */,
 				68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */,
 				683812F42C481C580062067A /* ShowingTabBar.swift in Sources */,
+				68D218E22C60319D00FA5CD7 /* ActionButton.swift in Sources */,
 				6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */,
 				68CA87DE2C5D543D006ED5FA /* FocusPickerViewController.swift in Sources */,
 				68AA61A72C3C25980053AD33 /* FocusSessionSettings+Toggle.swift in Sources */,

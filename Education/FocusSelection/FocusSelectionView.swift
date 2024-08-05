@@ -25,34 +25,59 @@ class FocusSelectionView: UIView {
         return lbl
     }()
     
-    private lazy var timerButton: UIButton = {
+    private lazy var timerButton: SelectionButton = {
         let bttn = SelectionButton(title: String("Tempo programado \n Ex.: 50 minutos"), bold: "Tempo programado")
+        bttn.tag = 0
         
-        bttn.addTarget(self, action: #selector(didTapTimerButton(_:)), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()
     
-    private lazy var stopWatchButton: UIButton = {
+    private lazy var stopWatchButton: SelectionButton = {
         let bttn = SelectionButton(title: String("Tempo programado com intervalo"), bold: String("Tempo programado com intervalo"))
+        bttn.tag = 1
         
-        bttn.addTarget(self, action: #selector(didTapStopWatchButton(_:)), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()
     
-    private lazy var pomodoroButton: UIButton = {
+    private lazy var pomodoroButton: SelectionButton = {
         let bttn = SelectionButton(title: String("Livre (pare quando quiser)"), bold: String("Livre"))
+        bttn.tag = 2
         
-        bttn.addTarget(self, action: #selector(didTapPomodoroButton(_:)), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()
     
-    private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String("Continuar"))
+    private lazy var continueButton: ActionButton = {
+        let titleColor = self.backgroundColor?.getDarkerColor()
+        let bttn = ActionButton(title: "Continuar", titleColor: titleColor)
+        bttn.isEnabled = false
         
-        bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        let bttn = UIButton(configuration: .plain())
+        bttn.setTitle("Cancel", for: .normal)
+        bttn.setTitleColor(self.backgroundColor?.getDarkerColor(), for: .normal)
+        
+        bttn.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()
@@ -62,6 +87,7 @@ class FocusSelectionView: UIView {
         super.init(frame: .zero)
         
         self.backgroundColor = UIColor(named: "FocusSelectionColor")
+        
         self.setupUI()
     }
     
@@ -77,32 +103,30 @@ class FocusSelectionView: UIView {
         button.layer.borderColor = color.cgColor
     }
     
-    @objc private func didTapTimerButton(_ sender: UIButton) {
-        self.changeButtonColors(sender, isSelected: true)
-        self.changeButtonColors(self.pomodoroButton, isSelected: false)
-        self.changeButtonColors(self.stopWatchButton, isSelected: false)
+    @objc private func didTapSelectionButton(_ sender: UIButton) {
+        self.continueButton.isEnabled = true
         
-        self.delegate?.timerButtonTapped()
+        var selectionButtons = self.subviews.compactMap { $0 as? SelectionButton }
+        
+        if let buttonIndex = selectionButtons.firstIndex(where: { $0.tag == sender.tag }) {
+            selectionButtons.remove(at: buttonIndex)
+            
+            self.changeButtonColors(sender, isSelected: true)
+            
+            for selectionButton in selectionButtons {
+                self.changeButtonColors(selectionButton, isSelected: false)
+            }
+        }
+        
+        self.delegate?.selectionButtonTapped(tag: sender.tag)
     }
     
-    @objc private func didTapPomodoroButton(_ sender: UIButton) {
-        self.changeButtonColors(sender, isSelected: true)
-        self.changeButtonColors(self.timerButton, isSelected: false)
-        self.changeButtonColors(self.stopWatchButton, isSelected: false)
-        
-        self.delegate?.pomodoroButtonTapped()
+    @objc private func didTapContinueButton() {
+        self.delegate?.continueButtonTapped()
     }
     
-    @objc private func didTapStopWatchButton(_ sender: UIButton) {
-        self.changeButtonColors(sender, isSelected: true)
-        self.changeButtonColors(self.pomodoroButton, isSelected: false)
-        self.changeButtonColors(self.timerButton, isSelected: false)
-        
-        self.delegate?.stopWatchButtonTapped()
-    }
-    
-    @objc private func didTapFinishButton() {
-        self.delegate?.finishButtonTapped()
+    @objc private func didTapCancelButton() {
+        self.delegate?.cancelButtonTapped()
     }
 }
 
@@ -113,34 +137,40 @@ extension FocusSelectionView: ViewCodeProtocol {
         self.addSubview(timerButton)
         self.addSubview(stopWatchButton)
         self.addSubview(pomodoroButton)
-        self.addSubview(finishButton)
+        self.addSubview(continueButton)
+        self.addSubview(cancelButton)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            topLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
-            topLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            topLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            topLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            topLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            topLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             
+            timerButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: padding),
             timerButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             timerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            timerButton.bottomAnchor.constraint(equalTo: stopWatchButton.topAnchor, constant: -padding),
             timerButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.184),
             
+            stopWatchButton.topAnchor.constraint(equalTo: timerButton.bottomAnchor, constant: padding),
             stopWatchButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             stopWatchButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            stopWatchButton.bottomAnchor.constraint(equalTo: pomodoroButton.topAnchor, constant: -padding),
             stopWatchButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.184),
             
+            pomodoroButton.topAnchor.constraint(equalTo: stopWatchButton.bottomAnchor, constant: padding),
             pomodoroButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             pomodoroButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            pomodoroButton.bottomAnchor.constraint(equalTo: finishButton.topAnchor, constant: -padding),
             pomodoroButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.184),
             
-            finishButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            finishButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            finishButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            finishButton.heightAnchor.constraint(equalTo: finishButton.widthAnchor, multiplier: 0.16)
+            continueButton.topAnchor.constraint(equalTo: pomodoroButton.bottomAnchor, constant: padding),
+            continueButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(padding * 2)),
+            continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor, multiplier: (70/330)),
+            continueButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            cancelButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: padding),
+            cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            cancelButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
         ])
     }
 }

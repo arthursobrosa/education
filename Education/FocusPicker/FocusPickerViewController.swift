@@ -15,6 +15,12 @@ class FocusPickerViewController: UIViewController {
         let view = FocusPickerView()
         view.delegate = self
         
+        let subpickers = view.datePicker.subviews.compactMap { $0 as? UIPickerView }
+        for subpicker in subpickers {
+            subpicker.dataSource = self
+            subpicker.delegate = self
+        }
+        
         view.settingsTableView.dataSource = self
         view.settingsTableView.delegate = self
         view.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
@@ -108,5 +114,52 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         let footerView = UIView()
         footerView.backgroundColor = UIColor.clear
         return footerView
+    }
+}
+
+extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerView.tag == 0 ? self.viewModel.hours.count : self.viewModel.minutes.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let selection = pickerView.tag == 0 ? self.viewModel.hours[row] : self.viewModel.minutes[row]
+        let text = selection < 10 ? "0" + String(selection) : String(selection)
+        
+        let unselectedColor = self.view.backgroundColor?.getDarkerColor()?.withAlphaComponent(0.5)
+        
+        let selectedRow = pickerView.selectedRow(inComponent: 0)
+        let color: UIColor? = row == selectedRow ? .white : unselectedColor
+        
+        let fontSize = row == selectedRow ? 50.0 : 40.0
+        
+        let label = UILabel()
+        label.font = .systemFont(ofSize: fontSize)
+        label.text = text
+        label.textColor = color
+        label.textAlignment = .center
+        
+        return label
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        switch pickerView.tag {
+            case 0:
+                self.viewModel.selectedHours = self.viewModel.hours[row]
+            case 1:
+                self.viewModel.selectedMinutes = self.viewModel.minutes[row]
+            default:
+                break
+        }
+        
+        pickerView.reloadAllComponents()
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        50
     }
 }
