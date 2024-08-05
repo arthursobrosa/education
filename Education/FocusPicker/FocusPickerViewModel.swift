@@ -8,6 +8,8 @@
 import Foundation
 
 class FocusPickerViewModel {
+    let timerCase: TimerCase?
+    
     var isAlarmOn: Bool = false
     var isTimeCountOn: Bool = false
     var selectedHours = Int()
@@ -33,6 +35,10 @@ class FocusPickerViewModel {
         
         return minutes
     }()
+    
+    init(timerCase: TimerCase?) {
+        self.timerCase = timerCase
+    }
     
     func setSelectedTime() {
         self.selectedTime = self.selectedHours * 3600 + self.selectedMinutes * 60

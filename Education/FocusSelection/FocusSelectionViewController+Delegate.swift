@@ -33,7 +33,7 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
     
     func continueButtonTapped() {
         if self.viewModel.selectedTimerCase != nil {
-            self.coordinator?.showFocusPicker()
+            self.coordinator?.showFocusPicker(timerCase: self.viewModel.selectedTimerCase)
         }
     }
     

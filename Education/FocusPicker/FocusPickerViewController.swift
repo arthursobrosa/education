@@ -15,7 +15,9 @@ class FocusPickerViewController: UIViewController {
         let view = FocusPickerView()
         view.delegate = self
         
-        let subpickers = view.datePicker.subviews.compactMap { $0 as? UIPickerView }
+        view.dateView.timerCase = self.viewModel.timerCase
+        
+        let subpickers = view.dateView.timerDatePicker.subviews.compactMap { $0 as? UIPickerView }
         for subpicker in subpickers {
             subpicker.dataSource = self
             subpicker.delegate = self
@@ -91,7 +93,7 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         
         cell.accessoryView = toggle
         
-        cell.backgroundColor = UIColor(named: "FocusSettingsColor")
+        cell.backgroundColor = self.view.backgroundColor?.getSecondaryColor()
         
         return cell
     }
@@ -138,7 +140,7 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
         let fontSize = row == selectedRow ? 50.0 : 40.0
         
         let label = UILabel()
-        label.font = .systemFont(ofSize: fontSize)
+        label.font = .boldSystemFont(ofSize: fontSize)
         label.text = text
         label.textColor = color
         label.textAlignment = .center

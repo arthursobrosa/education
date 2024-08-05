@@ -10,11 +10,15 @@ import UIKit
 class FocusPickerView: UIView {
     weak var delegate: FocusPickerDelegate?
     
-    let datePicker: CustomDatePickerView = {
-        let picker = CustomDatePickerView()
-        picker.translatesAutoresizingMaskIntoConstraints = false
+    lazy var dateView: DateView = {
+        let view = DateView()
         
-        return picker
+        view.pomodoroWorkDatePicker.color = self.backgroundColor?.getDarkerColor()
+        view.pomodoroRestDatePicker.color = self.backgroundColor?.getSecondaryColor()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
     }()
     
     let settingsTableView: UITableView = {
@@ -72,7 +76,7 @@ class FocusPickerView: UIView {
 
 extension FocusPickerView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(datePicker)
+        self.addSubview(dateView)
         self.addSubview(settingsTableView)
         self.addSubview(startButton)
         self.addSubview(cancelButton)
@@ -80,12 +84,12 @@ extension FocusPickerView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            datePicker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding * 4),
-            datePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding * 2.5),
-            datePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -(padding * 2.5)),
-            datePicker.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),
+            dateView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            dateView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
+            dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (323/359)),
+            dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: (255/323)),
             
-            settingsTableView.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: padding * 3.5),
+            settingsTableView.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: padding * 3.5),
             settingsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             settingsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             settingsTableView.bottomAnchor.constraint(equalTo: startButton.topAnchor, constant: -padding),

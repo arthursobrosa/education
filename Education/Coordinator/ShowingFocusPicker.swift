@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ShowingFocusPicker: AnyObject {
-    func showFocusPicker()
+    func showFocusPicker(timerCase: TimerCase?)
 }

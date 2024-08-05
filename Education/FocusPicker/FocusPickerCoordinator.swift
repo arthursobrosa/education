@@ -11,13 +11,15 @@ class FocusPickerCoordinator: Coordinator, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    var timerCase: TimerCase?
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, timerCase: TimerCase?) {
         self.navigationController = navigationController
+        self.timerCase = timerCase
     }
     
     func start() {
-        let viewModel = FocusPickerViewModel()
+        let viewModel = FocusPickerViewModel(timerCase: self.timerCase)
         let vc = FocusPickerViewController(viewModel: viewModel)
         vc.coordinator = self
         

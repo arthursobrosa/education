@@ -1,5 +1,5 @@
 //
-//  CustomDatePicker.swift
+//  CustomDatePickerView.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 05/08/24.
@@ -19,7 +19,7 @@ class CustomDatePickerView: UIView {
     
     private let hoursLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 50)
+        label.font = .boldSystemFont(ofSize: 50)
         label.text = "h"
         label.textColor = .white
         label.textAlignment = .center
@@ -41,7 +41,7 @@ class CustomDatePickerView: UIView {
     
     private let minutesLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 50)
+        label.font = .boldSystemFont(ofSize: 50)
         label.text = "min"
         label.textColor = .white
         label.textAlignment = .center
@@ -85,20 +85,26 @@ private extension CustomDatePickerView {
         let padding = 10.0
         
         NSLayoutConstraint.activate([
-            hoursPicker.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            hoursPicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.3),
+            hoursPicker.topAnchor.constraint(equalTo: self.topAnchor),
+            hoursPicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (80/250)),
             hoursPicker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            hoursPicker.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
             hoursLabel.leadingAnchor.constraint(equalTo: hoursPicker.trailingAnchor, constant: -padding),
             hoursLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
-            minutesPicker.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            minutesPicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.3),
+            minutesPicker.topAnchor.constraint(equalTo: hoursPicker.topAnchor),
+            minutesPicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (80/250)),
             minutesPicker.leadingAnchor.constraint(equalTo: hoursLabel.trailingAnchor, constant: padding),
             minutesPicker.trailingAnchor.constraint(equalTo: minutesLabel.leadingAnchor, constant: padding),
+            minutesPicker.bottomAnchor.constraint(equalTo: hoursPicker.bottomAnchor),
             
             minutesLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             minutesLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
+}
+
+#Preview {
+    CustomDatePickerView()
 }
