@@ -27,10 +27,10 @@ class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINa
     }
     
     func showTimer(totalTimeInSeconds: Int, subject: Subject?, timerCase: TimerCase) {
-        let child = FocusSessionCoordinator(navigationController: self.navigationController, totalTimeInSeconds: totalTimeInSeconds, subject: subject, timerCase: timerCase)
-        child.parentCoordinator = self
-        self.childCoordinators.append(child)
-        child.start()
+//        let child = FocusSessionCoordinator(navigationController: self.navigationController, totalTimeInSeconds: totalTimeInSeconds, subject: subject, timerCase: timerCase)
+//        child.parentCoordinator = self
+//        self.childCoordinators.append(child)
+//        child.start()
     }
     
     func childDidFinish(_ child: Coordinator?) {

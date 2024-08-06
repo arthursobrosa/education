@@ -10,7 +10,7 @@ import UIKit
 protocol FocusSelectionDelegate: AnyObject {
     func selectionButtonTapped(tag: Int)
     func continueButtonTapped()
-    func cancelButtonTapped()
+    func dismiss()
 }
 
 extension FocusSelectionViewController: FocusSelectionDelegate {
@@ -32,13 +32,19 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
     }
     
     func continueButtonTapped() {
-        if self.viewModel.selectedTimerCase != nil {
-            self.coordinator?.showFocusPicker(timerCase: self.viewModel.selectedTimerCase)
+        guard let timerCase = self.viewModel.selectedTimerCase else { return }
+        
+        switch timerCase {
+            case .stopwatch:
+                self.coordinator?.showTimer(totalTimeInSeconds: 0, subject: nil, timerCase: timerCase)
+            case .timer, .pomodoro:
+                self.coordinator?.showFocusPicker(timerCase: timerCase)
         }
     }
     
-    func cancelButtonTapped() {
-        
+    func dismiss() {
+        self.changeViewVisibility(isHidden: false)
+        self.coordinator?.dismiss()
     }
 }
 

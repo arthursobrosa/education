@@ -8,13 +8,13 @@
 import UIKit
 
 class DateView: UIView {
-    var timerCase: TimerCase? {
+    weak var delegate: FocusPickerDelegate? {
         didSet {
-            guard let timerCase = timerCase else { return }
-            
-            self.setupUI(timerCase: timerCase)
+            self.setupUI()
         }
     }
+    
+    private let timerCase: TimerCase?
     
     let timerDatePicker: CustomDatePickerView = {
         let picker = CustomDatePickerView()
@@ -23,21 +23,54 @@ class DateView: UIView {
         return picker
     }()
     
-    let pomodoroWorkDatePicker: CustomDateButton = {
-        let picker = CustomDateButton()
+    lazy var pomodoroWorkDatePicker: CustomDateButton = {
+        let font: UIFont = .systemFont(ofSize: 30, weight: .semibold)
+        let picker = CustomDateButton(font: font)
+        picker.datePicker.tag = 0
+        picker.datePicker.addTarget(self, action: #selector(pomodoroDatePickerChanged(_:)), for: .valueChanged)
+        
         picker.translatesAutoresizingMaskIntoConstraints = false
         
         return picker
     }()
     
-    let pomodoroRestDatePicker: CustomDateButton = {
-        let picker = CustomDateButton()
+    lazy var pomodoroRestDatePicker: CustomDateButton = {
+        let font: UIFont = .systemFont(ofSize: 24, weight: .semibold)
+        let picker = CustomDateButton(font: font)
+        picker.datePicker.tag = 1
+        picker.datePicker.addTarget(self, action: #selector(pomodoroDatePickerChanged(_:)), for: .valueChanged)
+        
         picker.translatesAutoresizingMaskIntoConstraints = false
         
         return picker
     }()
     
-    private func setupUI(timerCase: TimerCase) {
+    init(timerCase: TimerCase?) {
+        self.timerCase = timerCase
+        
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func pomodoroDatePickerChanged(_ sender: UIDatePicker) {
+        let calendar = Calendar.current
+        
+        let dateComponents = calendar.dateComponents([.hour, .minute], from: sender.date)
+        
+        guard let hour = dateComponents.hour,
+              let minute = dateComponents.minute else { return }
+        
+        let timeInSeconds = hour * 3600 + minute * 60
+        
+        self.delegate?.pomodoroDateChanged(tag: sender.tag, time: timeInSeconds)
+    }
+    
+    private func setupUI() {
+        guard let timerCase = self.timerCase else { return }
+        
         switch timerCase {
             case .timer:
                 self.setTimer()
@@ -51,12 +84,10 @@ class DateView: UIView {
     private func setTimer() {
         self.addSubview(timerDatePicker)
         
-        let padding = 36.0
-        
         NSLayoutConstraint.activate([
             timerDatePicker.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            timerDatePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            timerDatePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            timerDatePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            timerDatePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
     }
     
@@ -64,17 +95,17 @@ class DateView: UIView {
         self.addSubview(pomodoroWorkDatePicker)
         self.addSubview(pomodoroRestDatePicker)
         
-        let padding = 50.0
+        let padding = 20.0
         
         NSLayoutConstraint.activate([
-            pomodoroWorkDatePicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (200/323)),
+            pomodoroWorkDatePicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (200/310)),
             pomodoroWorkDatePicker.heightAnchor.constraint(equalTo: pomodoroWorkDatePicker.widthAnchor, multiplier: (57/200)),
             pomodoroWorkDatePicker.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
             pomodoroWorkDatePicker.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             pomodoroRestDatePicker.topAnchor.constraint(equalTo: pomodoroWorkDatePicker.bottomAnchor, constant: padding),
-            pomodoroRestDatePicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (174/323)),
-            pomodoroRestDatePicker.heightAnchor.constraint(equalTo: pomodoroRestDatePicker.widthAnchor, multiplier: (57/200)),
+            pomodoroRestDatePicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (174/310)),
+            pomodoroRestDatePicker.heightAnchor.constraint(equalTo: pomodoroRestDatePicker.widthAnchor, multiplier: (50/200)),
             pomodoroRestDatePicker.centerXAnchor.constraint(equalTo: self.centerXAnchor)
         ])
     }

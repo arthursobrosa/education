@@ -65,7 +65,7 @@ class ScheduleView: UIView {
         return button
     }()
     
-    let btnStartActivity: UIButton = {
+    lazy var btnStartActivity: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Iniciar atividade imediata", for: .normal)
         button.backgroundColor = .white
@@ -75,6 +75,9 @@ class ScheduleView: UIView {
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0 // Inicialmente invisível
+        
+        button.addTarget(self, action: #selector(startActivityTapped), for: .touchUpInside)
+        
         return button
     }()
     
@@ -89,6 +92,10 @@ class ScheduleView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func startActivityTapped() {
+        self.delegate?.startAcitivityTapped()
     }
 }
 

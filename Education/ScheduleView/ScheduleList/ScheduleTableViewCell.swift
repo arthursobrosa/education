@@ -7,16 +7,14 @@
 
 import UIKit
 
-protocol ScheduleButtonDelegate: AnyObject {
-    func didTapCircleView(in cell: ScheduleTableViewCell)
-}
-
 class ScheduleTableViewCell: UITableViewCell {
     // MARK: - ID
     static let identifier = "scheduleCell"
     weak var delegate: ScheduleButtonDelegate?
     
     // MARK: - Properties
+    var indexPath: IndexPath?
+    
     var subject: Subject? {
         didSet {
             guard let subject = subject else { return }
@@ -76,7 +74,7 @@ class ScheduleTableViewCell: UITableViewCell {
     }
 
     @objc private func circleViewTapped() {
-        delegate?.didTapCircleView(in: self)
+        delegate?.didTapCircleView(at: self.indexPath, withColor: self.color)
     }
     
     var color: UIColor? {
@@ -96,8 +94,6 @@ class ScheduleTableViewCell: UITableViewCell {
         return view
     }()
     
-    
-    
     let playImageView: UIImageView = {
         let playImage = UIImage(systemName: "play.fill")!
         let imageView = UIImageView(image: playImage)
@@ -107,7 +103,6 @@ class ScheduleTableViewCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
     
     let circleView: UIView = {
         let view = UIView()
@@ -126,7 +121,6 @@ class ScheduleTableViewCell: UITableViewCell {
         lbl.textAlignment = .right
         lbl.text = "Falta 10 mins"
         lbl.textColor = .white
-//        lbl.font = .boldSystemFont(ofSize: 18.0)
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -156,13 +150,11 @@ class ScheduleTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        
-        
         self.setupUI()
         self.setupGestureRecognizer()
     }
     
-    private func getTimeLeft (){
+    private func getTimeLeft() {
         
     }
     
@@ -180,7 +172,6 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
         cardView.addSubview(circleView)
         cardView.addSubview(timeLeftLabel)
         circleView.addSubview(playImageView)
-        
         
         let padding = 8.0
         
@@ -209,8 +200,6 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
             
             playImageView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
             playImageView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            
-            
         ])
         
         cardView.layer.cornerRadius = 16

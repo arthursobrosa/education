@@ -8,11 +8,28 @@
 import UIKit
 
 class FocusPickerView: UIView {
-    weak var delegate: FocusPickerDelegate?
+    weak var delegate: FocusPickerDelegate? {
+        didSet {
+            dateView.delegate = delegate
+        }
+    }
+    
+    private let timerCase: TimerCase?
+    
+    private lazy var backButton: UIButton = {
+        let bttn = UIButton()
+        bttn.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        bttn.tintColor = .white
+        
+        bttn.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
+    }()
     
     lazy var dateView: DateView = {
-        let view = DateView()
-        
+        let view = DateView(timerCase: self.timerCase)
         view.pomodoroWorkDatePicker.color = self.backgroundColor?.getDarkerColor()
         view.pomodoroRestDatePicker.color = self.backgroundColor?.getSecondaryColor()
         
@@ -21,9 +38,9 @@ class FocusPickerView: UIView {
         return view
     }()
     
-    let settingsTableView: UITableView = {
+    lazy var settingsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.backgroundColor = UIColor(named: "FocusSelectionColor")
+        tableView.backgroundColor = self.backgroundColor
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -43,6 +60,7 @@ class FocusPickerView: UIView {
     
     private lazy var cancelButton: UIButton = {
         let bttn = UIButton(configuration: .plain())
+        bttn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
         bttn.setTitle("Cancel", for: .normal)
         bttn.setTitleColor(self.backgroundColor?.getDarkerColor(), for: .normal)
         
@@ -53,10 +71,12 @@ class FocusPickerView: UIView {
         return bttn
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(color: UIColor?, timerCase: TimerCase?) {
+        self.timerCase = timerCase
         
-        self.backgroundColor = UIColor(named: "FocusSelectionColor")
+        super.init(frame: .zero)
+        
+        self.backgroundColor = color
         
         self.setupUI()
     }
@@ -65,17 +85,22 @@ class FocusPickerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func backButtonTapped() {
+        self.delegate?.dismiss()
+    }
+    
     @objc private func startButtonTapped() {
         self.delegate?.startButtonTapped()
     }
     
     @objc private func cancelButtonTapped() {
-        self.delegate?.cancelButtonTapped()
+        self.delegate?.dismiss()
     }
 }
 
 extension FocusPickerView: ViewCodeProtocol {
     func setupUI() {
+        self.addSubview(backButton)
         self.addSubview(dateView)
         self.addSubview(settingsTableView)
         self.addSubview(startButton)
@@ -84,24 +109,27 @@ extension FocusPickerView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            dateView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            dateView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (323/359)),
-            dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: (255/323)),
+            backButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
+            backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             
-            settingsTableView.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: padding * 3.5),
+            dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (310/359)),
+            dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: (167/310)),
+            dateView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            dateView.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: padding * 3.5),
+            
             settingsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             settingsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            settingsTableView.bottomAnchor.constraint(equalTo: startButton.topAnchor, constant: -padding),
+            settingsTableView.heightAnchor.constraint(equalTo: settingsTableView.widthAnchor, multiplier: (100/359)),
+            settingsTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            settingsTableView.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: padding * 3.2),
             
-            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(padding * 2)),
+            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (330/359)),
             startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: (70/330)),
             startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            cancelButton.topAnchor.constraint(equalTo: startButton.bottomAnchor, constant: padding),
-            cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            cancelButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
+            cancelButton.topAnchor.constraint(equalTo: startButton.bottomAnchor, constant: padding * 0.7),
+            cancelButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding)
         ])
     }
 }

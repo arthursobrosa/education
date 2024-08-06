@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class SelectionButton: UIButton {
-    init(title: String, bold: String) {
+    init(title: String, bold: String, color: UIColor?) {
         super.init(frame: .zero)
         
         self.layer.borderWidth = 2.5
@@ -19,7 +19,7 @@ class SelectionButton: UIButton {
         let attributedText = attributedText(withString: title, boldString: bold, normalFont: UIFont.systemFont(ofSize: 16), boldFont: UIFont.boldSystemFont(ofSize: 16))
         
         self.setAttributedTitle(attributedText, for: .normal)
-        self.backgroundColor = UIColor(named: "FocusSelectionColor")
+        self.backgroundColor = color
         self.layer.cornerRadius = 14
         self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         self.titleLabel?.numberOfLines = 2

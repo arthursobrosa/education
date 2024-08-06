@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ScheduleCoordinator: Coordinator, ShowingScheduleDetails {
+class ScheduleCoordinator: Coordinator, ShowingScheduleDetails, ShowingFocusSelection {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -29,16 +29,23 @@ class ScheduleCoordinator: Coordinator, ShowingScheduleDetails {
     func showScheduleDetails(schedule: Schedule?, title: String?, selectedDay: Int) {
         let viewModel = ScheduleDetailsViewModel(schedule: schedule, selectedDay: selectedDay)
         let vc = ScheduleDetailsViewController(viewModel: viewModel)
-        vc.modalPresentationStyle = .pageSheet
         vc.title = "\(title ?? String(localized: "newSchedule")) \(String(localized: "schedule"))"
         
         let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .pageSheet
         
         if let scheduleVC = self.navigationController.viewControllers.first as? ScheduleViewController {
             nav.transitioningDelegate = scheduleVC
         }
         
         self.navigationController.present(nav, animated: true)
+    }
+    
+    func showFocusSelection(color: UIColor?, subject: Subject?) {
+        let child = FocusSelectionCoordinator(navigationController: self.navigationController, color: color, subject: subject)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
+        child.start()
     }
 }
 

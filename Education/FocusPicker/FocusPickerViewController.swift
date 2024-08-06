@@ -8,14 +8,14 @@
 import UIKit
 
 class FocusPickerViewController: UIViewController {
-    weak var coordinator: Dismissing?
+    weak var coordinator: (ShowingTimer & Dismissing)?
     let viewModel: FocusPickerViewModel
     
+    private let color: UIColor?
+    
     private lazy var focusPickerView: FocusPickerView = {
-        let view = FocusPickerView()
+        let view = FocusPickerView(color: self.color, timerCase: self.viewModel.timerCase)
         view.delegate = self
-        
-        view.dateView.timerCase = self.viewModel.timerCase
         
         let subpickers = view.dateView.timerDatePicker.subviews.compactMap { $0 as? UIPickerView }
         for subpicker in subpickers {
@@ -27,11 +27,18 @@ class FocusPickerViewController: UIViewController {
         view.settingsTableView.delegate = self
         view.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
         
+        view.layer.cornerRadius = 12
+        view.layer.borderColor = UIColor.white.cgColor
+        view.layer.borderWidth = 1
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
         return view
     }()
     
-    init(viewModel: FocusPickerViewModel) {
+    init(viewModel: FocusPickerViewModel, color: UIColor?) {
         self.viewModel = viewModel
+        self.color = color
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -40,22 +47,10 @@ class FocusPickerViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func loadView() {
-        super.loadView()
-        
-        self.view = self.focusPickerView
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let customBackButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
-        customBackButton.tintColor = .white
-        self.navigationItem.leftBarButtonItem = customBackButton
-    }
-    
-    @objc private func backButtonTapped() {
-        self.coordinator?.dismiss()
+        self.setupUI()
     }
     
     @objc private func didChangeToggle(_ sender: UISwitch) {
@@ -67,6 +62,19 @@ class FocusPickerViewController: UIViewController {
             default:
                 break
         }
+    }
+}
+
+extension FocusPickerViewController: ViewCodeProtocol {
+    func setupUI() {
+        self.view.addSubview(focusPickerView)
+        
+        NSLayoutConstraint.activate([
+            focusPickerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: (588/844)),
+            focusPickerView.widthAnchor.constraint(equalTo: focusPickerView.heightAnchor, multiplier: (359/588)),
+            focusPickerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            focusPickerView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        ])
     }
 }
 
@@ -93,7 +101,7 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         
         cell.accessoryView = toggle
         
-        cell.backgroundColor = self.view.backgroundColor?.getSecondaryColor()
+        cell.backgroundColor = self.color?.getSecondaryColor()
         
         return cell
     }
@@ -132,7 +140,7 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
         let selection = pickerView.tag == 0 ? self.viewModel.hours[row] : self.viewModel.minutes[row]
         let text = selection < 10 ? "0" + String(selection) : String(selection)
         
-        let unselectedColor = self.view.backgroundColor?.getDarkerColor()?.withAlphaComponent(0.5)
+        let unselectedColor = self.color?.getDarkerColor()?.withAlphaComponent(0.5)
         
         let selectedRow = pickerView.selectedRow(inComponent: 0)
         let color: UIColor? = row == selectedRow ? .white : unselectedColor
@@ -140,7 +148,7 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
         let fontSize = row == selectedRow ? 50.0 : 40.0
         
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: fontSize)
+        label.font = .systemFont(ofSize: fontSize, weight: .semibold)
         label.text = text
         label.textColor = color
         label.textAlignment = .center
@@ -163,5 +171,14 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         50
+    }
+}
+
+// MARK: - Sheet Delegate
+extension FocusPickerViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        // handle
+        
+        return nil
     }
 }

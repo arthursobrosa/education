@@ -9,11 +9,11 @@ import UIKit
 
 class ScheduleViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: ShowingScheduleDetails?
+    weak var coordinator: (ShowingScheduleDetails & ShowingFocusSelection)?
     let viewModel: ScheduleViewModel
     
     // MARK: - Properties
-    private lazy var scheduleView: ScheduleView = {
+    lazy var scheduleView: ScheduleView = {
         let view = ScheduleView()
         
         view.delegate = self
@@ -107,12 +107,12 @@ class ScheduleViewController: UIViewController {
         
     }
     
-    @objc func viewTapped(_ gesture: UITapGestureRecognizer) {
+    @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
         // Verifica se o toque foi fora dos botões e oculta a overlayView se necessário
         dismissButtons()
     }
     
-    func dismissButtons() {
+    private func dismissButtons() {
         // Esconde a overlayView e os botões se eles estiverem visíveis
         if self.scheduleView.overlayView.alpha == 1 {
             UIView.animate(withDuration: 0.3) {
@@ -143,7 +143,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         cell.delegate = self
         cell.subject = subject
         cell.schedule = schedule
-       
+        cell.indexPath = indexPath
         
         return cell
     }
@@ -205,14 +205,4 @@ extension ScheduleViewController {
             subview.bottomAnchor.constraint(equalTo: self.scheduleView.contentView.bottomAnchor)
         ])
     }
-}
-
-// MARK: Play Button delegate
-extension ScheduleViewController: ScheduleButtonDelegate{
-    //Temporario, até termos o fluxo definido
-    func didTapCircleView(in cell: ScheduleTableViewCell) {
-        print("click")
-    }
-    
-    
 }

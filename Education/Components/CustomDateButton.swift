@@ -43,7 +43,6 @@ class CustomDateButton: UIView {
         }
         
         label.text = "\(hoursText)h  \(minutesText)min"
-        label.font = .systemFont(ofSize: 30)
         label.textAlignment = .center
         label.textColor = .white
         
@@ -54,7 +53,7 @@ class CustomDateButton: UIView {
         return label
     }()
     
-    private lazy var datePicker: UIDatePicker = {
+    lazy var datePicker: UIDatePicker = {
         let picker = UIDatePicker()
         
         let dateComponents = DateComponents(
@@ -75,8 +74,10 @@ class CustomDateButton: UIView {
         return picker
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(font: UIFont) {
+        super.init(frame: .zero)
+        
+        self.dateLabel.font = font
         
         self.setupUI()
     }
@@ -94,7 +95,11 @@ class CustomDateButton: UIView {
         let backWidth = self.dateLabelBack.bounds.width
         let scaleX = backWidth / dateWidth
         
-        self.datePicker.transform = CGAffineTransform(scaleX: scaleX, y: 1.5)
+        let dateHeight = self.datePicker.bounds.height
+        let backHeight = self.dateLabelBack.bounds.height
+        let scaleY = backHeight / dateHeight
+        
+        self.datePicker.transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
     }
     
     @objc private func didTapPicker(_ sender: UIDatePicker) {
@@ -136,8 +141,7 @@ extension CustomDateButton: ViewCodeProtocol {
             
             dateLabel.leadingAnchor.constraint(equalTo: dateLabelBack.leadingAnchor, constant: padding),
             dateLabel.trailingAnchor.constraint(equalTo: dateLabelBack.trailingAnchor, constant: -padding),
-            dateLabel.topAnchor.constraint(equalTo: dateLabelBack.topAnchor, constant: padding),
-            dateLabel.bottomAnchor.constraint(equalTo: dateLabelBack.bottomAnchor, constant: -padding),
+            dateLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             datePicker.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             datePicker.centerYAnchor.constraint(equalTo: self.centerYAnchor),

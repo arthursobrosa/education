@@ -19,7 +19,7 @@ class CustomDatePickerView: UIView {
     
     private let hoursLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 50)
+        label.font = .systemFont(ofSize: 50, weight: .semibold)
         label.text = "h"
         label.textColor = .white
         label.textAlignment = .center
@@ -41,7 +41,7 @@ class CustomDatePickerView: UIView {
     
     private let minutesLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 50)
+        label.font = .systemFont(ofSize: 50, weight: .semibold)
         label.text = "min"
         label.textColor = .white
         label.textAlignment = .center
@@ -82,25 +82,24 @@ private extension CustomDatePickerView {
         self.addSubview(minutesPicker)
         self.addSubview(minutesLabel)
         
-        let padding = 10.0
+        let padding = 15.0
         
         NSLayoutConstraint.activate([
             hoursPicker.topAnchor.constraint(equalTo: self.topAnchor),
-            hoursPicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (80/250)),
-            hoursPicker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             hoursPicker.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            hoursPicker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            hoursPicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (105/310)),
             
+            hoursLabel.centerYAnchor.constraint(equalTo: hoursPicker.centerYAnchor),
             hoursLabel.leadingAnchor.constraint(equalTo: hoursPicker.trailingAnchor, constant: -padding),
-            hoursLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
-            minutesPicker.topAnchor.constraint(equalTo: hoursPicker.topAnchor),
-            minutesPicker.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (80/250)),
-            minutesPicker.leadingAnchor.constraint(equalTo: hoursLabel.trailingAnchor, constant: padding),
-            minutesPicker.trailingAnchor.constraint(equalTo: minutesLabel.leadingAnchor, constant: padding),
-            minutesPicker.bottomAnchor.constraint(equalTo: hoursPicker.bottomAnchor),
+            minutesPicker.topAnchor.constraint(equalTo: self.topAnchor),
+            minutesPicker.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            minutesPicker.leadingAnchor.constraint(equalTo: hoursLabel.trailingAnchor),
+            minutesPicker.widthAnchor.constraint(equalTo: hoursPicker.widthAnchor),
             
-            minutesLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            minutesLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            minutesLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            minutesLabel.leadingAnchor.constraint(equalTo: minutesPicker.trailingAnchor, constant: -padding)
         ])
     }
 }
