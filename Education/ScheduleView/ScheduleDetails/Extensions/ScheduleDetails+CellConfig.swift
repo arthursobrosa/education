@@ -38,7 +38,7 @@ extension ScheduleDetailsViewController {
                 let datePicker = UIDatePicker()
                 datePicker.datePickerMode = .time
                 datePicker.date = row == 0 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
-//                datePicker.addTarget(self, action: #selector(pomodoroDatePickerChanged(_:)), for: .valueChanged)
+                datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
                 datePicker.tag = row
                 return datePicker
             default:

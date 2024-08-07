@@ -30,7 +30,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     }
     
     func showFocusPicker(timerCase: TimerCase?) {
-        let child = FocusPickerCoordinator(navigationController: self.navigationController, timerCase: timerCase, color: self.color)
+        let child = FocusPickerCoordinator(navigationController: self.navigationController, timerCase: timerCase, color: self.color, subject: self.subject)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
