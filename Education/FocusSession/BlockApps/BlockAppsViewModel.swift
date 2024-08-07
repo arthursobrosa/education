@@ -1,5 +1,5 @@
 //
-//  MyMonitor.swift
+//  BlockAppsMonitor.swift
 //  Education
 //
 //  Created by Lucas Cunha on 10/07/24.
@@ -55,15 +55,29 @@ class BlockAppsMonitor: ObservableObject {
         store.shield.webDomainCategories = nil
     }
     
-    var selectionToDiscourage = FamilyActivitySelection() {
-        willSet {
+    @Published var selectionToDiscourage: FamilyActivitySelection {
+        didSet {
             do {
-                let encoded = try JSONEncoder().encode(newValue)
-                UserDefaults.standard.set(encoded, forKey:"applications")
+                let encoded = try JSONEncoder().encode(selectionToDiscourage)
+                UserDefaults.standard.set(encoded, forKey: "applications")
                 print("saved selection")
             } catch {
                 print("error to encode data: \(error)")
             }
+        }
+    }
+
+    init() {
+        if let savedData = UserDefaults.standard.data(forKey: "applications") {
+            do {
+                let decodedSelection = try JSONDecoder().decode(FamilyActivitySelection.self, from: savedData)
+                self.selectionToDiscourage = decodedSelection
+            } catch {
+                print("error to decode data: \(error)")
+                self.selectionToDiscourage = FamilyActivitySelection()
+            }
+        } else {
+            self.selectionToDiscourage = FamilyActivitySelection()
         }
     }
     
@@ -176,5 +190,3 @@ func createBlockNotification() {
         }
     }
 }
-
-

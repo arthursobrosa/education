@@ -22,6 +22,9 @@ class ScheduleDetailsViewModel {
     var selectedStartTime: Date
     var selectedEndTime: Date
     
+    var alarmBefore = false
+    var alarmInTime = false
+    
     private var scheduleID: String?
     
     // MARK: - Initializer
@@ -96,8 +99,36 @@ class ScheduleDetailsViewModel {
         
         if let selectedIndex = self.days.firstIndex(where: { $0 == selectedDay }) {
             let dayOfTheWeek = Int(selectedIndex)
+            handleAlerts()
             self.scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: self.selectedStartTime, endTime: self.selectedEndTime)
         }
+    }
+    
+    private func handleAlerts(){
+        
+        let selectedDate = self.selectedStartTime
+        let title = "Reminder"
+        let body = "Your \(selectedSubjectName) event is starting soon!"
+        
+        
+        if(self.alarmBefore){
+            NotificationService.shared.scheduleWeeklyNotification(
+               title: title,
+               body: body,
+               date: selectedDate
+           )
+            
+        }
+        
+        if(self.alarmInTime){
+            NotificationService.shared.scheduleWeeklyNotificationAtExactTime(
+               title: title,
+               body: body,
+               date: selectedDate
+           )
+            
+        }
+        
     }
     
     private func updateSchedule(withID id: String) {

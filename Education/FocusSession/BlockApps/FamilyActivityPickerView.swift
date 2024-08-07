@@ -4,7 +4,6 @@
 //
 //  Created by Lucas Cunha on 15/07/24.
 //
-
 import SwiftUI
 import UIKit
 import FamilyControls
@@ -30,16 +29,16 @@ struct FamilyActivityPickerView: View {
     var body: some View {
         VStack {
             Text("")
-            .familyActivityPicker(isPresented: $isPresented, selection: $pickerDelegate.selectionToDiscourage)
-            .onAppear {
-                Task {
-                    do {
-                        try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
-                    } catch {
-                        print("Failed to request authorization: \(error)")
+                .familyActivityPicker(isPresented: $isPresented, selection: $pickerDelegate.selectionToDiscourage)
+                .onAppear {
+                    Task {
+                        do {
+                            try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+                        } catch {
+                            print("Failed to request authorization: \(error)")
+                        }
                     }
                 }
-            }
         }
     }
 }

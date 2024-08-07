@@ -26,8 +26,8 @@ class ScheduleDetailsViewController: UIViewController {
     
     var isPopoverOpen: Bool = false {
         didSet {
-            guard let startTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 0, section: 2)),
-                  let endTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 2)),
+            guard let startTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
+                  let endTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
                   let startDatePicker = startTimerCell.accessoryView as? UIDatePicker,
                   let endDatePicker = endTimerCell.accessoryView as? UIDatePicker else { return }
             
@@ -67,9 +67,9 @@ class ScheduleDetailsViewController: UIViewController {
     
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         switch sender.tag {
-            case 0:
-                self.viewModel.selectedStartTime = sender.date
             case 1:
+                self.viewModel.selectedStartTime = sender.date
+            case 2:
                 self.viewModel.selectedEndTime = sender.date
             default:
                 break
@@ -129,16 +129,18 @@ class ScheduleDetailsViewController: UIViewController {
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-            case 0:
-                return self.viewModel.subjectsNames.isEmpty ? 1 : 2
-            case 1:
+            case 3:
                 return 1
             case 2:
+                return 1
+            case 0:
+                return 3
+            case 1:
                 return 2
             default:
                 break
@@ -159,41 +161,31 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         return cell
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return String(localized: "focusTableSubjectHeader")
-        } else if section == 1 {
-            return String(localized: "scheduleTableDayHeader")
-        }
-        
-        return String(localized: "timerTabTitle")
-    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
         
         switch section {
-            case 0:
+            case 2:
                 if self.viewModel.subjectsNames.isEmpty {
                     self.showAddSubjectAlert()
                     break
                 }
                 
+                if let popover = self.createSubjectPopover(forTableView: tableView, at: indexPath) {
+                    self.isPopoverOpen.toggle()
+                    self.present(popover, animated: true)
+                }
+            
+            case 0:
                 if row == 0 {
-                    self.showAddSubjectAlert()
-                    break
+                    if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
+                        self.isPopoverOpen.toggle()
+                        self.present(popover, animated: true)
+                    }
                 }
-                
-                if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
-                    self.isPopoverOpen.toggle()
-                    self.present(popover, animated: true)
-                }
-            case 1:
-                if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
-                    self.isPopoverOpen.toggle()
-                    self.present(popover, animated: true)
-                }
+            
             default:
                 break
         }
