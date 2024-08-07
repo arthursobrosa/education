@@ -57,14 +57,11 @@ extension ScheduleDetailsViewController {
     }
     
     @objc private func switchToggledInTime(_ sender: UISwitch){
-        if sender.isOn{
-            self.viewModel.alarmInTime = true
-            
-            
-            
-        } else {
-            self.viewModel.alarmInTime = false
-        }
+        self.viewModel.alarmInTime = sender.isOn
+    }
+    
+    @objc private func switchToggledBlockApps(_ sender: UISwitch) {
+        self.viewModel.blocksApps = sender.isOn
     }
     
     func createAttributedLabel(withText text: String, symbolName: String, symbolColor: UIColor, textColor: UIColor) -> UIView {
@@ -105,8 +102,10 @@ extension ScheduleDetailsViewController {
         switch section {
             
             case 3:
-                return UISwitch()
-                
+                let toggle = UISwitch()
+                toggle.isOn = self.viewModel.blocksApps
+                toggle.addTarget(self, action: #selector(switchToggledBlockApps(_:)), for: .touchUpInside)
+                return toggle
             case 2:
             
                 let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedSubjectName)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)

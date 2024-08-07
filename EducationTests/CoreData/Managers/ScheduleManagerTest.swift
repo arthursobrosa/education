@@ -37,7 +37,7 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
         
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
 
@@ -59,7 +59,7 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
 
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
         
         
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
@@ -84,9 +84,9 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 6, startTime: dateA, endTime: dateB)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 6, startTime: dateA, endTime: dateB, blocksApps: false)
         
         var schedules = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!
         
@@ -112,7 +112,7 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
         
         var schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
         
@@ -139,10 +139,10 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
       
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 3, startTime: dateA, endTime: dateB)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 3, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB, blocksApps: false)
       
         let wednesdaySchedules = scheduleManager.fetchSchedules(dayOfTheWeek: 3)!
         let thursdaySchedules = scheduleManager.fetchSchedules(dayOfTheWeek: 4)!
