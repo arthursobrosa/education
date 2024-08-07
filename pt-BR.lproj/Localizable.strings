@@ -80,3 +80,8 @@
 "invalidDateAlertMessage2" = "Horário de início não pode ser igual ou maior que horário de fim";
 "noSubjectAlertTitle" = "Cronograma Inválido";
 "noSubjectAlertMessage" = "Você não pode criar um cronograma antes de atribuí-lo a uma matéria";
+"date" = "Data";
+"alarm5Min" = "Alerta 5 min. antes";
+"alarmAtTime" = "Alerta no horário";
+"subject" = "Disciplina";
+"blockApps" = "Bloquear Apps";

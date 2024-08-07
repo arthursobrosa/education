@@ -40,16 +40,24 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let tableRow = pickerView.tag == 0 ? 0 : 1
+        let tableRow = 0
         let cell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: tableRow, section: pickerView.tag))
         
         switch pickerView.tag {
             case 2:
                 self.viewModel.selectedSubjectName = self.viewModel.subjectsNames[row]
-                cell?.textLabel?.text = self.viewModel.selectedSubjectName
+            
+                let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedSubjectName)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel,  textColor: .secondaryLabel)
+                cell?.accessoryView = containerView
+            
             case 0:
                 self.viewModel.selectedDay = self.viewModel.days[row]
-                cell?.textLabel?.text = self.viewModel.selectedDay
+            
+                let label = UILabel()
+                label.text = "\(self.viewModel.selectedDay)"
+               
+                    let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedDay)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel,  textColor: .secondaryLabel)
+                    cell?.accessoryView = containerView
             default:
                 break
         }

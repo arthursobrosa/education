@@ -129,14 +129,15 @@ class ScheduleDetailsViewController: UIViewController {
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
+            case 3:
+                return 1
             case 2:
-                return self.viewModel.subjectsNames.isEmpty ? 1 : 2
-
+                return 1
             case 0:
                 return 3
             case 1:
@@ -160,15 +161,6 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         return cell
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 2 {
-            return String(localized: "focusTableSubjectHeader")
-        } else if section == 1 {
-            return "Alarm"
-        }
-        
-        return "Date"
-    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
@@ -181,16 +173,10 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                     break
                 }
                 
-                if row == 0 {
-                    self.showAddSubjectAlert()
-                    break
-                }
-                
                 if let popover = self.createSubjectPopover(forTableView: tableView, at: indexPath) {
                     self.isPopoverOpen.toggle()
                     self.present(popover, animated: true)
                 }
-           
             
             case 0:
                 if row == 0 {
