@@ -11,6 +11,7 @@ protocol FocusPickerDelegate: AnyObject {
     func startButtonTapped()
     func pomodoroDateChanged(tag: Int, time: Int)
     func dismiss()
+    func dismissAll()
 }
 
 extension FocusPickerViewController: FocusPickerDelegate {
@@ -36,5 +37,9 @@ extension FocusPickerViewController: FocusPickerDelegate {
     
     func dismiss() {
         self.coordinator?.dismiss()
+    }
+    
+    func dismissAll() {
+        self.coordinator?.dismissAll()
     }
 }

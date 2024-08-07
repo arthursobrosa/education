@@ -150,7 +150,7 @@ class FocusSelectionView: UIView {
         super.layoutSubviews()
         
         self.layer.cornerRadius = 12
-        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderColor = UIColor.label.cgColor
         self.layer.borderWidth = 1
     }
 }

@@ -11,7 +11,7 @@ class FocusSelectionViewController: UIViewController {
     weak var coordinator: (ShowingFocusPicker & ShowingTimer & Dismissing)?
     let viewModel: FocusSelectionViewModel
     
-    private let color: UIColor?
+    let color: UIColor?
     
     private lazy var focusSelectionView: FocusSelectionView = {
         let view = FocusSelectionView(color: self.color)

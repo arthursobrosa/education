@@ -12,6 +12,12 @@ class ScheduleViewController: UIViewController {
     weak var coordinator: (ShowingScheduleDetails & ShowingFocusSelection)?
     let viewModel: ScheduleViewModel
     
+    var currentActivityColor: UIColor? = nil {
+        didSet {
+            self.scheduleView.setCurrentActivity(withColor: currentActivityColor)
+        }
+    }
+    
     // MARK: - Properties
     lazy var scheduleView: ScheduleView = {
         let view = ScheduleView()
@@ -90,7 +96,6 @@ class ScheduleViewController: UIViewController {
             self.scheduleView.btnCreateActivity.alpha = newAlpha
             self.scheduleView.btnStartActivity.alpha = newAlpha
         }
-//        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
     }
     
     func loadSchedules() {

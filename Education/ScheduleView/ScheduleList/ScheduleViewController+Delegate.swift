@@ -60,11 +60,11 @@ extension ScheduleViewController: DayDelegate {
 
 // MARK: Play Button
 protocol ScheduleButtonDelegate: AnyObject {
-    func didTapCircleView(at indexPath: IndexPath?, withColor color: UIColor?)
+    func activityButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?)
 }
 
 extension ScheduleViewController: ScheduleButtonDelegate {
-    func didTapCircleView(at indexPath: IndexPath?, withColor color: UIColor?) {
+    func activityButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?) {
         guard let indexPath = indexPath else { return }
         
         let row = indexPath.row
@@ -72,6 +72,7 @@ extension ScheduleViewController: ScheduleButtonDelegate {
         let schedule = self.viewModel.schedules[row]
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
         
+        self.scheduleView.removeCurrentActivity()
         self.coordinator?.showFocusSelection(color: color, subject: subject)
     }
 }

@@ -13,7 +13,6 @@ class TabBarController: UITabBarController {
     private let studytime = StudyTimeCoordinator(navigationController: UINavigationController())
     private lazy var themeList = ThemeListCoordinator(navigationController: UINavigationController(), themeListViewModel: self.themeListViewModel)
     private let profile = ProfileCoordinator(navigationController: UINavigationController())
-//    private let timerSettings = FocusSessionSettingsCoordinator(navigationController: UINavigationController())
     
     init(themeListViewModel: ThemeListViewModel) {
         self.themeListViewModel = themeListViewModel
@@ -28,6 +27,8 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBar.backgroundColor = .systemBackground
+        
         schedule.start()
         schedule.navigationController.tabBarItem = UITabBarItem(title: String(localized: "scheduleTabTitle"), image: UIImage(systemName: "calendar.badge.clock"), tag: 0)
         
@@ -40,11 +41,6 @@ class TabBarController: UITabBarController {
         profile.start()
         profile.navigationController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 3)
         
-//        timerSettings.start()
-//        timerSettings.navigationController.tabBarItem = UITabBarItem(title: String(localized: "timerTabTitle"), image: UIImage(systemName: "timer"), tag: 2)
-        
         self.viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, profile.navigationController]
-        
-        self.view.backgroundColor = .systemBackground
     }
 }

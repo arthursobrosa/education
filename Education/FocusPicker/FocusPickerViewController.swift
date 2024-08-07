@@ -8,10 +8,10 @@
 import UIKit
 
 class FocusPickerViewController: UIViewController {
-    weak var coordinator: (ShowingTimer & Dismissing)?
+    weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
     let viewModel: FocusPickerViewModel
     
-    private let color: UIColor?
+    let color: UIColor?
     
     private lazy var focusPickerView: FocusPickerView = {
         let view = FocusPickerView(color: self.color, timerCase: self.viewModel.timerCase)
@@ -26,10 +26,6 @@ class FocusPickerViewController: UIViewController {
         view.settingsTableView.dataSource = self
         view.settingsTableView.delegate = self
         view.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
-        
-        view.layer.cornerRadius = 12
-        view.layer.borderColor = UIColor.white.cgColor
-        view.layer.borderWidth = 1
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -177,7 +173,7 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
 // MARK: - Sheet Delegate
 extension FocusPickerViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.coordinator?.dismiss()
+        self.coordinator?.dismissAll()
         
         return nil
     }

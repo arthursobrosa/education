@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing {
+class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing, DismissingAll {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -46,6 +46,10 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing {
     }
     
     func dismiss() {
+        self.navigationController.popViewController(animated: false)
+    }
+    
+    func dismissAll() {
         self.navigationController.popToRootViewController(animated: true)
     }
 }

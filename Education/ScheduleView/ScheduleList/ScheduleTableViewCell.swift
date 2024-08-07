@@ -51,7 +51,7 @@ class ScheduleTableViewCell: UITableViewCell {
             
             if schedule.dayOfTheWeek != Calendar.current.component(.weekday, from: Date()) - 1 {
                 resetView()
-                self.circleView.isHidden = true
+                self.activityButton.isHidden = true
                 self.timeLeftLabel.text = ""
                 return
             }
@@ -66,15 +66,9 @@ class ScheduleTableViewCell: UITableViewCell {
             }
         }
     }
-    
-    private func setupGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(circleViewTapped))
-        circleView.addGestureRecognizer(tapGestureRecognizer)
-        circleView.isUserInteractionEnabled = true
-    }
 
-    @objc private func circleViewTapped() {
-        delegate?.didTapCircleView(at: self.indexPath, withColor: self.color)
+    @objc private func activityButtonTapped() {
+        self.delegate?.activityButtonTapped(at: self.indexPath, withColor: self.color)
     }
     
     var color: UIColor? {
@@ -94,25 +88,15 @@ class ScheduleTableViewCell: UITableViewCell {
         return view
     }()
     
-    let playImageView: UIImageView = {
-        let playImage = UIImage(systemName: "play.fill")!
-        let imageView = UIImageView(image: playImage)
-        imageView.contentMode = .scaleAspectFit
-        imageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        imageView.tintColor = .white
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    let circleView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 25
-        view.layer.masksToBounds = true
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
+    private lazy var activityButton: ActivityButton = {
+        let bttn = ActivityButton()
+        bttn.activityState = .normal
         
-        view.translatesAutoresizingMaskIntoConstraints = false
+        bttn.addTarget(self, action: #selector(activityButtonTapped), for: .touchUpInside)
         
-        return view
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
     }()
     
     private let timeLeftLabel: UILabel = {
@@ -151,7 +135,6 @@ class ScheduleTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.setupUI()
-        self.setupGestureRecognizer()
     }
     
     private func getTimeLeft() {
@@ -169,9 +152,8 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
         self.contentView.addSubview(cardView)
         cardView.addSubview(subjectNameLabel)
         cardView.addSubview(timeLabel)
-        cardView.addSubview(circleView)
         cardView.addSubview(timeLeftLabel)
-        circleView.addSubview(playImageView)
+        cardView.addSubview(activityButton)
         
         let padding = 8.0
         
@@ -181,13 +163,13 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
             cardView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -padding),
             cardView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -padding),
             
-            circleView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            circleView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -padding * 2),
-            circleView.widthAnchor.constraint(equalToConstant: 50),
-            circleView.heightAnchor.constraint(equalToConstant: 50),
+            activityButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            activityButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -padding * 2),
+            activityButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (52/359)),
+            activityButton.heightAnchor.constraint(equalTo: activityButton.widthAnchor),
             
             timeLeftLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            timeLeftLabel.trailingAnchor.constraint(equalTo: circleView.leadingAnchor, constant: -padding * 2),
+            timeLeftLabel.trailingAnchor.constraint(equalTo: activityButton.leadingAnchor, constant: -padding * 2),
             
             subjectNameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: padding * 2),
             subjectNameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: padding * 2),
@@ -197,9 +179,6 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
             timeLabel.leadingAnchor.constraint(equalTo: subjectNameLabel.leadingAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: subjectNameLabel.trailingAnchor),
             timeLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -padding * 2),
-            
-            playImageView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
-            playImageView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
         ])
         
         cardView.layer.cornerRadius = 16
@@ -209,9 +188,7 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
 //Cell UI
 extension ScheduleTableViewCell{
     private func resetView() {
-        self.circleView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
-        self.circleView.layer.borderWidth = 0
-        self.playImageView.tintColor = .white
+        self.activityButton.activityState = .normal
         self.cardView.layer.borderWidth = 0
     }
 
@@ -221,42 +198,30 @@ extension ScheduleTableViewCell{
         let minutesLeft = differenceInMinutes % 60
         guard let color = self.color else { return }
         
-        self.circleView.isHidden = false
-        self.circleView.layer.borderWidth = 0
+        self.activityButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker()
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
-        self.circleView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
         self.cardView.layer.borderWidth = 0
-        self.playImageView.tintColor = .white
         self.timeLeftLabel.text = "Em \(hoursLeft)h\(minutesLeft)m"
     }
 
     private func updateViewForOngoingEvent() {
         guard let color = self.color else { return }
         
-        self.circleView.isHidden = false
+        self.activityButton.activityState = .current(color: color.darker())
         self.timeLeftLabel.text = "Agora"
         self.timeLeftLabel.font = .boldSystemFont(ofSize: 16)
         self.timeLeftLabel.textColor = .white
         self.cardView.layer.borderWidth = 1
         self.cardView.layer.borderColor = UIColor.white.cgColor
-        self.circleView.backgroundColor = .white
-        self.circleView.layer.borderWidth = 3
-        self.circleView.layer.borderColor = color.darker()?.cgColor
-        self.playImageView.tintColor = color.darker()
-        self.circleView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
     }
 
     private func updateViewForCompletedEvent() {
         guard let color = self.color else { return }
         
-        self.circleView.isHidden = false
+        self.activityButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker()
-        self.playImageView.tintColor = .white
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
-        self.cardView.layer.borderWidth = 0
-        self.circleView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
-        self.circleView.layer.borderWidth = 0
         self.timeLeftLabel.text = "Concluído"
     }
 }

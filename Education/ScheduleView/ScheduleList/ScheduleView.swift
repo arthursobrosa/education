@@ -44,6 +44,8 @@ class ScheduleView: UIView {
         return table
     }()
     
+    let emptyView = EmptyView(object: String(localized: "emptySchedule"))
+    
     lazy var overlayView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5) // Fundo semitransparente
@@ -81,7 +83,13 @@ class ScheduleView: UIView {
         return button
     }()
     
-    let emptyView = EmptyView(object: String(localized: "emptySchedule"))
+    private lazy var currentActivityView: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
     
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -97,6 +105,14 @@ class ScheduleView: UIView {
     @objc private func startActivityTapped() {
         self.delegate?.startAcitivityTapped()
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.currentActivityView.layer.cornerRadius = self.currentActivityView.bounds.height / 6
+        self.currentActivityView.layer.borderColor = UIColor.label.cgColor
+        self.currentActivityView.layer.borderWidth = 1
+    }
 }
 
 // MARK: - UI Setup
@@ -108,7 +124,7 @@ extension ScheduleView: ViewCodeProtocol {
         overlayView.addSubview(btnCreateActivity)
         overlayView.addSubview(btnStartActivity)
         
-        let btnPadind = 10.0
+        let btnPadding = 10.0
         let padding = 10.0
         
         NSLayoutConstraint.activate([
@@ -131,14 +147,35 @@ extension ScheduleView: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             btnCreateActivity.topAnchor.constraint(equalTo: overlayView.topAnchor),
-            btnCreateActivity.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadind),
+            btnCreateActivity.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
             btnCreateActivity.widthAnchor.constraint(equalToConstant: 160),
             btnCreateActivity.heightAnchor.constraint(equalToConstant: 40),
             
-            btnStartActivity.topAnchor.constraint(equalTo: btnCreateActivity.bottomAnchor, constant: btnPadind),
-            btnStartActivity.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadind),
+            btnStartActivity.topAnchor.constraint(equalTo: btnCreateActivity.bottomAnchor, constant: btnPadding),
+            btnStartActivity.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
             btnStartActivity.widthAnchor.constraint(equalToConstant: 250),
             btnStartActivity.heightAnchor.constraint(equalToConstant: 40)
         ])
+    }
+    
+    func setCurrentActivity(withColor color: UIColor?) {
+        self.currentActivityView.backgroundColor = color
+        
+        self.setCurrentActivityUI()
+    }
+    
+    private func setCurrentActivityUI() {
+        self.addSubview(currentActivityView)
+        
+        NSLayoutConstraint.activate([
+            currentActivityView.widthAnchor.constraint(equalTo: self.widthAnchor),
+            currentActivityView.heightAnchor.constraint(equalTo: currentActivityView.widthAnchor, multiplier: (155/390)),
+            currentActivityView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            currentActivityView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+    }
+    
+    func removeCurrentActivity() {
+        self.currentActivityView.removeFromSuperview()
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, ShowingTimer, Dismissing, UINavigationControllerDelegate {
+class FocusSelectionCoordinator: Coordinator, ShowingFocusPicker, ShowingTimer, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -52,26 +52,5 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     
     func dismiss() {
         self.navigationController.popToRootViewController(animated: true)
-    }
-    
-    func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                self.childCoordinators.remove(at: index)
-                break
-            }
-        }
-    }
-    
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        guard let fromViewController = self.navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
-        
-        if self.navigationController.viewControllers.contains(fromViewController) {
-            return
-        }
-        
-        if let focusPickerViewController = fromViewController as? FocusPickerViewController {
-            self.childDidFinish(focusPickerViewController.coordinator as? Coordinator)
-        }
     }
 }
