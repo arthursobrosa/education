@@ -80,3 +80,8 @@
 "invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date";
 "noSubjectAlertTitle" = "Invalid Schedule";
 "noSubjectAlertMessage" = "You cannot create a schedule before assigning it to a subject";
+"date" = "Date";
+"alarm5Min" = "Alert 5 min. before start time";
+"alarmAtTime" = "Alert at start time";
+"subject" = "Subject";
+"blockApps" = "Block Apps";
