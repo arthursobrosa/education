@@ -1,13 +1,13 @@
 //
-//  StudyTimeCoordinator.swift
+//  ProfileCoordinator.swift
 //  Education
 //
-//  Created by Leandro Silva on 10/07/24.
+//  Created by Arthur Sobrosa on 07/08/24.
 //
 
 import UIKit
 
-class StudyTimeCoordinator: Coordinator {
+class ProfileCoordinator: Coordinator {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -16,12 +16,11 @@ class StudyTimeCoordinator: Coordinator {
     }
     
     func start() {
-        self.navigationController.navigationBar.prefersLargeTitles = true
-        
-        let viewModel = StudyTimeViewModel()
-        let vc = StudyTimeViewController(viewModel: viewModel)
+        let vc = ProfileViewController()
         vc.coordinator = self
-        vc.title = "Subjects"
+        vc.title = "Profile"
+        
+        self.navigationController.navigationBar.prefersLargeTitles = true
         self.navigationController.pushViewController(vc, animated: false)
     }
 }

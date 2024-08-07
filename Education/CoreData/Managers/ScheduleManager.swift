@@ -12,7 +12,7 @@ final class ScheduleManager: ObjectManager {
     lazy var focusSessionManager = FocusSessionManager()
     
     // MARK: - Create
-    func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date) {
+    func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date, blocksApps: Bool) {
         backgroundContext.performAndWait {
             guard let schedule = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: backgroundContext) as? Schedule else { return }
             
@@ -20,6 +20,7 @@ final class ScheduleManager: ObjectManager {
             schedule.dayOfTheWeek = Int16(dayOfTheWeek)
             schedule.startTime = startTime
             schedule.endTime = endTime
+            schedule.blocksApps = blocksApps
             schedule.id = UUID().uuidString
             
             try? backgroundContext.save()

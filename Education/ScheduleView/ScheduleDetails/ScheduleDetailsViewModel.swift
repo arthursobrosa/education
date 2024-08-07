@@ -25,6 +25,8 @@ class ScheduleDetailsViewModel {
     var alarmBefore = false
     var alarmInTime = false
     
+    var blocksApps = false
+    
     private var scheduleID: String?
     
     // MARK: - Initializer
@@ -100,7 +102,7 @@ class ScheduleDetailsViewModel {
         if let selectedIndex = self.days.firstIndex(where: { $0 == selectedDay }) {
             let dayOfTheWeek = Int(selectedIndex)
             handleAlerts()
-            self.scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: self.selectedStartTime, endTime: self.selectedEndTime)
+            self.scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: self.selectedStartTime, endTime: self.selectedEndTime, blocksApps: blocksApps)
         }
     }
     
@@ -143,6 +145,7 @@ class ScheduleDetailsViewModel {
                     
                     schedule.startTime = self.selectedStartTime
                     schedule.endTime = self.selectedEndTime
+                    schedule.blocksApps = self.blocksApps
                 }
             }
             

@@ -10,6 +10,7 @@ import UIKit
 // MARK: - Schedule
 protocol ScheduleDelegate: AnyObject {
     func setPicker(_ picker: UIStackView)
+    func startAcitivityTapped()
 }
 
 extension ScheduleViewController: ScheduleDelegate {
@@ -31,6 +32,10 @@ extension ScheduleViewController: ScheduleDelegate {
             picker.addArrangedSubview(dayView)
         }
     }
+    
+    func startAcitivityTapped() {
+        print(#function)
+    }
 }
 
 // MARK: - Day
@@ -48,5 +53,25 @@ extension ScheduleViewController: DayDelegate {
         self.viewModel.selectedDay = dayView.tag
         
         self.loadSchedules()
+    }
+}
+
+
+
+// MARK: Play Button
+protocol ScheduleButtonDelegate: AnyObject {
+    func didTapCircleView(at indexPath: IndexPath?, withColor color: UIColor?)
+}
+
+extension ScheduleViewController: ScheduleButtonDelegate {
+    func didTapCircleView(at indexPath: IndexPath?, withColor color: UIColor?) {
+        guard let indexPath = indexPath else { return }
+        
+        let row = indexPath.row
+        
+        let schedule = self.viewModel.schedules[row]
+        let subject = self.viewModel.getSubject(fromSchedule: schedule)
+        
+        self.coordinator?.showFocusSelection(color: color, subject: subject)
     }
 }

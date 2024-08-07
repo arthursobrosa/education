@@ -11,6 +11,8 @@ class FocusSessionView: UIView {
     weak var delegate: FocusSessionDelegate?
     
     // MARK: - Properties
+    private let color: UIColor?
+    
     private let timerContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +71,9 @@ class FocusSessionView: UIView {
     }()
     
     // MARK: - Initializer
-    override init(frame: CGRect) {
+    init(color: UIColor?) {
+        self.color = color
+        
         super.init(frame: .zero)
         
         self.backgroundColor = .systemBackground
@@ -159,7 +163,7 @@ extension FocusSessionView: ViewCodeProtocol {
     }
     
     func setupLayers() {
-        let arcPath = UIBezierPath(arcCenter: CGPoint(x: self.timerLabel.frame.width / 2, y: self.timerLabel.frame.height / 2), radius: self.timerLabel.frame.width / 2, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: false)
+        let arcPath = UIBezierPath(arcCenter: CGPoint(x: self.timerLabel.frame.width / 2, y: self.timerLabel.frame.height / 2), radius: self.timerLabel.frame.width / 2, startAngle: -(CGFloat.pi / 2), endAngle: -(CGFloat.pi / 2) + CGFloat.pi * 2, clockwise: true)
         
         self.timerTrackLayer.path = arcPath.cgPath
         self.timerTrackLayer.strokeColor = UIColor.systemGray5.cgColor
@@ -169,7 +173,7 @@ extension FocusSessionView: ViewCodeProtocol {
         self.timerTrackLayer.strokeEnd = 1
         
         self.timerCircleFillLayer.path = arcPath.cgPath
-        self.timerCircleFillLayer.strokeColor = UIColor.label.cgColor
+        self.timerCircleFillLayer.strokeColor = self.color?.cgColor
         self.timerCircleFillLayer.lineWidth = 20
         self.timerCircleFillLayer.fillColor = UIColor.clear.cgColor
         self.timerCircleFillLayer.lineCap = .round

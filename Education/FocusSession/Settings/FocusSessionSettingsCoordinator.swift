@@ -9,7 +9,6 @@ import UIKit
 
 class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINavigationControllerDelegate {
     var childCoordinators = [Coordinator]()
-    
     var navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
@@ -27,11 +26,11 @@ class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINa
         navigationController.pushViewController(vc, animated: false)
     }
     
-    func showTimer(totalTimeInSeconds: Int, subjectID: String?) {
-        let child = FocusSessionCoordinator(navigationController: self.navigationController, totalTimeInSeconds: totalTimeInSeconds, subjectID: subjectID)
-        child.parentCoordinator = self
-        self.childCoordinators.append(child)
-        child.start()
+    func showTimer(totalTimeInSeconds: Int, subject: Subject?, timerCase: TimerCase) {
+//        let child = FocusSessionCoordinator(navigationController: self.navigationController, totalTimeInSeconds: totalTimeInSeconds, subject: subject, timerCase: timerCase)
+//        child.parentCoordinator = self
+//        self.childCoordinators.append(child)
+//        child.start()
     }
     
     func childDidFinish(_ child: Coordinator?) {
@@ -50,8 +49,8 @@ class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINa
             return
         }
         
-        if let timerViewController = fromViewController as? FocusSessionViewController {
-            self.childDidFinish(timerViewController.coordinator as? Coordinator)
-        }
+//        if let timerViewController = fromViewController as? FocusSessionViewController {
+//            self.childDidFinish(timerViewController.coordinator as? Coordinator)
+//        }
     }
 }
