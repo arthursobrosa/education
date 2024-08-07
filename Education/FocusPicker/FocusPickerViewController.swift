@@ -177,7 +177,7 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
 // MARK: - Sheet Delegate
 extension FocusPickerViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        // handle
+        self.coordinator?.dismiss()
         
         return nil
     }

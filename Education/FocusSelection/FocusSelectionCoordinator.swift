@@ -21,7 +21,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     }
     
     func start() {
-        let viewModel = FocusSelectionViewModel()
+        let viewModel = FocusSelectionViewModel(subject: self.subject)
         let vc = FocusSelectionViewController(viewModel: viewModel, color: self.color)
         vc.coordinator = self
         vc.navigationItem.hidesBackButton = true
@@ -38,12 +38,12 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     
     func showTimer(totalTimeInSeconds: Int, subject: Subject?, timerCase: TimerCase) {
         let viewModel = FocusSessionViewModel(totalSeconds: totalTimeInSeconds, subject: subject, timerCase: timerCase)
-        let vc = FocusSessionViewController(viewModel: viewModel)
+        let vc = FocusSessionViewController(viewModel: viewModel, color: self.color)
         
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
         
-        if let focusSelectionVC = self.navigationController.viewControllers.first as? FocusSelectionViewController {
+        if let focusSelectionVC = self.navigationController.viewControllers.last as? FocusSelectionViewController {
             nav.transitioningDelegate = focusSelectionVC
         }
         
@@ -51,7 +51,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     }
     
     func dismiss() {
-        self.navigationController.popViewController(animated: false)
+        self.navigationController.popToRootViewController(animated: true)
     }
     
     func childDidFinish(_ child: Coordinator?) {

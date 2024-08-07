@@ -33,12 +33,12 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing {
     
     func showTimer(totalTimeInSeconds: Int, subject: Subject?, timerCase: TimerCase) {
         let viewModel = FocusSessionViewModel(totalSeconds: totalTimeInSeconds, subject: subject, timerCase: timerCase)
-        let vc = FocusSessionViewController(viewModel: viewModel)
+        let vc = FocusSessionViewController(viewModel: viewModel, color: self.color)
         
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
         
-        if let focusPickerVC = self.navigationController.viewControllers.first as? FocusPickerViewController {
+        if let focusPickerVC = self.navigationController.viewControllers.last as? FocusPickerViewController {
             nav.transitioningDelegate = focusPickerVC
         }
         
@@ -46,6 +46,6 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing {
     }
     
     func dismiss() {
-        self.navigationController.popViewController(animated: false)
+        self.navigationController.popToRootViewController(animated: true)
     }
 }

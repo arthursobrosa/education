@@ -49,8 +49,8 @@ class FocusSessionSettingsCoordinator: NSObject, Coordinator, ShowingTimer, UINa
             return
         }
         
-        if let timerViewController = fromViewController as? FocusSessionViewController {
-            self.childDidFinish(timerViewController.coordinator as? Coordinator)
-        }
+//        if let timerViewController = fromViewController as? FocusSessionViewController {
+//            self.childDidFinish(timerViewController.coordinator as? Coordinator)
+//        }
     }
 }

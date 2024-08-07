@@ -71,7 +71,7 @@ extension FocusSelectionViewController: ViewCodeProtocol {
 // MARK: - Sheet Delegate
 extension FocusSelectionViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        // handle
+        self.coordinator?.dismiss()
         
         return nil
     }

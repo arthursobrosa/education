@@ -8,5 +8,10 @@
 import Foundation
 
 class FocusSelectionViewModel {
+    let subject: Subject?
     var selectedTimerCase: TimerCase? = nil
+    
+    init(subject: Subject?) {
+        self.subject = subject
+    }
 }

@@ -12,6 +12,8 @@ class FocusSessionViewModel {
     private let focusSessionManager: FocusSessionManager
    
     // MARK: - Properties
+    var isVisible = true
+    
     var timer = Timer()
     
     var totalSeconds: Int {

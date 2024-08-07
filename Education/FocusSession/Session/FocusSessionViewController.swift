@@ -12,20 +12,22 @@ class FocusSessionViewController: UIViewController {
     // MARK: - BlockApps Model
     var model = BlockAppsMonitor.shared
     
-    // MARK: - Coordinator and ViewModel
-    weak var coordinator: Dismissing?
+    // MARK: - ViewModel
     let viewModel: FocusSessionViewModel
     
     // MARK: - Properties
+    private let color: UIColor?
+    
     private lazy var focusSessionView: FocusSessionView = {
-        let view = FocusSessionView()
+        let view = FocusSessionView(color: self.color)
         view.delegate = self
         return view
     }()
     
     // MARK: - Initializer
-    init(viewModel: FocusSessionViewModel) {
+    init(viewModel: FocusSessionViewModel, color: UIColor?) {
         self.viewModel = viewModel
+        self.color = color
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,6 +46,7 @@ class FocusSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setTabItems()
         self.updateViewLabels()
         self.setNavigationTitle(isPaused: false)
         
@@ -157,6 +160,40 @@ class FocusSessionViewController: UIViewController {
         
         self.viewModel.timerState.value = .reseting
     }
+    
+    private func setTabItems() {
+        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(dismissButtonTapped))
+        dismissButton.tintColor = .label
+        self.navigationItem.leftBarButtonItems = [dismissButton]
+        
+        switch self.viewModel.timerCase {
+            case .timer, .pomodoro:
+                self.setVisibilityButton()
+            default:
+                break
+        }
+    }
+    
+    private func setVisibilityButton() {
+        self.navigationItem.rightBarButtonItems?.removeAll()
+        
+        let imageName = self.viewModel.isVisible ? "eye" : "eye.slash"
+        
+        let visibilityButton = UIBarButtonItem(image: UIImage(systemName: imageName), style: .plain, target: self, action: #selector(visibilityButtonTapped))
+        visibilityButton.tintColor = .label
+        self.navigationItem.rightBarButtonItems = [visibilityButton]
+    }
+    
+    @objc private func dismissButtonTapped() {
+        self.navigationController?.dismiss(animated: true)
+    }
+    
+    @objc private func visibilityButtonTapped() {
+        self.viewModel.isVisible.toggle()
+        
+        self.updateViewLabels()
+        self.setVisibilityButton()
+    }
 }
 
 // MARK: - Auxiliar Methods
@@ -192,7 +229,7 @@ extension FocusSessionViewController {
 
             self.viewModel.saveFocusSession()
             self.unblockApps()
-            self.coordinator?.dismiss()
+            self.navigationController?.dismiss(animated: true)
         }
 
         alertController.addAction(okAction)
@@ -201,7 +238,7 @@ extension FocusSessionViewController {
     }
     
     private func updateViewLabels() {
-        let timerString = self.viewModel.getTimerString()
+        let timerString = self.viewModel.isVisible ? self.viewModel.getTimerString() : String()
         
         self.focusSessionView.updateLabels(timerString: timerString)
     }
