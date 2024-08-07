@@ -21,7 +21,7 @@ class StudyTimeCoordinator: Coordinator {
         let viewModel = StudyTimeViewModel()
         let vc = StudyTimeViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = String(localized: "studyTime")
+        vc.title = "Subjects"
         self.navigationController.pushViewController(vc, animated: false)
     }
 }
