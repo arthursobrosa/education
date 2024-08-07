@@ -143,9 +143,14 @@ class ScheduleDetailsViewModel {
                         schedule.dayOfTheWeek = Int16(dayOfTheWeek)
                     }
                     
+                    NotificationService.shared.cancelNotifications(forDate: schedule.startTime!)
+                    
                     schedule.startTime = self.selectedStartTime
                     schedule.endTime = self.selectedEndTime
                     schedule.blocksApps = self.blocksApps
+                    
+                    handleAlerts()
+                    
                 }
             }
             
