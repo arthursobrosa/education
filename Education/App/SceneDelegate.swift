@@ -82,6 +82,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         // Use this method to undo the changes made on entering the background.
         let currentDate = Date.now
         self.timeInBackground.value = Int(currentDate.timeIntervalSince1970 - self.date.timeIntervalSince1970)
+        
+        ActivityManager.shared.updateAfterBackground(timeInBackground: self.timeInBackground.value)
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {

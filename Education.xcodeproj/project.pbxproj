@@ -21,9 +21,7 @@
 		310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1A2C2F26BE005339E8 /* TestPageView.swift */; };
 		310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */; };
 		317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11252C35BBBD00C5E7A5 /* TabBarController.swift */; };
-		317C11282C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11272C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift */; };
 		317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */; };
-		317C112E2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C112D2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift */; };
 		317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */; };
 		317C11332C3EF78200C5E7A5 /* StudyTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11322C3EF78200C5E7A5 /* StudyTimeViewModel.swift */; };
 		317C11352C3EF7C700C5E7A5 /* StudyTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11342C3EF7C700C5E7A5 /* StudyTimeView.swift */; };
@@ -32,6 +30,8 @@
 		31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */; };
 		31EB254B2C596883008F8893 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB254A2C596883008F8893 /* NotificationService.swift */; };
 		680038EE2C49F68600851926 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680038ED2C49F68600851926 /* EmptyView.swift */; };
+		6823766B2C63E86E00255143 /* DismissingAll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6823766A2C63E86E00255143 /* DismissingAll.swift */; };
+		682376702C63F48100255143 /* ActivityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6823766F2C63F48100255143 /* ActivityButton.swift */; };
 		682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCE2C2F342100272451 /* ThemeManager.swift */; };
 		682927512C30AE4000FE29AA /* (null) in Sources */ = {isa = PBXBuildFile; };
 		682A9A8A2C62602000FAAD07 /* ShowingFocusSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682A9A892C62602000FAAD07 /* ShowingFocusSelection.swift */; };
@@ -48,7 +48,6 @@
 		683812FF2C483EDE0062067A /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 683812FE2C483EDE0062067A /* loading.json */; };
 		683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B45382C1B6F3A00663912 /* AppDelegate.swift */; };
 		683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453A2C1B6F3A00663912 /* SceneDelegate.swift */; };
-		683B453D2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453C2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift */; };
 		683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		683B45452C1B6F3B00663912 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 683B45442C1B6F3B00663912 /* Base */; };
 		684282222C63B80A00CEEF1C /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684282212C63B80A00CEEF1C /* ProfileCoordinator.swift */; };
@@ -79,12 +78,11 @@
 		68833D9A2C46B28D00BA4850 /* DefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68833D992C46B28D00BA4850 /* DefaultCell.swift */; };
 		68833D9E2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68833D9D2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift */; };
 		6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6887D5B22C3859DF00F037F2 /* ButtonComponent.swift */; };
-		688C306D2C3EDB2000E11EA7 /* FocusSessionSettings+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C306C2C3EDB1F00E11EA7 /* FocusSessionSettings+Picker.swift */; };
-		689A4C382C46DCA50006B095 /* FocusSettingsViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689A4C372C46DCA50006B095 /* FocusSettingsViewController+Delegate.swift */; };
+		689388922C642133007EE922 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388912C642133007EE922 /* UIView+Extension.swift */; };
+		689388942C6423A7007EE922 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388932C6423A7007EE922 /* ActivityView.swift */; };
+		689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388982C642B23007EE922 /* TabBarController+Delegate.swift */; };
+		6893889C2C642C19007EE922 /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893889B2C642C19007EE922 /* ActivityManager.swift */; };
 		68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A451402C61143B00209786 /* CustomDatePickerView.swift */; };
-		68AA61A52C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A42C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift */; };
-		68AA61A72C3C25980053AD33 /* FocusSessionSettings+Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */; };
-		68AA61A92C3C26220053AD33 /* FocusSessionSettings+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */; };
 		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
 		68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */; };
 		68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */; };
@@ -121,7 +119,6 @@
 		CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */; };
 		CE3B7D332C4591CE00EE5070 /* BlockAppsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D322C4591CE00EE5070 /* BlockAppsViewModel.swift */; };
 		CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D4A2C45992000EE5070 /* FamilyActivityPickerView.swift */; };
-		CE42E2F22C2F429C00A29B2D /* FocusSessionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42E2F12C2F429C00A29B2D /* FocusSessionSettingsView.swift */; };
 		CE6A12502C63EBF000549DCC /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A124F2C63EBF000549DCC /* ProfileView.swift */; };
 		CE6A12522C63EEDC00549DCC /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A12512C63EEDC00549DCC /* ProfileViewModel.swift */; };
 		CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */; };
@@ -168,9 +165,7 @@
 		310B8A1A2C2F26BE005339E8 /* TestPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageView.swift; sourceTree = "<group>"; };
 		310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableViewCell.swift; sourceTree = "<group>"; };
 		317C11252C35BBBD00C5E7A5 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		317C11272C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsCoordinator.swift; sourceTree = "<group>"; };
 		317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTimer.swift; sourceTree = "<group>"; };
-		317C112D2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsViewModel.swift; sourceTree = "<group>"; };
 		317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeViewController.swift; sourceTree = "<group>"; };
 		317C11322C3EF78200C5E7A5 /* StudyTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeViewModel.swift; sourceTree = "<group>"; };
 		317C11342C3EF7C700C5E7A5 /* StudyTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeView.swift; sourceTree = "<group>"; };
@@ -179,6 +174,8 @@
 		31AA70A12C2C8632002367CA /* DataBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataBase.xcdatamodel; sourceTree = "<group>"; };
 		31EB254A2C596883008F8893 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		680038ED2C49F68600851926 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		6823766A2C63E86E00255143 /* DismissingAll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissingAll.swift; sourceTree = "<group>"; };
+		6823766F2C63F48100255143 /* ActivityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityButton.swift; sourceTree = "<group>"; };
 		682A9A892C62602000FAAD07 /* ShowingFocusSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusSelection.swift; sourceTree = "<group>"; };
 		68333DD12C3F81590064BF87 /* ScheduleDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsViewModel.swift; sourceTree = "<group>"; };
 		68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetails.swift; sourceTree = "<group>"; };
@@ -193,7 +190,6 @@
 		683B45352C1B6F3A00663912 /* Education.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Education.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		683B45382C1B6F3A00663912 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		683B453A2C1B6F3A00663912 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		683B453C2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsViewController.swift; sourceTree = "<group>"; };
 		683B45412C1B6F3B00663912 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		683B45442C1B6F3B00663912 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		683B45462C1B6F3B00663912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -232,12 +228,11 @@
 		68833D992C46B28D00BA4850 /* DefaultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCell.swift; sourceTree = "<group>"; };
 		68833D9D2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemePageViewController+Delegate.swift"; sourceTree = "<group>"; };
 		6887D5B22C3859DF00F037F2 /* ButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
-		688C306C2C3EDB1F00E11EA7 /* FocusSessionSettings+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Picker.swift"; sourceTree = "<group>"; };
-		689A4C372C46DCA50006B095 /* FocusSettingsViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSettingsViewController+Delegate.swift"; sourceTree = "<group>"; };
+		689388912C642133007EE922 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		689388932C6423A7007EE922 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		689388982C642B23007EE922 /* TabBarController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarController+Delegate.swift"; sourceTree = "<group>"; };
+		6893889B2C642C19007EE922 /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
 		68A451402C61143B00209786 /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
-		68AA61A42C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+CellConfig.swift"; sourceTree = "<group>"; };
-		68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Toggle.swift"; sourceTree = "<group>"; };
-		68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionSettings+Popover.swift"; sourceTree = "<group>"; };
 		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
 		68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudyTimeViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -272,7 +267,6 @@
 		CE3B7D322C4591CE00EE5070 /* BlockAppsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockAppsViewModel.swift; sourceTree = "<group>"; };
 		CE3B7D3A2C45922A00EE5070 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
 		CE3B7D4A2C45992000EE5070 /* FamilyActivityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyActivityPickerView.swift; sourceTree = "<group>"; };
-		CE42E2F12C2F429C00A29B2D /* FocusSessionSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSessionSettingsView.swift; sourceTree = "<group>"; };
 		CE6A124F2C63EBF000549DCC /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		CE6A12512C63EEDC00549DCC /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionView.swift; sourceTree = "<group>"; };
@@ -300,13 +294,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		302E06972C3F142600FAD574 /* ScheduleView */ = {
+		302E06972C3F142600FAD574 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
 				6874A2632C3F78BD00CAC9E4 /* ScheduleList */,
 				6874A2642C3F78D400CAC9E4 /* ScheduleDetails */,
+				CED3DB322C5BF9CA00297062 /* FocusSelection */,
+				68CA87D82C5D5387006ED5FA /* FocusPicker */,
+				6833B21D2C345700009EA63D /* FocusSession */,
 			);
-			path = ScheduleView;
+			path = Schedule;
 			sourceTree = "<group>";
 		};
 		302E06A72C45882D00FAD574 /* StudyTimeChart */ = {
@@ -320,6 +317,7 @@
 		30EE4DBD2C59727B00BB64D8 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				30EE4DBB2C59722400BB64D8 /* AudioService.swift */,
 				30EE4DBE2C59728E00BB64D8 /* alarm.mp3 */,
 			);
 			path = Audio;
@@ -330,6 +328,7 @@
 			children = (
 				30F216A22C2C884400B7114F /* ThemeList */,
 				30F216B72C2DEF2200B7114F /* ThemePage */,
+				6833B2172C34567E009EA63D /* Tests */,
 			);
 			path = Themes;
 			sourceTree = "<group>";
@@ -376,7 +375,7 @@
 			path = TestPage;
 			sourceTree = "<group>";
 		};
-		317C112F2C3EF70500C5E7A5 /* StudyTime */ = {
+		317C112F2C3EF70500C5E7A5 /* Subjects */ = {
 			isa = PBXGroup;
 			children = (
 				317C11362C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift */,
@@ -387,7 +386,7 @@
 				317C11382C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift */,
 				302E06A72C45882D00FAD574 /* StudyTimeChart */,
 			);
-			path = StudyTime;
+			path = Subjects;
 			sourceTree = "<group>";
 		};
 		31EB25492C596864008F8893 /* Notification */ = {
@@ -403,7 +402,6 @@
 			children = (
 				683B45382C1B6F3A00663912 /* AppDelegate.swift */,
 				683B453A2C1B6F3A00663912 /* SceneDelegate.swift */,
-				317C11252C35BBBD00C5E7A5 /* TabBarController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -441,6 +439,7 @@
 				68CA87DF2C5D54CD006ED5FA /* ShowingFocusPicker.swift */,
 				682A9A892C62602000FAAD07 /* ShowingFocusSelection.swift */,
 				68BBC96C2C35E13D00D82350 /* Dismissing.swift */,
+				6823766A2C63E86E00255143 /* DismissingAll.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -448,12 +447,13 @@
 		6833B21A2C3456C9009EA63D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				30EE4DBD2C59727B00BB64D8 /* Audio */,
 				6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */,
 				68825BD22C2F370B00272451 /* Box.swift */,
 				68833D992C46B28D00BA4850 /* DefaultCell.swift */,
 				683812F52C48329D0062067A /* UserDefaults.swift */,
-				30EE4DBB2C59722400BB64D8 /* AudioService.swift */,
 				68D218E32C60321C00FA5CD7 /* UIColor+Extension.swift */,
+				689388912C642133007EE922 /* UIView+Extension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -461,7 +461,6 @@
 		6833B21D2C345700009EA63D /* FocusSession */ = {
 			isa = PBXGroup;
 			children = (
-				6887D5B52C38699A00F037F2 /* Settings */,
 				6887D5B62C3869A700F037F2 /* Session */,
 				CE3B7D2D2C45912100EE5070 /* BlockApps */,
 			);
@@ -501,22 +500,17 @@
 		683B45372C1B6F3A00663912 /* Education */ = {
 			isa = PBXGroup;
 			children = (
-				684282202C63B80200CEEF1C /* Profile */,
-				CED3DB322C5BF9CA00297062 /* FocusSelection */,
-				68CA87D82C5D5387006ED5FA /* FocusPicker */,
-				31EB25492C596864008F8893 /* Notification */,
-				30EE4DBD2C59727B00BB64D8 /* Audio */,
 				68D47D582C2DE227000E011C /* Education.entitlements */,
 				6833B2162C345670009EA63D /* App */,
-				6833B21A2C3456C9009EA63D /* Utils */,
-				684EDFA62C2CAA7B00A3F392 /* CoreData */,
 				6833B2192C3456B9009EA63D /* Coordinator */,
 				683812EC2C481A610062067A /* Splash */,
+				689388972C642B13007EE922 /* TabBar */,
+				302E06972C3F142600FAD574 /* Schedule */,
+				317C112F2C3EF70500C5E7A5 /* Subjects */,
 				30F216A12C2C883900B7114F /* Themes */,
-				6833B2172C34567E009EA63D /* Tests */,
-				6833B21D2C345700009EA63D /* FocusSession */,
-				317C112F2C3EF70500C5E7A5 /* StudyTime */,
-				302E06972C3F142600FAD574 /* ScheduleView */,
+				684282202C63B80200CEEF1C /* Profile */,
+				68AD1B472C65633F0025DC95 /* Service */,
+				6833B21A2C3456C9009EA63D /* Utils */,
 				6887D5B42C38697400F037F2 /* Components */,
 				683B45412C1B6F3B00663912 /* Assets.xcassets */,
 				683B45432C1B6F3B00663912 /* LaunchScreen.storyboard */,
@@ -624,21 +618,9 @@
 				68D218E12C60319D00FA5CD7 /* ActionButton.swift */,
 				68A451402C61143B00209786 /* CustomDatePickerView.swift */,
 				685CBFD92C61597600EC8E09 /* CustomDateButton.swift */,
+				6823766F2C63F48100255143 /* ActivityButton.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		6887D5B52C38699A00F037F2 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				317C11272C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift */,
-				317C112D2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift */,
-				683B453C2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift */,
-				689A4C372C46DCA50006B095 /* FocusSettingsViewController+Delegate.swift */,
-				CE42E2F12C2F429C00A29B2D /* FocusSessionSettingsView.swift */,
-				68AA61AA2C3C268C0053AD33 /* Extensions */,
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 		6887D5B62C3869A700F037F2 /* Session */ = {
@@ -652,15 +634,32 @@
 			path = Session;
 			sourceTree = "<group>";
 		};
-		68AA61AA2C3C268C0053AD33 /* Extensions */ = {
+		689388972C642B13007EE922 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
-				688C306C2C3EDB1F00E11EA7 /* FocusSessionSettings+Picker.swift */,
-				68AA61A82C3C26220053AD33 /* FocusSessionSettings+Popover.swift */,
-				68AA61A62C3C25980053AD33 /* FocusSessionSettings+Toggle.swift */,
-				68AA61A42C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift */,
+				317C11252C35BBBD00C5E7A5 /* TabBarController.swift */,
+				689388982C642B23007EE922 /* TabBarController+Delegate.swift */,
 			);
-			path = Extensions;
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		6893889A2C642C11007EE922 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				6893889B2C642C19007EE922 /* ActivityManager.swift */,
+				689388932C6423A7007EE922 /* ActivityView.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		68AD1B472C65633F0025DC95 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				684EDFA62C2CAA7B00A3F392 /* CoreData */,
+				31EB25492C596864008F8893 /* Notification */,
+				6893889A2C642C11007EE922 /* Activity */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		68C2D0082C473F5800E2347A /* Extensions */ = {
@@ -837,30 +836,29 @@
 				317C11352C3EF7C700C5E7A5 /* StudyTimeView.swift in Sources */,
 				68C2CFFF2C47233600E2347A /* ScheduleViewController+Delegate.swift in Sources */,
 				6833B2152C345467009EA63D /* ObjectManager.swift in Sources */,
-				683B453D2C1B6F3A00663912 /* FocusSessionSettingsViewController.swift in Sources */,
 				68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */,
-				68AA61A52C3C25310053AD33 /* FocusSessionSettings+CellConfig.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
 				317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */,
 				68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */,
+				6823766B2C63E86E00255143 /* DismissingAll.swift in Sources */,
 				317C11372C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift in Sources */,
-				688C306D2C3EDB2000E11EA7 /* FocusSessionSettings+Picker.swift in Sources */,
 				68CA87DC2C5D5428006ED5FA /* FocusPickerViewModel.swift in Sources */,
 				684282222C63B80A00CEEF1C /* ProfileCoordinator.swift in Sources */,
 				317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */,
 				CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */,
 				6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */,
 				68C2CFFD2C47232500E2347A /* ScheduleViewController.swift in Sources */,
-				CE42E2F22C2F429C00A29B2D /* FocusSessionSettingsView.swift in Sources */,
 				68D218E42C60321C00FA5CD7 /* UIColor+Extension.swift in Sources */,
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
 				68CA87E42C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift in Sources */,
 				30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */,
+				689388922C642133007EE922 /* UIView+Extension.swift in Sources */,
 				CE6A12502C63EBF000549DCC /* ProfileView.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
 				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
+				689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */,
 				685CBFDC2C615CE300EC8E09 /* DateView.swift in Sources */,
 				31EB254B2C596883008F8893 /* NotificationService.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
@@ -880,6 +878,8 @@
 				30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */,
 				CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */,
 				CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */,
+				6893889C2C642C19007EE922 /* ActivityManager.swift in Sources */,
+				689388942C6423A7007EE922 /* ActivityView.swift in Sources */,
 				6874A2602C3F727200CAC9E4 /* ScheduleCoordinator.swift in Sources */,
 				CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */,
 				CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */,
@@ -896,7 +896,6 @@
 				68C2D00A2C473F8000E2347A /* ScheduleDetails+Picker.swift in Sources */,
 				683812F62C48329D0062067A /* UserDefaults.swift in Sources */,
 				302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */,
-				317C112E2C35C70700C5E7A5 /* FocusSessionSettingsViewModel.swift in Sources */,
 				30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */,
 				683812F02C481A9C0062067A /* SplashViewController.swift in Sources */,
 				68CA87E22C5D56DD006ED5FA /* FocusPickerView.swift in Sources */,
@@ -908,7 +907,6 @@
 				68C2D0012C4723A100E2347A /* ScheduleTableViewCell.swift in Sources */,
 				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
 				68C2D0072C473BF300E2347A /* TestPageViewController+Delegate.swift in Sources */,
-				689A4C382C46DCA50006B095 /* FocusSettingsViewController+Delegate.swift in Sources */,
 				68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */,
 				68825BD72C2F469D00272451 /* ShowingThemePage.swift in Sources */,
 				68C2D0052C473A4800E2347A /* ScheduleDetailsViewController+Delegate.swift in Sources */,
@@ -916,10 +914,10 @@
 				68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */,
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68833D9E2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift in Sources */,
+				682376702C63F48100255143 /* ActivityButton.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
 				317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */,
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
-				68AA61A92C3C26220053AD33 /* FocusSessionSettings+Popover.swift in Sources */,
 				6881123E2C33388A003012D0 /* ShowingTestPage.swift in Sources */,
 				68C2CFFB2C47220000E2347A /* ScheduleView.swift in Sources */,
 				CE3B7D332C4591CE00EE5070 /* BlockAppsViewModel.swift in Sources */,
@@ -931,10 +929,8 @@
 				68D218E22C60319D00FA5CD7 /* ActionButton.swift in Sources */,
 				6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */,
 				68CA87DE2C5D543D006ED5FA /* FocusPickerViewController.swift in Sources */,
-				68AA61A72C3C25980053AD33 /* FocusSessionSettings+Toggle.swift in Sources */,
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
 				68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */,
-				317C11282C35BF8200C5E7A5 /* FocusSessionSettingsCoordinator.swift in Sources */,
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
 				310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */,
