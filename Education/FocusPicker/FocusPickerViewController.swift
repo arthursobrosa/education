@@ -11,7 +11,7 @@ class FocusPickerViewController: UIViewController {
     weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
     let viewModel: FocusPickerViewModel
     
-    let color: UIColor?
+    private let color: UIColor?
     
     private lazy var focusPickerView: FocusPickerView = {
         let view = FocusPickerView(color: self.color, timerCase: self.viewModel.timerCase)
@@ -175,6 +175,6 @@ extension FocusPickerViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
         self.coordinator?.dismissAll()
         
-        return nil
+        return ActivityManager.shared.handleActivityDismissed(dismissed)
     }
 }

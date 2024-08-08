@@ -12,12 +12,6 @@ class ScheduleViewController: UIViewController {
     weak var coordinator: (ShowingScheduleDetails & ShowingFocusSelection)?
     let viewModel: ScheduleViewModel
     
-    var currentActivityColor: UIColor? = nil {
-        didSet {
-            self.scheduleView.setCurrentActivity(withColor: currentActivityColor)
-        }
-    }
-    
     // MARK: - Properties
     lazy var scheduleView: ScheduleView = {
         let view = ScheduleView()
@@ -107,9 +101,10 @@ class ScheduleViewController: UIViewController {
     }
     
     @objc private func createActivityBtnTapped() {
+        ActivityManager.shared.isShowingActivity = false
+        
         dismissButtons()
         self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
-        
     }
     
     @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {

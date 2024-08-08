@@ -142,18 +142,18 @@ extension FocusSessionView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            timerContainerView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding * 2),
             timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.385),
             timerContainerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: padding),
             timerContainerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            timerContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             timerLabel.centerXAnchor.constraint(equalTo: timerContainerView.centerXAnchor),
             timerLabel.centerYAnchor.constraint(equalTo: timerContainerView.centerYAnchor),
             timerLabel.widthAnchor.constraint(equalTo: timerContainerView.widthAnchor, multiplier: 1),
             timerLabel.heightAnchor.constraint(equalTo: timerLabel.widthAnchor),
             
-            pauseResumeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: padding * 2),
             pauseResumeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            pauseResumeButton.bottomAnchor.constraint(equalTo: finishButton.topAnchor, constant: -padding * 2),
             
             finishButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             finishButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
@@ -162,7 +162,7 @@ extension FocusSessionView: ViewCodeProtocol {
         ])
     }
     
-    func setupLayers() {
+    func setupLayers(strokeEnd: CGFloat) {
         let arcPath = UIBezierPath(arcCenter: CGPoint(x: self.timerLabel.frame.width / 2, y: self.timerLabel.frame.height / 2), radius: self.timerLabel.frame.width / 2, startAngle: -(CGFloat.pi / 2), endAngle: -(CGFloat.pi / 2) + CGFloat.pi * 2, clockwise: true)
         
         self.timerTrackLayer.path = arcPath.cgPath
@@ -177,7 +177,7 @@ extension FocusSessionView: ViewCodeProtocol {
         self.timerCircleFillLayer.lineWidth = 20
         self.timerCircleFillLayer.fillColor = UIColor.clear.cgColor
         self.timerCircleFillLayer.lineCap = .round
-        self.timerCircleFillLayer.strokeEnd = 0
+        self.timerCircleFillLayer.strokeEnd = strokeEnd
         
         self.timerLabel.layer.addSublayer(timerTrackLayer)
         self.timerLabel.layer.addSublayer(timerCircleFillLayer)

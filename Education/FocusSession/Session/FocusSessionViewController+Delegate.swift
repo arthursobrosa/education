@@ -22,8 +22,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
     
     func saveFocusSession() {
-        self.viewModel.saveFocusSession()
-        self.navigationController?.dismiss(animated: true)
+        self.finishAndDismiss()
     }
     
     func unblockApps() {

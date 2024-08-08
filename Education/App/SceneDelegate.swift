@@ -30,12 +30,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window?.rootViewController = coordinator?.navigationController
         window?.makeKeyAndVisible()
-        
-//        coordinator = FocusSelectionCoordinator(navigationController: UINavigationController())
-//        coordinator?.start()
-//        
-//        window?.rootViewController = coordinator?.navigationController
-//        window?.makeKeyAndVisible()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -62,6 +56,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to undo the changes made on entering the background.
         let currentDate = Date.now
         self.timeInBackground.value = Int(currentDate.timeIntervalSince1970 - self.date.timeIntervalSince1970)
+        
+        ActivityManager.shared.updateAfterBackground(timeInBackground: self.timeInBackground.value)
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {

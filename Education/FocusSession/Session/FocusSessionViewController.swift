@@ -16,7 +16,7 @@ class FocusSessionViewController: UIViewController {
     let viewModel: FocusSessionViewModel
     
     // MARK: - Properties
-    private let color: UIColor?
+    let color: UIColor?
     
     private lazy var focusSessionView: FocusSessionView = {
         let view = FocusSessionView(color: self.color)
@@ -131,7 +131,17 @@ class FocusSessionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.viewModel.didTapFinishButton = false
+        
         DispatchQueue.main.async {
+            switch self.viewModel.timerCase {
+                case .timer, .pomodoro:
+                    let strokeEnd = self.viewModel.getStrokeEnd()
+                    self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
+                default:
+                    break
+            }
+            
             let timerState = self.viewModel.timerState.value
             
             switch timerState {
@@ -140,13 +150,6 @@ class FocusSessionViewController: UIViewController {
                     self.focusSessionView.changeButtonAlpha()
                     self.setNavigationTitle(isPaused: true)
                 case nil:
-                    switch self.viewModel.timerCase {
-                        case .timer, .pomodoro:
-                            self.focusSessionView.setupLayers()
-                        default:
-                            break
-                    }
-                    
                     self.viewModel.timerState.value = .starting
                     self.setNavigationTitle(isPaused: false)
                 default:
@@ -194,6 +197,15 @@ class FocusSessionViewController: UIViewController {
         self.updateViewLabels()
         self.setVisibilityButton()
     }
+    
+    func finishAndDismiss() {
+        self.viewModel.saveFocusSession()
+        self.viewModel.didTapFinishButton = true
+        
+        ActivityManager.shared.isShowingActivity = false
+        
+        self.navigationController?.dismiss(animated: true)
+    }
 }
 
 // MARK: - Auxiliar Methods
@@ -227,9 +239,7 @@ extension FocusSessionViewController {
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
             guard let self = self else { return }
 
-            self.viewModel.saveFocusSession()
-            self.unblockApps()
-            self.navigationController?.dismiss(animated: true)
+            self.finishAndDismiss()
         }
 
         alertController.addAction(okAction)

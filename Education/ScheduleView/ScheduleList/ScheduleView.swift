@@ -83,14 +83,6 @@ class ScheduleView: UIView {
         return button
     }()
     
-    private lazy var currentActivityView: UIView = {
-        let view = UIView()
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -104,14 +96,6 @@ class ScheduleView: UIView {
     
     @objc private func startActivityTapped() {
         self.delegate?.startAcitivityTapped()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.currentActivityView.layer.cornerRadius = self.currentActivityView.bounds.height / 6
-        self.currentActivityView.layer.borderColor = UIColor.label.cgColor
-        self.currentActivityView.layer.borderWidth = 1
     }
 }
 
@@ -156,26 +140,5 @@ extension ScheduleView: ViewCodeProtocol {
             btnStartActivity.widthAnchor.constraint(equalToConstant: 250),
             btnStartActivity.heightAnchor.constraint(equalToConstant: 40)
         ])
-    }
-    
-    func setCurrentActivity(withColor color: UIColor?) {
-        self.currentActivityView.backgroundColor = color
-        
-        self.setCurrentActivityUI()
-    }
-    
-    private func setCurrentActivityUI() {
-        self.addSubview(currentActivityView)
-        
-        NSLayoutConstraint.activate([
-            currentActivityView.widthAnchor.constraint(equalTo: self.widthAnchor),
-            currentActivityView.heightAnchor.constraint(equalTo: currentActivityView.widthAnchor, multiplier: (155/390)),
-            currentActivityView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            currentActivityView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        ])
-    }
-    
-    func removeCurrentActivity() {
-        self.currentActivityView.removeFromSuperview()
     }
 }

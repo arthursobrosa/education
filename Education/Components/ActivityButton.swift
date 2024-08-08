@@ -21,9 +21,9 @@ class ActivityButton: UIButton {
         }
     }
     
-    var isPlaying: Bool = false {
+    var isPaused: Bool = true {
         didSet {
-            let imageName = isPlaying ? "pause.fill" : "play.fill"
+            let imageName = isPaused ? "play.fill" : "pause.fill"
             actionImageView.image = UIImage(systemName: imageName)
         }
     }
@@ -61,7 +61,7 @@ class ActivityButton: UIButton {
     }()
     
     private lazy var actionImageView: UIImageView = {
-        let imageName = self.isPlaying ? "pause.fill" : "play.fill"
+        let imageName = self.isPaused ? "play.fill" : "pause.fill"
         let actionImage = UIImage(systemName: imageName)
         
         let actionImageView = UIImageView(image: actionImage)

@@ -5,8 +5,8 @@
 //  Created by Leandro Silva on 03/07/24.
 //
 
-import Foundation
+import UIKit
 
 protocol ShowingTimer: AnyObject {
-    func showTimer(totalTimeInSeconds: Int, subject: Subject?, timerCase: TimerCase)
+    func showTimer<T: UIViewControllerTransitioningDelegate>(transitioningDelegate: T, timerState: FocusSessionViewModel.TimerState?, totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase)
 }

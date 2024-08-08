@@ -56,7 +56,6 @@ class DayView: UIView {
         let view = UIView()
         view.layer.cornerRadius = 18
         view.layer.masksToBounds = true
-        //view.backgroundColor = .red
         
         view.translatesAutoresizingMaskIntoConstraints = false
         

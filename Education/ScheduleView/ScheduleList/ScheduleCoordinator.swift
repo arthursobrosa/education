@@ -7,9 +7,10 @@
 
 import UIKit
 
-class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusSelection, UINavigationControllerDelegate {
+class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusSelection, ShowingTimer, UINavigationControllerDelegate {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    var color: UIColor?
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -49,6 +50,18 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         child.start()
     }
     
+    func showTimer<T: UIViewControllerTransitioningDelegate>(transitioningDelegate: T, timerState: FocusSessionViewModel.TimerState?, totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase) {
+        let viewModel = FocusSessionViewModel(totalSeconds: totalSeconds, timerSeconds: timerSeconds, subject: subject, timerCase: timerCase)
+        viewModel.timerState.value = timerState
+        let vc = FocusSessionViewController(viewModel: viewModel, color: self.color)
+        
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        nav.transitioningDelegate = transitioningDelegate
+        
+        self.navigationController.present(nav, animated: true)
+    }
+    
     func childDidFinish(_ child: Coordinator?) {
         for (index, coordinator) in childCoordinators.enumerated() {
             if coordinator === child {
@@ -66,18 +79,10 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         }
         
         if let focusSelectionViewController = fromViewController as? FocusSelectionViewController {
-            if let scheduleViewController = viewController as? ScheduleViewController {
-//                scheduleViewController.currentActivityColor = focusSelectionViewController.color
-            }
-            
             self.childDidFinish(focusSelectionViewController.coordinator as? Coordinator)
         }
         
         if let focusPickerViewController = fromViewController as? FocusPickerViewController {
-            if let scheduleViewController = viewController as? ScheduleViewController {
-//                scheduleViewController.currentActivityColor = focusPickerViewController.color
-            }
-            
             self.childDidFinish(focusPickerViewController.coordinator as? Coordinator)
         }
     }

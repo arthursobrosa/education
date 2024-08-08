@@ -11,7 +11,7 @@ class FocusSelectionViewController: UIViewController {
     weak var coordinator: (ShowingFocusPicker & ShowingTimer & Dismissing)?
     let viewModel: FocusSelectionViewModel
     
-    let color: UIColor?
+    private let color: UIColor?
     
     private lazy var focusSelectionView: FocusSelectionView = {
         let view = FocusSelectionView(color: self.color)
@@ -73,6 +73,6 @@ extension FocusSelectionViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
         self.coordinator?.dismiss()
         
-        return nil
+        return ActivityManager.shared.handleActivityDismissed(dismissed)
     }
 }

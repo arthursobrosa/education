@@ -56,9 +56,7 @@ extension ScheduleViewController: DayDelegate {
     }
 }
 
-
-
-// MARK: Play Button
+// MARK: - Play Button
 protocol ScheduleButtonDelegate: AnyObject {
     func activityButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?)
 }
@@ -72,7 +70,8 @@ extension ScheduleViewController: ScheduleButtonDelegate {
         let schedule = self.viewModel.schedules[row]
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
         
-        self.scheduleView.removeCurrentActivity()
+        ActivityManager.shared.isShowingActivity = false
+        
         self.coordinator?.showFocusSelection(color: color, subject: subject)
     }
 }

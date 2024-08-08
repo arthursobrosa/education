@@ -36,16 +36,14 @@ class FocusSelectionCoordinator: Coordinator, ShowingFocusPicker, ShowingTimer, 
         child.start()
     }
     
-    func showTimer(totalTimeInSeconds: Int, subject: Subject?, timerCase: TimerCase) {
-        let viewModel = FocusSessionViewModel(totalSeconds: totalTimeInSeconds, subject: subject, timerCase: timerCase)
+    func showTimer<T: UIViewControllerTransitioningDelegate>(transitioningDelegate: T, timerState: FocusSessionViewModel.TimerState?, totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase) {
+        let viewModel = FocusSessionViewModel(totalSeconds: totalSeconds, timerSeconds: timerSeconds, subject: subject, timerCase: timerCase)
+        viewModel.timerState.value = timerState
         let vc = FocusSessionViewController(viewModel: viewModel, color: self.color)
         
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
-        
-        if let focusSelectionVC = self.navigationController.viewControllers.last as? FocusSelectionViewController {
-            nav.transitioningDelegate = focusSelectionVC
-        }
+        nav.transitioningDelegate = transitioningDelegate
         
         self.navigationController.present(nav, animated: true)
     }

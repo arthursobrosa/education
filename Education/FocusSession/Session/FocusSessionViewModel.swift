@@ -12,6 +12,8 @@ class FocusSessionViewModel {
     private let focusSessionManager: FocusSessionManager
    
     // MARK: - Properties
+    var didTapFinishButton = false
+    
     var isVisible = true
     
     var timer = Timer()
@@ -47,7 +49,7 @@ class FocusSessionViewModel {
     var timerCase: TimerCase
     
     // MARK: - Initializer
-    init(totalSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager()) {
+    init(totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.focusSessionManager = focusSessionManager
         
         self.timerState = Box(nil)
@@ -55,7 +57,7 @@ class FocusSessionViewModel {
         self.date = Date.now
         
         self.totalSeconds = totalSeconds
-        self.timerSeconds = Box(totalSeconds)
+        self.timerSeconds = Box(timerSeconds)
         self.timerCase = timerCase
         
         switch timerCase {
