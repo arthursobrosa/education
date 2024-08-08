@@ -126,7 +126,8 @@ class ScheduleDetailsViewModel {
             NotificationService.shared.scheduleWeeklyNotificationAtExactTime(
                title: title,
                body: body,
-               date: selectedDate
+               date: selectedDate,
+               subjectName: selectedSubjectName
            )
             
         }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate {
     var coordinator: Coordinator?
     var window: UIWindow?
     var timeInBackground = Box(Int())
@@ -21,6 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
+        UNUserNotificationCenter.current().delegate = self
+        
         window = UIWindow(windowScene: windowScene)
         window?.frame = windowScene.coordinateSpace.bounds
 
@@ -31,11 +33,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = coordinator?.navigationController
         window?.makeKeyAndVisible()
         
-//        coordinator = FocusSelectionCoordinator(navigationController: UINavigationController())
-//        coordinator?.start()
-//        
-//        window?.rootViewController = coordinator?.navigationController
-//        window?.makeKeyAndVisible()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+            let userInfo = response.notification.request.content.userInfo
+
+            if let name = userInfo["subjectName"] as? String {
+
+                let subjectManager = SubjectManager()
+                let subject = subjectManager.fetchSubject(withName: name)
+                
+                self.showFocusSelection(color: .systemBlue, subject: subject)
+            
+            }
+
+            completionHandler()
+        }
+    
+    func showFocusSelection(color: UIColor?, subject: Subject?) {
+        guard let coordinator = coordinator else { return }
+        
+        if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
+            tabBar.schedule.showFocusSelection(color: color, subject: subject)
+        }
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

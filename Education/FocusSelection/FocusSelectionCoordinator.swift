@@ -51,7 +51,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     }
     
     func dismiss() {
-        self.navigationController.popToRootViewController(animated: true)
+        self.navigationController.popViewController(animated: true)
     }
     
     func childDidFinish(_ child: Coordinator?) {
