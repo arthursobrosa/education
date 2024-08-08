@@ -198,6 +198,7 @@ extension ScheduleTableViewCell{
         let minutesLeft = differenceInMinutes % 60
         guard let color = self.color else { return }
         
+        self.activityButton.isHidden = false
         self.activityButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker()
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
@@ -208,6 +209,7 @@ extension ScheduleTableViewCell{
     private func updateViewForOngoingEvent() {
         guard let color = self.color else { return }
         
+        self.activityButton.isHidden = false
         self.activityButton.activityState = .current(color: color.darker())
         self.timeLeftLabel.text = "Agora"
         self.timeLeftLabel.font = .boldSystemFont(ofSize: 16)
@@ -219,6 +221,7 @@ extension ScheduleTableViewCell{
     private func updateViewForCompletedEvent() {
         guard let color = self.color else { return }
         
+        self.activityButton.isHidden = false
         self.activityButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker()
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
