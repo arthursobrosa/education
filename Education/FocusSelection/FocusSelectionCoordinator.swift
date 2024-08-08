@@ -49,6 +49,6 @@ class FocusSelectionCoordinator: Coordinator, ShowingFocusPicker, ShowingTimer, 
     }
     
     func dismiss() {
-        self.navigationController.popToRootViewController(animated: true)
+        self.navigationController.popViewController(animated: true)
     }
 }

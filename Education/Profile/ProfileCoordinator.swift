@@ -16,7 +16,8 @@ class ProfileCoordinator: Coordinator {
     }
     
     func start() {
-        let vc = ProfileViewController()
+        let viewModel = ProfileViewModel()
+        let vc = ProfileViewController(viewModel: viewModel)
         vc.coordinator = self
         vc.title = "Profile"
         

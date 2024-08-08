@@ -31,6 +31,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
         ActivityManager.shared.activityDelegate = tabBar
         ActivityManager.shared.isShowingActivity = false
         
-        self.navigationController.present(tabBar, animated: false)
+        self.navigationController.setNavigationBarHidden(true, animated: false)
+        self.navigationController.pushViewController(tabBar, animated: false)
     }
 }

@@ -168,6 +168,8 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         let schedule = self.viewModel.schedules[indexPath.row]
         
         if editingStyle == .delete {
+            NotificationService.shared.cancelNotifications(forDate: schedule.startTime!)
+            
             self.viewModel.removeSchedule(schedule)
             
             self.loadSchedules()
