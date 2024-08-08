@@ -8,9 +8,6 @@
 import UIKit
 
 class ActivityView: UIView {
-    var timerCase: TimerCase?
-    var totalSeconds: Int = 0
-    
     var timerSeconds: Int = 0 {
         didSet {
             self.setTimerText()
@@ -38,6 +35,14 @@ class ActivityView: UIView {
         didSet {
             self.backgroundColor = color
             self.activityButton.activityState = .current(color: color?.getDarkerColor())
+        }
+    }
+    
+    var isAtWorkTime: Bool = false {
+        didSet {
+            guard !isAtWorkTime else { return }
+            
+            self.activityTitle.text = (self.activityTitle.text ?? String()) + " interval"
         }
     }
     

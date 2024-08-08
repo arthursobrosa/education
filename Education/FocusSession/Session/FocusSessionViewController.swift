@@ -270,7 +270,7 @@ extension FocusSessionViewController {
     
     private func startAnimation() {
         let timerDuration = Double(self.viewModel.timerSeconds.value)
-        let timerString = self.viewModel.getTimerString()
+        let timerString = self.viewModel.isVisible ? self.viewModel.getTimerString() : String()
         self.focusSessionView.startAnimation(timerDuration: timerDuration, timerString: timerString)
     }
     

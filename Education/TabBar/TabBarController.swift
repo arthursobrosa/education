@@ -9,7 +9,7 @@ import UIKit
 
 class TabBarController: UITabBarController {
     let themeListViewModel: ThemeListViewModel
-    private let schedule = ScheduleCoordinator(navigationController: UINavigationController())
+    let schedule = ScheduleCoordinator(navigationController: UINavigationController())
     private let studytime = StudyTimeCoordinator(navigationController: UINavigationController())
     private lazy var themeList = ThemeListCoordinator(navigationController: UINavigationController(), themeListViewModel: self.themeListViewModel)
     private let profile = ProfileCoordinator(navigationController: UINavigationController())
@@ -80,8 +80,13 @@ class TabBarController: UITabBarController {
         schedule.color = self.activityView.color
         
         let timerState: FocusSessionViewModel.TimerState? = self.activityView.isPaused ? .reseting : nil
+        let totalSeconds = ActivityManager.shared.totalSeconds
+        let timerSeconds = ActivityManager.shared.timerSeconds
+        let subject = ActivityManager.shared.subject
+        let timerCase = ActivityManager.shared.timerCase
+        let isAtWorkTime = ActivityManager.shared.isAtWorkTime
         
-        schedule.showTimer(transitioningDelegate: self, timerState: timerState, totalSeconds: self.activityView.totalSeconds, timerSeconds: self.activityView.timerSeconds, subject: self.activityView.subject, timerCase: self.activityView.timerCase ?? .timer)
+        schedule.showTimer(transitioningDelegate: self, timerState: timerState, totalSeconds: totalSeconds, timerSeconds: timerSeconds, subject: subject, timerCase: timerCase, isAtWorkTime: isAtWorkTime)
         
         ActivityManager.shared.isShowingActivity = false
     }

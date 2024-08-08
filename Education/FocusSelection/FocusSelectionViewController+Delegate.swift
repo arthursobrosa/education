@@ -36,7 +36,7 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
         
         switch timerCase {
             case .stopwatch:
-                self.coordinator?.showTimer(transitioningDelegate: self, timerState: nil, totalSeconds: 0, timerSeconds: 0, subject: self.viewModel.subject, timerCase: timerCase)
+                self.coordinator?.showTimer(transitioningDelegate: self, timerState: nil, totalSeconds: 0, timerSeconds: 0, subject: self.viewModel.subject, timerCase: timerCase, isAtWorkTime: true)
             case .timer, .pomodoro:
                 self.coordinator?.showFocusPicker(timerCase: timerCase)
         }

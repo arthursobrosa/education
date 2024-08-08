@@ -21,7 +21,7 @@ extension FocusPickerViewController: FocusPickerDelegate {
         guard let timerCase = self.viewModel.timerCase else { return }
         let totalTime = self.viewModel.getTotalTime()
         
-        self.coordinator?.showTimer(transitioningDelegate: self, timerState: nil, totalSeconds: totalTime, timerSeconds: totalTime, subject: self.viewModel.subject, timerCase: timerCase)
+        self.coordinator?.showTimer(transitioningDelegate: self, timerState: nil, totalSeconds: totalTime, timerSeconds: totalTime, subject: self.viewModel.subject, timerCase: timerCase, isAtWorkTime: true)
     }
     
     func pomodoroDateChanged(tag: Int, time: Int) {

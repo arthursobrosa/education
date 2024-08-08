@@ -44,12 +44,12 @@ class FocusSessionViewModel {
     var restTime = 0
     var numberOfLoops = 0
     var currentLoop = 0
-    var isAtWorkTime = true
+    var isAtWorkTime: Bool
     
     var timerCase: TimerCase
     
     // MARK: - Initializer
-    init(totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager()) {
+    init(totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager(), isAtWorkTime: Bool) {
         self.focusSessionManager = focusSessionManager
         
         self.timerState = Box(nil)
@@ -68,6 +68,8 @@ class FocusSessionViewModel {
             default:
                 break
         }
+        
+        self.isAtWorkTime = isAtWorkTime
     }
     
     // MARK: - Methods

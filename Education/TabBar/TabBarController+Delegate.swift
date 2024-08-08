@@ -9,19 +9,18 @@ import UIKit
 
 // MARK: - Activity
 protocol ActivityDelegate: AnyObject {
-    func setActivityView(color: UIColor?, subject: Subject?, totalSeconds: Int, timerSeconds: Int, timerCase: TimerCase, isPaused: Bool)
+    func setActivityView(color: UIColor?, subject: Subject?, timerSeconds: Int, isPaused: Bool)
     func updateActivityView(timerSeconds: Int)
     func changeActivityButtonState()
+    func changeActivityIsAtWorkTime(_ isAtWorkTime: Bool)
     func removeActivityView()
 }
 
 extension TabBarController: ActivityDelegate {
-    func setActivityView(color: UIColor?, subject: Subject?, totalSeconds: Int, timerSeconds: Int, timerCase: TimerCase, isPaused: Bool) {
+    func setActivityView(color: UIColor?, subject: Subject?, timerSeconds: Int, isPaused: Bool) {
         self.activityView.color = color
         self.activityView.subject = subject
-        self.activityView.totalSeconds = totalSeconds
         self.activityView.timerSeconds = timerSeconds
-        self.activityView.timerCase = timerCase
         self.activityView.isPaused = isPaused
         
         self.view.addSubview(activityView)
@@ -33,6 +32,10 @@ extension TabBarController: ActivityDelegate {
     
     func changeActivityButtonState() {
         self.activityView.isPaused.toggle()
+    }
+    
+    func changeActivityIsAtWorkTime(_ isAtWorkTime: Bool) {
+        self.activityView.isAtWorkTime = isAtWorkTime
     }
     
     func removeActivityView() {
