@@ -49,11 +49,12 @@ class NotificationService {
         }
     }
     
-    func scheduleWeeklyNotificationAtExactTime(title: String, body: String, date: Date) {
+    func scheduleWeeklyNotificationAtExactTime(title: String, body: String, date: Date, subjectName: String) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
+        content.userInfo = ["subjectName": subjectName]
         
         let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)

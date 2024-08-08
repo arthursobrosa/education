@@ -9,7 +9,7 @@ import UIKit
 
 class TabBarController: UITabBarController {
     let themeListViewModel: ThemeListViewModel
-    private let schedule = ScheduleCoordinator(navigationController: UINavigationController())
+    let schedule = ScheduleCoordinator(navigationController: UINavigationController())
     private let studytime = StudyTimeCoordinator(navigationController: UINavigationController())
     private lazy var themeList = ThemeListCoordinator(navigationController: UINavigationController(), themeListViewModel: self.themeListViewModel)
     private let profile = ProfileCoordinator(navigationController: UINavigationController())
@@ -27,6 +27,8 @@ class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.hidesBackButton = true
         
         schedule.start()
         schedule.navigationController.tabBarItem = UITabBarItem(title: String(localized: "scheduleTabTitle"), image: UIImage(systemName: "calendar.badge.clock"), tag: 0)
