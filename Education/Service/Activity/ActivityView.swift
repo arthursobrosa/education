@@ -34,7 +34,7 @@ class ActivityView: UIView {
     var color: UIColor? {
         didSet {
             self.backgroundColor = color
-            self.activityButton.activityState = .current(color: color?.getDarkerColor())
+            self.activityButton.activityState = .current(color: color?.darker(by: 0.6))
         }
     }
     

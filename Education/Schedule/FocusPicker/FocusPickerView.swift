@@ -30,8 +30,8 @@ class FocusPickerView: UIView {
     
     lazy var dateView: DateView = {
         let view = DateView(timerCase: self.timerCase)
-        view.pomodoroWorkDatePicker.color = self.backgroundColor?.getDarkerColor()
-        view.pomodoroRestDatePicker.color = self.backgroundColor?.getSecondaryColor()
+        view.pomodoroWorkDatePicker.color = self.backgroundColor?.darker(by: 0.6)
+        view.pomodoroRestDatePicker.color = self.backgroundColor?.darker(by: 0.8)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -48,7 +48,7 @@ class FocusPickerView: UIView {
     }()
     
     private lazy var startButton: ActionButton = {
-        let titleColor = self.backgroundColor?.getDarkerColor()
+        let titleColor = self.backgroundColor?.darker(by: 0.6)
         let bttn = ActionButton(title: "Começar", titleColor: titleColor)
         
         bttn.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
@@ -62,7 +62,7 @@ class FocusPickerView: UIView {
         let bttn = UIButton(configuration: .plain())
         bttn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
         bttn.setTitle("Cancel", for: .normal)
-        bttn.setTitleColor(self.backgroundColor?.getDarkerColor(), for: .normal)
+        bttn.setTitleColor(self.backgroundColor?.darker(by: 0.6), for: .normal)
         
         bttn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         

@@ -130,3 +130,9 @@ class FocusSessionViewModel {
         self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
     }
 }
+
+enum TimerCase {
+    case stopwatch
+    case timer
+    case pomodoro(workTime: Int, restTime: Int, numberOfLoops: Int)
+}

@@ -97,7 +97,7 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         
         cell.accessoryView = toggle
         
-        cell.backgroundColor = self.color?.getSecondaryColor()
+        cell.backgroundColor = self.color?.darker(by: 0.8)
         
         return cell
     }
@@ -136,7 +136,7 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
         let selection = pickerView.tag == 0 ? self.viewModel.hours[row] : self.viewModel.minutes[row]
         let text = selection < 10 ? "0" + String(selection) : String(selection)
         
-        let unselectedColor = self.color?.getDarkerColor()?.withAlphaComponent(0.5)
+        let unselectedColor = self.color?.darker(by: 0.6)?.withAlphaComponent(0.5)
         
         let selectedRow = pickerView.selectedRow(inComponent: 0)
         let color: UIColor? = row == selectedRow ? .white : unselectedColor

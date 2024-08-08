@@ -200,7 +200,7 @@ extension ScheduleTableViewCell{
         
         self.activityButton.isHidden = false
         self.activityButton.activityState = .normal
-        self.timeLeftLabel.textColor = color.darker()
+        self.timeLeftLabel.textColor = color.darker(by: 0.6)
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
         self.cardView.layer.borderWidth = 0
         self.timeLeftLabel.text = "Em \(hoursLeft)h\(minutesLeft)m"
@@ -210,7 +210,7 @@ extension ScheduleTableViewCell{
         guard let color = self.color else { return }
         
         self.activityButton.isHidden = false
-        self.activityButton.activityState = .current(color: color.darker())
+        self.activityButton.activityState = .current(color: color.darker(by: 0.6))
         self.timeLeftLabel.text = "Agora"
         self.timeLeftLabel.font = .boldSystemFont(ofSize: 16)
         self.timeLeftLabel.textColor = .white
@@ -223,31 +223,9 @@ extension ScheduleTableViewCell{
         
         self.activityButton.isHidden = false
         self.activityButton.activityState = .normal
-        self.timeLeftLabel.textColor = color.darker()
+        self.timeLeftLabel.textColor = color.darker(by: 0.6)
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
         self.timeLeftLabel.text = "Concluído"
-    }
-}
-
-
-extension UIColor {
-    func darker(by percentage: CGFloat = 30.0) -> UIColor? {
-        return self.adjust(by: -1 * abs(percentage))
-    }
-    
-    func adjust(by percentage: CGFloat = 30.0) -> UIColor? {
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-        
-        if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
-            return UIColor(red: min(red + percentage/100, 1.0),
-                           green: min(green + percentage/100, 1.0),
-                           blue: min(blue + percentage/100, 1.0),
-                           alpha: alpha)
-        } else {
-            return nil
-        }
+        self.cardView.layer.borderWidth = 0
     }
 }

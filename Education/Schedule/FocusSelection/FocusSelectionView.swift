@@ -71,7 +71,7 @@ class FocusSelectionView: UIView {
     }()
     
     private lazy var continueButton: ActionButton = {
-        let titleColor = self.backgroundColor?.getDarkerColor()
+        let titleColor = self.backgroundColor?.darker(by: 0.6)
         let bttn = ActionButton(title: "Continuar", titleColor: titleColor)
         bttn.isEnabled = false
         
@@ -86,7 +86,7 @@ class FocusSelectionView: UIView {
         let bttn = UIButton(configuration: .plain())
         bttn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
         bttn.setTitle("Cancel", for: .normal)
-        bttn.setTitleColor(self.backgroundColor?.getDarkerColor(), for: .normal)
+        bttn.setTitleColor(self.backgroundColor?.darker(by: 0.6), for: .normal)
         
         bttn.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
