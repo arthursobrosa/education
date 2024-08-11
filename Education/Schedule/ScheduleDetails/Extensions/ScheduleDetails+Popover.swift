@@ -66,9 +66,6 @@ extension ScheduleDetailsViewController {
         
         return popoverVC
     }
-    
-    
-    
 }
 
 // MARK: - Popover Delegate

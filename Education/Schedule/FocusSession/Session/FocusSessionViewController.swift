@@ -9,9 +9,6 @@ import UIKit
 import AVFoundation
 
 class FocusSessionViewController: UIViewController {
-    // MARK: - BlockApps Model
-    var model = BlockAppsMonitor.shared
-    
     // MARK: - ViewModel
     let viewModel: FocusSessionViewModel
     
@@ -46,12 +43,13 @@ class FocusSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.blockApps()
         self.setTabItems()
         self.updateViewLabels()
         self.setNavigationTitle(isPaused: false)
         
         self.viewModel.timerSeconds.bind { [weak self] timerSeconds in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.updateViewLabels()
             
@@ -90,9 +88,8 @@ class FocusSessionViewController: UIViewController {
         }
         
         self.viewModel.timerState.bind { [weak self] timerState in
-            guard let self = self else { return }
-            
-            guard let timerState = timerState else { return }
+            guard let self,
+                  let timerState else { return }
             
             switch timerState {
                 case .starting:
@@ -106,7 +103,7 @@ class FocusSessionViewController: UIViewController {
         
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             sceneDelegate.timeInBackground.bind { [weak self] timeInBackground in
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 switch self.viewModel.timerCase {
                     case .stopwatch:
@@ -164,6 +161,12 @@ class FocusSessionViewController: UIViewController {
         self.viewModel.timerState.value = .reseting
     }
     
+    private func blockApps() {
+        guard self.viewModel.blocksApps else { return }
+        
+        BlockAppsMonitor.shared.apllyShields()
+    }
+    
     private func setTabItems() {
         let dismissButton = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(dismissButtonTapped))
         dismissButton.tintColor = .label
@@ -214,16 +217,16 @@ extension FocusSessionViewController {
         var title: String
         
         if isPaused {
-            title = "Paused"
+            title = String(localized: "paused")
         } else if let subject = self.viewModel.subject {
-            title = "\(subject.unwrappedName) activity"
+            title = String(format: NSLocalizedString("subjectActivity", comment: ""), subject.unwrappedName)
         } else {
-            title = "New activity"
+            title = String(localized: "newActivity")
             
             switch self.viewModel.timerCase {
                 case .pomodoro:
                     if !self.viewModel.isAtWorkTime {
-                        title = "Interval"
+                        title = String(localized: "interval")
                     }
                 default:
                     break
@@ -237,7 +240,7 @@ extension FocusSessionViewController {
         let alertController = UIAlertController(title: String(localized: "timerAlertTitle"), message: String(localized: "timerAlertMessage"), preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.finishAndDismiss()
         }
@@ -256,9 +259,11 @@ extension FocusSessionViewController {
     private func handleTimerEnd() {
         self.focusSessionView.hidePauseResumeButton()
         
-        let audioService = AudioService()
-        if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
-            audioService.playAudio(from: url)
+        if self.viewModel.isAlarmOn {
+            let audioService = AudioService()
+            if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
+                audioService.playAudio(from: url)
+            }
         }
         
         self.resetTimer()

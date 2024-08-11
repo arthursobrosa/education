@@ -25,7 +25,7 @@ class DateView: UIView {
     
     lazy var pomodoroWorkDatePicker: CustomDateButton = {
         let font: UIFont = .systemFont(ofSize: 30, weight: .semibold)
-        let picker = CustomDateButton(font: font)
+        let picker = CustomDateButton(font: font, hours: 0, minutes: 25)
         picker.datePicker.tag = 0
         picker.datePicker.addTarget(self, action: #selector(pomodoroDatePickerChanged(_:)), for: .valueChanged)
         
@@ -36,7 +36,7 @@ class DateView: UIView {
     
     lazy var pomodoroRestDatePicker: CustomDateButton = {
         let font: UIFont = .systemFont(ofSize: 24, weight: .semibold)
-        let picker = CustomDateButton(font: font)
+        let picker = CustomDateButton(font: font, hours: 0, minutes: 5)
         picker.datePicker.tag = 1
         picker.datePicker.addTarget(self, action: #selector(pomodoroDatePickerChanged(_:)), for: .valueChanged)
         
@@ -69,7 +69,7 @@ class DateView: UIView {
     }
     
     private func setupUI() {
-        guard let timerCase = self.timerCase else { return }
+        guard let timerCase else { return }
         
         switch timerCase {
             case .timer:

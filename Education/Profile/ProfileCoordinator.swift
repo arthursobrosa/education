@@ -19,7 +19,7 @@ class ProfileCoordinator: Coordinator {
         let viewModel = ProfileViewModel()
         let vc = ProfileViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = "Profile"
+        vc.title = String(localized: "profileTab")
         
         self.navigationController.navigationBar.prefersLargeTitles = true
         self.navigationController.pushViewController(vc, animated: false)

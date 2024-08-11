@@ -10,12 +10,12 @@ import UIKit
 
 class TestTableViewCell: UITableViewCell {
     // MARK: - ID
-    static let identifier = "TestCell"
+    static let identifier = "testCell"
     
     // MARK: - Object to populate subviews
     var test: Test? {
         didSet {
-            guard let test = test else { return }
+            guard let test else { return }
             
             self.dateLabel.text = formatDate(test.date ?? Date.now)
             self.questionsLabel.text = "\(test.rightQuestions) / \(test.totalQuestions)"

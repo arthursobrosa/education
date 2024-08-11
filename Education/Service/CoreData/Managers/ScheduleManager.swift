@@ -80,9 +80,9 @@ final class ScheduleManager: ObjectManager {
     func fetchSchedules(subjectID: String? = nil, dayOfTheWeek: Int? = nil) -> [Schedule]? {
         let fetchRequest = NSFetchRequest<Schedule>(entityName: "Schedule")
         
-        if let subjectID = subjectID {
+        if let subjectID {
             fetchRequest.predicate = NSPredicate(format: "subjectID == %@", subjectID)
-        } else if let dayOfTheWeek = dayOfTheWeek {
+        } else if let dayOfTheWeek {
             fetchRequest.predicate = NSPredicate(format: "dayOfTheWeek == %d", dayOfTheWeek)
         } else {
             print("Found nil on arguments")

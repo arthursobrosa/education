@@ -11,6 +11,7 @@ protocol FocusSelectionDelegate: AnyObject {
     func selectionButtonTapped(tag: Int)
     func continueButtonTapped()
     func dismiss()
+    func dismissAll()
 }
 
 extension FocusSelectionViewController: FocusSelectionDelegate {
@@ -36,15 +37,24 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
         
         switch timerCase {
             case .stopwatch:
-                self.coordinator?.showTimer(transitioningDelegate: self, timerState: nil, totalSeconds: 0, timerSeconds: 0, subject: self.viewModel.subject, timerCase: timerCase, isAtWorkTime: true)
-            case .timer, .pomodoro:
-                self.coordinator?.showFocusPicker(timerCase: timerCase)
+                ActivityManager.shared.finishSession()
+                
+                self.coordinator?.showTimer(transitioningDelegate: self, timerState: nil, totalSeconds: 0, timerSeconds: 0, subject: self.viewModel.subject, timerCase: timerCase, isAtWorkTime: true, blocksApps: self.viewModel.blocksApps, isTimeCountOn: true, isAlarmOn: false)
+            case .timer:
+                self.coordinator?.showFocusPicker(timerCase: timerCase, blocksApps: self.viewModel.blocksApps)
+            case .pomodoro:
+                let pomodoroCase: TimerCase = .pomodoro(workTime: 25 * 60, restTime: 5 * 60, numberOfLoops: 2)
+                
+                self.coordinator?.showFocusPicker(timerCase: pomodoroCase, blocksApps: self.viewModel.blocksApps)
         }
     }
     
     func dismiss() {
-        self.changeViewVisibility(isHidden: false)
         self.coordinator?.dismiss()
+    }
+    
+    func dismissAll() {
+        self.coordinator?.dismissAll()
     }
 }
 

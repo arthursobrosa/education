@@ -52,7 +52,7 @@ final class FocusSessionManager: ObjectManager {
         let fetchRequest = NSFetchRequest<FocusSession>(entityName: "FocusSession")
         
         if !allSessions {
-            if let subjectID = subjectID {
+            if let subjectID {
                 fetchRequest.predicate = NSPredicate(format: "subjectID == %@", subjectID)
             } else {
                 fetchRequest.predicate = NSPredicate(format: "subjectID == nil", #keyPath(FocusSession.subjectID))

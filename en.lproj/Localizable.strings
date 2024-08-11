@@ -2,66 +2,29 @@
 "add" = "Add";
 "cancel" = "Cancel";
 "save" = "Save";
+"none" = "None";
+"continue" = "Continue";
+"start" = "Start";
+"other" = "Other";
 
 // MARK: - EmptyView
 "emptyMessage" = "There are no %@s in here... Why don't you try adding one?";
-"emptyTheme" = "theme";
-"emptyTest" = "test";
-"emptyStudyTime" = "study time";
-"emptySchedule" = "schedule";
 
 // MARK: - TabBar
-"themesTabTitle" = "Themes";
-"timerTabTitle" = "Timer";
-"studyTimeTabTitle" = "Study Time";
-"scheduleTabTitle" = "Schedule";
+"scheduleTab" = "Schedule";
+"subjectTab" = "Subjects";
+"themeTab" = "Exams";
+"profileTab" = "Profile";
 
-// MARK: - ThemeList
-"themesTitle" = "Themes";
-"themeAlertTitle" = "Add Theme";
-"themeAlertMessage" = "Enter theme name:";
-"themeAlertPlaceholder" = "Theme name";
-"themeTableViewDetail" = "Detail";
-
-// MARK: - ThemePage
-"newTest" = "New Test";
-"addTest" = "Add Test";
-
-// MARK: - TestPage
-"rightQuestions" = "Right Questions";
-"totalQuestions" = "Total Questions";
-
-// MARK: - FocusSession
-"newFocusSession" = "New Focus";
-"noneSubject" = "None";
-"focusInvalidDateAlertTitle" = "Invalid Date";
-"focusInvalidDateAlertMessage" = "You chose an invalid date";
-"focusInvalidDateAction" = "Choose again";
-"focusTableSubjectHeader" = "Subject";
-"focusTableTimerHeader" = "Timer";
-"focusTableAppBlockingHeader" = "App Blocking";
-"focusStartButton" = "Start";
-"focusEndsAt" = "Ends At";
-"focusAlarmWhenFinished" = "Alarm when finished";
-"focusBlock" = "Block";
-"focusApps" = "Apps";
-"focusSession" = "Focus";
-"timerAlertTitle" = "Time's up!";
-"timerAlertMessage" = "Your timer is finished";
-"focusFinish" = "Finish";
-
-// MARK: - StudyTime
-"studyTime" = "Study Time";
-"studyTimeOther" = "Other";
-"studyTimeLastWeek" = "Last week";
-"studyTimeLastMonth" = "Last month";
-"studyTimeLastYear" = "Last year";
-
-// MARK: - ScheduleList
+// MARK: - Schedule
 "schedule" = "Schedule";
 "newSchedule" = "New";
-
-// MARK: - ScheduleDetails
+"emptySchedule" = "schedule";
+"createActivity" = "Create activity";
+"imediateActivity" = "Start imediate activity";
+"timeLeft" = "In %@h%@m";
+"timeLeftNow" = "Now";
+"timeLeftFinished" = "Finished";
 "sunday" = "Sunday";
 "monday" = "Monday";
 "tuesday" = "Tuesday";
@@ -69,19 +32,61 @@
 "thursday" = "Thursday";
 "friday" = "Friday";
 "saturday" = "Saturday";
+"reminder" = "Reminder";
+"comingEvent" = "Your %@ event is starting soon!";
 "addSubjectAlertTitle" = "Add Subject";
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";
-"scheduleTableDayHeader" = "Day";
-"scheduleStartDate" = "Start";
-"scheduleEndDate"= "End";
 "invalidDateAlertTitle" = "Invalid Date";
 "invalidDateAlertMessage1" = "There is an existing schedule at %@ with conflicting dates";
 "invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date";
 "noSubjectAlertTitle" = "Invalid Schedule";
 "noSubjectAlertMessage" = "You cannot create a schedule before assigning it to a subject";
 "date" = "Date";
+"startDate" = "Start";
+"endDate"= "End";
 "alarm5Min" = "Alert 5 min. before start time";
 "alarmAtTime" = "Alert at start time";
 "subject" = "Subject";
 "blockApps" = "Block Apps";
+
+// MARK: - Focus
+"subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
+"timeCountingQuestion" = "How do you want to tell time?";
+"timerSelectionTitle" = "Scheduled time \n e.g.: 50 minutes";
+"timerSelectionBold" = "Scheduled time";
+"pomodoroSelectionTitle" = "Scheduled time with interval";
+"stopwatchSelectionTitle" = "Free (stop when you want)";
+"stopwatchSelectionBold" = "Free";
+"alarm" = "Alarm";
+"showTimeCount" = "Show time count";
+"paused" = "Paused";
+"subjectActivity" = "%@ activity";
+"newActivity" = "New activity";
+"interval" = "Interval";
+"timerAlertTitle" = "Time's up!";
+"timerAlertMessage" = "Your timer is finished";
+"focusFinish" = "Finish";
+
+// MARK: - Subjects
+"studyTimeLastWeek" = "Last week";
+"studyTimeLastMonth" = "Last month";
+"studyTimeLastYear" = "Last year";
+"emptyStudyTime" = "study time";
+
+// MARK: - Themes
+"emptyTheme" = "theme";
+"themeAlertTitle" = "Add Theme";
+"themeAlertMessage" = "Enter theme name:";
+"themeAlertPlaceholder" = "Theme name";
+"newTest" = "New Test";
+"addTest" = "Add Test";
+"emptyTest" = "test";
+"wrongQuestionsTitle" = "Invalid Number of Hits!";
+"wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
+"rightQuestions" = "Right Questions";
+"totalQuestions" = "Total Questions";
+"themeTableDetail" = "Detail";
+
+// MARK: - Profile
+"selectBlockedApps" = "Select Blocked Apps";

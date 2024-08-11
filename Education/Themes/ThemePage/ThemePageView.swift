@@ -56,7 +56,7 @@ class ThemePageView: UIView {
 // MARK: - UI Setup
 extension ThemePageView: ViewCodeProtocol {
     func setupUI() {
-        guard let chartHostingController = self.chartHostingController else { return }
+        guard let chartHostingController else { return }
         
         self.addSubview(picker)
         self.addSubview(chartHostingController.view)

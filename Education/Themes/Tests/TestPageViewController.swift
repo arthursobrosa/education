@@ -41,9 +41,9 @@ class TestPageViewController: UIViewController {
 
     // MARK: - Methods
     func showWrongQuestionsAlert() {
-        let alertController = UIAlertController(title: "Invalid Number of Hits!", message: "The number of correct answers cannot be greater than the total number of questions. Please review your entry.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: String(localized: "wrongQuestionsTitle"), message: String(localized: "wrongQuestionsMessage"), preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         
         alertController.addAction(okAction)
         

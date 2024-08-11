@@ -40,7 +40,7 @@ class ProfileViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func showFamilyActivityPicker() {
+    private func showFamilyActivityPicker() {
         // Create the SwiftUI view
         let swiftUIView = FamilyActivityPickerView()
         
@@ -62,7 +62,6 @@ class ProfileViewController: UIViewController {
         
         hostingController.didMove(toParent: self)
     }
-    
 }
 
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
@@ -74,7 +73,11 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         
-        cell.textLabel?.text = "Select Blocked Apps"
+        cell.textLabel?.text = String(localized: "selectBlockedApps")
+        
+        if cell.traitCollection.userInterfaceStyle == .light {
+            cell.backgroundColor = .systemGray5
+        }
         
         return cell
     }
@@ -83,8 +86,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 {
-            showFamilyActivityPicker()
+            self.showFamilyActivityPicker()
         }
     }
-    
 }

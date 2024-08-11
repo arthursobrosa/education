@@ -8,12 +8,12 @@
 import UIKit
 
 class ButtonComponent: UIButton {
-    init(title: String) {
+    init(title: String, titleColor: UIColor?) {
         super.init(frame: .zero)
         
         self.setTitle(title, for: .normal)
-        self.setTitleColor(.label, for: .normal)
-        self.backgroundColor = .systemGray
+        self.setTitleColor(titleColor, for: .normal)
+        self.backgroundColor = .label.withAlphaComponent(0.08)
         self.layer.cornerRadius = 14
         self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         

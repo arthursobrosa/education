@@ -10,14 +10,14 @@ import UIKit
 class CustomDateButton: UIView {
     var color: UIColor? {
         didSet {
-            guard let color = color else { return }
+            guard let color else { return }
             
             self.dateLabelBack.backgroundColor = color
         }
     }
     
-    private var hours = Int()
-    private var minutes = Int()
+    private var hours: Int
+    private var minutes: Int
     
     private let dateLabelBack: UIView = {
         let view = UIView()
@@ -55,18 +55,19 @@ class CustomDateButton: UIView {
     
     lazy var datePicker: UIDatePicker = {
         let picker = UIDatePicker()
-        
-        let dateComponents = DateComponents(
-            hour: 0,
-            minute: 0
-        )
-        
-        let calendar = Calendar.current
-        let date = calendar.date(from: dateComponents)
-        
-        picker.date = date!
         picker.datePickerMode = .time
         picker.layer.zPosition = 0
+        
+        let calendar = Calendar.current
+        let dateComponents = DateComponents(
+            hour: self.hours,
+            minute: self.minutes
+        )
+        
+        if let date = calendar.date(from: dateComponents) {
+            picker.date = date
+        }
+        
         picker.addTarget(self, action: #selector(didTapPicker(_:)), for: .valueChanged)
         
         picker.translatesAutoresizingMaskIntoConstraints = false
@@ -74,11 +75,14 @@ class CustomDateButton: UIView {
         return picker
     }()
     
-    init(font: UIFont) {
+    init(font: UIFont, hours: Int, minutes: Int) {
+        self.hours = hours
+        self.minutes = minutes
+        
         super.init(frame: .zero)
         
         self.dateLabel.font = font
-        
+            
         self.setupUI()
     }
 
@@ -109,6 +113,20 @@ class CustomDateButton: UIView {
         
         guard let hour = dateComponents.hour,
               let minute = dateComponents.minute else { return }
+        
+        if hour == 0 && minute == 0 {
+            let newDateComponents = DateComponents(
+                hour: 0,
+                minute: 1
+            )
+            
+            guard let newDate = calendar.date(from: newDateComponents) else { return }
+            
+            sender.date = newDate
+            
+            self.didTapPicker(sender)
+            return
+        }
         
         var hoursText = "\(hour)"
         var minutesText = "\(minute)"

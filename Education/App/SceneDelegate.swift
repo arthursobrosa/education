@@ -44,17 +44,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 let subject = subjectManager.fetchSubject(withName: name)
                 
                 self.showFocusSelection(color: .systemBlue, subject: subject)
-            
+
             }
 
             completionHandler()
         }
     
     func showFocusSelection(color: UIColor?, subject: Subject?) {
-        guard let coordinator = coordinator else { return }
+        guard let coordinator else { return }
         
         if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
-            tabBar.schedule.showFocusSelection(color: color, subject: subject)
+            tabBar.schedule.showFocusSelection(color: color, subject: subject, blocksApps: false)
         }
     }
     

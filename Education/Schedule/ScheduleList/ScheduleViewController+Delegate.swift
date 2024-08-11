@@ -10,6 +10,7 @@ import UIKit
 // MARK: - Schedule
 protocol ScheduleDelegate: AnyObject {
     func setPicker(_ picker: UIStackView)
+    func createAcitivityTapped()
     func startAcitivityTapped()
 }
 
@@ -33,8 +34,14 @@ extension ScheduleViewController: ScheduleDelegate {
         }
     }
     
+    func createAcitivityTapped() {
+        self.dismissButtons()
+        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
+    }
+    
     func startAcitivityTapped() {
-        print(#function)
+        self.dismissButtons()
+        self.coordinator?.showFocusImediate()
     }
 }
 
@@ -63,15 +70,13 @@ protocol ScheduleButtonDelegate: AnyObject {
 
 extension ScheduleViewController: ScheduleButtonDelegate {
     func activityButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?) {
-        guard let indexPath = indexPath else { return }
+        guard let indexPath else { return }
         
         let row = indexPath.row
         
         let schedule = self.viewModel.schedules[row]
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
         
-        ActivityManager.shared.isShowingActivity = false
-        
-        self.coordinator?.showFocusSelection(color: color, subject: subject)
+        self.coordinator?.showFocusSelection(color: color, subject: subject, blocksApps: schedule.blocksApps)
     }
 }

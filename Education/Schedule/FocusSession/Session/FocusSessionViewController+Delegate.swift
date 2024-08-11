@@ -26,6 +26,6 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
     
     func unblockApps() {
-        self.model.removeShields()
+        BlockAppsMonitor.shared.removeShields()
     }
 }

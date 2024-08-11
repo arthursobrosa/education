@@ -59,7 +59,7 @@ class ScheduleDetailsViewController: UIViewController {
     // MARK: - Methods
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.scheduleDetailsView.tableView.reloadData()
         }
@@ -86,7 +86,7 @@ class ScheduleDetailsViewController: UIViewController {
         }
         
         let addAction = UIAlertAction(title: String(localized: "add"), style: .default) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             
             if let subjectName = alertController.textFields?.first?.text, !subjectName.isEmpty {
                 self.viewModel.addSubject(name: subjectName)
@@ -134,14 +134,12 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-            case 3:
-                return 1
-            case 2:
-                return 1
             case 0:
                 return 3
             case 1:
                 return 2
+            case 2, 3:
+                return 1
             default:
                 break
         }
@@ -167,6 +165,13 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         let row = indexPath.row
         
         switch section {
+            case 0:
+                if row == 0 {
+                    if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
+                        self.isPopoverOpen.toggle()
+                        self.present(popover, animated: true)
+                    }
+                }
             case 2:
                 if self.viewModel.subjectsNames.isEmpty {
                     self.showAddSubjectAlert()
@@ -177,15 +182,6 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                     self.isPopoverOpen.toggle()
                     self.present(popover, animated: true)
                 }
-            
-            case 0:
-                if row == 0 {
-                    if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
-                        self.isPopoverOpen.toggle()
-                        self.present(popover, animated: true)
-                    }
-                }
-            
             default:
                 break
         }

@@ -8,21 +8,21 @@
 import UIKit
 
 class SubjectTimeTableViewCell: UITableViewCell{
-    static let identifier = "SubjectTimeCell"
+    static let identifier = "subjectTimeCell"
     
     var subject: Subject? {
         didSet {
-            if let subject = subject {
+            if let subject {
                 self.subjectName.text = subject.unwrappedName
             } else {
-                self.subjectName.text = String(localized: "studyTimeOther")
+                self.subjectName.text = String(localized: "other")
             }
         }
     }
     
     var totalTime: String? {
         didSet {
-            guard let totalTime = totalTime else { return }
+            guard let totalTime else { return }
             
             self.totalHours.text = totalTime
         }
@@ -51,7 +51,7 @@ class SubjectTimeTableViewCell: UITableViewCell{
             self.backgroundColor = .systemGray5
         }
         
-        setupUI()
+        self.setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -59,17 +59,19 @@ class SubjectTimeTableViewCell: UITableViewCell{
     }
     
     private func setupUI() {
-        contentView.addSubview(subjectName)
-        contentView.addSubview(totalHours)
+        self.contentView.addSubview(subjectName)
+        self.contentView.addSubview(totalHours)
+        
+        let padding = 10.0
         
         NSLayoutConstraint.activate([
             subjectName.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            subjectName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            subjectName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             
             totalHours.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            totalHours.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            totalHours.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             
-            subjectName.trailingAnchor.constraint(lessThanOrEqualTo: totalHours.leadingAnchor, constant: -10)
+            subjectName.trailingAnchor.constraint(lessThanOrEqualTo: totalHours.leadingAnchor, constant: -padding)
         ])
     }
 }

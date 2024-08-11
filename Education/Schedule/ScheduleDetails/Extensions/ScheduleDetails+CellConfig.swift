@@ -13,46 +13,39 @@ extension ScheduleDetailsViewController {
         let row = indexPath.row
         
         switch section {
-            case 3:
-                return String(localized: "blockApps")
-            case 2:
-                return String(localized: "subject")
             case 0:
-            
                 switch row {
-                case 0:
-                    return String(localized: "date")
-                case 1:
-                    return String(localized: "scheduleStartDate")
-                case 2:
-                    return String(localized: "scheduleEndDate")
-                default:
-                    return String()
+                    case 0:
+                        return String(localized: "date")
+                    case 1:
+                        return String(localized: "startDate")
+                    case 2:
+                        return String(localized: "endDate")
+                    default:
+                        return String()
                 }
             case 1:
                 return row == 0 ? String(localized: "alarm5Min") : String(localized: "alarmAtTime")
-          
-                
+            case 2:
+                return String(localized: "subject")
+            case 3:
+                return String(localized: "blockApps")
             default:
                 return String()
         }
     }
     
-    @objc private func switchToggledBefore(_ sender: UISwitch){
-        if sender.isOn{
-            self.viewModel.alarmBefore = true
-            
-            NotificationService.shared.requestAuthorization{granted, error in
-                if granted{
-                    print("permitiu")
-                } else if let error = error {
-                    print(error.localizedDescription)
-                }
-                
+    @objc private func switchToggledBefore(_ sender: UISwitch) {
+        self.viewModel.alarmBefore = sender.isOn
+        
+        guard self.viewModel.alarmBefore else { return }
+        
+        NotificationService.shared.requestAuthorization { granted, error in
+            if granted {
+                print("notification persimission granted")
+            } else if let error {
+                print(error.localizedDescription)
             }
-            
-        } else {
-            self.viewModel.alarmBefore = false
         }
     }
     
@@ -100,21 +93,8 @@ extension ScheduleDetailsViewController {
         let row = indexPath.row
         
         switch section {
-            
-            case 3:
-                let toggle = UISwitch()
-                toggle.isOn = self.viewModel.blocksApps
-                toggle.addTarget(self, action: #selector(switchToggledBlockApps(_:)), for: .touchUpInside)
-                return toggle
-            case 2:
-            
-                let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedSubjectName)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
-                return containerView
-            
             case 0:
-            
                 if row == 0 {
-                    
                     let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedDay)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel,  textColor: .secondaryLabel)
                     return containerView
                 }
@@ -124,12 +104,10 @@ extension ScheduleDetailsViewController {
                 datePicker.date = row == 1 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
                 datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
                 datePicker.tag = row
-                return datePicker
-            
-            case 1:
                 
-                if(row == 0){
-                    
+                return datePicker
+            case 1:
+                if row == 0 {
                     let toggleSwitch = UISwitch()
                     toggleSwitch.addTarget(self, action: #selector(switchToggledBefore(_:)), for: .valueChanged)
                     
@@ -140,7 +118,16 @@ extension ScheduleDetailsViewController {
                 toggleSwitch.addTarget(self, action: #selector(switchToggledInTime(_:)), for: .valueChanged)
                 
                 return toggleSwitch
-            
+            case 2:
+                let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedSubjectName)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
+                
+                return containerView
+            case 3:
+                let toggle = UISwitch()
+                toggle.isOn = self.viewModel.blocksApps
+                toggle.addTarget(self, action: #selector(switchToggledBlockApps(_:)), for: .touchUpInside)
+                
+                return toggle
             default:
                 return nil
         }

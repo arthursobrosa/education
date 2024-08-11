@@ -17,7 +17,7 @@ class ScheduleTableViewCell: UITableViewCell {
     
     var subject: Subject? {
         didSet {
-            guard let subject = subject else { return }
+            guard let subject else { return }
             
             self.subjectNameLabel.text = subject.unwrappedName
         }
@@ -25,7 +25,7 @@ class ScheduleTableViewCell: UITableViewCell {
     
     var schedule: Schedule? {
         didSet {
-            guard let schedule = schedule else { return }
+            guard let schedule else { return }
             
             let dateNow = Date()
             let formatter = DateFormatter()
@@ -73,7 +73,7 @@ class ScheduleTableViewCell: UITableViewCell {
     
     var color: UIColor? {
         didSet {
-            guard let color = color else { return }
+            guard let color else { return }
             
             self.cardView.backgroundColor = color
         }
@@ -103,7 +103,6 @@ class ScheduleTableViewCell: UITableViewCell {
         let lbl = UILabel()
         lbl.font = .systemFont(ofSize: 14)
         lbl.textAlignment = .right
-        lbl.text = "Falta 10 mins"
         lbl.textColor = .white
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -137,9 +136,9 @@ class ScheduleTableViewCell: UITableViewCell {
         self.setupUI()
     }
     
-    private func getTimeLeft() {
-        
-    }
+//    private func getTimeLeft() {
+//        
+//    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -196,36 +195,36 @@ extension ScheduleTableViewCell{
         let differenceInMinutes = startTimeInMinutes - currentTimeInMinutes
         let hoursLeft = differenceInMinutes / 60
         let minutesLeft = differenceInMinutes % 60
-        guard let color = self.color else { return }
+        guard let color else { return }
         
         self.activityButton.isHidden = false
         self.activityButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker(by: 0.6)
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
         self.cardView.layer.borderWidth = 0
-        self.timeLeftLabel.text = "Em \(hoursLeft)h\(minutesLeft)m"
+        self.timeLeftLabel.text = String(format: NSLocalizedString("timeLeft", comment: ""), String(hoursLeft), String(minutesLeft))
     }
 
     private func updateViewForOngoingEvent() {
-        guard let color = self.color else { return }
+        guard let color else { return }
         
         self.activityButton.isHidden = false
         self.activityButton.activityState = .current(color: color.darker(by: 0.6))
-        self.timeLeftLabel.text = "Agora"
+        self.timeLeftLabel.text = String(localized: "timeLeftNow")
         self.timeLeftLabel.font = .boldSystemFont(ofSize: 16)
         self.timeLeftLabel.textColor = .white
         self.cardView.layer.borderWidth = 1
-        self.cardView.layer.borderColor = UIColor.white.cgColor
+        self.cardView.layer.borderColor = UIColor.label.cgColor
     }
 
     private func updateViewForCompletedEvent() {
-        guard let color = self.color else { return }
+        guard let color else { return }
         
         self.activityButton.isHidden = false
         self.activityButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker(by: 0.6)
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
-        self.timeLeftLabel.text = "Concluído"
+        self.timeLeftLabel.text = String(localized: "timeLeftFinished")
         self.cardView.layer.borderWidth = 0
     }
 }

@@ -11,7 +11,10 @@ class FocusSelectionViewModel {
     let subject: Subject?
     var selectedTimerCase: TimerCase? = nil
     
-    init(subject: Subject?) {
+    let blocksApps: Bool
+    
+    init(subject: Subject?, blocksApps: Bool) {
         self.subject = subject
+        self.blocksApps = blocksApps
     }
 }

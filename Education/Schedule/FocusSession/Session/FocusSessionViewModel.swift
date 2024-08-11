@@ -14,7 +14,7 @@ class FocusSessionViewModel {
     // MARK: - Properties
     var didTapFinishButton = false
     
-    var isVisible = true
+    var isVisible: Bool
     
     var timer = Timer()
     
@@ -38,7 +38,7 @@ class FocusSessionViewModel {
     var timerState: Box<TimerState?>
     
     let subject: Subject?
-    private let date: Date
+    let date: Date
     
     var workTime = 0
     var restTime = 0
@@ -48,8 +48,11 @@ class FocusSessionViewModel {
     
     var timerCase: TimerCase
     
+    let blocksApps: Bool
+    let isAlarmOn: Bool
+    
     // MARK: - Initializer
-    init(totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager(), isAtWorkTime: Bool) {
+    init(totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager(), isAtWorkTime: Bool, blocksApps: Bool, isTimeCountOn: Bool, isAlarmOn: Bool) {
         self.focusSessionManager = focusSessionManager
         
         self.timerState = Box(nil)
@@ -70,6 +73,12 @@ class FocusSessionViewModel {
         }
         
         self.isAtWorkTime = isAtWorkTime
+        
+        self.blocksApps = blocksApps
+        
+        self.isVisible = isTimeCountOn
+        
+        self.isAlarmOn = isAlarmOn
     }
     
     // MARK: - Methods
