@@ -23,6 +23,8 @@ class ScheduleView: UIView {
         stack.alignment = .center
         stack.spacing = 4
         
+        stack.backgroundColor = .systemBackground
+        
         stack.translatesAutoresizingMaskIntoConstraints = false
         
         return stack
@@ -38,6 +40,7 @@ class ScheduleView: UIView {
     
     let tableView: UITableView = {
         let table = UITableView()
+        table.separatorStyle = .none
 
         table.translatesAutoresizingMaskIntoConstraints = false
         
@@ -48,35 +51,37 @@ class ScheduleView: UIView {
     
     lazy var overlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5) // Fundo semitransparente
+        view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5) // Fundo semitransparente
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.alpha = 0 // Inicialmente invisível
+        view.alpha = 0
         return view
     }()
     
-    let btnCreateActivity: UIButton = {
+    lazy var createAcitivityButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Criar atividade", for: .normal)
-        button.backgroundColor = .white
+        button.setTitle(String(localized: "createActivity"), for: .normal)
+        button.backgroundColor = .label
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         button.titleLabel?.textColor = .systemBackground
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0 // Inicialmente invisível
+        button.alpha = 0
+        
+        button.addTarget(self, action: #selector(createActivityButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    lazy var btnStartActivity: UIButton = {
+    lazy var startActivityButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Iniciar atividade imediata", for: .normal)
-        button.backgroundColor = .white
+        button.setTitle(String(localized: "imediateActivity"), for: .normal)
+        button.backgroundColor = .label
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         button.titleLabel?.textColor = .systemBackground
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0 // Inicialmente invisível
+        button.alpha = 0
         
         button.addTarget(self, action: #selector(startActivityTapped), for: .touchUpInside)
         
@@ -94,6 +99,10 @@ class ScheduleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func createActivityButtonTapped() {
+        self.delegate?.createAcitivityTapped()
+    }
+    
     @objc private func startActivityTapped() {
         self.delegate?.startAcitivityTapped()
     }
@@ -105,8 +114,8 @@ extension ScheduleView: ViewCodeProtocol {
         self.addSubview(picker)
         self.addSubview(contentView)
         self.addSubview(overlayView)
-        overlayView.addSubview(btnCreateActivity)
-        overlayView.addSubview(btnStartActivity)
+        overlayView.addSubview(createAcitivityButton)
+        overlayView.addSubview(startActivityButton)
         
         let btnPadding = 10.0
         let padding = 10.0
@@ -119,7 +128,7 @@ extension ScheduleView: ViewCodeProtocol {
             contentView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            contentView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
         ])
         
         NSLayoutConstraint.activate([
@@ -130,15 +139,15 @@ extension ScheduleView: ViewCodeProtocol {
         ])
         
         NSLayoutConstraint.activate([
-            btnCreateActivity.topAnchor.constraint(equalTo: overlayView.topAnchor),
-            btnCreateActivity.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
-            btnCreateActivity.widthAnchor.constraint(equalToConstant: 160),
-            btnCreateActivity.heightAnchor.constraint(equalToConstant: 40),
+            createAcitivityButton.topAnchor.constraint(equalTo: overlayView.topAnchor),
+            createAcitivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
+            createAcitivityButton.widthAnchor.constraint(equalToConstant: 160),
+            createAcitivityButton.heightAnchor.constraint(equalToConstant: 40),
             
-            btnStartActivity.topAnchor.constraint(equalTo: btnCreateActivity.bottomAnchor, constant: btnPadding),
-            btnStartActivity.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
-            btnStartActivity.widthAnchor.constraint(equalToConstant: 250),
-            btnStartActivity.heightAnchor.constraint(equalToConstant: 40)
+            startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: btnPadding),
+            startActivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
+            startActivityButton.widthAnchor.constraint(equalToConstant: 250),
+            startActivityButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 }

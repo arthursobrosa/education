@@ -8,14 +8,13 @@
 import UIKit
 
 class FocusSelectionViewController: UIViewController {
-    weak var coordinator: (ShowingFocusPicker & ShowingTimer & Dismissing)?
+    weak var coordinator: (ShowingFocusPicker & ShowingTimer & Dismissing & DismissingAll & DismissingAfterModal)?
     let viewModel: FocusSelectionViewModel
     
     private let color: UIColor?
     
     private lazy var focusSelectionView: FocusSelectionView = {
         let view = FocusSelectionView(color: self.color)
-        view.alpha = 0
         view.delegate = self
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -37,21 +36,9 @@ class FocusSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .systemBackground
+        
         self.setupUI()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.changeViewVisibility(isHidden: true)
-    }
-    
-    func changeViewVisibility(isHidden: Bool) {
-        let alpha = isHidden ? 1.0 : 0.0
-        
-        UIView.animate(withDuration: 0.3) {
-            self.focusSelectionView.alpha = alpha
-        }
     }
 }
 
@@ -71,7 +58,7 @@ extension FocusSelectionViewController: ViewCodeProtocol {
 // MARK: - Sheet Delegate
 extension FocusSelectionViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.coordinator?.dismiss()
+        self.coordinator?.dismissAfterModal()
         
         return ActivityManager.shared.handleActivityDismissed(dismissed)
     }

@@ -21,7 +21,7 @@ class BlockAppsMonitor: ObservableObject {
         print(isAuthorized)
     }
     
-    func apllyShields(){
+    func apllyShields() {
         do {
             guard let data = UserDefaults.standard.data(forKey: "applications") else {return}
             let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
@@ -49,7 +49,7 @@ class BlockAppsMonitor: ObservableObject {
         UNUserNotificationCenter.current().add(request)
     }
     
-    func removeShields(){
+    func removeShields() {
         store.shield.applications =  nil
         store.shield.applicationCategories = nil
         store.shield.webDomainCategories = nil
@@ -183,7 +183,7 @@ func createBlockNotification() {
     let request = UNNotificationRequest(identifier: "start", content: content, trigger: trigger)
     
     UNUserNotificationCenter.current().add(request) { error in
-        if let error = error {
+        if let error {
             print("Error adding notification: \(error.localizedDescription)")
         } else {
             print("Notification scheduled successfully")

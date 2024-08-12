@@ -24,7 +24,7 @@ class SplashViewController: UIViewController {
         let waitingTime: CGFloat = UserDefaults.isFirstEntry ? 6 : 2
         
         DispatchQueue.main.asyncAfter(deadline: .now() + waitingTime) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             if UserDefaults.isFirstEntry {
                 UserDefaults.isFirstEntry = false

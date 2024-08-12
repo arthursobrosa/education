@@ -49,14 +49,14 @@ class StudyTimeViewController: UIViewController {
         super.viewDidLoad()
         
         self.viewModel.subjects.bind { [weak self] subjects in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.subjects = subjects
             self.reloadTable()
         }
         
         self.viewModel.focusSessions.bind { [weak self] focusSessions in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.setView(isEmpty: focusSessions.isEmpty)
             
@@ -78,7 +78,7 @@ class StudyTimeViewController: UIViewController {
     
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.studyTimeView.tableView.reloadData()
         }

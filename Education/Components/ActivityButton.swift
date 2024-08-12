@@ -15,7 +15,7 @@ enum ActivityState {
 class ActivityButton: UIButton {
     var activityState: ActivityState? {
         didSet {
-            guard let activityState = activityState else { return }
+            guard let activityState else { return }
             
             self.setButtonForState(activityState)
         }

@@ -43,7 +43,7 @@ class NotificationService {
         let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
+            if let error {
                 print("Error scheduling notification: \(error.localizedDescription)")
             }
         }
@@ -67,7 +67,7 @@ class NotificationService {
         let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
+            if let error {
                 print("Error scheduling notification: \(error.localizedDescription)")
             }
         }

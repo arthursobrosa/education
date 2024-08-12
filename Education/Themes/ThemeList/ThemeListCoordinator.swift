@@ -22,7 +22,7 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigatio
         self.navigationController.navigationBar.prefersLargeTitles = true
         
         let vc = ThemeListViewController(viewModel: self.themeListViewModel)
-        vc.title = "Exams"
+        vc.title = String(localized: "themeTab")
         vc.coordinator = self
         self.navigationController.pushViewController(vc, animated: false)
     }

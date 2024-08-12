@@ -25,7 +25,7 @@ class ScheduleDetailsViewModel {
     var alarmBefore = false
     var alarmInTime = false
     
-    var blocksApps = false
+    var blocksApps: Bool
     
     private var scheduleID: String?
     
@@ -59,7 +59,7 @@ class ScheduleDetailsViewModel {
             }
         }
         
-        if let schedule = schedule {
+        if let schedule {
             if let subject = self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID) {
                 selectedSubjectName = subject.unwrappedName
             }
@@ -73,6 +73,7 @@ class ScheduleDetailsViewModel {
         self.selectedStartTime = selectedStartTime
         self.selectedEndTime = selectedEndTime
         self.scheduleID = schedule?.unwrappedID
+        self.blocksApps = schedule?.blocksApps ?? false
     }
     
     // MARK: - Methods
@@ -89,7 +90,7 @@ class ScheduleDetailsViewModel {
     }
     
     func saveSchedule() {
-        if let scheduleID = scheduleID {
+        if let scheduleID {
             self.updateSchedule(withID: scheduleID)
         } else {
             self.createNewSchedule()
@@ -102,36 +103,31 @@ class ScheduleDetailsViewModel {
         if let selectedIndex = self.days.firstIndex(where: { $0 == selectedDay }) {
             let dayOfTheWeek = Int(selectedIndex)
             handleAlerts()
-            self.scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: self.selectedStartTime, endTime: self.selectedEndTime, blocksApps: blocksApps)
+            self.scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: self.selectedStartTime, endTime: self.selectedEndTime, blocksApps: self.blocksApps)
         }
     }
     
-    private func handleAlerts(){
-        
+    private func handleAlerts() {
         let selectedDate = self.selectedStartTime
-        let title = "Reminder"
-        let body = "Your \(selectedSubjectName) event is starting soon!"
+        let title = String(localized: "reminder")
+        let body = String(format: NSLocalizedString("comingEvent", comment: ""), String(selectedSubjectName))
         
-        
-        if(self.alarmBefore){
+        if self.alarmBefore {
             NotificationService.shared.scheduleWeeklyNotification(
                title: title,
                body: body,
                date: selectedDate
            )
-            
         }
         
-        if(self.alarmInTime){
+        if self.alarmInTime {
             NotificationService.shared.scheduleWeeklyNotificationAtExactTime(
                title: title,
                body: body,
                date: selectedDate,
                subjectName: selectedSubjectName
            )
-            
         }
-        
     }
     
     private func updateSchedule(withID id: String) {
@@ -150,8 +146,7 @@ class ScheduleDetailsViewModel {
                     schedule.endTime = self.selectedEndTime
                     schedule.blocksApps = self.blocksApps
                     
-                    handleAlerts()
-                    
+                    self.handleAlerts()
                 }
             }
             

@@ -21,7 +21,7 @@ class DayView: UIView {
     // MARK: - Properties
     var dayOfWeek: DayOfWeek? {
         didSet {
-            guard let dayOfWeek = dayOfWeek else { return }
+            guard let dayOfWeek else { return }
             
             self.dayLabel.text = dayOfWeek.day.capitalized
             self.dateLabel.text = dayOfWeek.date
@@ -103,21 +103,18 @@ extension DayView: ViewCodeProtocol {
             
             dateLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
             dateLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
-            
-            
         ])
-        
-        
     }
     
     func handleDayColors(){
-        guard let dayOfWeek else {return}
-        if (dayOfWeek.isSelected) {
+        guard let dayOfWeek else { return }
+        
+        if dayOfWeek.isSelected {
             self.dayLabel.textColor = .systemBlue
             self.dateLabel.textColor = .systemBackground
             self.circleView.layer.borderColor = UIColor.systemBlue.cgColor
             self.circleView.backgroundColor = .systemBlue
-        } else if(dayOfWeek.isToday) {
+        } else if dayOfWeek.isToday {
             self.dayLabel.textColor = .systemBlue
             self.dateLabel.textColor = .systemBlue
             self.circleView.layer.borderColor = UIColor.systemBlue.cgColor

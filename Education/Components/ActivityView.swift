@@ -8,11 +8,15 @@
 import UIKit
 
 class ActivityView: UIView {
+    var totalSeconds: Int = 0 // This will be used to create the progress view
+    
     var timerSeconds: Int = 0 {
         didSet {
             self.setTimerText()
         }
     }
+    
+    private var percentage: Double = 0
     
     var isPaused: Bool = false {
         didSet {
@@ -22,7 +26,7 @@ class ActivityView: UIView {
     
     var subject: Subject? {
         didSet {
-            if let subject = subject {
+            if let subject {
                 self.activityTitle.text = subject.unwrappedName
                 return
             }
@@ -49,7 +53,7 @@ class ActivityView: UIView {
     private let activityTitle: UILabel = {
         let lbl = UILabel()
         lbl.font = .systemFont(ofSize: 18, weight: .semibold)
-        lbl.textColor = .label
+        lbl.textColor = .white
         lbl.textAlignment = .left
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +64,7 @@ class ActivityView: UIView {
     private let activityTimer: UILabel = {
         let lbl = UILabel()
         lbl.font = .systemFont(ofSize: 18, weight: .regular)
-        lbl.textColor = .label
+        lbl.textColor = .white
         lbl.textAlignment = .left
         
         lbl.translatesAutoresizingMaskIntoConstraints = false

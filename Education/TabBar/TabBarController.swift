@@ -40,16 +40,16 @@ class TabBarController: UITabBarController {
         self.tabBar.backgroundColor = .systemBackground
         
         schedule.start()
-        schedule.navigationController.tabBarItem = UITabBarItem(title: String(localized: "scheduleTabTitle"), image: UIImage(systemName: "calendar.badge.clock"), tag: 0)
+        schedule.navigationController.tabBarItem = UITabBarItem(title: String(localized: "scheduleTab"), image: UIImage(systemName: "calendar.badge.clock"), tag: 0)
         
         studytime.start()
-        studytime.navigationController.tabBarItem = UITabBarItem(title: "Subjects", image: UIImage(systemName: "books.vertical"), tag: 1)
+        studytime.navigationController.tabBarItem = UITabBarItem(title: String(localized: "subjectTab"), image: UIImage(systemName: "books.vertical"), tag: 1)
         
         themeList.start()
-        themeList.navigationController.tabBarItem = UITabBarItem(title: "Exams", image: UIImage(systemName: "list.bullet.clipboard"), tag: 2)
+        themeList.navigationController.tabBarItem = UITabBarItem(title: String(localized: "themeTab"), image: UIImage(systemName: "list.bullet.clipboard"), tag: 2)
         
         profile.start()
-        profile.navigationController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 3)
+        profile.navigationController.tabBarItem = UITabBarItem(title: String(localized: "profileTab"), image: UIImage(systemName: "person"), tag: 3)
         
         self.viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, profile.navigationController]
     }
@@ -64,6 +64,8 @@ class TabBarController: UITabBarController {
     }
     
     @objc private func activityButtonTapped() {
+        guard ActivityManager.shared.timerSeconds > 0 else { return }
+        
         self.activityView.isPaused.toggle()
         ActivityManager.shared.isPaused.toggle()
         
@@ -72,12 +74,11 @@ class TabBarController: UITabBarController {
         } else {
             ActivityManager.shared.startTimer()
         }
-        
     }
     
     @objc private func activityViewTapped() {
-        self.selectedIndex = schedule.navigationController.tabBarItem.tag
-        schedule.color = self.activityView.color
+        self.selectedIndex = self.schedule.navigationController.tabBarItem.tag
+        self.schedule.color = self.activityView.color
         
         let timerState: FocusSessionViewModel.TimerState? = self.activityView.isPaused ? .reseting : nil
         let totalSeconds = ActivityManager.shared.totalSeconds
@@ -85,8 +86,11 @@ class TabBarController: UITabBarController {
         let subject = ActivityManager.shared.subject
         let timerCase = ActivityManager.shared.timerCase
         let isAtWorkTime = ActivityManager.shared.isAtWorkTime
+        let blocksApps = ActivityManager.shared.blocksApps
+        let isTimeCountOn = ActivityManager.shared.isTimeCountOn
+        let isAlarmOn = ActivityManager.shared.isAlarmOn
         
-        schedule.showTimer(transitioningDelegate: self, timerState: timerState, totalSeconds: totalSeconds, timerSeconds: timerSeconds, subject: subject, timerCase: timerCase, isAtWorkTime: isAtWorkTime)
+        self.schedule.showTimer(transitioningDelegate: self, timerState: timerState, totalSeconds: totalSeconds, timerSeconds: timerSeconds, subject: subject, timerCase: timerCase, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
         
         ActivityManager.shared.isShowingActivity = false
     }

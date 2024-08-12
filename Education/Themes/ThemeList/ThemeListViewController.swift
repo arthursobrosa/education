@@ -49,7 +49,7 @@ class ThemeListViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [addThemeButton]
         
         self.viewModel.themes.bind { [weak self] themes in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.setView(isEmpty: themes.isEmpty)
             
@@ -71,7 +71,7 @@ class ThemeListViewController: UIViewController {
     
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.themeListTableView.reloadData()
         }
@@ -89,7 +89,7 @@ class ThemeListViewController: UIViewController {
         }
         
         let addAction = UIAlertAction(title: String(localized: "add"), style: .default) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             
             if let themeName = alertController.textFields?.first?.text, !themeName.isEmpty {
                 self.viewModel.addTheme(name: themeName)
@@ -129,7 +129,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         let containerView = UIView()
         
         let detailsLabel = UILabel()
-        detailsLabel.text = String(localized: "themeTableViewDetail")
+        detailsLabel.text = String(localized: "themeTableDetail")
         detailsLabel.textColor = .secondaryLabel
         detailsLabel.font = UIFont.systemFont(ofSize: 17)
         detailsLabel.translatesAutoresizingMaskIntoConstraints = false

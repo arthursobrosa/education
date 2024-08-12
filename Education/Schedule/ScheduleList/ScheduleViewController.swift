@@ -9,7 +9,7 @@ import UIKit
 
 class ScheduleViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingScheduleDetails & ShowingFocusSelection)?
+    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingFocusSelection)?
     let viewModel: ScheduleViewModel
     
     // MARK: - Properties
@@ -48,13 +48,13 @@ class ScheduleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .systemBackground
+        
         let addScheduleButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addScheduleButtonTapped))
         self.navigationItem.rightBarButtonItems = [addScheduleButton]
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
         self.scheduleView.overlayView.addGestureRecognizer(tapGesture)
-        
-        self.scheduleView.btnCreateActivity.addTarget(self, action: #selector(createActivityBtnTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +66,7 @@ class ScheduleViewController: UIViewController {
     // MARK: - Methods
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.scheduleView.tableView.reloadData()
         }
@@ -87,8 +87,8 @@ class ScheduleViewController: UIViewController {
         
         UIView.animate(withDuration: 0.3) {
             self.scheduleView.overlayView.alpha = newAlpha
-            self.scheduleView.btnCreateActivity.alpha = newAlpha
-            self.scheduleView.btnStartActivity.alpha = newAlpha
+            self.scheduleView.createAcitivityButton.alpha = newAlpha
+            self.scheduleView.startActivityButton.alpha = newAlpha
         }
     }
     
@@ -100,25 +100,18 @@ class ScheduleViewController: UIViewController {
         self.reloadTable()
     }
     
-    @objc private func createActivityBtnTapped() {
-        ActivityManager.shared.isShowingActivity = false
-        
-        dismissButtons()
-        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
-    }
-    
     @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
         // Verifica se o toque foi fora dos botões e oculta a overlayView se necessário
         dismissButtons()
     }
     
-    private func dismissButtons() {
+    func dismissButtons() {
         // Esconde a overlayView e os botões se eles estiverem visíveis
         if self.scheduleView.overlayView.alpha == 1 {
             UIView.animate(withDuration: 0.3) {
                 self.scheduleView.overlayView.alpha = 0
-                self.scheduleView.btnCreateActivity.alpha = 0
-                self.scheduleView.btnStartActivity.alpha = 0
+                self.scheduleView.createAcitivityButton.alpha = 0
+                self.scheduleView.startActivityButton.alpha = 0
             }
         }
     }

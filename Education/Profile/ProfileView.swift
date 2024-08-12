@@ -20,6 +20,8 @@ class ProfileView: UIView{
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.backgroundColor = .systemBackground
+        
         self.setupUI()
     }
     

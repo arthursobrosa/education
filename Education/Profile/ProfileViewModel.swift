@@ -7,6 +7,6 @@
 
 import Foundation
 
-class ProfileViewModel{
+class ProfileViewModel {
     
 }

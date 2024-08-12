@@ -81,12 +81,11 @@ class StudyTimeViewModel : ObservableObject {
         
         let hours = totalTime / 3600
         let minutes = (totalTime / 60) % 60
-        let seconds = totalTime % 60
         
         if totalTime >= 3600 {
             return "\(hours)h\(minutes)m"
         } else if totalTime >= 60 {
-            return "\(minutes)m\(seconds)s"
+            return "\(minutes)m"
         } else {
             return "\(totalTime)s"
         }
@@ -128,6 +127,6 @@ class StudyTimeViewModel : ObservableObject {
     
     private func idToName(subjectId: String) -> String {
         let subject = self.subjectManager.fetchSubject(withID: subjectId)
-        return subject?.unwrappedName ?? String(localized: "studyTimeOther")
+        return subject?.unwrappedName ?? String(localized: "other")
     }
 }

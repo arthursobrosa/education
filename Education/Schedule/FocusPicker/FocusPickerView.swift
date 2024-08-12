@@ -49,7 +49,7 @@ class FocusPickerView: UIView {
     
     private lazy var startButton: ActionButton = {
         let titleColor = self.backgroundColor?.darker(by: 0.6)
-        let bttn = ActionButton(title: "Começar", titleColor: titleColor)
+        let bttn = ActionButton(title: String(localized: "start"), titleColor: titleColor)
         
         bttn.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         
@@ -61,7 +61,7 @@ class FocusPickerView: UIView {
     private lazy var cancelButton: UIButton = {
         let bttn = UIButton(configuration: .plain())
         bttn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-        bttn.setTitle("Cancel", for: .normal)
+        bttn.setTitle(String(localized: "cancel"), for: .normal)
         bttn.setTitleColor(self.backgroundColor?.darker(by: 0.6), for: .normal)
         
         bttn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)

@@ -42,7 +42,7 @@ class ThemePageViewController: UIViewController {
     }()
     
     private lazy var addTestButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "addTest"))
+        let bttn = ButtonComponent(title: String(localized: "addTest"), titleColor: .systemGray)
         bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
         
         return bttn
@@ -65,10 +65,12 @@ class ThemePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .systemBackground
+        
         self.setupUI()
         
         self.viewModel.tests.bind { [weak self] tests in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.setContentView(isEmpty: tests.isEmpty)
             
@@ -86,7 +88,7 @@ class ThemePageViewController: UIViewController {
     // MARK: - Methods
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.themePageView.testsTableView.reloadData()
         }

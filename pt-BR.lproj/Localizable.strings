@@ -2,66 +2,29 @@
 "add" = "Adicionar";
 "cancel" = "Cancelar";
 "save" = "Salvar";
+"none" = "Nenhuma";
+"continue" = "Continar";
+"start" = "Começar";
+"other" = "Outro";
 
 // MARK: - EmptyView
-"emptyMessage" = "Não há %@s aqui... Por que você não tenta criar um(a)?";
-"emptyTheme" = "tema";
-"emptyTest" = "teste";
-"emptyStudyTime" = "tempos de estudo";
-"emptySchedule" = "cronograma";
+"emptyMessage" = "Não há nenhum(a) %@s aqui... Que tal adicionar um(a)?";
 
 // MARK: - TabBar
-"themesTabTitle" = "Temas";
-"timerTabTitle" = "Cronômetro";
-"studyTimeTabTitle" = "Tempo Estudado";
-"scheduleTabTitle" = "Cronograma";
+"scheduleTab" = "Cronograma";
+"subjectTab" = "Matérias";
+"themeTab" = "Provas";
+"profileTab" = "Perfil";
 
-// MARK: - ThemeList
-"themesTitle" = "Temas";
-"themeAlertTitle" = "Adicinar Tema";
-"themeAlertMessage" = "Insira o nome do tema:";
-"themeAlertPlaceholder" = "Nome do tema";
-"themeTableViewDetail" = "Detalhe";
-
-// MARK: - ThemePage
-"newTest" = "Novo Teste";
-"addTest" = "Adicionar Teste";
-
-// MARK: - TestPage
-"rightQuestions" = "Questões Corretas";
-"totalQuestions" = "Total de Questões";
-
-// MARK: - FocusSession
-"newFocusSession" = "Novo Foco";
-"noneSubject" = "Nenhuma";
-"focusInvalidDateAlertTitle" = "Data Inválida";
-"focusInvalidDateAlertMessage" = "Você escolheu uma data inválida";
-"focusInvalidDateAction" = "Escolha denovo";
-"focusTableSubjectHeader" = "Matéria";
-"focusTableTimerHeader" = "Cronômetro";
-"focusTableAppBlockingHeader" = "Bloqueio de Apps";
-"focusStartButton" = "Iniciar";
-"focusEndsAt" = "Termina às";
-"focusAlarmWhenFinished" = "Alarme ao finalizar";
-"focusBlock" = "Bloquear";
-"focusApps" = "Apps";
-"focusSession" = "Foco";
-"timerAlertTitle" = "Tempo esgotado!";
-"timerAlertMessage" = "O seu cronômetro foi finalizado";
-"focusFinish" = "Finalizar";
-
-// MARK: - StudyTime
-"studyTime" = "Tempo Estudado";
-"studyTimeOther" = "Outro";
-"studyTimeLastWeek" = "Semana";
-"studyTimeLastMonth" = "Mês";
-"studyTimeLastYear" = "Ano";
-
-// MARK: - ScheduleList
+// MARK: - Schedule
 "schedule" = "Cronograma";
 "newSchedule" = "Novo";
-
-// MARK: - ScheduleDetails
+"emptySchedule" = "cronograma";
+"createActivity" = "Criar atividade";
+"imediateActivity" = "Criar atividade imediata";
+"timeLeft" = "Em %@h%@m";
+"timeLeftNow" = "Agora";
+"timeLeftFinished" = "Concluído";
 "sunday" = "Domingo";
 "monday" = "Segunda";
 "tuesday" = "Terça";
@@ -69,19 +32,61 @@
 "thursday" = "Quinta";
 "friday" = "Sexta";
 "saturday" = "Sábado";
+"reminder" = "Lembrete";
+"comingEvent" = "Seu evento de %@ começará em breve!";
 "addSubjectAlertTitle" = "Adicionar Matéria";
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
-"addSubjectAlertPlaceholder" = "Nome da matéria";
-"scheduleTableDayHeader" = "Dia";
-"scheduleStartDate" = "Início";
-"scheduleEndDate"= "Fim";
-"invalidDateAlertTitle" = "Data Inválida";
-"invalidDateAlertMessage1" = "Já existe um cronograma no(a) %@ com horários conflitantes";
-"invalidDateAlertMessage2" = "Horário de início não pode ser igual ou maior que horário de fim";
+"addSubjectAlertPlaceholder" = "Nome da Matéria";
+"invalidDateAlertTitle" = "Data inválida";
+"invalidDateAlertMessage1" = "Existe um cronograma para %@ com datas conflitantes";
+"invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim";
 "noSubjectAlertTitle" = "Cronograma Inválido";
 "noSubjectAlertMessage" = "Você não pode criar um cronograma antes de atribuí-lo a uma matéria";
 "date" = "Data";
-"alarm5Min" = "Alerta 5 min. antes";
-"alarmAtTime" = "Alerta no horário";
-"subject" = "Disciplina";
+"startDate" = "Início";
+"endDate"= "Fim";
+"alarm5Min" = "Alerta 5 min. antes de iniciar";
+"alarmAtTime" = "Alerta ao iniciar";
+"subject" = "Matéria";
 "blockApps" = "Bloquear Apps";
+
+// MARK: - Focus
+"subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
+"timeCountingQuestion" = "De que forma você deseja contar o tempo?";
+"timerSelectionTitle" = "Tempo programado \n Ex.: 50min";
+"timerSelectionBold" = "Tempo programado";
+"pomodoroSelectionTitle" = "Tempo programado com intervalo";
+"stopwatchSelectionTitle" = "Livre (pare quando quiser)";
+"stopwatchSelectionBold" = "Livre";
+"alarm" = "Alarme";
+"showTimeCount" = "Mostrar contagem de tempo";
+"paused" = "Pausado";
+"subjectActivity" = "Ativide de %@";
+"newActivity" = "Nova atividade";
+"interval" = "Intervalo";
+"timerAlertTitle" = "Tempo acabou!";
+"timerAlertMessage" = "O seu cronômetro foi finalizado";
+"focusFinish" = "Finalizar";
+
+// MARK: - Subjects
+"studyTimeLastWeek" = "Última semana";
+"studyTimeLastMonth" = "Último mês";
+"studyTimeLastYear" = "Último ano";
+"emptyStudyTime" = "tempo de estudo";
+
+// MARK: - Themes
+"emptyTheme" = "tema";
+"themeAlertTitle" = "Adicionar Tema";
+"themeAlertMessage" = "Insira o nome do tema:";
+"themeAlertPlaceholder" = "Nome do tema";
+"newTest" = "Novo Teste";
+"addTest" = "Adicionar Teste";
+"emptyTest" = "teste";
+"wrongQuestionsTitle" = "Número de Acertos Inválido!";
+"wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
+"rightQuestions" = "Questões Corretas";
+"totalQuestions" = "Total de Questões";
+"themeTableDetail" = "Detalhe";
+
+// MARK: - Profile
+"selectBlockedApps" = "Selecione os Apps Bloqueados";

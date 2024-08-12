@@ -8,7 +8,7 @@
 import UIKit
 
 class FocusPickerViewController: UIViewController {
-    weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
+    weak var coordinator: (ShowingTimer & Dismissing & DismissingAll & DismissingAfterModal)?
     let viewModel: FocusPickerViewModel
     
     private let color: UIColor?
@@ -45,6 +45,8 @@ class FocusPickerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = .systemBackground
         
         self.setupUI()
     }
@@ -88,7 +90,8 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         
-        cell.textLabel?.text = section == 0 ? "Alarme" : "Mostrar contagem do tempo"
+        cell.textLabel?.text = section == 0 ? String(localized: "alarm") : String(localized: "showTimeCount")
+        cell.textLabel?.textColor = .white
         
         let toggle = UISwitch()
         toggle.isOn = section == 0 ? self.viewModel.isAlarmOn : self.viewModel.isTimeCountOn
@@ -173,7 +176,7 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
 // MARK: - Sheet Delegate
 extension FocusPickerViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.coordinator?.dismissAll()
+        self.coordinator?.dismissAfterModal()
         
         return ActivityManager.shared.handleActivityDismissed(dismissed)
     }
