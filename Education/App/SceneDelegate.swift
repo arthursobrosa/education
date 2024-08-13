@@ -54,7 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         guard let coordinator else { return }
         
         if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
-            tabBar.schedule.showFocusSelection(color: color, subject: subject, blocksApps: false)
+//            tabBar.schedule.showFocusSelection(color: color, subject: subject, blocksApps: false)
         }
     }
     

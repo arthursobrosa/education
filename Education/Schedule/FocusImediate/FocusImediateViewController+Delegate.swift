@@ -25,6 +25,8 @@ extension FocusImediateViewController: FocusImediateDelegate {
         let row = indexPath.row
         let subject: Subject? = row >= self.subjects.count ? nil : self.subjects[row]
         
-        self.coordinator?.showFocusSelection(color: self.color, subject: subject, blocksApps: false)
+        let focusSessionModel = FocusSessionModel(isPaused: false, totalSeconds: 0, timerSeconds: 0, timerCase: .timer, subject: subject, isAtWorkTime: true, blocksApps: false, isTimeCountOn: true, isAlarmOn: false, color: self.color)
+        
+        self.coordinator?.showFocusSelection(focusSessionModel: focusSessionModel)
     }
 }

@@ -17,7 +17,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
     func pauseResumeButtonTapped() {
         self.viewModel.pauseResumeButtonTapped()
         
-        let isPaused = !(self.viewModel.timerState.value == .starting)
+        let isPaused = self.viewModel.timerState.value == .reseting
         self.setNavigationTitle(isPaused: isPaused)
     }
     

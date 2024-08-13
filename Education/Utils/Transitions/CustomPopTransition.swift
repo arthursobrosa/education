@@ -1,5 +1,5 @@
 //
-//  CustomPopAnimation.swift
+//  CustomPopTransition.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 09/08/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomPopAnimation: NSObject, UIViewControllerAnimatedTransitioning {
+class CustomPopTransition: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: (any UIViewControllerContextTransitioning)?) -> TimeInterval {
         return 0.3
     }

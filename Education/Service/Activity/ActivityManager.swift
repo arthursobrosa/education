@@ -17,14 +17,10 @@ class ActivityManager {
     
     var isShowingActivity: Bool = false {
         didSet {
-            if isShowingActivity {
-                self.activityDelegate?.setActivityView(color: self.color, 
-                                                       subject: self.subject, 
-                                                       totalSeconds: self.totalSeconds,
-                                                       timerSeconds: self.timerSeconds,
-                                                       isPaused: self.isPaused)
+            if let focusSessionModel, isShowingActivity {
+                self.activityDelegate?.setActivityView(focusSessionModel: self.focusSessionModel)
                 
-                if !isPaused {
+                if !focusSessionModel.isPaused {
                     self.startTimer()
                 }
                 
@@ -38,16 +34,8 @@ class ActivityManager {
         }
     }
     
-    var color: UIColor?
-    var subject: Subject?
-    var totalSeconds = Int()
-    var timerSeconds = Int() {
-        didSet {
-            self.activityDelegate?.updateActivityView(timerSeconds: timerSeconds)
-        }
-    }
-    var timerCase: TimerCase = .timer
-    var isPaused: Bool = false
+    var focusSessionModel: FocusSessionModel?
+    
     var isAtWorkTime: Bool = false {
         didSet {
             self.activityDelegate?.changeActivityIsAtWorkTime(isAtWorkTime)
@@ -60,26 +48,25 @@ class ActivityManager {
     
     var date = Date()
     
-    var blocksApps: Bool = false
-    var isTimeCountOn: Bool = true
-    var isAlarmOn: Bool = false
-    
     init(focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.focusSessionManager = focusSessionManager
     }
     
     func startTimer() {
         self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
-            guard let self else { return }
+            guard let self,
+                  let focusSessionModel else { return }
             
-            switch self.timerCase {
+            switch focusSessionModel.timerCase {
                 case .stopwatch:
-                    self.timerSeconds += 1
+                    focusSessionModel.timerSeconds += 1
                 case .timer, .pomodoro:
-                    self.timerSeconds -= 1
+                    focusSessionModel.timerSeconds -= 1
             }
             
-            if self.timerSeconds <= 0 {
+            self.activityDelegate?.updateActivityView(timerSeconds: focusSessionModel.timerSeconds)
+            
+            if focusSessionModel.timerSeconds <= 0 {
                 self.handleTimerEnd()
                 return
             }
@@ -87,7 +74,9 @@ class ActivityManager {
     }
     
     private func handleTimerEnd() {
-        switch self.timerCase {
+        guard let focusSessionModel else { return }
+        
+        switch focusSessionModel.timerCase {
             case .stopwatch:
                 return
             case .timer:
@@ -103,14 +92,14 @@ class ActivityManager {
                     
                     self.isAtWorkTime.toggle()
                     
-                    self.totalSeconds = self.restTime
-                    self.timerSeconds = self.totalSeconds
+                    focusSessionModel.totalSeconds = self.restTime
+                    focusSessionModel.timerSeconds = focusSessionModel.totalSeconds
                 } else {
                     self.currentLoop += 1
                     self.isAtWorkTime.toggle()
                     
-                    self.totalSeconds = self.workTime
-                    self.timerSeconds = self.totalSeconds
+                    focusSessionModel.totalSeconds = self.workTime
+                    focusSessionModel.timerSeconds = focusSessionModel.totalSeconds
                 }
         }
     }
@@ -119,10 +108,9 @@ class ActivityManager {
         guard let focusSessionViewController = dismissed.children.first as? FocusSessionViewController,
               !focusSessionViewController.viewModel.didTapFinishButton else { return nil }
         
-        let timerCase = focusSessionViewController.viewModel.timerCase
-        self.timerCase = timerCase
+        guard let focusSessionModel else { return nil }
         
-        switch timerCase {
+        switch focusSessionModel.timerCase {
             case .pomodoro(let workTime, let restTime, let numberOfLoops):
                 self.workTime = workTime
                 self.restTime = restTime
@@ -131,17 +119,8 @@ class ActivityManager {
                 break
         }
 
-        self.color = focusSessionViewController.color
-        self.subject = focusSessionViewController.viewModel.subject
-        self.totalSeconds = focusSessionViewController.viewModel.totalSeconds
-        self.timerSeconds = focusSessionViewController.viewModel.timerSeconds.value
-        self.isPaused = focusSessionViewController.viewModel.timerState.value == .reseting
-        self.isAtWorkTime = focusSessionViewController.viewModel.isAtWorkTime
-        self.currentLoop = focusSessionViewController.viewModel.currentLoop
+        self.focusSessionModel = focusSessionViewController.viewModel.focusSessionModel
         self.date = focusSessionViewController.viewModel.date
-        self.blocksApps = focusSessionViewController.viewModel.blocksApps
-        self.isTimeCountOn = focusSessionViewController.viewModel.isVisible
-        self.isAlarmOn = focusSessionViewController.viewModel.isAlarmOn
         
         self.isShowingActivity = true
         
@@ -149,40 +128,46 @@ class ActivityManager {
     }
     
     func updateAfterBackground(timeInBackground: Int) {
-        switch self.timerCase {
+        guard let focusSessionModel else { return }
+        
+        switch focusSessionModel.timerCase {
             case .stopwatch:
-                if timeInBackground > 0 && !self.isPaused {
-                    self.timerSeconds += timeInBackground
+                if timeInBackground > 0 && !focusSessionModel.isPaused {
+                    focusSessionModel.timerSeconds += timeInBackground
                 }
             case .timer, .pomodoro:
-                if timeInBackground > 0 && !self.isPaused {
-                    self.timerSeconds -= timeInBackground
+                if timeInBackground > 0 && !focusSessionModel.isPaused {
+                    focusSessionModel.timerSeconds -= timeInBackground
                     
-                    if self.timerSeconds <= 0 {
-                        self.timerSeconds = 0
+                    if focusSessionModel.timerSeconds <= 0 {
+                        focusSessionModel.timerSeconds = 0
                         self.activityDelegate?.changeActivityButtonState()
                     }
                 }
         }
+        
+        self.activityDelegate?.updateActivityView(timerSeconds: focusSessionModel.timerSeconds)
     }
     
     private func saveFocusSesssion() {
+        guard let focusSessionModel else { return }
+        
         var totalTime: Int = 0
         
-        switch self.timerCase {
+        switch focusSessionModel.timerCase {
             case .stopwatch:
-                totalTime = self.timerSeconds
+                totalTime = focusSessionModel.timerSeconds
             case .timer:
-                totalTime = self.totalSeconds - self.timerSeconds
+                totalTime = focusSessionModel.totalSeconds - focusSessionModel.timerSeconds
             case .pomodoro:
                 if self.isAtWorkTime {
-                    totalTime = (self.workTime * self.currentLoop) + (self.totalSeconds - self.timerSeconds)
+                    totalTime = (self.workTime * self.currentLoop) + (focusSessionModel.totalSeconds - focusSessionModel.timerSeconds)
                 } else {
                     totalTime = self.workTime * (self.currentLoop + 1)
                 }
         }
         
-        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
+        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: focusSessionModel.subject?.unwrappedID)
     }
     
     func finishSession() {

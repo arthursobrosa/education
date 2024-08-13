@@ -13,6 +13,7 @@ class ActivityView: UIView {
     var timerSeconds: Int = 0 {
         didSet {
             self.setTimerText()
+            self.updateProgress()
         }
     }
     
@@ -38,6 +39,7 @@ class ActivityView: UIView {
     var color: UIColor? {
         didSet {
             self.backgroundColor = color
+            self.progressView.backgroundColor = color?.darker(by: 0.6)
             self.activityButton.activityState = .current(color: color?.darker(by: 0.6))
         }
     }
@@ -49,6 +51,14 @@ class ActivityView: UIView {
             self.activityTitle.text = (self.activityTitle.text ?? String()) + " interval"
         }
     }
+    
+    private let progressView: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
     
     private let activityTitle: UILabel = {
         let lbl = UILabel()
@@ -95,6 +105,7 @@ class ActivityView: UIView {
         
         let radius = self.bounds.height / 6
         self.roundCorners(corners: [.topLeft, .topRight], radius: radius, borderWidth: 2, borderColor: .label)
+        self.progressView.roundCorners(corners: [.topLeft], radius: radius, borderWidth: 0, borderColor: .clear)
     }
     
     private func setTimerText() {
@@ -114,15 +125,37 @@ class ActivityView: UIView {
     private func getText(from number: Int) -> String {
         return number < 10 ? "0\(number)" : "\(number)"
     }
+    
+    private func updateProgress() {
+        guard self.totalSeconds > 0 else { return }
+        
+        let percentage = 1 - (Double(self.timerSeconds) / Double(totalSeconds))
+        
+        self.progressView.removeConstraints(self.progressView.constraints)
+        
+        NSLayoutConstraint.activate([
+            self.progressView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: percentage)
+        ])
+        
+        UIView.animate(withDuration: 1) {
+            self.layoutIfNeeded()
+        }
+    }
 }
 
 extension ActivityView: ViewCodeProtocol {
     func setupUI() {
+        self.addSubview(progressView)
         self.addSubview(activityTitle)
         self.addSubview(activityTimer)
         self.addSubview(activityButton)
         
         NSLayoutConstraint.activate([
+            progressView.widthAnchor.constraint(equalToConstant: 0),
+            progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            progressView.heightAnchor.constraint(equalTo: self.heightAnchor),
+            progressView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            
             activityTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             activityTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
             

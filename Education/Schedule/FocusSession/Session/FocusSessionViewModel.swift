@@ -14,8 +14,6 @@ class FocusSessionViewModel {
     // MARK: - Properties
     var didTapFinishButton = false
     
-    var isVisible: Bool
-    
     var timer = Timer()
     
     var totalSeconds: Int {
@@ -37,48 +35,21 @@ class FocusSessionViewModel {
     
     var timerState: Box<TimerState?>
     
-    let subject: Subject?
     let date: Date
     
-    var workTime = 0
-    var restTime = 0
-    var numberOfLoops = 0
-    var currentLoop = 0
-    var isAtWorkTime: Bool
-    
-    var timerCase: TimerCase
-    
-    let blocksApps: Bool
-    let isAlarmOn: Bool
+    var focusSessionModel: FocusSessionModel
     
     // MARK: - Initializer
-    init(totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager(), isAtWorkTime: Bool, blocksApps: Bool, isTimeCountOn: Bool, isAlarmOn: Bool) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), focusSessionModel: FocusSessionModel) {
         self.focusSessionManager = focusSessionManager
         
+        self.focusSessionModel = focusSessionModel
+        
         self.timerState = Box(nil)
-        self.subject = subject
         self.date = Date.now
         
-        self.totalSeconds = totalSeconds
-        self.timerSeconds = Box(timerSeconds)
-        self.timerCase = timerCase
-        
-        switch timerCase {
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
-                self.workTime = workTime
-                self.restTime = restTime
-                self.numberOfLoops = numberOfLoops
-            default:
-                break
-        }
-        
-        self.isAtWorkTime = isAtWorkTime
-        
-        self.blocksApps = blocksApps
-        
-        self.isVisible = isTimeCountOn
-        
-        self.isAlarmOn = isAlarmOn
+        self.totalSeconds = focusSessionModel.totalSeconds
+        self.timerSeconds = Box(focusSessionModel.timerSeconds)
     }
     
     // MARK: - Methods
@@ -88,12 +59,14 @@ class FocusSessionViewModel {
     
     func startTimer() {
         self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            switch self.timerCase {
+            switch self.focusSessionModel.timerCase {
                 case .stopwatch:
                     self.timerSeconds.value += 1
                 case .timer, .pomodoro:
                     self.timerSeconds.value -= 1
             }
+            
+            self.focusSessionModel.timerSeconds = self.timerSeconds.value
         }
     }
     
@@ -123,20 +96,20 @@ class FocusSessionViewModel {
     func saveFocusSession() {
         var totalTime: Int = 0
         
-        switch self.timerCase {
+        switch self.focusSessionModel.timerCase {
             case .stopwatch:
                 totalTime = self.timerSeconds.value
             case .timer:
                 totalTime = self.totalSeconds - self.timerSeconds.value
-            case .pomodoro:
-                if self.isAtWorkTime {
-                    totalTime = (self.workTime * self.currentLoop) + (self.totalSeconds - self.timerSeconds.value)
+            case .pomodoro(let workTime, _, _):
+                if self.focusSessionModel.isAtWorkTime {
+                    totalTime = (workTime * self.focusSessionModel.currentLoop) + (self.focusSessionModel.totalSeconds - self.timerSeconds.value)
                 } else {
-                    totalTime = self.workTime * (self.currentLoop + 1)
+                    totalTime = workTime * (self.focusSessionModel.currentLoop + 1)
                 }
         }
         
-        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
+        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: focusSessionModel.subject?.unwrappedID)
     }
 }
 

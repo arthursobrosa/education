@@ -8,11 +8,8 @@
 import Foundation
 
 class FocusPickerViewModel {
-    let subject: Subject?
-    var timerCase: TimerCase?
+    var focusSessionModel: FocusSessionModel
     
-    var isAlarmOn: Bool = false
-    var isTimeCountOn: Bool = true
     var selectedHours = Int()
     var selectedMinutes: Int = 1
     
@@ -40,14 +37,11 @@ class FocusPickerViewModel {
         return minutes
     }()
     
-    let blocksApps: Bool
     
-    init(timerCase: TimerCase?, subject: Subject?, blocksApps: Bool) {
-        self.timerCase = timerCase
-        self.subject = subject
-        self.blocksApps = blocksApps
+    init(focusSessionModel: FocusSessionModel) {
+        self.focusSessionModel = focusSessionModel
         
-        switch timerCase {
+        switch focusSessionModel.timerCase {
             case .pomodoro(let workTime, let restTime, let numberOfLoops):
                 self.selectedWorkTime = workTime
                 self.selectedRestTime = restTime
@@ -59,12 +53,10 @@ class FocusPickerViewModel {
         }
     }
     
-    func getTotalTime() -> Int {
-        guard let timerCase else { return 0 }
-        
+    private func getTotalTime() {
         var totalTime = Int()
         
-        switch timerCase {
+        switch self.focusSessionModel.timerCase {
             case .timer:
                 totalTime = self.selectedHours * 3600 + self.selectedMinutes * 60
             case .pomodoro(let worktime, _, _):
@@ -73,17 +65,21 @@ class FocusPickerViewModel {
                 break
         }
         
-        return totalTime
+        self.focusSessionModel.totalSeconds = totalTime
+        self.focusSessionModel.timerSeconds = totalTime
     }
     
-    func setTimerCase() {
-        guard let timerCase else { return }
-        
-        switch timerCase {
+    private func setTimerCase() {
+        switch self.focusSessionModel.timerCase {
             case .pomodoro:
-                self.timerCase = .pomodoro(workTime: self.selectedWorkTime, restTime: self.selectedRestTime, numberOfLoops: self.selectedNumberOfLoops)
+                self.focusSessionModel.timerCase = .pomodoro(workTime: self.selectedWorkTime, restTime: self.selectedRestTime, numberOfLoops: self.selectedNumberOfLoops)
             default:
                 break
         }
+    }
+    
+    func setFocusSessionModel() {
+        self.setTimerCase()
+        self.getTotalTime()
     }
 }

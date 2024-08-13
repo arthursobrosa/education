@@ -152,7 +152,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
         let subjectName = subject?.unwrappedName
         
-        self.coordinator?.showScheduleDetails(schedule: schedule, title: subjectName, selectedDay: self.viewModel.selectedDay)
+        self.coordinator?.showScheduleDetails(title: subjectName, schedule: schedule, selectedDay: self.viewModel.selectedDay)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }

@@ -23,6 +23,8 @@ class ScheduleViewModel {
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
     
+    var currentFocusSessionModel: FocusSessionModel?
+    
     // MARK: - Initializer
     init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager()) {
         self.subjectManager = subjectManager

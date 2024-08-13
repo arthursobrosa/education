@@ -8,13 +8,13 @@
 import UIKit
 
 class FocusPickerViewController: UIViewController {
-    weak var coordinator: (ShowingTimer & Dismissing & DismissingAll & DismissingAfterModal)?
+    weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
     let viewModel: FocusPickerViewModel
     
     private let color: UIColor?
     
     private lazy var focusPickerView: FocusPickerView = {
-        let view = FocusPickerView(color: self.color, timerCase: self.viewModel.timerCase)
+        let view = FocusPickerView(color: self.color, timerCase: self.viewModel.focusSessionModel.timerCase)
         view.delegate = self
         
         let subpickers = view.dateView.timerDatePicker.subviews.compactMap { $0 as? UIPickerView }
@@ -46,7 +46,7 @@ class FocusPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .systemBackground
+        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.8)
         
         self.setupUI()
     }
@@ -54,9 +54,9 @@ class FocusPickerViewController: UIViewController {
     @objc private func didChangeToggle(_ sender: UISwitch) {
         switch sender.tag {
             case 0:
-                self.viewModel.isAlarmOn.toggle()
+                self.viewModel.focusSessionModel.isAlarmOn.toggle()
             case 1:
-                self.viewModel.isTimeCountOn.toggle()
+                self.viewModel.focusSessionModel.isTimeCountOn.toggle()
             default:
                 break
         }
@@ -94,7 +94,7 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         cell.textLabel?.textColor = .white
         
         let toggle = UISwitch()
-        toggle.isOn = section == 0 ? self.viewModel.isAlarmOn : self.viewModel.isTimeCountOn
+        toggle.isOn = section == 0 ? self.viewModel.focusSessionModel.isAlarmOn : self.viewModel.focusSessionModel.isTimeCountOn
         toggle.tag = section
         toggle.addTarget(self, action: #selector(didChangeToggle(_:)), for: .valueChanged)
         
@@ -176,7 +176,7 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
 // MARK: - Sheet Delegate
 extension FocusPickerViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.coordinator?.dismissAfterModal()
+        self.coordinator?.dismissAll(animated: true)
         
         return ActivityManager.shared.handleActivityDismissed(dismissed)
     }
