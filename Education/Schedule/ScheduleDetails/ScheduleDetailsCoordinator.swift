@@ -40,7 +40,7 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
         self.navigationController.present(self.newNavigationController, animated: true)
     }
     
-    func dismiss() {
-        self.navigationController.dismiss(animated: true)
+    func dismiss(animated: Bool) {
+        self.navigationController.dismiss(animated: animated)
     }
 }

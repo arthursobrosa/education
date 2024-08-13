@@ -44,8 +44,8 @@ class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Di
         child.start()
     }
     
-    func dismiss() {
-        self.navigationController.dismiss(animated: true)
+    func dismiss(animated: Bool) {
+        self.navigationController.dismiss(animated: animated)
     }
     
     func childDidFinish(_ child: Coordinator?) {

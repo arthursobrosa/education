@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FocusPickerCoordinator: NSObject, Coordinator, ShowingTimer, Dismissing, DismissingAll {
+class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing, DismissingAll {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -25,7 +25,7 @@ class FocusPickerCoordinator: NSObject, Coordinator, ShowingTimer, Dismissing, D
         vc.navigationItem.hidesBackButton = true
         vc.coordinator = self
         
-        self.navigationController.pushViewController(vc, animated: true)
+        self.navigationController.pushViewController(vc, animated: false)
     }
     
     func showTimer(focusSessionModel: FocusSessionModel) {
@@ -46,23 +46,15 @@ class FocusPickerCoordinator: NSObject, Coordinator, ShowingTimer, Dismissing, D
         return parentCoordinator
     }
     
-    func dismiss() {
-        self.navigationController.popViewController(animated: true)
+    func dismiss(animated: Bool) {
+        self.navigationController.popViewController(animated: animated)
     }
     
     func dismissAll(animated: Bool) {
-        self.dismiss()
+        self.dismiss(animated: animated)
         
         if let focusSelectionCoordinator = self.parentCoordinator as? FocusSelectionCoordinator {
             focusSelectionCoordinator.dismissAll(animated: animated)
         }
-    }
-}
-
-extension FocusPickerCoordinator: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.dismissAll(animated: true)
-        
-        return ActivityManager.shared.handleActivityDismissed(dismissed)
     }
 }

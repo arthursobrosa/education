@@ -64,11 +64,9 @@ class TabBarController: UITabBarController {
     }
     
     @objc private func activityButtonTapped() {
-        guard let focusSessionModel = ActivityManager.shared.focusSessionModel,
-              focusSessionModel.timerSeconds > 0 else { return }
+        guard self.activityView.timerSeconds > 0 else { return }
         
         self.activityView.isPaused.toggle()
-        focusSessionModel.isPaused.toggle()
         
         if self.activityView.isPaused {
             ActivityManager.shared.timer.invalidate()
@@ -80,11 +78,11 @@ class TabBarController: UITabBarController {
     @objc private func activityViewTapped() {
         guard let focusSessionModel = ActivityManager.shared.focusSessionModel else { return }
         
-        self.selectedIndex = self.schedule.navigationController.tabBarItem.tag
-//        self.schedule.color = self.activityView.color
-        self.schedule.currentFocusSessionModel = focusSessionModel
+        focusSessionModel.timerState = self.activityView.isPaused ? .reseting : .starting
         
-//        self.schedule.showTimer()
+        self.selectedIndex = self.schedule.navigationController.tabBarItem.tag
+        
+        self.schedule.showTimer(focusSessionModel: focusSessionModel)
         
         ActivityManager.shared.isShowingActivity = false
     }

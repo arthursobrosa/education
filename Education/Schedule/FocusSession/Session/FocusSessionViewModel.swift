@@ -45,7 +45,7 @@ class FocusSessionViewModel {
         
         self.focusSessionModel = focusSessionModel
         
-        self.timerState = Box(nil)
+        self.timerState = Box(focusSessionModel.timerState)
         self.date = Date.now
         
         self.totalSeconds = focusSessionModel.totalSeconds

@@ -8,5 +8,5 @@
 import Foundation
 
 protocol Dismissing: AnyObject {
-    func dismiss()
+    func dismiss(animated: Bool)
 }

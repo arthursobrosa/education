@@ -13,7 +13,7 @@ class ActivityView: UIView {
     var timerSeconds: Int = 0 {
         didSet {
             self.setTimerText()
-            self.updateProgress()
+//            self.updateProgress()
         }
     }
     
@@ -32,7 +32,7 @@ class ActivityView: UIView {
                 return
             }
             
-            self.activityTitle.text = "New activity"
+            self.activityTitle.text = String(localized: "newActivity")
         }
     }
     
@@ -46,9 +46,13 @@ class ActivityView: UIView {
     
     var isAtWorkTime: Bool = false {
         didSet {
-            guard !isAtWorkTime else { return }
+            if let subject {
+                self.activityTitle.text = isAtWorkTime ? subject.unwrappedName : subject.unwrappedName + " " + String(localized: "interval")
+                
+                return
+            }
             
-            self.activityTitle.text = (self.activityTitle.text ?? String()) + " interval"
+            self.activityTitle.text = isAtWorkTime ? String(localized: "newActivity") : String(localized: "newActivity") + " " + String(localized: "interval")
         }
     }
     
@@ -145,16 +149,16 @@ class ActivityView: UIView {
 
 extension ActivityView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(progressView)
+//        self.addSubview(progressView)
         self.addSubview(activityTitle)
         self.addSubview(activityTimer)
         self.addSubview(activityButton)
         
         NSLayoutConstraint.activate([
-            progressView.widthAnchor.constraint(equalToConstant: 0),
-            progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            progressView.heightAnchor.constraint(equalTo: self.heightAnchor),
-            progressView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+//            progressView.widthAnchor.constraint(equalToConstant: 0),
+//            progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//            progressView.heightAnchor.constraint(equalTo: self.heightAnchor),
+//            progressView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             activityTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             activityTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),

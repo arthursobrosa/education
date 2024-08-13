@@ -44,6 +44,8 @@ class FocusSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ActivityManager.shared.finishSession()
+        
         self.blockApps()
         self.setTabItems()
         self.updateViewLabels()
@@ -98,6 +100,8 @@ class FocusSessionViewController: UIViewController {
                 case .reseting:
                     self.restart()
             }
+            
+            self.viewModel.focusSessionModel.timerState = timerState
             
             self.updateButton(imageName: timerState.imageName)
         }
@@ -192,9 +196,7 @@ class FocusSessionViewController: UIViewController {
     }
     
     @objc private func dismissButtonTapped() {
-        self.coordinator?.dismiss()
-        
-        
+        self.coordinator?.dismiss(animated: true)
     }
     
     @objc private func visibilityButtonTapped() {
@@ -210,7 +212,7 @@ class FocusSessionViewController: UIViewController {
         
         ActivityManager.shared.isShowingActivity = false
         
-        self.coordinator?.dismiss()
+        self.coordinator?.dismiss(animated: true)
     }
 }
 

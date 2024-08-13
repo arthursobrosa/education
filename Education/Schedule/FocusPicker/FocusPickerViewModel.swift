@@ -53,6 +53,15 @@ class FocusPickerViewModel {
         }
     }
     
+    private func setTimerCase() {
+        switch self.focusSessionModel.timerCase {
+            case .pomodoro:
+                self.focusSessionModel.timerCase = .pomodoro(workTime: self.selectedWorkTime, restTime: self.selectedRestTime, numberOfLoops: self.selectedNumberOfLoops)
+            default:
+                break
+        }
+    }
+    
     private func getTotalTime() {
         var totalTime = Int()
         
@@ -67,15 +76,6 @@ class FocusPickerViewModel {
         
         self.focusSessionModel.totalSeconds = totalTime
         self.focusSessionModel.timerSeconds = totalTime
-    }
-    
-    private func setTimerCase() {
-        switch self.focusSessionModel.timerCase {
-            case .pomodoro:
-                self.focusSessionModel.timerCase = .pomodoro(workTime: self.selectedWorkTime, restTime: self.selectedRestTime, numberOfLoops: self.selectedNumberOfLoops)
-            default:
-                break
-        }
     }
     
     func setFocusSessionModel() {

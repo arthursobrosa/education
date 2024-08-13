@@ -36,7 +36,7 @@ class FocusSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.8)
+        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
         
         self.setupUI()
     }

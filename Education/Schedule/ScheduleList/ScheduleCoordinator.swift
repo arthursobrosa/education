@@ -11,8 +11,6 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
-    var currentFocusSessionModel: FocusSessionModel?
-    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
@@ -79,11 +77,17 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
         }
         
         if let focusSessionVC = nav.viewControllers.first as? FocusSessionViewController {
+            ActivityManager.shared.handleActivityDismissed(focusSessionVC: focusSessionVC)
+            
             self.childDidFinish(focusSessionVC.color as? Coordinator)
         }
         
         if let scheduleDetailsVC = nav.viewControllers.first as? ScheduleDetailsViewController {
             self.childDidFinish(scheduleDetailsVC.coordinator)
+            
+            guard let scheduleVC = self.navigationController.viewControllers.first as? ScheduleViewController else { return nil }
+            
+            scheduleVC.loadSchedules()
         }
         
         return nil

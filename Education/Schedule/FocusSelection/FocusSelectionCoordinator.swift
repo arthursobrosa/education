@@ -45,7 +45,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
             return
         }
         
-        self.navigationController.pushViewController(vc, animated: true)
+        self.navigationController.pushViewController(vc, animated: false)
     }
     
     func showFocusPicker(focusSessionModel: FocusSessionModel) {
@@ -76,21 +76,21 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
         return parentCoordinator
     }
     
-    func dismiss() {
+    func dismiss(animated: Bool) {
         if isFirstModal {
-            self.navigationController.dismiss(animated: true)
+            self.navigationController.dismiss(animated: animated)
             
             return
         }
         
-        self.navigationController.popViewController(animated: true)
+        self.navigationController.popViewController(animated: animated)
     }
     
     func dismissAll(animated: Bool) {
-        self.dismiss()
+        self.dismiss(animated: animated)
         
         if let focusImediateCoordinator = self.parentCoordinator as? FocusImediateCoordinator {
-            focusImediateCoordinator.dismiss()
+            focusImediateCoordinator.dismiss(animated: animated)
         }
     }
     
@@ -127,13 +127,5 @@ extension FocusSelectionCoordinator: UINavigationControllerDelegate {
         }
         
         return nil
-    }
-}
-
-extension FocusSelectionCoordinator: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.dismissAll(animated: true)
-        
-        return ActivityManager.shared.handleActivityDismissed(dismissed)
     }
 }

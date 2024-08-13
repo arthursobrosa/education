@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Activity
 protocol ActivityDelegate: AnyObject {
-    func setActivityView(focusSessionModel: FocusSessionModel?)
+    func setActivityView(focusSessionModel: FocusSessionModel)
     func updateActivityView(timerSeconds: Int)
     func changeActivityButtonState()
     func changeActivityIsAtWorkTime(_ isAtWorkTime: Bool)
@@ -18,14 +18,14 @@ protocol ActivityDelegate: AnyObject {
 }
 
 extension TabBarController: ActivityDelegate {
-    func setActivityView(focusSessionModel: FocusSessionModel?) {
-        guard let focusSessionModel else { return }
+    func setActivityView(focusSessionModel: FocusSessionModel) {
+        guard let timerState = focusSessionModel.timerState else { return }
         
         self.activityView.color = focusSessionModel.color
         self.activityView.subject = focusSessionModel.subject
         self.activityView.totalSeconds = focusSessionModel.totalSeconds
         self.activityView.timerSeconds = focusSessionModel.timerSeconds
-        self.activityView.isPaused = focusSessionModel.isPaused
+        self.activityView.isPaused = timerState == .reseting
         
         self.view.addSubview(activityView)
     }
@@ -48,12 +48,5 @@ extension TabBarController: ActivityDelegate {
     
     func removeActivityView() {
         self.activityView.removeFromSuperview()
-    }
-}
-
-// MARK: - Transitioning Delegate
-extension TabBarController: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        ActivityManager.shared.handleActivityDismissed(dismissed)
     }
 }

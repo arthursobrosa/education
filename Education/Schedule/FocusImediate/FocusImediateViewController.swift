@@ -45,7 +45,7 @@ class FocusImediateViewController: UIViewController {
         
         self.viewModel.fetchSubjects()
         
-        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.8)
+        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
         
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
@@ -100,14 +100,5 @@ extension FocusImediateViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 52 + 12
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let row = indexPath.row
-        let subject: Subject? = row >= self.subjects.count ? nil : self.subjects[row]
-        
-//        self.coordinator?.showFocusSelection(focusSessionModel: self.viewModel.focusSessionModel)
     }
 }

@@ -18,7 +18,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         UNUserNotificationCenter.current().delegate = self
@@ -32,19 +31,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         
         window?.rootViewController = coordinator?.navigationController
         window?.makeKeyAndVisible()
-        
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
             let userInfo = response.notification.request.content.userInfo
 
             if let name = userInfo["subjectName"] as? String {
-
                 let subjectManager = SubjectManager()
                 let subject = subjectManager.fetchSubject(withName: name)
                 
                 self.showFocusSelection(color: .systemBlue, subject: subject)
-
             }
 
             completionHandler()
@@ -54,7 +50,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         guard let coordinator else { return }
         
         if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
-//            tabBar.schedule.showFocusSelection(color: color, subject: subject, blocksApps: false)
+            let focusSessionModel = FocusSessionModel(timerState: nil, totalSeconds: 0, timerSeconds: 0, timerCase: .timer, subject: subject, isAtWorkTime: false, blocksApps: false, isTimeCountOn: false, isAlarmOn: false, color: color)
+            
+            tabBar.selectedIndex = 0
+            tabBar.schedule.showFocusSelection(focusSessionModel: focusSessionModel)
         }
     }
     

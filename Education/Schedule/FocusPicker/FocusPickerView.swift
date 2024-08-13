@@ -127,9 +127,9 @@ extension FocusPickerView: ViewCodeProtocol {
             
             settingsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             settingsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            settingsTableView.heightAnchor.constraint(equalTo: settingsTableView.widthAnchor, multiplier: (100/359)),
+            settingsTableView.heightAnchor.constraint(equalTo: settingsTableView.widthAnchor, multiplier: (144/359)),
             settingsTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            settingsTableView.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: padding * 3.2),
+            settingsTableView.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: padding),
             
             startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (330/359)),
             startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: (70/330)),
