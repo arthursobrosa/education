@@ -12,7 +12,7 @@ final class ScheduleManager: ObjectManager {
     lazy var focusSessionManager = FocusSessionManager()
     
     // MARK: - Create
-    func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date, blocksApps: Bool) {
+    func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date, blocksApps: Bool, earlyAlarm: Bool, imediateAlarm: Bool) {
         backgroundContext.performAndWait {
             guard let schedule = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: backgroundContext) as? Schedule else { return }
             
@@ -21,7 +21,10 @@ final class ScheduleManager: ObjectManager {
             schedule.startTime = startTime
             schedule.endTime = endTime
             schedule.blocksApps = blocksApps
+            schedule.earlyAlarm = earlyAlarm
+            schedule.imediateAlarm = imediateAlarm
             schedule.id = UUID().uuidString
+            
             
             try? backgroundContext.save()
             CoreDataStack.shared.saveMainContext()

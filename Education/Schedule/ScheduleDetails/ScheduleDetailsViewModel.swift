@@ -84,7 +84,7 @@ class ScheduleDetailsViewModel {
     }
     
     func addSubject(name: String) {
-        self.subjectManager.createSubject(name: name)
+        self.subjectManager.createSubject(name: name, color: "FocusSelectionColor")
         self.fetchSubjects()
         self.selectedSubjectName = name
     }
@@ -103,7 +103,7 @@ class ScheduleDetailsViewModel {
         if let selectedIndex = self.days.firstIndex(where: { $0 == selectedDay }) {
             let dayOfTheWeek = Int(selectedIndex)
             handleAlerts()
-            self.scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: self.selectedStartTime, endTime: self.selectedEndTime, blocksApps: self.blocksApps)
+            self.scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: self.selectedStartTime, endTime: self.selectedEndTime, blocksApps: self.blocksApps, earlyAlarm: self.alarmBefore, imediateAlarm: self.alarmInTime)
         }
     }
     

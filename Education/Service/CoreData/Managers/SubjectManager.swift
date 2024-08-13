@@ -12,11 +12,12 @@ final class SubjectManager: ObjectManager {
     lazy var scheduleManager = ScheduleManager()
     
     // MARK: - Create
-    func createSubject(name: String) {
+    func createSubject(name: String, color: String) {
         backgroundContext.performAndWait {
             guard let subject = NSEntityDescription.insertNewObject(forEntityName: "Subject", into: backgroundContext) as? Subject else { return }
             
             subject.name = name
+            subject.color = color
             subject.id = UUID().uuidString
             
             try? backgroundContext.save()

@@ -26,7 +26,7 @@ class ScheduleManagerTest: XCTestCase {
     }
     
     func test_create_schedule() {
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
         
@@ -37,7 +37,7 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
         
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
 
@@ -48,7 +48,7 @@ class ScheduleManagerTest: XCTestCase {
     
     func test_fetch_single_schedule() {
         
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
         
@@ -59,7 +59,7 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
 
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
         
         
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
@@ -73,7 +73,7 @@ class ScheduleManagerTest: XCTestCase {
     }
         
     func test_delete_schedule() {
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
         
@@ -84,9 +84,9 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB, blocksApps: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 6, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 6, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
         
         var schedules = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!
         
@@ -101,7 +101,7 @@ class ScheduleManagerTest: XCTestCase {
     }
     
     func test_update_schedule() {
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
         
@@ -112,7 +112,7 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
         
         var schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
         
@@ -128,7 +128,7 @@ class ScheduleManagerTest: XCTestCase {
     }
     
     func test_fetch_schedules_by_day_of_the_week() {
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
         
@@ -139,10 +139,10 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
       
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 3, startTime: dateA, endTime: dateB, blocksApps: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB, blocksApps: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 3, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
       
         let wednesdaySchedules = scheduleManager.fetchSchedules(dayOfTheWeek: 3)!
         let thursdaySchedules = scheduleManager.fetchSchedules(dayOfTheWeek: 4)!

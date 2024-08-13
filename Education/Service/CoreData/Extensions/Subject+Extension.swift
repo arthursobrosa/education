@@ -15,4 +15,8 @@ extension Subject {
     var unwrappedName: String {
         return name ?? String()
     }
+    
+    var unwrappedColor: String {
+        return color ?? String()
+    }
 }
