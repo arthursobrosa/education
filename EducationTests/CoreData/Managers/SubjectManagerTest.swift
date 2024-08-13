@@ -23,16 +23,16 @@ class SubjectManagerTest: XCTestCase {
     }
     
     func test_create_subject() {
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         let subject = subjectManager.fetchSubject(withName: "Math")!
 
         XCTAssertEqual("Math", subject.unwrappedName)
     }
         
     func test_delete_subject() {
-        subjectManager.createSubject(name: "Math")
-        subjectManager.createSubject(name: "Geography")
-        subjectManager.createSubject(name: "Science")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
+        subjectManager.createSubject(name: "Geography", color: "FocusSelectionColor")
+        subjectManager.createSubject(name: "Science", color: "FocusSelectionColor")
         
         let subjectA = subjectManager.fetchSubject(withName: "Math")!
         let subjectB = subjectManager.fetchSubject(withName: "Geography")!
@@ -48,7 +48,7 @@ class SubjectManagerTest: XCTestCase {
     }
     
     func test_update_subject() {
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
         
