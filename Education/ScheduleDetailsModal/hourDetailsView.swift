@@ -34,7 +34,7 @@ class HourDetailsView: UIView {
         let imgView = UIImageView(image: img)
         
 
-        imgView.frame = CGRect(x: 16, y: 32, width: 10, height: 53)
+        imgView.translatesAutoresizingMaskIntoConstraints = false
         
         return imgView
     }()
@@ -45,7 +45,7 @@ class HourDetailsView: UIView {
         
         let imgView = UIImageView(image: img)
         
-        imgView.frame = CGRect(x: 102, y: 32, width: 188, height: 2)
+        imgView.translatesAutoresizingMaskIntoConstraints = false
         
         return imgView
     }()
@@ -55,7 +55,7 @@ class HourDetailsView: UIView {
         
         let imgView = UIImageView(image: img)
         
-        imgView.frame = CGRect(x: 102, y: 80, width: 188, height: 2)
+        imgView.translatesAutoresizingMaskIntoConstraints = false
         
         return imgView
     }()
@@ -85,25 +85,28 @@ extension HourDetailsView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-//            bracket.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
-//            bracket.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            bracket.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 53/102),
+            bracket.widthAnchor.constraint(equalTo: bracket.heightAnchor, multiplier: 6/53),
+            bracket.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            bracket.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 26),
             
-            bracket.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            bracket.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20.0),
-            
-            startTime.topAnchor.constraint(equalTo: bracket.topAnchor, constant: -padding * 0.5),
+            startTime.centerYAnchor.constraint(equalTo: bracket.topAnchor),
             startTime.leadingAnchor.constraint(equalTo: bracket.trailingAnchor, constant: 8),
             
-            //lineStartTime.leadingAnchor.constraint(equalTo: startTime.trailingAnchor, constant: 8),
+            lineStartTime.leadingAnchor.constraint(equalTo: startTime.trailingAnchor, constant: 8),
+            lineStartTime.centerYAnchor.constraint(equalTo: startTime.centerYAnchor),
+            lineStartTime.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 188/321),
            
-            endTime.topAnchor.constraint(equalTo: startTime.bottomAnchor, constant: padding),
+            endTime.centerYAnchor.constraint(equalTo: startTime.centerYAnchor, constant: 51),
             endTime.leadingAnchor.constraint(equalTo: bracket.trailingAnchor, constant: 8),
             
-            //lineEndTime.leadingAnchor.constraint(equalTo: startTime.trailingAnchor, constant: 8),
+            lineEndTime.leadingAnchor.constraint(equalTo: startTime.trailingAnchor, constant: 8),
+            lineEndTime.centerYAnchor.constraint(equalTo: endTime.centerYAnchor),
+            lineEndTime.widthAnchor.constraint(equalTo: lineStartTime.widthAnchor)
         ])
     }
 }
 
-#Preview{
-    HourDetailsView()
+#Preview {
+    ScheduleDetailsModalViewController(color: UIColor(named: "ScheduleColor1"))
 }
