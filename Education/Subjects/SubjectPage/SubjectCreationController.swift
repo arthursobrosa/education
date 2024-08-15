@@ -57,7 +57,7 @@ class SubjectCreationController: UIViewController{
             showAlert(message: "Por favor, insira um nome para o subject.")
             return
         }
-        let existingSubjects = self.viewModel.subjects.value
+        let existingSubjects = viewModel.subjects.value
         if existingSubjects.contains(where: { $0.name?.lowercased() == name.lowercased() }) {
             showAlert(message: "Já existe um subject com este nome.")
             return
@@ -70,7 +70,7 @@ class SubjectCreationController: UIViewController{
         
         viewModel.createSubject(name: name, color: color)
         
-        self.coordinator?.dismiss()
+        self.coordinator?.dismiss(animated: true)
     }
     
     private func showAlert(message: String) {

@@ -52,7 +52,7 @@ class FocusSessionViewModel {
     }
     
     func saveFocusSession() {
-        ActivityManager.shared.finishSession()
+        ActivityManager.shared.saveFocusSesssion()
     }
 }
 
