@@ -8,7 +8,8 @@
 import UIKit
 
 class ScheduleDetailsViewController: UIViewController {
-    // MARK: - ViewModel
+    // MARK: - Coordinator & ViewModel
+    weak var coordinator: ScheduleDetailsCoordinator?
     let viewModel: ScheduleDetailsViewModel
     
     // MARK: - Properties

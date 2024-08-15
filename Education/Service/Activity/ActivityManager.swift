@@ -2,72 +2,124 @@
 //  ActivityManager.swift
 //  Education
 //
-//  Created by Arthur Sobrosa on 07/08/24.
+//  Created by Arthur Sobrosa on 14/08/24.
 //
 
 import UIKit
 
 class ActivityManager {
+    // MARK: - Shared Instance
     static let shared = ActivityManager()
     
+    // MARK: - Delegate and FocusSession manager
     weak var activityDelegate: ActivityDelegate?
     private let focusSessionManager: FocusSessionManager
     
+    // MARK: - Properties to initialize
+    var date: Date
+    
+    enum TimerState: String {
+        case starting = "pause"
+        case reseting = "play"
+        
+        var imageName: String {
+            return "\(self.rawValue).fill"
+        }
+    }
+    
+    @Published var timerState: TimerState? {
+        didSet {
+            guard let timerState else { return }
+            
+            switch timerState {
+                case .starting:
+                    self.startTimer()
+                case .reseting:
+                    self.stopTimer()
+            }
+        }
+    }
+
+    var totalSeconds: Int
+    
+    @Published var timerSeconds: Int {
+        didSet {
+            if timerSeconds <= 0 {
+                self.handleTimerEnd()
+            }
+        }
+    }
+    
+    var timerCase: TimerCase
+    var subject: Subject?
+    var blocksApps: Bool
+    var isTimeCountOn: Bool
+    var isAlarmOn: Bool
+    
+    var isAtWorkTime: Bool
+    var workTime = Int()
+    var restTime = Int()
+    var numberOfLoops = Int()
+    var currentLoop = Int()
+    
+    var color: UIColor?
+    
+    // MARK: - Other properties
     var timer = Timer()
     
     var isShowingActivity: Bool = false {
         didSet {
             if isShowingActivity {
-                self.activityDelegate?.setActivityView(color: self.color, 
-                                                       subject: self.subject, 
-                                                       totalSeconds: self.totalSeconds,
-                                                       timerSeconds: self.timerSeconds,
-                                                       isPaused: self.isPaused)
-                
-                if !isPaused {
-                    self.startTimer()
-                }
-                
+                self.activityDelegate?.setActivityView()
                 self.activityDelegate?.changeActivityVisibility(isShowing: true)
                 
                 return
             }
             
-            self.timer.invalidate()
             self.activityDelegate?.removeActivityView()
         }
     }
     
-    var color: UIColor?
-    var subject: Subject?
-    var totalSeconds = Int()
-    var timerSeconds = Int() {
+    @Published var updateAfterBackground: Bool = false {
         didSet {
-            self.activityDelegate?.updateActivityView(timerSeconds: timerSeconds)
+            guard updateAfterBackground,
+                  self.isShowingActivity else { return }
+            
+            self.activityDelegate?.updateActivityView()
+            self.activityDelegate?.setActivityView()
         }
     }
-    var timerCase: TimerCase = .timer
-    var isPaused: Bool = false
-    var isAtWorkTime: Bool = false {
-        didSet {
-            self.activityDelegate?.changeActivityIsAtWorkTime(isAtWorkTime)
-        }
-    }
-    var workTime = Int()
-    var restTime = Int()
-    var numberOfLoops = Int()
-    var currentLoop = 0
     
-    var date = Date()
+    @Published var showEndAlert: Bool
     
-    var blocksApps: Bool = false
-    var isTimeCountOn: Bool = true
-    var isAlarmOn: Bool = false
-    
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager()) {
+    // MARK: - Initializer
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), date: Date = Date.now, timerState: TimerState? = nil, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, subject: Subject? = nil, isAtWorkTime: Bool = false, blocksApps: Bool = false, isTimeCountOn: Bool = false, isAlarmOn: Bool = false, showEndAlert: Bool = false, color: UIColor? = nil) {
         self.focusSessionManager = focusSessionManager
+        
+        self.date = date
+        self.timerState = timerState
+        self.totalSeconds = totalSeconds
+        self.timerSeconds = timerSeconds
+        self.timerCase = timerCase
+        self.subject = subject
+        self.isAtWorkTime = isAtWorkTime
+        self.blocksApps = blocksApps
+        self.isTimeCountOn = isTimeCountOn
+        self.isAlarmOn = isAlarmOn
+        self.showEndAlert = showEndAlert
+        self.color = color
+        
+        switch self.timerCase {
+            case .pomodoro(let workTime, let restTime, let numberOfLoops):
+                self.workTime = workTime
+                self.restTime = restTime
+                self.numberOfLoops = numberOfLoops
+            default:
+                break
+        }
     }
     
+    // MARK: - Methods
     func startTimer() {
         self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
             guard let self else { return }
@@ -79,94 +131,62 @@ class ActivityManager {
                     self.timerSeconds -= 1
             }
             
-            if self.timerSeconds <= 0 {
-                self.handleTimerEnd()
-                return
-            }
+            guard self.isShowingActivity else { return }
+            
+            self.activityDelegate?.updateActivityView()
         }
     }
     
-    private func handleTimerEnd() {
+    func stopTimer() {
+        self.timer.invalidate()
+    }
+    
+    func handleTimerEnd() {
         switch self.timerCase {
             case .stopwatch:
                 return
             case .timer:
                 self.activityDelegate?.changeActivityButtonState()
-                self.timer.invalidate()
-            case .pomodoro:
+                self.stopTimer()
+                self.showEndAlert = true
+            case .pomodoro(let workTime, let restTime, let numberOfLoops):
                 if self.isAtWorkTime {
-                    if self.currentLoop >= self.numberOfLoops - 1 {
+                    if self.currentLoop >= numberOfLoops - 1 {
                         self.activityDelegate?.changeActivityButtonState()
-                        self.timer.invalidate()
+                        self.stopTimer()
+                        self.showEndAlert = true
                         return
                     }
                     
                     self.isAtWorkTime.toggle()
                     
-                    self.totalSeconds = self.restTime
+                    self.totalSeconds = restTime
                     self.timerSeconds = self.totalSeconds
                 } else {
                     self.currentLoop += 1
                     self.isAtWorkTime.toggle()
                     
-                    self.totalSeconds = self.workTime
+                    self.totalSeconds = workTime
                     self.timerSeconds = self.totalSeconds
                 }
+                
+                self.activityDelegate?.updateActivityView()
+                self.activityDelegate?.setActivityView()
+                
+                self.timerState = .reseting
+                self.timerState = .starting
         }
     }
     
-    func handleActivityDismissed(_ dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        guard let focusSessionViewController = dismissed.children.first as? FocusSessionViewController,
-              !focusSessionViewController.viewModel.didTapFinishButton else { return nil }
-        
-        let timerCase = focusSessionViewController.viewModel.timerCase
-        self.timerCase = timerCase
-        
-        switch timerCase {
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
-                self.workTime = workTime
-                self.restTime = restTime
-                self.numberOfLoops = numberOfLoops
-            default:
-                break
-        }
-
-        self.color = focusSessionViewController.color
-        self.subject = focusSessionViewController.viewModel.subject
-        self.totalSeconds = focusSessionViewController.viewModel.totalSeconds
-        self.timerSeconds = focusSessionViewController.viewModel.timerSeconds.value
-        self.isPaused = focusSessionViewController.viewModel.timerState.value == .reseting
-        self.isAtWorkTime = focusSessionViewController.viewModel.isAtWorkTime
-        self.currentLoop = focusSessionViewController.viewModel.currentLoop
-        self.date = focusSessionViewController.viewModel.date
-        self.blocksApps = focusSessionViewController.viewModel.blocksApps
-        self.isTimeCountOn = focusSessionViewController.viewModel.isVisible
-        self.isAlarmOn = focusSessionViewController.viewModel.isAlarmOn
+    func handleActivityDismissed(didTapFinish: Bool) {
+        guard !didTapFinish else { return }
         
         self.isShowingActivity = true
+    }
+    
+    func saveFocusSesssion() {
+        self.timerState = .reseting
         
-        return nil
-    }
-    
-    func updateAfterBackground(timeInBackground: Int) {
-        switch self.timerCase {
-            case .stopwatch:
-                if timeInBackground > 0 && !self.isPaused {
-                    self.timerSeconds += timeInBackground
-                }
-            case .timer, .pomodoro:
-                if timeInBackground > 0 && !self.isPaused {
-                    self.timerSeconds -= timeInBackground
-                    
-                    if self.timerSeconds <= 0 {
-                        self.timerSeconds = 0
-                        self.activityDelegate?.changeActivityButtonState()
-                    }
-                }
-        }
-    }
-    
-    private func saveFocusSesssion() {
         var totalTime: Int = 0
         
         switch self.timerCase {
@@ -174,11 +194,11 @@ class ActivityManager {
                 totalTime = self.timerSeconds
             case .timer:
                 totalTime = self.totalSeconds - self.timerSeconds
-            case .pomodoro:
+            case .pomodoro(let workTime, _, _):
                 if self.isAtWorkTime {
-                    totalTime = (self.workTime * self.currentLoop) + (self.totalSeconds - self.timerSeconds)
+                    totalTime = (workTime * self.currentLoop) + (self.totalSeconds - self.timerSeconds)
                 } else {
-                    totalTime = self.workTime * (self.currentLoop + 1)
+                    totalTime = workTime * (self.currentLoop + 1)
                 }
         }
         
@@ -196,5 +216,60 @@ class ActivityManager {
         guard self.isShowingActivity else { return }
         
         self.activityDelegate?.changeActivityVisibility(isShowing: isShowing)
+    }
+    
+    func updateFocusSession(with focusSessionModel: FocusSessionModel) {
+        self.timerState = focusSessionModel.timerState
+        self.totalSeconds = focusSessionModel.totalSeconds
+        self.timerSeconds = focusSessionModel.timerSeconds
+        self.timerCase = focusSessionModel.timerCase
+        self.subject = focusSessionModel.subject
+        self.isAtWorkTime = focusSessionModel.isAtWorkTime
+        self.currentLoop = focusSessionModel.currentLoop
+        self.blocksApps = focusSessionModel.blocksApps
+        self.isTimeCountOn = focusSessionModel.isTimeCountOn
+        self.isAlarmOn = focusSessionModel.isAlarmOn
+        self.showEndAlert = focusSessionModel.showEndAlert
+        self.color = focusSessionModel.color
+    }
+    
+    func updateAfterBackground(timeInBackground: Int) {
+        self.updateAfterBackground = self.handleAfterBackground(timeInBackground)
+    }
+    
+    func handleAfterBackground(_ timeInBackground: Int) -> Bool {
+        guard timeInBackground > 0,
+              self.timerState == .starting else { return false }
+        
+        switch self.timerCase {
+            case .timer:
+                self.timerSeconds -= timeInBackground
+            case .stopwatch:
+                self.timerSeconds += timeInBackground
+            case .pomodoro(let workTime, let restTime, let numberOfLoops):
+                self.handlePomodoro(timeInBackground, workTime: workTime, restTime: restTime, numberOfLoops: numberOfLoops)
+        }
+        
+        return true
+    }
+    
+    private func handlePomodoro(_ timeInBackground: Int, workTime: Int, restTime: Int, numberOfLoops: Int) {
+        var loopStartTime = self.currentLoop * (workTime + restTime)
+        var loopPassedTime = self.isAtWorkTime ? (workTime - self.timerSeconds) : (workTime + (restTime - self.timerSeconds))
+        let totalPassedTime = loopStartTime + loopPassedTime + timeInBackground
+        
+        self.currentLoop = totalPassedTime / (workTime + restTime)
+        loopStartTime = self.currentLoop * (workTime + restTime)
+        loopPassedTime = totalPassedTime - loopStartTime
+        self.isAtWorkTime = loopPassedTime < workTime
+        
+        if self.currentLoop >= numberOfLoops - 1 && !self.isAtWorkTime {
+            self.isAtWorkTime = true
+            self.timerSeconds = 0
+            
+            return
+        }
+        
+        self.timerSeconds = self.isAtWorkTime ? (workTime - loopPassedTime) : (restTime - (loopPassedTime - workTime))
     }
 }

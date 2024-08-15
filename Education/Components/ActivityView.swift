@@ -8,11 +8,12 @@
 import UIKit
 
 class ActivityView: UIView {
-    var totalSeconds: Int = 0 // This will be used to create the progress view
+    var totalSeconds: Int = 0
     
     var timerSeconds: Int = 0 {
         didSet {
             self.setTimerText()
+            self.updateProgress()
         }
     }
     
@@ -31,24 +32,39 @@ class ActivityView: UIView {
                 return
             }
             
-            self.activityTitle.text = "New activity"
+            self.activityTitle.text = String(localized: "newActivity")
         }
     }
     
     var color: UIColor? {
         didSet {
             self.backgroundColor = color
+            self.progressView.backgroundColor = color?.darker(by: 0.6)
             self.activityButton.activityState = .current(color: color?.darker(by: 0.6))
         }
     }
     
     var isAtWorkTime: Bool = false {
         didSet {
-            guard !isAtWorkTime else { return }
+            if let subject {
+                self.activityTitle.text = isAtWorkTime ? subject.unwrappedName : subject.unwrappedName + " " + String(localized: "interval")
+                
+                return
+            }
             
-            self.activityTitle.text = (self.activityTitle.text ?? String()) + " interval"
+            self.activityTitle.text = isAtWorkTime ? String(localized: "newActivity") : String(localized: "newActivity") + " " + String(localized: "interval")
         }
     }
+    
+    private let progressView: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    private var progressViewWidthConstraint: NSLayoutConstraint?
     
     private let activityTitle: UILabel = {
         let lbl = UILabel()
@@ -95,6 +111,7 @@ class ActivityView: UIView {
         
         let radius = self.bounds.height / 6
         self.roundCorners(corners: [.topLeft, .topRight], radius: radius, borderWidth: 2, borderColor: .label)
+        self.progressView.roundCorners(corners: [.topLeft], radius: radius, borderWidth: 0, borderColor: .clear)
     }
     
     private func setTimerText() {
@@ -114,18 +131,45 @@ class ActivityView: UIView {
     private func getText(from number: Int) -> String {
         return number < 10 ? "0\(number)" : "\(number)"
     }
+    
+    private func updateProgress() {
+        guard self.totalSeconds > 0 else { return }
+        
+        let percentage = 1 - (Double(self.timerSeconds) / Double(totalSeconds))
+        
+        self.progressViewWidthConstraint?.constant = self.bounds.width * percentage
+        
+        if percentage <= 0 {
+            self.setTimerText()
+            
+            return
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+            self.layoutIfNeeded()
+        }
+    }
 }
 
 extension ActivityView: ViewCodeProtocol {
     func setupUI() {
+        self.addSubview(progressView)
         self.addSubview(activityTitle)
         self.addSubview(activityTimer)
         self.addSubview(activityButton)
         
+        self.progressViewWidthConstraint = progressView.widthAnchor.constraint(equalToConstant: 0)
+        self.progressViewWidthConstraint?.isActive = true
+        
         NSLayoutConstraint.activate([
+            progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            progressView.heightAnchor.constraint(equalTo: self.heightAnchor),
+            progressView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            
             activityTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             activityTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
             
+            activityTimer.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (76/390)),
             activityTimer.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             activityButton.leadingAnchor.constraint(equalTo: activityTimer.trailingAnchor, constant: 8),

@@ -8,13 +8,13 @@
 import UIKit
 
 class FocusPickerViewController: UIViewController {
-    weak var coordinator: (ShowingTimer & Dismissing & DismissingAll & DismissingAfterModal)?
+    weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
     let viewModel: FocusPickerViewModel
     
     private let color: UIColor?
     
     private lazy var focusPickerView: FocusPickerView = {
-        let view = FocusPickerView(color: self.color, timerCase: self.viewModel.timerCase)
+        let view = FocusPickerView(color: self.color, timerCase: self.viewModel.focusSessionModel.timerCase)
         view.delegate = self
         
         let subpickers = view.dateView.timerDatePicker.subviews.compactMap { $0 as? UIPickerView }
@@ -46,7 +46,7 @@ class FocusPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .systemBackground
+        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
         
         self.setupUI()
     }
@@ -54,9 +54,11 @@ class FocusPickerViewController: UIViewController {
     @objc private func didChangeToggle(_ sender: UISwitch) {
         switch sender.tag {
             case 0:
-                self.viewModel.isAlarmOn.toggle()
+                ActivityManager.shared.isAlarmOn.toggle()
             case 1:
-                self.viewModel.isTimeCountOn.toggle()
+                ActivityManager.shared.isTimeCountOn.toggle()
+            case 2:
+                ActivityManager.shared.blocksApps.toggle()
             default:
                 break
         }
@@ -78,7 +80,7 @@ extension FocusPickerViewController: ViewCodeProtocol {
 
 extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,11 +92,28 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         
-        cell.textLabel?.text = section == 0 ? String(localized: "alarm") : String(localized: "showTimeCount")
+        var toggleIsOn = Bool()
+        var cellText = String()
+        
+        switch section {
+            case 0:
+                cellText = String(localized: "alarm")
+                toggleIsOn = ActivityManager.shared.isAlarmOn
+            case 1:
+                cellText = String(localized: "showTimeCount")
+                toggleIsOn = ActivityManager.shared.isTimeCountOn
+            case 2:
+                cellText = String(localized: "blockApps")
+                toggleIsOn = ActivityManager.shared.blocksApps
+            default:
+                break
+        }
+        
+        cell.textLabel?.text = cellText
         cell.textLabel?.textColor = .white
         
         let toggle = UISwitch()
-        toggle.isOn = section == 0 ? self.viewModel.isAlarmOn : self.viewModel.isTimeCountOn
+        toggle.isOn = toggleIsOn
         toggle.tag = section
         toggle.addTarget(self, action: #selector(didChangeToggle(_:)), for: .valueChanged)
         
@@ -105,12 +124,17 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 3
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 3
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        switch section {
+            case 0, 1:
+                return 6
+            default:
+                return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -170,14 +194,5 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         50
-    }
-}
-
-// MARK: - Sheet Delegate
-extension FocusPickerViewController: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.coordinator?.dismissAfterModal()
-        
-        return ActivityManager.shared.handleActivityDismissed(dismissed)
     }
 }

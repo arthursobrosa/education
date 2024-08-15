@@ -14,129 +14,45 @@ class FocusSessionViewModel {
     // MARK: - Properties
     var didTapFinishButton = false
     
-    var isVisible: Bool
-    
-    var timer = Timer()
-    
-    var totalSeconds: Int {
-        didSet {
-            self.timerSeconds.value = totalSeconds
-        }
-    }
-    
-    var timerSeconds: Box<Int>
-    
-    enum TimerState: String {
-        case starting = "pause"
-        case reseting = "play"
-        
-        var imageName: String {
-            return "\(self.rawValue).fill"
-        }
-    }
-    
-    var timerState: Box<TimerState?>
-    
-    let subject: Subject?
-    let date: Date
-    
-    var workTime = 0
-    var restTime = 0
-    var numberOfLoops = 0
-    var currentLoop = 0
-    var isAtWorkTime: Bool
-    
-    var timerCase: TimerCase
-    
-    let blocksApps: Bool
-    let isAlarmOn: Bool
-    
     // MARK: - Initializer
-    init(totalSeconds: Int, timerSeconds: Int, subject: Subject?, timerCase: TimerCase, focusSessionManager: FocusSessionManager = FocusSessionManager(), isAtWorkTime: Bool, blocksApps: Bool, isTimeCountOn: Bool, isAlarmOn: Bool) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.focusSessionManager = focusSessionManager
-        
-        self.timerState = Box(nil)
-        self.subject = subject
-        self.date = Date.now
-        
-        self.totalSeconds = totalSeconds
-        self.timerSeconds = Box(timerSeconds)
-        self.timerCase = timerCase
-        
-        switch timerCase {
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
-                self.workTime = workTime
-                self.restTime = restTime
-                self.numberOfLoops = numberOfLoops
-            default:
-                break
-        }
-        
-        self.isAtWorkTime = isAtWorkTime
-        
-        self.blocksApps = blocksApps
-        
-        self.isVisible = isTimeCountOn
-        
-        self.isAlarmOn = isAlarmOn
+        ActivityManager.shared.date = Date.now
     }
     
     // MARK: - Methods
-    func startFocusSession() {
-        self.timerState.value = .starting
-    }
-    
-    func startTimer() {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            switch self.timerCase {
-                case .stopwatch:
-                    self.timerSeconds.value += 1
-                case .timer, .pomodoro:
-                    self.timerSeconds.value -= 1
-            }
-        }
-    }
-    
     func getTimerString() -> String {
         var seconds = Int()
         var minutes = Int()
         var hours = Int()
         
-        if self.timerSeconds.value > 0 {
-            seconds = self.timerSeconds.value % 60
-            minutes = self.timerSeconds.value / 60 % 60
-            hours = self.timerSeconds.value / 3600
+        let timerSeconds = ActivityManager.shared.timerSeconds
+        
+        if timerSeconds > 0 {
+            seconds = timerSeconds % 60
+            minutes = timerSeconds / 60 % 60
+            hours = timerSeconds / 3600
         }
         
         return "\(hours)h \(minutes)m \(seconds)s"
     }
     
     func getStrokeEnd() -> CGFloat {
-        return 1 - (CGFloat(self.timerSeconds.value) / CGFloat(self.totalSeconds))
+        let timerSeconds = ActivityManager.shared.timerSeconds
+        let totalSeconds = ActivityManager.shared.totalSeconds
+
+        return 1 - (CGFloat(timerSeconds) / CGFloat(totalSeconds))
     }
     
     func pauseResumeButtonTapped() {
-        let newTimerState: TimerState = self.timerState.value == .starting ? .reseting : .starting
-        self.timerState.value = newTimerState
+        let timerState = ActivityManager.shared.timerState
+        
+        let newTimerState: ActivityManager.TimerState = timerState == .starting ? .reseting : .starting
+        ActivityManager.shared.timerState = newTimerState
     }
     
     func saveFocusSession() {
-        var totalTime: Int = 0
-        
-        switch self.timerCase {
-            case .stopwatch:
-                totalTime = self.timerSeconds.value
-            case .timer:
-                totalTime = self.totalSeconds - self.timerSeconds.value
-            case .pomodoro:
-                if self.isAtWorkTime {
-                    totalTime = (self.workTime * self.currentLoop) + (self.totalSeconds - self.timerSeconds.value)
-                } else {
-                    totalTime = self.workTime * (self.currentLoop + 1)
-                }
-        }
-        
-        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
+        ActivityManager.shared.finishSession()
     }
 }
 
