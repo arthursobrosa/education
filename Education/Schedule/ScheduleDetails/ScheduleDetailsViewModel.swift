@@ -22,8 +22,8 @@ class ScheduleDetailsViewModel {
     var selectedStartTime: Date
     var selectedEndTime: Date
     
-    var alarmBefore = false
-    var alarmInTime = false
+    var alarmBefore: Bool
+    var alarmInTime: Bool
     
     var blocksApps: Bool
     
@@ -59,6 +59,9 @@ class ScheduleDetailsViewModel {
             }
         }
         
+        self.alarmBefore = false
+        self.alarmInTime = false
+        
         if let schedule {
             if let subject = self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID) {
                 selectedSubjectName = subject.unwrappedName
@@ -66,6 +69,8 @@ class ScheduleDetailsViewModel {
             
             selectedStartTime = schedule.unwrappedStartTime
             selectedEndTime = schedule.unwrappedEndTime
+            self.alarmBefore = schedule.earlyAlarm
+            self.alarmInTime = schedule.imediateAlarm
         }
         
         self.selectedDay = self.days[selectedDay]
@@ -145,6 +150,8 @@ class ScheduleDetailsViewModel {
                     schedule.startTime = self.selectedStartTime
                     schedule.endTime = self.selectedEndTime
                     schedule.blocksApps = self.blocksApps
+                    schedule.earlyAlarm = self.alarmBefore
+                    schedule.imediateAlarm = self.alarmInTime
                     
                     self.handleAlerts()
                 }
