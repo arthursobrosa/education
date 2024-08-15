@@ -128,6 +128,9 @@
 		68EC5BE12C66D31600805051 /* CustomPushAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE02C66D31600805051 /* CustomPushAnimation.swift */; };
 		68EC5BE32C66D49800805051 /* CustomPopAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE22C66D49800805051 /* CustomPopAnimation.swift */; };
 		CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */; };
+		CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */; };
+		CE1E018D2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018C2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift */; };
+		CE1E018F2C6BEAD000811CB9 /* hourDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018E2C6BEAD000811CB9 /* hourDetailsView.swift */; };
 		CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010042C3329F1007BCA07 /* FocusSessionView.swift */; };
 		CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */; };
 		CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */; };
@@ -289,6 +292,9 @@
 		68EC5BE02C66D31600805051 /* CustomPushAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPushAnimation.swift; sourceTree = "<group>"; };
 		68EC5BE22C66D49800805051 /* CustomPopAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopAnimation.swift; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
+		CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsModalView.swift; sourceTree = "<group>"; };
+		CE1E018C2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsModalViewController.swift; sourceTree = "<group>"; };
+		CE1E018E2C6BEAD000811CB9 /* hourDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hourDetailsView.swift; sourceTree = "<group>"; };
 		CE3010042C3329F1007BCA07 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewController.swift; sourceTree = "<group>"; };
 		CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMonitor.swift; sourceTree = "<group>"; };
@@ -536,6 +542,7 @@
 		683B45372C1B6F3A00663912 /* Education */ = {
 			isa = PBXGroup;
 			children = (
+				CE1E01892C6BD5F400811CB9 /* ScheduleDetailsModal */,
 				68D47D582C2DE227000E011C /* Education.entitlements */,
 				6833B2162C345670009EA63D /* App */,
 				6833B2192C3456B9009EA63D /* Coordinator */,
@@ -743,6 +750,16 @@
 			path = Transitions;
 			sourceTree = "<group>";
 		};
+		CE1E01892C6BD5F400811CB9 /* ScheduleDetailsModal */ = {
+			isa = PBXGroup;
+			children = (
+				CE1E018C2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift */,
+				CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */,
+				CE1E018E2C6BEAD000811CB9 /* hourDetailsView.swift */,
+			);
+			path = ScheduleDetailsModal;
+			sourceTree = "<group>";
+		};
 		CE3B7D2D2C45912100EE5070 /* BlockApps */ = {
 			isa = PBXGroup;
 			children = (
@@ -916,6 +933,7 @@
 				689388922C642133007EE922 /* UIView+Extension.swift in Sources */,
 				CE6A12502C63EBF000549DCC /* ProfileView.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
+				CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */,
 				688C257D2C6674F000150F7F /* FocusSubjectTableViewCell.swift in Sources */,
 				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
 				689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */,
@@ -983,6 +1001,7 @@
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68833D9E2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift in Sources */,
 				682376702C63F48100255143 /* ActivityButton.swift in Sources */,
+				CE1E018F2C6BEAD000811CB9 /* hourDetailsView.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
 				317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */,
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
@@ -991,6 +1010,7 @@
 				31C102F42C6D1A67009D2751 /* SubjectCreationView.swift in Sources */,
 				688C257B2C66716600150F7F /* FocusImediateViewController+Delegate.swift in Sources */,
 				CE3B7D332C4591CE00EE5070 /* BlockAppsViewModel.swift in Sources */,
+				CE1E018D2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift in Sources */,
 				68CA87D72C5D4F74006ED5FA /* FocusSelectionViewModel.swift in Sources */,
 				30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */,
 				68825BD32C2F370B00272451 /* Box.swift in Sources */,
