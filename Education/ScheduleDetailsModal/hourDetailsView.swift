@@ -97,7 +97,7 @@ extension HourDetailsView: ViewCodeProtocol {
             lineStartTime.centerYAnchor.constraint(equalTo: startTime.centerYAnchor),
             lineStartTime.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 188/321),
            
-            endTime.centerYAnchor.constraint(equalTo: startTime.centerYAnchor, constant: 51),
+            endTime.centerYAnchor.constraint(equalTo: bracket.bottomAnchor, constant: 0),
             endTime.leadingAnchor.constraint(equalTo: bracket.trailingAnchor, constant: 8),
             
             lineEndTime.leadingAnchor.constraint(equalTo: startTime.trailingAnchor, constant: 8),
@@ -108,5 +108,5 @@ extension HourDetailsView: ViewCodeProtocol {
 }
 
 #Preview {
-    ScheduleDetailsModalViewController(color: UIColor(named: "ScheduleColor1"))
+    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()), color: UIColor(named: "ScheduleColor1"))
 }

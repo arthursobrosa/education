@@ -9,6 +9,8 @@ import UIKit
 
 class ScheduleDetailsModalViewController: UIViewController {
     private let color: UIColor?
+    weak var coordinator: (ShowingFocusSelection & Dismissing & DismissingAll & DismissingAfterModal & ShowingScheduleDetails)?
+    let viewModel: ScheduleDetailsModalViewModel
     
     private lazy var scheduleModalView: ScheduleDetailsModalView = {
         let view = ScheduleDetailsModalView(color: self.color)
@@ -17,7 +19,8 @@ class ScheduleDetailsModalViewController: UIViewController {
         return view
     }()
     
-    init(color: UIColor?) {
+    init(viewModel: ScheduleDetailsModalViewModel, color: UIColor?) {
+        self.viewModel = viewModel
         self.color = color
         
         super.init(nibName: nil, bundle: nil)
@@ -49,6 +52,14 @@ extension ScheduleDetailsModalViewController: ViewCodeProtocol {
     }
 }
 
-#Preview{
-    ScheduleDetailsModalViewController(color: UIColor(named: "ScheduleColor1"))
+extension ScheduleDetailsModalViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        self.coordinator?.dismissAfterModal()
+        
+        return ActivityManager.shared.handleActivityDismissed(dismissed)
+    }
+}
+
+#Preview {
+    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()), color: UIColor(named: "ScheduleColor1"))
 }

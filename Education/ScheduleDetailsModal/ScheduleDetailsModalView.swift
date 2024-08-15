@@ -8,9 +8,11 @@
 import UIKit
 
 class ScheduleDetailsModalView: UIView {
+    
+    weak var delegate: ScheduleDetailsModalDelegate?
     private var color: UIColor?
     
-    private let closeButton: UIButton = {
+    private lazy var closeButton: UIButton = {
         
         let btn = UIButton()
         
@@ -20,12 +22,14 @@ class ScheduleDetailsModalView: UIView {
         btn.imageView?.tintColor = .white
         btn.setPreferredSymbolConfiguration(.init(pointSize: 24), forImageIn: .normal)
         
+        btn.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+        
         btn.translatesAutoresizingMaskIntoConstraints = false
         
         return btn
     }()
     
-    private let editButton: UIButton = {
+    private lazy var editButton: UIButton = {
         
         let btn = UIButton()
         
@@ -35,6 +39,7 @@ class ScheduleDetailsModalView: UIView {
         btn.imageView?.tintColor = .white
         btn.setPreferredSymbolConfiguration(.init(pointSize: 24), forImageIn: .normal)
         
+        btn.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
                 
         btn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -121,6 +126,14 @@ class ScheduleDetailsModalView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    @objc private func didTapCloseButton(){
+        self.delegate?.dismiss()
+    }
+    
+    @objc private func didTapEditButton(){
+        self.delegate?.editButtonTapped(schedule: Schedule(), title: self.nameLabel.text, selectedDay: 1)
+    }
 }
 
 extension ScheduleDetailsModalView: ViewCodeProtocol {
@@ -160,6 +173,6 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
     }
 }
 
-#Preview{
-    ScheduleDetailsModalViewController(color: UIColor(named: "ScheduleColor1"))
+#Preview {
+    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()), color: UIColor(named: "ScheduleColor1"))
 }
