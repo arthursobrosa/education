@@ -8,12 +8,12 @@
 import UIKit
 
 class ActivityView: UIView {
-    var totalSeconds: Int = 0 // This will be used to create the progress view
+    var totalSeconds: Int = 0
     
     var timerSeconds: Int = 0 {
         didSet {
             self.setTimerText()
-//            self.updateProgress()
+            self.updateProgress()
         }
     }
     
@@ -63,6 +63,8 @@ class ActivityView: UIView {
         
         return view
     }()
+    
+    private var progressViewWidthConstraint: NSLayoutConstraint?
     
     private let activityTitle: UILabel = {
         let lbl = UILabel()
@@ -135,13 +137,15 @@ class ActivityView: UIView {
         
         let percentage = 1 - (Double(self.timerSeconds) / Double(totalSeconds))
         
-        self.progressView.removeConstraints(self.progressView.constraints)
+        self.progressViewWidthConstraint?.constant = self.bounds.width * percentage
         
-        NSLayoutConstraint.activate([
-            self.progressView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: percentage)
-        ])
+        if percentage <= 0 {
+            self.setTimerText()
+            
+            return
+        }
         
-        UIView.animate(withDuration: 1) {
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
             self.layoutIfNeeded()
         }
     }
@@ -149,20 +153,23 @@ class ActivityView: UIView {
 
 extension ActivityView: ViewCodeProtocol {
     func setupUI() {
-//        self.addSubview(progressView)
+        self.addSubview(progressView)
         self.addSubview(activityTitle)
         self.addSubview(activityTimer)
         self.addSubview(activityButton)
         
+        self.progressViewWidthConstraint = progressView.widthAnchor.constraint(equalToConstant: 0)
+        self.progressViewWidthConstraint?.isActive = true
+        
         NSLayoutConstraint.activate([
-//            progressView.widthAnchor.constraint(equalToConstant: 0),
-//            progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            progressView.heightAnchor.constraint(equalTo: self.heightAnchor),
-//            progressView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            progressView.heightAnchor.constraint(equalTo: self.heightAnchor),
+            progressView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             activityTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             activityTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
             
+            activityTimer.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (76/390)),
             activityTimer.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             activityButton.leadingAnchor.constraint(equalTo: activityTimer.trailingAnchor, constant: 8),

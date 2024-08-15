@@ -14,7 +14,7 @@ class FocusPickerViewController: UIViewController {
     private let color: UIColor?
     
     private lazy var focusPickerView: FocusPickerView = {
-        let view = FocusPickerView(color: self.color, timerCase: ActivityManager.shared.timerCase)
+        let view = FocusPickerView(color: self.color, timerCase: self.viewModel.focusSessionModel.timerCase)
         view.delegate = self
         
         let subpickers = view.dateView.timerDatePicker.subviews.compactMap { $0 as? UIPickerView }
