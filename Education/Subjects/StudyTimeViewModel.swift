@@ -129,4 +129,13 @@ class StudyTimeViewModel : ObservableObject {
         let subject = self.subjectManager.fetchSubject(withID: subjectId)
         return subject?.unwrappedName ?? String(localized: "other")
     }
+    
+    func createSubject(name: String, color: String) {
+        subjectManager.createSubject(name: name, color: color)
+    }
+    
+    func removeSubject(subject: Subject){
+        self.subjectManager.deleteSubject(subject)
+        self.fetchSubjects()
+    }
 }

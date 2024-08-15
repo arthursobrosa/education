@@ -97,7 +97,7 @@ class FocusSessionView: UIView {
     }
     
     @objc private func didTapFinishButton(_ sender: UIButton) {
-        self.delegate?.saveFocusSession()
+        self.delegate?.finishAndDismiss()
         self.delegate?.unblockApps()
     }
     

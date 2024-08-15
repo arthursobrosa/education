@@ -64,33 +64,21 @@ class TabBarController: UITabBarController {
     }
     
     @objc private func activityButtonTapped() {
-        guard ActivityManager.shared.timerSeconds > 0 else { return }
+        guard self.activityView.timerSeconds > 0 else { return }
         
         self.activityView.isPaused.toggle()
-        ActivityManager.shared.isPaused.toggle()
         
         if self.activityView.isPaused {
-            ActivityManager.shared.timer.invalidate()
+            ActivityManager.shared.timerState = .reseting
         } else {
-            ActivityManager.shared.startTimer()
+            ActivityManager.shared.timerState = .starting
         }
     }
     
     @objc private func activityViewTapped() {
         self.selectedIndex = self.schedule.navigationController.tabBarItem.tag
-        self.schedule.color = self.activityView.color
         
-        let timerState: FocusSessionViewModel.TimerState? = self.activityView.isPaused ? .reseting : nil
-        let totalSeconds = ActivityManager.shared.totalSeconds
-        let timerSeconds = ActivityManager.shared.timerSeconds
-        let subject = ActivityManager.shared.subject
-        let timerCase = ActivityManager.shared.timerCase
-        let isAtWorkTime = ActivityManager.shared.isAtWorkTime
-        let blocksApps = ActivityManager.shared.blocksApps
-        let isTimeCountOn = ActivityManager.shared.isTimeCountOn
-        let isAlarmOn = ActivityManager.shared.isAlarmOn
-        
-        self.schedule.showTimer(transitioningDelegate: self, timerState: timerState, totalSeconds: totalSeconds, timerSeconds: timerSeconds, subject: subject, timerCase: timerCase, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
+        self.schedule.showTimer(focusSessionModel: nil)
         
         ActivityManager.shared.isShowingActivity = false
     }

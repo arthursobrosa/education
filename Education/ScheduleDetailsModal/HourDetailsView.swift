@@ -82,8 +82,6 @@ extension HourDetailsView: ViewCodeProtocol {
         addSubview(endTime)
         addSubview(lineEndTime)
         
-        let padding = 20.0
-        
         NSLayoutConstraint.activate([
             bracket.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 53/102),
             bracket.widthAnchor.constraint(equalTo: bracket.heightAnchor, multiplier: 6/53),

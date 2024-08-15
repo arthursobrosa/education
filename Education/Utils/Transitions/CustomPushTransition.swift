@@ -1,5 +1,5 @@
 //
-//  CustomPushAnimation.swift
+//  CustomPushTransition.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 09/08/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomPushAnimation: NSObject, UIViewControllerAnimatedTransitioning {
+class CustomPushTransition: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: (any UIViewControllerContextTransitioning)?) -> TimeInterval {
         return 0.3
     }

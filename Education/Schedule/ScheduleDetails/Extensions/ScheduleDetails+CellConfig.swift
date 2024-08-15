@@ -35,26 +35,37 @@ extension ScheduleDetailsViewController {
         }
     }
     
-    @objc private func switchToggledBefore(_ sender: UISwitch) {
-        self.viewModel.alarmBefore = sender.isOn
-        
-        guard self.viewModel.alarmBefore else { return }
-        
-        NotificationService.shared.requestAuthorization { granted, error in
-            if granted {
-                print("notification persimission granted")
-            } else if let error {
-                print(error.localizedDescription)
-            }
+    @objc private func switchToggled(_ sender: UISwitch) {
+        switch sender.tag {
+            case 0:
+                self.viewModel.alarmBefore = sender.isOn
+                
+                guard self.viewModel.alarmBefore else { return }
+                
+                NotificationService.shared.requestAuthorization { granted, error in
+                    if granted {
+                        print("notification persimission granted")
+                    } else if let error {
+                        print(error.localizedDescription)
+                    }
+                }
+            case 1:
+                self.viewModel.alarmInTime = sender.isOn
+                
+                guard self.viewModel.alarmInTime else { return }
+                
+                NotificationService.shared.requestAuthorization { granted, error in
+                    if granted {
+                        print("notification persimission granted")
+                    } else if let error {
+                        print(error.localizedDescription)
+                    }
+                }
+            case 2:
+                self.viewModel.blocksApps = sender.isOn
+            default:
+                break
         }
-    }
-    
-    @objc private func switchToggledInTime(_ sender: UISwitch){
-        self.viewModel.alarmInTime = sender.isOn
-    }
-    
-    @objc private func switchToggledBlockApps(_ sender: UISwitch) {
-        self.viewModel.blocksApps = sender.isOn
     }
     
     func createAttributedLabel(withText text: String, symbolName: String, symbolColor: UIColor, textColor: UIColor) -> UIView {
@@ -109,13 +120,17 @@ extension ScheduleDetailsViewController {
             case 1:
                 if row == 0 {
                     let toggleSwitch = UISwitch()
-                    toggleSwitch.addTarget(self, action: #selector(switchToggledBefore(_:)), for: .valueChanged)
+                    toggleSwitch.isOn = self.viewModel.alarmBefore
+                    toggleSwitch.tag = 0
+                    toggleSwitch.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
                     
                     return toggleSwitch
                 }
                 
                 let toggleSwitch = UISwitch()
-                toggleSwitch.addTarget(self, action: #selector(switchToggledInTime(_:)), for: .valueChanged)
+                toggleSwitch.isOn = self.viewModel.alarmInTime
+                toggleSwitch.tag = 1
+                toggleSwitch.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
                 
                 return toggleSwitch
             case 2:
@@ -125,7 +140,8 @@ extension ScheduleDetailsViewController {
             case 3:
                 let toggle = UISwitch()
                 toggle.isOn = self.viewModel.blocksApps
-                toggle.addTarget(self, action: #selector(switchToggledBlockApps(_:)), for: .touchUpInside)
+                toggle.tag = 2
+                toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .touchUpInside)
                 
                 return toggle
             default:

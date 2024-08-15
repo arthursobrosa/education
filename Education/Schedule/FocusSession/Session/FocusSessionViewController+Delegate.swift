@@ -9,20 +9,21 @@ import Foundation
 
 protocol FocusSessionDelegate: AnyObject {
     func pauseResumeButtonTapped()
-    func saveFocusSession()
+    func finishAndDismiss()
     func unblockApps()
 }
 
 extension FocusSessionViewController: FocusSessionDelegate {
     func pauseResumeButtonTapped() {
         self.viewModel.pauseResumeButtonTapped()
-        
-        let isPaused = !(self.viewModel.timerState.value == .starting)
-        self.setNavigationTitle(isPaused: isPaused)
+        self.setNavigationTitle()
     }
     
-    func saveFocusSession() {
-        self.finishAndDismiss()
+    func finishAndDismiss() {
+        self.viewModel.saveFocusSession()
+        self.viewModel.didTapFinishButton = true
+        
+        self.coordinator?.dismiss(animated: true)
     }
     
     func unblockApps() {

@@ -43,7 +43,9 @@ class FocusImediateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .systemBackground
+        self.viewModel.fetchSubjects()
+        
+        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
         
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
@@ -51,12 +53,6 @@ class FocusImediateViewController: UIViewController {
             self.subjects = subjects
             self.reloadTable()
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        self.viewModel.fetchSubjects()
     }
     
     private func reloadTable() {
@@ -104,14 +100,5 @@ extension FocusImediateViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 52 + 12
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let row = indexPath.row
-        let subject: Subject? = row >= self.subjects.count ? nil : self.subjects[row]
-        
-        self.coordinator?.showFocusSelection(color: self.color, subject: subject, blocksApps: false)
     }
 }
