@@ -133,7 +133,7 @@
 		CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */; };
 		CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */; };
 		CE1E018D2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018C2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift */; };
-		CE1E018F2C6BEAD000811CB9 /* hourDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018E2C6BEAD000811CB9 /* hourDetailsView.swift */; };
+		CE1E018F2C6BEAD000811CB9 /* HourDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018E2C6BEAD000811CB9 /* HourDetailsView.swift */; };
 		CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010042C3329F1007BCA07 /* FocusSessionView.swift */; };
 		CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */; };
 		CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */; };
@@ -300,7 +300,7 @@
 		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
 		CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsModalView.swift; sourceTree = "<group>"; };
 		CE1E018C2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsModalViewController.swift; sourceTree = "<group>"; };
-		CE1E018E2C6BEAD000811CB9 /* hourDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hourDetailsView.swift; sourceTree = "<group>"; };
+		CE1E018E2C6BEAD000811CB9 /* HourDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourDetailsView.swift; sourceTree = "<group>"; };
 		CE3010042C3329F1007BCA07 /* FocusSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionView.swift; sourceTree = "<group>"; };
 		CE3010062C332A33007BCA07 /* FocusSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewController.swift; sourceTree = "<group>"; };
 		CE3B7D2E2C45916600EE5070 /* MyMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMonitor.swift; sourceTree = "<group>"; };
@@ -764,7 +764,7 @@
 			children = (
 				CE1E018C2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift */,
 				CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */,
-				CE1E018E2C6BEAD000811CB9 /* hourDetailsView.swift */,
+				CE1E018E2C6BEAD000811CB9 /* HourDetailsView.swift */,
 			);
 			path = ScheduleDetailsModal;
 			sourceTree = "<group>";
@@ -1012,7 +1012,7 @@
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68833D9E2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift in Sources */,
 				682376702C63F48100255143 /* ActivityButton.swift in Sources */,
-				CE1E018F2C6BEAD000811CB9 /* hourDetailsView.swift in Sources */,
+				CE1E018F2C6BEAD000811CB9 /* HourDetailsView.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
 				317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */,
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
