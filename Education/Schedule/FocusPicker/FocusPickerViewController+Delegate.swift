@@ -18,8 +18,6 @@ extension FocusPickerViewController: FocusPickerDelegate {
     func startButtonTapped() {
         self.viewModel.setFocusSessionModel()
         
-        ActivityManager.shared.finishSession()
-        
         BlockAppsMonitor.shared.removeShields()
         
         self.coordinator?.showTimer(focusSessionModel: self.viewModel.focusSessionModel)

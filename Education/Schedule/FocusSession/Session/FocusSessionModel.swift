@@ -8,7 +8,8 @@
 import UIKit
 
 class FocusSessionModel {
-    var timerState: FocusSessionViewModel.TimerState?
+    var date: Date
+    var timerState: ActivityManager.TimerState?
     var totalSeconds: Int
     var timerSeconds: Int
     var timerCase: TimerCase
@@ -16,6 +17,7 @@ class FocusSessionModel {
     var blocksApps: Bool
     var isTimeCountOn: Bool
     var isAlarmOn: Bool
+    var showEndAlert: Bool
     
     var isAtWorkTime: Bool
     var workTime = Int()
@@ -25,7 +27,8 @@ class FocusSessionModel {
     
     var color: UIColor?
     
-    init(timerState: FocusSessionViewModel.TimerState?, totalSeconds: Int, timerSeconds: Int, timerCase: TimerCase, subject: Subject?, isAtWorkTime: Bool, blocksApps: Bool, isTimeCountOn: Bool, isAlarmOn: Bool, color: UIColor?) {
+    init(date: Date = Date.now, timerState: ActivityManager.TimerState? = nil, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, subject: Subject? = nil, isAtWorkTime: Bool = true, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, showEndAlert: Bool = false, color: UIColor? = nil) {
+        self.date = date
         self.timerState = timerState
         self.totalSeconds = totalSeconds
         self.timerSeconds = timerSeconds
@@ -35,6 +38,7 @@ class FocusSessionModel {
         self.blocksApps = blocksApps
         self.isTimeCountOn = isTimeCountOn
         self.isAlarmOn = isAlarmOn
+        self.showEndAlert = showEndAlert
         self.color = color
         
         switch self.timerCase {

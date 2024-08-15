@@ -13,16 +13,13 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
     var navigationController: UINavigationController
     var newNavigationController = UINavigationController()
     
-    private let focusSessionModel: FocusSessionModel
-    
-    init(navigationController: UINavigationController, focusSessionModel: FocusSessionModel) {
+    init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.focusSessionModel = focusSessionModel
     }
     
     func start() {
-        let viewModel = FocusSessionViewModel(focusSessionModel: self.focusSessionModel)
-        let vc = FocusSessionViewController(viewModel: viewModel, color: self.focusSessionModel.color)
+        let viewModel = FocusSessionViewModel()
+        let vc = FocusSessionViewController(viewModel: viewModel, color: ActivityManager.shared.color)
         vc.coordinator = self
         
         self.newNavigationController = UINavigationController(rootViewController: vc)

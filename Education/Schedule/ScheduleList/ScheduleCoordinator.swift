@@ -47,8 +47,13 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         child.start()
     }
     
-    func showTimer(focusSessionModel: FocusSessionModel) {
-        let child = FocusSessionCoordinator(navigationController: self.navigationController, focusSessionModel: focusSessionModel)
+    func showTimer(focusSessionModel: FocusSessionModel?) {
+        if let focusSessionModel {
+            ActivityManager.shared.finishSession()
+            ActivityManager.shared.updateFocusSession(with: focusSessionModel)
+        }
+        
+        let child = FocusSessionCoordinator(navigationController: self.navigationController)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -77,9 +82,9 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
         }
         
         if let focusSessionVC = nav.viewControllers.first as? FocusSessionViewController {
-            ActivityManager.shared.handleActivityDismissed(focusSessionVC: focusSessionVC)
+            ActivityManager.shared.handleActivityDismissed(didTapFinish: focusSessionVC.viewModel.didTapFinishButton)
             
-            self.childDidFinish(focusSessionVC.color as? Coordinator)
+            self.childDidFinish(focusSessionVC.coordinator as? Coordinator)
         }
         
         if let scheduleDetailsVC = nav.viewControllers.first as? ScheduleDetailsViewController {

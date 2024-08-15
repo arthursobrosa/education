@@ -37,8 +37,6 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
     func continueButtonTapped() {
         switch self.viewModel.focusSessionModel.timerCase {
             case .stopwatch:
-                ActivityManager.shared.finishSession()
-                
                 self.coordinator?.showTimer(focusSessionModel: self.viewModel.focusSessionModel)
             case .timer:
                 self.coordinator?.showFocusPicker(focusSessionModel: self.viewModel.focusSessionModel)

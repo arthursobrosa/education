@@ -7,10 +7,9 @@
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var coordinator: Coordinator?
     var window: UIWindow?
-    var timeInBackground = Box(Int())
     private var date = Date()
     
     
@@ -31,30 +30,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         
         window?.rootViewController = coordinator?.navigationController
         window?.makeKeyAndVisible()
-    }
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-            let userInfo = response.notification.request.content.userInfo
-
-            if let name = userInfo["subjectName"] as? String {
-                let subjectManager = SubjectManager()
-                let subject = subjectManager.fetchSubject(withName: name)
-                
-                self.showFocusSelection(color: .systemBlue, subject: subject)
-            }
-
-            completionHandler()
-        }
-    
-    func showFocusSelection(color: UIColor?, subject: Subject?) {
-        guard let coordinator else { return }
-        
-        if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
-            let focusSessionModel = FocusSessionModel(timerState: nil, totalSeconds: 0, timerSeconds: 0, timerCase: .timer, subject: subject, isAtWorkTime: false, blocksApps: false, isTimeCountOn: false, isAlarmOn: false, color: color)
-            
-            tabBar.selectedIndex = 0
-            tabBar.schedule.showFocusSelection(focusSessionModel: focusSessionModel)
-        }
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -80,9 +55,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
         let currentDate = Date.now
-        self.timeInBackground.value = Int(currentDate.timeIntervalSince1970 - self.date.timeIntervalSince1970)
+        let timeInBackground = Int(currentDate.timeIntervalSince1970 - self.date.timeIntervalSince1970)
         
-        ActivityManager.shared.updateAfterBackground(timeInBackground: self.timeInBackground.value)
+        ActivityManager.shared.updateAfterBackground(timeInBackground: timeInBackground)
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
@@ -91,5 +66,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         // to restore the scene back to its current state.
         CoreDataStack.shared.saveMainContext()
         self.date = Date.now
+    }
+}
+
+extension SceneDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+
+        if let name = userInfo["subjectName"] as? String {
+            let subjectManager = SubjectManager()
+            let subject = subjectManager.fetchSubject(withName: name)
+            
+            self.showFocusSelection(color: .systemBlue, subject: subject)
+        }
+
+        completionHandler()
+    }
+    
+    private func showFocusSelection(color: UIColor?, subject: Subject?) {
+        guard let coordinator else { return }
+        
+        if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
+            let newFocusSessionModel = FocusSessionModel(subject: subject, color: color)
+            
+            tabBar.selectedIndex = 0
+            tabBar.schedule.showFocusSelection(focusSessionModel: newFocusSessionModel)
+        }
     }
 }

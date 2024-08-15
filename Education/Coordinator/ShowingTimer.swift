@@ -8,5 +8,5 @@
 import UIKit
 
 protocol ShowingTimer: AnyObject {
-    func showTimer(focusSessionModel: FocusSessionModel)
+    func showTimer(focusSessionModel: FocusSessionModel?)
 }

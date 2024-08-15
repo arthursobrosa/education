@@ -28,7 +28,7 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing, DismissingA
         self.navigationController.pushViewController(vc, animated: false)
     }
     
-    func showTimer(focusSessionModel: FocusSessionModel) {
+    func showTimer(focusSessionModel: FocusSessionModel?) {
         guard let parentCoordinator = self.getParentCoordinator() as? ScheduleCoordinator else { return }
         
         parentCoordinator.showTimer(focusSessionModel: focusSessionModel)
@@ -40,8 +40,6 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing, DismissingA
         if let focusSelectionCoordinator = self.parentCoordinator as? FocusSelectionCoordinator {
             parentCoordinator = focusSelectionCoordinator.getParentCoordinator()
         }
-        
-        self.dismissAll(animated: false)
         
         return parentCoordinator
     }

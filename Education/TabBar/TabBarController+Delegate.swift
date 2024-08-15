@@ -9,37 +9,35 @@ import UIKit
 
 // MARK: - Activity
 protocol ActivityDelegate: AnyObject {
-    func setActivityView(focusSessionModel: FocusSessionModel)
-    func updateActivityView(timerSeconds: Int)
+    func setActivityView()
+    func updateActivityView()
     func changeActivityButtonState()
-    func changeActivityIsAtWorkTime(_ isAtWorkTime: Bool)
     func changeActivityVisibility(isShowing: Bool)
     func removeActivityView()
 }
 
 extension TabBarController: ActivityDelegate {
-    func setActivityView(focusSessionModel: FocusSessionModel) {
-        guard let timerState = focusSessionModel.timerState else { return }
+    func setActivityView() {
+        guard let timerState = ActivityManager.shared.timerState else { return }
         
-        self.activityView.color = focusSessionModel.color
-        self.activityView.subject = focusSessionModel.subject
-        self.activityView.totalSeconds = focusSessionModel.totalSeconds
-        self.activityView.timerSeconds = focusSessionModel.timerSeconds
+        self.activityView.color = ActivityManager.shared.color
+        self.activityView.subject = ActivityManager.shared.subject
+        self.activityView.totalSeconds = ActivityManager.shared.totalSeconds
+        self.activityView.timerSeconds = ActivityManager.shared.timerSeconds
+        self.activityView.isAtWorkTime = ActivityManager.shared.isAtWorkTime
         self.activityView.isPaused = timerState == .reseting
         
         self.view.addSubview(activityView)
     }
     
-    func updateActivityView(timerSeconds: Int) {
+    func updateActivityView() {
+        let timerSeconds = ActivityManager.shared.timerSeconds
+        
         self.activityView.timerSeconds = timerSeconds
     }
     
     func changeActivityButtonState() {
         self.activityView.isPaused.toggle()
-    }
-    
-    func changeActivityIsAtWorkTime(_ isAtWorkTime: Bool) {
-        self.activityView.isAtWorkTime = isAtWorkTime
     }
     
     func changeActivityVisibility(isShowing: Bool) {

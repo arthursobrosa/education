@@ -41,7 +41,7 @@ class FocusPickerViewModel {
     init(focusSessionModel: FocusSessionModel) {
         self.focusSessionModel = focusSessionModel
         
-        switch focusSessionModel.timerCase {
+        switch self.focusSessionModel.timerCase {
             case .pomodoro(let workTime, let restTime, let numberOfLoops):
                 self.selectedWorkTime = workTime
                 self.selectedRestTime = restTime

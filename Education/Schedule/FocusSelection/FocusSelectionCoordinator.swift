@@ -55,7 +55,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
         child.start()
     }
     
-    func showTimer(focusSessionModel: FocusSessionModel) {
+    func showTimer(focusSessionModel: FocusSessionModel?) {
         guard let scheduleCoordinator = self.getParentCoordinator() as? ScheduleCoordinator else { return }
         
         scheduleCoordinator.showTimer(focusSessionModel: focusSessionModel)
@@ -71,7 +71,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
             parentCoordinator = scheduleCoordinator
         }
         
-        self.dismissAll(animated: false)
+        self.dismissAll(animated: true)
         
         return parentCoordinator
     }

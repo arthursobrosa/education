@@ -14,7 +14,7 @@ class FocusPickerViewController: UIViewController {
     private let color: UIColor?
     
     private lazy var focusPickerView: FocusPickerView = {
-        let view = FocusPickerView(color: self.color, timerCase: self.viewModel.focusSessionModel.timerCase)
+        let view = FocusPickerView(color: self.color, timerCase: ActivityManager.shared.timerCase)
         view.delegate = self
         
         let subpickers = view.dateView.timerDatePicker.subviews.compactMap { $0 as? UIPickerView }
@@ -54,11 +54,11 @@ class FocusPickerViewController: UIViewController {
     @objc private func didChangeToggle(_ sender: UISwitch) {
         switch sender.tag {
             case 0:
-                self.viewModel.focusSessionModel.isAlarmOn.toggle()
+                ActivityManager.shared.isAlarmOn.toggle()
             case 1:
-                self.viewModel.focusSessionModel.isTimeCountOn.toggle()
+                ActivityManager.shared.isTimeCountOn.toggle()
             case 2:
-                self.viewModel.focusSessionModel.blocksApps.toggle()
+                ActivityManager.shared.blocksApps.toggle()
             default:
                 break
         }
@@ -98,13 +98,13 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         switch section {
             case 0:
                 cellText = String(localized: "alarm")
-                toggleIsOn = self.viewModel.focusSessionModel.isAlarmOn
+                toggleIsOn = ActivityManager.shared.isAlarmOn
             case 1:
                 cellText = String(localized: "showTimeCount")
-                toggleIsOn = self.viewModel.focusSessionModel.isTimeCountOn
+                toggleIsOn = ActivityManager.shared.isTimeCountOn
             case 2:
                 cellText = String(localized: "blockApps")
-                toggleIsOn = self.viewModel.focusSessionModel.blocksApps
+                toggleIsOn = ActivityManager.shared.blocksApps
             default:
                 break
         }
