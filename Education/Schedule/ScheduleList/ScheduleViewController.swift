@@ -25,8 +25,6 @@ class ScheduleViewController: UIViewController {
         return view
     }()
     
-    private let scheduleColors: [UIColor] = [UIColor(named: "ScheduleColor1")!, UIColor(named: "ScheduleColor2")!, UIColor(named: "ScheduleColor3")!, UIColor(named: "ScheduleColor4")!, UIColor(named: "ScheduleColor5")!, UIColor(named: "ScheduleColor6")!]
-    
     // MARK: - Initializer
     init(viewModel: ScheduleViewModel) {
         self.viewModel = viewModel
@@ -128,11 +126,11 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         
         let schedule = self.viewModel.schedules[row]
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
-        let color = self.scheduleColors[row % self.scheduleColors.count]
+        let color = subject?.unwrappedColor
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.identifier, for: indexPath) as? ScheduleTableViewCell else { fatalError("Could not dequeue cell") }
         
-        cell.color = color
+        cell.color = UIColor(named: color ?? "sealBackgroundColor")
         cell.delegate = self
         cell.subject = subject
         cell.schedule = schedule

@@ -14,8 +14,10 @@ class SubjectTimeTableViewCell: UITableViewCell{
         didSet {
             if let subject {
                 self.subjectName.text = subject.unwrappedName
+                self.subjectName.textColor = UIColor(named: subject.unwrappedColor)
             } else {
                 self.subjectName.text = String(localized: "other")
+                self.subjectName.textColor = UIColor(named: "sealBackgroundColor")
             }
         }
     }
