@@ -8,20 +8,24 @@
 import UIKit
 
 class ScheduleDetailsModalViewController: UIViewController {
-    private let color: UIColor?
-    weak var coordinator: (ShowingFocusSelection & Dismissing & DismissingAll & DismissingAfterModal & ShowingScheduleDetails)?
+    weak var coordinator: (ShowingFocusSelection & Dismissing & ShowingScheduleDetails)?
     let viewModel: ScheduleDetailsModalViewModel
     
     private lazy var scheduleModalView: ScheduleDetailsModalView = {
-        let view = ScheduleDetailsModalView(color: self.color)
+        let colorName = self.viewModel.subject.unwrappedColor
+        let color = UIColor(named: colorName)
+        let startTime = self.viewModel.getTimeString(isStartTime: true)
+        let endTime = self.viewModel.getTimeString(isStartTime: false)
+        
+        let view = ScheduleDetailsModalView(startTime: startTime, endTime: endTime, color: color, subjectName: self.viewModel.subject.unwrappedName, dayOfTheWeek: self.viewModel.selectedDay)
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
     
-    init(viewModel: ScheduleDetailsModalViewModel, color: UIColor?) {
+    init(viewModel: ScheduleDetailsModalViewModel) {
         self.viewModel = viewModel
-        self.color = color
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -52,14 +56,6 @@ extension ScheduleDetailsModalViewController: ViewCodeProtocol {
     }
 }
 
-extension ScheduleDetailsModalViewController: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.coordinator?.dismissAfterModal()
-        
-        return ActivityManager.shared.handleActivityDismissed(dismissed)
-    }
-}
-
 #Preview {
-    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()), color: UIColor(named: "ScheduleColor1"))
+    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()))
 }

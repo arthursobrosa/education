@@ -145,6 +145,7 @@
 		CE4D4C9A2C6D36C000160F17 /* ScheduleNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C992C6D36C000160F17 /* ScheduleNotificationView.swift */; };
 		CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9B2C6D371200160F17 /* ScheduleNotificationNameCard.swift */; };
 		CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */; };
+		CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */; };
 		CE6A12502C63EBF000549DCC /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A124F2C63EBF000549DCC /* ProfileView.swift */; };
 		CE6A12522C63EEDC00549DCC /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A12512C63EEDC00549DCC /* ProfileViewModel.swift */; };
 		CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */; };
@@ -319,6 +320,7 @@
 		CE4D4C992C6D36C000160F17 /* ScheduleNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationView.swift; sourceTree = "<group>"; };
 		CE4D4C9B2C6D371200160F17 /* ScheduleNotificationNameCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationNameCard.swift; sourceTree = "<group>"; };
 		CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationViewController.swift; sourceTree = "<group>"; };
+		CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetailsModal.swift; sourceTree = "<group>"; };
 		CE6A124F2C63EBF000549DCC /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		CE6A12512C63EEDC00549DCC /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionView.swift; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 				6823766A2C63E86E00255143 /* DismissingAll.swift */,
 				683B5BE12C682B270065121E /* DismissingAfterModal.swift */,
 				31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */,
+				CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -775,11 +778,11 @@
 		CE1E01892C6BD5F400811CB9 /* ScheduleDetailsModal */ = {
 			isa = PBXGroup;
 			children = (
-				CE1E018C2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift */,
-				CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */,
-				CE394D0B2C6E83FE00A8B1F0 /* ScheduleDetailsModalViewModel.swift */,
 				CE394D0E2C6E85FC00A8B1F0 /* ScheduleDetailsModalCoordinator.swift */,
+				CE394D0B2C6E83FE00A8B1F0 /* ScheduleDetailsModalViewModel.swift */,
+				CE1E018C2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift */,
 				CE394D102C6E89A200A8B1F0 /* ScheduleDetailsModalController+Delegate.swift */,
+				CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */,
 				CE1E018E2C6BEAD000811CB9 /* HourDetailsView.swift */,
 			);
 			path = ScheduleDetailsModal;
@@ -1004,6 +1007,7 @@
 				CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */,
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
+				CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */,
 				CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */,
 				68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */,
 				68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */,

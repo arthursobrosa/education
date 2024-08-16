@@ -9,7 +9,7 @@ import UIKit
 
 class ScheduleViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingFocusSelection)?
+    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingFocusSelection & ShowingScheduleDetailsModal)?
     let viewModel: ScheduleViewModel
     
     // MARK: - Properties
@@ -149,10 +149,8 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         let row = indexPath.row
         
         let schedule = self.viewModel.schedules[row]
-        let subject = self.viewModel.getSubject(fromSchedule: schedule)
-        let subjectName = subject?.unwrappedName
         
-        self.coordinator?.showScheduleDetails(title: subjectName, schedule: schedule, selectedDay: self.viewModel.selectedDay)
+        self.coordinator?.showScheduleDetailsModal(schedule: schedule)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }

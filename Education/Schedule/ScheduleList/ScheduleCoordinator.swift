@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingFocusSelection, ShowingTimer {
+class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingFocusSelection, ShowingTimer, ShowingScheduleDetailsModal {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -26,8 +26,8 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         self.navigationController.pushViewController(vc, animated: false)
     }
     
-    func showScheduleDetails(title: String?, schedule: Schedule?, selectedDay: Int) {
-        let child = ScheduleDetailsCoordinator(navigationController: self.navigationController, title: title, schedule: schedule, selectedDay: selectedDay)
+    func showScheduleDetails(schedule: Schedule?) {
+        let child = ScheduleDetailsCoordinator(navigationController: self.navigationController, schedule: schedule)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -56,6 +56,13 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         let child = FocusSessionCoordinator(navigationController: self.navigationController)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
+        child.start()
+    }
+    
+    func showScheduleDetailsModal(schedule: Schedule) {
+        let child = ScheduleDetailsModalCoordinator(navigationController: self.navigationController, schedule: schedule)
+        self.childCoordinators.append(child)
+        child.parentCoordinator = self
         child.start()
     }
     
@@ -88,11 +95,15 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
         }
         
         if let scheduleDetailsVC = nav.viewControllers.first as? ScheduleDetailsViewController {
-            self.childDidFinish(scheduleDetailsVC.coordinator)
+            self.childDidFinish(scheduleDetailsVC.coordinator as? Coordinator)
             
             guard let scheduleVC = self.navigationController.viewControllers.first as? ScheduleViewController else { return nil }
             
             scheduleVC.loadSchedules()
+        }
+        
+        if let scheduleDetailsModalVC = nav.viewControllers.first as? ScheduleDetailsModalViewController {
+            self.childDidFinish(scheduleDetailsModalVC.coordinator as? Coordinator)
         }
         
         return nil

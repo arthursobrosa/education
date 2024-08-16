@@ -11,7 +11,6 @@ class HourDetailsView: UIView {
     private let startTime: UILabel = {
         
         let lbl = UILabel()
-        lbl.text = "14:00"
         lbl.font = UIFont.boldSystemFont(ofSize: 22)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -21,7 +20,6 @@ class HourDetailsView: UIView {
     private let endTime: UILabel = {
         
         let lbl = UILabel()
-        lbl.text = "15:00"
         lbl.font = UIFont.boldSystemFont(ofSize: 22)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -60,8 +58,11 @@ class HourDetailsView: UIView {
         return imgView
     }()
     
-    init() {
+    init(starTime: String, endTime: String) {
         super.init(frame: .zero)
+        
+        self.startTime.text = starTime
+        self.endTime.text = endTime
         
         self.setupUI()
         
@@ -106,5 +107,5 @@ extension HourDetailsView: ViewCodeProtocol {
 }
 
 #Preview {
-    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()), color: UIColor(named: "ScheduleColor1"))
+    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()))
 }

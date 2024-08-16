@@ -7,75 +7,56 @@
 
 import UIKit
 
-class ScheduleDetailsModalCoordinator: Coordinator, ShowingFocusSelection, Dismissing, DismissingAll, DismissingAfterModal, ShowingScheduleDetails {
-    
+class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelection, Dismissing, ShowingScheduleDetails {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    private let color: UIColor?
+    var newNavigationController = UINavigationController()
+    
     private let schedule: Schedule
     
-    init(navigationController: UINavigationController, color: UIColor?, schedule: Schedule) {
+    init(navigationController: UINavigationController, schedule: Schedule) {
         self.navigationController = navigationController
-        self.color = color
         self.schedule = schedule
     }
     
     func start() {
-        let viewModel = ScheduleDetailsModalViewModel(schedule: schedule)
-        let vc = ScheduleDetailsModalViewController(viewModel: viewModel, color: self.color)
+        let viewModel = ScheduleDetailsModalViewModel(schedule: self.schedule)
+        let vc = ScheduleDetailsModalViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.navigationItem.hidesBackButton = true
         
-        self.navigationController.pushViewController(vc, animated: true)
+        self.newNavigationController = UINavigationController(rootViewController: vc)
+        
+        self.newNavigationController.delegate = self
+        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
+            self.newNavigationController.transitioningDelegate = scheduleCoordinator
+        }
+        
+        self.newNavigationController.setNavigationBarHidden(true, animated: false)
+        
+        self.newNavigationController.modalPresentationStyle = .overFullScreen
+        self.newNavigationController.modalTransitionStyle = .crossDissolve
+        
+        self.navigationController.present(self.newNavigationController, animated: true)
     }
     
-    func showFocusSelection(color: UIColor?, subject: Subject?, blocksApps: Bool) {
-        let child = FocusSelectionCoordinator(navigationController: self.navigationController, color: color, subject: subject, blocksApps: blocksApps)
+    func showFocusSelection(focusSessionModel: FocusSessionModel) {
+        let child = FocusSelectionCoordinator(navigationController: self.navigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
     }
     
-    
-    func showScheduleDetails(schedule: Schedule?, title: String?, selectedDay: Int) {
-        let viewModel = ScheduleDetailsViewModel(schedule: schedule, selectedDay: selectedDay)
-        let vc = ScheduleDetailsViewController(viewModel: viewModel)
-        vc.title = "\(title ?? String(localized: "newSchedule")) \(String(localized: "schedule"))"
+    func showScheduleDetails(schedule: Schedule?) {
+        self.dismiss(animated: true)
         
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .pageSheet
-        
-        if let scheduleVC = self.navigationController.viewControllers.first as? ScheduleViewController {
-            nav.transitioningDelegate = scheduleVC
+        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
+            scheduleCoordinator.showScheduleDetails(schedule: schedule)
         }
-        
-        self.navigationController.present(nav, animated: true)
-
     }
     
-    func dismiss() {
-        self.navigationController.popViewController(animated: true)
-    }
-    
-    func dismissAll() {
-        self.navigationController.popToRootViewController(animated: true)
-    }
-    
-    func dismissAfterModal() {
-        self.dismissAll()
-        
-        if let focusImediateCoordinator = self.parentCoordinator as? FocusImediateCoordinator,
-           let scheduleCoordinator = focusImediateCoordinator.parentCoordinator {
-            focusImediateCoordinator.childDidFinish(self)
-            scheduleCoordinator.childDidFinish(focusImediateCoordinator)
-            
-            return
-        } else if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
-            scheduleCoordinator.childDidFinish(self)
-            
-            return
-        }
+    func dismiss(animated: Bool) {
+        self.navigationController.popViewController(animated: animated)
     }
     
     func childDidFinish(_ child: Coordinator?) {
@@ -85,5 +66,31 @@ class ScheduleDetailsModalCoordinator: Coordinator, ShowingFocusSelection, Dismi
                 break
             }
         }
+    }
+}
+
+extension ScheduleDetailsModalCoordinator: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        guard let fromVC = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
+        
+        if navigationController.viewControllers.contains(fromVC) {
+            return
+        }
+        
+        if let focusSelectionVC = fromVC as? FocusSelectionViewController {
+            self.childDidFinish(focusSelectionVC.coordinator as? Coordinator)
+        }
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        if operation == .push {
+            return CustomPushTransition()
+        }
+        
+        if operation == .pop {
+            return CustomPopTransition()
+        }
+        
+        return nil
     }
 }
