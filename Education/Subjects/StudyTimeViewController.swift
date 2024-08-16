@@ -109,7 +109,6 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
             fatalError("Could not dequeue cell")
         }
-        cell.backgroundColor = UIColor(named: subject?.unwrappedColor ?? "sealBackgroundColor")
         cell.subject = subject
         cell.totalTime = totalTime
         
