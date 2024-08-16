@@ -18,7 +18,7 @@ class ScheduleDetailsModalViewModel {
         self.subjectManager = subjectManager
         
         self.schedule = schedule
-        self.subject = self.subjectManager.fetchSubject(withID: self.schedule.unwrappedID)!
+        self.subject = self.subjectManager.fetchSubject(withID: self.schedule.unwrappedSubjectID)!
         
         let days = [
             String(localized: "sunday"),
