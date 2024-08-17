@@ -41,22 +41,22 @@ class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelect
     }
     
     func showFocusSelection(focusSessionModel: FocusSessionModel) {
-        let child = FocusSelectionCoordinator(navigationController: self.navigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
+        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
     }
     
-    func showScheduleDetails(schedule: Schedule?) {
-        self.dismiss(animated: true)
+    func showScheduleDetails(schedule: Schedule?, selectedDay: Int?) {
+        self.dismiss(animated: false)
         
         if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
-            scheduleCoordinator.showScheduleDetails(schedule: schedule)
+            scheduleCoordinator.showScheduleDetails(schedule: schedule, selectedDay: selectedDay)
         }
     }
     
     func dismiss(animated: Bool) {
-        self.navigationController.popViewController(animated: animated)
+        self.navigationController.dismiss(animated: animated)
     }
     
     func childDidFinish(_ child: Coordinator?) {
@@ -80,17 +80,5 @@ extension ScheduleDetailsModalCoordinator: UINavigationControllerDelegate {
         if let focusSelectionVC = fromVC as? FocusSelectionViewController {
             self.childDidFinish(focusSelectionVC.coordinator as? Coordinator)
         }
-    }
-    
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        if operation == .push {
-            return CustomPushTransition()
-        }
-        
-        if operation == .pop {
-            return CustomPopTransition()
-        }
-        
-        return nil
     }
 }

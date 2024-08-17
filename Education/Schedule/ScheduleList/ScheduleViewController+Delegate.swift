@@ -36,7 +36,7 @@ extension ScheduleViewController: ScheduleDelegate {
     
     func createAcitivityTapped() {
         self.dismissButtons()
-        self.coordinator?.showScheduleDetails(schedule: nil)
+        self.coordinator?.showScheduleDetails(schedule: nil, selectedDay: self.viewModel.selectedDay)
     }
     
     func startAcitivityTapped() {

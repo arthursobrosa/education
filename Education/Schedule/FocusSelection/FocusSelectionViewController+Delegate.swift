@@ -53,7 +53,7 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
     }
     
     func dismissAll() {
-        self.coordinator?.dismissAll(animated: true)
+        self.coordinator?.dismissAll()
     }
 }
 

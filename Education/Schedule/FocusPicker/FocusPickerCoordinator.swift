@@ -48,11 +48,16 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing, DismissingA
         self.navigationController.popViewController(animated: animated)
     }
     
-    func dismissAll(animated: Bool) {
-        self.dismiss(animated: animated)
+    func dismissAll() {
+        self.dismiss(animated: false)
         
         if let focusSelectionCoordinator = self.parentCoordinator as? FocusSelectionCoordinator {
-            focusSelectionCoordinator.dismissAll(animated: animated)
+            if focusSelectionCoordinator.isFirstModal {
+                focusSelectionCoordinator.dismiss(animated: false)
+                return
+            }
+            
+            focusSelectionCoordinator.dismissAll()
         }
     }
 }

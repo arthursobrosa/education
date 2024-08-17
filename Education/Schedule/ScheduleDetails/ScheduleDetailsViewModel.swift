@@ -16,7 +16,15 @@ class ScheduleDetailsViewModel {
     var subjectsNames: [String]
     var selectedSubjectName: String
     
-    var days: [String]
+    let days = [
+        String(localized: "sunday"),
+        String(localized: "monday"),
+        String(localized: "tuesday"),
+        String(localized: "wednesday"),
+        String(localized: "thursday"),
+        String(localized: "friday"),
+        String(localized: "saturday")
+    ]
     var selectedDay: String
     
     var selectedStartTime: Date
@@ -31,27 +39,17 @@ class ScheduleDetailsViewModel {
     var schedule: Schedule?
     
     // MARK: - Initializer
-    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), schedule: Schedule? = nil) {
+    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), schedule: Schedule? = nil, selectedDay: Int?) {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
         self.schedule = schedule
-        
-        self.days = [
-            String(localized: "sunday"),
-            String(localized: "monday"),
-            String(localized: "tuesday"),
-            String(localized: "wednesday"),
-            String(localized: "thursday"),
-            String(localized: "friday"),
-            String(localized: "saturday")
-        ]
         
         let currentDate = Date.now
         
         var selectedSubjectName: String = String()
         var selectedStartTime: Date = currentDate
         var selectedEndTime: Date = currentDate
-        var selectedDay = self.days[0]
+        var selectedDayIndex = selectedDay != nil ? selectedDay! : 0
         
         self.subjectsNames = [String]()
         
@@ -75,11 +73,10 @@ class ScheduleDetailsViewModel {
             selectedEndTime = schedule.unwrappedEndTime
             self.alarmBefore = schedule.earlyAlarm
             self.alarmInTime = schedule.imediateAlarm
-            selectedDay = self.days[schedule.unwrappedDay]
+            selectedDayIndex = schedule.unwrappedDay
         }
 
-        
-        self.selectedDay = selectedDay
+        self.selectedDay = self.days[selectedDayIndex]
         self.selectedSubjectName = selectedSubjectName
         self.selectedStartTime = selectedStartTime
         self.selectedEndTime = selectedEndTime

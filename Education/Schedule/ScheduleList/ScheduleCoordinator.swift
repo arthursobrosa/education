@@ -26,8 +26,8 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         self.navigationController.pushViewController(vc, animated: false)
     }
     
-    func showScheduleDetails(schedule: Schedule?) {
-        let child = ScheduleDetailsCoordinator(navigationController: self.navigationController, schedule: schedule)
+    func showScheduleDetails(schedule: Schedule?, selectedDay: Int?) {
+        let child = ScheduleDetailsCoordinator(navigationController: self.navigationController, schedule: schedule, selectedDay: selectedDay)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -61,8 +61,8 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     
     func showScheduleDetailsModal(schedule: Schedule) {
         let child = ScheduleDetailsModalCoordinator(navigationController: self.navigationController, schedule: schedule)
-        self.childCoordinators.append(child)
         child.parentCoordinator = self
+        self.childCoordinators.append(child)
         child.start()
     }
     

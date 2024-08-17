@@ -14,14 +14,16 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
     private var newNavigationController = UINavigationController()
     
     private let schedule: Schedule?
+    private let selectedDay: Int?
     
-    init(navigationController: UINavigationController, schedule: Schedule?) {
+    init(navigationController: UINavigationController, schedule: Schedule?, selectedDay: Int?) {
         self.navigationController = navigationController
         self.schedule = schedule
+        self.selectedDay = selectedDay
     }
     
     func start() {
-        let viewModel = ScheduleDetailsViewModel(schedule: self.schedule)
+        let viewModel = ScheduleDetailsViewModel(schedule: self.schedule, selectedDay: self.selectedDay)
         let vc = ScheduleDetailsViewController(viewModel: viewModel)
         vc.coordinator = self
         
