@@ -8,13 +8,9 @@
 import Foundation
 
 class FocusSelectionViewModel {
-    let subject: Subject?
-    var selectedTimerCase: TimerCase? = nil
+    var focusSessionModel: FocusSessionModel
     
-    let blocksApps: Bool
-    
-    init(subject: Subject?, blocksApps: Bool) {
-        self.subject = subject
-        self.blocksApps = blocksApps
+    init(focusSessionModel: FocusSessionModel) {
+        self.focusSessionModel = focusSessionModel
     }
 }

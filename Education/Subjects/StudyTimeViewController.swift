@@ -10,7 +10,7 @@ import SwiftUI
 
 class StudyTimeViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: StudyTimeCoordinator?
+    weak var coordinator: ShowingSubjectCreation?
     let viewModel: StudyTimeViewModel
     
     // MARK: - Properties
@@ -62,6 +62,9 @@ class StudyTimeViewController: UIViewController {
             
             self.reloadTable()
         }
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.rightBarButtonItem = addButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,6 +86,10 @@ class StudyTimeViewController: UIViewController {
             self.studyTimeView.tableView.reloadData()
         }
     }
+    
+    @objc func addButtonTapped() {
+        self.coordinator?.showSubjectCreation(viewModel: viewModel)
+    }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
@@ -102,7 +109,6 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
             fatalError("Could not dequeue cell")
         }
-        
         cell.subject = subject
         cell.totalTime = totalTime
         
@@ -111,6 +117,29 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let row = indexPath.row
+        
+        guard row <= self.subjects.count - 1 else { return }
+        
+        let subject = self.subjects[row]
+        
+        if editingStyle == .delete {
+            let alert = UIAlertController(title: "Excluir Subject", message: "Você tem certeza que deseja excluir este \(subject.unwrappedName)? Ao aceitar será excluído seu tempo de estudo e horários maracdos", preferredStyle: .alert)
+            
+            let deleteAction = UIAlertAction(title: "Excluir", style: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.removeSubject(subject: subject)
+            }
+            let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+            
+            alert.addAction(deleteAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

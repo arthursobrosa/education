@@ -84,9 +84,9 @@ class ScheduleView: UIView {
     lazy var createAcitivityButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(String(localized: "createActivity"), for: .normal)
+        button.setTitleColor(.systemBackground, for: .normal)
         button.backgroundColor = .label
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        button.titleLabel?.textColor = .systemBackground
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -99,9 +99,9 @@ class ScheduleView: UIView {
     lazy var startActivityButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(String(localized: "imediateActivity"), for: .normal)
+        button.setTitleColor(.systemBackground, for: .normal)
         button.backgroundColor = .label
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        button.titleLabel?.textColor = .systemBackground
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false

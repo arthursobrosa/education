@@ -16,7 +16,7 @@ extension FocusImediateViewController: FocusImediateDelegate {
     func cancelButtonTapped() {
         ActivityManager.shared.changeActivityVisibility(isShowing: true)
         
-        self.coordinator?.dismiss()
+        self.coordinator?.dismiss(animated: true)
     }
     
     func subjectButtonTapped(indexPath: IndexPath?) {
@@ -25,6 +25,8 @@ extension FocusImediateViewController: FocusImediateDelegate {
         let row = indexPath.row
         let subject: Subject? = row >= self.subjects.count ? nil : self.subjects[row]
         
-        self.coordinator?.showFocusSelection(color: self.color, subject: subject, blocksApps: false)
+        let newFocusSessionModel = FocusSessionModel(subject: subject, color: color)
+        
+        self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
 }

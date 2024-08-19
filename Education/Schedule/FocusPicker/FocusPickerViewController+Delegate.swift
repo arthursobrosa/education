@@ -16,17 +16,11 @@ protocol FocusPickerDelegate: AnyObject {
 
 extension FocusPickerViewController: FocusPickerDelegate {
     func startButtonTapped() {
-        self.viewModel.setTimerCase()
-        
-        guard let timerCase = self.viewModel.timerCase else { return }
-        
-        let totalTime = self.viewModel.getTotalTime()
-        
-        ActivityManager.shared.finishSession()
+        self.viewModel.setFocusSessionModel()
         
         BlockAppsMonitor.shared.removeShields()
         
-        self.coordinator?.showTimer(transitioningDelegate: self, timerState: nil, totalSeconds: totalTime, timerSeconds: totalTime, subject: self.viewModel.subject, timerCase: timerCase, isAtWorkTime: true, blocksApps: self.viewModel.blocksApps, isTimeCountOn: self.viewModel.isTimeCountOn, isAlarmOn: self.viewModel.isAlarmOn)
+        self.coordinator?.showTimer(focusSessionModel: self.viewModel.focusSessionModel)
     }
     
     func pomodoroDateChanged(tag: Int, time: Int) {
@@ -41,10 +35,10 @@ extension FocusPickerViewController: FocusPickerDelegate {
     }
     
     func dismiss() {
-        self.coordinator?.dismiss()
+        self.coordinator?.dismiss(animated: true)
     }
     
     func dismissAll() {
-        self.coordinator?.dismissAll()
+        self.coordinator?.dismissAll(animated: true)
     }
 }

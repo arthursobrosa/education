@@ -9,35 +9,35 @@ import UIKit
 
 // MARK: - Activity
 protocol ActivityDelegate: AnyObject {
-    func setActivityView(color: UIColor?, subject: Subject?, totalSeconds: Int, timerSeconds: Int, isPaused: Bool)
-    func updateActivityView(timerSeconds: Int)
+    func setActivityView()
+    func updateActivityView()
     func changeActivityButtonState()
-    func changeActivityIsAtWorkTime(_ isAtWorkTime: Bool)
     func changeActivityVisibility(isShowing: Bool)
     func removeActivityView()
 }
 
 extension TabBarController: ActivityDelegate {
-    func setActivityView(color: UIColor?, subject: Subject?, totalSeconds: Int, timerSeconds: Int, isPaused: Bool) {
-        self.activityView.color = color
-        self.activityView.subject = subject
-        self.activityView.totalSeconds = totalSeconds
-        self.activityView.timerSeconds = timerSeconds
-        self.activityView.isPaused = isPaused
+    func setActivityView() {
+        guard let timerState = ActivityManager.shared.timerState else { return }
+        
+        self.activityView.color = ActivityManager.shared.color
+        self.activityView.subject = ActivityManager.shared.subject
+        self.activityView.totalSeconds = ActivityManager.shared.totalSeconds
+        self.activityView.timerSeconds = ActivityManager.shared.timerSeconds
+        self.activityView.isAtWorkTime = ActivityManager.shared.isAtWorkTime
+        self.activityView.isPaused = timerState == .reseting
         
         self.view.addSubview(activityView)
     }
     
-    func updateActivityView(timerSeconds: Int) {
+    func updateActivityView() {
+        let timerSeconds = ActivityManager.shared.timerSeconds
+        
         self.activityView.timerSeconds = timerSeconds
     }
     
     func changeActivityButtonState() {
         self.activityView.isPaused.toggle()
-    }
-    
-    func changeActivityIsAtWorkTime(_ isAtWorkTime: Bool) {
-        self.activityView.isAtWorkTime = isAtWorkTime
     }
     
     func changeActivityVisibility(isShowing: Bool) {
@@ -46,12 +46,5 @@ extension TabBarController: ActivityDelegate {
     
     func removeActivityView() {
         self.activityView.removeFromSuperview()
-    }
-}
-
-// MARK: - Transitioning Delegate
-extension TabBarController: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        ActivityManager.shared.handleActivityDismissed(dismissed)
     }
 }

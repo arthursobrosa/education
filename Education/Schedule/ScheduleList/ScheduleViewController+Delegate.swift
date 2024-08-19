@@ -36,7 +36,7 @@ extension ScheduleViewController: ScheduleDelegate {
     
     func createAcitivityTapped() {
         self.dismissButtons()
-        self.coordinator?.showScheduleDetails(schedule: nil, title: nil, selectedDay: self.viewModel.selectedDay)
+        self.coordinator?.showScheduleDetails(title: nil, schedule: nil, selectedDay: self.viewModel.selectedDay)
     }
     
     func startAcitivityTapped() {
@@ -83,7 +83,9 @@ extension ScheduleViewController: ScheduleButtonDelegate {
         let schedule = self.viewModel.schedules[row]
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
         
-        self.coordinator?.showFocusSelection(color: color, subject: subject, blocksApps: schedule.blocksApps)
+        let newFocusSessionModel = FocusSessionModel(subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
+        
+        self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
 }
 

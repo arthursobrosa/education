@@ -29,32 +29,31 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
                 break
         }
         
-        self.viewModel.selectedTimerCase = timerCase
+        guard let timerCase else { return }
+        
+        self.viewModel.focusSessionModel.timerCase = timerCase
     }
     
     func continueButtonTapped() {
-        guard let timerCase = self.viewModel.selectedTimerCase else { return }
-        
-        switch timerCase {
+        switch self.viewModel.focusSessionModel.timerCase {
             case .stopwatch:
-                ActivityManager.shared.finishSession()
-                
-                self.coordinator?.showTimer(transitioningDelegate: self, timerState: nil, totalSeconds: 0, timerSeconds: 0, subject: self.viewModel.subject, timerCase: timerCase, isAtWorkTime: true, blocksApps: self.viewModel.blocksApps, isTimeCountOn: true, isAlarmOn: false)
+                self.coordinator?.showTimer(focusSessionModel: self.viewModel.focusSessionModel)
             case .timer:
-                self.coordinator?.showFocusPicker(timerCase: timerCase, blocksApps: self.viewModel.blocksApps)
+                self.coordinator?.showFocusPicker(focusSessionModel: self.viewModel.focusSessionModel)
             case .pomodoro:
                 let pomodoroCase: TimerCase = .pomodoro(workTime: 25 * 60, restTime: 5 * 60, numberOfLoops: 2)
+                self.viewModel.focusSessionModel.timerCase = pomodoroCase
                 
-                self.coordinator?.showFocusPicker(timerCase: pomodoroCase, blocksApps: self.viewModel.blocksApps)
+                self.coordinator?.showFocusPicker(focusSessionModel: self.viewModel.focusSessionModel)
         }
     }
     
     func dismiss() {
-        self.coordinator?.dismiss()
+        self.coordinator?.dismiss(animated: true)
     }
     
     func dismissAll() {
-        self.coordinator?.dismissAll()
+        self.coordinator?.dismissAll(animated: true)
     }
 }
 

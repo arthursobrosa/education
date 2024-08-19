@@ -7,7 +7,8 @@
 
 import UIKit
 
-class StudyTimeCoordinator: Coordinator {
+class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation {
+    
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -23,5 +24,36 @@ class StudyTimeCoordinator: Coordinator {
         vc.coordinator = self
         vc.title = String(localized: "subjectTab")
         self.navigationController.pushViewController(vc, animated: false)
+    }
+    
+    func showSubjectCreation(viewModel: StudyTimeViewModel) {
+        let child = SubjectCreationCoordinator(navigationController: self.navigationController, viewModel: viewModel)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
+        child.start()
+    }
+    
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() {
+            if coordinator === child {
+                self.childCoordinators.remove(at: index)
+                break
+            }
+        }
+    }
+}
+
+extension StudyTimeCoordinator: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let nav = dismissed as? UINavigationController else { return nil}
+        
+        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationController {
+            self.childDidFinish(subjectCreationVC.coordinator as? Coordinator)
+            
+            subjectCreationVC.viewModel.fetchSubjects()
+            subjectCreationVC.viewModel.fetchFocusSessions()
+        }
+        
+        return nil
     }
 }

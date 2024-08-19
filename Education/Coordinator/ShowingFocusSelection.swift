@@ -8,5 +8,5 @@
 import UIKit
 
 protocol ShowingFocusSelection: AnyObject {
-    func showFocusSelection(color: UIColor?, subject: Subject?, blocksApps: Bool)
+    func showFocusSelection(focusSessionModel: FocusSessionModel)
 }
