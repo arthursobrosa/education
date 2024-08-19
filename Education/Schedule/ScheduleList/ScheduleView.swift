@@ -136,7 +136,7 @@ class ScheduleView: UIView {
     @objc private func viewModeChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
-            self.viewModeDelegate?.didSelectDailyMode()
+            self.viewModeDelegate?.didSelectDailyModeToday()
         case 1:
             self.viewModeDelegate?.didSelectWeeklyMode()
         default:

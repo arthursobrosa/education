@@ -80,12 +80,35 @@ class ScheduleViewController: UIViewController {
         }
     }
     
+    private func reloadCollection() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.scheduleView.collectionViews.reloadData()
+        }
+    }
+    
     func unselectDays() {
         let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
         
         dayViews.forEach { dayView in
             if let dayOfWeek = dayView.dayOfWeek {
                 dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: false, isToday: dayOfWeek.isToday)
+            }
+        }
+    }
+    
+    func selectToday() {
+        let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
+        
+        dayViews.forEach { dayView in
+            
+            if let dayOfWeek = dayView.dayOfWeek {
+                if(dayOfWeek.isToday){
+                    dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
+                    self.viewModel.selectedDay = dayView.tag
+                }
+                
             }
         }
     }
@@ -106,6 +129,7 @@ class ScheduleViewController: UIViewController {
         self.setContentView(isEmpty: self.viewModel.schedules.isEmpty)
         
         self.reloadTable()
+        self.reloadCollection()
     }
     
     @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {

@@ -59,6 +59,12 @@ extension ScheduleViewController: DayDelegate {
         dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
         self.viewModel.selectedDay = dayView.tag
         
+        if(self.scheduleView.viewModeSelector.selectedSegmentIndex == 1){
+            didSelectDailyMode()
+            self.scheduleView.viewModeSelector.selectedSegmentIndex = 0
+        }
+        
+        
         self.loadSchedules()
     }
 }
@@ -82,19 +88,27 @@ extension ScheduleViewController: ScheduleButtonDelegate {
 }
 
 protocol ViewModeSelectorDelegate: AnyObject {
-    func didSelectDailyMode()
+    func didSelectDailyModeToday()
     func didSelectWeeklyMode()
 }
 
 extension ScheduleViewController: ViewModeSelectorDelegate {
     func didSelectDailyMode() {
-        print("diario")
         self.scheduleView.tableView.isHidden = false
         self.scheduleView.collectionViews.isHidden = true
     }
     
+    func didSelectDailyModeToday() {
+        self.unselectDays()
+        self.selectToday()
+        self.scheduleView.tableView.isHidden = false
+        self.scheduleView.collectionViews.isHidden = true
+        self.loadSchedules()
+        self.scheduleView.tableView.reloadData()
+    }
+    
     func didSelectWeeklyMode() {
-        print("semanal")
+        self.unselectDays()
         self.scheduleView.tableView.isHidden = true
         self.scheduleView.collectionViews.isHidden = false
     }
