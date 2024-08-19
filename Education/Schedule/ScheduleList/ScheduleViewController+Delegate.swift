@@ -150,7 +150,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
             let formatter = DateFormatter()
             formatter.timeStyle = .short
             
-            cell.configure(with: firstThreeLetters(of: subject?.unwrappedName ?? ""), startTime: formatter.string(from: task.unwrappedStartTime), endTime: formatter.string(from: task.unwrappedEndTime))
+            cell.configure(with: firstThreeLetters(of: subject?.unwrappedName ?? ""), startTime: formatter.string(from: task.unwrappedStartTime), endTime: formatter.string(from: task.unwrappedEndTime), bgColor: subject?.unwrappedColor ?? "")
             
             return cell
         }
@@ -162,7 +162,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
             let subject = self.viewModel.getSubject(fromSchedule: task)
             let subjectName = subject?.unwrappedName
             
-            self.coordinator?.showScheduleDetails(schedule: task, title: subjectName, selectedDay: indexPath.section)
+            self.coordinator?.showScheduleDetails(title: subjectName, schedule: task, selectedDay: indexPath.section)
             
         }
     }
@@ -252,11 +252,11 @@ class TaskCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with subject: String, startTime: String, endTime: String) {
+    func configure(with subject: String, startTime: String, endTime: String, bgColor: String) {
         subjectLabel.text = subject
         timeLabel.text = startTime
         timeLabel2.text = endTime
-        contentView.backgroundColor = .systemBlue
+        contentView.backgroundColor = UIColor(named: bgColor)
     }
 }
 
