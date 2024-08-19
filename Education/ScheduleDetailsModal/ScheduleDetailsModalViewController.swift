@@ -19,6 +19,7 @@ class ScheduleDetailsModalViewController: UIViewController {
         
         let view = ScheduleDetailsModalView(startTime: startTime, endTime: endTime, color: color, subjectName: self.viewModel.subject.unwrappedName, dayOfTheWeek: self.viewModel.selectedDay)
         
+        view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view

@@ -12,6 +12,8 @@ class ScheduleDetailsModalView: UIView {
     
     private let startTime: String
     private let endTime: String
+    private let color: UIColor?
+
     
     private lazy var closeButton: UIButton = {
         
@@ -102,6 +104,7 @@ class ScheduleDetailsModalView: UIView {
         
 
         btn.setAttributedTitle(attributedString, for: .normal)
+        btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
         
         
         btn.layer.cornerRadius = 25
@@ -114,6 +117,7 @@ class ScheduleDetailsModalView: UIView {
     init(startTime: String, endTime: String, color: UIColor?, subjectName: String, dayOfTheWeek: String) {
         self.startTime = startTime
         self.endTime = endTime
+        self.color = color
         
         super.init(frame: .zero)
         
@@ -140,7 +144,11 @@ class ScheduleDetailsModalView: UIView {
     }
     
     @objc private func didTapEditButton(){
-        self.delegate?.editButtonTapped(schedule: Schedule(), title: self.nameLabel.text, selectedDay: 1)
+        self.delegate?.editButtonTapped()
+    }
+    
+    @objc private func didTapStartButton(){
+        self.delegate?.startButtonTapped()
     }
 }
 

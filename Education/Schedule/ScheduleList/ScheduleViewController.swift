@@ -9,7 +9,7 @@ import UIKit
 
 class ScheduleViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingFocusSelection & ShowingScheduleDetailsModal)?
+    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingScheduleNotification & ShowingScheduleDetailsModal)?
     let viewModel: ScheduleViewModel
     
     // MARK: - Properties

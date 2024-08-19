@@ -8,6 +8,11 @@
 import UIKit
 
 class ScheduleNotificationView: UIView {
+    weak var delegate: ScheduleNotificationDelegate?
+    
+    private let startTime: String
+    private let endTime: String
+    private let subjectName: String
     private var color: UIColor?
     
     private let clockLabel: UILabel = {
@@ -40,9 +45,9 @@ class ScheduleNotificationView: UIView {
         return lbl
     }()
     
-    private let scheduleNotificationCardView: ScheduleNotificationNameCard = {
+    private lazy var scheduleNotificationCardView: ScheduleNotificationNameCard = {
         
-        let view = ScheduleNotificationNameCard()
+        let view = ScheduleNotificationNameCard(starTime: self.startTime, endTime: self.endTime, subjectName: self.subjectName)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -50,7 +55,11 @@ class ScheduleNotificationView: UIView {
     
     private lazy var startButton: UIButton = {
         let btn = ActionButton(title: "Iniciar agora", titleColor: color?.darker(by: 0.5))
+        
         btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
+        
         return btn
     }()
     
@@ -58,14 +67,22 @@ class ScheduleNotificationView: UIView {
         let btn = UIButton()
         btn.setTitle("Adiar", for: .normal)
         btn.setTitleColor(color?.darker(by: 0.5), for: .normal)
+        
         btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        btn.addTarget(self, action: #selector(didTapDelayButton), for: .touchUpInside)
+        
         return btn
     }()
 
-    init(color: UIColor?) {
+    init(startTime: String, endTime: String, color: UIColor?, subjectName: String) {
+        self.startTime = startTime
+        self.endTime = endTime
+        self.color = color
+        self.subjectName = subjectName
+        
         super.init(frame: .zero)
         
-        self.color = color
         self.setupUI()
         
         self.backgroundColor = color
@@ -76,6 +93,14 @@ class ScheduleNotificationView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func didTapStartButton(){
+        self.delegate?.startButtonTapped()
+    }
+    
+    @objc private func didTapDelayButton(){
+        self.delegate?.dismiss()
     }
 }
 
@@ -113,5 +138,5 @@ extension ScheduleNotificationView: ViewCodeProtocol {
 }
 
 #Preview{
-    ScheduleNotificationViewController(color: UIColor(named: "ScheduleColor1"))
+    ScheduleNotificationViewController(color: UIColor(named: "ScheduleColor1"), viewModel: ScheduleNotificationViewModel(schedule: Schedule()))
 }
