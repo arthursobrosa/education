@@ -9,6 +9,7 @@
 import UIKit
 
 protocol ScheduleDetailsModalDelegate: AnyObject {
+
     func startButtonTapped()
     func editButtonTapped()
     func dismiss()

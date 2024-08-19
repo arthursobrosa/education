@@ -11,13 +11,14 @@ class ScheduleDetailsModalViewController: UIViewController {
     weak var coordinator: (ShowingFocusSelection & Dismissing & ShowingScheduleDetails)?
     let viewModel: ScheduleDetailsModalViewModel
     
+    var color: UIColor?
+    
     private lazy var scheduleModalView: ScheduleDetailsModalView = {
-        let colorName = self.viewModel.subject.unwrappedColor
-        let color = UIColor(named: colorName)
         let startTime = self.viewModel.getTimeString(isStartTime: true)
         let endTime = self.viewModel.getTimeString(isStartTime: false)
         
-        let view = ScheduleDetailsModalView(startTime: startTime, endTime: endTime, color: color, subjectName: self.viewModel.subject.unwrappedName, dayOfTheWeek: self.viewModel.selectedDay)
+        let view = ScheduleDetailsModalView(startTime: startTime, endTime: endTime, color: self.color, subjectName: self.viewModel.subject.unwrappedName, dayOfTheWeek: self.viewModel.getDayOfWeek())
+        view.delegate = self
         
         view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -27,6 +28,9 @@ class ScheduleDetailsModalViewController: UIViewController {
     
     init(viewModel: ScheduleDetailsModalViewModel) {
         self.viewModel = viewModel
+        
+        let colorName = self.viewModel.subject.unwrappedColor
+        self.color = UIColor(named: colorName)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -40,7 +44,7 @@ class ScheduleDetailsModalViewController: UIViewController {
         
         self.setupUI()
         
-        self.view.backgroundColor = .clear
+        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
     }
 }
 

@@ -111,6 +111,8 @@ class ScheduleDetailsModalView: UIView {
         btn.backgroundColor = .black.withAlphaComponent(0.25)
         btn.translatesAutoresizingMaskIntoConstraints = false
         
+        btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
+        
         return btn
     }()
 
@@ -139,7 +141,7 @@ class ScheduleDetailsModalView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func didTapCloseButton(){
+    @objc private func didTapCloseButton() {
         self.delegate?.dismiss()
     }
     

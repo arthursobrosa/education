@@ -11,7 +11,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    private let isFirstModal: Bool
+    let isFirstModal: Bool
     private var newNavigationController = UINavigationController()
     
     private let focusSessionModel: FocusSessionModel
@@ -67,11 +67,14 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
         if let focusImediateCoordinator = self.parentCoordinator as? FocusImediateCoordinator,
            let scheduleCoordinator = focusImediateCoordinator.parentCoordinator as? ScheduleCoordinator {
             parentCoordinator = scheduleCoordinator
+        } else if let scheduleDetailsModalCoordinator = self.parentCoordinator as? ScheduleDetailsModalCoordinator,
+                  let scheduleCoordinator = scheduleDetailsModalCoordinator.parentCoordinator as? ScheduleCoordinator {
+            parentCoordinator = scheduleCoordinator
         } else if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
             parentCoordinator = scheduleCoordinator
         }
         
-        self.dismissAll(animated: true)
+        self.dismissAll()
         
         return parentCoordinator
     }
@@ -83,14 +86,18 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
             return
         }
         
-        self.navigationController.popViewController(animated: animated)
+        self.navigationController.popViewController(animated: !animated)
     }
     
-    func dismissAll(animated: Bool) {
-        self.dismiss(animated: animated)
+    func dismissAll() {
+        self.dismiss(animated: isFirstModal)
         
         if let focusImediateCoordinator = self.parentCoordinator as? FocusImediateCoordinator {
-            focusImediateCoordinator.dismiss(animated: animated)
+            focusImediateCoordinator.dismiss(animated: false)
+        }
+        
+        if let scheduleDetailsModalCoordinator = self.parentCoordinator as? ScheduleDetailsModalCoordinator {
+            scheduleDetailsModalCoordinator.dismiss(animated: false)
         }
     }
     
@@ -115,17 +122,5 @@ extension FocusSelectionCoordinator: UINavigationControllerDelegate {
         if let focusPickerVC = fromVC as? FocusPickerViewController {
             self.childDidFinish(focusPickerVC.coordinator as? Coordinator)
         }
-    }
-    
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        if operation == .push {
-            return CustomPushTransition()
-        }
-        
-        if operation == .pop {
-            return CustomPopTransition()
-        }
-        
-        return nil
     }
 }

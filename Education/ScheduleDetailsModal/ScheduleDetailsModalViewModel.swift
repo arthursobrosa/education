@@ -12,7 +12,17 @@ class ScheduleDetailsModalViewModel {
     
     var schedule: Schedule
     var subject: Subject
-    var selectedDay: String
+    var selectedDayIndex: Int
+    
+    private let days = [
+        String(localized: "sunday"),
+        String(localized: "monday"),
+        String(localized: "tuesday"),
+        String(localized: "wednesday"),
+        String(localized: "thursday"),
+        String(localized: "friday"),
+        String(localized: "saturday")
+    ]
     
     init(subjectManager: SubjectManager = SubjectManager(), schedule: Schedule) {
         self.subjectManager = subjectManager
@@ -30,7 +40,7 @@ class ScheduleDetailsModalViewModel {
             String(localized: "saturday")
         ]
         
-        self.selectedDay = days[schedule.unwrappedDay]
+        self.selectedDayIndex = schedule.unwrappedDay
     }
     
     func getTimeString(isStartTime: Bool) -> String {
@@ -49,6 +59,10 @@ class ScheduleDetailsModalViewModel {
         }
         
         return String()
+    }
+    
+    func getDayOfWeek() -> String {
+        return self.days[selectedDayIndex]
     }
 }
 

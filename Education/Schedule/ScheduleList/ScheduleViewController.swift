@@ -177,7 +177,7 @@ extension ScheduleViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - UI Setup
 extension ScheduleViewController {
-    func setContentView(isEmpty: Bool) {
+    private func setContentView(isEmpty: Bool) {
         self.scheduleView.removeConstraints(self.scheduleView.emptyView.constraints)
         self.scheduleView.removeConstraints(self.scheduleView.tableView.constraints)
         

@@ -48,8 +48,8 @@ class ScheduleViewModel {
                 }
                 return false
             }
+            
             self.schedules = orderedSchedules
-            print(orderedSchedules)
         }
     }
     

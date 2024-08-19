@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 
 final class SubjectManager: ObjectManager {
+    lazy var focusSessionManager = FocusSessionManager()
     lazy var scheduleManager = ScheduleManager()
     
     // MARK: - Create
@@ -33,6 +34,12 @@ final class SubjectManager: ObjectManager {
             
             schedules.forEach { schedule in
                 self.scheduleManager.deleteSchedule(schedule)
+            }
+            
+            if let focusSessions = self.focusSessionManager.fetchFocusSessions(subjectID: subject.unwrappedID) {
+                focusSessions.forEach { focusSession in
+                    self.focusSessionManager.deleteFocusSession(focusSession)
+                }
             }
             
             do {
