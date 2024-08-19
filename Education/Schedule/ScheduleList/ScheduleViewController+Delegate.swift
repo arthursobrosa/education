@@ -162,7 +162,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
             let subject = self.viewModel.getSubject(fromSchedule: task)
             let subjectName = subject?.unwrappedName
             
-            self.coordinator?.showScheduleDetails(title: subjectName, schedule: task, selectedDay: indexPath.section)
+            self.coordinator?.showScheduleDetails(schedule: task, selectedDay: indexPath.section)
             
         }
     }
