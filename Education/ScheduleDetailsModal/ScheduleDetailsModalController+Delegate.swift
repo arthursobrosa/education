@@ -27,7 +27,7 @@ extension ScheduleDetailsModalViewController: ScheduleDetailsModalDelegate {
     }
     
     func editButtonTapped() {
-        self.coordinator?.showScheduleDetails(schedule: self.viewModel.schedule)
+        self.coordinator?.showScheduleDetails(schedule: self.viewModel.schedule, selectedDay: 1)
     }
     
     func dismiss() {
