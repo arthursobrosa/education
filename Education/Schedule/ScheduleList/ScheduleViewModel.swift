@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class ScheduleViewModel {
     // MARK: - Subject and Schedule Handlers
@@ -14,6 +15,8 @@ class ScheduleViewModel {
     
     // MARK: - Properties
     var schedules = [Schedule]()
+    
+    var tasks: [[Schedule]] = [[],[],[],[],[],[],[]]
     
     var selectedDay: Int = Calendar.current.component(.weekday, from: Date()) - 1
     
@@ -51,6 +54,38 @@ class ScheduleViewModel {
             
             self.schedules = orderedSchedules
         }
+        
+        if let weekSchedules = self.scheduleManager.fetchSchedules(){
+            let orderedWeekSchedules = weekSchedules.sorted {
+                let calendar = Calendar.current
+                let startTimeComponents1 = calendar.dateComponents([.hour, .minute], from: $0.unwrappedStartTime)
+                let startTimeComponents2 = calendar.dateComponents([.hour, .minute], from: $1.unwrappedStartTime)
+                
+                if let hour1 = startTimeComponents1.hour, let minute1 = startTimeComponents1.minute,
+                   let hour2 = startTimeComponents2.hour, let minute2 = startTimeComponents2.minute {
+                    if hour1 == hour2 {
+                        return minute1 < minute2
+                    }
+                    return hour1 < hour2
+                }
+                return false
+            }
+            
+            let schedulesByDay = organizeSchedulesByDayOfWeek(orderedWeekSchedules)
+            
+            self.tasks = schedulesByDay
+        }
+        
+    }
+    
+    func organizeSchedulesByDayOfWeek(_ orderedWeekSchedules: [Schedule]) -> [[Schedule]] {
+        var schedulesByDay: [[Schedule]] = Array(repeating: [], count: 7)
+        
+        for schedule in orderedWeekSchedules {
+            schedulesByDay[Int(schedule.dayOfTheWeek)].append(schedule)
+        }
+        
+        return schedulesByDay
     }
     
     func removeSchedule(_ schedule: Schedule) {
