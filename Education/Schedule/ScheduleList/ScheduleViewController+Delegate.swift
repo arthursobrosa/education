@@ -85,7 +85,7 @@ extension ScheduleViewController: ScheduleButtonDelegate {
         
         let newFocusSessionModel = FocusSessionModel(isPaused: false, subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
         
-        self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
+        self.coordinator?.showScheduleNotification(schedule: schedule)
     }
 }
 

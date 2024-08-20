@@ -1,21 +1,19 @@
 //
-//  ScheduleDetailsModalController+Delegate.swift
+//  ScheduleNotificationDelegate.swift
 //  Education
 //
-//  Created by Lucas Cunha on 15/08/24.
+//  Created by Lucas Cunha on 19/08/24.
 //
 
 
 import UIKit
 
-protocol ScheduleDetailsModalDelegate: AnyObject {
-
+protocol ScheduleNotificationDelegate: AnyObject {
     func startButtonTapped()
-    func editButtonTapped()
     func dismiss()
 }
 
-extension ScheduleDetailsModalViewController: ScheduleDetailsModalDelegate {
+extension ScheduleNotificationViewController: ScheduleNotificationDelegate {
     
     func startButtonTapped() {
         let colorName = self.viewModel.subject.unwrappedColor
@@ -26,11 +24,8 @@ extension ScheduleDetailsModalViewController: ScheduleDetailsModalDelegate {
         self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
     
-    func editButtonTapped() {
-        self.coordinator?.showScheduleDetails(schedule: self.viewModel.schedule, selectedDay: 1)
+    func dismiss() {
+        self.navigationController?.dismiss(animated: true)
     }
     
-    func dismiss() {
-        self.coordinator?.dismiss(animated: true)
-    }
 }

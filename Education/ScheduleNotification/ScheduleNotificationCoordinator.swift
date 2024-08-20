@@ -1,13 +1,13 @@
 //
-//  ScheduleDetailsModalCoordinator.swift
+//  ScheduleNotificationCoordinator.swift
 //  Education
 //
-//  Created by Lucas Cunha on 15/08/24.
+//  Created by Lucas Cunha on 19/08/24.
 //
 
 import UIKit
 
-class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelection, Dismissing, ShowingScheduleDetails {
+class ScheduleNotificationCoordinator: NSObject, Coordinator, ShowingFocusSelection, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -21,8 +21,8 @@ class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelect
     }
     
     func start() {
-        let viewModel = ScheduleDetailsModalViewModel(schedule: self.schedule)
-        let vc = ScheduleDetailsModalViewController(viewModel: viewModel)
+        let viewModel = ScheduleNotificationViewModel(schedule: self.schedule)
+        let vc = ScheduleNotificationViewController(color: .red, viewModel: viewModel)
         vc.coordinator = self
         
         self.newNavigationController = UINavigationController(rootViewController: vc)
@@ -49,13 +49,6 @@ class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelect
         self.navigationController.dismiss(animated: true)
     }
     
-    func showScheduleDetails(schedule: Schedule?, selectedDay: Int?) {
-        self.dismiss(animated: false)
-        
-        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
-            scheduleCoordinator.showScheduleDetails(schedule: schedule, selectedDay: selectedDay)
-        }
-    }
     
     func dismiss(animated: Bool) {
         self.navigationController.dismiss(animated: animated)
@@ -71,7 +64,7 @@ class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelect
     }
 }
 
-extension ScheduleDetailsModalCoordinator: UINavigationControllerDelegate {
+extension ScheduleNotificationCoordinator: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         guard let fromVC = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
         
@@ -82,5 +75,17 @@ extension ScheduleDetailsModalCoordinator: UINavigationControllerDelegate {
         if let focusSelectionVC = fromVC as? FocusSelectionViewController {
             self.childDidFinish(focusSelectionVC.coordinator as? Coordinator)
         }
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        if operation == .push {
+            return CustomPushTransition()
+        }
+        
+        if operation == .pop {
+            return CustomPopTransition()
+        }
+        
+        return nil
     }
 }
