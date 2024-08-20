@@ -15,6 +15,8 @@ class ScheduleView: UIView {
         }
     }
     
+    weak var viewModeDelegate: ViewModeSelectorDelegate? 
+    
     // MARK: - UI Components
     let picker: UIStackView = {
         let stack = UIStackView()
@@ -29,6 +31,17 @@ class ScheduleView: UIView {
         
         return stack
     }()
+    
+     let viewModeSelector: UISegmentedControl = {
+          let segmentedControl = UISegmentedControl(items: ["Diário", "Semanal"])
+          segmentedControl.selectedSegmentIndex = 0
+          segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+          segmentedControl.backgroundColor = .black
+          segmentedControl.selectedSegmentTintColor = .gray
+          segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+          segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+          return segmentedControl
+      }()
     
     let contentView: UIView = {
         let view = UIView()
@@ -45,6 +58,17 @@ class ScheduleView: UIView {
         table.translatesAutoresizingMaskIntoConstraints = false
         
         return table
+    }()
+    
+    let collectionViews: UICollectionView = {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.isHidden = true
+        return collection
     }()
     
     let emptyView = EmptyView(object: String(localized: "emptySchedule"))
@@ -93,6 +117,8 @@ class ScheduleView: UIView {
         super.init(frame: frame)
         
         self.setupUI()
+        
+        viewModeSelector.addTarget(self, action: #selector(viewModeChanged(_:)), for: .valueChanged)
     }
     
     required init?(coder: NSCoder) {
@@ -106,11 +132,23 @@ class ScheduleView: UIView {
     @objc private func startActivityTapped() {
         self.delegate?.startAcitivityTapped()
     }
+    
+    @objc private func viewModeChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            self.viewModeDelegate?.didSelectDailyModeToday()
+        case 1:
+            self.viewModeDelegate?.didSelectWeeklyMode()
+        default:
+            break
+        }
+    }
 }
 
 // MARK: - UI Setup
 extension ScheduleView: ViewCodeProtocol {
     func setupUI() {
+        self.addSubview(viewModeSelector)
         self.addSubview(picker)
         self.addSubview(contentView)
         self.addSubview(overlayView)
@@ -121,7 +159,12 @@ extension ScheduleView: ViewCodeProtocol {
         let padding = 10.0
         
         NSLayoutConstraint.activate([
-            picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
+            
+            viewModeSelector.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
+            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            picker.topAnchor.constraint(equalTo: self.viewModeSelector.bottomAnchor, constant: padding),
             picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             picker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             

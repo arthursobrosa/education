@@ -17,10 +17,18 @@ class ScheduleViewController: UIViewController {
         let view = ScheduleView()
         
         view.delegate = self
+        view.viewModeDelegate = self
         
+        view.collectionViews.dataSource = self
+        view.collectionViews.delegate = self
         view.tableView.dataSource = self
         view.tableView.delegate = self
         view.tableView.register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.identifier)
+        view.collectionViews.register(TaskCell.self, forCellWithReuseIdentifier: TaskCell.identifier)
+        view.collectionViews.register(EmptyCell.self, forCellWithReuseIdentifier: EmptyCell.identifier)
+        
+        
+        //view.collectionViews.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.identifier)
         
         return view
     }()
@@ -70,12 +78,35 @@ class ScheduleViewController: UIViewController {
         }
     }
     
+    private func reloadCollection() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.scheduleView.collectionViews.reloadData()
+        }
+    }
+    
     func unselectDays() {
         let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
         
         dayViews.forEach { dayView in
             if let dayOfWeek = dayView.dayOfWeek {
                 dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: false, isToday: dayOfWeek.isToday)
+            }
+        }
+    }
+    
+    func selectToday() {
+        let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
+        
+        dayViews.forEach { dayView in
+            
+            if let dayOfWeek = dayView.dayOfWeek {
+                if(dayOfWeek.isToday){
+                    dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
+                    self.viewModel.selectedDay = dayView.tag
+                }
+                
             }
         }
     }
@@ -96,6 +127,7 @@ class ScheduleViewController: UIViewController {
         self.setContentView(isEmpty: self.viewModel.schedules.isEmpty)
         
         self.reloadTable()
+        self.reloadCollection()
     }
     
     @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
@@ -181,7 +213,13 @@ extension ScheduleViewController {
         self.scheduleView.removeConstraints(self.scheduleView.emptyView.constraints)
         self.scheduleView.removeConstraints(self.scheduleView.tableView.constraints)
         
-        self.addContentSubview(isEmpty ? self.scheduleView.emptyView : self.scheduleView.tableView)
+        if isEmpty {
+            self.addContentSubview(self.scheduleView.emptyView)
+            self.addContentSubview(self.scheduleView.collectionViews)
+        } else {
+            self.addContentSubview(self.scheduleView.tableView)
+            self.addContentSubview(self.scheduleView.collectionViews)
+        }
     }
     
     private func addContentSubview(_ subview: UIView) {
