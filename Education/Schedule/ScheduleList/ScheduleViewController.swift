@@ -9,7 +9,7 @@ import UIKit
 
 class ScheduleViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingFocusSelection)?
+    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingFocusSelection & ShowingScheduleDetailsModal)?
     let viewModel: ScheduleViewModel
     
     // MARK: - Properties
@@ -179,10 +179,8 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         let row = indexPath.row
         
         let schedule = self.viewModel.schedules[row]
-        let subject = self.viewModel.getSubject(fromSchedule: schedule)
-        let subjectName = subject?.unwrappedName
         
-        self.coordinator?.showScheduleDetails(title: subjectName, schedule: schedule, selectedDay: self.viewModel.selectedDay)
+        self.coordinator?.showScheduleDetailsModal(schedule: schedule)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -211,7 +209,7 @@ extension ScheduleViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - UI Setup
 extension ScheduleViewController {
-    func setContentView(isEmpty: Bool) {
+    private func setContentView(isEmpty: Bool) {
         self.scheduleView.removeConstraints(self.scheduleView.emptyView.constraints)
         self.scheduleView.removeConstraints(self.scheduleView.tableView.constraints)
         

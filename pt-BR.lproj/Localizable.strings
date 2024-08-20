@@ -73,6 +73,7 @@
 "studyTimeLastMonth" = "Último mês";
 "studyTimeLastYear" = "Último ano";
 "emptyStudyTime" = "tempo de estudo";
+"emptySubject" = "matéria";
 
 // MARK: - Themes
 "emptyTheme" = "tema";

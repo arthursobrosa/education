@@ -8,17 +8,6 @@
 import UIKit
 
 class ActivityView: UIView {
-    var totalSeconds: Int = 0
-    
-    var timerSeconds: Int = 0 {
-        didSet {
-            self.setTimerText()
-            self.updateProgress()
-        }
-    }
-    
-    private var percentage: Double = 0
-    
     var isPaused: Bool = false {
         didSet {
             self.activityButton.isPaused = isPaused
@@ -44,18 +33,6 @@ class ActivityView: UIView {
         }
     }
     
-    var isAtWorkTime: Bool = false {
-        didSet {
-            if let subject {
-                self.activityTitle.text = isAtWorkTime ? subject.unwrappedName : subject.unwrappedName + " " + String(localized: "interval")
-                
-                return
-            }
-            
-            self.activityTitle.text = isAtWorkTime ? String(localized: "newActivity") : String(localized: "newActivity") + " " + String(localized: "interval")
-        }
-    }
-    
     private let progressView: UIView = {
         let view = UIView()
         
@@ -64,7 +41,7 @@ class ActivityView: UIView {
         return view
     }()
     
-    private var progressViewWidthConstraint: NSLayoutConstraint?
+    private var progressWidthConstraint: NSLayoutConstraint!
     
     private let activityTitle: UILabel = {
         let lbl = UILabel()
@@ -114,38 +91,28 @@ class ActivityView: UIView {
         self.progressView.roundCorners(corners: [.topLeft], radius: radius, borderWidth: 0, borderColor: .clear)
     }
     
-    private func setTimerText() {
-        let seconds = self.timerSeconds % 60
-        let minutes = self.timerSeconds / 60 % 60
-        let hours = self.timerSeconds / 3600
+    func updateTimer(timerSeconds: Int) {
+        let seconds = timerSeconds % 60
+        let minutes = timerSeconds / 60 % 60
+        let hours = timerSeconds / 3600
         
         let secondsText = self.getText(from: seconds)
         let minutesText = self.getText(from: minutes)
         let hoursText = self.getText(from: hours)
         
-        let text = "\(hoursText):\(minutesText):\(secondsText)"
+        let timerText = "\(hoursText):\(minutesText):\(secondsText)"
         
-        self.activityTimer.text = text
+        self.activityTimer.text = timerText
     }
     
     private func getText(from number: Int) -> String {
         return number < 10 ? "0\(number)" : "\(number)"
     }
     
-    private func updateProgress() {
-        guard self.totalSeconds > 0 else { return }
+    func updateProgressBar(progress: CGFloat) {
+        self.progressWidthConstraint.constant = progress * self.bounds.width
         
-        let percentage = 1 - (Double(self.timerSeconds) / Double(totalSeconds))
-        
-        self.progressViewWidthConstraint?.constant = self.bounds.width * percentage
-        
-        if percentage <= 0 {
-            self.setTimerText()
-            
-            return
-        }
-        
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+        UIView.animate(withDuration: 1/60) {
             self.layoutIfNeeded()
         }
     }
@@ -158,8 +125,8 @@ extension ActivityView: ViewCodeProtocol {
         self.addSubview(activityTimer)
         self.addSubview(activityButton)
         
-        self.progressViewWidthConstraint = progressView.widthAnchor.constraint(equalToConstant: 0)
-        self.progressViewWidthConstraint?.isActive = true
+        self.progressWidthConstraint = progressView.widthAnchor.constraint(equalToConstant: 0)
+        self.progressWidthConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
             progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),

@@ -9,8 +9,6 @@ import UIKit
 import CoreData
 
 final class ScheduleManager: ObjectManager {
-    lazy var focusSessionManager = FocusSessionManager()
-    
     // MARK: - Create
     func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date, blocksApps: Bool, earlyAlarm: Bool, imediateAlarm: Bool) {
         backgroundContext.performAndWait {
@@ -35,12 +33,6 @@ final class ScheduleManager: ObjectManager {
     func deleteSchedule(_ schedule: Schedule) {
         let objectID = schedule.objectID
         backgroundContext.performAndWait {
-            if let focusSessions = self.focusSessionManager.fetchFocusSessions(subjectID: schedule.unwrappedID) {
-                focusSessions.forEach { focusSession in
-                    self.focusSessionManager.deleteFocusSession(focusSession)
-                }
-            }
-            
             if let scheduleInContext = try? backgroundContext.existingObject(with: objectID) {
                 backgroundContext.delete(scheduleInContext)
                 try? backgroundContext.save()

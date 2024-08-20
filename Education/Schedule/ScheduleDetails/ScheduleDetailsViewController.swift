@@ -9,7 +9,7 @@ import UIKit
 
 class ScheduleDetailsViewController: UIViewController {
     // MARK: - Coordinator & ViewModel
-    weak var coordinator: ScheduleDetailsCoordinator?
+    weak var coordinator: Dismissing?
     let viewModel: ScheduleDetailsViewModel
     
     // MARK: - Properties
@@ -55,6 +55,12 @@ class ScheduleDetailsViewController: UIViewController {
         super.loadView()
         
         self.view = self.scheduleDetailsView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationItem.title = self.viewModel.getTitleName()
     }
     
     // MARK: - Methods
