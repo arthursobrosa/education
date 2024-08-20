@@ -7,9 +7,7 @@
 
 import UIKit
 
-class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingScheduleNotification, ShowingTimer, ShowingScheduleDetailsModal {
-
-    
+class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingScheduleNotification, ShowingTimer, ShowingScheduleDetailsModal, ShowingFocusSelection {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     

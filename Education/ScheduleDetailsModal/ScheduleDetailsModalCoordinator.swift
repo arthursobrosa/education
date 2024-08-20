@@ -41,12 +41,10 @@ class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelect
     }
     
     func showFocusSelection(focusSessionModel: FocusSessionModel) {
-        let child = FocusSelectionCoordinator(navigationController: self.navigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
-        child.parentCoordinator = self.parentCoordinator
-        self.parentCoordinator!.childCoordinators.append(child)
+        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
         child.start()
-        
-        self.navigationController.dismiss(animated: true)
     }
     
     func showScheduleDetails(schedule: Schedule?, selectedDay: Int?) {

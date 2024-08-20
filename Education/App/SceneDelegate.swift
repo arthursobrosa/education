@@ -68,6 +68,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.currentDate = Date()
         self.timerSeconds = ActivityManager.shared.timerSeconds
         
+        switch ActivityManager.shared.timerCase {
+            case .pomodoro:
+                ActivityManager.shared.stopTimer()
+            default:
+                break
+        }
+        
         CoreDataStack.shared.saveMainContext()
     }
 }

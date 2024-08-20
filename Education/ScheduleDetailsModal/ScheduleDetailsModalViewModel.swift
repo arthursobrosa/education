@@ -30,16 +30,6 @@ class ScheduleDetailsModalViewModel {
         self.schedule = schedule
         self.subject = self.subjectManager.fetchSubject(withID: self.schedule.unwrappedSubjectID)!
         
-        let days = [
-            String(localized: "sunday"),
-            String(localized: "monday"),
-            String(localized: "tuesday"),
-            String(localized: "wednesday"),
-            String(localized: "thursday"),
-            String(localized: "friday"),
-            String(localized: "saturday")
-        ]
-        
         self.selectedDayIndex = schedule.unwrappedDay
     }
     
