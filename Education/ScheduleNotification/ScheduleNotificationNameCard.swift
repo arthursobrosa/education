@@ -12,7 +12,6 @@ class ScheduleNotificationNameCard: UIView {
     private let subjectName: UILabel = {
         
         let lbl = UILabel()
-        lbl.text = "Biologia"
         lbl.font = UIFont.boldSystemFont(ofSize: 32)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -22,7 +21,6 @@ class ScheduleNotificationNameCard: UIView {
     private let startTime: UILabel = {
         
         let lbl = UILabel()
-        lbl.text = "14:00"
         lbl.font = UIFont.boldSystemFont(ofSize: 22)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -32,7 +30,6 @@ class ScheduleNotificationNameCard: UIView {
     private let endTime: UILabel = {
         
         let lbl = UILabel()
-        lbl.text = "15:00"
         lbl.font = UIFont.boldSystemFont(ofSize: 22)
         lbl.alpha = 0.7
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -52,8 +49,13 @@ class ScheduleNotificationNameCard: UIView {
     }()
     
     
-    init() {
+    init(starTime: String, endTime: String, subjectName: String) {
         super.init(frame: .zero)
+        
+        self.startTime.text = starTime
+        self.endTime.text = endTime
+        self.subjectName.text = subjectName
+        
         
         self.setupUI()
         
@@ -96,6 +98,6 @@ extension ScheduleNotificationNameCard: ViewCodeProtocol {
 }
 
 #Preview {
-    ScheduleNotificationViewController(color: UIColor(named: "ScheduleColor1"))
+    ScheduleNotificationViewController(color: UIColor(named: "ScheduleColor1"), viewModel: ScheduleNotificationViewModel(schedule: Schedule()))
 }
 

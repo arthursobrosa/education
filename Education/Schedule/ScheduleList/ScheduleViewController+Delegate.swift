@@ -85,7 +85,7 @@ extension ScheduleViewController: ScheduleButtonDelegate {
         
         let newFocusSessionModel = FocusSessionModel(isPaused: false, subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
         
-        self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
+        self.coordinator?.showScheduleNotification(schedule: schedule)
     }
 }
 
@@ -162,7 +162,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
             let subject = self.viewModel.getSubject(fromSchedule: task)
             let subjectName = subject?.unwrappedName
             
-            self.coordinator?.showScheduleDetails(title: subjectName, schedule: task, selectedDay: indexPath.section)
+            self.coordinator?.showScheduleDetails(schedule: task, selectedDay: indexPath.section)
             
         }
     }

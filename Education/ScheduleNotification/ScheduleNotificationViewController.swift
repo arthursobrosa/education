@@ -9,16 +9,27 @@ import UIKit
 
 class ScheduleNotificationViewController: UIViewController {
     private let color: UIColor?
+    weak var coordinator: (ShowingFocusSelection & Dismissing)?
+    let viewModel: ScheduleNotificationViewModel
     
     private lazy var scheduleModalView: ScheduleNotificationView = {
-        let view = ScheduleNotificationView(color: self.color)
+        
+        let colorName = self.viewModel.subject.unwrappedColor
+        let color = UIColor(named: colorName)
+        let startTime = self.viewModel.getTimeString(isStartTime: true)
+        let endTime = self.viewModel.getTimeString(isStartTime: false)
+        
+        let view = ScheduleNotificationView(startTime: startTime, endTime: endTime, color: color, subjectName: self.viewModel.subject.unwrappedName)
+        
+        view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
     
-    init(color: UIColor?) {
+    init(color: UIColor?, viewModel: ScheduleNotificationViewModel) {
         self.color = color
+        self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -50,5 +61,5 @@ extension ScheduleNotificationViewController: ViewCodeProtocol {
 }
 
 #Preview{
-    ScheduleNotificationViewController(color: UIColor(named: "ScheduleColor1"))
+    ScheduleNotificationViewController(color: UIColor(named: "ScheduleColor1"), viewModel: ScheduleNotificationViewModel(schedule: Schedule()))
 }

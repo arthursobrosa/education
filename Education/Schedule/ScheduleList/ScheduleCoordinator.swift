@@ -7,7 +7,9 @@
 
 import UIKit
 
-class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingFocusSelection, ShowingTimer, ShowingScheduleDetailsModal {
+class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingScheduleNotification, ShowingTimer, ShowingScheduleDetailsModal {
+
+    
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -35,6 +37,13 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     
     func showFocusImediate() {
         let child = FocusImediateCoordinator(navigationController: self.navigationController)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
+        child.start()
+    }
+    
+    func showScheduleNotification(schedule: Schedule) {
+        let child = ScheduleNotificationCoordinator(navigationController: self.navigationController, schedule: schedule)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
