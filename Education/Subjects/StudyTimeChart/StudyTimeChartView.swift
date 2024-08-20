@@ -20,9 +20,8 @@ struct StudyTimeChartView: View {
             .cornerRadius(3)
             .foregroundStyle(by: .value("Subject", session.subject))
         }
-        .chartLegend(position: .bottom, spacing: 30)
-        .padding()
-        .frame(height: 300)
+//        .chartLegend(position: .bottom, spacing: 30)
+        .chartLegend(.hidden)
         .onAppear {
             viewModel.updateAggregatedTimes()
         }
@@ -30,8 +29,4 @@ struct StudyTimeChartView: View {
             viewModel.updateAggregatedTimes()
         }
     }
-}
-
-#Preview {
-    StudyTimeChartView()
 }

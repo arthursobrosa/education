@@ -1,25 +1,28 @@
 //
-//  FocusImediateCoordinator.swift
+//  ScheduleDetailsModalCoordinator.swift
 //  Education
 //
-//  Created by Arthur Sobrosa on 09/08/24.
+//  Created by Lucas Cunha on 15/08/24.
 //
 
 import UIKit
 
-class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Dismissing {
+class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelection, Dismissing, ShowingScheduleDetails {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var newNavigationController = UINavigationController()
     
-    init(navigationController: UINavigationController) {
+    private let schedule: Schedule
+    
+    init(navigationController: UINavigationController, schedule: Schedule) {
         self.navigationController = navigationController
+        self.schedule = schedule
     }
     
     func start() {
-        let viewModel = FocusImediateViewModel()
-        let vc = FocusImediateViewController(viewModel: viewModel, color: UIColor(named: "defaultColor"))
+        let viewModel = ScheduleDetailsModalViewModel(schedule: self.schedule)
+        let vc = ScheduleDetailsModalViewController(viewModel: viewModel)
         vc.coordinator = self
         
         self.newNavigationController = UINavigationController(rootViewController: vc)
@@ -44,6 +47,14 @@ class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Di
         child.start()
     }
     
+    func showScheduleDetails(schedule: Schedule?, selectedDay: Int?) {
+        self.dismiss(animated: false)
+        
+        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
+            scheduleCoordinator.showScheduleDetails(schedule: schedule, selectedDay: selectedDay)
+        }
+    }
+    
     func dismiss(animated: Bool) {
         self.navigationController.dismiss(animated: animated)
     }
@@ -58,7 +69,7 @@ class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Di
     }
 }
 
-extension FocusImediateCoordinator: UINavigationControllerDelegate {
+extension ScheduleDetailsModalCoordinator: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         guard let fromVC = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
         

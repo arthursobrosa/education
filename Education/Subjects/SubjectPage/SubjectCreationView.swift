@@ -64,7 +64,7 @@ extension SubjectCreationView: ViewCodeProtocol {
         
         // Constraints para o nome do subject (UITextField)
         NSLayoutConstraint.activate([
-            nameTextField.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            nameTextField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
             nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])

@@ -7,186 +7,217 @@
 
 import UIKit
 
+enum TimerCase {
+    case stopwatch
+    case timer
+    case pomodoro(workTime: Int, restTime: Int, numberOfLoops: Int)
+}
+
 class ActivityManager {
     // MARK: - Shared Instance
     static let shared = ActivityManager()
     
     // MARK: - Delegate and FocusSession manager
-    weak var activityDelegate: ActivityDelegate?
+    weak var delegate: TabBarDelegate?
     private let focusSessionManager: FocusSessionManager
     
-    // MARK: - Properties to initialize
+    // MARK: - Timer properties
+    var timerCase: TimerCase
+    
+    private var startTime: Date?
+    private var pausedTime: TimeInterval = 0
+    var timer: Timer?
+    
+    @Published var timerDidFinish: Bool = false
+    
+    var totalSeconds: Int
+    @Published var timerSeconds: Int
+    
+    var isAtWorkTime: Bool = true
+    var workTime: Int = 0
+    var restTime: Int = 0
+    var numberOfLoops: Int = 0
+    var currentLoop: Int = 0
+    
+    var progress: CGFloat = 0
+    
+    @Published var isPaused: Bool {
+        didSet {
+            isPaused ? self.stopTimer() : self.startTimer()
+        }
+    }
+    
+    @Published var updateAfterBackground: Bool = false
+    
+    var isShowingActivity: Bool = false {
+        didSet {
+            if isShowingActivity {
+                self.delegate?.addActivityView()
+                self.delegate?.changeActivityVisibility(isShowing: true)
+                self.delegate?.updateActivityTimer()
+                
+                return
+            }
+            
+            self.delegate?.removeActivityView()
+        }
+    }
+    
+    // MARK: - Schedule properties
     var date: Date
     
-    enum TimerState: String {
-        case starting = "pause"
-        case reseting = "play"
-        
-        var imageName: String {
-            return "\(self.rawValue).fill"
-        }
-    }
-    
-    @Published var timerState: TimerState? {
-        didSet {
-            guard let timerState else { return }
-            
-            switch timerState {
-                case .starting:
-                    self.startTimer()
-                case .reseting:
-                    self.stopTimer()
-            }
-        }
-    }
-
-    var totalSeconds: Int
-    
-    @Published var timerSeconds: Int {
-        didSet {
-            if timerSeconds <= 0 {
-                self.handleTimerEnd()
-            }
-        }
-    }
-    
-    var timerCase: TimerCase
     var subject: Subject?
     var blocksApps: Bool
     var isTimeCountOn: Bool
     var isAlarmOn: Bool
     
-    var isAtWorkTime: Bool
-    var workTime = Int()
-    var restTime = Int()
-    var numberOfLoops = Int()
-    var currentLoop = Int()
-    
     var color: UIColor?
     
-    // MARK: - Other properties
-    var timer = Timer()
-    
-    var isShowingActivity: Bool = false {
-        didSet {
-            if isShowingActivity {
-                self.activityDelegate?.setActivityView()
-                self.activityDelegate?.changeActivityVisibility(isShowing: true)
-                
-                return
-            }
-            
-            self.activityDelegate?.removeActivityView()
-        }
-    }
-    
-    @Published var updateAfterBackground: Bool = false {
-        didSet {
-            guard updateAfterBackground,
-                  self.isShowingActivity else { return }
-            
-            self.activityDelegate?.updateActivityView()
-            self.activityDelegate?.setActivityView()
-        }
-    }
-    
-    @Published var showEndAlert: Bool
-    
     // MARK: - Initializer
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), date: Date = Date.now, timerState: TimerState? = nil, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, subject: Subject? = nil, isAtWorkTime: Bool = false, blocksApps: Bool = false, isTimeCountOn: Bool = false, isAlarmOn: Bool = false, showEndAlert: Bool = false, color: UIColor? = nil) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), timerCase: TimerCase = .timer, totalSeconds: Int = 1, timerSeconds: Int = 1, isPaused: Bool = true, date: Date = Date(), subject: Subject? = nil, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
         self.focusSessionManager = focusSessionManager
         
-        self.date = date
-        self.timerState = timerState
+        self.timerCase = timerCase
         self.totalSeconds = totalSeconds
         self.timerSeconds = timerSeconds
-        self.timerCase = timerCase
+        self.isPaused = isPaused
+        
+        self.date = date
         self.subject = subject
-        self.isAtWorkTime = isAtWorkTime
         self.blocksApps = blocksApps
         self.isTimeCountOn = isTimeCountOn
         self.isAlarmOn = isAlarmOn
-        self.showEndAlert = showEndAlert
         self.color = color
-        
-        switch self.timerCase {
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
-                self.workTime = workTime
-                self.restTime = restTime
-                self.numberOfLoops = numberOfLoops
-            default:
-                break
-        }
     }
     
     // MARK: - Methods
-    func startTimer() {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+    private func startTimer() {
+        switch self.timerCase {
+            case .stopwatch:
+                self.startStopwatch()
+                
+                return
+            default:
+                break
+        }
+        
+        if self.startTime == nil {
+            self.startTime = Date()
+        } else {
+            self.startTime = Date().addingTimeInterval(-self.pausedTime)
+        }
+            
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1/60, repeats: true) { [weak self] _ in
             guard let self else { return }
             
-            switch self.timerCase {
-                case .stopwatch:
-                    self.timerSeconds += 1
-                case .timer, .pomodoro:
-                    self.timerSeconds -= 1
+            let elapsed = Date().timeIntervalSince(self.startTime ?? Date())
+            progress = CGFloat(min(elapsed / Double(self.totalSeconds), 1))
+            
+            let remainingTime = max(self.totalSeconds - Int(elapsed), 0)
+            self.timerSeconds = remainingTime
+            
+            if self.isShowingActivity {
+                self.delegate?.updateActivityTimer()
             }
             
-            guard self.isShowingActivity else { return }
+            if elapsed >= Double(self.totalSeconds) {
+                self.handleTimerEnd()
+            }
             
-            self.activityDelegate?.updateActivityView()
+            switch timerCase {
+                case .pomodoro:
+                    if self.updateAfterBackground {
+                        self.updateAfterBackground = true
+                        self.updateAfterBackground = false
+                    }
+                default:
+                    break
+            }
+        }
+    }
+    
+    private func startStopwatch() {
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self else { return }
+            
+            self.progress = 0
+            self.timerSeconds += 1
+            
+            if self.isShowingActivity {
+                self.delegate?.updateActivityTimer()
+            }
         }
     }
     
     func stopTimer() {
-        self.timer.invalidate()
+        self.timer?.invalidate()
+        self.timer = nil
+        
+        if let startTime = self.startTime {
+            self.pausedTime = Date().timeIntervalSince(startTime)
+        }
     }
     
-    func handleTimerEnd() {
+    func resetTimer() {
+        self.isPaused = true
+        
+        self.timerDidFinish = false
+        
+        self.progress = 0
+        self.totalSeconds = 0
+        self.timerSeconds = 0
+        self.pausedTime = 0
+        self.startTime = nil
+        
+        self.isAtWorkTime = true
+        self.workTime = 0
+        self.restTime = 0
+        self.numberOfLoops = 0
+        self.currentLoop = 0
+    }
+    
+    private func handleTimerEnd() {
         switch self.timerCase {
-            case .stopwatch:
-                return
             case .timer:
-                self.activityDelegate?.changeActivityButtonState()
                 self.stopTimer()
-                self.showEndAlert = true
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
+                self.timerDidFinish = true
+                
+                return
+            case .pomodoro:
                 if self.isAtWorkTime {
-                    if self.currentLoop >= numberOfLoops - 1 {
-                        self.activityDelegate?.changeActivityButtonState()
+                    if self.currentLoop >= self.numberOfLoops - 1 {
                         self.stopTimer()
-                        self.showEndAlert = true
+                        self.timerDidFinish = true
+                        
                         return
                     }
                     
                     self.isAtWorkTime.toggle()
-                    
-                    self.totalSeconds = restTime
+                    self.totalSeconds = self.restTime
                     self.timerSeconds = self.totalSeconds
                 } else {
                     self.currentLoop += 1
                     self.isAtWorkTime.toggle()
-                    
-                    self.totalSeconds = workTime
+                    self.totalSeconds = self.workTime
                     self.timerSeconds = self.totalSeconds
                 }
                 
-                self.activityDelegate?.updateActivityView()
-                self.activityDelegate?.setActivityView()
+                self.startTime = nil
+                self.pausedTime = 0
+                self.progress = 0
                 
-                self.timerState = .reseting
-                self.timerState = .starting
+                self.isPaused = true
+                self.isPaused = false
+            case .stopwatch:
+                return
         }
     }
     
     func handleActivityDismissed(didTapFinish: Bool) {
-        guard !didTapFinish else { return }
-        
-        self.isShowingActivity = true
+        didTapFinish ? self.resetTimer() : (self.isShowingActivity = true)
     }
     
     func saveFocusSesssion() {
-        self.timerState = .reseting
-        
         var totalTime: Int = 0
         
         switch self.timerCase {
@@ -203,6 +234,8 @@ class ActivityManager {
         }
         
         self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
+        
+        self.resetTimer()
     }
     
     func finishSession() {
@@ -212,14 +245,7 @@ class ActivityManager {
         self.isShowingActivity = false
     }
     
-    func changeActivityVisibility(isShowing: Bool) {
-        guard self.isShowingActivity else { return }
-        
-        self.activityDelegate?.changeActivityVisibility(isShowing: isShowing)
-    }
-    
     func updateFocusSession(with focusSessionModel: FocusSessionModel) {
-        self.timerState = focusSessionModel.timerState
         self.totalSeconds = focusSessionModel.totalSeconds
         self.timerSeconds = focusSessionModel.timerSeconds
         self.timerCase = focusSessionModel.timerCase
@@ -229,47 +255,60 @@ class ActivityManager {
         self.blocksApps = focusSessionModel.blocksApps
         self.isTimeCountOn = focusSessionModel.isTimeCountOn
         self.isAlarmOn = focusSessionModel.isAlarmOn
-        self.showEndAlert = focusSessionModel.showEndAlert
         self.color = focusSessionModel.color
+        self.workTime = focusSessionModel.workTime
+        self.restTime = focusSessionModel.restTime
+        self.numberOfLoops = focusSessionModel.numberOfLoops
+        self.isPaused = focusSessionModel.isPaused
     }
     
-    func updateAfterBackground(timeInBackground: Int) {
-        self.updateAfterBackground = self.handleAfterBackground(timeInBackground)
-    }
-    
-    func handleAfterBackground(_ timeInBackground: Int) -> Bool {
-        guard timeInBackground > 0,
-              self.timerState == .starting else { return false }
+    func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int) {
+        guard !self.isPaused else { return }
         
         switch self.timerCase {
             case .timer:
-                self.timerSeconds -= timeInBackground
+                break
+            case .pomodoro(let workTime, let restTime, _):
+                self.handlePomodoro(workTime: workTime, restTime: restTime, lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
+                self.startTimer()
             case .stopwatch:
-                self.timerSeconds += timeInBackground
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
-                self.handlePomodoro(timeInBackground, workTime: workTime, restTime: restTime, numberOfLoops: numberOfLoops)
+                self.timerSeconds += Int(timeInBackground)
+                
+                return
         }
         
-        return true
+        self.updateAfterBackground = true
     }
     
-    private func handlePomodoro(_ timeInBackground: Int, workTime: Int, restTime: Int, numberOfLoops: Int) {
-        var loopStartTime = self.currentLoop * (workTime + restTime)
-        var loopPassedTime = self.isAtWorkTime ? (workTime - self.timerSeconds) : (workTime + (restTime - self.timerSeconds))
-        let totalPassedTime = loopStartTime + loopPassedTime + timeInBackground
+    private func handlePomodoro(workTime: Int, restTime: Int, lastTimerSeconds: Int, timeInBackground: TimeInterval) {
+        let totalPassedTime = self.getLoopStartTime(currentLoop: self.currentLoop, workTime: workTime, restTime: restTime) + self.getInLoopTime(workTime: workTime, restTime: restTime, isAtWorkTime: self.isAtWorkTime, timerSeconds: lastTimerSeconds) + Int(timeInBackground)
         
-        self.currentLoop = totalPassedTime / (workTime + restTime)
-        loopStartTime = self.currentLoop * (workTime + restTime)
-        loopPassedTime = totalPassedTime - loopStartTime
-        self.isAtWorkTime = loopPassedTime < workTime
+        self.currentLoop = self.getCurrentLoop(workTime: workTime, restTime: restTime, totalPassedTime: totalPassedTime)
+        var newInLoopTime = totalPassedTime - self.getLoopStartTime(currentLoop: self.currentLoop, workTime: workTime, restTime: restTime)
+        self.isAtWorkTime = newInLoopTime < workTime
         
-        if self.currentLoop >= numberOfLoops - 1 && !self.isAtWorkTime {
-            self.isAtWorkTime = true
-            self.timerSeconds = 0
-            
-            return
+        newInLoopTime = self.isAtWorkTime ? newInLoopTime : newInLoopTime - workTime
+        
+        if (self.currentLoop == self.numberOfLoops - 1 && !self.isAtWorkTime) || (self.currentLoop > self.numberOfLoops - 1) {
+            // Handle timer end
         }
         
-        self.timerSeconds = self.isAtWorkTime ? (workTime - loopPassedTime) : (restTime - (loopPassedTime - workTime))
+        self.totalSeconds = self.isAtWorkTime ? workTime : restTime
+        
+        self.pausedTime = TimeInterval(newInLoopTime)
+    }
+    
+    private func getLoopStartTime(currentLoop: Int, workTime: Int, restTime: Int) -> Int {
+        let pomodoroTotal = workTime + restTime
+        return currentLoop * pomodoroTotal
+    }
+    
+    private func getInLoopTime(workTime: Int, restTime: Int, isAtWorkTime: Bool, timerSeconds: Int) -> Int {
+        return isAtWorkTime ? workTime - timerSeconds : workTime + (restTime - timerSeconds)
+    }
+    
+    private func getCurrentLoop(workTime: Int, restTime: Int, totalPassedTime: Int) -> Int {
+        let pomodoroTotal = workTime + restTime
+        return totalPassedTime / pomodoroTotal
     }
 }

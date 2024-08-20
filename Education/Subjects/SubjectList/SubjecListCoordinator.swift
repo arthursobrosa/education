@@ -64,7 +64,6 @@ extension SubjectListCoordinator: UIViewControllerTransitioningDelegate {
             self.childDidFinish(subjectCreationVC.coordinator as? Coordinator)
             
             subjectCreationVC.viewModel.fetchSubjects()
-            subjectCreationVC.viewModel.fetchFocusSessions()
         }
         
         return nil

@@ -16,7 +16,15 @@ class ScheduleDetailsViewModel {
     var subjectsNames: [String]
     var selectedSubjectName: String
     
-    var days: [String]
+    let days = [
+        String(localized: "sunday"),
+        String(localized: "monday"),
+        String(localized: "tuesday"),
+        String(localized: "wednesday"),
+        String(localized: "thursday"),
+        String(localized: "friday"),
+        String(localized: "saturday")
+    ]
     var selectedDay: String
     
     var selectedStartTime: Date
@@ -28,27 +36,20 @@ class ScheduleDetailsViewModel {
     var blocksApps: Bool
     
     private var scheduleID: String?
+    var schedule: Schedule?
     
     // MARK: - Initializer
-    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), schedule: Schedule? = nil, selectedDay: Int) {
+    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), schedule: Schedule? = nil, selectedDay: Int?) {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
-        
-        self.days = [
-            String(localized: "sunday"),
-            String(localized: "monday"),
-            String(localized: "tuesday"),
-            String(localized: "wednesday"),
-            String(localized: "thursday"),
-            String(localized: "friday"),
-            String(localized: "saturday")
-        ]
+        self.schedule = schedule
         
         let currentDate = Date.now
         
         var selectedSubjectName: String = String()
         var selectedStartTime: Date = currentDate
         var selectedEndTime: Date = currentDate
+        var selectedDayIndex = selectedDay != nil ? selectedDay! : 0
         
         self.subjectsNames = [String]()
         
@@ -67,13 +68,15 @@ class ScheduleDetailsViewModel {
                 selectedSubjectName = subject.unwrappedName
             }
             
+            
             selectedStartTime = schedule.unwrappedStartTime
             selectedEndTime = schedule.unwrappedEndTime
             self.alarmBefore = schedule.earlyAlarm
             self.alarmInTime = schedule.imediateAlarm
+            selectedDayIndex = schedule.unwrappedDay
         }
-        
-        self.selectedDay = self.days[selectedDay]
+
+        self.selectedDay = self.days[selectedDayIndex]
         self.selectedSubjectName = selectedSubjectName
         self.selectedStartTime = selectedStartTime
         self.selectedEndTime = selectedEndTime
@@ -231,5 +234,11 @@ class ScheduleDetailsViewModel {
         guard let returnedDate = Calendar.current.date(from: dateComponents) else { return nil }
         
         return returnedDate
+    }
+    
+    func getTitleName() -> String {
+        let subject = self.subjectManager.fetchSubject(withID: self.schedule?.subjectID)
+        let title = "\(subject?.name ?? String(localized: "newSchedule")) \(String(localized: "schedule"))"
+        return title
     }
 }

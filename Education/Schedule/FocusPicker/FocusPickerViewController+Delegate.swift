@@ -35,10 +35,10 @@ extension FocusPickerViewController: FocusPickerDelegate {
     }
     
     func dismiss() {
-        self.coordinator?.dismiss(animated: true)
+        self.coordinator?.dismiss(animated: false)
     }
     
     func dismissAll() {
-        self.coordinator?.dismissAll(animated: true)
+        self.coordinator?.dismissAll()
     }
 }

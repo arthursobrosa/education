@@ -37,6 +37,8 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ActivityManager.shared.delegate = self
+        
         self.tabBar.backgroundColor = .systemBackground
         
         schedule.start()
@@ -64,22 +66,13 @@ class TabBarController: UITabBarController {
     }
     
     @objc private func activityButtonTapped() {
-        guard self.activityView.timerSeconds > 0 else { return }
-        
+        ActivityManager.shared.isPaused.toggle()
         self.activityView.isPaused.toggle()
-        
-        if self.activityView.isPaused {
-            ActivityManager.shared.timerState = .reseting
-        } else {
-            ActivityManager.shared.timerState = .starting
-        }
     }
     
     @objc private func activityViewTapped() {
         self.selectedIndex = self.schedule.navigationController.tabBarItem.tag
         
         self.schedule.showTimer(focusSessionModel: nil)
-        
-        ActivityManager.shared.isShowingActivity = false
     }
 }
