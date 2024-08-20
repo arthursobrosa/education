@@ -56,7 +56,10 @@ class FocusPickerViewModel {
     private func setTimerCase() {
         switch self.focusSessionModel.timerCase {
             case .pomodoro:
-                self.focusSessionModel.timerCase = .pomodoro(workTime: self.selectedWorkTime, restTime: self.selectedRestTime, numberOfLoops: self.selectedNumberOfLoops)
+                self.focusSessionModel.timerCase = .pomodoro(workTime: self.selectedWorkTime / 10, restTime: self.selectedRestTime / 10, numberOfLoops: self.selectedNumberOfLoops)
+                self.focusSessionModel.workTime = self.selectedWorkTime / 10
+                self.focusSessionModel.restTime = self.selectedRestTime / 10
+                self.focusSessionModel.numberOfLoops = self.selectedNumberOfLoops
             default:
                 break
         }
