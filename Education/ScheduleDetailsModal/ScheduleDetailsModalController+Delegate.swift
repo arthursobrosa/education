@@ -24,7 +24,9 @@ extension ScheduleDetailsModalViewController: ScheduleDetailsModalDelegate {
     }
     
     func startButtonTapped() {
-        let newFocusSessionModel = FocusSessionModel(subject: self.viewModel.subject, color: self.color)
+        let schedule = self.viewModel.schedule
+        
+        let newFocusSessionModel = FocusSessionModel(isPaused: false, subject: self.viewModel.subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: self.color)
         
         self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }

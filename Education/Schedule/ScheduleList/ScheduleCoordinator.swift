@@ -89,7 +89,7 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
         }
         
         if let focusSessionVC = nav.viewControllers.first as? FocusSessionViewController {
-            ActivityManager.shared.handleActivityDismissed(didTapFinish: focusSessionVC.viewModel.didTapFinishButton)
+            ActivityManager.shared.handleActivityDismissed(didTapFinish: focusSessionVC.viewModel.didTapFinish)
             
             self.childDidFinish(focusSessionVC.coordinator as? Coordinator)
         }

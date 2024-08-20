@@ -54,11 +54,11 @@ class FocusPickerViewController: UIViewController {
     @objc private func didChangeToggle(_ sender: UISwitch) {
         switch sender.tag {
             case 0:
-                ActivityManager.shared.isAlarmOn.toggle()
+                self.viewModel.focusSessionModel.isAlarmOn.toggle()
             case 1:
-                ActivityManager.shared.isTimeCountOn.toggle()
+                self.viewModel.focusSessionModel.isTimeCountOn.toggle()
             case 2:
-                ActivityManager.shared.blocksApps.toggle()
+                self.viewModel.focusSessionModel.blocksApps.toggle()
             default:
                 break
         }
@@ -98,13 +98,13 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         switch section {
             case 0:
                 cellText = String(localized: "alarm")
-                toggleIsOn = ActivityManager.shared.isAlarmOn
+                toggleIsOn = self.viewModel.focusSessionModel.isAlarmOn
             case 1:
                 cellText = String(localized: "showTimeCount")
-                toggleIsOn = ActivityManager.shared.isTimeCountOn
+                toggleIsOn = self.viewModel.focusSessionModel.isTimeCountOn
             case 2:
                 cellText = String(localized: "blockApps")
-                toggleIsOn = ActivityManager.shared.blocksApps
+                toggleIsOn = self.viewModel.focusSessionModel.blocksApps
             default:
                 break
         }
