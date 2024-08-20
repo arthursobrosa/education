@@ -22,6 +22,8 @@ class FocusSessionViewController: UIViewController {
     private lazy var focusSessionView: FocusSessionView = {
         let view = FocusSessionView(color: self.color)
         view.delegate = self
+        view.isPaused = ActivityManager.shared.isPaused
+        
         return view
     }()
     
@@ -49,93 +51,108 @@ class FocusSessionViewController: UIViewController {
         
         self.blockApps()
         self.setTabItems()
-        self.updateViewLabels()
         self.setNavigationTitle()
         
         self.bindActivity()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        ActivityManager.shared.isShowingActivity = false
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            let strokeEnd = self.viewModel.getStrokeEnd()
+            self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
+            
+            self.setNavigationTitle()
+        }
+    }
     
     private func bindActivity() {
-        ActivityManager.shared.$timerState
+        ActivityManager.shared.$isPaused
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] timerState in
-                guard let self,
-                      let timerState else { return }
+            .sink { [weak self] isPaused in
+                guard let self else { return }
                 
-                switch timerState {
-                    case .starting:
-                        self.start()
-                    case .reseting:
-                        self.restart()
+                switch ActivityManager.shared.timerCase {
+                    case .stopwatch:
+                        return
+                    default:
+                        break
                 }
-    
-                self.updateButton(imageName: timerState.imageName)
+                
+                if isPaused {
+                    self.focusSessionView.resetAnimations()
+                    
+                    let timerSeconds = ActivityManager.shared.timerSeconds
+                    
+                    let timerDuration = Double(timerSeconds)
+                    let strokeEnd = self.viewModel.getStrokeEnd()
+                    
+                    self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
+                } else {
+                    let timerSeconds = ActivityManager.shared.timerSeconds
+                    self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
+                    
+                    self.updateViewLabels()
+                }
             }
             .store(in: &self.cancellables)
         
         ActivityManager.shared.$timerSeconds
             .receive(on: DispatchQueue.main)
             .sink { [weak self] timerSeconds in
-                guard let self else { return }
+                guard let self,
+                      !self.viewModel.didTapFinish else { return }
                 
                 self.updateViewLabels()
+                
                 self.setNavigationTitle()
+            }
+            .store(in: &self.cancellables)
+        
+        ActivityManager.shared.$timerDidFinish
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] timerDidFinish in
+                guard let self else { return }
+                
+                guard timerDidFinish else { return }
+                
+                self.focusSessionView.redefineAnimation(timerDuration: 0, strokeEnd: 0)
+                self.focusSessionView.resetAnimations()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.showEndTimeAlert()
+                }
             }
             .store(in: &self.cancellables)
         
         ActivityManager.shared.$updateAfterBackground
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updateAfterBackground in
-                guard let self,
-                      updateAfterBackground else { return }
+                guard let self else { return }
                 
-                self.restart()
-                self.start()
+                guard updateAfterBackground else { return }
+                
+                switch ActivityManager.shared.timerCase {
+                    case .stopwatch:
+                        return
+                    default:
+                        break
+                }
+                
+                let strokeEnd = self.viewModel.getStrokeEnd()
+                self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
+                
+                let timerSeconds = ActivityManager.shared.timerSeconds
+                self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
                 
                 self.setNavigationTitle()
             }
             .store(in: &self.cancellables)
-        
-        ActivityManager.shared.$showEndAlert
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] showEndAlert in
-                guard let self,
-                      showEndAlert else { return }
-                
-                self.showEndTimeAlert()
-                self.focusSessionView.redefineAnimation(timerDuration: 0, strokeEnd: 0)
-            }
-            .store(in: &self.cancellables)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.viewModel.didTapFinishButton = false
-        
-        DispatchQueue.main.async {
-            switch ActivityManager.shared.timerCase {
-                case .timer, .pomodoro:
-                    let strokeEnd = self.viewModel.getStrokeEnd()
-                    self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
-                default:
-                    break
-            }
-            
-            let timerState = ActivityManager.shared.timerState
-            
-            switch timerState {
-                case .reseting:
-                    self.focusSessionView.finishButton.isEnabled = true
-                    self.focusSessionView.changeButtonAlpha()
-                    self.setNavigationTitle()
-                case nil:
-                    ActivityManager.shared.timerState = .starting
-                    self.setNavigationTitle()
-                default:
-                    break
-            }
-        }
     }
     
     private func blockApps() {
@@ -184,7 +201,7 @@ extension FocusSessionViewController {
     public func setNavigationTitle() {
         var title: String
         
-        let isPaused = ActivityManager.shared.timerState == .reseting
+        let isPaused = ActivityManager.shared.isPaused
         
         if let subject = ActivityManager.shared.subject {
             if ActivityManager.shared.isAtWorkTime {
@@ -210,7 +227,7 @@ extension FocusSessionViewController {
         let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
             guard let self else { return }
 
-            self.finishAndDismiss()
+            self.didTapFinishButton()
         }
 
         alertController.addAction(okAction)
@@ -234,45 +251,8 @@ extension FocusSessionViewController {
             }
         }
         
-        self.resetTimer()
-        
         self.focusSessionView.resetAnimations()
         
         self.showEndTimeAlert()
-    }
-    
-    private func startAnimation() {
-        let timerSeconds = ActivityManager.shared.timerSeconds
-        let isTimeCountOn = ActivityManager.shared.isTimeCountOn
-        
-        let timerDuration = Double(timerSeconds)
-        let timerString = isTimeCountOn ? self.viewModel.getTimerString() : String()
-        self.focusSessionView.startAnimation(timerDuration: timerDuration, timerString: timerString)
-    }
-    
-    private func restartAnimation() {
-        let timerSeconds = ActivityManager.shared.timerSeconds
-        
-        let timerDuration = Double(timerSeconds) + 1
-        let strokeEnd = self.viewModel.getStrokeEnd()
-        
-        self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
-    }
-    
-    private func updateButton(imageName: String) {
-        self.focusSessionView.changePauseResumeImage(to: imageName)
-    }
-    
-    private func resetTimer() {
-        self.focusSessionView.resetAnimations()
-    }
-    
-    private func start() {
-        self.startAnimation()
-    }
-    
-    private func restart() {
-        self.resetTimer()
-        self.restartAnimation()
     }
 }
