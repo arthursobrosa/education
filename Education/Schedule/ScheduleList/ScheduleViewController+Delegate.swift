@@ -159,11 +159,8 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if !viewModel.tasks[indexPath.section].isEmpty {
             let task = viewModel.tasks[indexPath.section][indexPath.item]
-            let subject = self.viewModel.getSubject(fromSchedule: task)
-            let subjectName = subject?.unwrappedName
             
-            self.coordinator?.showScheduleDetails(title: subjectName, schedule: task, selectedDay: indexPath.section)
-            
+            self.coordinator?.showScheduleDetails(schedule: task, selectedDay: indexPath.section)
         }
     }
     
