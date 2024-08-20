@@ -69,6 +69,7 @@
 		6874A2602C3F727200CAC9E4 /* ScheduleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */; };
 		6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */; };
 		6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */; };
+		687711722C7525FC00C6D4F1 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687711712C7525FC00C6D4F1 /* TaskCell.swift */; };
 		6881123E2C33388A003012D0 /* ShowingTestPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881123D2C33388A003012D0 /* ShowingTestPage.swift */; };
 		6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881FA782C456101000FECAE /* FocusSessionViewController+Delegate.swift */; };
 		68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BC42C2F256E00272451 /* CoreDataStack.swift */; };
@@ -249,6 +250,7 @@
 		6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCoordinator.swift; sourceTree = "<group>"; };
 		6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsViewController.swift; sourceTree = "<group>"; };
 		6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsView.swift; sourceTree = "<group>"; };
+		687711712C7525FC00C6D4F1 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		6881123D2C33388A003012D0 /* ShowingTestPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTestPage.swift; sourceTree = "<group>"; };
 		6881FA782C456101000FECAE /* FocusSessionViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionViewController+Delegate.swift"; sourceTree = "<group>"; };
 		68825BC42C2F256E00272451 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -666,6 +668,7 @@
 				68C2CFFA2C47220000E2347A /* ScheduleView.swift */,
 				68C2D0002C4723A100E2347A /* ScheduleTableViewCell.swift */,
 				68C2D0022C47255700E2347A /* DayView.swift */,
+				687711712C7525FC00C6D4F1 /* TaskCell.swift */,
 			);
 			path = ScheduleList;
 			sourceTree = "<group>";
@@ -1090,6 +1093,7 @@
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
 				310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */,
 				CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */,
+				687711722C7525FC00C6D4F1 /* TaskCell.swift in Sources */,
 				68833D9A2C46B28D00BA4850 /* DefaultCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
