@@ -128,12 +128,10 @@ class ScheduleViewController: UIViewController {
     }
     
     @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
-        // Verifica se o toque foi fora dos botões e oculta a overlayView se necessário
-        dismissButtons()
+        self.dismissButtons()
     }
     
     func dismissButtons() {
-        // Esconde a overlayView e os botões se eles estiverem visíveis
         if self.scheduleView.overlayView.alpha == 1 {
             UIView.animate(withDuration: 0.3) {
                 self.scheduleView.overlayView.alpha = 0
