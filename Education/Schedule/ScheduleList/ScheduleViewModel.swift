@@ -107,4 +107,10 @@ class ScheduleViewModel {
         formatter.dateFormat = "dd"
         return formatter.string(from: date)
     }
+    
+    func isThereAnySubject() -> Bool {
+        guard let subjects = self.subjectManager.fetchSubjects() else { return false }
+        
+        return !subjects.isEmpty
+    }
 }

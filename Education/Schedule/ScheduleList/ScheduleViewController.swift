@@ -142,6 +142,16 @@ class ScheduleViewController: UIViewController {
             }
         }
     }
+    
+    func showNoSubjectAlert() {
+        let alertController = UIAlertController(title: "You cannot create a schedule", message: "You have to create a subject beforing setting a schedule", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        
+        alertController.addAction(okAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
