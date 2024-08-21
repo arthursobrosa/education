@@ -13,8 +13,6 @@ class SubjectListController: UIViewController {
     let viewModel: StudyTimeViewModel
     
     // MARK: - Properties
-    private var subjects = [Subject]()
-    
     private lazy var subjectListView: SubjectListView = {
         let view = SubjectListView()
         
@@ -50,7 +48,6 @@ class SubjectListController: UIViewController {
             
             self.view = self.subjectListView
             
-            self.subjects = subjects
             self.reloadTable()
         }
         
@@ -69,7 +66,6 @@ class SubjectListController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
-            self.subjects = subjects
             self.subjectListView.tableView.reloadData()
             self.subjectListView.layoutSubviews()
         }
@@ -87,7 +83,7 @@ class SubjectListController: UIViewController {
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension SubjectListController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subjects.count
+        return self.viewModel.subjects.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -95,7 +91,7 @@ extension SubjectListController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
-        let subject = subjects[indexPath.row]
+        let subject = self.viewModel.subjects.value[indexPath.row]
         cell.configure(with: subject)
         
         return cell
@@ -103,7 +99,7 @@ extension SubjectListController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-        let subject = self.subjects[indexPath.row]
+        let subject = self.viewModel.subjects.value[indexPath.row]
         
         if editingStyle == .delete {
             let alert = UIAlertController(title: "Excluir Subject", message: "Você tem certeza que deseja excluir este \(subject.unwrappedName)? Ao aceitar será excluído seu tempo de estudo e horários maracdos", preferredStyle: .alert)

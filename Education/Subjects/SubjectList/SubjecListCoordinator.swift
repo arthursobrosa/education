@@ -26,11 +26,13 @@ class SubjectListCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Dis
     func start() {
         let vc = SubjectListController(viewModel: self.viewModel)
         vc.coordinator = self
+        
         self.newNavigationController = UINavigationController(rootViewController: vc)
         
         if let studyTimeCoordinator = self.parentCoordinator as? StudyTimeCoordinator {
             self.newNavigationController.transitioningDelegate = studyTimeCoordinator
         }
+        
         self.newNavigationController.modalPresentationStyle = .pageSheet
         self.navigationController.present(self.newNavigationController, animated: true)
     }

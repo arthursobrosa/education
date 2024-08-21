@@ -14,8 +14,6 @@ class StudyTimeViewController: UIViewController {
     let viewModel: StudyTimeViewModel
     
     // MARK: - Properties
-    private var subjects = [Subject]()
-    
     private lazy var studyTimeView: StudyTimeView = {
         let studyTimeChartView = StudyTimeChartView(viewModel: self.viewModel)
         
@@ -55,9 +53,7 @@ class StudyTimeViewController: UIViewController {
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
             
-            self.subjects = subjects
-            
-            self.studyTimeView.changeEmptyView(emptySubject: self.subjects.isEmpty)
+            self.studyTimeView.changeEmptyView(emptySubject: subjects.isEmpty)
             
             self.reloadTable()
         }
@@ -82,7 +78,7 @@ class StudyTimeViewController: UIViewController {
     }
     
     // MARK: - Methods
-    private func reloadTable() {
+    func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
@@ -98,7 +94,7 @@ class StudyTimeViewController: UIViewController {
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.subjects.count + 1
+        return self.viewModel.subjects.value.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -106,12 +102,13 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         
         var subject: Subject? = nil
         
-        subject = row <= (self.subjects.count - 1) ? self.subjects[indexPath.row] : nil
+        subject = row <= (self.viewModel.subjects.value.count - 1) ? self.viewModel.subjects.value[indexPath.row] : nil
         let totalTime = self.viewModel.getTotalTime(forSubject: subject)
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
             fatalError("Could not dequeue cell")
         }
+        
         cell.subject = subject
         cell.totalTime = totalTime
         

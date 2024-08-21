@@ -52,6 +52,10 @@ extension StudyTimeCoordinator: UIViewControllerTransitioningDelegate {
         
             subjectListVC.viewModel.fetchSubjects()
             subjectListVC.viewModel.fetchFocusSessions()
+            
+            if let studyTimeVC = self.navigationController.viewControllers.first as? StudyTimeViewController {
+                studyTimeVC.reloadTable()
+            }
         }
         
         return nil
