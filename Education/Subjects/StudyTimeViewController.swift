@@ -10,12 +10,10 @@ import SwiftUI
 
 class StudyTimeViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: ShowingSubjectCreation?
+    weak var coordinator: ShowingSubjectList?
     let viewModel: StudyTimeViewModel
     
     // MARK: - Properties
-    private var subjects = [Subject]()
-    
     private lazy var studyTimeView: StudyTimeView = {
         let studyTimeChartView = StudyTimeChartView(viewModel: self.viewModel)
         
@@ -29,6 +27,7 @@ class StudyTimeViewController: UIViewController {
         
         return view
     }()
+    
     
     // MARK: - Initialization
     init(viewModel: StudyTimeViewModel) {
@@ -54,9 +53,7 @@ class StudyTimeViewController: UIViewController {
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
             
-            self.subjects = subjects
-            
-            self.studyTimeView.changeEmptyView(emptySubject: self.subjects.isEmpty)
+            self.studyTimeView.changeEmptyView(emptySubject: subjects.isEmpty)
             
             self.reloadTable()
         }
@@ -69,7 +66,7 @@ class StudyTimeViewController: UIViewController {
             self.reloadTable()
         }
         
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        let addButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(addButtonTapped))
         navigationItem.rightBarButtonItem = addButton
     }
     
@@ -81,7 +78,7 @@ class StudyTimeViewController: UIViewController {
     }
     
     // MARK: - Methods
-    private func reloadTable() {
+    func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
@@ -90,14 +87,14 @@ class StudyTimeViewController: UIViewController {
     }
     
     @objc func addButtonTapped() {
-        self.coordinator?.showSubjectCreation(viewModel: viewModel)
+        self.coordinator?.showSubjectList(viewModel: viewModel)
     }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.subjects.count + 1
+        return self.viewModel.subjects.value.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,12 +102,13 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         
         var subject: Subject? = nil
         
-        subject = row <= (self.subjects.count - 1) ? self.subjects[indexPath.row] : nil
+        subject = row <= (self.viewModel.subjects.value.count - 1) ? self.viewModel.subjects.value[indexPath.row] : nil
         let totalTime = self.viewModel.getTotalTime(forSubject: subject)
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
             fatalError("Could not dequeue cell")
         }
+        
         cell.subject = subject
         cell.totalTime = totalTime
         
@@ -119,29 +117,6 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell else { return }
-        
-        let subject = cell.subject
-        
-        if editingStyle == .delete {
-            let alert = UIAlertController(title: "Excluir Subject", message: "Você tem certeza que deseja excluir esta matéria? Ao aceitar será excluído seu tempo de estudo e horários marcados", preferredStyle: .alert)
-            
-            let deleteAction = UIAlertAction(title: "Excluir", style: .destructive) { [weak self] _ in
-                guard let self else { return }
-                
-                self.viewModel.removeSubject(subject: subject)
-            }
-            
-            let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
-            
-            alert.addAction(deleteAction)
-            alert.addAction(cancelAction)
-            
-            self.present(alert, animated: true, completion: nil)
-        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -161,8 +136,8 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension StudyTimeViewController {
     func setContentView(isEmpty: Bool) {
-        self.studyTimeView.removeConstraints(self.studyTimeView.emptyView.constraints)
-        self.studyTimeView.removeConstraints(self.studyTimeView.chartController.view.constraints)
+        self.studyTimeView.emptyView.removeFromSuperview()
+        self.studyTimeView.chartController.view.removeFromSuperview()
         
         self.addContentSubview(isEmpty ? self.studyTimeView.emptyView : self.studyTimeView.chartController.view)
     }
