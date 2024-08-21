@@ -45,6 +45,8 @@ struct SubjectTime: Identifiable {
     var id = UUID()
     var subject: String
     let totalTime: Int
+    let subjectColor: String
+    
 }
 
 class StudyTimeViewModel : ObservableObject {
@@ -98,6 +100,21 @@ class StudyTimeViewModel : ObservableObject {
         }
     }
     
+    func getTotalAggregatedTime() -> String {
+        let totalTime = self.getTime(from: focusSessions.value)
+        
+        let hours = totalTime / 3600
+        let minutes = (totalTime / 60) % 60
+        
+        if totalTime >= 3600 {
+            return "\(hours)h\(minutes)m"
+        } else if totalTime >= 60 {
+            return "\(minutes)m"
+        } else {
+            return "\(totalTime)s"
+        }
+    }
+    
     private func getTime(from focusSessions: [FocusSession]) -> Int {
         var totalTime: Int = 0
         
@@ -115,22 +132,27 @@ class StudyTimeViewModel : ObservableObject {
     }
     
     func updateAggregatedTimes() {
-        self.aggregatedTimes = []
-        
-        var subjectTotals: [String: Int] = [:]
-        
-        for session in self.focusSessions.value {
-            subjectTotals[session.unwrappedSubjectID, default: 0] += session.unwrappedTotalTime
+            self.aggregatedTimes = []
+            
+            var subjectTotals: [String: Int] = [:]
+            
+            for session in self.focusSessions.value {
+                subjectTotals[session.unwrappedSubjectID, default: 0] += session.unwrappedTotalTime
+            }
+            
+            var subjectColors: [String: String] = [:]
+            for subjectId in subjectTotals.keys {
+                if let subject = self.subjectManager.fetchSubject(withID: subjectId) {
+                    subjectColors[subjectId] = subject.unwrappedColor
+                }
+            }
+            
+            let times = subjectTotals.map {
+                SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "")
+            }
+            
+            self.aggregatedTimes = times
         }
-        
-        let times = subjectTotals.map { SubjectTime(subject: $0.key, totalTime: $0.value) }
-        
-        for time in times {
-            self.aggregatedTimes.append(SubjectTime(
-                subject: idToName(subjectId: time.subject),
-                totalTime: time.totalTime))
-        }
-    }
     
     private func idToName(subjectId: String) -> String {
         let subject = self.subjectManager.fetchSubject(withID: subjectId)

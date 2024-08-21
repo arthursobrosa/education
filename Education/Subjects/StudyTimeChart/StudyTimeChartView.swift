@@ -11,17 +11,29 @@ struct StudyTimeChartView: View {
     @StateObject var viewModel: StudyTimeViewModel = StudyTimeViewModel()
     
     var body: some View {
-        Chart(viewModel.aggregatedTimes) { session in
-            SectorMark(
-                angle: .value("Time", session.totalTime),
-                innerRadius: .ratio(0.5),
-                angularInset: 1.5
-            )
-            .cornerRadius(3)
-            .foregroundStyle(by: .value("Subject", session.subject))
+        ZStack{
+            
+            VStack{
+                Text(String(localized: "totalTime"))
+                    .bold()
+                Text(viewModel.getTotalAggregatedTime())
+            }
+            
+            
+            Chart(viewModel.aggregatedTimes) { session in
+                SectorMark(
+                    angle: .value("Time", session.totalTime),
+                    innerRadius: .ratio(0.8),
+                    angularInset: 1.5
+                )
+                .cornerRadius(12)
+                .foregroundStyle(Color(UIColor(named: session.subjectColor) ?? .clear))
+            }
+            .chartLegend(.hidden)
+            .padding()
         }
-//        .chartLegend(position: .bottom, spacing: 30)
-        .chartLegend(.hidden)
+       
+        .frame(height: 300)
         .onAppear {
             viewModel.updateAggregatedTimes()
         }
