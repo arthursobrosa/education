@@ -49,6 +49,8 @@
 "alarmAtTime" = "Alert at start time";
 "subject" = "Subject";
 "blockApps" = "Block Apps";
+"daily" = "Daily";
+"weekly" = "Weekly";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
@@ -69,6 +71,8 @@
 "focusFinish" = "Finish";
 
 // MARK: - Subjects
+"saveSubject" = "Save Subject";
+"addSubjectName" = "Insert the subject's name";
 "studyTimeLastWeek" = "Last week";
 "studyTimeLastMonth" = "Last month";
 "studyTimeLastYear" = "Last year";
@@ -91,3 +95,8 @@
 
 // MARK: - Profile
 "selectBlockedApps" = "Select Blocked Apps";
+
+// MARK: - Modal
+"startButton" = "Start now";
+"delayButton" = "Delay";
+
