@@ -12,14 +12,12 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     private var newNavigationController = UINavigationController()
-    private let title: String?
     
     private let schedule: Schedule?
-    private let selectedDay: Int
+    private let selectedDay: Int?
     
-    init(navigationController: UINavigationController, title: String?, schedule: Schedule?, selectedDay: Int) {
+    init(navigationController: UINavigationController, schedule: Schedule?, selectedDay: Int?) {
         self.navigationController = navigationController
-        self.title = title
         self.schedule = schedule
         self.selectedDay = selectedDay
     }
@@ -28,7 +26,7 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
         let viewModel = ScheduleDetailsViewModel(schedule: self.schedule, selectedDay: self.selectedDay)
         let vc = ScheduleDetailsViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = "\(self.title ?? String(localized: "newSchedule")) \(String(localized: "schedule"))"
+        
         
         self.newNavigationController = UINavigationController(rootViewController: vc)
         if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {

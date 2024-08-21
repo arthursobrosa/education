@@ -21,8 +21,6 @@ class ScheduleManagerTest: XCTestCase {
                                                  backgroundContext: coreDataStack.mainContext)
         scheduleManager = ScheduleManager(mainContext: coreDataStack.mainContext,
                                                  backgroundContext: coreDataStack.mainContext)
-        scheduleManager.focusSessionManager = FocusSessionManager(mainContext: coreDataStack.mainContext,
-                                                                  backgroundContext: coreDataStack.mainContext)
     }
     
     func test_create_schedule() {

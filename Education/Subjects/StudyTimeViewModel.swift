@@ -22,6 +22,23 @@ enum DateRange: String, CaseIterable {
                 return String(localized: "studyTimeLastYear")
         }
     }
+    
+    var calendarComponent: Calendar.Component {
+        switch self {
+            case .lastWeek:
+                return .weekOfYear
+            case .lastMonth:
+                return .month
+            case .lastYear:
+                return .year
+        }
+    }
+    
+    func getStartDate() -> Date {
+        let calendar = Calendar.current
+        
+        return calendar.date(byAdding: self.calendarComponent, value: -1, to: Date.now) ?? Date.now
+    }
 }
 
 struct SubjectTime: Identifiable {
@@ -49,6 +66,11 @@ class StudyTimeViewModel : ObservableObject {
     var subjects = Box([Subject]())
     var focusSessions = Box([FocusSession]())
     
+    private let filterSession = { (session: FocusSession, dateRange: DateRange) -> Bool in
+        let startDate = dateRange.getStartDate()
+        return session.date! >= startDate
+    }
+    
     // MARK: - Initializer
     init(subjectManager: SubjectManager = SubjectManager(), focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.subjectManager = subjectManager
@@ -58,22 +80,7 @@ class StudyTimeViewModel : ObservableObject {
     // MARK: - Methods
     func fetchFocusSessions() {
         if let focusSessions = self.focusSessionManager.fetchFocusSessions(allSessions: true) {
-            let calendar = Calendar.current
-            let now = Date()
-            var startDate: Date
-            
-            switch selectedDateRange {
-                case .lastWeek:
-                    startDate = calendar.date(byAdding: .weekOfYear, value: -1, to: now) ?? now
-                case .lastMonth:
-                    startDate = calendar.date(byAdding: .month, value: -1, to: now) ?? now
-                case .lastYear:
-                    startDate = calendar.date(byAdding: .year, value: -1, to: now) ?? now
-            }
-            
-            let filteredSessions = focusSessions.filter { $0.date! >= startDate }
-            
-            self.focusSessions.value = filteredSessions
+            self.focusSessions.value = focusSessions.filter { filterSession($0, self.selectedDateRange) }
         }
     }
     
@@ -156,8 +163,18 @@ class StudyTimeViewModel : ObservableObject {
         subjectManager.createSubject(name: name, color: color)
     }
     
-    func removeSubject(subject: Subject){
-        self.subjectManager.deleteSubject(subject)
+    func removeSubject(subject: Subject?) {
+        if let subject {
+            self.subjectManager.deleteSubject(subject)
+        } else {
+            let noSubjectSessions = self.focusSessions.value.filter { $0.subjectID == subject?.id }
+            noSubjectSessions.forEach { focusSession in
+                self.focusSessionManager.deleteFocusSession(focusSession)
+            }
+        }
+        
         self.fetchSubjects()
+        self.fetchFocusSessions()
+        self.updateAggregatedTimes()
     }
 }

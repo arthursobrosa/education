@@ -51,8 +51,8 @@ class ScheduleViewModel {
                 }
                 return false
             }
+            
             self.schedules = orderedSchedules
-            print(orderedSchedules)
         }
         
         if let weekSchedules = self.scheduleManager.fetchSchedules(){
@@ -106,5 +106,11 @@ class ScheduleViewModel {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd"
         return formatter.string(from: date)
+    }
+    
+    func isThereAnySubject() -> Bool {
+        guard let subjects = self.subjectManager.fetchSubjects() else { return false }
+        
+        return !subjects.isEmpty
     }
 }

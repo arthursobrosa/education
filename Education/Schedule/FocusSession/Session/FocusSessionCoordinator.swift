@@ -39,7 +39,7 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
         if let focusPickerCoordinator = self.parentCoordinator as? FocusPickerCoordinator {
             delegateCoordinator = focusPickerCoordinator
             
-            focusPickerCoordinator.dismissAll(animated: true)
+            focusPickerCoordinator.dismissAll()
         } else if let focusSelectionCoordinator = self.parentCoordinator as? FocusSelectionCoordinator {
             if let focusImediateCoordinator = focusSelectionCoordinator.parentCoordinator as? FocusImediateCoordinator,
                let scheduleCoordinator = focusImediateCoordinator.parentCoordinator as? ScheduleCoordinator {
@@ -48,7 +48,7 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
                 delegateCoordinator = scheduleCoordinator
             }
             
-            focusSelectionCoordinator.dismissAll(animated: true)
+            focusSelectionCoordinator.dismissAll()
         } else if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
             delegateCoordinator = scheduleCoordinator
         }

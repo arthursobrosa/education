@@ -42,7 +42,3 @@ struct StudyTimeChartView: View {
         }
     }
 }
-
-#Preview {
-    StudyTimeChartView()
-}

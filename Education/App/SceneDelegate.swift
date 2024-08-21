@@ -8,9 +8,11 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var coordinator: Coordinator?
     var window: UIWindow?
-    private var date = Date()
+    var coordinator: Coordinator?
+    
+    private var currentDate = Date()
+    private var timerSeconds = Int()
     
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -54,43 +56,51 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
-        let currentDate = Date.now
-        let timeInBackground = Int(currentDate.timeIntervalSince1970 - self.date.timeIntervalSince1970)
+        let timeInBackground = Date().timeIntervalSince(self.currentDate)
         
-        ActivityManager.shared.updateAfterBackground(timeInBackground: timeInBackground)
+        ActivityManager.shared.updateAfterBackground(timeInBackground: timeInBackground, lastTimerSeconds: self.timerSeconds)
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        self.currentDate = Date()
+        self.timerSeconds = ActivityManager.shared.timerSeconds
+        
+        switch ActivityManager.shared.timerCase {
+            case .pomodoro:
+                ActivityManager.shared.stopTimer()
+            default:
+                break
+        }
+        
         CoreDataStack.shared.saveMainContext()
-        self.date = Date.now
     }
 }
 
 extension SceneDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-
-        if let name = userInfo["subjectName"] as? String {
-            let subjectManager = SubjectManager()
-            let subject = subjectManager.fetchSubject(withName: name)
-            
-            self.showFocusSelection(color: .systemBlue, subject: subject)
+        
+        guard let subjectName = userInfo["subjectName"] as? String,
+              let startTime = userInfo["startTime"] as? Date,
+              let endTime = userInfo["endTime"] as? Date else {
+            completionHandler()
+            return
         }
+        
+        self.showScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
 
         completionHandler()
     }
     
-    private func showFocusSelection(color: UIColor?, subject: Subject?) {
+    private func showScheduleNotification(subjectName: String, startTime: Date, endTime: Date) {
         guard let coordinator else { return }
         
         if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
-            let newFocusSessionModel = FocusSessionModel(subject: subject, color: color)
-            
             tabBar.selectedIndex = 0
-            tabBar.schedule.showFocusSelection(focusSessionModel: newFocusSessionModel)
+            tabBar.schedule.showScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
         }
     }
 }

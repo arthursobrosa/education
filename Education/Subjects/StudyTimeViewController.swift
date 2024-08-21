@@ -10,19 +10,16 @@ import SwiftUI
 
 class StudyTimeViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: ShowingSubjectCreation?
+    weak var coordinator: ShowingSubjectList?
     let viewModel: StudyTimeViewModel
     
     // MARK: - Properties
-    private var subjects = [Subject]()
-    
     private lazy var studyTimeView: StudyTimeView = {
-        let view = StudyTimeView()
+        let studyTimeChartView = StudyTimeChartView(viewModel: self.viewModel)
+        
+        let view = StudyTimeView(chartView: studyTimeChartView)
         
         view.delegate = self
-        
-        let studyTimeChartView = StudyTimeChartView(viewModel: self.viewModel)
-        view.chartHostingController = UIHostingController(rootView: studyTimeChartView)
         
         view.tableView.delegate = self
         view.tableView.dataSource = self
@@ -31,7 +28,6 @@ class StudyTimeViewController: UIViewController {
         return view
     }()
     
-    private let emptyView = EmptyView(object: String(localized: "emptyStudyTime"))
     
     // MARK: - Initialization
     init(viewModel: StudyTimeViewModel) {
@@ -45,25 +41,32 @@ class StudyTimeViewController: UIViewController {
     }
     
     // MARK: - Lifecycle
+    override func loadView() {
+        super.loadView()
+        
+        self.view = self.studyTimeView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
             
-            self.subjects = subjects
+            self.studyTimeView.changeEmptyView(emptySubject: subjects.isEmpty)
+            
             self.reloadTable()
         }
         
         self.viewModel.focusSessions.bind { [weak self] focusSessions in
             guard let self else { return }
             
-            self.setView(isEmpty: focusSessions.isEmpty)
+            self.setContentView(isEmpty: focusSessions.isEmpty)
             
             self.reloadTable()
         }
         
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        let addButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(addButtonTapped))
         navigationItem.rightBarButtonItem = addButton
     }
     
@@ -75,11 +78,7 @@ class StudyTimeViewController: UIViewController {
     }
     
     // MARK: - Methods
-    private func setView(isEmpty: Bool) {
-        self.view = isEmpty ? self.emptyView : self.studyTimeView
-    }
-    
-    private func reloadTable() {
+    func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
@@ -88,14 +87,14 @@ class StudyTimeViewController: UIViewController {
     }
     
     @objc func addButtonTapped() {
-        self.coordinator?.showSubjectCreation(viewModel: viewModel)
+        self.coordinator?.showSubjectList(viewModel: viewModel)
     }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.subjects.count + 1
+        return self.viewModel.subjects.value.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -103,12 +102,13 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         
         var subject: Subject? = nil
         
-        subject = row <= (self.subjects.count - 1) ? self.subjects[indexPath.row] : nil
+        subject = row <= (self.viewModel.subjects.value.count - 1) ? self.viewModel.subjects.value[indexPath.row] : nil
         let totalTime = self.viewModel.getTotalTime(forSubject: subject)
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
             fatalError("Could not dequeue cell")
         }
+        
         cell.subject = subject
         cell.totalTime = totalTime
         
@@ -119,30 +119,39 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         return 44
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let row = indexPath.row
-        
-        guard row <= self.subjects.count - 1 else { return }
-        
-        let subject = self.subjects[row]
-        
-        if editingStyle == .delete {
-            let alert = UIAlertController(title: "Excluir Subject", message: "Você tem certeza que deseja excluir este \(subject.unwrappedName)? Ao aceitar será excluído seu tempo de estudo e horários maracdos", preferredStyle: .alert)
-            
-            let deleteAction = UIAlertAction(title: "Excluir", style: .destructive) { [weak self] _ in
-                guard let self = self else { return }
-                self.viewModel.removeSubject(subject: subject)
-            }
-            let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
-            
-            alert.addAction(deleteAction)
-            alert.addAction(cancelAction)
-            
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
+}
+
+extension StudyTimeViewController {
+    func setContentView(isEmpty: Bool) {
+        self.studyTimeView.emptyView.removeFromSuperview()
+        self.studyTimeView.chartController.view.removeFromSuperview()
+        
+        self.addContentSubview(isEmpty ? self.studyTimeView.emptyView : self.studyTimeView.chartController.view)
+    }
+    
+    private func addContentSubview(_ subview: UIView) {
+        self.studyTimeView.contentView.addSubview(subview)
+        
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            subview.topAnchor.constraint(equalTo: self.studyTimeView.contentView.topAnchor),
+            subview.leadingAnchor.constraint(equalTo: self.studyTimeView.contentView.leadingAnchor),
+            subview.trailingAnchor.constraint(equalTo: self.studyTimeView.contentView.trailingAnchor),
+            subview.bottomAnchor.constraint(equalTo: self.studyTimeView.contentView.bottomAnchor)
+        ])
     }
 }

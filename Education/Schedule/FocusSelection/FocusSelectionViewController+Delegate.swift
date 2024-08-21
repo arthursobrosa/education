@@ -16,7 +16,7 @@ protocol FocusSelectionDelegate: AnyObject {
 
 extension FocusSelectionViewController: FocusSelectionDelegate {
     func selectionButtonTapped(tag: Int) {
-        var timerCase: TimerCase?
+        var timerCase: TimerCase = .timer
         
         switch tag {
             case 0:
@@ -28,8 +28,6 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
             default:
                 break
         }
-        
-        guard let timerCase else { return }
         
         self.viewModel.focusSessionModel.timerCase = timerCase
     }
@@ -53,7 +51,7 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
     }
     
     func dismissAll() {
-        self.coordinator?.dismissAll(animated: true)
+        self.coordinator?.dismissAll()
     }
 }
 

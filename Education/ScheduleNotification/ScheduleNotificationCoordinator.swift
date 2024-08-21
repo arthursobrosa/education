@@ -1,25 +1,32 @@
 //
-//  FocusImediateCoordinator.swift
+//  ScheduleNotificationCoordinator.swift
 //  Education
 //
-//  Created by Arthur Sobrosa on 09/08/24.
+//  Created by Lucas Cunha on 19/08/24.
 //
 
 import UIKit
 
-class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Dismissing {
+class ScheduleNotificationCoordinator: NSObject, Coordinator, ShowingFocusSelection, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var newNavigationController = UINavigationController()
     
-    init(navigationController: UINavigationController) {
+    private let subjectName: String
+    private let startTime: Date
+    private let endTime: Date
+    
+    init(navigationController: UINavigationController, subjectName: String, startTime: Date, endTime: Date) {
         self.navigationController = navigationController
+        self.subjectName = subjectName
+        self.startTime = startTime
+        self.endTime = endTime
     }
     
     func start() {
-        let viewModel = FocusImediateViewModel()
-        let vc = FocusImediateViewController(viewModel: viewModel, color: UIColor(named: "defaultColor"))
+        let viewModel = ScheduleNotificationViewModel(subjectName: self.subjectName, startTime: self.startTime, endTime: self.endTime)
+        let vc = ScheduleNotificationViewController(color: .red, viewModel: viewModel)
         vc.coordinator = self
         
         self.newNavigationController = UINavigationController(rootViewController: vc)
@@ -44,6 +51,7 @@ class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Di
         child.start()
     }
     
+    
     func dismiss(animated: Bool) {
         self.navigationController.dismiss(animated: animated)
     }
@@ -58,7 +66,7 @@ class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Di
     }
 }
 
-extension FocusImediateCoordinator: UINavigationControllerDelegate {
+extension ScheduleNotificationCoordinator: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         guard let fromVC = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
         

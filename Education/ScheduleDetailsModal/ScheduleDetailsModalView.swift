@@ -8,9 +8,14 @@
 import UIKit
 
 class ScheduleDetailsModalView: UIView {
-    private var color: UIColor?
+    weak var delegate: ScheduleDetailsModalDelegate?
     
-    private let closeButton: UIButton = {
+    private let startTime: String
+    private let endTime: String
+    private let color: UIColor?
+
+    
+    private lazy var closeButton: UIButton = {
         
         let btn = UIButton()
         
@@ -20,12 +25,14 @@ class ScheduleDetailsModalView: UIView {
         btn.imageView?.tintColor = .white
         btn.setPreferredSymbolConfiguration(.init(pointSize: 24), forImageIn: .normal)
         
+        btn.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+        
         btn.translatesAutoresizingMaskIntoConstraints = false
         
         return btn
     }()
     
-    private let editButton: UIButton = {
+    private lazy var editButton: UIButton = {
         
         let btn = UIButton()
         
@@ -35,6 +42,7 @@ class ScheduleDetailsModalView: UIView {
         btn.imageView?.tintColor = .white
         btn.setPreferredSymbolConfiguration(.init(pointSize: 24), forImageIn: .normal)
         
+        btn.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
                 
         btn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -44,7 +52,6 @@ class ScheduleDetailsModalView: UIView {
     private let nameLabel: UILabel = {
         
         let lbl = UILabel()
-        lbl.text = "Biologia"
         lbl.font = UIFont.boldSystemFont(ofSize: 32)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -72,9 +79,9 @@ class ScheduleDetailsModalView: UIView {
         return lbl
     }()
     
-    private let hourDetailView: HourDetailsView = {
+    private lazy var hourDetailView: HourDetailsView = {
         
-        let view = HourDetailsView()
+        let view = HourDetailsView(starTime: self.startTime, endTime: self.endTime)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -91,28 +98,40 @@ class ScheduleDetailsModalView: UIView {
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 19, height: 19)
         
         let imageString = NSAttributedString(attachment: imageAttachment)
-        attributedString.append(NSAttributedString(string: "Iniciar agora"))
+        attributedString.append(NSAttributedString(string: String(localized: "startButton")))
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(imageString)
         
 
         btn.setAttributedTitle(attributedString, for: .normal)
+        btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
         
         
         btn.layer.cornerRadius = 25
         btn.backgroundColor = .black.withAlphaComponent(0.25)
         btn.translatesAutoresizingMaskIntoConstraints = false
         
+        btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
+        
         return btn
     }()
 
-    init(color: UIColor?) {
+    init(startTime: String, endTime: String, color: UIColor?, subjectName: String, dayOfTheWeek: String) {
+        self.startTime = startTime
+        self.endTime = endTime
+        self.color = color
+        
         super.init(frame: .zero)
         
-        self.color = color
+        self.backgroundColor = color
+        self.startButton.backgroundColor = color?.darker(by: 0.6)
+        
+        self.nameLabel.text = subjectName
+        
+        self.dayLabel.text = dayOfTheWeek
+        
         self.setupUI()
         
-        self.backgroundColor = color
         self.layer.cornerRadius = 14
         self.layer.borderWidth = 1.5
         self.layer.borderColor = UIColor.white.cgColor
@@ -120,6 +139,18 @@ class ScheduleDetailsModalView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func didTapCloseButton() {
+        self.delegate?.dismiss()
+    }
+    
+    @objc private func didTapEditButton(){
+        self.delegate?.editButtonTapped()
+    }
+    
+    @objc private func didTapStartButton(){
+        self.delegate?.startButtonTapped()
     }
 }
 
@@ -160,6 +191,6 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
     }
 }
 
-#Preview{
-    ScheduleDetailsModalViewController(color: UIColor(named: "ScheduleColor1"))
+#Preview {
+    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()))
 }

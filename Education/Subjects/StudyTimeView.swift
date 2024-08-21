@@ -25,12 +25,25 @@ class StudyTimeView: UIView {
         return picker
     }()
     
-    var chartHostingController: UIHostingController<StudyTimeChartView>? {
-        didSet {
-            chartHostingController?.view.translatesAutoresizingMaskIntoConstraints = false
-            self.setupUI()
-        }
-    }
+    let contentView: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    private let chartView: StudyTimeChartView
+    
+    lazy var chartController: UIHostingController<StudyTimeChartView> = {
+        let controller = UIHostingController(rootView: self.chartView)
+        
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    var emptyView = EmptyView(object: String(localized: "emptyStudyTime"))
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -42,24 +55,32 @@ class StudyTimeView: UIView {
     }()
     
     // MARK: - Initialization
-    override init(frame: CGRect) {
+    init(chartView: StudyTimeChartView) {
+        self.chartView = chartView
+        
         super.init(frame: .zero)
         
         self.backgroundColor = .systemBackground
+        
+        self.setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func changeEmptyView(emptySubject: Bool) {
+        let object = emptySubject ? String(localized: "emptySubject") : String(localized: "emptyStudyTime")
+        
+        self.emptyView = EmptyView(object: object)
     }
 }
 
 // MARK: - UI Setup
 extension StudyTimeView: ViewCodeProtocol {
     func setupUI() {
-        guard let chartHostingController = self.chartHostingController else { return }
-        
         self.addSubview(picker)
-        self.addSubview(chartHostingController.view)
+        self.addSubview(contentView)
         self.addSubview(tableView)
         
         let padding = 20.0
@@ -69,14 +90,17 @@ extension StudyTimeView: ViewCodeProtocol {
             picker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
             picker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 2),
             
-            chartHostingController.view.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
-            chartHostingController.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            chartHostingController.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            contentView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
+            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            contentView.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -padding),
             
-            tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding / 2),
+            tableView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.27),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
         ])
     }
+    
+    
 }

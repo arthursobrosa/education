@@ -12,15 +12,20 @@ class FocusSessionViewModel {
     private let focusSessionManager: FocusSessionManager
    
     // MARK: - Properties
-    var didTapFinishButton = false
+    var didTapFinish = false
     
     // MARK: - Initializer
     init(focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.focusSessionManager = focusSessionManager
+        
         ActivityManager.shared.date = Date.now
     }
     
     // MARK: - Methods
+    func getStrokeEnd() -> CGFloat {
+        return ActivityManager.shared.progress
+    }
+    
     func getTimerString() -> String {
         var seconds = Int()
         var minutes = Int()
@@ -37,27 +42,7 @@ class FocusSessionViewModel {
         return "\(hours)h \(minutes)m \(seconds)s"
     }
     
-    func getStrokeEnd() -> CGFloat {
-        let timerSeconds = ActivityManager.shared.timerSeconds
-        let totalSeconds = ActivityManager.shared.totalSeconds
-
-        return 1 - (CGFloat(timerSeconds) / CGFloat(totalSeconds))
-    }
-    
-    func pauseResumeButtonTapped() {
-        let timerState = ActivityManager.shared.timerState
-        
-        let newTimerState: ActivityManager.TimerState = timerState == .starting ? .reseting : .starting
-        ActivityManager.shared.timerState = newTimerState
-    }
-    
     func saveFocusSession() {
         ActivityManager.shared.saveFocusSesssion()
     }
-}
-
-enum TimerCase {
-    case stopwatch
-    case timer
-    case pomodoro(workTime: Int, restTime: Int, numberOfLoops: Int)
 }

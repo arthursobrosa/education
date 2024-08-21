@@ -13,6 +13,13 @@ class FocusSessionView: UIView {
     // MARK: - Properties
     private let color: UIColor?
     
+    var isPaused: Bool = false {
+        didSet {
+            self.updatePauseResumeButton()
+            self.updateFinishButton()
+        }
+    }
+    
     private let timerContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -62,10 +69,10 @@ class FocusSessionView: UIView {
     
     lazy var finishButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String(localized: "focusFinish"), titleColor: self.color)
-        bttn.isEnabled = false
-        bttn.alpha = 0.5
+        bttn.isEnabled = self.isPaused
+        bttn.alpha = bttn.isEnabled ? 1 : 0.5
         
-        bttn.addTarget(self, action: #selector(didTapFinishButton(_:)), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
         
         return bttn
     }()
@@ -86,37 +93,36 @@ class FocusSessionView: UIView {
     
     // MARK: - Auxiliar methods
     @objc private func pauseResumeButtonTapped() {
-        self.finishButton.isEnabled.toggle()
-        self.changeButtonAlpha()
+        self.isPaused.toggle()
         self.delegate?.pauseResumeButtonTapped()
     }
     
-    func changeButtonAlpha() {
-        let isEnabled = self.finishButton.isEnabled
-        self.finishButton.alpha = isEnabled ? 1 : 0.8
+    func updateFinishButton() {
+        self.finishButton.isEnabled = isPaused
+        self.finishButton.alpha = self.finishButton.isEnabled ? 1 : 0.5
     }
     
-    @objc private func didTapFinishButton(_ sender: UIButton) {
-        self.delegate?.finishAndDismiss()
+    func updatePauseResumeButton() {
+        let imageName = isPaused ? "play.fill" : "pause.fill"
+        
+        UIView.transition(with: self.pauseResumeButton, duration: 0.3, options: .transitionCrossDissolve) {
+            self.pauseResumeButton.setImage(UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .semibold, scale: .default)), for: .normal)
+        }
+    }
+    
+    @objc private func didTapFinishButton() {
+        self.delegate?.didTapFinishButton()
         self.delegate?.unblockApps()
     }
     
-    func startAnimation(timerDuration: Double, timerString: String) {
+    func startAnimation(timerDuration: Double) {
         self.timerEndAnimation.duration = timerDuration
-        
-        self.updateLabels(timerString: timerString)
         
         self.timerCircleFillLayer.add(self.timerEndAnimation, forKey: "timerEnd")
     }
     
     func resetAnimations() {
         self.timerCircleFillLayer.removeAllAnimations()
-    }
-    
-    func changePauseResumeImage(to imageName: String) {
-        UIView.transition(with: self.pauseResumeButton, duration: 0.3, options: .transitionCrossDissolve) {
-            self.pauseResumeButton.setImage(UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .semibold, scale: .default)), for: .normal)
-        }
     }
     
     func hidePauseResumeButton() {
@@ -127,6 +133,10 @@ class FocusSessionView: UIView {
     func redefineAnimation(timerDuration: Double, strokeEnd: CGFloat) {
         self.timerCircleFillLayer.strokeEnd = strokeEnd
         self.timerEndAnimation.duration = timerDuration
+    }
+    
+    func updateLabels(timerString: String) {
+        self.timerLabel.text = timerString
     }
 }
 
@@ -187,9 +197,5 @@ extension FocusSessionView: ViewCodeProtocol {
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
             self.timerContainerView.layer.cornerRadius = self.timerContainerView.frame.width / 2
         }
-    }
-    
-    func updateLabels(timerString: String) {
-        self.timerLabel.text = timerString
     }
 }
