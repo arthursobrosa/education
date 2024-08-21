@@ -99,3 +99,5 @@
 // MARK: - Modal
 "startButton" = "Iniciar agora";
 
+//MARK: - GRAPH
+"totalTime" = "Tempo Total de Estudo:";

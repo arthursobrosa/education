@@ -14,7 +14,7 @@ struct StudyTimeChartView: View {
         ZStack{
             
             VStack{
-                Text("Total Studied Time:")
+                Text(String(localized: "totalTime"))
                     .bold()
                 Text(viewModel.getTotalAggregatedTime())
             }
@@ -26,10 +26,10 @@ struct StudyTimeChartView: View {
                     innerRadius: .ratio(0.8),
                     angularInset: 1.5
                 )
-                .cornerRadius(8)
+                .cornerRadius(12)
                 .foregroundStyle(Color(UIColor(named: session.subjectColor) ?? .clear))
             }
-            .chartLegend(position: .bottom, spacing: 30)
+            .chartLegend(.hidden)
             .padding()
         }
        
