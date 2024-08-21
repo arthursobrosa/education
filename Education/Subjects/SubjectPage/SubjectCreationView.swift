@@ -9,6 +9,16 @@ import UIKit
 
 class SubjectCreationView: UIView {
     
+
+    
+    let tableView: UITableView = {
+        let table = UITableView(frame: .zero, style: .insetGrouped)
+        table.translatesAutoresizingMaskIntoConstraints = false
+       
+//        table.backgroundColor = .red
+        return table
+    }()
+    
     // MARK: - UI Components
     let nameTextField: UITextField = {
         let textField = UITextField()
@@ -43,11 +53,14 @@ class SubjectCreationView: UIView {
         super.init(frame: frame)
         self.backgroundColor = .systemBackground
         setupUI()
+
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+ 
 }
 
 extension SubjectCreationView: ViewCodeProtocol {
@@ -57,30 +70,25 @@ extension SubjectCreationView: ViewCodeProtocol {
         // Configuração básica da view
         backgroundColor = UIColor.systemBackground
         
+        if self.traitCollection.userInterfaceStyle == .light {
+            tableView.backgroundColor = .white
+        }
+        
         // Adicionando os elementos de UI na view
-        addSubview(nameTextField)
-        addSubview(collectionView)
-        addSubview(saveButton)
-        
-        // Constraints para o nome do subject (UITextField)
+        addSubview(tableView)
+
         NSLayoutConstraint.activate([
-            nameTextField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 70),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
         ])
         
-        // Constraints para a CollectionView
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 20),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            collectionView.heightAnchor.constraint(equalToConstant: 200)
-        ])
-        
-        // Constraints para o botão de salvar
-        NSLayoutConstraint.activate([
-            saveButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 20),
-            saveButton.centerXAnchor.constraint(equalTo: centerXAnchor)
-        ])
+
     }
 }
+
+
+
+
+

@@ -100,3 +100,6 @@
 "startButton" = "Start now";
 "delayButton" = "Delay";
 
+
+//MARK: - GRAPH
+"totalTime" = "Total Studied Time:";
