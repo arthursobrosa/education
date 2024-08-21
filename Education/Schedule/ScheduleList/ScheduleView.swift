@@ -33,7 +33,7 @@ class ScheduleView: UIView {
     }()
     
      let viewModeSelector: UISegmentedControl = {
-          let segmentedControl = UISegmentedControl(items: ["Diário", "Semanal"])
+          let segmentedControl = UISegmentedControl(items: [String(localized: "daily"), String(localized: "weekly")])
           segmentedControl.selectedSegmentIndex = 0
           segmentedControl.translatesAutoresizingMaskIntoConstraints = false
           segmentedControl.backgroundColor = .black
