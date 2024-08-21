@@ -121,3 +121,24 @@ extension SubjectListController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
+extension SubjectListController {
+    func setContentView(isEmpty: Bool) {
+        self.subjectListView.emptyView.removeFromSuperview()
+        
+        self.addContentSubview(isEmpty ? self.subjectListView.emptyView : self.subjectListView.tableView)
+    }
+    
+    private func addContentSubview(_ subview: UIView) {
+        self.subjectListView.tableView.addSubview(subview)
+        
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            subview.topAnchor.constraint(equalTo: self.subjectListView.tableView.topAnchor),
+            subview.leadingAnchor.constraint(equalTo: self.subjectListView.tableView.leadingAnchor),
+            subview.trailingAnchor.constraint(equalTo: self.subjectListView.tableView.trailingAnchor),
+            subview.bottomAnchor.constraint(equalTo: self.subjectListView.tableView.bottomAnchor)
+        ])
+    }
+}

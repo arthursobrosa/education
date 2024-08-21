@@ -54,6 +54,7 @@ class ScheduleViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         
         let addScheduleButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addScheduleButtonTapped))
+        addScheduleButton.tintColor = .label
         self.navigationItem.rightBarButtonItems = [addScheduleButton]
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))

@@ -78,6 +78,7 @@
 "studyTimeLastYear" = "Last year";
 "emptyStudyTime" = "study time";
 "emptySubject" = "subject";
+"emptyCreateSubject" = "Create new subject";
 
 // MARK: - Themes
 "emptyTheme" = "theme";

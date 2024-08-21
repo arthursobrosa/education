@@ -10,6 +10,14 @@ import UIKit
 class SubjectListView: UIView {
     
     // MARK: - UI Components
+    
+    var emptyView: UILabel = {
+        let emptyView = UILabel()
+        emptyView.text = String(localized: "emptyCreateSubject")
+        emptyView.textColor = .secondaryLabel
+        return emptyView
+    }()
+    
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .systemBackground
