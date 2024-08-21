@@ -8,12 +8,5 @@
 import Foundation
 
 protocol ShowingScheduleNotification: AnyObject {
-    func showScheduleNotification(schedule: Schedule)
+    func showScheduleNotification(subjectName: String, startTime: Date, endTime: Date)
 }
-
-//func showScheduleDetailsModal(schedule: Schedule) {
-//    let child = ScheduleNotificationCoordinator(navigationController: self.navigationController, schedule: schedule)
-//    self.childCoordinators.append(child)
-//    child.parentCoordinator = self
-//    child.start()
-//}

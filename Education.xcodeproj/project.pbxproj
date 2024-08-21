@@ -822,12 +822,12 @@
 		CE4D4C982C6D369D00160F17 /* ScheduleNotification */ = {
 			isa = PBXGroup;
 			children = (
+				CE323B402C73BDC5004143E0 /* ScheduleNotificationCoordinator.swift */,
+				CE323B3E2C73BD3F004143E0 /* ScheduleNotificationViewModel.swift */,
 				CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */,
+				CE323B3A2C73BC3E004143E0 /* ScheduleNotificationDelegate.swift */,
 				CE4D4C992C6D36C000160F17 /* ScheduleNotificationView.swift */,
 				CE4D4C9B2C6D371200160F17 /* ScheduleNotificationNameCard.swift */,
-				CE323B3A2C73BC3E004143E0 /* ScheduleNotificationDelegate.swift */,
-				CE323B3E2C73BD3F004143E0 /* ScheduleNotificationViewModel.swift */,
-				CE323B402C73BDC5004143E0 /* ScheduleNotificationCoordinator.swift */,
 			);
 			path = ScheduleNotification;
 			sourceTree = "<group>";

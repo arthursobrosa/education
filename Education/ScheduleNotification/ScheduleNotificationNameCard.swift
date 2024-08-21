@@ -97,7 +97,3 @@ extension ScheduleNotificationNameCard: ViewCodeProtocol {
     }
 }
 
-#Preview {
-    ScheduleNotificationViewController(color: UIColor(named: "ScheduleColor1"), viewModel: ScheduleNotificationViewModel(schedule: Schedule()))
-}
-
