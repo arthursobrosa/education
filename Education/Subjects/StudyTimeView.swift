@@ -101,4 +101,6 @@ extension StudyTimeView: ViewCodeProtocol {
             tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
         ])
     }
+    
+    
 }

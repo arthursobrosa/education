@@ -136,8 +136,8 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension StudyTimeViewController {
     func setContentView(isEmpty: Bool) {
-        self.studyTimeView.removeConstraints(self.studyTimeView.emptyView.constraints)
-        self.studyTimeView.removeConstraints(self.studyTimeView.chartController.view.constraints)
+        self.studyTimeView.emptyView.removeFromSuperview()
+        self.studyTimeView.chartController.view.removeFromSuperview()
         
         self.addContentSubview(isEmpty ? self.studyTimeView.emptyView : self.studyTimeView.chartController.view)
     }
