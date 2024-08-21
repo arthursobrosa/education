@@ -43,7 +43,7 @@ class ScheduleNotificationViewController: UIViewController {
         
         self.setupUI()
         
-        self.view.backgroundColor = .clear
+        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
     }
 }
 
@@ -58,8 +58,4 @@ extension ScheduleNotificationViewController: ViewCodeProtocol {
             scheduleModalView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
     }
-}
-
-#Preview{
-    ScheduleNotificationViewController(color: UIColor(named: "ScheduleColor1"), viewModel: ScheduleNotificationViewModel(schedule: Schedule()))
 }

@@ -13,15 +13,19 @@ class ScheduleNotificationCoordinator: NSObject, Coordinator, ShowingFocusSelect
     var navigationController: UINavigationController
     var newNavigationController = UINavigationController()
     
-    private let schedule: Schedule
+    private let subjectName: String
+    private let startTime: Date
+    private let endTime: Date
     
-    init(navigationController: UINavigationController, schedule: Schedule) {
+    init(navigationController: UINavigationController, subjectName: String, startTime: Date, endTime: Date) {
         self.navigationController = navigationController
-        self.schedule = schedule
+        self.subjectName = subjectName
+        self.startTime = startTime
+        self.endTime = endTime
     }
     
     func start() {
-        let viewModel = ScheduleNotificationViewModel(schedule: self.schedule)
+        let viewModel = ScheduleNotificationViewModel(subjectName: self.subjectName, startTime: self.startTime, endTime: self.endTime)
         let vc = ScheduleNotificationViewController(color: .red, viewModel: viewModel)
         vc.coordinator = self
         
@@ -41,12 +45,10 @@ class ScheduleNotificationCoordinator: NSObject, Coordinator, ShowingFocusSelect
     }
     
     func showFocusSelection(focusSessionModel: FocusSessionModel) {
-        let child = FocusSelectionCoordinator(navigationController: self.navigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
-        child.parentCoordinator = self.parentCoordinator
-        self.parentCoordinator!.childCoordinators.append(child)
+        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
         child.start()
-        
-        self.navigationController.dismiss(animated: true)
     }
     
     
@@ -75,17 +77,5 @@ extension ScheduleNotificationCoordinator: UINavigationControllerDelegate {
         if let focusSelectionVC = fromVC as? FocusSelectionViewController {
             self.childDidFinish(focusSelectionVC.coordinator as? Coordinator)
         }
-    }
-    
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        if operation == .push {
-            return CustomPushTransition()
-        }
-        
-        if operation == .pop {
-            return CustomPopTransition()
-        }
-        
-        return nil
     }
 }

@@ -12,7 +12,7 @@ class SubjectCreationView: UIView {
     // MARK: - UI Components
     let nameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Insira o nome do subject"
+        textField.placeholder = String(localized: "addSubjectName")
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -32,7 +32,7 @@ class SubjectCreationView: UIView {
     
     let saveButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Salvar Subject", for: .normal)
+        button.setTitle(String(localized: "saveSubject"), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -64,7 +64,7 @@ extension SubjectCreationView: ViewCodeProtocol {
         
         // Constraints para o nome do subject (UITextField)
         NSLayoutConstraint.activate([
-            nameTextField.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            nameTextField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
             nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])

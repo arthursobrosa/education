@@ -40,8 +40,8 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         child.start()
     }
     
-    func showScheduleNotification(schedule: Schedule) {
-        let child = ScheduleNotificationCoordinator(navigationController: self.navigationController, schedule: schedule)
+    func showScheduleNotification(subjectName: String, startTime: Date, endTime: Date) {
+        let child = ScheduleNotificationCoordinator(navigationController: self.navigationController, subjectName: subjectName, startTime: startTime, endTime: endTime)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()

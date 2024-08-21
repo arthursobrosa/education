@@ -10,19 +10,21 @@ import Foundation
 class ScheduleNotificationViewModel {
     private let subjectManager: SubjectManager
     
-    var schedule: Schedule
+    var startTime: Date
+    var endTime: Date
     var subject: Subject
     
-    init(subjectManager: SubjectManager = SubjectManager(), schedule: Schedule) {
+    init(subjectManager: SubjectManager = SubjectManager(), subjectName: String, startTime: Date, endTime: Date) {
         self.subjectManager = subjectManager
         
-        self.schedule = schedule
-        self.subject = self.subjectManager.fetchSubject(withID: self.schedule.unwrappedSubjectID)!
+        self.startTime = startTime
+        self.endTime = endTime
         
+        self.subject = self.subjectManager.fetchSubject(withName: subjectName)!
     }
     
     func getTimeString(isStartTime: Bool) -> String {
-        let date = isStartTime ? self.schedule.unwrappedStartTime : self.schedule.unwrappedEndTime
+        let date = isStartTime ? self.startTime : self.endTime
         
         let calendar = Calendar.current
         
