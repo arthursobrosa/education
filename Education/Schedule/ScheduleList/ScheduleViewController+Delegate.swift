@@ -36,6 +36,13 @@ extension ScheduleViewController: ScheduleDelegate {
     
     func createAcitivityTapped() {
         self.dismissButtons()
+        
+        guard self.viewModel.isThereAnySubject() else {
+            self.showNoSubjectAlert()
+            
+            return
+        }
+        
         self.coordinator?.showScheduleDetails(schedule: nil, selectedDay: self.viewModel.selectedDay)
     }
     

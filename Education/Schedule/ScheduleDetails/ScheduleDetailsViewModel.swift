@@ -133,7 +133,9 @@ class ScheduleDetailsViewModel {
                title: title,
                body: body,
                date: selectedDate,
-               subjectName: selectedSubjectName
+               subjectName: selectedSubjectName,
+               startTime: selectedStartTime,
+               endTime: selectedEndTime
            )
         }
     }

@@ -99,6 +99,10 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
         if let scheduleDetailsModalCoordinator = self.parentCoordinator as? ScheduleDetailsModalCoordinator {
             scheduleDetailsModalCoordinator.dismiss(animated: false)
         }
+        
+        if let scheduleNotificationCoordinator = self.parentCoordinator as? ScheduleNotificationCoordinator {
+            scheduleNotificationCoordinator.dismiss(animated: false)
+        }
     }
     
     func childDidFinish(_ child: Coordinator?) {
