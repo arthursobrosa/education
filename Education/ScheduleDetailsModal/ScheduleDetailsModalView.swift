@@ -98,7 +98,7 @@ class ScheduleDetailsModalView: UIView {
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 19, height: 19)
         
         let imageString = NSAttributedString(attachment: imageAttachment)
-        attributedString.append(NSAttributedString(string: "Iniciar agora"))
+        attributedString.append(NSAttributedString(string: String(localized: "startButton")))
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(imageString)
         

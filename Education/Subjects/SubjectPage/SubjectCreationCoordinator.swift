@@ -24,17 +24,10 @@ class SubjectCreationCoordinator: Coordinator, Dismissing {
     func start() {
         let vc = SubjectCreationController(viewModel: self.viewModel)
         vc.coordinator = self
-        self.newNavigationController = UINavigationController(rootViewController: vc)
-        
-        if let studyTimeCoordinator = self.parentCoordinator as? StudyTimeCoordinator {
-            self.newNavigationController.transitioningDelegate = studyTimeCoordinator
-        }
-        self.newNavigationController.setNavigationBarHidden(true, animated: false)
-        self.newNavigationController.modalPresentationStyle = .pageSheet
-        self.navigationController.present(self.newNavigationController, animated: true)
+        self.navigationController.pushViewController(vc, animated: true)
     }
     
     func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+        self.navigationController.popViewController(animated: animated)
     }
 }

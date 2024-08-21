@@ -7,8 +7,7 @@
 
 import UIKit
 
-class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation {
-    
+class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectList {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -26,12 +25,13 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation {
         self.navigationController.pushViewController(vc, animated: false)
     }
     
-    func showSubjectCreation(viewModel: StudyTimeViewModel) {
-        let child = SubjectCreationCoordinator(navigationController: self.navigationController, viewModel: viewModel)
+    func showSubjectList(viewModel: StudyTimeViewModel) {
+        let child = SubjectListCoordinator(navigationController: self.navigationController, viewModel: viewModel)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
     }
+    
     
     func childDidFinish(_ child: Coordinator?) {
         for (index, coordinator) in childCoordinators.enumerated() {
@@ -47,11 +47,15 @@ extension StudyTimeCoordinator: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let nav = dismissed as? UINavigationController else { return nil}
         
-        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationController {
-            self.childDidFinish(subjectCreationVC.coordinator as? Coordinator)
+        if let subjectListVC = nav.viewControllers.first as? SubjectListController {
+            self.childDidFinish(subjectListVC.coordinator as? Coordinator)
+        
+            subjectListVC.viewModel.fetchSubjects()
+            subjectListVC.viewModel.fetchFocusSessions()
             
-            subjectCreationVC.viewModel.fetchSubjects()
-            subjectCreationVC.viewModel.fetchFocusSessions()
+            if let studyTimeVC = self.navigationController.viewControllers.first as? StudyTimeViewController {
+                studyTimeVC.reloadTable()
+            }
         }
         
         return nil
