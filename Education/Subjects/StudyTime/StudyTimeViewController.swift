@@ -64,8 +64,9 @@ class StudyTimeViewController: UIViewController {
             self.reloadTable()
         }
         
-        let addButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(addButtonTapped))
-        navigationItem.rightBarButtonItem = addButton
+        let listButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(listButtonTapped))
+        listButton.tintColor = .label
+        navigationItem.rightBarButtonItem = listButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,7 +85,7 @@ class StudyTimeViewController: UIViewController {
         }
     }
     
-    @objc func addButtonTapped() {
+    @objc func listButtonTapped() {
         self.coordinator?.showSubjectList(viewModel: viewModel)
     }
 }

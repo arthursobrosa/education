@@ -46,6 +46,7 @@ class ThemeListViewController: UIViewController {
         super.viewDidLoad()
         
         let addThemeButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addThemeButtonTapped))
+        addThemeButton.tintColor = .label
         self.navigationItem.rightBarButtonItems = [addThemeButton]
         
         self.viewModel.themes.bind { [weak self] themes in

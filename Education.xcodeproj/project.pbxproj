@@ -37,6 +37,7 @@
 		31C103072C73BC22009D2751 /* SubjecListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C103062C73BC22009D2751 /* SubjecListCoordinator.swift */; };
 		31C103092C73BCFA009D2751 /* SubjectListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C103082C73BCFA009D2751 /* SubjectListTableViewCell.swift */; };
 		31C1030B2C73C4E0009D2751 /* ShowingSubjectList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C1030A2C73C4E0009D2751 /* ShowingSubjectList.swift */; };
+		31C1030D2C77A875009D2751 /* EmptyListSubjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C1030C2C77A875009D2751 /* EmptyListSubjectsView.swift */; };
 		31EB254B2C596883008F8893 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB254A2C596883008F8893 /* NotificationService.swift */; };
 		680038EE2C49F68600851926 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680038ED2C49F68600851926 /* EmptyView.swift */; };
 		6823766B2C63E86E00255143 /* DismissingAll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6823766A2C63E86E00255143 /* DismissingAll.swift */; };
@@ -221,6 +222,7 @@
 		31C103062C73BC22009D2751 /* SubjecListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjecListCoordinator.swift; sourceTree = "<group>"; };
 		31C103082C73BCFA009D2751 /* SubjectListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectListTableViewCell.swift; sourceTree = "<group>"; };
 		31C1030A2C73C4E0009D2751 /* ShowingSubjectList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingSubjectList.swift; sourceTree = "<group>"; };
+		31C1030C2C77A875009D2751 /* EmptyListSubjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListSubjectsView.swift; sourceTree = "<group>"; };
 		31EB254A2C596883008F8893 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		680038ED2C49F68600851926 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		6823766A2C63E86E00255143 /* DismissingAll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissingAll.swift; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 				68A8167E2C76BA0A001D5F1E /* SubjectListViewController+Delegate.swift */,
 				31C103022C73BB1F009D2751 /* SubjectListView.swift */,
 				31C103082C73BCFA009D2751 /* SubjectListTableViewCell.swift */,
+				31C1030C2C77A875009D2751 /* EmptyListSubjectsView.swift */,
 			);
 			path = SubjectList;
 			sourceTree = "<group>";
@@ -1067,6 +1070,7 @@
 				6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
 				6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */,
+				31C1030D2C77A875009D2751 /* EmptyListSubjectsView.swift in Sources */,
 				685CBFDA2C61597600EC8E09 /* CustomDateButton.swift in Sources */,
 				688C25732C66709900150F7F /* FocusImediateCoordinator.swift in Sources */,
 				68CA87E02C5D54CD006ED5FA /* ShowingFocusPicker.swift in Sources */,

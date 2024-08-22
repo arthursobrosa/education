@@ -1,29 +1,25 @@
 //
-//  SubjectListView.swift
+//  EmptyListSubjectsView.swift
 //  Education
 //
-//  Created by Leandro Silva on 19/08/24.
+//  Created by Leandro Silva on 22/08/24.
 //
 
 import UIKit
 
-class SubjectListView: UIView {
+class EmptyListSubjectsView: UIView {
     // MARK: - Delegate
     weak var delegate: SubjectListDelegate?
     
     // MARK: - UI Components
-    
-    let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.backgroundColor = .systemBackground
-        tableView.isScrollEnabled = false
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return tableView
+    private lazy var createSubjectLabel: UILabel = {
+        let label = UILabel()
+        label.text = String(localized: "emptyCreateSubject")
+        label.textColor = .secondaryLabel
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
-    
-    private var tableViewHeightConstraint: NSLayoutConstraint!
     
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
@@ -58,32 +54,23 @@ class SubjectListView: UIView {
     @objc private func addButtonTapped() {
         self.delegate?.addButtonTapped()
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        tableViewHeightConstraint.constant = tableView.contentSize.height
-    }
 }
 
 // MARK: - UI Setup
-extension SubjectListView: ViewCodeProtocol {
+extension EmptyListSubjectsView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(tableView)
+        self.addSubview(createSubjectLabel)
         self.addSubview(addButton)
         
-        tableViewHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
-        tableViewHeightConstraint.isActive = true
-        
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            createSubjectLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            createSubjectLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -30),
             
             addButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            addButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 10),
+            addButton.topAnchor.constraint(equalTo: createSubjectLabel.bottomAnchor, constant: 18),
             addButton.widthAnchor.constraint(equalToConstant: 40),
             addButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 }
+

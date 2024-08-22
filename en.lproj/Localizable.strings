@@ -14,6 +14,7 @@
 "emptyStudyTime" = "No study hours recorded";
 "emptyTheme" = "You haven't recorded any exams yet";
 "emptyTest" = "There are no tests assigned for this exam";
+"emptyCreateSubject" = "Create new subject";
 
 // MARK: - TabBar
 "scheduleTab" = "Schedule";
@@ -84,6 +85,7 @@
 "studyTimeLastWeek" = "Last week";
 "studyTimeLastMonth" = "Last month";
 "studyTimeLastYear" = "Last year";
+"emptySubject" = "subject";
 "deleteSubjectTitle" = "Delete subject";
 "deleteSubjectMessage" = "Are you sure you want to delete %@? Its study time and activities will also be deleted.";
 "subjectCreationTitle" = "Invalid inputs";
