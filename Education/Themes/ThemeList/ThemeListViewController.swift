@@ -119,7 +119,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.accessoryView = createAccessoryView()
         
         if self.traitCollection.userInterfaceStyle == .light {
-            cell.backgroundColor = .systemGray5
+            cell.backgroundColor = .systemGray3
         }
         
         return cell

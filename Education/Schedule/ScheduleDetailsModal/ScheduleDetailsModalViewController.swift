@@ -60,7 +60,3 @@ extension ScheduleDetailsModalViewController: ViewCodeProtocol {
         ])
     }
 }
-
-#Preview {
-    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()))
-}

@@ -49,7 +49,7 @@ struct SubjectTime: Identifiable {
     
 }
 
-class StudyTimeViewModel : ObservableObject {
+class StudyTimeViewModel: ObservableObject {
     // MARK: - Subject and FocusSession Handlers
     private let subjectManager: SubjectManager
     private let focusSessionManager: FocusSessionManager
@@ -70,6 +70,10 @@ class StudyTimeViewModel : ObservableObject {
         let startDate = dateRange.getStartDate()
         return session.date! >= startDate
     }
+    
+    let subjectColors = ["bluePicker", "blueSkyPicker", "olivePicker", "orangePicker", "pinkPicker", "redPicker", "turquoisePicker", "violetPicker", "yellowPicker"]
+    
+    lazy var selectedSubjectColor: Box<String> = Box(self.subjectColors[0])
     
     // MARK: - Initializer
     init(subjectManager: SubjectManager = SubjectManager(), focusSessionManager: FocusSessionManager = FocusSessionManager()) {

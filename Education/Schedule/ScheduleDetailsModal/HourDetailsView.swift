@@ -9,18 +9,18 @@ import UIKit
 
 class HourDetailsView: UIView {
     private let startTime: UILabel = {
-        
         let lbl = UILabel()
         lbl.font = UIFont.boldSystemFont(ofSize: 22)
+        lbl.textColor = .white
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
     }()
     
     private let endTime: UILabel = {
-        
         let lbl = UILabel()
         lbl.font = UIFont.boldSystemFont(ofSize: 22)
+        lbl.textColor = .white
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -30,7 +30,6 @@ class HourDetailsView: UIView {
         let img = UIImage(named: "ScheduleDetailsModal1")
         
         let imgView = UIImageView(image: img)
-        
 
         imgView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -104,8 +103,4 @@ extension HourDetailsView: ViewCodeProtocol {
             lineEndTime.widthAnchor.constraint(equalTo: lineStartTime.widthAnchor)
         ])
     }
-}
-
-#Preview {
-    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()))
 }

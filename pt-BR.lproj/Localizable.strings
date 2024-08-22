@@ -89,7 +89,6 @@
 "subjectCreationTitle" = "Dados inválidos";
 "subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
-"subjectCreationNoColor" = "Por favor, selecione uma cor.";
 "color" = "Cor";
 
 // MARK: - Themes

@@ -81,8 +81,8 @@ extension StudyTimeView: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             viewModeControl.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding / 2),
-            viewModeControl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
-            viewModeControl.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 2),
+            viewModeControl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 4),
+            viewModeControl.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 4),
             
             contentView.topAnchor.constraint(equalTo: viewModeControl.bottomAnchor, constant: padding),
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),

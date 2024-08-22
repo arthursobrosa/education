@@ -89,7 +89,6 @@
 "subjectCreationTitle" = "Invalid inputs";
 "subjectCreationNoName" = "Please, insert a name for your subject.";
 "subjectCreationUsedName" = "There is an existing subject with this name.";
-"subjectCreationNoColor" = "Please, select a color.";
 "color" = "Color";
 
 // MARK: - Themes
