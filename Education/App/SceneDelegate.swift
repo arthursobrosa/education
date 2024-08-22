@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         window?.frame = windowScene.coordinateSpace.bounds
-
+        
         let themeListViewModel = ThemeListViewModel()
         coordinator = SplashCoordinator(navigationController: UINavigationController(), themeListViewModel: themeListViewModel)
         coordinator?.start()
@@ -69,27 +69,59 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.timerSeconds = ActivityManager.shared.timerSeconds
         
         switch ActivityManager.shared.timerCase {
-            case .pomodoro:
-                ActivityManager.shared.stopTimer()
-            default:
-                break
+        case .pomodoro:
+            ActivityManager.shared.stopTimer()
+        default:
+            break
+        }
+        
+        guard !ActivityManager.shared.isPaused else { return }
+        
+        switch ActivityManager.shared.timerCase {
+        case .timer:
+            NotificationService.shared.scheduleEndNotification(
+                title: String(localized: "timerAlertMessage"),
+                body: ActivityManager.shared.subject!.unwrappedName,
+                date: Calendar.current.date(byAdding: .second, value: ActivityManager.shared.timerSeconds, to: Date.now)!,
+                subjectName: ActivityManager.shared.subject!.unwrappedName)
+            
+        case .pomodoro(_, _, _):
+            NotificationService.shared.scheduleEndNotification(
+                title: String(localized: "timerAlertMessage"),
+                body: ActivityManager.shared.subject!.unwrappedName,
+                date: notificationDate(),
+                subjectName: ActivityManager.shared.subject!.unwrappedName)
+        default:
+            break
         }
         
         CoreDataStack.shared.saveMainContext()
+    }
+    
+    func notificationDate() -> Date{
+        let pomodoro = ActivityManager.shared
+        
+        let loopTime = pomodoro.workTime + pomodoro.restTime
+        let totalTime = loopTime * pomodoro.numberOfLoops
+        let timePassed = Double(pomodoro.currentLoop * loopTime) + Date().timeIntervalSince(pomodoro.startTime ?? Date())
+        
+        let timeLeft = Double(totalTime) - timePassed
+        
+        return  Date() + timeLeft
     }
 }
 
 extension SceneDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-
+        
         if let name = userInfo["subjectName"] as? String {
             let subjectManager = SubjectManager()
             let subject = subjectManager.fetchSubject(withName: name)
             
             self.showFocusSelection(color: .systemBlue, subject: subject)
         }
-
+        
         completionHandler()
     }
     

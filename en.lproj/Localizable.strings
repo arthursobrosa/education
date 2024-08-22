@@ -95,6 +95,7 @@
 
 // MARK: - Profile
 "selectBlockedApps" = "Select Blocked Apps";
+"activateNotification" = "Activate Notification";
 
 // MARK: - Modal
 "startButton" = "Start now";

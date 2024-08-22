@@ -24,7 +24,7 @@ class ActivityManager {
     // MARK: - Timer properties
     var timerCase: TimerCase
     
-    private var startTime: Date?
+    var startTime: Date?
     private var pausedTime: TimeInterval = 0
     var timer: Timer?
     
@@ -95,7 +95,6 @@ class ActivityManager {
         switch self.timerCase {
             case .stopwatch:
                 self.startStopwatch()
-                
                 return
             default:
                 break
@@ -152,6 +151,16 @@ class ActivityManager {
     func stopTimer() {
         self.timer?.invalidate()
         self.timer = nil
+        
+        switch self.timerCase {
+        case .timer:
+            NotificationService.shared.cancelNotificationByName(name: self.subject!.unwrappedName)
+        case .pomodoro(_, _, _):
+            NotificationService.shared.cancelNotificationByName(name: self.subject!.unwrappedName)
+        default:
+            break
+        }
+        
         
         if let startTime = self.startTime {
             self.pausedTime = Date().timeIntervalSince(startTime)
