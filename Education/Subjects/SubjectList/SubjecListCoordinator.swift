@@ -55,6 +55,7 @@ class SubjectListCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Dis
     
     func dismiss(animated: Bool) {
         self.navigationController.dismiss(animated: animated)
+        self.viewModel.fetchSubjects()
     }
 }
 

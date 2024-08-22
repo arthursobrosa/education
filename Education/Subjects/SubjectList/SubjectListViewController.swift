@@ -25,6 +25,13 @@ class SubjectListViewController: UIViewController {
         return view
     }()
     
+    private lazy var emptyView: EmptyListSubjectsView = {
+        let view = EmptyListSubjectsView()
+        view.delegate = self
+        
+        return view
+    }()
+    
     // MARK: - Initialization
     init(viewModel: StudyTimeViewModel) {
         self.viewModel = viewModel
@@ -47,16 +54,27 @@ class SubjectListViewController: UIViewController {
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
             
-            self.view = self.subjectListView
-            
-            self.reloadTable()
+            handleEmptyView()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        
         self.viewModel.fetchSubjects()
+        self.viewModel.subjects.bind { [weak self] subjects in
+            guard let self else { return }
+            print("caiu")
+            handleEmptyView()
+        }
+        
+//
+//        self.viewModel.fetchSubjects()
+//        self.viewModel.subjects.bind { [weak self] subjects in
+//            self?.reloadTable()
+//        }
+        //print(self.viewModel.subjects.value)
     }
     
     
@@ -67,6 +85,17 @@ class SubjectListViewController: UIViewController {
             
             self.subjectListView.tableView.reloadData()
             self.subjectListView.layoutSubviews()
+        }
+    }
+    
+    private func handleEmptyView(){
+        if self.viewModel.subjects.value.isEmpty {
+            self.view = self.emptyView
+            print("vazio")
+        } else {
+            self.view = self.subjectListView
+          
+            self.reloadTable()
         }
     }
     
@@ -87,6 +116,7 @@ extension SubjectListViewController: UITableViewDataSource, UITableViewDelegate 
         }
         
         let subject = self.viewModel.subjects.value[indexPath.row]
+        //print(subject)
         cell.configure(with: subject)
         
         return cell
