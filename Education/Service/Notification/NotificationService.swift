@@ -25,6 +25,30 @@ class NotificationService {
         }
     }
     
+    func scheduleEndNotification(title: String, body: String, date: Date, subjectName: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+        content.userInfo = ["subjectName": subjectName]
+        
+        let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: date)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd-HH-mm-ss"
+        let dateString = dateFormatter.string(from: date)
+        
+        let requestId = subjectName
+        let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error {
+                print("Error scheduling notification: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     func scheduleWeeklyNotification(title: String, body: String, date: Date) {
         let content = UNMutableNotificationContent()
         content.title = title
@@ -75,6 +99,13 @@ class NotificationService {
     
     func cancelAllNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+    
+    func cancelNotificationByName(name: String) {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            let requestIds = requests.filter { $0.identifier.hasPrefix(name) }.map { $0.identifier }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: requestIds)
+        }
     }
     
     func cancelNotifications(forDate date: Date) {

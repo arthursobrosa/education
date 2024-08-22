@@ -70,11 +70,27 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         return 1
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = indexPath.section
         
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         
-        cell.textLabel?.text = String(localized: "selectBlockedApps")
+        var cellText = String()
+        
+        switch section {
+            case 0:
+                cellText = String(localized: "selectBlockedApps")
+            case 1:
+                cellText = String(localized: "activateNotification")
+            default:
+                break
+        }
+        
+        cell.textLabel?.text = cellText
         
         if cell.traitCollection.userInterfaceStyle == .light {
             cell.backgroundColor = .systemGray3
@@ -84,10 +100,23 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath.row == 0 {
+        let section = indexPath.section
+      
+        switch section {
+            case 0:
             self.showFamilyActivityPicker()
+            case 1:
+            NotificationService.shared.requestAuthorization { granted, error in
+                if granted {
+                    print("notification persimission granted")
+                } else if let error {
+                    print(error.localizedDescription)
+                }
+            }
+        
+            default:
+                break
         }
     }
 }
