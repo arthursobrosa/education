@@ -14,6 +14,7 @@
 "emptyStudyTime" = "Nenhuma hora de estudo registrada";
 "emptyTheme" = "Você ainda não registrou nenhuma prova";
 "emptyTest" = "Não há nenhum teste atribuído a essa prova";
+"emptyCreateSubject" = "Criar nova matéria";
 
 // MARK: - TabBar
 "scheduleTab" = "Cronograma";
@@ -84,9 +85,7 @@
 "studyTimeLastWeek" = "Última semana";
 "studyTimeLastMonth" = "Último mês";
 "studyTimeLastYear" = "Último ano";
-"emptyStudyTime" = "tempo de estudo";
 "emptySubject" = "matéria";
-"emptyCreateSubject" = "Criar nova matéria";
 "deleteSubjectTitle" = "Excluir matéria";
 "deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades também serão excluídos.";
 "subjectCreationTitle" = "Dados inválidos";

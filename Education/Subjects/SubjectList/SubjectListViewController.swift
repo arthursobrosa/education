@@ -25,6 +25,13 @@ class SubjectListViewController: UIViewController {
         return view
     }()
     
+    private lazy var emptyView: EmptyListSubjectsView = {
+        let view = EmptyListSubjectsView()
+        view.delegate = self
+        
+        return view
+    }()
+    
     // MARK: - Initialization
     init(viewModel: StudyTimeViewModel) {
         self.viewModel = viewModel
@@ -47,16 +54,27 @@ class SubjectListViewController: UIViewController {
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
             
-            self.view = self.subjectListView
-            
-            self.reloadTable()
+            handleEmptyView()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        
         self.viewModel.fetchSubjects()
+        self.viewModel.subjects.bind { [weak self] subjects in
+            guard let self else { return }
+            print("caiu")
+            handleEmptyView()
+        }
+        
+//
+//        self.viewModel.fetchSubjects()
+//        self.viewModel.subjects.bind { [weak self] subjects in
+//            self?.reloadTable()
+//        }
+        //print(self.viewModel.subjects.value)
     }
     
     
@@ -67,6 +85,17 @@ class SubjectListViewController: UIViewController {
             
             self.subjectListView.tableView.reloadData()
             self.subjectListView.layoutSubviews()
+        }
+    }
+    
+    private func handleEmptyView(){
+        if self.viewModel.subjects.value.isEmpty {
+            self.view = self.emptyView
+            print("vazio")
+        } else {
+            self.view = self.subjectListView
+          
+            self.reloadTable()
         }
     }
     
@@ -87,6 +116,7 @@ extension SubjectListViewController: UITableViewDataSource, UITableViewDelegate 
         }
         
         let subject = self.viewModel.subjects.value[indexPath.row]
+        //print(subject)
         cell.configure(with: subject)
         
         return cell
@@ -114,26 +144,5 @@ extension SubjectListViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
-extension SubjectListController {
-    func setContentView(isEmpty: Bool) {
-        self.subjectListView.emptyView.removeFromSuperview()
-        
-        self.addContentSubview(isEmpty ? self.subjectListView.emptyView : self.subjectListView.tableView)
-    }
-    
-    private func addContentSubview(_ subview: UIView) {
-        self.subjectListView.tableView.addSubview(subview)
-        
-        subview.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            subview.topAnchor.constraint(equalTo: self.subjectListView.tableView.topAnchor),
-            subview.leadingAnchor.constraint(equalTo: self.subjectListView.tableView.leadingAnchor),
-            subview.trailingAnchor.constraint(equalTo: self.subjectListView.tableView.trailingAnchor),
-            subview.bottomAnchor.constraint(equalTo: self.subjectListView.tableView.bottomAnchor)
-        ])
     }
 }
