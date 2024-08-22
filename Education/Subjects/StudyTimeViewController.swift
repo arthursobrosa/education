@@ -71,8 +71,6 @@ class StudyTimeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        self.viewModel.foo()
-        
         self.viewModel.fetchSubjects()
         self.viewModel.fetchFocusSessions()
     }

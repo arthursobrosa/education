@@ -177,12 +177,4 @@ class StudyTimeViewModel : ObservableObject {
         self.fetchFocusSessions()
         self.updateAggregatedTimes()
     }
-    
-    func foo() {
-        if let subjects = self.subjectManager.fetchSubjects() {
-            subjects.forEach { subject in
-                self.subjectManager.deleteSubject(subject)
-            }
-        }
-    }
 }
