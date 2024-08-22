@@ -26,7 +26,7 @@ class SubjectCreationView: UIView {
         layout.scrollDirection = .vertical
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .clear
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
