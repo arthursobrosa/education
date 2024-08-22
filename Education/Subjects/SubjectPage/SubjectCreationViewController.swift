@@ -157,7 +157,7 @@ extension SubjectCreationViewController {
     func createSubjectPopover(forTableView tableView: UITableView, at indexPath: IndexPath) -> Popover? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
         
-        let popoverVC = Popover(contentSize: CGSize(width: 190, height: 190))
+        let popoverVC = Popover(contentSize: CGSize(width: 190, height: 195))
         let sourceRect = CGRect(x: cell.bounds.midX,
                                 y: cell.bounds.midY,
                                 width: 0,
@@ -165,7 +165,22 @@ extension SubjectCreationViewController {
         
         popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: .up, sourceRect: sourceRect, delegate: self)
 
-        popoverVC.view = self.subjectCreationView.collectionView
+        let paddedView = UIView(frame: CGRect(x: 0, y: 0, width: 190, height: 195))
+        paddedView.translatesAutoresizingMaskIntoConstraints = false
+        popoverVC.view = paddedView
+        
+        paddedView.addSubview(self.subjectCreationView.collectionView)
+        
+        self.subjectCreationView.collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let padding: CGFloat = 10
+        
+        NSLayoutConstraint.activate([
+            self.subjectCreationView.collectionView.topAnchor.constraint(equalTo: paddedView.topAnchor, constant: padding * 2.5),
+            self.subjectCreationView.collectionView.leadingAnchor.constraint(equalTo: paddedView.leadingAnchor, constant: padding),
+            self.subjectCreationView.collectionView.trailingAnchor.constraint(equalTo: paddedView.trailingAnchor, constant: -padding),
+            self.subjectCreationView.collectionView.bottomAnchor.constraint(equalTo: paddedView.bottomAnchor, constant: -padding)
+        ])
         
         return popoverVC
     }

@@ -303,7 +303,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
         if !viewModel.tasks[indexPath.section].isEmpty {
             let task = viewModel.tasks[indexPath.section][indexPath.item]
             
-            self.coordinator?.showScheduleDetails(schedule: task, selectedDay: indexPath.section)
+            self.coordinator?.showScheduleDetailsModal(schedule: task)
         }
     }
     
