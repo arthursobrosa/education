@@ -13,7 +13,7 @@ class ButtonComponent: UIButton {
         
         self.setTitle(title, for: .normal)
         self.setTitleColor(titleColor, for: .normal)
-        self.backgroundColor = .label.withAlphaComponent(0.08)
+        self.backgroundColor = .systemGray3
         self.layer.cornerRadius = 14
         self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         

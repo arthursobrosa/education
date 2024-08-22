@@ -12,12 +12,19 @@ class ScheduleView: UIView {
     weak var delegate: ScheduleDelegate? {
         didSet {
             delegate?.setPicker(self.picker)
+            delegate?.setSegmentedControl(self.viewModeSelector)
         }
     }
     
-    weak var viewModeDelegate: ViewModeSelectorDelegate? 
-    
     // MARK: - UI Components
+    let viewModeSelector: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl()
+        
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return segmentedControl
+    }()
+    
     let picker: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -32,17 +39,6 @@ class ScheduleView: UIView {
         return stack
     }()
     
-     let viewModeSelector: UISegmentedControl = {
-          let segmentedControl = UISegmentedControl(items: [String(localized: "daily"), String(localized: "weekly")])
-          segmentedControl.selectedSegmentIndex = 0
-          segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-          segmentedControl.backgroundColor = .black
-          segmentedControl.selectedSegmentTintColor = .gray
-          segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
-          segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-          return segmentedControl
-      }()
-    
     let contentView: UIView = {
         let view = UIView()
         
@@ -54,24 +50,24 @@ class ScheduleView: UIView {
     let tableView: UITableView = {
         let table = UITableView()
         table.separatorStyle = .none
-
+        
         table.translatesAutoresizingMaskIntoConstraints = false
         
         return table
     }()
     
-    let collectionViews: UICollectionView = {
-        
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.isHidden = true
+        
         return collection
     }()
     
-    let emptyView = EmptyView(object: String(localized: "emptySchedule"))
+    var emptyView = EmptyView(message: String(localized: "emptyDaySchedule"))
     
     lazy var overlayView: UIView = {
         let view = UIView()
@@ -121,8 +117,6 @@ class ScheduleView: UIView {
         super.init(frame: frame)
         
         self.setupUI()
-        
-        viewModeSelector.addTarget(self, action: #selector(viewModeChanged(_:)), for: .valueChanged)
     }
     
     required init?(coder: NSCoder) {
@@ -137,15 +131,10 @@ class ScheduleView: UIView {
         self.delegate?.startAcitivityTapped()
     }
     
-    @objc private func viewModeChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-            self.viewModeDelegate?.didSelectDailyModeToday()
-        case 1:
-            self.viewModeDelegate?.didSelectWeeklyMode()
-        default:
-            break
-        }
+    func changeEmptyView(isDaily: Bool) {
+        let message = isDaily ? String(localized: "emptyDaySchedule") : String(localized: "emptyWeekSchedule")
+        
+        self.emptyView = EmptyView(message: message)
     }
 }
 
@@ -163,10 +152,9 @@ extension ScheduleView: ViewCodeProtocol {
         let padding = 10.0
         
         NSLayoutConstraint.activate([
-            
             viewModeSelector.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
+            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 2),
             
             picker.topAnchor.constraint(equalTo: self.viewModeSelector.bottomAnchor, constant: padding),
             picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),

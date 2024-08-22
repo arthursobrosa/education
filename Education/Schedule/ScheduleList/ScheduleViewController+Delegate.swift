@@ -9,12 +9,71 @@ import UIKit
 
 // MARK: - Schedule
 protocol ScheduleDelegate: AnyObject {
+    // MARK: - View Mode
+    func setSegmentedControl(_ segmentedControl: UISegmentedControl)
+    
+    // MARK: - Day
     func setPicker(_ picker: UIStackView)
+    func dayTapped(_ dayView: DayView)
+    
+    // MARK: - Floating buttons
     func createAcitivityTapped()
     func startAcitivityTapped()
+    
+    // MARK: - Play button
+    func playButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?)
 }
 
 extension ScheduleViewController: ScheduleDelegate {
+    // MARK: - View Mode
+    func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
+        let viewModes = self.viewModel.viewModes.map { $0.name }
+        let selectedViewMode = self.viewModel.selectedViewMode.name
+        
+        for (index, viewMode) in viewModes.enumerated() {
+            let action = UIAction(title: viewMode) { _ in
+                self.viewModel.selectedViewMode = self.viewModel.viewModes[index]
+                
+                self.loadSchedules()
+                
+                switch index {
+                    case 0:
+                        self.selectToday()
+                    case 1:
+                        self.unselectDays()
+                    default:
+                        break
+                }
+            }
+            
+            segmentedControl.insertSegment(action: action, at: index, animated: false)
+            
+            if viewMode == selectedViewMode {
+                segmentedControl.selectedSegmentIndex = index
+            }
+        }
+    }
+    
+    // MARK: Day
+    func dayTapped(_ dayView: DayView) {
+        if self.scheduleView.viewModeSelector.selectedSegmentIndex == 1 {
+            self.scheduleView.viewModeSelector.selectedSegmentIndex = 0
+            self.viewModel.selectedViewMode = .daily
+            self.dayTapped(dayView)
+            
+            return
+        }
+        
+        self.unselectDays()
+        
+        guard let dayOfWeek = dayView.dayOfWeek else { return }
+        
+        dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
+        self.viewModel.selectedDay = dayView.tag
+        
+        self.loadSchedules()
+    }
+    
     func setPicker(_ picker: UIStackView) {
         let dates = self.viewModel.daysOfWeek
         
@@ -34,6 +93,7 @@ extension ScheduleViewController: ScheduleDelegate {
         }
     }
     
+    // MARK: - Floating buttons
     func createAcitivityTapped() {
         self.dismissButtons()
         
@@ -43,46 +103,18 @@ extension ScheduleViewController: ScheduleDelegate {
             return
         }
         
-        self.coordinator?.showScheduleDetails(schedule: nil, selectedDay: self.viewModel.selectedDay)
+        let selectedDay = self.viewModel.selectedViewMode == .daily ? self.viewModel.selectedDay : Calendar.current.component(.weekday, from: Date()) - 1
+        
+        self.coordinator?.showScheduleDetails(schedule: nil, selectedDay: selectedDay)
     }
     
     func startAcitivityTapped() {
         self.dismissButtons()
         self.coordinator?.showFocusImediate()
     }
-}
-
-// MARK: - Day
-protocol DayDelegate: AnyObject {
-    func dayTapped(_ dayView: DayView)
-}
-
-extension ScheduleViewController: DayDelegate {
-    func dayTapped(_ dayView: DayView) {
-        self.unselectDays()
-        
-        guard let dayOfWeek = dayView.dayOfWeek else { return }
-        
-        dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
-        self.viewModel.selectedDay = dayView.tag
-        
-        if(self.scheduleView.viewModeSelector.selectedSegmentIndex == 1){
-            didSelectDailyMode()
-            self.scheduleView.viewModeSelector.selectedSegmentIndex = 0
-        }
-        
-        
-        self.loadSchedules()
-    }
-}
-
-// MARK: - Play Button
-protocol ScheduleButtonDelegate: AnyObject {
-    func activityButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?)
-}
-
-extension ScheduleViewController: ScheduleButtonDelegate {
-    func activityButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?) {
+    
+    // MARK: - Play Button
+    func playButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?) {
         guard let indexPath else { return }
         
         let row = indexPath.row
@@ -93,36 +125,5 @@ extension ScheduleViewController: ScheduleButtonDelegate {
         let newFocusSessionModel = FocusSessionModel(isPaused: false, subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
         
         self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
-    }
-}
-
-protocol ViewModeSelectorDelegate: AnyObject {
-    func didSelectDailyModeToday()
-    func didSelectWeeklyMode()
-}
-
-extension ScheduleViewController: ViewModeSelectorDelegate {
-    func didSelectDailyMode() {
-        self.scheduleView.tableView.isHidden = false
-        self.scheduleView.collectionViews.isHidden = true
-    }
-    
-    func didSelectDailyModeToday() {
-        self.unselectDays()
-        self.selectToday()
-        self.scheduleView.tableView.isHidden = false
-        self.scheduleView.collectionViews.isHidden = true
-        self.loadSchedules()
-        self.scheduleView.tableView.reloadData()
-    }
-    
-    func didSelectWeeklyMode() {
-        self.unselectDays()
-        self.scheduleView.tableView.isHidden = true
-        self.scheduleView.collectionViews.isHidden = false
-    }
-    
-    func firstThreeLetters(of text: String) -> String {
-        return String(text.prefix(3))
     }
 }

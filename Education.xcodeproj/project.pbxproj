@@ -32,7 +32,7 @@
 		31C102F62C6D1A9B009D2751 /* SubjectCreationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102F52C6D1A9B009D2751 /* SubjectCreationController.swift */; };
 		31C102FA2C6D30BC009D2751 /* ShowingSubjectCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */; };
 		31C102FC2C6D3168009D2751 /* SubjectCreationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */; };
-		31C102FF2C73BAF0009D2751 /* SubjectListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102FE2C73BAF0009D2751 /* SubjectListController.swift */; };
+		31C102FF2C73BAF0009D2751 /* SubjectListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102FE2C73BAF0009D2751 /* SubjectListViewController.swift */; };
 		31C103032C73BB1F009D2751 /* SubjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C103022C73BB1F009D2751 /* SubjectListView.swift */; };
 		31C103072C73BC22009D2751 /* SubjecListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C103062C73BC22009D2751 /* SubjecListCoordinator.swift */; };
 		31C103092C73BCFA009D2751 /* SubjectListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C103082C73BCFA009D2751 /* SubjectListTableViewCell.swift */; };
@@ -100,6 +100,9 @@
 		689388942C6423A7007EE922 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388932C6423A7007EE922 /* ActivityView.swift */; };
 		689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388982C642B23007EE922 /* TabBarController+Delegate.swift */; };
 		68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A451402C61143B00209786 /* CustomDatePickerView.swift */; };
+		68A8167B2C769277001D5F1E /* InputTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */; };
+		68A8167D2C769296001D5F1E /* ColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167C2C769296001D5F1E /* ColorPickerCell.swift */; };
+		68A8167F2C76BA0A001D5F1E /* SubjectListViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167E2C76BA0A001D5F1E /* SubjectListViewController+Delegate.swift */; };
 		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
 		68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */; };
 		68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */; };
@@ -213,7 +216,7 @@
 		31C102F52C6D1A9B009D2751 /* SubjectCreationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCreationController.swift; sourceTree = "<group>"; };
 		31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingSubjectCreation.swift; sourceTree = "<group>"; };
 		31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCreationCoordinator.swift; sourceTree = "<group>"; };
-		31C102FE2C73BAF0009D2751 /* SubjectListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectListController.swift; sourceTree = "<group>"; };
+		31C102FE2C73BAF0009D2751 /* SubjectListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectListViewController.swift; sourceTree = "<group>"; };
 		31C103022C73BB1F009D2751 /* SubjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectListView.swift; sourceTree = "<group>"; };
 		31C103062C73BC22009D2751 /* SubjecListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjecListCoordinator.swift; sourceTree = "<group>"; };
 		31C103082C73BCFA009D2751 /* SubjectListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectListTableViewCell.swift; sourceTree = "<group>"; };
@@ -287,6 +290,9 @@
 		689388932C6423A7007EE922 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		689388982C642B23007EE922 /* TabBarController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarController+Delegate.swift"; sourceTree = "<group>"; };
 		68A451402C61143B00209786 /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
+		68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextTableViewCell.swift; sourceTree = "<group>"; };
+		68A8167C2C769296001D5F1E /* ColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCell.swift; sourceTree = "<group>"; };
+		68A8167E2C76BA0A001D5F1E /* SubjectListViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubjectListViewController+Delegate.swift"; sourceTree = "<group>"; };
 		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
 		68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudyTimeViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -459,6 +465,7 @@
 		31C102F22C6D19D2009D2751 /* SubjectPage */ = {
 			isa = PBXGroup;
 			children = (
+				68A816792C769238001D5F1E /* Cells */,
 				31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */,
 				31C102F52C6D1A9B009D2751 /* SubjectCreationController.swift */,
 				31C102F32C6D1A67009D2751 /* SubjectCreationView.swift */,
@@ -470,7 +477,8 @@
 			isa = PBXGroup;
 			children = (
 				31C103062C73BC22009D2751 /* SubjecListCoordinator.swift */,
-				31C102FE2C73BAF0009D2751 /* SubjectListController.swift */,
+				31C102FE2C73BAF0009D2751 /* SubjectListViewController.swift */,
+				68A8167E2C76BA0A001D5F1E /* SubjectListViewController+Delegate.swift */,
 				31C103022C73BB1F009D2751 /* SubjectListView.swift */,
 				31C103082C73BCFA009D2751 /* SubjectListTableViewCell.swift */,
 			);
@@ -768,6 +776,15 @@
 			path = Activity;
 			sourceTree = "<group>";
 		};
+		68A816792C769238001D5F1E /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */,
+				68A8167C2C769296001D5F1E /* ColorPickerCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		68AD1B472C65633F0025DC95 /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -1019,7 +1036,7 @@
 				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
 				689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */,
 				31C1030B2C73C4E0009D2751 /* ShowingSubjectList.swift in Sources */,
-				31C102FF2C73BAF0009D2751 /* SubjectListController.swift in Sources */,
+				31C102FF2C73BAF0009D2751 /* SubjectListViewController.swift in Sources */,
 				685CBFDC2C615CE300EC8E09 /* DateView.swift in Sources */,
 				CE394D0F2C6E85FC00A8B1F0 /* ScheduleDetailsModalCoordinator.swift in Sources */,
 				31EB254B2C596883008F8893 /* NotificationService.swift in Sources */,
@@ -1058,7 +1075,9 @@
 				680038EE2C49F68600851926 /* EmptyView.swift in Sources */,
 				684282242C63B83300CEEF1C /* ProfileViewController.swift in Sources */,
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
+				68A8167F2C76BA0A001D5F1E /* SubjectListViewController+Delegate.swift in Sources */,
 				683812F22C481ADA0062067A /* SplashView.swift in Sources */,
+				68A8167B2C769277001D5F1E /* InputTextTableViewCell.swift in Sources */,
 				683B5BE22C682B270065121E /* DismissingAfterModal.swift in Sources */,
 				682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */,
 				68C2D00A2C473F8000E2347A /* ScheduleDetails+Picker.swift in Sources */,
@@ -1099,6 +1118,7 @@
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
 				6881123E2C33388A003012D0 /* ShowingTestPage.swift in Sources */,
 				68D3138B2C6ADFEE00F63159 /* FocusSessionModel.swift in Sources */,
+				68A8167D2C769296001D5F1E /* ColorPickerCell.swift in Sources */,
 				68C2CFFB2C47220000E2347A /* ScheduleView.swift in Sources */,
 				31C102F42C6D1A67009D2751 /* SubjectCreationView.swift in Sources */,
 				688C257B2C66716600150F7F /* FocusImediateViewController+Delegate.swift in Sources */,

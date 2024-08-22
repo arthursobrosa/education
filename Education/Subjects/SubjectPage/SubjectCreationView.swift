@@ -8,18 +8,14 @@
 import UIKit
 
 class SubjectCreationView: UIView {
-    
-
-    
+    // MARK: - UI Components
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.translatesAutoresizingMaskIntoConstraints = false
        
-//        table.backgroundColor = .red
         return table
     }()
     
-    // MARK: - UI Components
     let nameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = String(localized: "addSubjectName")
@@ -51,16 +47,15 @@ class SubjectCreationView: UIView {
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.backgroundColor = .systemBackground
+        
         setupUI()
-
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
- 
 }
 
 extension SubjectCreationView: ViewCodeProtocol {

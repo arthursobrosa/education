@@ -24,7 +24,7 @@ class SubjectListCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Dis
     }
     
     func start() {
-        let vc = SubjectListController(viewModel: self.viewModel)
+        let vc = SubjectListViewController(viewModel: self.viewModel)
         vc.coordinator = self
         
         self.newNavigationController = UINavigationController(rootViewController: vc)

@@ -118,12 +118,13 @@ class ScheduleDetailsViewModel {
     private func handleAlerts() {
         let selectedDate = self.selectedStartTime
         let title = String(localized: "reminder")
-        let body = String(format: NSLocalizedString("comingEvent", comment: ""), String(selectedSubjectName))
+        let bodyBefore = String(format: NSLocalizedString("comingEvent", comment: ""), String(selectedSubjectName))
+        let bodyInTime = String(format: NSLocalizedString("imediateEvent", comment: ""), String(selectedSubjectName))
         
         if self.alarmBefore {
             NotificationService.shared.scheduleWeeklyNotification(
                title: title,
-               body: body,
+               body: bodyBefore,
                date: selectedDate
            )
         }
@@ -131,7 +132,7 @@ class ScheduleDetailsViewModel {
         if self.alarmInTime {
             NotificationService.shared.scheduleWeeklyNotificationAtExactTime(
                title: title,
-               body: body,
+               body: bodyInTime,
                date: selectedDate,
                subjectName: selectedSubjectName,
                startTime: selectedStartTime,

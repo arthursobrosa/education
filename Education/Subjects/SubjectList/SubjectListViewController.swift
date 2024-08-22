@@ -1,5 +1,5 @@
 //
-//  SubjectListController.swift
+//  SubjectListViewController.swift
 //  Education
 //
 //  Created by Leandro Silva on 19/08/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SubjectListController: UIViewController {
+class SubjectListViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
     weak var coordinator: (ShowingSubjectCreation & Dismissing)?
     let viewModel: StudyTimeViewModel
@@ -15,12 +15,13 @@ class SubjectListController: UIViewController {
     // MARK: - Properties
     private lazy var subjectListView: SubjectListView = {
         let view = SubjectListView()
+    
+        view.delegate = self
         
         view.tableView.delegate = self
         view.tableView.dataSource = self
         view.tableView.register(SubjectListTableViewCell.self, forCellReuseIdentifier: SubjectListTableViewCell.identifier)
         
-        view.addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return view
     }()
     
@@ -50,7 +51,6 @@ class SubjectListController: UIViewController {
             
             self.reloadTable()
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +61,6 @@ class SubjectListController: UIViewController {
     
     
     // MARK: - Methods
-    
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -71,17 +70,13 @@ class SubjectListController: UIViewController {
         }
     }
     
-    @objc private func addButtonTapped() {
-        self.coordinator?.showSubjectCreation(viewModel: viewModel)
-    }
-    
     @objc private func okButtonTapped() {
         self.coordinator?.dismiss(animated: true)
     }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
-extension SubjectListController: UITableViewDataSource, UITableViewDelegate {
+extension SubjectListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.subjects.value.count
     }
@@ -102,13 +97,13 @@ extension SubjectListController: UITableViewDataSource, UITableViewDelegate {
         let subject = self.viewModel.subjects.value[indexPath.row]
         
         if editingStyle == .delete {
-            let alert = UIAlertController(title: "Excluir Subject", message: "Você tem certeza que deseja excluir este \(subject.unwrappedName)? Ao aceitar será excluído seu tempo de estudo e horários maracdos", preferredStyle: .alert)
+            let alert = UIAlertController(title: String(localized: "deleteSubjectTitle"), message: String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subject.unwrappedName), preferredStyle: .alert)
             
-            let deleteAction = UIAlertAction(title: "Excluir", style: .destructive) { [weak self] _ in
+            let deleteAction = UIAlertAction(title: String(localized: "confirm"), style: .destructive) { [weak self] _ in
                 guard let self = self else { return }
                 self.viewModel.removeSubject(subject: subject)
             }
-            let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
             
             alert.addAction(deleteAction)
             alert.addAction(cancelAction)

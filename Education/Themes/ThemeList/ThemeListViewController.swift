@@ -28,7 +28,7 @@ class ThemeListViewController: UIViewController {
         return tableView
     }()
     
-    private let emptyView = EmptyView(object: String(localized: "emptyTheme"))
+    private let emptyView = EmptyView(message: String(localized: "emptyTheme"))
     
     // MARK: - Initialization
     init(viewModel: ThemeListViewModel) {

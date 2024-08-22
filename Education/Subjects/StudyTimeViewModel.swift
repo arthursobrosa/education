@@ -144,11 +144,11 @@ class StudyTimeViewModel : ObservableObject {
             for subjectId in subjectTotals.keys {
                 if let subject = self.subjectManager.fetchSubject(withID: subjectId) {
                     subjectColors[subjectId] = subject.unwrappedColor
-                }
+                } 
             }
             
             let times = subjectTotals.map {
-                SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "")
+                SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "sealBackgroundColor")
             }
             
             self.aggregatedTimes = times
@@ -176,5 +176,13 @@ class StudyTimeViewModel : ObservableObject {
         self.fetchSubjects()
         self.fetchFocusSessions()
         self.updateAggregatedTimes()
+    }
+    
+    func foo() {
+        if let subjects = self.subjectManager.fetchSubjects() {
+            subjects.forEach { subject in
+                self.subjectManager.deleteSubject(subject)
+            }
+        }
     }
 }

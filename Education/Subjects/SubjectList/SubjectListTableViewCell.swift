@@ -8,7 +8,7 @@
 import UIKit
 
 class SubjectListTableViewCell: UITableViewCell {
-    static let identifier = "SubjectListTableViewCell"
+    static let identifier = "subjectListTableViewCell"
     
     // MARK: - UI Components
     private let colorCircle: UIView = {
@@ -35,6 +35,11 @@ class SubjectListTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        if self.traitCollection.userInterfaceStyle == .light {
+            self.backgroundColor = .systemGray5
+        }
+        
         self.setupUI()
     }
     

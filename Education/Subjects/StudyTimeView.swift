@@ -12,12 +12,12 @@ class StudyTimeView: UIView {
     // MARK: - Delegate
     weak var delegate: StudyTimeDelegate? {
         didSet {
-            delegate?.setPicker(self.picker)
+            delegate?.setSegmentedControl(self.viewModeControl)
         }
     }
     
     // MARK: - UI Components
-    private let picker: UISegmentedControl = {
+    private let viewModeControl: UISegmentedControl = {
         let picker = UISegmentedControl()
         
         picker.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ class StudyTimeView: UIView {
         return controller
     }()
     
-    var emptyView = EmptyView(object: String(localized: "emptyStudyTime"))
+    let emptyView = EmptyView(message: String(localized: "emptyStudyTime"))
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -68,29 +68,23 @@ class StudyTimeView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func changeEmptyView(emptySubject: Bool) {
-        let object = emptySubject ? String(localized: "emptySubject") : String(localized: "emptyStudyTime")
-        
-        self.emptyView = EmptyView(object: object)
-    }
 }
 
 // MARK: - UI Setup
 extension StudyTimeView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(picker)
+        self.addSubview(viewModeControl)
         self.addSubview(contentView)
         self.addSubview(tableView)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            picker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
-            picker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 2),
+            viewModeControl.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding / 2),
+            viewModeControl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
+            viewModeControl.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 2),
             
-            contentView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
+            contentView.topAnchor.constraint(equalTo: viewModeControl.bottomAnchor, constant: padding),
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             contentView.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -padding),
@@ -101,6 +95,4 @@ extension StudyTimeView: ViewCodeProtocol {
             tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
         ])
     }
-    
-    
 }
