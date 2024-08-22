@@ -42,13 +42,13 @@ class ThemePageViewController: UIViewController {
     }()
     
     private lazy var addTestButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "addTest"), titleColor: .systemGray)
+        let bttn = ButtonComponent(title: String(localized: "addTest"), titleColor: .white)
         bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
         
         return bttn
     }()
     
-    private let emptyView = EmptyView(object: String(localized: "emptyTest"))
+    private let emptyView = EmptyView(message: String(localized: "emptyTest"))
     
     // MARK: - Initialization
     init(viewModel: ThemePageViewModel) {

@@ -115,6 +115,7 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
+<<<<<<< HEAD
         if let name = userInfo["subjectName"] as? String {
             let subjectManager = SubjectManager()
             let subject = subjectManager.fetchSubject(withName: name)
@@ -122,17 +123,26 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
             self.showFocusSelection(color: .systemBlue, subject: subject)
         }
         
+=======
+        guard let subjectName = userInfo["subjectName"] as? String,
+              let startTime = userInfo["startTime"] as? Date,
+              let endTime = userInfo["endTime"] as? Date else {
+            completionHandler()
+            return
+        }
+        
+        self.showScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
+
+>>>>>>> dev
         completionHandler()
     }
     
-    private func showFocusSelection(color: UIColor?, subject: Subject?) {
+    private func showScheduleNotification(subjectName: String, startTime: Date, endTime: Date) {
         guard let coordinator else { return }
         
         if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
-            let newFocusSessionModel = FocusSessionModel(subject: subject, color: color)
-            
             tabBar.selectedIndex = 0
-            tabBar.schedule.showFocusSelection(focusSessionModel: newFocusSessionModel)
+            tabBar.schedule.showScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
         }
     }
 }

@@ -28,7 +28,7 @@ class ThemeListViewController: UIViewController {
         return tableView
     }()
     
-    private let emptyView = EmptyView(object: String(localized: "emptyTheme"))
+    private let emptyView = EmptyView(message: String(localized: "emptyTheme"))
     
     // MARK: - Initialization
     init(viewModel: ThemeListViewModel) {
@@ -46,6 +46,7 @@ class ThemeListViewController: UIViewController {
         super.viewDidLoad()
         
         let addThemeButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addThemeButtonTapped))
+        addThemeButton.tintColor = .label
         self.navigationItem.rightBarButtonItems = [addThemeButton]
         
         self.viewModel.themes.bind { [weak self] themes in
@@ -119,7 +120,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.accessoryView = createAccessoryView()
         
         if self.traitCollection.userInterfaceStyle == .light {
-            cell.backgroundColor = .systemGray5
+            cell.backgroundColor = .systemGray3
         }
         
         return cell

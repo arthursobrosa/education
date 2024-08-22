@@ -8,6 +8,20 @@
 import Foundation
 import UIKit
 
+enum ScheduleViewMode: CaseIterable {
+    case daily
+    case weekly
+    
+    var name: String {
+        switch self {
+            case .daily:
+                return String(localized: "daily")
+            case .weekly:
+                return String(localized: "weekly")
+        }
+    }
+}
+
 class ScheduleViewModel {
     // MARK: - Subject and Schedule Handlers
     private let subjectManager: SubjectManager
@@ -18,13 +32,16 @@ class ScheduleViewModel {
     
     var tasks: [[Schedule]] = [[],[],[],[],[],[],[]]
     
+    var viewModes: [ScheduleViewMode] = ScheduleViewMode.allCases
+    var selectedViewMode: ScheduleViewMode = .daily
+    
     var selectedDay: Int = Calendar.current.component(.weekday, from: Date()) - 1
     
-    var daysOfWeek: [Date] {
+    let daysOfWeek: [Date] = {
         let calendar = Calendar.current
         let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
-    }
+    }()
     
     var currentFocusSessionModel: FocusSessionModel?
     
@@ -106,5 +123,15 @@ class ScheduleViewModel {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd"
         return formatter.string(from: date)
+    }
+    
+    func isThereAnySubject() -> Bool {
+        guard let subjects = self.subjectManager.fetchSubjects() else { return false }
+        
+        return !subjects.isEmpty
+    }
+    
+    func firstThreeLetters(of text: String) -> String {
+        return String(text.prefix(3))
     }
 }

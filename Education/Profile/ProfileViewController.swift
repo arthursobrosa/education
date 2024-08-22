@@ -12,17 +12,18 @@ class ProfileViewController: UIViewController {
     weak var coordinator: ProfileCoordinator?
     private let viewModel: ProfileViewModel
     
-    private lazy var profileView: ProfileView = {
-        let view = ProfileView()
+    private lazy var profileTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = .systemBackground
         
-        view.settingsTableView.dataSource = self
-        view.settingsTableView.delegate = self
-        view.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
         
-        return view
+        return tableView
     }()
     
-    let swiftUIFamilyPickerView = FamilyActivityPickerView()
+    private let swiftUIFamilyPickerView = FamilyActivityPickerView()
     
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
@@ -33,7 +34,7 @@ class ProfileViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.view = self.profileView
+        self.view = self.profileTableView
     }
     
     required init?(coder: NSCoder) {
@@ -92,7 +93,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.text = cellText
         
         if cell.traitCollection.userInterfaceStyle == .light {
-            cell.backgroundColor = .systemGray5
+            cell.backgroundColor = .systemGray3
         }
         
         return cell

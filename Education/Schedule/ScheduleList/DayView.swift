@@ -16,7 +16,7 @@ struct DayOfWeek {
 
 class DayView: UIView {
     // MARK: - Delegate
-    weak var delegate: DayDelegate?
+    weak var delegate: ScheduleDelegate?
     
     // MARK: - Properties
     var dayOfWeek: DayOfWeek? {

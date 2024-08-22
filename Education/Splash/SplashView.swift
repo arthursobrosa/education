@@ -20,11 +20,11 @@ class SplashView: UIView {
         return animation
     }()
     
-    private let sealImageView: UIImageView = {
+    private let logoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "sealSplash")
+        imageView.image = UIImage(named: "AppIcon")
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -34,7 +34,7 @@ class SplashView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor(named: "sealBackgroundColor")
+        self.backgroundColor = UIColor(named: "splashBack")
         
         self.setupUI()
         
@@ -48,18 +48,18 @@ class SplashView: UIView {
 
 extension SplashView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(sealImageView)
+        self.addSubview(logoImageView)
         self.addSubview(animationView)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            sealImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            sealImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: padding / 2),
-            sealImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6),
-            sealImageView.heightAnchor.constraint(equalTo: sealImageView.widthAnchor),
+            logoImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            logoImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6),
+            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
             
-            animationView.topAnchor.constraint(equalTo: sealImageView.bottomAnchor, constant: padding * 3),
+            animationView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: padding * 3),
             animationView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             animationView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2),
             animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor)

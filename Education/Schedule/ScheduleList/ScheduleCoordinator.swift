@@ -40,8 +40,8 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         child.start()
     }
     
-    func showScheduleNotification(schedule: Schedule) {
-        let child = ScheduleNotificationCoordinator(navigationController: self.navigationController, schedule: schedule)
+    func showScheduleNotification(subjectName: String, startTime: Date, endTime: Date) {
+        let child = ScheduleNotificationCoordinator(navigationController: self.navigationController, subjectName: subjectName, startTime: startTime, endTime: endTime)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -105,6 +105,15 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
             self.childDidFinish(scheduleDetailsVC.coordinator as? Coordinator)
             
             guard let scheduleVC = self.navigationController.viewControllers.first as? ScheduleViewController else { return nil }
+            
+            if let selecteDayIndex = scheduleDetailsVC.viewModel.days.firstIndex(where: { $0 == scheduleDetailsVC.viewModel.selectedDay }) {
+                scheduleVC.viewModel.selectedDay = Int(selecteDayIndex)
+                
+                let dayViews = scheduleVC.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
+                let selectedDayView = dayViews[selecteDayIndex]
+                
+                scheduleVC.dayTapped(selectedDayView)
+            }
             
             scheduleVC.loadSchedules()
         }

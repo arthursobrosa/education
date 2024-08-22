@@ -6,9 +6,15 @@
 "continue" = "Continue";
 "start" = "Start";
 "other" = "Other";
+"confirm" = "Confirm";
 
 // MARK: - EmptyView
-"emptyMessage" = "There are no %@s in here... Why don't you try adding one?";
+"emptyDaySchedule" = "There are no schedules for this day";
+"emptyWeekSchedule" = "There are no schedules for this week";
+"emptyStudyTime" = "No study hours recorded";
+"emptyTheme" = "You haven't recorded any exams yet";
+"emptyTest" = "There are no tests assigned for this exam";
+"emptyCreateSubject" = "Create new subject";
 
 // MARK: - TabBar
 "scheduleTab" = "Schedule";
@@ -19,7 +25,6 @@
 // MARK: - Schedule
 "schedule" = "Schedule";
 "newSchedule" = "New";
-"emptySchedule" = "schedule";
 "createActivity" = "Create activity";
 "imediateActivity" = "Start imediate activity";
 "timeLeft" = "In %@h%@m";
@@ -34,6 +39,7 @@
 "saturday" = "Saturday";
 "reminder" = "Reminder";
 "comingEvent" = "Your %@ event is starting soon!";
+"imediateEvent" = "Your %@ event is starting now!";
 "addSubjectAlertTitle" = "Add Subject";
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";
@@ -51,6 +57,8 @@
 "blockApps" = "Block Apps";
 "daily" = "Daily";
 "weekly" = "Weekly";
+"noSubjectTitle" = "You cannot create a schedule";
+"noSubjectMessage" = "You have to create a subject before setting a schedule";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
@@ -71,22 +79,26 @@
 "focusFinish" = "Finish";
 
 // MARK: - Subjects
+"subject" = "Subject";
 "saveSubject" = "Save Subject";
 "addSubjectName" = "Insert the subject's name";
 "studyTimeLastWeek" = "Last week";
 "studyTimeLastMonth" = "Last month";
 "studyTimeLastYear" = "Last year";
-"emptyStudyTime" = "study time";
 "emptySubject" = "subject";
+"deleteSubjectTitle" = "Delete subject";
+"deleteSubjectMessage" = "Are you sure you want to delete %@? Its study time and activities will also be deleted.";
+"subjectCreationTitle" = "Invalid inputs";
+"subjectCreationNoName" = "Please, insert a name for your subject.";
+"subjectCreationUsedName" = "There is an existing subject with this name.";
+"color" = "Color";
 
 // MARK: - Themes
-"emptyTheme" = "theme";
 "themeAlertTitle" = "Add Theme";
 "themeAlertMessage" = "Enter theme name:";
 "themeAlertPlaceholder" = "Theme name";
 "newTest" = "New Test";
 "addTest" = "Add Test";
-"emptyTest" = "test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
 "wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
 "rightQuestions" = "Right Questions";
@@ -101,3 +113,6 @@
 "startButton" = "Start now";
 "delayButton" = "Delay";
 
+
+//MARK: - GRAPH
+"totalTime" = "Total Studied Time:";
