@@ -10,7 +10,7 @@ import UIKit
 class ScheduleTableViewCell: UITableViewCell {
     // MARK: - ID
     static let identifier = "scheduleCell"
-    weak var delegate: ScheduleButtonDelegate?
+    weak var delegate: ScheduleDelegate?
     
     // MARK: - Properties
     var indexPath: IndexPath?
@@ -51,7 +51,7 @@ class ScheduleTableViewCell: UITableViewCell {
             
             if schedule.dayOfTheWeek != Calendar.current.component(.weekday, from: Date()) - 1 {
                 resetView()
-                self.activityButton.isHidden = true
+                self.playButton.isHidden = true
                 self.timeLeftLabel.text = ""
                 return
             }
@@ -67,8 +67,8 @@ class ScheduleTableViewCell: UITableViewCell {
         }
     }
 
-    @objc private func activityButtonTapped() {
-        self.delegate?.activityButtonTapped(at: self.indexPath, withColor: self.color)
+    @objc private func playButtonTapped() {
+        self.delegate?.playButtonTapped(at: self.indexPath, withColor: self.color)
     }
     
     var color: UIColor? {
@@ -88,11 +88,11 @@ class ScheduleTableViewCell: UITableViewCell {
         return view
     }()
     
-    private lazy var activityButton: ActivityButton = {
+    private lazy var playButton: ActivityButton = {
         let bttn = ActivityButton()
         bttn.activityState = .normal
         
-        bttn.addTarget(self, action: #selector(activityButtonTapped), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         
         bttn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -136,10 +136,6 @@ class ScheduleTableViewCell: UITableViewCell {
         self.setupUI()
     }
     
-//    private func getTimeLeft() {
-//        
-//    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -152,7 +148,7 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
         cardView.addSubview(subjectNameLabel)
         cardView.addSubview(timeLabel)
         cardView.addSubview(timeLeftLabel)
-        cardView.addSubview(activityButton)
+        cardView.addSubview(playButton)
         
         let padding = 8.0
         
@@ -162,13 +158,13 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
             cardView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -padding),
             cardView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -padding),
             
-            activityButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            activityButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -padding * 2),
-            activityButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (52/359)),
-            activityButton.heightAnchor.constraint(equalTo: activityButton.widthAnchor),
+            playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -padding * 2),
+            playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (52/359)),
+            playButton.heightAnchor.constraint(equalTo: playButton.widthAnchor),
             
             timeLeftLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            timeLeftLabel.trailingAnchor.constraint(equalTo: activityButton.leadingAnchor, constant: -padding * 2),
+            timeLeftLabel.trailingAnchor.constraint(equalTo: playButton.leadingAnchor, constant: -padding * 2),
             
             subjectNameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: padding * 2),
             subjectNameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: padding * 2),
@@ -184,10 +180,10 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
     }
 }
 
-//Cell UI
+// MARK: - Cell UI
 extension ScheduleTableViewCell{
     private func resetView() {
-        self.activityButton.activityState = .normal
+        self.playButton.activityState = .normal
         self.cardView.layer.borderWidth = 0
     }
 
@@ -197,8 +193,8 @@ extension ScheduleTableViewCell{
         let minutesLeft = differenceInMinutes % 60
         guard let color else { return }
         
-        self.activityButton.isHidden = false
-        self.activityButton.activityState = .normal
+        self.playButton.isHidden = false
+        self.playButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker(by: 0.6)
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
         self.cardView.layer.borderWidth = 0
@@ -208,8 +204,8 @@ extension ScheduleTableViewCell{
     private func updateViewForOngoingEvent() {
         guard let color else { return }
         
-        self.activityButton.isHidden = false
-        self.activityButton.activityState = .current(color: color.darker(by: 0.6))
+        self.playButton.isHidden = false
+        self.playButton.activityState = .current(color: color.darker(by: 0.6))
         self.timeLeftLabel.text = String(localized: "timeLeftNow")
         self.timeLeftLabel.font = .boldSystemFont(ofSize: 16)
         self.timeLeftLabel.textColor = .white
@@ -220,8 +216,8 @@ extension ScheduleTableViewCell{
     private func updateViewForCompletedEvent() {
         guard let color else { return }
         
-        self.activityButton.isHidden = false
-        self.activityButton.activityState = .normal
+        self.playButton.isHidden = false
+        self.playButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker(by: 0.6)
         self.timeLeftLabel.font = .systemFont(ofSize: 16)
         self.timeLeftLabel.text = String(localized: "timeLeftFinished")

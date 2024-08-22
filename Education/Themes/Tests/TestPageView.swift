@@ -48,17 +48,10 @@ class TestPageView: UIView {
         return totalQuestions
     }()
     
-    private lazy var addTestButton: UIButton = {
-        let bttn = UIButton(type: .system)
-        bttn.setTitle(String(localized: "addTest"), for: .normal)
-        bttn.setTitleColor(.label, for: .normal)
-        bttn.backgroundColor = .systemGray
-        bttn.layer.cornerRadius = 14
-        bttn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    private lazy var addTestButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: String(localized: "addTest"), titleColor: .white)
         
         bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()

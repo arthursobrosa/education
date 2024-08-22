@@ -22,7 +22,7 @@ class SubjectCreationCoordinator: Coordinator, Dismissing {
     }
     
     func start() {
-        let vc = SubjectCreationController(viewModel: self.viewModel)
+        let vc = SubjectCreationViewController(viewModel: self.viewModel)
         vc.coordinator = self
         self.navigationController.pushViewController(vc, animated: true)
     }

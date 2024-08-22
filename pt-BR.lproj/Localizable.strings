@@ -3,12 +3,17 @@
 "cancel" = "Cancelar";
 "save" = "Salvar";
 "none" = "Nenhuma";
-"continue" = "Continar";
+"continue" = "Continuar";
 "start" = "Começar";
 "other" = "Outro";
+"confirm" = "Confirmar";
 
 // MARK: - EmptyView
-"emptyMessage" = "Não há nenhum(a) %@s aqui... Que tal adicionar um(a)?";
+"emptyDaySchedule" = "Não há nenhum cronograma para esse dia";
+"emptyWeekSchedule" = "Não há nenhum cronograma para essa semana";
+"emptyStudyTime" = "Nenhuma hora de estudo registrada";
+"emptyTheme" = "Você ainda não registrou nenhuma prova";
+"emptyTest" = "Não há nenhum teste atribuído a essa prova";
 
 // MARK: - TabBar
 "scheduleTab" = "Cronograma";
@@ -19,21 +24,21 @@
 // MARK: - Schedule
 "schedule" = "Cronograma";
 "newSchedule" = "Novo";
-"emptySchedule" = "cronograma";
 "createActivity" = "Criar atividade";
 "imediateActivity" = "Criar atividade imediata";
 "timeLeft" = "Em %@h%@m";
 "timeLeftNow" = "Agora";
 "timeLeftFinished" = "Concluído";
 "sunday" = "Domingo";
-"monday" = "Segunda";
-"tuesday" = "Terça";
-"wednesday" = "Quarta";
-"thursday" = "Quinta";
-"friday" = "Sexta";
+"monday" = "Segunda-feira";
+"tuesday" = "Terça-feira";
+"wednesday" = "Quarta-feira";
+"thursday" = "Quinta-feira";
+"friday" = "Sexta-feira";
 "saturday" = "Sábado";
 "reminder" = "Lembrete";
 "comingEvent" = "Seu evento de %@ começará em breve!";
+"imediateEvent" = "Seu evento de %@ começa agora!";
 "addSubjectAlertTitle" = "Adicionar Matéria";
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
@@ -50,7 +55,9 @@
 "subject" = "Matéria";
 "blockApps" = "Bloquear Apps";
 "daily" = "Diário";
-"weekly" = "Semeanal";
+"weekly" = "Semanal";
+"noSubjectTitle" = "Você não pode criar um cronograma";
+"noSubjectMessage" = "Você deve criar uma matéria antes de configurar um cronograma";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
@@ -63,7 +70,7 @@
 "alarm" = "Alarme";
 "showTimeCount" = "Mostrar contagem de tempo";
 "paused" = "Pausado";
-"subjectActivity" = "Ativide de %@";
+"subjectActivity" = "Atividade de %@";
 "newActivity" = "Nova atividade";
 "interval" = "Intervalo";
 "timerAlertTitle" = "Tempo acabou!";
@@ -71,22 +78,25 @@
 "focusFinish" = "Finalizar";
 
 // MARK: - Subjects
+"subject" = "Matéria";
 "saveSubject" = "Salvar Matéria";
 "addSubjectName" = "Insira o nome da matéria";
 "studyTimeLastWeek" = "Última semana";
 "studyTimeLastMonth" = "Último mês";
 "studyTimeLastYear" = "Último ano";
-"emptyStudyTime" = "tempo de estudo";
-"emptySubject" = "matéria";
+"deleteSubjectTitle" = "Excluir matéria";
+"deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades também serão excluídos.";
+"subjectCreationTitle" = "Dados inválidos";
+"subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
+"subjectCreationUsedName" = "Já existe uma matéria com este nome.";
+"color" = "Cor";
 
 // MARK: - Themes
-"emptyTheme" = "tema";
 "themeAlertTitle" = "Adicionar Tema";
 "themeAlertMessage" = "Insira o nome do tema:";
 "themeAlertPlaceholder" = "Nome do tema";
 "newTest" = "Novo Teste";
 "addTest" = "Adicionar Teste";
-"emptyTest" = "teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
 "rightQuestions" = "Questões Corretas";

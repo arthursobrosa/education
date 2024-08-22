@@ -12,12 +12,19 @@ class ScheduleView: UIView {
     weak var delegate: ScheduleDelegate? {
         didSet {
             delegate?.setPicker(self.picker)
+            delegate?.setSegmentedControl(self.viewModeSelector)
         }
     }
     
-    weak var viewModeDelegate: ViewModeSelectorDelegate? 
-    
     // MARK: - UI Components
+    let viewModeSelector: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl()
+        
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return segmentedControl
+    }()
+    
     let picker: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -32,17 +39,6 @@ class ScheduleView: UIView {
         return stack
     }()
     
-     let viewModeSelector: UISegmentedControl = {
-          let segmentedControl = UISegmentedControl(items: [String(localized: "daily"), String(localized: "weekly")])
-          segmentedControl.selectedSegmentIndex = 0
-          segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-          segmentedControl.backgroundColor = .black
-          segmentedControl.selectedSegmentTintColor = .gray
-          segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
-          segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-          return segmentedControl
-      }()
-    
     let contentView: UIView = {
         let view = UIView()
         
@@ -54,60 +50,64 @@ class ScheduleView: UIView {
     let tableView: UITableView = {
         let table = UITableView()
         table.separatorStyle = .none
-
+        
         table.translatesAutoresizingMaskIntoConstraints = false
         
         return table
     }()
     
-    let collectionViews: UICollectionView = {
-        
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.isHidden = true
+        
         return collection
     }()
     
-    let emptyView = EmptyView(object: String(localized: "emptySchedule"))
+    var emptyView = EmptyView(message: String(localized: "emptyDaySchedule"))
     
     lazy var overlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5) // Fundo semitransparente
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
         view.alpha = 0
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
         return view
     }()
     
     lazy var createAcitivityButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(configuration: .filled())
         button.setTitle(String(localized: "createActivity"), for: .normal)
         button.setTitleColor(.systemBackground, for: .normal)
-        button.backgroundColor = .label
+        button.tintColor = .label
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         
         button.addTarget(self, action: #selector(createActivityButtonTapped), for: .touchUpInside)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     lazy var startActivityButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(configuration: .filled())
         button.setTitle(String(localized: "imediateActivity"), for: .normal)
         button.setTitleColor(.systemBackground, for: .normal)
-        button.backgroundColor = .label
+        button.tintColor = .label
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         
         button.addTarget(self, action: #selector(startActivityTapped), for: .touchUpInside)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
     }()
@@ -117,8 +117,6 @@ class ScheduleView: UIView {
         super.init(frame: frame)
         
         self.setupUI()
-        
-        viewModeSelector.addTarget(self, action: #selector(viewModeChanged(_:)), for: .valueChanged)
     }
     
     required init?(coder: NSCoder) {
@@ -133,15 +131,10 @@ class ScheduleView: UIView {
         self.delegate?.startAcitivityTapped()
     }
     
-    @objc private func viewModeChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-            self.viewModeDelegate?.didSelectDailyModeToday()
-        case 1:
-            self.viewModeDelegate?.didSelectWeeklyMode()
-        default:
-            break
-        }
+    func changeEmptyView(isDaily: Bool) {
+        let message = isDaily ? String(localized: "emptyDaySchedule") : String(localized: "emptyWeekSchedule")
+        
+        self.emptyView = EmptyView(message: message)
     }
 }
 
@@ -159,10 +152,9 @@ extension ScheduleView: ViewCodeProtocol {
         let padding = 10.0
         
         NSLayoutConstraint.activate([
-            
             viewModeSelector.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
+            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 2),
             
             picker.topAnchor.constraint(equalTo: self.viewModeSelector.bottomAnchor, constant: padding),
             picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -184,12 +176,10 @@ extension ScheduleView: ViewCodeProtocol {
         NSLayoutConstraint.activate([
             createAcitivityButton.topAnchor.constraint(equalTo: overlayView.topAnchor),
             createAcitivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
-            createAcitivityButton.widthAnchor.constraint(equalToConstant: 160),
             createAcitivityButton.heightAnchor.constraint(equalToConstant: 40),
             
             startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: btnPadding),
             startActivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
-            startActivityButton.widthAnchor.constraint(equalToConstant: 250),
             startActivityButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }

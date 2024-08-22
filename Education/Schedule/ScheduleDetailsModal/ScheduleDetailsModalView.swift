@@ -13,6 +13,7 @@ class ScheduleDetailsModalView: UIView {
     private let startTime: String
     private let endTime: String
     private let color: UIColor?
+    private let dayOfTheWeek: String
 
     
     private lazy var closeButton: UIButton = {
@@ -50,8 +51,8 @@ class ScheduleDetailsModalView: UIView {
     }()
     
     private let nameLabel: UILabel = {
-        
         let lbl = UILabel()
+        lbl.textColor = .white
         lbl.font = UIFont.boldSystemFont(ofSize: 32)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -59,28 +60,14 @@ class ScheduleDetailsModalView: UIView {
     }()
     
     private let dayLabel: UILabel = {
-        
         let lbl = UILabel()
-        let attributedString = NSMutableAttributedString(string: "")
-        let imageAttachment = NSTextAttachment()
         
-        lbl.font = UIFont.systemFont(ofSize: 22)
-        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(.white)
-        imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 22, height: 22)
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        attributedString.append(imageString)
-        attributedString.append(NSAttributedString(string: "  "))
-        attributedString.append(NSAttributedString(string: "Segunda-feira"))
-
-        lbl.attributedText = attributedString
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
     }()
     
     private lazy var hourDetailView: HourDetailsView = {
-        
         let view = HourDetailsView(starTime: self.startTime, endTime: self.endTime)
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -88,30 +75,29 @@ class ScheduleDetailsModalView: UIView {
     }()
     
     private lazy var startButton: UIButton = {
-        
         let btn = UIButton()
+        btn.layer.cornerRadius = 25
+        btn.backgroundColor = .black.withAlphaComponent(0.25)
+        
         let attributedString = NSMutableAttributedString(string: "")
+        
         let imageAttachment = NSTextAttachment()
         let img = UIImage(systemName: "play.fill")
-        
         imageAttachment.image = img?.withTintColor(.white)
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 19, height: 19)
-        
         let imageString = NSAttributedString(attachment: imageAttachment)
-        attributedString.append(NSAttributedString(string: String(localized: "startButton")))
+        
+        let startString = NSAttributedString(string: String(localized: "startButton"), attributes: [.foregroundColor : UIColor.white])
+        
+        attributedString.append(startString)
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(imageString)
         
-
         btn.setAttributedTitle(attributedString, for: .normal)
+        
         btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
         
-        
-        btn.layer.cornerRadius = 25
-        btn.backgroundColor = .black.withAlphaComponent(0.25)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        
-        btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
         
         return btn
     }()
@@ -120,6 +106,7 @@ class ScheduleDetailsModalView: UIView {
         self.startTime = startTime
         self.endTime = endTime
         self.color = color
+        self.dayOfTheWeek = dayOfTheWeek
         
         super.init(frame: .zero)
         
@@ -128,17 +115,33 @@ class ScheduleDetailsModalView: UIView {
         
         self.nameLabel.text = subjectName
         
-        self.dayLabel.text = dayOfTheWeek
-        
+        self.setDayLabel()
         self.setupUI()
         
         self.layer.cornerRadius = 14
         self.layer.borderWidth = 1.5
-        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderColor = UIColor.label.cgColor
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setDayLabel() {
+        let attributedString = NSMutableAttributedString()
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(.white)
+        imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 22, height: 22)
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        
+        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont.systemFont(ofSize: 22), .foregroundColor: UIColor.white])
+        
+        attributedString.append(imageString)
+        attributedString.append(NSAttributedString(string: "  "))
+        attributedString.append(dayString)
+
+        self.dayLabel.attributedText = attributedString
     }
     
     @objc private func didTapCloseButton() {
@@ -189,8 +192,4 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
             startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 321/385),
         ])
     }
-}
-
-#Preview {
-    ScheduleDetailsModalViewController(viewModel: ScheduleDetailsModalViewModel(schedule: Schedule()))
 }

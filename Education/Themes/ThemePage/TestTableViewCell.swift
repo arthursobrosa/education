@@ -42,7 +42,7 @@ class TestTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         if self.traitCollection.userInterfaceStyle == .light {
-            self.backgroundColor = .systemGray5
+            self.backgroundColor = .systemGray3
         }
         
         self.setupUI()

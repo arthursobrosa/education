@@ -47,7 +47,7 @@ extension StudyTimeCoordinator: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let nav = dismissed as? UINavigationController else { return nil}
         
-        if let subjectListVC = nav.viewControllers.first as? SubjectListController {
+        if let subjectListVC = nav.viewControllers.first as? SubjectListViewController {
             self.childDidFinish(subjectListVC.coordinator as? Coordinator)
         
             subjectListVC.viewModel.fetchSubjects()

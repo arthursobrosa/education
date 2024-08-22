@@ -160,7 +160,7 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         cell.accessoryView = self.createAccessoryView(for: indexPath)
         
         if self.traitCollection.userInterfaceStyle == .light {
-            cell.backgroundColor = .systemGray5
+            cell.backgroundColor = .systemGray3
         }
         
         return cell

@@ -19,7 +19,7 @@ extension ScheduleNotificationViewController: ScheduleNotificationDelegate {
         let colorName = self.viewModel.subject.unwrappedColor
         let color = UIColor(named: colorName)
         
-        let newFocusSessionModel = FocusSessionModel(subject: self.viewModel.subject, color: color)
+        let newFocusSessionModel = FocusSessionModel(isPaused: false, subject: self.viewModel.subject, color: color)
         
         self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
