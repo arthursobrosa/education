@@ -115,15 +115,6 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
-<<<<<<< HEAD
-        if let name = userInfo["subjectName"] as? String {
-            let subjectManager = SubjectManager()
-            let subject = subjectManager.fetchSubject(withName: name)
-            
-            self.showFocusSelection(color: .systemBlue, subject: subject)
-        }
-        
-=======
         guard let subjectName = userInfo["subjectName"] as? String,
               let startTime = userInfo["startTime"] as? Date,
               let endTime = userInfo["endTime"] as? Date else {
@@ -133,7 +124,6 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
         
         self.showScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
 
->>>>>>> dev
         completionHandler()
     }
     
