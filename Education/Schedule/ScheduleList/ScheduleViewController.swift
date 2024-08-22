@@ -17,15 +17,15 @@ class ScheduleViewController: UIViewController {
         let view = ScheduleView()
         
         view.delegate = self
-        view.viewModeDelegate = self
         
-        view.collectionViews.dataSource = self
-        view.collectionViews.delegate = self
         view.tableView.dataSource = self
         view.tableView.delegate = self
         view.tableView.register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.identifier)
-        view.collectionViews.register(TaskCell.self, forCellWithReuseIdentifier: TaskCell.identifier)
-        view.collectionViews.register(EmptyCell.self, forCellWithReuseIdentifier: EmptyCell.identifier)
+        
+        view.collectionView.dataSource = self
+        view.collectionView.delegate = self
+        view.collectionView.register(TaskCell.self, forCellWithReuseIdentifier: TaskCell.identifier)
+        view.collectionView.register(EmptyCell.self, forCellWithReuseIdentifier: EmptyCell.identifier)
         
         return view
     }()
@@ -68,7 +68,7 @@ class ScheduleViewController: UIViewController {
     }
     
     // MARK: - Methods
-    private func reloadTable() {
+    func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
@@ -76,11 +76,11 @@ class ScheduleViewController: UIViewController {
         }
     }
     
-    private func reloadCollection() {
+    func reloadCollection() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
-            self.scheduleView.collectionViews.reloadData()
+            self.scheduleView.collectionView.reloadData()
         }
     }
     
@@ -98,13 +98,11 @@ class ScheduleViewController: UIViewController {
         let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
         
         dayViews.forEach { dayView in
-            
             if let dayOfWeek = dayView.dayOfWeek {
-                if(dayOfWeek.isToday){
+                if dayOfWeek.isToday {
                     dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
                     self.viewModel.selectedDay = dayView.tag
                 }
-                
             }
         }
     }
@@ -122,19 +120,17 @@ class ScheduleViewController: UIViewController {
     func loadSchedules() {
         self.viewModel.fetchSchedules()
         
-        self.setContentView(isEmpty: self.viewModel.schedules.isEmpty)
+        self.setContentView()
         
         self.reloadTable()
         self.reloadCollection()
     }
     
     @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
-        // Verifica se o toque foi fora dos botões e oculta a overlayView se necessário
-        dismissButtons()
+        self.dismissButtons()
     }
     
     func dismissButtons() {
-        // Esconde a overlayView e os botões se eles estiverem visíveis
         if self.scheduleView.overlayView.alpha == 1 {
             UIView.animate(withDuration: 0.3) {
                 self.scheduleView.overlayView.alpha = 0
@@ -145,7 +141,7 @@ class ScheduleViewController: UIViewController {
     }
     
     func showNoSubjectAlert() {
-        let alertController = UIAlertController(title: "You cannot create a schedule", message: "You have to create a subject beforing setting a schedule", preferredStyle: .alert)
+        let alertController = UIAlertController(title: String(localized: "noSubjectTitle"), message: String(localized: "noSubjectMessage"), preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
         
@@ -217,16 +213,41 @@ extension ScheduleViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - UI Setup
 extension ScheduleViewController {
-    private func setContentView(isEmpty: Bool) {
-        self.scheduleView.removeConstraints(self.scheduleView.emptyView.constraints)
-        self.scheduleView.removeConstraints(self.scheduleView.tableView.constraints)
+    private func setContentView() {
+        self.scheduleView.contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        var isDaily = false
+        var isEmpty = false
+        
+        if self.viewModel.selectedViewMode == .daily {
+            isEmpty = self.viewModel.schedules.isEmpty
+            isDaily = true
+        } else {
+            let numberOfTaks = self.viewModel.tasks.count
+            var emptyTasks = 0
+            
+            for task in self.viewModel.tasks {
+                if task.isEmpty {
+                    emptyTasks += 1
+                }
+            }
+            
+            isEmpty = emptyTasks == numberOfTaks
+            
+            isDaily = false
+        }
         
         if isEmpty {
+            self.scheduleView.changeEmptyView(isDaily: isDaily)
             self.addContentSubview(self.scheduleView.emptyView)
-            self.addContentSubview(self.scheduleView.collectionViews)
         } else {
-            self.addContentSubview(self.scheduleView.tableView)
-            self.addContentSubview(self.scheduleView.collectionViews)
+            if isDaily {
+                self.addContentSubview(self.scheduleView.tableView)
+            } else {
+                self.addContentSubview(self.scheduleView.collectionView)
+            }
         }
     }
     
@@ -271,7 +292,9 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
             let formatter = DateFormatter()
             formatter.timeStyle = .short
             
-            cell.configure(with: firstThreeLetters(of: subject?.unwrappedName ?? ""), startTime: formatter.string(from: task.unwrappedStartTime), endTime: formatter.string(from: task.unwrappedEndTime), bgColor: subject?.unwrappedColor ?? "")
+            let firstThreeLetters = self.viewModel.firstThreeLetters(of: subject?.unwrappedName ?? String())
+            
+            cell.configure(with: firstThreeLetters, startTime: formatter.string(from: task.unwrappedStartTime), endTime: formatter.string(from: task.unwrappedEndTime), bgColor: subject?.unwrappedColor ?? "")
             
             return cell
         }
@@ -307,5 +330,4 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-    
 }

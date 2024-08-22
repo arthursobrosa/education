@@ -20,7 +20,7 @@ class ScheduleDetailsView: UIView {
     }()
     
     private lazy var saveButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "save"), titleColor: .systemGray)
+        let bttn = ButtonComponent(title: String(localized: "save"), titleColor: .white)
         bttn.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         return bttn
     }()

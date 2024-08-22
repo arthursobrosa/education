@@ -53,8 +53,6 @@ class StudyTimeViewController: UIViewController {
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
             
-            self.studyTimeView.changeEmptyView(emptySubject: subjects.isEmpty)
-            
             self.reloadTable()
         }
         
@@ -135,15 +133,16 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension StudyTimeViewController {
+private extension StudyTimeViewController {
     func setContentView(isEmpty: Bool) {
-        self.studyTimeView.emptyView.removeFromSuperview()
-        self.studyTimeView.chartController.view.removeFromSuperview()
+        self.studyTimeView.contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
         
         self.addContentSubview(isEmpty ? self.studyTimeView.emptyView : self.studyTimeView.chartController.view)
     }
     
-    private func addContentSubview(_ subview: UIView) {
+    func addContentSubview(_ subview: UIView) {
         self.studyTimeView.contentView.addSubview(subview)
         
         subview.translatesAutoresizingMaskIntoConstraints = false

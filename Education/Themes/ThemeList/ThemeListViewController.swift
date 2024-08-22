@@ -28,7 +28,7 @@ class ThemeListViewController: UIViewController {
         return tableView
     }()
     
-    private let emptyView = EmptyView(object: String(localized: "emptyTheme"))
+    private let emptyView = EmptyView(message: String(localized: "emptyTheme"))
     
     // MARK: - Initialization
     init(viewModel: ThemeListViewModel) {
@@ -120,7 +120,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.accessoryView = createAccessoryView()
         
         if self.traitCollection.userInterfaceStyle == .light {
-            cell.backgroundColor = .systemGray5
+            cell.backgroundColor = .systemGray3
         }
         
         return cell

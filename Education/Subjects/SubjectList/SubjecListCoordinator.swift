@@ -24,7 +24,7 @@ class SubjectListCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Dis
     }
     
     func start() {
-        let vc = SubjectListController(viewModel: self.viewModel)
+        let vc = SubjectListViewController(viewModel: self.viewModel)
         vc.coordinator = self
         
         self.newNavigationController = UINavigationController(rootViewController: vc)
@@ -62,7 +62,7 @@ extension SubjectListCoordinator: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let nav = dismissed as? UINavigationController else { return nil}
         
-        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationController {
+        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
             self.childDidFinish(subjectCreationVC.coordinator as? Coordinator)
             
             subjectCreationVC.viewModel.fetchSubjects()

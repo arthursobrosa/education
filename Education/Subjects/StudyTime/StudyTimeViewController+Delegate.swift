@@ -8,11 +8,11 @@
 import UIKit
 
 protocol StudyTimeDelegate: AnyObject {
-    func setPicker(_ picker: UISegmentedControl)
+    func setSegmentedControl(_ picker: UISegmentedControl)
 }
 
 extension StudyTimeViewController: StudyTimeDelegate {
-    func setPicker(_ picker: UISegmentedControl) {
+    func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
         let dateRanges = self.viewModel.dateRanges.map { $0.name }
         let selectedDateRange = self.viewModel.selectedDateRange.name
         
@@ -21,10 +21,10 @@ extension StudyTimeViewController: StudyTimeDelegate {
                 self.viewModel.selectedDateRange = self.viewModel.dateRanges[index]
             }
             
-            picker.insertSegment(action: action, at: index, animated: false)
+            segmentedControl.insertSegment(action: action, at: index, animated: false)
             
             if dateRange == selectedDateRange {
-                picker.selectedSegmentIndex = index
+                segmentedControl.selectedSegmentIndex = index
             }
         }
     }
