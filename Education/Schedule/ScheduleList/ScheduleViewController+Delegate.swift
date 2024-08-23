@@ -34,11 +34,10 @@ extension ScheduleViewController: ScheduleDelegate {
             let action = UIAction(title: viewMode) { _ in
                 self.viewModel.selectedViewMode = self.viewModel.viewModes[index]
                 
-                self.loadSchedules()
-                
                 switch index {
                     case 0:
                         self.selectToday()
+                        self.loadSchedules()
                     case 1:
                         self.unselectDays()
                     default:

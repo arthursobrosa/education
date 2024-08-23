@@ -39,6 +39,12 @@ class FocusSelectionViewController: UIViewController {
         self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
         
         self.setupUI()
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.focusSelectionView.layer.borderColor = UIColor.label.cgColor
+        }
     }
 }
 

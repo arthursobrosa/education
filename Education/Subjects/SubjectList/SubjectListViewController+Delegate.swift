@@ -13,6 +13,8 @@ protocol SubjectListDelegate: AnyObject {
 
 extension SubjectListViewController: SubjectListDelegate {
     func addButtonTapped() {
+        self.viewModel.currentEditingSubject = nil
+        self.viewModel.selectedSubjectColor.value = self.viewModel.subjectColors[0]
         self.coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 }

@@ -53,6 +53,13 @@ class FocusImediateViewController: UIViewController {
             self.subjects = subjects
             self.reloadTable()
         }
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.reloadTable()
+            self.focusImediateView.layer.borderColor = UIColor.label.cgColor
+        }
     }
     
     private func reloadTable() {

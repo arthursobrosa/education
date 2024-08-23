@@ -45,6 +45,12 @@ class ScheduleDetailsModalViewController: UIViewController {
         self.setupUI()
         
         self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.scheduleModalView.layer.borderColor = UIColor.label.cgColor
+        }
     }
 }
 

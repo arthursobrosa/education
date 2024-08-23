@@ -49,7 +49,7 @@ class TestPageView: UIView {
     }()
     
     private lazy var addTestButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "addTest"), titleColor: .white)
+        let bttn = ButtonComponent(title: String(localized: "addTest"))
         
         bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
         

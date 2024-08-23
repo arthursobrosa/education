@@ -64,9 +64,7 @@ class StudyTimeViewController: UIViewController {
             self.reloadTable()
         }
         
-        let listButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(listButtonTapped))
-        listButton.tintColor = .label
-        navigationItem.rightBarButtonItem = listButton
+        self.setNavigationItems()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +75,18 @@ class StudyTimeViewController: UIViewController {
     }
     
     // MARK: - Methods
+    private func setNavigationItems() {
+        let listButton = UIButton()
+        listButton.setImage(UIImage(systemName: "list.bullet"), for: .normal)
+        listButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
+        listButton.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
+        listButton.tintColor = .label
+        
+        let listItem = UIBarButtonItem(customView: listButton)
+        
+        self.navigationItem.rightBarButtonItems = [listItem]
+    }
+    
     func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }

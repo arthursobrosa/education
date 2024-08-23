@@ -12,8 +12,7 @@ class ScheduleNotificationViewController: UIViewController {
     weak var coordinator: (ShowingFocusSelection & Dismissing)?
     let viewModel: ScheduleNotificationViewModel
     
-    private lazy var scheduleModalView: ScheduleNotificationView = {
-        
+    private lazy var scheduleNotificationView: ScheduleNotificationView = {
         let colorName = self.viewModel.subject.unwrappedColor
         let color = UIColor(named: colorName)
         let startTime = self.viewModel.getTimeString(isStartTime: true)
@@ -44,18 +43,24 @@ class ScheduleNotificationViewController: UIViewController {
         self.setupUI()
         
         self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.scheduleNotificationView.layer.borderColor = UIColor.label.cgColor
+        }
     }
 }
 
 extension ScheduleNotificationViewController: ViewCodeProtocol {
     func setupUI() {
-        self.view.addSubview(scheduleModalView)
+        self.view.addSubview(scheduleNotificationView)
         
         NSLayoutConstraint.activate([
-            scheduleModalView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 588/844),
-            scheduleModalView.widthAnchor.constraint(equalTo: scheduleModalView.heightAnchor, multiplier: 359/588),
-            scheduleModalView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            scheduleModalView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            scheduleNotificationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 588/844),
+            scheduleNotificationView.widthAnchor.constraint(equalTo: scheduleNotificationView.heightAnchor, multiplier: 359/588),
+            scheduleNotificationView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            scheduleNotificationView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
     }
 }

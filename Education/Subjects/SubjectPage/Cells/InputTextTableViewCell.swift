@@ -16,7 +16,7 @@ class InputTextTableViewCell: UITableViewCell {
         }
     }
     
-    private lazy var textField: UITextField = {
+    lazy var textField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
         textField.placeholder = String(localized: "subject")

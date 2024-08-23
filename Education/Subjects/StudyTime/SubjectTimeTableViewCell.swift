@@ -14,10 +14,10 @@ class SubjectTimeTableViewCell: UITableViewCell{
         didSet {
             if let subject {
                 self.subjectName.text = subject.unwrappedName
-                self.subjectName.textColor = UIColor(named: subject.unwrappedColor)
+                self.colorCircle.backgroundColor = UIColor(named: subject.unwrappedColor)
             } else {
                 self.subjectName.text = String(localized: "other")
-                self.subjectName.textColor = UIColor(named: "sealBackgroundColor")
+                self.colorCircle.backgroundColor = UIColor(named: "sealBackgroundColor")
             }
         }
     }
@@ -31,10 +31,18 @@ class SubjectTimeTableViewCell: UITableViewCell{
     }
     
     // MARK: - UI Components
+    private let colorCircle: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 12.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var subjectName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
+        label.textColor = .label
         return label
     }()
     
@@ -49,11 +57,9 @@ class SubjectTimeTableViewCell: UITableViewCell{
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        if self.traitCollection.userInterfaceStyle == .light {
-            self.backgroundColor = .systemGray3
-        }
-        
         self.setupUI()
+        
+        self.backgroundColor = .systemGray6
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -61,14 +67,20 @@ class SubjectTimeTableViewCell: UITableViewCell{
     }
     
     private func setupUI() {
+        self.contentView.addSubview(colorCircle)
         self.contentView.addSubview(subjectName)
         self.contentView.addSubview(totalHours)
         
         let padding = 10.0
         
         NSLayoutConstraint.activate([
-            subjectName.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            subjectName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            colorCircle.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: padding),
+            colorCircle.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            colorCircle.widthAnchor.constraint(equalToConstant: 25),
+            colorCircle.heightAnchor.constraint(equalToConstant: 25),
+            
+            subjectName.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            subjectName.leadingAnchor.constraint(equalTo: colorCircle.trailingAnchor, constant: padding),
             
             totalHours.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             totalHours.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),

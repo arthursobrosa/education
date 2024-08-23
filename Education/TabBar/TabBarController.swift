@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
     let schedule = ScheduleCoordinator(navigationController: UINavigationController())
     private let studytime = StudyTimeCoordinator(navigationController: UINavigationController())
     private lazy var themeList = ThemeListCoordinator(navigationController: UINavigationController(), themeListViewModel: self.themeListViewModel)
-    private let profile = ProfileCoordinator(navigationController: UINavigationController())
+    private let settings = SettingsCoordinator(navigationController: UINavigationController())
     
     lazy var activityView: ActivityView = {
         let view = ActivityView()
@@ -50,10 +50,10 @@ class TabBarController: UITabBarController {
         themeList.start()
         themeList.navigationController.tabBarItem = UITabBarItem(title: String(localized: "themeTab"), image: UIImage(systemName: "list.bullet.clipboard"), tag: 2)
         
-        profile.start()
-        profile.navigationController.tabBarItem = UITabBarItem(title: String(localized: "profileTab"), image: UIImage(systemName: "person"), tag: 3)
+        settings.start()
+        settings.navigationController.tabBarItem = UITabBarItem(title: String(localized: "settingsTab"), image: UIImage(systemName: "gearshape"), tag: 3)
         
-        self.viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, profile.navigationController]
+        self.viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, settings.navigationController]
     }
     
     override func viewDidLayoutSubviews() {

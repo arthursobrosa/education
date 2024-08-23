@@ -49,6 +49,12 @@ class FocusPickerViewController: UIViewController {
         self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
         
         self.setupUI()
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.focusPickerView.layer.borderColor = UIColor.label.cgColor
+        }
     }
     
     @objc private func didChangeToggle(_ sender: UISwitch) {

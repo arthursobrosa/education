@@ -61,20 +61,13 @@ class SubjectListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
         self.viewModel.fetchSubjects()
+        
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
-            print("caiu")
-            handleEmptyView()
+            
+            self.handleEmptyView()
         }
-        
-//
-//        self.viewModel.fetchSubjects()
-//        self.viewModel.subjects.bind { [weak self] subjects in
-//            self?.reloadTable()
-//        }
-        //print(self.viewModel.subjects.value)
     }
     
     
@@ -116,7 +109,6 @@ extension SubjectListViewController: UITableViewDataSource, UITableViewDelegate 
         }
         
         let subject = self.viewModel.subjects.value[indexPath.row]
-        //print(subject)
         cell.configure(with: subject)
         
         return cell
@@ -144,5 +136,11 @@ extension SubjectListViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let subject = self.viewModel.subjects.value[indexPath.row]
+        
+        self.viewModel.currentEditingSubject = subject
+        self.viewModel.selectedSubjectColor.value = subject.unwrappedColor
+        self.coordinator?.showSubjectCreation(viewModel: self.viewModel)
     }
 }

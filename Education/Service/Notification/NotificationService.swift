@@ -35,10 +35,6 @@ class NotificationService {
         let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd-HH-mm-ss"
-        let dateString = dateFormatter.string(from: date)
-        
         let requestId = subjectName
         let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
         

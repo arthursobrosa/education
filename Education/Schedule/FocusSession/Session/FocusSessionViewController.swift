@@ -54,6 +54,12 @@ class FocusSessionViewController: UIViewController {
         self.setNavigationTitle()
         
         self.bindActivity()
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.focusSessionView.updateTimerTracker()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

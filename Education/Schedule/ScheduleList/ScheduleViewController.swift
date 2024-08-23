@@ -53,12 +53,16 @@ class ScheduleViewController: UIViewController {
         
         self.view.backgroundColor = .systemBackground
         
-        let addScheduleButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addScheduleButtonTapped))
-        addScheduleButton.tintColor = .label
-        self.navigationItem.rightBarButtonItems = [addScheduleButton]
+        self.setNavigationItems()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
         self.scheduleView.overlayView.addGestureRecognizer(tapGesture)
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.loadSchedules()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,6 +72,20 @@ class ScheduleViewController: UIViewController {
     }
     
     // MARK: - Methods
+    private func setNavigationItems() {
+        let addButton = UIButton()
+        addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
+        addButton.addTarget(self, action: #selector(addScheduleButtonTapped), for: .touchUpInside)
+        addButton.tintColor = .label
+        
+        let addItem = UIBarButtonItem(customView: addButton)
+        
+        self.navigationItem.rightBarButtonItems = [addItem]
+        
+        self.navigationItem.title = self.viewModel.getTitleString()
+    }
+    
     func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }

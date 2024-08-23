@@ -159,9 +159,7 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         cell.textLabel?.text = self.createCellTitle(for: indexPath)
         cell.accessoryView = self.createAccessoryView(for: indexPath)
         
-        if self.traitCollection.userInterfaceStyle == .light {
-            cell.backgroundColor = .systemGray3
-        }
+        cell.backgroundColor = .systemGray5
         
         return cell
     }

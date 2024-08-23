@@ -20,7 +20,7 @@
 "scheduleTab" = "Schedule";
 "subjectTab" = "Subjects";
 "themeTab" = "Exams";
-"profileTab" = "Profile";
+"settingsTab" = "Settings";
 
 // MARK: - Schedule
 "schedule" = "Schedule";
@@ -105,7 +105,9 @@
 "totalQuestions" = "Total Questions";
 "themeTableDetail" = "Detail";
 
-// MARK: - Profile
+// MARK: - Settings
+"blockAppsTitle" = "Block apps";
+"notificationsTitle" = "Notifications";
 "selectBlockedApps" = "Select Blocked Apps";
 "activateNotification" = "Activate Notification";
 

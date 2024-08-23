@@ -82,13 +82,17 @@ class SubjectCreationViewController: UIViewController{
             return
         }
         
-        let existingSubjects = viewModel.subjects.value
-        if existingSubjects.contains(where: { $0.name?.lowercased() == name.lowercased() }) {
-            showAlert(message: String(localized: "subjectCreationUsedName"))
-            return
+        if self.viewModel.currentEditingSubject != nil {
+            self.viewModel.updateSubject(name: name, color: self.viewModel.selectedSubjectColor.value)
+        } else {
+            let existingSubjects = viewModel.subjects.value
+            if existingSubjects.contains(where: { $0.name?.lowercased() == name.lowercased() }) {
+                showAlert(message: String(localized: "subjectCreationUsedName"))
+                return
+            }
+            
+            self.viewModel.createSubject(name: name, color: self.viewModel.selectedSubjectColor.value)
         }
-        
-        self.viewModel.createSubject(name: name, color: self.viewModel.selectedSubjectColor.value)
         
         self.coordinator?.dismiss(animated: true)
     }
@@ -234,9 +238,12 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
                     fatalError("Could not dequeue cell")
                 }
                 
-                if self.traitCollection.userInterfaceStyle == .light {
-                    cell.backgroundColor = .systemGray3
+                if let currentEditingSubject = self.viewModel.currentEditingSubject {
+                    cell.textField.text = currentEditingSubject.unwrappedName
+                    self.subjectName = currentEditingSubject.unwrappedName
                 }
+                
+                cell.backgroundColor = .systemGray5
                 
                 cell.delegate = self
                 
@@ -246,9 +253,7 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
                     fatalError("Could not dequeue cell")
                 }
                 
-                if self.traitCollection.userInterfaceStyle == .light {
-                    cell.backgroundColor = .systemGray3
-                }
+                cell.backgroundColor = .systemGray5
                 
                 cell.color = self.viewModel.selectedSubjectColor.value
                 

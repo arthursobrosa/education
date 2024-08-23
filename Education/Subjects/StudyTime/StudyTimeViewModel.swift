@@ -74,6 +74,7 @@ class StudyTimeViewModel: ObservableObject {
     let subjectColors = ["bluePicker", "blueSkyPicker", "olivePicker", "orangePicker", "pinkPicker", "redPicker", "turquoisePicker", "violetPicker", "yellowPicker"]
     
     lazy var selectedSubjectColor: Box<String> = Box(self.subjectColors[0])
+    var currentEditingSubject: Subject?
     
     // MARK: - Initializer
     init(subjectManager: SubjectManager = SubjectManager(), focusSessionManager: FocusSessionManager = FocusSessionManager()) {
@@ -165,6 +166,17 @@ class StudyTimeViewModel: ObservableObject {
     
     func createSubject(name: String, color: String) {
         subjectManager.createSubject(name: name, color: color)
+    }
+    
+    func updateSubject(name: String, color: String) {
+        guard let currentEditingSubject else { return }
+        
+        if let subject = self.subjectManager.fetchSubject(withID: currentEditingSubject.unwrappedID) {
+            subject.name = name
+            subject.color = color
+            
+            self.subjectManager.updateSubject(subject)
+        }
     }
     
     func removeSubject(subject: Subject?) {
