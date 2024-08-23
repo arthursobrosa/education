@@ -136,7 +136,7 @@ class ScheduleViewModel {
     }
     
     func getTitleString() -> String {
-        var dateFormatter = DateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM, "
         
         let month = dateFormatter.string(from: Date()).capitalized
