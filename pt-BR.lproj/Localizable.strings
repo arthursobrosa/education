@@ -94,9 +94,9 @@
 "color" = "Cor";
 
 // MARK: - Themes
-"themeAlertTitle" = "Adicionar Tema";
-"themeAlertMessage" = "Insira o nome do tema:";
-"themeAlertPlaceholder" = "Nome do tema";
+"themeAlertTitle" = "Adicionar prova";
+"themeAlertMessage" = "Insira o nome da prova:";
+"themeAlertPlaceholder" = "Nome da prova";
 "newTest" = "Novo Teste";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";

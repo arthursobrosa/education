@@ -94,9 +94,9 @@
 "color" = "Color";
 
 // MARK: - Themes
-"themeAlertTitle" = "Add Theme";
-"themeAlertMessage" = "Enter theme name:";
-"themeAlertPlaceholder" = "Theme name";
+"themeAlertTitle" = "Add exam";
+"themeAlertMessage" = "Enter exam name:";
+"themeAlertPlaceholder" = "Exam name";
 "newTest" = "New Test";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
