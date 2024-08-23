@@ -37,12 +37,13 @@ extension ScheduleViewController: ScheduleDelegate {
                 switch index {
                     case 0:
                         self.selectToday()
-                        self.loadSchedules()
                     case 1:
                         self.unselectDays()
                     default:
                         break
                 }
+                
+                self.loadSchedules()
             }
             
             segmentedControl.insertSegment(action: action, at: index, animated: false)
