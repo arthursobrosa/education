@@ -41,9 +41,7 @@ class TestTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        if self.traitCollection.userInterfaceStyle == .light {
-            self.backgroundColor = .systemGray3
-        }
+        self.backgroundColor = .systemGray6
         
         self.setupUI()
     }

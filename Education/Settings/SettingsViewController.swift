@@ -1,5 +1,5 @@
 //
-//  ProfileViewController.swift
+//  SettingsViewController.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 07/08/24.
@@ -8,11 +8,11 @@
 import UIKit
 import SwiftUI
 
-class ProfileViewController: UIViewController {
-    weak var coordinator: ProfileCoordinator?
-    private let viewModel: ProfileViewModel
+class SettingsViewController: UIViewController {
+    weak var coordinator: SettingsCoordinator?
+    private let viewModel: SettingsViewModel
     
-    private lazy var profileTableView: UITableView = {
+    private lazy var settingsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .systemBackground
         
@@ -25,7 +25,7 @@ class ProfileViewController: UIViewController {
     
     private let swiftUIFamilyPickerView = FamilyActivityPickerView()
     
-    init(viewModel: ProfileViewModel) {
+    init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -34,7 +34,7 @@ class ProfileViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.view = self.profileTableView
+        self.view = self.settingsTableView
     }
     
     required init?(coder: NSCoder) {
@@ -65,7 +65,7 @@ class ProfileViewController: UIViewController {
     }
 }
 
-extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
+extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -91,32 +91,32 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         cell.textLabel?.text = cellText
-        
-        if cell.traitCollection.userInterfaceStyle == .light {
-            cell.backgroundColor = .systemGray3
-        }
+        cell.backgroundColor = .systemGray6
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let section = indexPath.section
       
         switch section {
             case 0:
-            self.showFamilyActivityPicker()
+                self.showFamilyActivityPicker()
             case 1:
-            NotificationService.shared.requestAuthorization { granted, error in
-                if granted {
-                    print("notification persimission granted")
-                } else if let error {
-                    print(error.localizedDescription)
-                }
-            }
-        
+                self.viewModel.requestNoficationAuthorization()
             default:
                 break
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+            case 0:
+                return String(localized: "blockAppsTitle")
+            case 1:
+                return String(localized: "notificationsTitle")
+            default:
+                return String()
         }
     }
 }

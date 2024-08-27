@@ -34,8 +34,6 @@ extension ScheduleViewController: ScheduleDelegate {
             let action = UIAction(title: viewMode) { _ in
                 self.viewModel.selectedViewMode = self.viewModel.viewModes[index]
                 
-                self.loadSchedules()
-                
                 switch index {
                     case 0:
                         self.selectToday()
@@ -44,6 +42,8 @@ extension ScheduleViewController: ScheduleDelegate {
                     default:
                         break
                 }
+                
+                self.loadSchedules()
             }
             
             segmentedControl.insertSegment(action: action, at: index, animated: false)

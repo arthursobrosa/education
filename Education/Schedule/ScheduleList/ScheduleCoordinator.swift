@@ -21,7 +21,6 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         let viewModel = ScheduleViewModel()
         let vc = ScheduleViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = String(localized: "schedule")
         
         self.navigationController.pushViewController(vc, animated: false)
     }

@@ -20,7 +20,7 @@
 "scheduleTab" = "Schedule";
 "subjectTab" = "Subjects";
 "themeTab" = "Exams";
-"profileTab" = "Profile";
+"settingsTab" = "Settings";
 
 // MARK: - Schedule
 "schedule" = "Schedule";
@@ -94,9 +94,9 @@
 "color" = "Color";
 
 // MARK: - Themes
-"themeAlertTitle" = "Add Theme";
-"themeAlertMessage" = "Enter theme name:";
-"themeAlertPlaceholder" = "Theme name";
+"themeAlertTitle" = "Add exam";
+"themeAlertMessage" = "Enter exam name:";
+"themeAlertPlaceholder" = "Exam name";
 "newTest" = "New Test";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
@@ -105,7 +105,9 @@
 "totalQuestions" = "Total Questions";
 "themeTableDetail" = "Detail";
 
-// MARK: - Profile
+// MARK: - Settings
+"blockAppsTitle" = "Block apps";
+"notificationsTitle" = "Notifications";
 "selectBlockedApps" = "Select Blocked Apps";
 "activateNotification" = "Activate Notification";
 

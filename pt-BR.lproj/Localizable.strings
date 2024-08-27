@@ -20,7 +20,7 @@
 "scheduleTab" = "Cronograma";
 "subjectTab" = "Matérias";
 "themeTab" = "Provas";
-"profileTab" = "Perfil";
+"settingsTab" = "Ajustes";
 
 // MARK: - Schedule
 "schedule" = "Cronograma";
@@ -94,9 +94,9 @@
 "color" = "Cor";
 
 // MARK: - Themes
-"themeAlertTitle" = "Adicionar Tema";
-"themeAlertMessage" = "Insira o nome do tema:";
-"themeAlertPlaceholder" = "Nome do tema";
+"themeAlertTitle" = "Adicionar prova";
+"themeAlertMessage" = "Insira o nome da prova:";
+"themeAlertPlaceholder" = "Nome da prova";
 "newTest" = "Novo Teste";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
@@ -105,7 +105,9 @@
 "totalQuestions" = "Total de Questões";
 "themeTableDetail" = "Detalhe";
 
-// MARK: - Profile
+// MARK: - Settings
+"blockAppsTitle" = "Bloqueio de apps";
+"notificationsTitle" = "Notificações";
 "selectBlockedApps" = "Selecione os Apps Bloqueados";
 "activateNotification" = "Ativar Notificação";
 

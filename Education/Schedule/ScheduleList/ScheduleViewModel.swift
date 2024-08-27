@@ -134,4 +134,17 @@ class ScheduleViewModel {
     func firstThreeLetters(of text: String) -> String {
         return String(text.prefix(3))
     }
+    
+    func getTitleString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM, "
+        
+        let month = dateFormatter.string(from: Date()).capitalized
+        
+        dateFormatter.dateFormat = "YYYY"
+        
+        let year = dateFormatter.string(from: Date()).capitalized
+        
+        return month + year
+    }
 }

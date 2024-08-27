@@ -61,8 +61,8 @@
 		683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		683B45452C1B6F3B00663912 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 683B45442C1B6F3B00663912 /* Base */; };
 		683B5BE22C682B270065121E /* DismissingAfterModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B5BE12C682B270065121E /* DismissingAfterModal.swift */; };
-		684282222C63B80A00CEEF1C /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684282212C63B80A00CEEF1C /* ProfileCoordinator.swift */; };
-		684282242C63B83300CEEF1C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684282232C63B83300CEEF1C /* ProfileViewController.swift */; };
+		684282222C63B80A00CEEF1C /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684282212C63B80A00CEEF1C /* SettingsCoordinator.swift */; };
+		684282242C63B83300CEEF1C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684282232C63B83300CEEF1C /* SettingsViewController.swift */; };
 		684BF88B2C346F1F005E63BE /* CoreDataTestStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF88A2C346F1F005E63BE /* CoreDataTestStack.swift */; };
 		684BF8912C346FE3005E63BE /* SubjectManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8902C346FE3005E63BE /* SubjectManagerTest.swift */; };
 		684BF8932C347856005E63BE /* ScheduleManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8922C347856005E63BE /* ScheduleManagerTest.swift */; };
@@ -161,7 +161,7 @@
 		CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9B2C6D371200160F17 /* ScheduleNotificationNameCard.swift */; };
 		CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */; };
 		CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */; };
-		CE6A12522C63EEDC00549DCC /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A12512C63EEDC00549DCC /* ProfileViewModel.swift */; };
+		CE6A12522C63EEDC00549DCC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */; };
 		CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */; };
 		CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB352C5BFD7E00297062 /* SelectionButton.swift */; };
 		CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */; };
@@ -245,8 +245,8 @@
 		683B45442C1B6F3B00663912 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		683B45462C1B6F3B00663912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		683B5BE12C682B270065121E /* DismissingAfterModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissingAfterModal.swift; sourceTree = "<group>"; };
-		684282212C63B80A00CEEF1C /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
-		684282232C63B83300CEEF1C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		684282212C63B80A00CEEF1C /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
+		684282232C63B83300CEEF1C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		684BF8812C346E9A005E63BE /* EducationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EducationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		684BF88A2C346F1F005E63BE /* CoreDataTestStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestStack.swift; sourceTree = "<group>"; };
 		684BF8902C346FE3005E63BE /* SubjectManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectManagerTest.swift; sourceTree = "<group>"; };
@@ -350,7 +350,7 @@
 		CE4D4C9B2C6D371200160F17 /* ScheduleNotificationNameCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationNameCard.swift; sourceTree = "<group>"; };
 		CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationViewController.swift; sourceTree = "<group>"; };
 		CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetailsModal.swift; sourceTree = "<group>"; };
-		CE6A12512C63EEDC00549DCC /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionView.swift; sourceTree = "<group>"; };
 		CED3DB352C5BFD7E00297062 /* SelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; };
 		CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSelectionViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -599,7 +599,7 @@
 				302E06972C3F142600FAD574 /* Schedule */,
 				317C112F2C3EF70500C5E7A5 /* Subjects */,
 				30F216A12C2C883900B7114F /* Themes */,
-				684282202C63B80200CEEF1C /* Profile */,
+				684282202C63B80200CEEF1C /* Settings */,
 				68AD1B472C65633F0025DC95 /* Service */,
 				6833B21A2C3456C9009EA63D /* Utils */,
 				6887D5B42C38697400F037F2 /* Components */,
@@ -610,14 +610,14 @@
 			path = Education;
 			sourceTree = "<group>";
 		};
-		684282202C63B80200CEEF1C /* Profile */ = {
+		684282202C63B80200CEEF1C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				684282212C63B80A00CEEF1C /* ProfileCoordinator.swift */,
-				684282232C63B83300CEEF1C /* ProfileViewController.swift */,
-				CE6A12512C63EEDC00549DCC /* ProfileViewModel.swift */,
+				684282212C63B80A00CEEF1C /* SettingsCoordinator.swift */,
+				684282232C63B83300CEEF1C /* SettingsViewController.swift */,
+				CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */,
 			);
-			path = Profile;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		684BF8822C346E9A005E63BE /* EducationTests */ = {
@@ -1034,7 +1034,7 @@
 				6823766B2C63E86E00255143 /* DismissingAll.swift in Sources */,
 				317C11372C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift in Sources */,
 				68CA87DC2C5D5428006ED5FA /* FocusPickerViewModel.swift in Sources */,
-				684282222C63B80A00CEEF1C /* ProfileCoordinator.swift in Sources */,
+				684282222C63B80A00CEEF1C /* SettingsCoordinator.swift in Sources */,
 				CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */,
 				317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */,
 				CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */,
@@ -1062,7 +1062,7 @@
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
 				CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
-				CE6A12522C63EEDC00549DCC /* ProfileViewModel.swift in Sources */,
+				CE6A12522C63EEDC00549DCC /* SettingsViewModel.swift in Sources */,
 				682A9A8A2C62602000FAAD07 /* ShowingFocusSelection.swift in Sources */,
 				CE4D4C9A2C6D36C000160F17 /* ScheduleNotificationView.swift in Sources */,
 				68825BD92C2F48FD00272451 /* ThemePageCoordinator.swift in Sources */,
@@ -1093,7 +1093,7 @@
 				CE323B3B2C73BC3E004143E0 /* ScheduleNotificationDelegate.swift in Sources */,
 				68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */,
 				680038EE2C49F68600851926 /* EmptyView.swift in Sources */,
-				684282242C63B83300CEEF1C /* ProfileViewController.swift in Sources */,
+				684282242C63B83300CEEF1C /* SettingsViewController.swift in Sources */,
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
 				68A8167F2C76BA0A001D5F1E /* SubjectListViewController+Delegate.swift in Sources */,
 				683812F22C481ADA0062067A /* SplashView.swift in Sources */,
@@ -1214,7 +1214,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_BUILD = 8;
+				APP_BUILD = 10;
 				APP_VERSION = 1.0;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1280,7 +1280,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_BUILD = 8;
+				APP_BUILD = 10;
 				APP_VERSION = 1.0;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;

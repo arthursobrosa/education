@@ -68,7 +68,9 @@ class FocusSessionView: UIView {
     }()
     
     lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "focusFinish"), titleColor: self.color)
+        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: self.color)
+        bttn.backgroundColor = .systemGray5
+        
         bttn.isEnabled = self.isPaused
         bttn.alpha = bttn.isEnabled ? 1 : 0.5
         
@@ -137,6 +139,10 @@ class FocusSessionView: UIView {
     
     func updateLabels(timerString: String) {
         self.timerLabel.text = timerString
+    }
+    
+    func updateTimerTracker() {
+        self.timerTrackLayer.strokeColor = UIColor.systemGray5.cgColor
     }
 }
 

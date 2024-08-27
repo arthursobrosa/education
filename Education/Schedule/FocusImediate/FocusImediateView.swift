@@ -50,6 +50,9 @@ class FocusImediateView: UIView {
         super.init(frame: .zero)
         
         self.backgroundColor = color
+        self.layer.cornerRadius = 12
+        self.layer.borderColor = UIColor.label.cgColor
+        self.layer.borderWidth = 1
         
         self.setupUI()
     }
@@ -60,14 +63,6 @@ class FocusImediateView: UIView {
     
     @objc private func cancelButtonTapped() {
         self.delegate?.cancelButtonTapped()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.layer.cornerRadius = 12
-        self.layer.borderColor = UIColor.label.cgColor
-        self.layer.borderWidth = 1
     }
 }
 

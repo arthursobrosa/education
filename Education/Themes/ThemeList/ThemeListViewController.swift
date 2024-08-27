@@ -45,9 +45,7 @@ class ThemeListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let addThemeButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addThemeButtonTapped))
-        addThemeButton.tintColor = .label
-        self.navigationItem.rightBarButtonItems = [addThemeButton]
+        self.setNavigationItems()
         
         self.viewModel.themes.bind { [weak self] themes in
             guard let self else { return }
@@ -66,6 +64,18 @@ class ThemeListViewController: UIViewController {
     }
     
     // MARK: - Methods
+    private func setNavigationItems() {
+        let addButton = UIButton()
+        addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
+        addButton.addTarget(self, action: #selector(addThemeButtonTapped), for: .touchUpInside)
+        addButton.tintColor = .label
+        
+        let addItem = UIBarButtonItem(customView: addButton)
+        
+        self.navigationItem.rightBarButtonItems = [addItem]
+    }
+    
     private func setView(isEmpty: Bool) {
         self.view = isEmpty ? self.emptyView : self.themeListTableView
     }
@@ -119,9 +129,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.text = theme.name
         cell.accessoryView = createAccessoryView()
         
-        if self.traitCollection.userInterfaceStyle == .light {
-            cell.backgroundColor = .systemGray3
-        }
+        cell.backgroundColor = .systemGray6
         
         return cell
     }

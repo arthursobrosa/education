@@ -32,8 +32,6 @@ struct StudyTimeChartView: View {
             .chartLegend(.hidden)
             .padding()
         }
-       
-        .frame(height: 300)
         .onAppear {
             viewModel.updateAggregatedTimes()
         }

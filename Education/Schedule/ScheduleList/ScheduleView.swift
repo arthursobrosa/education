@@ -176,11 +176,11 @@ extension ScheduleView: ViewCodeProtocol {
         NSLayoutConstraint.activate([
             createAcitivityButton.topAnchor.constraint(equalTo: overlayView.topAnchor),
             createAcitivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
-            createAcitivityButton.heightAnchor.constraint(equalToConstant: 40),
+            createAcitivityButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.045),
             
             startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: btnPadding),
             startActivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
-            startActivityButton.heightAnchor.constraint(equalToConstant: 40)
+            startActivityButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.045)
         ])
     }
 }

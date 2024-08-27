@@ -8,14 +8,14 @@
 import UIKit
 
 class ButtonComponent: UIButton {
-    init(title: String, titleColor: UIColor?) {
+    init(title: String, textColor: UIColor? = .label) {
         super.init(frame: .zero)
         
-        self.setTitle(title, for: .normal)
-        self.setTitleColor(titleColor, for: .normal)
+        let attributedString = NSAttributedString(string: title, attributes: [.font : UIFont.boldSystemFont(ofSize: 16), .foregroundColor : textColor ?? .label])
+        
+        self.setAttributedTitle(attributedString, for: .normal)
         self.backgroundColor = .systemGray3
         self.layer.cornerRadius = 14
-        self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
         self.translatesAutoresizingMaskIntoConstraints = false
     }

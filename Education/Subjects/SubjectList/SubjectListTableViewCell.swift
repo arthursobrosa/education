@@ -36,9 +36,7 @@ class SubjectListTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        if self.traitCollection.userInterfaceStyle == .light {
-            self.backgroundColor = .systemGray3
-        }
+        self.backgroundColor = .systemGray5
         
         self.setupUI()
     }
@@ -55,7 +53,6 @@ class SubjectListTableViewCell: UITableViewCell {
 
 extension SubjectListTableViewCell: ViewCodeProtocol {
     func setupUI() {
-        
         self.contentView.addSubview(colorCircle)
         self.contentView.addSubview(subjectLabel)
         self.contentView.addSubview(chevronImageView)
