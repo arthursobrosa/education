@@ -82,9 +82,9 @@
 "subject" = "Matéria";
 "saveSubject" = "Salvar Matéria";
 "addSubjectName" = "Insira o nome da matéria";
-"studyTimeLastWeek" = "Última semana";
-"studyTimeLastMonth" = "Último mês";
-"studyTimeLastYear" = "Último ano";
+"studyTimeLastWeek" = "Semana";
+"studyTimeLastMonth" = "Mês";
+"studyTimeLastYear" = "Ano";
 "emptySubject" = "matéria";
 "deleteSubjectTitle" = "Excluir matéria";
 "deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades também serão excluídos.";
@@ -116,3 +116,8 @@
 
 //MARK: - GRAPH
 "totalTime" = "Tempo Total de Estudo:";
+
+//MARK: - ACTIVITY
+"newActivity" = "Nova Atividade";
+"activityPre" = "Atividade de";
+"activityPost" = "";
