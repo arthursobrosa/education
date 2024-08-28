@@ -40,6 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
         
+        CoreDataStack.shared.saveMainContext()
         BlockAppsMonitor.shared.removeShields()
     }
     
@@ -77,7 +78,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard !ActivityManager.shared.isPaused else { return }
         
-        
         var date = Date()
         
         switch ActivityManager.shared.timerCase {
@@ -93,9 +93,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             title: String(localized: "timerAlertMessage"),
             subjectName: ActivityManager.shared.subject?.unwrappedName,
             date: date)
-        
-        
-        CoreDataStack.shared.saveMainContext()
     }
     
     private func notificationDate() -> Date {

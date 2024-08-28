@@ -28,8 +28,6 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
             return
         }
         
-        guard self.viewModel.isNewScheduleAvailable() else { return }
-        
         self.viewModel.saveSchedule()
         self.coordinator?.dismiss(animated: true)
     }

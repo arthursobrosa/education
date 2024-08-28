@@ -10,7 +10,7 @@ import Foundation
 protocol FocusSessionDelegate: AnyObject {
     func pauseResumeButtonTapped()
     func didTapFinishButton()
-    func unblockApps()
+    func didTapRestartButton()
 }
 
 extension FocusSessionViewController: FocusSessionDelegate {
@@ -25,9 +25,11 @@ extension FocusSessionViewController: FocusSessionDelegate {
         self.viewModel.didTapFinish = true
         
         self.coordinator?.dismiss(animated: true)
+        
+        BlockAppsMonitor.shared.removeShields()
     }
     
-    func unblockApps() {
-        BlockAppsMonitor.shared.removeShields()
+    func didTapRestartButton() {
+        ActivityManager.shared.restartActivity()
     }
 }
