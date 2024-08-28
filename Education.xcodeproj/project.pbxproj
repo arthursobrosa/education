@@ -131,6 +131,8 @@
 		68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */; };
 		68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */; };
 		68DE198A2C3DBAD800872751 /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE19892C3DBAD800872751 /* Popover.swift */; };
+		68E10AA82C7FCBC9008AF82C /* Cocon-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */; };
+		68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E10AA92C7FCE39008AF82C /* Fonts.swift */; };
 		68E617A82C6D6F4E00488237 /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E617A72C6D6F4E00488237 /* ActivityManager.swift */; };
 		68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE02C66D31600805051 /* CustomPushTransition.swift */; };
 		68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE22C66D49800805051 /* CustomPopTransition.swift */; };
@@ -312,6 +314,8 @@
 		68D3138C2C6AE4E000F63159 /* ScheduleDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsCoordinator.swift; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
 		68DE19892C3DBAD800872751 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
+		68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cocon-Regular.ttf"; sourceTree = "<group>"; };
+		68E10AA92C7FCE39008AF82C /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		68E617A72C6D6F4E00488237 /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
 		68EC5BE02C66D31600805051 /* CustomPushTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPushTransition.swift; sourceTree = "<group>"; };
 		68EC5BE22C66D49800805051 /* CustomPopTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
@@ -509,6 +513,7 @@
 		6833B21A2C3456C9009EA63D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				68E10AA62C7FCBBA008AF82C /* Fonts */,
 				68EC5BDF2C66D30C00805051 /* Transitions */,
 				30EE4DBD2C59727B00BB64D8 /* Audio */,
 				6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */,
@@ -808,6 +813,15 @@
 			path = FocusPicker;
 			sourceTree = "<group>";
 		};
+		68E10AA62C7FCBBA008AF82C /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */,
+				68E10AA92C7FCE39008AF82C /* Fonts.swift */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		68EC5BDF2C66D30C00805051 /* Transitions */ = {
 			isa = PBXGroup;
 			children = (
@@ -968,6 +982,7 @@
 				683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */,
 				68C8D9AB2C4987FF0092E80D /* Localizable.strings in Resources */,
 				683B45452C1B6F3B00663912 /* Base in Resources */,
+				68E10AA82C7FCBC9008AF82C /* Cocon-Regular.ttf in Resources */,
 				683812FF2C483EDE0062067A /* loading.json in Resources */,
 				30EE4DBF2C59728E00BB64D8 /* alarm.mp3 in Resources */,
 			);
@@ -1015,6 +1030,7 @@
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
 				68CA87E42C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift in Sources */,
+				68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */,
 				68D313892C6ADC6100F63159 /* FocusSessionCoordinator.swift in Sources */,
 				30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */,
 				68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */,
