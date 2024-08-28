@@ -40,6 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
         
+        CoreDataStack.shared.saveMainContext()
         BlockAppsMonitor.shared.removeShields()
     }
     
@@ -69,36 +70,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.timerSeconds = ActivityManager.shared.timerSeconds
         
         switch ActivityManager.shared.timerCase {
-        case .pomodoro:
-            ActivityManager.shared.stopTimer()
-        default:
-            break
+            case .pomodoro:
+                ActivityManager.shared.stopTimer()
+            default:
+                break
         }
         
         guard !ActivityManager.shared.isPaused else { return }
         
+        var date = Date()
+        
         switch ActivityManager.shared.timerCase {
-        case .timer:
-            NotificationService.shared.scheduleEndNotification(
-                title: String(localized: "timerAlertMessage"),
-                body: ActivityManager.shared.subject!.unwrappedName,
-                date: Calendar.current.date(byAdding: .second, value: ActivityManager.shared.timerSeconds, to: Date.now)!,
-                subjectName: ActivityManager.shared.subject!.unwrappedName)
-            
-        case .pomodoro(_, _, _):
-            NotificationService.shared.scheduleEndNotification(
-                title: String(localized: "timerAlertMessage"),
-                body: ActivityManager.shared.subject!.unwrappedName,
-                date: notificationDate(),
-                subjectName: ActivityManager.shared.subject!.unwrappedName)
-        default:
-            break
+            case .timer:
+                date = Calendar.current.date(byAdding: .second, value: ActivityManager.shared.timerSeconds, to: Date.now)!
+            case .pomodoro:
+                date = self.notificationDate()
+            default:
+                break
         }
         
-        CoreDataStack.shared.saveMainContext()
+        NotificationService.shared.scheduleEndNotification(
+            title: String(localized: "timerAlertMessage"),
+            subjectName: ActivityManager.shared.subject?.unwrappedName,
+            date: date)
     }
     
-    func notificationDate() -> Date{
+    private func notificationDate() -> Date {
         let pomodoro = ActivityManager.shared
         
         let loopTime = pomodoro.workTime + pomodoro.restTime

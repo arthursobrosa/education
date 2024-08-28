@@ -77,6 +77,7 @@
 "timerAlertTitle" = "Tempo acabou!";
 "timerAlertMessage" = "O seu cronômetro foi finalizado";
 "focusFinish" = "Finalizar";
+"focusRestart" = "Recomeçar";
 
 // MARK: - Subjects
 "subject" = "Matéria";

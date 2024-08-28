@@ -16,7 +16,6 @@ class FocusSessionView: UIView {
     var isPaused: Bool = false {
         didSet {
             self.updatePauseResumeButton()
-            self.updateFinishButton()
         }
     }
     
@@ -67,14 +66,30 @@ class FocusSessionView: UIView {
         return bttn
     }()
     
-    lazy var finishButton: ButtonComponent = {
+    private lazy var finishButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: self.color)
         bttn.backgroundColor = .systemGray5
         
-        bttn.isEnabled = self.isPaused
-        bttn.alpha = bttn.isEnabled ? 1 : 0.5
-        
         bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
+        
+        return bttn
+    }()
+    
+    private lazy var restartButton: ButtonComponent = {
+        let attributedString = NSMutableAttributedString()
+        let restartString = NSAttributedString(string: String(localized: "focusRestart"))
+        let restartAttachment = NSTextAttachment(image: UIImage(systemName: "arrow.counterclockwise")!)
+        let restartImage = NSAttributedString(attachment: restartAttachment)
+        attributedString.append(restartString)
+        attributedString.append(NSAttributedString(string: "  "))
+        attributedString.append(restartImage)
+        attributedString.addAttributes([.font : UIFont.boldSystemFont(ofSize: 16), .foregroundColor : self.color ?? .label], range: .init(location: 0, length: attributedString.length))
+        
+        let bttn = ButtonComponent(title: String(), textColor: self.color)
+        bttn.setAttributedTitle(attributedString, for: .normal)
+        bttn.backgroundColor = .systemGray5
+        
+        bttn.addTarget(self, action: #selector(didTapRestartButton), for: .touchUpInside)
         
         return bttn
     }()
@@ -99,11 +114,6 @@ class FocusSessionView: UIView {
         self.delegate?.pauseResumeButtonTapped()
     }
     
-    func updateFinishButton() {
-        self.finishButton.isEnabled = isPaused
-        self.finishButton.alpha = self.finishButton.isEnabled ? 1 : 0.5
-    }
-    
     func updatePauseResumeButton() {
         let imageName = isPaused ? "play.fill" : "pause.fill"
         
@@ -112,9 +122,14 @@ class FocusSessionView: UIView {
         }
     }
     
+    @objc private func didTapRestartButton() {
+        self.delegate?.didTapRestartButton()
+        
+        self.isPaused = false
+    }
+    
     @objc private func didTapFinishButton() {
         self.delegate?.didTapFinishButton()
-        self.delegate?.unblockApps()
     }
     
     func startAnimation(timerDuration: Double) {
@@ -153,6 +168,7 @@ extension FocusSessionView: ViewCodeProtocol {
         timerContainerView.addSubview(timerLabel)
         
         self.addSubview(pauseResumeButton)
+        self.addSubview(restartButton)
         self.addSubview(finishButton)
         
         let padding = 20.0
@@ -161,7 +177,7 @@ extension FocusSessionView: ViewCodeProtocol {
             timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 300/844),
             timerContainerView.widthAnchor.constraint(equalTo: timerContainerView.heightAnchor, multiplier: 290/300),
             timerContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            timerContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            timerContainerView.bottomAnchor.constraint(equalTo: pauseResumeButton.topAnchor, constant: -65),
             
             timerLabel.centerXAnchor.constraint(equalTo: timerContainerView.centerXAnchor),
             timerLabel.centerYAnchor.constraint(equalTo: timerContainerView.centerYAnchor),
@@ -169,12 +185,17 @@ extension FocusSessionView: ViewCodeProtocol {
             timerLabel.heightAnchor.constraint(equalTo: timerLabel.widthAnchor),
             
             pauseResumeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            pauseResumeButton.bottomAnchor.constraint(equalTo: finishButton.topAnchor, constant: -padding * 2),
+            pauseResumeButton.bottomAnchor.constraint(equalTo: restartButton.topAnchor, constant: -34),
             
-            finishButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            finishButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            finishButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            finishButton.heightAnchor.constraint(equalTo: finishButton.widthAnchor, multiplier: 0.16)
+            restartButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            restartButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            restartButton.bottomAnchor.constraint(equalTo: finishButton.topAnchor, constant: -8),
+            restartButton.heightAnchor.constraint(equalTo: restartButton.widthAnchor, multiplier: 0.16),
+            
+            finishButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            finishButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            finishButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -17),
+            finishButton.heightAnchor.constraint(equalTo: restartButton.heightAnchor)
         ])
     }
     

@@ -17,7 +17,6 @@ class FocusSessionModel {
     var blocksApps: Bool
     var isTimeCountOn: Bool
     var isAlarmOn: Bool
-    var showEndAlert: Bool
     
     var isAtWorkTime: Bool
     var workTime = Int()
@@ -27,7 +26,7 @@ class FocusSessionModel {
     
     var color: UIColor?
     
-    init(date: Date = Date.now, isPaused: Bool = true, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, subject: Subject? = nil, isAtWorkTime: Bool = true, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, showEndAlert: Bool = false, color: UIColor? = nil) {
+    init(date: Date = Date.now, isPaused: Bool = true, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, subject: Subject? = nil, isAtWorkTime: Bool = true, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
         self.date = date
         self.isPaused = isPaused
         self.totalSeconds = totalSeconds
@@ -38,7 +37,6 @@ class FocusSessionModel {
         self.blocksApps = blocksApps
         self.isTimeCountOn = isTimeCountOn
         self.isAlarmOn = isAlarmOn
-        self.showEndAlert = showEndAlert
         self.color = color
         
         switch self.timerCase {

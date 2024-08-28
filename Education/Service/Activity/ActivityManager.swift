@@ -153,14 +153,11 @@ class ActivityManager {
         self.timer = nil
         
         switch self.timerCase {
-        case .timer:
-            NotificationService.shared.cancelNotificationByName(name: self.subject!.unwrappedName)
-        case .pomodoro(_, _, _):
-            NotificationService.shared.cancelNotificationByName(name: self.subject!.unwrappedName)
-        default:
-            break
+            case .timer, .pomodoro:
+                NotificationService.shared.cancelNotificationByName(name: self.subject?.unwrappedName)
+            default:
+                break
         }
-        
         
         if let startTime = self.startTime {
             self.pausedTime = Date().timeIntervalSince(startTime)
@@ -269,6 +266,23 @@ class ActivityManager {
         self.restTime = focusSessionModel.restTime
         self.numberOfLoops = focusSessionModel.numberOfLoops
         self.isPaused = focusSessionModel.isPaused
+    }
+    
+    func restartActivity() {
+        let currentFocusSession = FocusSessionModel(date: self.date, totalSeconds: self.totalSeconds, timerSeconds: self.totalSeconds, timerCase: self.timerCase, subject: self.subject, isAtWorkTime: true, blocksApps: self.blocksApps, isTimeCountOn: self.isTimeCountOn, isAlarmOn: self.isAlarmOn)
+        currentFocusSession.currentLoop = 0
+        currentFocusSession.color = self.color
+        currentFocusSession.workTime = self.workTime
+        currentFocusSession.restTime = self.restTime
+        currentFocusSession.numberOfLoops = self.numberOfLoops
+        currentFocusSession.isPaused = self.isPaused
+        
+        self.resetTimer()
+        
+        self.updateFocusSession(with: currentFocusSession)
+        
+        self.isPaused = true
+        self.isPaused = false
     }
     
     func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int) {
