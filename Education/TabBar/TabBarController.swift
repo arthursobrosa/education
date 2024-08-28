@@ -54,6 +54,47 @@ class TabBarController: UITabBarController {
         settings.navigationController.tabBarItem = UITabBarItem(title: String(localized: "settingsTab"), image: UIImage(systemName: "gearshape"), tag: 3)
         
         self.viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, settings.navigationController]
+        
+        customizeTabBar()
+        
+                
+    }
+    
+    func customizeTabBar(){
+        self.tabBar.barTintColor = .white
+        self.tabBar.backgroundColor = .clear
+        self.tabBar.isTranslucent = true
+        self.tabBar.tintColor = .label
+        self.tabBar.frame = CGRect(x: 0, y: self.view.bounds.height - self.tabBar.frame.height, width: self.view.bounds.width, height: 80)
+        
+        // Criando a sublayer da tabbar
+        let padding: CGFloat = 15.0
+        let roundLayer = CAShapeLayer()
+        let adjustedRect = CGRect(
+            x: padding,
+            y: self.tabBar.bounds.origin.y - 8,
+            width: self.tabBar.bounds.width - padding * 2,
+            height: self.tabBar.bounds.height - 10
+        )
+        roundLayer.path = UIBezierPath(roundedRect: adjustedRect, cornerRadius: 30).cgPath
+        roundLayer.fillColor = UIColor.label.withAlphaComponent(0.1).cgColor
+        
+        // Adicionando sublayer na tab bar
+        self.tabBar.layer.insertSublayer(roundLayer, at: 0)
+        self.tabBar.itemPositioning = .centered
+        self.tabBar.itemSpacing = 5
+        self.tabBar.layer.masksToBounds = false
+
+        // Reagindo ao dark e light mode
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            if let roundLayer = self.tabBar.layer.sublayers?.first(where: { $0 is CAShapeLayer }) as? CAShapeLayer {
+                        roundLayer.fillColor = UIColor.label.withAlphaComponent(0.15).cgColor
+                    }
+            self.tabBar.tintColor = .label
+
+        }
     }
     
     override func viewDidLayoutSubviews() {
