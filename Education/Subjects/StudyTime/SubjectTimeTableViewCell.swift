@@ -38,7 +38,7 @@ class SubjectTimeTableViewCell: UITableViewCell{
         return view
     }()
     
-    private lazy var subjectName: UILabel = {
+    lazy var subjectName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -49,6 +49,7 @@ class SubjectTimeTableViewCell: UITableViewCell{
     private lazy var totalHours: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .secondaryLabel
         label.textAlignment = .right
         return label
     }()
