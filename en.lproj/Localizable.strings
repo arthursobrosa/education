@@ -82,9 +82,9 @@
 "subject" = "Subject";
 "saveSubject" = "Save Subject";
 "addSubjectName" = "Insert the subject's name";
-"studyTimeLastWeek" = "Last week";
-"studyTimeLastMonth" = "Last month";
-"studyTimeLastYear" = "Last year";
+"studyTimeLastWeek" = "Week";
+"studyTimeLastMonth" = "Month";
+"studyTimeLastYear" = "Year";
 "emptySubject" = "subject";
 "deleteSubjectTitle" = "Delete subject";
 "deleteSubjectMessage" = "Are you sure you want to delete %@? Its study time and activities will also be deleted.";
@@ -118,3 +118,8 @@
 
 //MARK: - GRAPH
 "totalTime" = "Total Studied Time:";
+
+//MARK: - ACTIVITY
+"newActivity" = "New Activity";
+"activityPre" = "";
+"activityPost" = "Activity";
