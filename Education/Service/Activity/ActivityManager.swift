@@ -153,14 +153,11 @@ class ActivityManager {
         self.timer = nil
         
         switch self.timerCase {
-        case .timer:
-            NotificationService.shared.cancelNotificationByName(name: self.subject!.unwrappedName)
-        case .pomodoro(_, _, _):
-            NotificationService.shared.cancelNotificationByName(name: self.subject!.unwrappedName)
-        default:
-            break
+            case .timer, .pomodoro:
+                NotificationService.shared.cancelNotificationByName(name: self.subject?.unwrappedName)
+            default:
+                break
         }
-        
         
         if let startTime = self.startTime {
             self.pausedTime = Date().timeIntervalSince(startTime)

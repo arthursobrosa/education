@@ -25,17 +25,19 @@ class NotificationService {
         }
     }
     
-    func scheduleEndNotification(title: String, body: String, date: Date, subjectName: String) {
+    func scheduleEndNotification(title: String, subjectName: String?, date: Date) {
+        let body = subjectName ?? String(localized: "newActivity")
+        
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
-        content.userInfo = ["subjectName": subjectName]
+        content.userInfo = ["subjectName": body]
         
         let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
         
-        let requestId = subjectName
+        let requestId = body
         let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
@@ -97,9 +99,11 @@ class NotificationService {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
-    func cancelNotificationByName(name: String) {
+    func cancelNotificationByName(name: String?) {
+        let id = name ?? String(localized: "newActivity")
+        
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            let requestIds = requests.filter { $0.identifier.hasPrefix(name) }.map { $0.identifier }
+            let requestIds = requests.filter { $0.identifier.hasPrefix(id) }.map { $0.identifier }
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: requestIds)
         }
     }
