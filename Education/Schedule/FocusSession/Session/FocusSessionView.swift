@@ -19,6 +19,42 @@ class FocusSessionView: UIView {
         }
     }
     
+    private lazy var dismissButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
+        button.tintColor = .label
+        
+        button.addTarget(self, action: #selector(dismisButtonTapped), for: .touchUpInside)
+        
+        button.isHidden = true
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
+    private let activityTitle: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    private lazy var visibilityButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        
+        button.addTarget(self, action: #selector(visibilityButtonTapped), for: .touchUpInside)
+        
+        button.isHidden = true
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
     private let timerContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -66,15 +102,6 @@ class FocusSessionView: UIView {
         return bttn
     }()
     
-    private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: self.color)
-        bttn.backgroundColor = .systemGray5
-        
-        bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
-        
-        return bttn
-    }()
-    
     private lazy var restartButton: ButtonComponent = {
         let attributedString = NSMutableAttributedString()
         let restartString = NSAttributedString(string: String(localized: "focusRestart"))
@@ -89,7 +116,20 @@ class FocusSessionView: UIView {
         bttn.setAttributedTitle(attributedString, for: .normal)
         bttn.backgroundColor = .systemGray5
         
+        bttn.isHidden = true
+        
         bttn.addTarget(self, action: #selector(didTapRestartButton), for: .touchUpInside)
+        
+        return bttn
+    }()
+    
+    private lazy var finishButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: self.color)
+        bttn.backgroundColor = .systemGray5
+        
+        bttn.isHidden = true
+        
+        bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
         
         return bttn
     }()
@@ -109,6 +149,48 @@ class FocusSessionView: UIView {
     }
     
     // MARK: - Auxiliar methods
+    func setTitleLabel(for subject: Subject?) {
+        guard let subject else { return }
+        
+        let attributedString = NSMutableAttributedString()
+        
+        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .medium), .foregroundColor : UIColor.label.withAlphaComponent(0.7)])
+        let subjectString = NSAttributedString(string: subject.unwrappedName, attributes: [.font : UIFont.boldSystemFont(ofSize: 32), .foregroundColor : UIColor.label.withAlphaComponent(0.85)])
+        
+        attributedString.append(activityString)
+        attributedString.append(subjectString)
+        
+        self.activityTitle.attributedText = attributedString
+    }
+    
+    func changeButtonsIsHidden(_ isHidden: Bool) {
+        self.dismissButton.isHidden = isHidden
+        self.visibilityButton.isHidden = isHidden
+        self.restartButton.isHidden = isHidden
+        self.finishButton.isHidden = isHidden
+    }
+    
+    func setVisibilityButton(isActive: Bool) {
+        let imageName = isActive ? "eye" : "eye.slash"
+        self.visibilityButton.setImage(UIImage(systemName: imageName), for: .normal)
+        self.visibilityButton.tintColor = .label
+        
+        self.addSubview(visibilityButton)
+        
+        NSLayoutConstraint.activate([
+            visibilityButton.topAnchor.constraint(equalTo: dismissButton.topAnchor),
+            visibilityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+        ])
+    }
+    
+    @objc private func dismisButtonTapped() {
+        self.delegate?.dismissButtonTapped()
+    }
+    
+    @objc private func visibilityButtonTapped() {
+        self.delegate?.visibilityButtonTapped()
+    }
+    
     @objc private func pauseResumeButtonTapped() {
         self.isPaused.toggle()
         self.delegate?.pauseResumeButtonTapped()
@@ -164,6 +246,8 @@ class FocusSessionView: UIView {
 // MARK: - UI Setup
 extension FocusSessionView: ViewCodeProtocol {
     func setupUI() {
+        self.addSubview(dismissButton)
+        self.addSubview(activityTitle)
         self.addSubview(timerContainerView)
         timerContainerView.addSubview(timerLabel)
         
@@ -174,6 +258,12 @@ extension FocusSessionView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
+            dismissButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -6),
+            dismissButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            
+            activityTitle.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            activityTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
             timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 300/844),
             timerContainerView.widthAnchor.constraint(equalTo: timerContainerView.heightAnchor, multiplier: 290/300),
             timerContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),

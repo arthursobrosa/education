@@ -14,12 +14,18 @@ class FocusSessionViewController: UIViewController {
     weak var coordinator: Dismissing?
     let viewModel: FocusSessionViewModel
     
+    // MARK: - Combine storage
     private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - Status bar hidden
+    override var prefersStatusBarHidden: Bool {
+        return !self.viewModel.viewWasTapped
+    }
     
     // MARK: - Properties
     let color: UIColor?
     
-    private lazy var focusSessionView: FocusSessionView = {
+    lazy var focusSessionView: FocusSessionView = {
         let view = FocusSessionView(color: self.color)
         view.delegate = self
         view.isPaused = ActivityManager.shared.isPaused
@@ -49,11 +55,10 @@ class FocusSessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.blockApps()
-        self.setTabItems()
-        self.setNavigationTitle()
-        
+        self.setCustomNavigationItems()
         self.bindActivity()
+        self.setGestureRecognizer()
+        self.blockApps()
         
         self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
             (self: Self, previousTraitCollection: UITraitCollection) in
@@ -73,8 +78,20 @@ class FocusSessionViewController: UIViewController {
             let strokeEnd = self.viewModel.getStrokeEnd()
             self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
             
-            self.setNavigationTitle()
+            self.focusSessionView.setTitleLabel(for: ActivityManager.shared.subject)
         }
+    }
+    
+    private func setCustomNavigationItems() {
+        switch ActivityManager.shared.timerCase {
+            case .timer, .pomodoro:
+                self.focusSessionView.setVisibilityButton(isActive: ActivityManager.shared.isTimeCountOn)
+            default:
+                break
+        }
+        
+        
+        self.focusSessionView.setTitleLabel(for: ActivityManager.shared.subject)
     }
     
     private func bindActivity() {
@@ -116,7 +133,7 @@ class FocusSessionViewController: UIViewController {
                 
                 self.updateViewLabels()
                 
-                self.setNavigationTitle()
+                self.focusSessionView.setTitleLabel(for: ActivityManager.shared.subject)
             }
             .store(in: &self.cancellables)
         
@@ -156,9 +173,21 @@ class FocusSessionViewController: UIViewController {
                 let timerSeconds = ActivityManager.shared.timerSeconds
                 self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
                 
-                self.setNavigationTitle()
+                self.focusSessionView.setTitleLabel(for: ActivityManager.shared.subject)
             }
             .store(in: &self.cancellables)
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func viewWasTapped() {
+        self.viewModel.viewWasTapped.toggle()
+        
+        self.setNeedsStatusBarAppearanceUpdate()
+        self.focusSessionView.changeButtonsIsHidden(!self.viewModel.viewWasTapped)
     }
     
     private func blockApps() {
@@ -166,67 +195,10 @@ class FocusSessionViewController: UIViewController {
         
         BlockAppsMonitor.shared.apllyShields()
     }
-    
-    private func setTabItems() {
-        let dismissButton = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(dismissButtonTapped))
-        dismissButton.tintColor = .label
-        self.navigationItem.leftBarButtonItems = [dismissButton]
-        
-        switch ActivityManager.shared.timerCase {
-            case .timer, .pomodoro:
-                self.setVisibilityButton()
-            default:
-                break
-        }
-    }
-    
-    private func setVisibilityButton() {
-        self.navigationItem.rightBarButtonItems?.removeAll()
-        
-        let imageName = ActivityManager.shared.isTimeCountOn ? "eye" : "eye.slash"
-        
-        let visibilityButton = UIBarButtonItem(image: UIImage(systemName: imageName), style: .plain, target: self, action: #selector(visibilityButtonTapped))
-        visibilityButton.tintColor = .label
-        self.navigationItem.rightBarButtonItems = [visibilityButton]
-    }
-    
-    @objc private func dismissButtonTapped() {
-        self.coordinator?.dismiss(animated: true)
-    }
-    
-    @objc private func visibilityButtonTapped() {
-        ActivityManager.shared.isTimeCountOn.toggle()
-        
-        self.updateViewLabels()
-        self.setVisibilityButton()
-    }
 }
 
 // MARK: - Auxiliar Methods
 extension FocusSessionViewController {
-    public func setNavigationTitle() {
-        var title: String
-        
-        let isPaused = ActivityManager.shared.isPaused
-        
-        if let subject = ActivityManager.shared.subject {
-            if ActivityManager.shared.isAtWorkTime {
-                title = String(format: NSLocalizedString("subjectActivity", comment: ""), subject.unwrappedName)
-            } else {
-                title = String(localized: "interval")
-            }
-        } else {
-            title = String(localized: "newActivity")
-        }
-        
-        if isPaused {
-            title = String(localized: "paused")
-        }
-        
-        
-        self.title = title
-    }
-    
     private func showEndTimeAlert() {
         let alertController = UIAlertController(title: String(localized: "timerAlertTitle"), message: String(localized: "timerAlertMessage"), preferredStyle: .alert)
 
@@ -241,7 +213,7 @@ extension FocusSessionViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    private func updateViewLabels() {
+    public func updateViewLabels() {
         let timerString = ActivityManager.shared.isTimeCountOn ? self.viewModel.getTimerString() : String()
         
         self.focusSessionView.updateLabels(timerString: timerString)
