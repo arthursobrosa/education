@@ -71,7 +71,7 @@
 "alarm" = "Alarme";
 "showTimeCount" = "Mostrar contagem de tempo";
 "paused" = "Pausado";
-"subjectActivity" = "Atividade de %@";
+"subjectActivity" = "Atividade de";
 "newActivity" = "Nova atividade";
 "interval" = "Intervalo";
 "timerAlertTitle" = "Tempo acabou!";

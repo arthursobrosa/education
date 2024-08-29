@@ -30,6 +30,9 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
 
         self.newNavigationController.modalPresentationStyle = .fullScreen
         
+        // This will cause the status bar to be hidden
+        self.newNavigationController.setNavigationBarHidden(true, animated: false)
+        
         self.navigationController.present(self.newNavigationController, animated: true)
     }
     

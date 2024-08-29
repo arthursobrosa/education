@@ -71,7 +71,7 @@
 "alarm" = "Alarm";
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
-"subjectActivity" = "%@ activity";
+"subjectActivity" = "Activity";
 "newActivity" = "New activity";
 "interval" = "Interval";
 "timerAlertTitle" = "Time's up!";

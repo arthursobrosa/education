@@ -48,7 +48,7 @@ class ScheduleDetailsViewModel {
         
         var selectedSubjectName: String = String()
         var selectedStartTime: Date = currentDate
-        var selectedEndTime: Date = currentDate
+        var selectedEndTime: Date = selectedStartTime.addingTimeInterval(60)
         var selectedDayIndex = selectedDay != nil ? selectedDay! : 0
         
         self.subjectsNames = [String]()
@@ -67,7 +67,6 @@ class ScheduleDetailsViewModel {
             if let subject = self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID) {
                 selectedSubjectName = subject.unwrappedName
             }
-            
             
             selectedStartTime = schedule.unwrappedStartTime
             selectedEndTime = schedule.unwrappedEndTime

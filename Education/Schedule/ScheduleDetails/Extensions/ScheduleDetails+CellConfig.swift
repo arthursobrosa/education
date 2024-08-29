@@ -114,6 +114,7 @@ extension ScheduleDetailsViewController {
                 datePicker.datePickerMode = .time
                 datePicker.date = row == 1 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
                 datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
+                datePicker.addTarget(self, action: #selector(datePickerEditionEnded), for: .editingDidEnd)
                 datePicker.tag = row
                 
                 return datePicker

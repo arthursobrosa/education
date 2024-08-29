@@ -98,6 +98,10 @@
 		68A8167B2C769277001D5F1E /* InputTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */; };
 		68A8167D2C769296001D5F1E /* ColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167C2C769296001D5F1E /* ColorPickerCell.swift */; };
 		68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A816852C772140001D5F1E /* SubjectCreationViewController+Delegate.swift */; };
+		68B2CA972C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA962C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf */; };
+		68B2CA992C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA982C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf */; };
+		68B2CA9B2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */; };
+		68B2CA9D2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */; };
 		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
 		68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */; };
 		68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */; };
@@ -131,6 +135,8 @@
 		68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */; };
 		68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */; };
 		68DE198A2C3DBAD800872751 /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE19892C3DBAD800872751 /* Popover.swift */; };
+		68E10AA82C7FCBC9008AF82C /* Cocon-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */; };
+		68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E10AA92C7FCE39008AF82C /* Fonts.swift */; };
 		68E617A82C6D6F4E00488237 /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E617A72C6D6F4E00488237 /* ActivityManager.swift */; };
 		68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE02C66D31600805051 /* CustomPushTransition.swift */; };
 		68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE22C66D49800805051 /* CustomPopTransition.swift */; };
@@ -282,6 +288,10 @@
 		68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextTableViewCell.swift; sourceTree = "<group>"; };
 		68A8167C2C769296001D5F1E /* ColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCell.swift; sourceTree = "<group>"; };
 		68A816852C772140001D5F1E /* SubjectCreationViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubjectCreationViewController+Delegate.swift"; sourceTree = "<group>"; };
+		68B2CA962C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Regular.ttf"; sourceTree = "<group>"; };
+		68B2CA982C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Medium.ttf"; sourceTree = "<group>"; };
+		68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-SemiBold.ttf"; sourceTree = "<group>"; };
+		68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Bold.ttf"; sourceTree = "<group>"; };
 		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
 		68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudyTimeViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -312,6 +322,8 @@
 		68D3138C2C6AE4E000F63159 /* ScheduleDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsCoordinator.swift; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
 		68DE19892C3DBAD800872751 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
+		68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cocon-Regular.ttf"; sourceTree = "<group>"; };
+		68E10AA92C7FCE39008AF82C /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		68E617A72C6D6F4E00488237 /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
 		68EC5BE02C66D31600805051 /* CustomPushTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPushTransition.swift; sourceTree = "<group>"; };
 		68EC5BE22C66D49800805051 /* CustomPopTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
@@ -509,6 +521,7 @@
 		6833B21A2C3456C9009EA63D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				68E10AA62C7FCBBA008AF82C /* Fonts */,
 				68EC5BDF2C66D30C00805051 /* Transitions */,
 				30EE4DBD2C59727B00BB64D8 /* Audio */,
 				6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */,
@@ -808,6 +821,19 @@
 			path = FocusPicker;
 			sourceTree = "<group>";
 		};
+		68E10AA62C7FCBBA008AF82C /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */,
+				68B2CA962C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf */,
+				68B2CA982C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf */,
+				68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */,
+				68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */,
+				68E10AA92C7FCE39008AF82C /* Fonts.swift */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		68EC5BDF2C66D30C00805051 /* Transitions */ = {
 			isa = PBXGroup;
 			children = (
@@ -965,9 +991,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68B2CA9B2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf in Resources */,
+				68B2CA9D2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf in Resources */,
+				68B2CA972C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf in Resources */,
 				683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */,
 				68C8D9AB2C4987FF0092E80D /* Localizable.strings in Resources */,
+				68B2CA992C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf in Resources */,
 				683B45452C1B6F3B00663912 /* Base in Resources */,
+				68E10AA82C7FCBC9008AF82C /* Cocon-Regular.ttf in Resources */,
 				683812FF2C483EDE0062067A /* loading.json in Resources */,
 				30EE4DBF2C59728E00BB64D8 /* alarm.mp3 in Resources */,
 			);
@@ -1015,6 +1046,7 @@
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
 				68CA87E42C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift in Sources */,
+				68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */,
 				68D313892C6ADC6100F63159 /* FocusSessionCoordinator.swift in Sources */,
 				30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */,
 				68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */,
