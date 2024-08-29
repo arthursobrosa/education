@@ -5,6 +5,10 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Cocon-Regular.ttf</string>
+		<string>DarkmodeOnTrial-Regular.ttf</string>
+		<string>DarkmodeOnTrial-Medium.ttf</string>
+		<string>DarkmodeOnTrial-SemiBold.ttf</string>
+		<string>DarkmodeOnTrial-Bold.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

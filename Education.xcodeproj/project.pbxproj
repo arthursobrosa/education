@@ -98,6 +98,10 @@
 		68A8167B2C769277001D5F1E /* InputTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */; };
 		68A8167D2C769296001D5F1E /* ColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167C2C769296001D5F1E /* ColorPickerCell.swift */; };
 		68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A816852C772140001D5F1E /* SubjectCreationViewController+Delegate.swift */; };
+		68B2CA972C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA962C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf */; };
+		68B2CA992C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA982C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf */; };
+		68B2CA9B2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */; };
+		68B2CA9D2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */; };
 		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
 		68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */; };
 		68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */; };
@@ -284,6 +288,10 @@
 		68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextTableViewCell.swift; sourceTree = "<group>"; };
 		68A8167C2C769296001D5F1E /* ColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCell.swift; sourceTree = "<group>"; };
 		68A816852C772140001D5F1E /* SubjectCreationViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubjectCreationViewController+Delegate.swift"; sourceTree = "<group>"; };
+		68B2CA962C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Regular.ttf"; sourceTree = "<group>"; };
+		68B2CA982C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Medium.ttf"; sourceTree = "<group>"; };
+		68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-SemiBold.ttf"; sourceTree = "<group>"; };
+		68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Bold.ttf"; sourceTree = "<group>"; };
 		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
 		68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudyTimeViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -817,6 +825,10 @@
 			isa = PBXGroup;
 			children = (
 				68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */,
+				68B2CA962C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf */,
+				68B2CA982C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf */,
+				68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */,
+				68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */,
 				68E10AA92C7FCE39008AF82C /* Fonts.swift */,
 			);
 			path = Fonts;
@@ -979,8 +991,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68B2CA9B2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf in Resources */,
+				68B2CA9D2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf in Resources */,
+				68B2CA972C8106BD00DF8069 /* DarkmodeOnTrial-Regular.ttf in Resources */,
 				683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */,
 				68C8D9AB2C4987FF0092E80D /* Localizable.strings in Resources */,
+				68B2CA992C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf in Resources */,
 				683B45452C1B6F3B00663912 /* Base in Resources */,
 				68E10AA82C7FCBC9008AF82C /* Cocon-Regular.ttf in Resources */,
 				683812FF2C483EDE0062067A /* loading.json in Resources */,
