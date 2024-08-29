@@ -8,16 +8,22 @@
 import UIKit
 
 class ButtonComponent: UIButton {
-    init(title: String, textColor: UIColor? = .label) {
+    init(title: String, textColor: UIColor? = .systemBackground) {
         super.init(frame: .zero)
         
         let attributedString = NSAttributedString(string: title, attributes: [.font : UIFont.boldSystemFont(ofSize: 16), .foregroundColor : textColor ?? .label])
         
         self.setAttributedTitle(attributedString, for: .normal)
-        self.backgroundColor = .systemGray3
-        self.layer.cornerRadius = 14
+        self.backgroundColor = .label
+        self.layer.cornerRadius = 30
+        
         
         self.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.heightAnchor.constraint(equalToConstant: 18),
+            self.widthAnchor.constraint(equalToConstant: 104),
+        ])
     }
     
     required init?(coder: NSCoder) {
