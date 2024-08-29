@@ -10,7 +10,7 @@ import SwiftUI
 
 class SettingsViewController: UIViewController {
     weak var coordinator: SettingsCoordinator?
-    private let viewModel: SettingsViewModel
+    let viewModel: SettingsViewModel
     
     private lazy var settingsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -41,6 +41,30 @@ class SettingsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.viewModel.isNotificationActive.bind { [weak self] isActive in
+            guard let self else { return }
+            
+            self.reloadTable()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.viewModel.requestNoficationAuthorization()
+    }
+    
+    private func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.settingsTableView.reloadData()
+        }
+    }
+    
     private func showFamilyActivityPicker() {
         // Create the SwiftUI view
         let swiftUIView = FamilyActivityPickerView()
@@ -63,6 +87,30 @@ class SettingsViewController: UIViewController {
         
         hostingController.didMove(toParent: self)
     }
+    
+    @objc func didChangeNotificationToggle(_ sender: UISwitch) {
+        sender.setOn(!sender.isOn, animated: true)
+        
+        self.showNotificationAlert(isActivating: !sender.isOn)
+    }
+    
+    private func showNotificationAlert(isActivating: Bool) {
+        #warning("colocar esses textos nos localizables e criar bgl de fazer ir até as configurações do celular")
+        let deactivationTitle = "Deactivate on your phone!"
+        let deactivationMessage = "It's not possible to deactivate notifications from inside Foca's app"
+        
+        let activationTitle = "Keep track of your studies!"
+        let activationMessage = "We'll notify you when it's time to study for a subject and no ads are shown."
+        
+        let title = isActivating ? activationTitle : deactivationTitle
+        let message = isActivating ? activationMessage : deactivationMessage
+        
+        let alert = UIAlertController(title: title, message: title, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+        
+        self.present(alert, animated: true)
+    }
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -75,38 +123,23 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = indexPath.section
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         
-        var cellText = String()
-        
-        switch section {
-            case 0:
-                cellText = String(localized: "selectBlockedApps")
-            case 1:
-                cellText = String(localized: "activateNotification")
-            default:
-                break
-        }
-        
-        cell.textLabel?.text = cellText
+        cell.textLabel?.text = self.createCellTitle(for: indexPath)
+        cell.accessoryView = self.createCellAccessoryView(for: indexPath)
         cell.backgroundColor = .systemGray6
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         let section = indexPath.section
-      
-        switch section {
-            case 0:
-                self.showFamilyActivityPicker()
-            case 1:
-                self.viewModel.requestNoficationAuthorization()
-            default:
-                break
-        }
+        
+        guard section != 1 else { return }
+
+        self.showFamilyActivityPicker()
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

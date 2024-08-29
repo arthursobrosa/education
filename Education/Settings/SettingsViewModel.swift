@@ -8,13 +8,18 @@
 import Foundation
 
 class SettingsViewModel {
+    var isNotificationActive = Box(false)
+    
     func requestNoficationAuthorization() {
-        NotificationService.shared.requestAuthorization { granted, error in
-            if granted {
-                print("notification persimission granted")
-            } else if let error {
+        NotificationService.shared.requestAuthorization { [weak self] granted, error in
+            guard let self else { return }
+            
+            if let error {
                 print(error.localizedDescription)
+                return
             }
+            
+            self.isNotificationActive.value = granted
         }
     }
 }
