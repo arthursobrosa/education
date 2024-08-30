@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
     let schedule = ScheduleCoordinator(navigationController: UINavigationController())
     private let studytime = StudyTimeCoordinator(navigationController: UINavigationController())
     private lazy var themeList = ThemeListCoordinator(navigationController: UINavigationController(), themeListViewModel: self.themeListViewModel)
-    private let settings = SettingsCoordinator(navigationController: UINavigationController())
+    let settings = SettingsCoordinator(navigationController: UINavigationController())
     
     lazy var activityView: ActivityView = {
         let view = ActivityView()

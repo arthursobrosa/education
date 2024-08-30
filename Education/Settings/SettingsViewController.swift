@@ -95,19 +95,33 @@ class SettingsViewController: UIViewController {
     }
     
     private func showNotificationAlert(isActivating: Bool) {
-        #warning("colocar esses textos nos localizables e criar bgl de fazer ir até as configurações do celular")
-        let deactivationTitle = "Deactivate on your phone!"
-        let deactivationMessage = "It's not possible to deactivate notifications from inside Foca's app"
+        let deactivationTitle = String(localized: "deactivateTitle")
+        let deactivationMessage = String(localized: "deactivateMessage")
         
-        let activationTitle = "Keep track of your studies!"
-        let activationMessage = "We'll notify you when it's time to study for a subject and no ads are shown."
+        let activationTitle = String(localized: "activationTitle")
+        let activationMessage = String(localized: "activationMessage")
+        
+        var actions = [UIAlertAction]()
+        
+        let activateNowAction = UIAlertAction(title: String(localized: "activateNow"), style: .default) { _ in
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
+            }
+        }
+        let activateLaterAction = UIAlertAction(title: String(localized: "activateLater"), style: .destructive)
+        
+        let okAction = UIAlertAction(title: String(localized: "okAction"), style: .cancel, handler: nil)
         
         let title = isActivating ? activationTitle : deactivationTitle
         let message = isActivating ? activationMessage : deactivationMessage
+        actions = isActivating ? [activateNowAction, activateLaterAction] : [okAction]
         
-        let alert = UIAlertController(title: title, message: title, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-        alert.addAction(okAction)
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        for action in actions {
+            alert.addAction(action)
+        }
         
         self.present(alert, animated: true)
     }
@@ -115,10 +129,6 @@ class SettingsViewController: UIViewController {
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
@@ -135,21 +145,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let section = indexPath.section
+        let row = indexPath.row
         
-        guard section != 1 else { return }
-
-        self.showFamilyActivityPicker()
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-            case 0:
-                return String(localized: "blockAppsTitle")
+        switch row {
             case 1:
-                return String(localized: "notificationsTitle")
+                self.showFamilyActivityPicker()
             default:
-                return String()
+                return
         }
     }
 }

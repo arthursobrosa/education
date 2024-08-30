@@ -9,30 +9,30 @@ import UIKit
 
 extension SettingsViewController {
     func createCellTitle(for indexPath: IndexPath) -> String {
-        let section = indexPath.section
+        let row = indexPath.row
         
-        switch section {
+        switch row {
             case 0:
-                return String(localized: "selectBlockedApps")
+                return String(localized: "notificationsTitle")
             case 1:
-                return String(localized: "activateNotification")
+                return String(localized: "selectBlockedApps")
             default:
                 return String()
         }
     }
     
     func createCellAccessoryView(for indexPath: IndexPath) -> UIView? {
-        let section = indexPath.section
+        let row = indexPath.row
         
-        switch section {
+        switch row {
             case 0:
-                return nil
-            case 1:
                 let toggleSwitch = UISwitch()
                 toggleSwitch.isOn = self.viewModel.isNotificationActive.value
                 toggleSwitch.addTarget(self, action: #selector(didChangeNotificationToggle(_:)), for: .valueChanged)
                 
                 return toggleSwitch
+            case 1:
+                return nil
             default:
                 return nil
         }

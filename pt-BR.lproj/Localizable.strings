@@ -110,7 +110,13 @@
 "blockAppsTitle" = "Bloqueio de apps";
 "notificationsTitle" = "Notificações";
 "selectBlockedApps" = "Selecione os Apps Bloqueados";
-"activateNotification" = "Ativar Notificação";
+"deactivateTitle" = "Desative no seu celular!";
+"deactivateMessage" = "Não é possível desabilitar notificações no app Foca. Para isso, accesse as Configurações do seu celular.";
+"activationTitle" = "Acompanhe os seus estudos!";
+"activationMessage" = "Vamos enviar o status das suas atividades e alertar quando estivar na hora de estudar uma matéria. Sem propagandas adicionadas.";
+"activateNow" = "Ativar agora";
+"activateLater" = "Ativar depois";
+"okAction" = "Ok, entendi";
 
 // MARK: - Modal
 "startButton" = "Iniciar agora";

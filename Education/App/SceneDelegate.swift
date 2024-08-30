@@ -60,6 +60,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let timeInBackground = Date().timeIntervalSince(self.currentDate)
         
         ActivityManager.shared.updateAfterBackground(timeInBackground: timeInBackground, lastTimerSeconds: self.timerSeconds)
+        
+        guard let coordinator else { return }
+        
+        if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
+            guard tabBar.selectedIndex == 3,
+                  let settingsVC = tabBar.settings.navigationController.viewControllers.first as? SettingsViewController else { return }
+            
+            settingsVC.viewModel.requestNoficationAuthorization()
+        }
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
