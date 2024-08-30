@@ -200,17 +200,15 @@ class FocusSessionViewController: UIViewController {
 // MARK: - Auxiliar Methods
 extension FocusSessionViewController {
     private func showEndTimeAlert() {
-        let alertController = UIAlertController(title: String(localized: "timerAlertTitle"), message: String(localized: "timerAlertMessage"), preferredStyle: .alert)
+//        let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
+//            guard let self else { return }
+//
+//            self.didTapFinishButton()
+//        }
+//
+//        alertController.addAction(okAction)
 
-        let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-            guard let self else { return }
-
-            self.didTapFinishButton()
-        }
-
-        alertController.addAction(okAction)
-
-        present(alertController, animated: true, completion: nil)
+        self.focusSessionView.showEndNotification(false)
     }
     
     public func updateViewLabels() {
