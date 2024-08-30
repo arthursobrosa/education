@@ -45,7 +45,7 @@
 "addSubjectAlertPlaceholder" = "Subject name";
 "invalidDateAlertTitle" = "Invalid Date";
 "invalidDateAlertMessage1" = "There is an existing schedule at %@ with conflicting dates";
-"invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date";
+"invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date.";
 "noSubjectAlertTitle" = "Invalid Schedule";
 "noSubjectAlertMessage" = "You cannot create a schedule before assigning it to a subject";
 "date" = "Date";
@@ -89,7 +89,7 @@
 "emptySubject" = "subject";
 "deleteSubjectTitle" = "Delete subject";
 "deleteSubjectMessage" = "Are you sure you want to delete %@? Its study time and activities will also be deleted.";
-"subjectCreationTitle" = "Invalid inputs";
+"subjectCreationTitle" = "Invalid subject";
 "subjectCreationNoName" = "Please, insert a name for your subject.";
 "subjectCreationUsedName" = "There is an existing subject with this name.";
 "color" = "Color";
