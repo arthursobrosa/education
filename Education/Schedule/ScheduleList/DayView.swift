@@ -35,7 +35,7 @@ class DayView: UIView {
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
         
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -45,7 +45,7 @@ class DayView: UIView {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
         
         label.translatesAutoresizingMaskIntoConstraints = false
         
