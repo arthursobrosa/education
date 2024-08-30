@@ -88,7 +88,7 @@ class ScheduleNotificationView: UIView {
         self.backgroundColor = color
         self.layer.cornerRadius = 14
         self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderColor = UIColor.label.cgColor
     }
     
     required init?(coder: NSCoder) {
