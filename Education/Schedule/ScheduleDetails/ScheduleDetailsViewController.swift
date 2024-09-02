@@ -76,13 +76,23 @@ class ScheduleDetailsViewController: UIViewController {
         switch sender.tag {
             case 1:
                 self.viewModel.selectedStartTime = sender.date
+                
+                if self.viewModel.selectedEndTime <= self.viewModel.selectedStartTime {
+                    self.viewModel.selectedEndTime = self.viewModel.selectedStartTime.addingTimeInterval(60)
+                }
             case 2:
                 self.viewModel.selectedEndTime = sender.date
+                
+                if self.viewModel.selectedStartTime >= self.viewModel.selectedEndTime {
+                    self.viewModel.selectedStartTime = self.viewModel.selectedEndTime.addingTimeInterval(-60)
+                }
             default:
                 break
         }
-        
-        sender.reloadInputViews()
+    }
+    
+    @objc func datePickerEditionEnded() {
+        self.reloadTable()
     }
     
     private func showAddSubjectAlert() {

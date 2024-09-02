@@ -7,17 +7,58 @@
 
 import UIKit
 
-class FocusSessionView: UIView {
+class FocusSessionView: UIView, EndNotificationDelegate {
     weak var delegate: FocusSessionDelegate?
     
     // MARK: - Properties
     private let color: UIColor?
+    
+    func okButtonPressed() {
+        self.endNotification.isHidden = true
+        self.delegate?.didTapFinishButton()
+    }
     
     var isPaused: Bool = false {
         didSet {
             self.updatePauseResumeButton()
         }
     }
+    
+    private lazy var dismissButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
+        button.tintColor = .label
+        
+        button.addTarget(self, action: #selector(dismisButtonTapped), for: .touchUpInside)
+        
+        button.isHidden = true
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
+    private let activityTitle: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    private lazy var visibilityButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        
+        button.addTarget(self, action: #selector(visibilityButtonTapped), for: .touchUpInside)
+        
+        button.isHidden = true
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
     
     private let timerContainerView: UIView = {
         let view = UIView()
@@ -66,15 +107,6 @@ class FocusSessionView: UIView {
         return bttn
     }()
     
-    private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: self.color)
-        bttn.backgroundColor = .systemGray5
-        
-        bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
-        
-        return bttn
-    }()
-    
     private lazy var restartButton: ButtonComponent = {
         let attributedString = NSMutableAttributedString()
         let restartString = NSAttributedString(string: String(localized: "focusRestart"))
@@ -89,9 +121,36 @@ class FocusSessionView: UIView {
         bttn.setAttributedTitle(attributedString, for: .normal)
         bttn.backgroundColor = .systemGray5
         
+        bttn.isHidden = true
+        
         bttn.addTarget(self, action: #selector(didTapRestartButton), for: .touchUpInside)
         
         return bttn
+    }()
+    
+    private lazy var finishButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: self.color)
+        bttn.backgroundColor = .systemGray5
+        
+        bttn.isHidden = true
+        
+        bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
+        
+        return bttn
+    }()
+    
+    private lazy var endNotification: UIView = {
+        let view = NotificationView(title: "Tempo Acabou!",
+                                    body: ((ActivityManager.shared.subject) != nil) ? "Parabens, Voce chegou ao fim da sua atividade de " + (ActivityManager.shared.subject!.unwrappedName)  + " 🎉" :
+                                            "Parabens, Voce chegou ao fim da sua atividade 🎉",
+                                    color: color ?? UIColor.systemGray5)
+        view.delegate = self
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        
+        view.addTarget()
+        
+        return view
     }()
     
     // MARK: - Initializer
@@ -109,6 +168,53 @@ class FocusSessionView: UIView {
     }
     
     // MARK: - Auxiliar methods
+    func setTitleLabel(for subject: Subject?) {
+        guard let subject else { return }
+        
+        let attributedString = NSMutableAttributedString()
+        
+        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .medium), .foregroundColor : UIColor.label.withAlphaComponent(0.7)])
+        let subjectString = NSAttributedString(string: subject.unwrappedName, attributes: [.font : UIFont.boldSystemFont(ofSize: 32), .foregroundColor : UIColor.label.withAlphaComponent(0.85)])
+        
+        attributedString.append(activityString)
+        attributedString.append(subjectString)
+        
+        self.activityTitle.attributedText = attributedString
+    }
+    
+    
+    func changeButtonsIsHidden(_ isHidden: Bool) {
+        self.dismissButton.isHidden = isHidden
+        self.visibilityButton.isHidden = isHidden
+        self.restartButton.isHidden = isHidden
+        self.finishButton.isHidden = isHidden
+    }
+    
+    func showEndNotification(_ isHidden: Bool) {
+        self.endNotification.isHidden = isHidden
+    }
+    
+    func setVisibilityButton(isActive: Bool) {
+        let imageName = isActive ? "eye" : "eye.slash"
+        self.visibilityButton.setImage(UIImage(systemName: imageName), for: .normal)
+        self.visibilityButton.tintColor = .label
+        
+        self.addSubview(visibilityButton)
+        
+        NSLayoutConstraint.activate([
+            visibilityButton.topAnchor.constraint(equalTo: dismissButton.topAnchor),
+            visibilityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+        ])
+    }
+    
+    @objc private func dismisButtonTapped() {
+        self.delegate?.dismissButtonTapped()
+    }
+    
+    @objc private func visibilityButtonTapped() {
+        self.delegate?.visibilityButtonTapped()
+    }
+    
     @objc private func pauseResumeButtonTapped() {
         self.isPaused.toggle()
         self.delegate?.pauseResumeButtonTapped()
@@ -164,16 +270,25 @@ class FocusSessionView: UIView {
 // MARK: - UI Setup
 extension FocusSessionView: ViewCodeProtocol {
     func setupUI() {
+        self.addSubview(dismissButton)
+        self.addSubview(activityTitle)
         self.addSubview(timerContainerView)
         timerContainerView.addSubview(timerLabel)
         
         self.addSubview(pauseResumeButton)
         self.addSubview(restartButton)
         self.addSubview(finishButton)
+        self.addSubview(endNotification)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
+            dismissButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -6),
+            dismissButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            
+            activityTitle.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            activityTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
             timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 300/844),
             timerContainerView.widthAnchor.constraint(equalTo: timerContainerView.heightAnchor, multiplier: 290/300),
             timerContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -195,7 +310,12 @@ extension FocusSessionView: ViewCodeProtocol {
             finishButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             finishButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             finishButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -17),
-            finishButton.heightAnchor.constraint(equalTo: restartButton.heightAnchor)
+            finishButton.heightAnchor.constraint(equalTo: restartButton.heightAnchor),
+            
+            endNotification.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            endNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            endNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
+            endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 242/844),
         ])
     }
     

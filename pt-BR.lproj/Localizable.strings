@@ -45,7 +45,7 @@
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
 "invalidDateAlertTitle" = "Data inválida";
 "invalidDateAlertMessage1" = "Existe um cronograma para %@ com datas conflitantes";
-"invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim";
+"invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
 "noSubjectAlertTitle" = "Cronograma Inválido";
 "noSubjectAlertMessage" = "Você não pode criar um cronograma antes de atribuí-lo a uma matéria";
 "date" = "Data";
@@ -71,7 +71,7 @@
 "alarm" = "Alarme";
 "showTimeCount" = "Mostrar contagem de tempo";
 "paused" = "Pausado";
-"subjectActivity" = "Atividade de %@";
+"subjectActivity" = "Atividade de";
 "newActivity" = "Nova atividade";
 "interval" = "Intervalo";
 "timerAlertTitle" = "Tempo acabou!";
@@ -89,7 +89,7 @@
 "emptySubject" = "matéria";
 "deleteSubjectTitle" = "Excluir matéria";
 "deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades também serão excluídos.";
-"subjectCreationTitle" = "Dados inválidos";
+"subjectCreationTitle" = "Matéria inválida";
 "subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";
