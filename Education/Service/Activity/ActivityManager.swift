@@ -210,6 +210,8 @@ class ActivityManager {
     }
     
     func handleActivityDismissed(didTapFinish: Bool) {
+        self.isPaused = true
+        
         didTapFinish ? self.resetTimer() : (self.isShowingActivity = true)
     }
     

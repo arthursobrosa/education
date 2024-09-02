@@ -17,7 +17,6 @@ protocol FocusSessionDelegate: AnyObject {
 
 extension FocusSessionViewController: FocusSessionDelegate {
     func dismissButtonTapped() {
-        ActivityManager.shared.isPaused = true
         self.coordinator?.dismiss(animated: true)
     }
     

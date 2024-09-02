@@ -114,7 +114,7 @@ class FocusSessionViewController: UIViewController {
                     
                     let timerDuration = Double(timerSeconds)
                     let strokeEnd = self.viewModel.getStrokeEnd()
-                    
+//                    
                     self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
                 } else {
                     let timerSeconds = ActivityManager.shared.timerSeconds
