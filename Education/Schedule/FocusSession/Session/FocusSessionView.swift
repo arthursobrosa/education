@@ -7,11 +7,16 @@
 
 import UIKit
 
-class FocusSessionView: UIView {
+class FocusSessionView: UIView, EndNotificationDelegate {
     weak var delegate: FocusSessionDelegate?
     
     // MARK: - Properties
     private let color: UIColor?
+    
+    func okButtonPressed() {
+        self.endNotification.isHidden = true
+        self.delegate?.didTapFinishButton()
+    }
     
     var isPaused: Bool = false {
         didSet {
@@ -134,6 +139,20 @@ class FocusSessionView: UIView {
         return bttn
     }()
     
+    private lazy var endNotification: UIView = {
+        let view = NotificationView(title: "Tempo Acabou!",
+                                    body: ((ActivityManager.shared.subject) != nil) ? "Parabens, Voce chegou ao fim da sua atividade de " + (ActivityManager.shared.subject!.unwrappedName)  + " 🎉" :
+                                            "Parabens, Voce chegou ao fim da sua atividade 🎉",
+                                    color: color ?? UIColor.systemGray5)
+        view.delegate = self
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        
+        view.addTarget()
+        
+        return view
+    }()
+    
     // MARK: - Initializer
     init(color: UIColor?) {
         self.color = color
@@ -163,11 +182,16 @@ class FocusSessionView: UIView {
         self.activityTitle.attributedText = attributedString
     }
     
+    
     func changeButtonsIsHidden(_ isHidden: Bool) {
         self.dismissButton.isHidden = isHidden
         self.visibilityButton.isHidden = isHidden
         self.restartButton.isHidden = isHidden
         self.finishButton.isHidden = isHidden
+    }
+    
+    func showEndNotification(_ isHidden: Bool) {
+        self.endNotification.isHidden = isHidden
     }
     
     func setVisibilityButton(isActive: Bool) {
@@ -254,6 +278,7 @@ extension FocusSessionView: ViewCodeProtocol {
         self.addSubview(pauseResumeButton)
         self.addSubview(restartButton)
         self.addSubview(finishButton)
+        self.addSubview(endNotification)
         
         let padding = 20.0
         
@@ -285,7 +310,12 @@ extension FocusSessionView: ViewCodeProtocol {
             finishButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             finishButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             finishButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -17),
-            finishButton.heightAnchor.constraint(equalTo: restartButton.heightAnchor)
+            finishButton.heightAnchor.constraint(equalTo: restartButton.heightAnchor),
+            
+            endNotification.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            endNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            endNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
+            endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 242/844),
         ])
     }
     

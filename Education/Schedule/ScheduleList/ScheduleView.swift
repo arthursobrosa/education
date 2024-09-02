@@ -74,6 +74,64 @@ class ScheduleView: UIView {
     
     var emptyView = EmptyView(message: String(localized: "emptyDaySchedule"))
     
+    lazy var noSubjectsView: NoSubjectsView = {
+       let view = NoSubjectsView()
+       view.translatesAutoresizingMaskIntoConstraints = false
+       view.setButtonTarget(target: self, action: #selector(emptyViewButtonTapped))
+       return view
+   }()
+    
+//    lazy var emptyView2: UIView = {
+//        let view = UIView()
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//
+//        let stack = UIView()
+//        stack.translatesAutoresizingMaskIntoConstraints = false
+////        stack.backgroundColor = .red
+//
+//        let messageLabel = UILabel()
+//        messageLabel.text = "Crie uma matéria antes de iniciar seu cronograma"
+//        messageLabel.textAlignment = .center
+//        messageLabel.numberOfLines = 0 // Permite a quebra de linha
+//        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+//
+//        let button = UIButton(type: .system)
+//        button.setTitle("Criar", for: .normal)
+//        button.backgroundColor = .systemBlue
+//        button.setTitleColor(.white, for: .normal)
+//        button.layer.cornerRadius = 10
+//        button.layer.masksToBounds = true
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//
+//        button.addTarget(self, action: #selector(emptyViewButtonTapped), for: .touchUpInside)
+//
+//        stack.addSubview(messageLabel)
+//        stack.addSubview(button)
+//        view.addSubview(stack)
+//
+//        NSLayoutConstraint.activate([
+//            // Constraints for messageLabel
+//            messageLabel.topAnchor.constraint(equalTo: stack.topAnchor, constant: 0),
+//            messageLabel.leadingAnchor.constraint(equalTo: stack.leadingAnchor, constant: 16),
+//            messageLabel.trailingAnchor.constraint(equalTo: stack.trailingAnchor, constant: -16),
+//
+//            // Constraints for button
+//            button.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
+//            button.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
+//            button.widthAnchor.constraint(equalToConstant: 150),
+//            button.heightAnchor.constraint(equalToConstant: 44),
+////            button.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: -16),
+//
+//            // Constraints for stack
+//            stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            stack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            stack.heightAnchor.constraint(equalToConstant: 200),
+//            stack.widthAnchor.constraint(equalToConstant: 200),
+//        ])
+//
+//        return view
+//    }()
+    
     lazy var overlayView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
@@ -135,6 +193,12 @@ class ScheduleView: UIView {
     @objc private func startActivityTapped() {
         self.delegate?.startAcitivityTapped()
     }
+    
+    @objc private func emptyViewButtonTapped() {
+        
+        self.delegate?.emptyViewButtonTapped()
+            
+        }
     
     func changeEmptyView(isDaily: Bool) {
         let message = isDaily ? String(localized: "emptyDaySchedule") : String(localized: "emptyWeekSchedule")
