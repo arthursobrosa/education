@@ -7,7 +7,16 @@
 
 import UIKit
 
-class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingScheduleNotification, ShowingTimer, ShowingScheduleDetailsModal, ShowingFocusSelection {
+class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingScheduleNotification, ShowingTimer, ShowingScheduleDetailsModal, ShowingFocusSelection, ShowingSubjectCreation {
+    
+    
+    func showSubjectCreation(viewModel: StudyTimeViewModel) {
+        let child = SubjectCreationCoordinator(navigationController: self.navigationController, viewModel: viewModel)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
+        child.start()
+    }
+    
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -119,6 +128,17 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
         
         if let scheduleDetailsModalVC = nav.viewControllers.first as? ScheduleDetailsModalViewController {
             self.childDidFinish(scheduleDetailsModalVC.coordinator as? Coordinator)
+        }
+        
+        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
+            self.childDidFinish(subjectCreationVC.coordinator as? Coordinator)
+            
+            if let scheduleVc = self.navigationController.viewControllers.first as? ScheduleViewController{
+                scheduleVc.loadSchedules()
+            }
+            
+            
+            
         }
         
         return nil
