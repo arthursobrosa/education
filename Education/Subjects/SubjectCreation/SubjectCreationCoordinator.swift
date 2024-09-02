@@ -31,6 +31,10 @@ class SubjectCreationCoordinator: Coordinator, Dismissing {
             self.newNavigationController.transitioningDelegate = studyTimeCoordinator
         }
         
+        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
+            self.newNavigationController.transitioningDelegate = scheduleCoordinator
+        }
+        
         self.newNavigationController.modalPresentationStyle = .pageSheet
         self.navigationController.present(self.newNavigationController, animated: true)
     }

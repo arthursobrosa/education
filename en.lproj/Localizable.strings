@@ -124,3 +124,15 @@
 "newActivity" = "New Activity";
 "activityPre" = "";
 "activityPost" = "Activity";
+
+//MARK: - TIPS
+"newActivityTip" = "Create a new activity here";
+"explainActivityTip" = "You can create a recurring activity and add it to the schedule or create an immediate activity where you start a study timer right away.";
+"newSubjectTip" = "Create a subject here";
+"explainSubjectTip" = "Your scheduled activities and study time are linked to subjects.";
+"newTestTip" = "Create a new test group here";
+"explainTestTip" = "In each test group, you can add results and track your progress over time.";
+
+//MARK: - EMPTY SUBJECTS VIEW
+"create" = "Create Subject";
+"createText" = "Create a subject before starting your schedule";
