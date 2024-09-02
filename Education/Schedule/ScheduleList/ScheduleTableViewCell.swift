@@ -101,7 +101,8 @@ class ScheduleTableViewCell: UITableViewCell {
     
     private let timeLeftLabel: UILabel = {
         let lbl = UILabel()
-        lbl.font = .systemFont(ofSize: 14)
+        let font = UIFont(name: Fonts.darkModeOnSemiBold, size: 20)
+        lbl.font = font
         lbl.textAlignment = .right
         lbl.textColor = .white
         
@@ -112,9 +113,9 @@ class ScheduleTableViewCell: UITableViewCell {
     
     private let subjectNameLabel: UILabel = {
         let lbl = UILabel()
+        let font = UIFont(name: Fonts.darkModeOnSemiBold, size: 20)
+        lbl.font = font
         lbl.textColor = .white
-        lbl.font = .boldSystemFont(ofSize: 20.0)
-        
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -196,7 +197,7 @@ extension ScheduleTableViewCell{
         self.playButton.isHidden = false
         self.playButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker(by: 0.6)
-        self.timeLeftLabel.font = .systemFont(ofSize: 16)
+        self.timeLeftLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
         self.cardView.layer.borderWidth = 0
         self.timeLeftLabel.text = String(format: NSLocalizedString("timeLeft", comment: ""), String(hoursLeft), String(minutesLeft))
     }
@@ -207,7 +208,7 @@ extension ScheduleTableViewCell{
         self.playButton.isHidden = false
         self.playButton.activityState = .current(color: color.darker(by: 0.6))
         self.timeLeftLabel.text = String(localized: "timeLeftNow")
-        self.timeLeftLabel.font = .boldSystemFont(ofSize: 16)
+        self.timeLeftLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
         self.timeLeftLabel.textColor = .white
         self.cardView.layer.borderWidth = 1
         self.cardView.layer.borderColor = UIColor.label.cgColor
@@ -219,7 +220,7 @@ extension ScheduleTableViewCell{
         self.playButton.isHidden = false
         self.playButton.activityState = .normal
         self.timeLeftLabel.textColor = color.darker(by: 0.6)
-        self.timeLeftLabel.font = .systemFont(ofSize: 16)
+        self.timeLeftLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
         self.timeLeftLabel.text = String(localized: "timeLeftFinished")
         self.cardView.layer.borderWidth = 0
     }

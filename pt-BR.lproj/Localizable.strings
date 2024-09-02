@@ -45,7 +45,7 @@
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
 "invalidDateAlertTitle" = "Data inválida";
 "invalidDateAlertMessage1" = "Existe um cronograma para %@ com datas conflitantes";
-"invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim";
+"invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
 "noSubjectAlertTitle" = "Cronograma Inválido";
 "noSubjectAlertMessage" = "Você não pode criar um cronograma antes de atribuí-lo a uma matéria";
 "date" = "Data";
@@ -89,7 +89,7 @@
 "emptySubject" = "matéria";
 "deleteSubjectTitle" = "Excluir matéria";
 "deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades também serão excluídos.";
-"subjectCreationTitle" = "Dados inválidos";
+"subjectCreationTitle" = "Matéria inválida";
 "subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";
@@ -129,3 +129,15 @@
 "activityPre" = "Atividade de";
 "activityPost" = "";
 "studyingNow" = "Estudando agora";
+
+//MARK: - TIPS
+"newActivityTip" = "Crie uma nova atividade aqui";
+"explainActivityTip" = "Você pode criar uma atividade recorrente e adicioná-la ao cronograma ou criar uma atividade imediata, onde você já inicia um temporizador de estudo.";
+"newSubjectTip" = "Crie uma matéria aqui";
+"explainSubjectTip" = "As atividades do seu cronograma e o seu tempo de estudo são vinculados a matérias.";
+"newTestTip" = "Crie um novo grupo de testes aqui";
+"explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
+
+//MARK: - EMPTY SUBJECTS VIEW
+"create" = "Criar Matéria";
+"createText" = "Crie uma matéria antes de iniciar seu cronograma";

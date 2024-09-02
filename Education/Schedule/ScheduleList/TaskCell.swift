@@ -12,7 +12,7 @@ class TaskCell: UICollectionViewCell {
     
     let subjectLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
         label.textColor = .white
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -21,7 +21,7 @@ class TaskCell: UICollectionViewCell {
     
     let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 11)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 11)
         label.textColor = .white
         label.textAlignment = .center
         label.numberOfLines = 1
@@ -31,7 +31,7 @@ class TaskCell: UICollectionViewCell {
     
     let timeLabel2: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 11)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 11)
         label.textColor = .white
         label.textAlignment = .center
         label.numberOfLines = 1

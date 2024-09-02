@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import TipKit
 
 class ThemeListViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
     weak var coordinator: ShowingThemePage?
     private let viewModel: ThemeListViewModel
+    
+    var createTestTip = CreateTestTip()
     
     // MARK: - Properties
     private var themes = [Theme]()
@@ -60,6 +63,8 @@ class ThemeListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        handleTip()
+        
         self.viewModel.fetchThemes()
     }
     
@@ -76,6 +81,22 @@ class ThemeListViewController: UIViewController {
         let addItem = UIBarButtonItem(customView: addButton)
         
         self.navigationItem.rightBarButtonItems = [addItem]
+    }
+    
+    private func handleTip(){
+        Task { @MainActor in
+                for await shouldDisplay in createTestTip.shouldDisplayUpdates {
+                    if shouldDisplay {
+                        if let rightBarButtonItem = self.navigationItem.rightBarButtonItem {
+                            let controller = TipUIPopoverViewController(createTestTip, sourceItem: rightBarButtonItem)
+                            controller.view.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+                            present(controller, animated: true)
+                        }
+                    } else if presentedViewController is TipUIPopoverViewController {
+                        dismiss(animated: true)
+                    }
+                }
+            }
     }
     
     private func setView(isEmpty: Bool) {
@@ -129,6 +150,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         cell.textLabel?.text = theme.name
+        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
         cell.accessoryView = createAccessoryView()
         
         cell.backgroundColor = .systemGray6
@@ -142,7 +164,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         let detailsLabel = UILabel()
         detailsLabel.text = String(localized: "themeTableDetail")
         detailsLabel.textColor = .secondaryLabel
-        detailsLabel.font = UIFont.systemFont(ofSize: 17)
+        detailsLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
         detailsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
