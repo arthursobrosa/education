@@ -25,7 +25,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     }
     
     func showTabBar() {
-        let tabBar = TabBarController(themeListViewModel: self.themeListViewModel)
+        let tabBar = TabBarController()
         tabBar.modalPresentationStyle = .fullScreen
         
         self.navigationController.setNavigationBarHidden(true, animated: false)

@@ -95,6 +95,7 @@
 		688C257B2C66716600150F7F /* FocusImediateViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257A2C66716600150F7F /* FocusImediateViewController+Delegate.swift */; };
 		688C257D2C6674F000150F7F /* FocusSubjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257C2C6674F000150F7F /* FocusSubjectTableViewCell.swift */; };
 		688C257F2C667F9400150F7F /* ShowingFocusImediate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */; };
+		688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */; };
 		689388922C642133007EE922 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388912C642133007EE922 /* UIView+Extension.swift */; };
 		689388942C6423A7007EE922 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388932C6423A7007EE922 /* ActivityView.swift */; };
 		689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388982C642B23007EE922 /* TabBarController+Delegate.swift */; };
@@ -106,6 +107,8 @@
 		68B2CA992C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA982C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf */; };
 		68B2CA9B2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */; };
 		68B2CA9D2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */; };
+		68B2CA9F2C810A9500DF8069 /* SettingsViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B2CA9E2C810A9500DF8069 /* SettingsViewController+Extension.swift */; };
+		68B2CADC2C82529A00DF8069 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B2CADB2C82529A00DF8069 /* CustomTabBar.swift */; };
 		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
 		68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */; };
 		68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */; };
@@ -290,6 +293,7 @@
 		688C257A2C66716600150F7F /* FocusImediateViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusImediateViewController+Delegate.swift"; sourceTree = "<group>"; };
 		688C257C2C6674F000150F7F /* FocusSubjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSubjectTableViewCell.swift; sourceTree = "<group>"; };
 		688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusImediate.swift; sourceTree = "<group>"; };
+		688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityButton.swift; sourceTree = "<group>"; };
 		689388912C642133007EE922 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		689388932C6423A7007EE922 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		689388982C642B23007EE922 /* TabBarController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarController+Delegate.swift"; sourceTree = "<group>"; };
@@ -301,6 +305,8 @@
 		68B2CA982C81089000DF8069 /* DarkmodeOnTrial-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Medium.ttf"; sourceTree = "<group>"; };
 		68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-SemiBold.ttf"; sourceTree = "<group>"; };
 		68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Bold.ttf"; sourceTree = "<group>"; };
+		68B2CA9E2C810A9500DF8069 /* SettingsViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Extension.swift"; sourceTree = "<group>"; };
+		68B2CADB2C82529A00DF8069 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
 		68C2CFF62C470B9800E2347A /* StudyTimeViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudyTimeViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -620,8 +626,9 @@
 			isa = PBXGroup;
 			children = (
 				684282212C63B80A00CEEF1C /* SettingsCoordinator.swift */,
-				684282232C63B83300CEEF1C /* SettingsViewController.swift */,
 				CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */,
+				684282232C63B83300CEEF1C /* SettingsViewController.swift */,
+				68B2CA9E2C810A9500DF8069 /* SettingsViewController+Extension.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -718,6 +725,7 @@
 				68A451402C61143B00209786 /* CustomDatePickerView.swift */,
 				685CBFD92C61597600EC8E09 /* CustomDateButton.swift */,
 				6823766F2C63F48100255143 /* ActivityButton.swift */,
+				688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */,
 				689388932C6423A7007EE922 /* ActivityView.swift */,
 				CE0BD2332C8234C100E9FBDF /* NotificationView.swift */,
 			);
@@ -755,6 +763,7 @@
 			children = (
 				317C11252C35BBBD00C5E7A5 /* TabBarController.swift */,
 				689388982C642B23007EE922 /* TabBarController+Delegate.swift */,
+				68B2CADB2C82529A00DF8069 /* CustomTabBar.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -1044,6 +1053,7 @@
 				CED3DB3A2C5C17EC00297062 /* FocusSelectionCoordinator.swift in Sources */,
 				CE394D0C2C6E83FF00A8B1F0 /* ScheduleDetailsModalViewModel.swift in Sources */,
 				CE323B412C73BDC5004143E0 /* ScheduleNotificationCoordinator.swift in Sources */,
+				68B2CADC2C82529A00DF8069 /* CustomTabBar.swift in Sources */,
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
 				68C2D00C2C473FC100E2347A /* ScheduleDetails+Popover.swift in Sources */,
 				68C2D0032C47255700E2347A /* DayView.swift in Sources */,
@@ -1142,6 +1152,7 @@
 				68C2D0012C4723A100E2347A /* ScheduleTableViewCell.swift in Sources */,
 				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
 				68C2D0072C473BF300E2347A /* TestPageViewController+Delegate.swift in Sources */,
+				68B2CA9F2C810A9500DF8069 /* SettingsViewController+Extension.swift in Sources */,
 				68D3138D2C6AE4E000F63159 /* ScheduleDetailsCoordinator.swift in Sources */,
 				68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */,
 				30C076822C80E2DC002BBE2C /* CreateSubjectTip.swift in Sources */,
@@ -1184,6 +1195,7 @@
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
 				310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */,
+				688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */,
 				CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */,
 				687711722C7525FC00C6D4F1 /* TaskCell.swift in Sources */,
 				68833D9A2C46B28D00BA4850 /* DefaultCell.swift in Sources */,

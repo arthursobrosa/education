@@ -31,8 +31,19 @@ class ScheduleTableViewCell: UITableViewCell {
             let formatter = DateFormatter()
             formatter.timeStyle = .short
             
-            self.timeLabel.text = "\(formatter.string(from: schedule.unwrappedStartTime)) - \(formatter.string(from: schedule.unwrappedEndTime))"
-            self.timeLabel.textColor = .white
+            let font: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)
+            let startTimeColor: UIColor = (self.traitCollection.userInterfaceStyle == .light ? self.color?.darker(by: 0.8) : self.color) ?? .label
+            let endTimeColor: UIColor = (self.traitCollection.userInterfaceStyle == .light ? self.color : self.color?.darker(by: 0.8)) ?? .label
+            
+            let attributedString = NSMutableAttributedString()
+            let startTimeString = NSAttributedString(string: "\(formatter.string(from: schedule.unwrappedStartTime))", attributes: [.font : font, .foregroundColor : startTimeColor])
+            let endTimeString = NSAttributedString(string: "\(formatter.string(from: schedule.unwrappedEndTime))", attributes: [.font : font, .foregroundColor : endTimeColor])
+            
+            attributedString.append(startTimeString)
+            attributedString.append(NSAttributedString(string: " - ", attributes: [.font : font, .foregroundColor : endTimeColor]))
+            attributedString.append(endTimeString)
+            
+            self.timeLabel.attributedText = attributedString
             
             let calendar = Calendar.current
             let startTimeComponents = calendar.dateComponents([.hour, .minute], from: schedule.unwrappedStartTime)
@@ -50,7 +61,7 @@ class ScheduleTableViewCell: UITableViewCell {
             let currentTimeInMinutes = currentHour * 60 + currentMinute
             
             if schedule.dayOfTheWeek != Calendar.current.component(.weekday, from: Date()) - 1 {
-                resetView()
+                self.resetView()
                 self.playButton.isHidden = true
                 self.timeLeftLabel.text = ""
                 return
@@ -75,7 +86,13 @@ class ScheduleTableViewCell: UITableViewCell {
         didSet {
             guard let color else { return }
             
-            self.cardView.backgroundColor = color
+            self.cardView.backgroundColor = color.withAlphaComponent(0.2)
+            
+            let subjectColor = self.traitCollection.userInterfaceStyle == .light ? color.darker(by: 0.6) : color.darker(by: 1.8)
+            self.subjectNameLabel.textColor = subjectColor
+            self.playButton.playImageView.tintColor = subjectColor
+            self.playButton.circleView.backgroundColor = color.withAlphaComponent(0.6)
+            self.timeLeftLabel.textColor = self.traitCollection.userInterfaceStyle == .light ? color : color.darker(by: 0.8)
         }
     }
     
@@ -88,34 +105,10 @@ class ScheduleTableViewCell: UITableViewCell {
         return view
     }()
     
-    private lazy var playButton: ActivityButton = {
-        let bttn = ActivityButton()
-        bttn.activityState = .normal
-        
-        bttn.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return bttn
-    }()
-    
-    private let timeLeftLabel: UILabel = {
-        let lbl = UILabel()
-        let font = UIFont(name: Fonts.darkModeOnSemiBold, size: 20)
-        lbl.font = font
-        lbl.textAlignment = .right
-        lbl.textColor = .white
-        
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        
-        return lbl
-    }()
-    
     private let subjectNameLabel: UILabel = {
         let lbl = UILabel()
-        let font = UIFont(name: Fonts.darkModeOnSemiBold, size: 20)
-        lbl.font = font
-        lbl.textColor = .white
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 17)
+        
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -123,11 +116,31 @@ class ScheduleTableViewCell: UITableViewCell {
     
     private let timeLabel: UILabel = {
         let lbl = UILabel()
-        lbl.textColor = .white
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
+    }()
+    
+    private let timeLeftLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.textAlignment = .right
+        lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
+        
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
+    
+    private lazy var playButton: ActivityButton = {
+        let bttn = ActivityButton()
+        
+        bttn.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
     }()
     
     // MARK: - Initializer
@@ -151,30 +164,28 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
         cardView.addSubview(timeLeftLabel)
         cardView.addSubview(playButton)
         
-        let padding = 8.0
-        
         NSLayoutConstraint.activate([
-            cardView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: padding),
-            cardView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: padding),
-            cardView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -padding),
-            cardView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -padding),
+            cardView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5.5),
+            cardView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 12),
+            cardView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -12),
+            cardView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5.5),
             
             playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -padding * 2),
-            playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (52/359)),
+            playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -10),
+            playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (48/366)),
             playButton.heightAnchor.constraint(equalTo: playButton.widthAnchor),
             
             timeLeftLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            timeLeftLabel.trailingAnchor.constraint(equalTo: playButton.leadingAnchor, constant: -padding * 2),
+            timeLeftLabel.trailingAnchor.constraint(equalTo: playButton.leadingAnchor, constant: -7),
             
-            subjectNameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: padding * 2),
-            subjectNameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: padding * 2),
-            subjectNameLabel.trailingAnchor.constraint(equalTo: timeLeftLabel.leadingAnchor, constant: -padding),
+            subjectNameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 9.5),
+            subjectNameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 15),
+            subjectNameLabel.trailingAnchor.constraint(equalTo: timeLeftLabel.leadingAnchor, constant: -28),
             
-            timeLabel.topAnchor.constraint(equalTo: subjectNameLabel.bottomAnchor, constant: (padding / 2)),
+            timeLabel.topAnchor.constraint(equalTo: subjectNameLabel.bottomAnchor, constant: 4),
             timeLabel.leadingAnchor.constraint(equalTo: subjectNameLabel.leadingAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: subjectNameLabel.trailingAnchor),
-            timeLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -padding * 2),
+            timeLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -9.5)
         ])
         
         cardView.layer.cornerRadius = 16
@@ -184,7 +195,6 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
 // MARK: - Cell UI
 extension ScheduleTableViewCell{
     private func resetView() {
-        self.playButton.activityState = .normal
         self.cardView.layer.borderWidth = 0
     }
 
@@ -192,36 +202,18 @@ extension ScheduleTableViewCell{
         let differenceInMinutes = startTimeInMinutes - currentTimeInMinutes
         let hoursLeft = differenceInMinutes / 60
         let minutesLeft = differenceInMinutes % 60
-        guard let color else { return }
         
         self.playButton.isHidden = false
-        self.playButton.activityState = .normal
-        self.timeLeftLabel.textColor = color.darker(by: 0.6)
-        self.timeLeftLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
-        self.cardView.layer.borderWidth = 0
         self.timeLeftLabel.text = String(format: NSLocalizedString("timeLeft", comment: ""), String(hoursLeft), String(minutesLeft))
     }
 
     private func updateViewForOngoingEvent() {
-        guard let color else { return }
-        
         self.playButton.isHidden = false
-        self.playButton.activityState = .current(color: color.darker(by: 0.6))
         self.timeLeftLabel.text = String(localized: "timeLeftNow")
-        self.timeLeftLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
-        self.timeLeftLabel.textColor = .white
-        self.cardView.layer.borderWidth = 1
-        self.cardView.layer.borderColor = UIColor.label.cgColor
     }
 
     private func updateViewForCompletedEvent() {
-        guard let color else { return }
-        
         self.playButton.isHidden = false
-        self.playButton.activityState = .normal
-        self.timeLeftLabel.textColor = color.darker(by: 0.6)
-        self.timeLeftLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
         self.timeLeftLabel.text = String(localized: "timeLeftFinished")
-        self.cardView.layer.borderWidth = 0
     }
 }
