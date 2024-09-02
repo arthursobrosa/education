@@ -11,8 +11,7 @@ class ButtonComponent: UIButton {
     init(title: String, textColor: UIColor? = .systemBackground) {
         super.init(frame: .zero)
         
-        let attributedString = NSAttributedString(string: title, attributes: [.font : UIFont.boldSystemFont(ofSize: 16), .foregroundColor : textColor ?? .label])
-        
+        let attributedString = NSAttributedString(string: title, attributes: [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? .systemFont(ofSize: 18), .foregroundColor : textColor ?? .label])
         self.setAttributedTitle(attributedString, for: .normal)
         self.backgroundColor = .label
         self.layer.cornerRadius = 30
