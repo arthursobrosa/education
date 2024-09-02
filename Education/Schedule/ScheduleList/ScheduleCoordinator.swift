@@ -133,12 +133,9 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
         if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
             self.childDidFinish(subjectCreationVC.coordinator as? Coordinator)
             
-            if let scheduleVc = self.navigationController.viewControllers.first as? ScheduleViewController{
-                scheduleVc.loadSchedules()
+            if let scheduleVC = self.navigationController.viewControllers.first as? ScheduleViewController{
+                scheduleVC.loadSchedules()
             }
-            
-            
-            
         }
         
         return nil
