@@ -76,6 +76,8 @@ class StudyTimeViewController: UIViewController {
     
     // MARK: - Methods
     private func setNavigationItems() {
+        self.navigationItem.title = String(localized: "subjectTab")
+        
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)

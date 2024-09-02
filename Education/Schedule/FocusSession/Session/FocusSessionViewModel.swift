@@ -14,8 +14,6 @@ class FocusSessionViewModel {
     // MARK: - Properties
     var didTapFinish = false
     
-    var viewWasTapped = false
-    
     // MARK: - Initializer
     init(focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.focusSessionManager = focusSessionManager

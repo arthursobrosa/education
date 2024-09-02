@@ -53,8 +53,6 @@ class ActivityManager {
         didSet {
             if isShowingActivity {
                 self.delegate?.addActivityView()
-                self.delegate?.changeActivityVisibility(isShowing: true)
-                self.delegate?.updateActivityTimer()
                 
                 return
             }
@@ -115,10 +113,6 @@ class ActivityManager {
             let remainingTime = max(self.totalSeconds - Int(elapsed), 0)
             self.timerSeconds = remainingTime
             
-            if self.isShowingActivity {
-                self.delegate?.updateActivityTimer()
-            }
-            
             if elapsed >= Double(self.totalSeconds) {
                 self.handleTimerEnd()
             }
@@ -141,10 +135,6 @@ class ActivityManager {
             
             self.progress = 0
             self.timerSeconds += 1
-            
-            if self.isShowingActivity {
-                self.delegate?.updateActivityTimer()
-            }
         }
     }
     
@@ -265,7 +255,7 @@ class ActivityManager {
         self.workTime = focusSessionModel.workTime
         self.restTime = focusSessionModel.restTime
         self.numberOfLoops = focusSessionModel.numberOfLoops
-        self.isPaused = focusSessionModel.isPaused
+        self.isPaused = false
     }
     
     func restartActivity() {
@@ -275,7 +265,6 @@ class ActivityManager {
         currentFocusSession.workTime = self.workTime
         currentFocusSession.restTime = self.restTime
         currentFocusSession.numberOfLoops = self.numberOfLoops
-        currentFocusSession.isPaused = self.isPaused
         
         self.resetTimer()
         

@@ -49,6 +49,8 @@ class SettingsViewController: UIViewController {
             
             self.reloadTable()
         }
+        
+        self.navigationItem.title = String(localized: "settingsTab")
     }
     
     override func viewWillAppear(_ animated: Bool) {

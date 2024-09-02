@@ -20,7 +20,7 @@ extension ScheduleDetailsModalViewController: ScheduleDetailsModalDelegate {
         let colorName = self.viewModel.subject.unwrappedColor
         let color = UIColor(named: colorName)
         
-        let newFocusSessionModel = FocusSessionModel(isPaused: false, subject: self.viewModel.subject, blocksApps: self.viewModel.schedule.blocksApps, isAlarmOn: self.viewModel.schedule.imediateAlarm, color: color)
+        let newFocusSessionModel = FocusSessionModel(subject: self.viewModel.subject, blocksApps: self.viewModel.schedule.blocksApps, isAlarmOn: self.viewModel.schedule.imediateAlarm, color: color)
         
         self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }

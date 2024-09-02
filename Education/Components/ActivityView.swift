@@ -8,11 +8,7 @@
 import UIKit
 
 class ActivityView: UIView {
-    var isPaused: Bool = false {
-        didSet {
-            self.activityButton.isPaused = isPaused
-        }
-    }
+    weak var delegate: TabBarDelegate?
     
     var subject: Subject? {
         didSet {
@@ -25,29 +21,44 @@ class ActivityView: UIView {
         }
     }
     
-    var color: UIColor? {
+    var timerSeconds: Int? {
         didSet {
-            self.backgroundColor = color
-            self.progressView.backgroundColor = color?.darker(by: 0.6)
-            self.activityButton.activityState = .current(color: color?.darker(by: 0.6))
+            guard let timerSeconds else { return }
+            
+            self.updateTimer(timerSeconds: timerSeconds)
         }
     }
     
-    private let progressView: UIView = {
-        let view = UIView()
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
+    var color: UIColor? {
+        didSet {
+            self.studyingNowLabel.textColor = color?.darker(by: 1.3)
+            self.activityTitle.textColor = color?.darker(by: 0.6)
+            self.activityTimer.textColor = color
+        }
+    }
     
-    private var progressWidthConstraint: NSLayoutConstraint!
+    var progress: CGFloat? {
+        didSet {
+            guard let color,
+                  let progress else { return }
+            
+            self.addLiveActivityButton(color: color, progress: progress)
+        }
+    }
+    
+    private let studyingNowLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = String(localized: "studyingNow")
+        lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
+        
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
     
     private let activityTitle: UILabel = {
         let lbl = UILabel()
-        lbl.font = .systemFont(ofSize: 18, weight: .semibold)
-        lbl.textColor = .white
-        lbl.textAlignment = .left
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 17)
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -56,25 +67,27 @@ class ActivityView: UIView {
     
     private let activityTimer: UILabel = {
         let lbl = UILabel()
-        lbl.font = .systemFont(ofSize: 18, weight: .regular)
-        lbl.textColor = .white
-        lbl.textAlignment = .left
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 17)
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
     }()
     
-    let activityButton: ActivityButton = {
-        let bttn = ActivityButton()
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return bttn
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = .systemBackground
+        self.layer.shadowColor = UIColor.label.cgColor
+        self.layer.shadowOffset = CGSize(width: 0, height: -4)
+        self.layer.shadowOpacity = 0.1
+        self.layer.shadowRadius = 20
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.layer.shadowColor = UIColor.label.cgColor
+        }
         
         self.setupUI()
     }
@@ -86,12 +99,10 @@ class ActivityView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let radius = self.bounds.height / 6
-        self.roundCorners(corners: [.topLeft, .topRight], radius: radius, borderWidth: 2, borderColor: .label)
-        self.progressView.roundCorners(corners: [.topLeft], radius: radius, borderWidth: 0, borderColor: .clear)
+        self.layer.cornerRadius = self.bounds.height * (18/60)
     }
     
-    func updateTimer(timerSeconds: Int) {
+    private func updateTimer(timerSeconds: Int) {
         let seconds = timerSeconds % 60
         let minutes = timerSeconds / 60 % 60
         let hours = timerSeconds / 3600
@@ -109,41 +120,42 @@ class ActivityView: UIView {
         return number < 10 ? "0\(number)" : "\(number)"
     }
     
-    func updateProgressBar(progress: CGFloat) {
-        self.progressWidthConstraint.constant = progress * self.bounds.width
-        
-        UIView.animate(withDuration: 1/60) {
-            self.layoutIfNeeded()
-        }
+    @objc private func didTapPlayButton() {
+        self.delegate?.didTapPlayButton()
     }
 }
 
 extension ActivityView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(progressView)
+        self.addSubview(studyingNowLabel)
         self.addSubview(activityTitle)
         self.addSubview(activityTimer)
-        self.addSubview(activityButton)
-        
-        self.progressWidthConstraint = progressView.widthAnchor.constraint(equalToConstant: 0)
-        self.progressWidthConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
-            progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            progressView.heightAnchor.constraint(equalTo: self.heightAnchor),
-            progressView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            studyingNowLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 7),
+            studyingNowLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14),
             
-            activityTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            activityTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
+            activityTitle.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -11),
+            activityTitle.leadingAnchor.constraint(equalTo: studyingNowLabel.leadingAnchor),
             
-            activityTimer.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (76/390)),
-            activityTimer.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            
-            activityButton.leadingAnchor.constraint(equalTo: activityTimer.trailingAnchor, constant: 8),
-            activityButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (52/390)),
-            activityButton.heightAnchor.constraint(equalTo: activityButton.widthAnchor),
-            activityButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            activityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -22)
+            activityTimer.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (80/366)),
+            activityTimer.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        ])
+    }
+    
+    private func addLiveActivityButton(color: UIColor?, progress: CGFloat) {
+        let liveActivityButton = LiveActivityButton(color: color, progress: progress)
+        liveActivityButton.playButton.addTarget(self, action: #selector(didTapPlayButton), for: .touchUpInside)
+        liveActivityButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(liveActivityButton)
+        
+        NSLayoutConstraint.activate([
+            liveActivityButton.leadingAnchor.constraint(equalTo: activityTimer.trailingAnchor, constant: 13),
+            liveActivityButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (44/366)),
+            liveActivityButton.heightAnchor.constraint(equalTo: liveActivityButton.widthAnchor),
+            liveActivityButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            liveActivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12)
         ])
     }
 }

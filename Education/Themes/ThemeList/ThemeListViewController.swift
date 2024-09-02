@@ -65,6 +65,8 @@ class ThemeListViewController: UIViewController {
     
     // MARK: - Methods
     private func setNavigationItems() {
+        self.navigationItem.title = String(localized: "themeTab")
+        
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
