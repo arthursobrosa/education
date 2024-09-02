@@ -37,39 +37,28 @@ class TabBarController: UITabBarController {
         self.setValue(self.customTabBar, forKey: "tabBar")
         self.setTabItems()
         self.startCoordinators()
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: Fonts.darkModeOnMedium, size: 10)!
-        ]
+        
         self.tabBar.backgroundColor = .systemBackground
-        
-        schedule.start()
-        schedule.navigationController.tabBarItem = UITabBarItem(title: String(localized: "scheduleTab"), image: UIImage(systemName: "calendar.badge.clock"), tag: 0)
-        schedule.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
-        schedule.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .selected)
-        
-        studytime.start()
-        studytime.navigationController.tabBarItem = UITabBarItem(title: String(localized: "subjectTab"), image: UIImage(systemName: "books.vertical"), tag: 1)
-        studytime.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
-        studytime.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .selected)
-        
-        themeList.start()
-        themeList.navigationController.tabBarItem = UITabBarItem(title: String(localized: "themeTab"), image: UIImage(systemName: "list.bullet.clipboard"), tag: 2)
-        themeList.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
-        themeList.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .selected)
-        
-        settings.start()
-        settings.navigationController.tabBarItem = UITabBarItem(title: String(localized: "settingsTab"), image: UIImage(systemName: "gearshape"), tag: 3)
-        settings.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
-        settings.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .selected)
         
         self.viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, settings.navigationController]
     }
     
     private func setTabItems() {
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: Fonts.darkModeOnMedium, size: 10)!
+        ]
+        
         schedule.navigationController.tabBarItem = UITabBarItem(title: TabCase.schedule.title, image: TabCase.schedule.image, tag: TabCase.schedule.rawValue)
+        schedule.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
+        
         studytime.navigationController.tabBarItem = UITabBarItem(title: TabCase.subjects.title, image: TabCase.subjects.image, tag: TabCase.subjects.rawValue)
+        studytime.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
+        
         themeList.navigationController.tabBarItem = UITabBarItem(title: TabCase.exams.title, image: TabCase.exams.image, tag: TabCase.exams.rawValue)
+        themeList.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
+        
         settings.navigationController.tabBarItem = UITabBarItem(title: TabCase.settings.title, image: TabCase.settings.image, tag: TabCase.settings.rawValue)
+        settings.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
     }
     
     private func startCoordinators() {
