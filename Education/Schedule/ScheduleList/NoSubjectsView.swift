@@ -14,20 +14,15 @@ class NoSubjectsView: UIView {
     // MARK: - UI Components
     private let messageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Crie uma matéria antes de iniciar seu cronograma"
+        label.text = String(localized: "createText")
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let button: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Criar", for: .normal)
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 10
-        button.layer.masksToBounds = true
+    private let button: ButtonComponent = {
+        let button = ButtonComponent(title: String(localized: "create"))
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -53,15 +48,28 @@ class NoSubjectsView: UIView {
     
     // MARK: - Setup UI
     private func setupUI() {
-        stack.addArrangedSubview(messageLabel)
-        stack.addArrangedSubview(button)
+        stack.addSubview(messageLabel)
+        stack.addSubview(button)
+        
         addSubview(stack)
         
         NSLayoutConstraint.activate([
             stack.centerXAnchor.constraint(equalTo: centerXAnchor),
             stack.centerYAnchor.constraint(equalTo: centerYAnchor),
             stack.heightAnchor.constraint(equalToConstant: 200),
-            stack.widthAnchor.constraint(equalToConstant: 200)
+            stack.widthAnchor.constraint(equalToConstant: 300)
+        ])
+        
+        NSLayoutConstraint.activate([
+            messageLabel.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
+            messageLabel.topAnchor.constraint(equalTo: stack.topAnchor),
+            messageLabel.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+            messageLabel.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+            button.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 24),
+            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 4/14),
+            button.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
+            button.leadingAnchor.constraint(equalTo: stack.leadingAnchor, constant: 50),
+            button.trailingAnchor.constraint(equalTo: stack.trailingAnchor, constant: -50)
         ])
     }
     

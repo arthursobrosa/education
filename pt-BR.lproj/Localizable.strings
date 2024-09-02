@@ -130,3 +130,7 @@
 "explainSubjectTip" = "As atividades do seu cronograma e o seu tempo de estudo são vinculados a matérias.";
 "newTestTip" = "Crie um novo grupo de testes aqui";
 "explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
+
+//MARK: - EMPTY SUBJECTS VIEW
+"create" = "Criar Matéria";
+"createText" = "Crie uma matéria antes de iniciar seu cronograma";
