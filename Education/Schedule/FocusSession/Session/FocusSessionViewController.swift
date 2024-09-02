@@ -19,7 +19,7 @@ class FocusSessionViewController: UIViewController {
     
     // MARK: - Status bar hidden
     override var prefersStatusBarHidden: Bool {
-        return self.focusSessionView.prefersStatusBarHidden
+        return self.viewModel.prefersStatusBarHidden
     }
     
     // MARK: - Properties
@@ -184,7 +184,8 @@ class FocusSessionViewController: UIViewController {
     }
     
     @objc func viewWasTapped() {
-        self.focusSessionView.prefersStatusBarHidden.toggle()
+        self.viewModel.prefersStatusBarHidden.toggle()
+        self.focusSessionView.changeButtonsIsHidden(isHidden: self.viewModel.prefersStatusBarHidden)
         
         self.setNeedsStatusBarAppearanceUpdate()
     }

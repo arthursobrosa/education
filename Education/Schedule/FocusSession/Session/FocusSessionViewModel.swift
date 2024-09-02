@@ -12,6 +12,8 @@ class FocusSessionViewModel {
     private let focusSessionManager: FocusSessionManager
    
     // MARK: - Properties
+    var prefersStatusBarHidden = true
+    
     var didTapFinish = false
     
     // MARK: - Initializer

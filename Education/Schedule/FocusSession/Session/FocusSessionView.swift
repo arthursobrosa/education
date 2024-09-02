@@ -13,16 +13,9 @@ class FocusSessionView: UIView {
     // MARK: - Properties
     private let color: UIColor?
     
-    var prefersStatusBarHidden: Bool = true {
-        didSet {
-            self.changeButtonsIsHidden()
-        }
-    }
-    
     var isPaused: Bool = false {
         didSet {
             self.updatePauseResumeButton()
-            self.setDismissButtonVisibility()
         }
     }
     
@@ -170,12 +163,11 @@ class FocusSessionView: UIView {
         self.activityTitle.attributedText = attributedString
     }
     
-    private func changeButtonsIsHidden() {
-        self.setDismissButtonVisibility()
-        
-        self.visibilityButton.isHidden = self.prefersStatusBarHidden
-        self.restartButton.isHidden = self.prefersStatusBarHidden
-        self.finishButton.isHidden = self.prefersStatusBarHidden
+    func changeButtonsIsHidden(isHidden: Bool) {
+        self.dismissButton.isHidden = isHidden
+        self.visibilityButton.isHidden = isHidden
+        self.restartButton.isHidden = isHidden
+        self.finishButton.isHidden = isHidden
     }
     
     func setVisibilityButton(isActive: Bool) {
@@ -189,10 +181,6 @@ class FocusSessionView: UIView {
             visibilityButton.topAnchor.constraint(equalTo: dismissButton.topAnchor),
             visibilityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
-    }
-    
-    private func setDismissButtonVisibility() {
-        self.dismissButton.isHidden = self.prefersStatusBarHidden ? true : !isPaused
     }
     
     @objc private func dismisButtonTapped() {
