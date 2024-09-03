@@ -250,4 +250,8 @@ class ScheduleDetailsViewModel {
         }
         return title
     }
+    
+    func removeSchedule(_ schedule: Schedule) {
+        self.scheduleManager.deleteSchedule(schedule)
+    }
 }

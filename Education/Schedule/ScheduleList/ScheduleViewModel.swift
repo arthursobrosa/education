@@ -105,10 +105,6 @@ class ScheduleViewModel {
         return schedulesByDay
     }
     
-    func removeSchedule(_ schedule: Schedule) {
-        self.scheduleManager.deleteSchedule(schedule)
-    }
-    
     func getSubject(fromSchedule schedule: Schedule) -> Subject? {
         return self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID)
     }

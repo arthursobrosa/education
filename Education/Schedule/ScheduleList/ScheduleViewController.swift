@@ -78,7 +78,8 @@ class ScheduleViewController: UIViewController {
     private func setNavigationItems() {
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
+        addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(addScheduleButtonTapped), for: .touchUpInside)
         addButton.tintColor = .label
         
@@ -209,18 +210,6 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         self.coordinator?.showScheduleDetailsModal(schedule: schedule)
         
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let schedule = self.viewModel.schedules[indexPath.row]
-        
-        if editingStyle == .delete {
-            NotificationService.shared.cancelNotifications(forDate: schedule.startTime!)
-            
-            self.viewModel.removeSchedule(schedule)
-            
-            self.loadSchedules()
-        }
     }
 }
 

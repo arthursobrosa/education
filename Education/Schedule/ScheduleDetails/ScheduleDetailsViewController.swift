@@ -60,10 +60,39 @@ class ScheduleDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = self.viewModel.getTitleName()
+        self.setNavigationItems()
     }
     
     // MARK: - Methods
+    private func setNavigationItems() {
+        self.navigationItem.title = self.viewModel.getTitleName()
+        
+        guard let schedule = self.viewModel.schedule else { return }
+        
+        let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(didTapDeleteButton))
+        deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
+        
+        self.navigationItem.rightBarButtonItems = [deleteButton]
+    }
+    
+    @objc private func didTapDeleteButton() {
+        let alertController = UIAlertController(title: "Schedule Deletion", message: "Are you sure you want to delete this schedule?", preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
+            guard let schedule = self.viewModel.schedule else { return }
+            NotificationService.shared.cancelNotifications(forDate: schedule.unwrappedStartTime)
+            self.viewModel.removeSchedule(schedule)
+            self.coordinator?.dismiss(animated: true)
+        }
+        
+        let noAction = UIAlertAction(title: "No", style: .cancel)
+        
+        alertController.addAction(yesAction)
+        alertController.addAction(noAction)
+        
+        self.present(alertController, animated: true)
+    }
+    
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }

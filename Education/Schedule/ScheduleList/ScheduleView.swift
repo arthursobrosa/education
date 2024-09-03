@@ -171,16 +171,16 @@ extension ScheduleView: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             viewModeSelector.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
-            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 2),
+            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12),
+            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12),
             
             picker.topAnchor.constraint(equalTo: self.viewModeSelector.bottomAnchor, constant: padding),
-            picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            picker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            picker.leadingAnchor.constraint(equalTo: viewModeSelector.leadingAnchor),
+            picker.trailingAnchor.constraint(equalTo: viewModeSelector.trailingAnchor),
             
             contentView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: 21.5),
-            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            contentView.leadingAnchor.constraint(equalTo: viewModeSelector.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: viewModeSelector.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
         

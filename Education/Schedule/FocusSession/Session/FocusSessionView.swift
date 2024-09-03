@@ -115,7 +115,7 @@ class FocusSessionView: UIView, EndNotificationDelegate {
         attributedString.append(restartString)
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(restartImage)
-        attributedString.addAttributes([.font : UIFont.boldSystemFont(ofSize: 16), .foregroundColor : UIColor.label.withAlphaComponent(0.55)], range: .init(location: 0, length: attributedString.length))
+        attributedString.addAttributes([.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? UIFont.boldSystemFont(ofSize: 16), .foregroundColor : UIColor.label.withAlphaComponent(0.55)], range: .init(location: 0, length: attributedString.length))
         
         let bttn = ButtonComponent(title: String(), textColor: nil)
         bttn.setAttributedTitle(attributedString, for: .normal)
