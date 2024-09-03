@@ -110,14 +110,14 @@ extension DayView: ViewCodeProtocol {
         guard let dayOfWeek else { return }
         
         if dayOfWeek.isSelected {
-            self.dayLabel.textColor = .systemBlue
+            self.dayLabel.textColor = .label
             self.dateLabel.textColor = .systemBackground
-            self.circleView.layer.borderColor = UIColor.systemBlue.cgColor
-            self.circleView.backgroundColor = .systemBlue
+            self.circleView.layer.borderColor = UIColor.label.cgColor
+            self.circleView.backgroundColor = .label
         } else if dayOfWeek.isToday {
-            self.dayLabel.textColor = .systemBlue
-            self.dateLabel.textColor = .systemBlue
-            self.circleView.layer.borderColor = UIColor.systemBlue.cgColor
+            self.dayLabel.textColor = .label
+            self.dateLabel.textColor = .label
+            self.circleView.layer.borderColor = UIColor.label.cgColor
             self.circleView.layer.borderWidth = 1.0
             self.circleView.backgroundColor = .clear
         } else {

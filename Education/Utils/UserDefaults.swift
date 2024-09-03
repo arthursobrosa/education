@@ -26,8 +26,12 @@ struct UserDefault<Value> {
 extension UserDefaults {
     public enum Keys {
         static let isFirstEntry = "isFirstEntry"
+        static let dayOfWeek = "dayOfWeek"
     }
     
     @UserDefault(key: UserDefaults.Keys.isFirstEntry, defaultValue: true)
     static var isFirstEntry
+    
+    @UserDefault(key: UserDefaults.Keys.dayOfWeek, defaultValue: 0)
+    static var dayOfWeek
 }

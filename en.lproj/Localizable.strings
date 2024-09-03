@@ -107,9 +107,6 @@
 "themeTableDetail" = "Detail";
 
 // MARK: - Settings
-"blockAppsTitle" = "Block apps";
-"notificationsTitle" = "Notifications";
-"selectBlockedApps" = "Select Blocked Apps";
 "deactivateTitle" = "Deactivate on your phone!";
 "deactivateMessage" = "It's not possible to disable notifications in the Foca app. To do so, access your phone's Settings.";
 "activationTitle" = "Keep track of your studies!";
@@ -117,6 +114,9 @@
 "activateNow" = "Activate now";
 "activateLater" = "Activate later";
 "okAction" = "Ok, got it";
+"notificationsAndAlerts" = "Notifications and Alerts";
+"blockApps" = "Block Apps";
+"firstWeekDay" = "First day of the week";
 
 // MARK: - Modal
 "startButton" = "Start now";

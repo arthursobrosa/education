@@ -26,12 +26,6 @@ protocol ScheduleDelegate: AnyObject {
 }
 
 extension ScheduleViewController: ScheduleDelegate {
-    
-    func emptyViewButtonTapped() {
-        let vm = StudyTimeViewModel()
-        self.coordinator?.showSubjectCreation(viewModel: vm)
-    }
-    
     // MARK: - View Mode
     func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
         let viewModes = self.viewModel.viewModes.map { $0.name }
@@ -82,7 +76,13 @@ extension ScheduleViewController: ScheduleDelegate {
     }
     
     func setPicker(_ picker: UIStackView) {
-        let dates = self.viewModel.daysOfWeek
+        picker.arrangedSubviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        var dates = self.viewModel.daysOfWeek
+        
+//        let sortedDates = Array(dates[UserDefaults.dayOfWeek...]) + Array(dates[..<UserDefaults.dayOfWeek])
         
         for (index, date) in dates.enumerated() {
             let dayView = DayView()
@@ -118,6 +118,11 @@ extension ScheduleViewController: ScheduleDelegate {
     func startAcitivityTapped() {
         self.dismissButtons()
         self.coordinator?.showFocusImediate()
+    }
+    
+    func emptyViewButtonTapped() {
+        let vm = StudyTimeViewModel()
+        self.coordinator?.showSubjectCreation(viewModel: vm)
     }
     
     // MARK: - Play Button

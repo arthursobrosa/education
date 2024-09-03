@@ -11,7 +11,6 @@ class ScheduleView: UIView {
     // MARK: - Delegate
     weak var delegate: ScheduleDelegate? {
         didSet {
-            delegate?.setPicker(self.picker)
             delegate?.setSegmentedControl(self.viewModeSelector)
         }
     }

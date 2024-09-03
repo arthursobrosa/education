@@ -13,7 +13,7 @@ class FamilyActivityPickerDelegate: ObservableObject {
         willSet {
             do {
                 let encoded = try JSONEncoder().encode(newValue)
-                UserDefaults.standard.set(encoded, forKey:"applications")
+                UserDefaults.standard.set(encoded, forKey: "applications")
                 print("saved selection")
             } catch {
                 print("error to encode data: \(error)")

@@ -106,7 +106,7 @@ extension ScheduleDetailsViewController {
         switch section {
             case 0:
                 if row == 0 {
-                    let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedDay)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel,  textColor: .secondaryLabel)
+                    let containerView = self.createAttributedLabel(withText: "\(self.viewModel.selectedDay)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
                     return containerView
                 }
             

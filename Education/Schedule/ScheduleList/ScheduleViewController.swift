@@ -72,6 +72,8 @@ class ScheduleViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.loadSchedules()
+        
+        self.setPicker(self.scheduleView.picker)
     }
     
     // MARK: - Methods
