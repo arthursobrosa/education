@@ -183,6 +183,15 @@ class FocusSessionViewController: UIViewController {
         self.view.addGestureRecognizer(tapGesture)
     }
     
+    func hideEndNotification(){
+        self.focusSessionView.showEndNotification(true)
+    }
+    
+    func hideFinishNotification(){
+        self.focusSessionView.showFinishNotification(true)
+    }
+    
+    
     @objc func viewWasTapped() {
         self.viewModel.viewWasTapped.toggle()
         

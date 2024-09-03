@@ -8,12 +8,12 @@
 
 import UIKit
 
-@objc protocol EndNotificationDelegate: AnyObject {
-    func okButtonPressed()
-}
+//@objc protocol EndNotificationDelegate: AnyObject {
+//    func okButtonPressed()
+//}
 
-class NotificationView: UIView {
-    weak var delegate: (any EndNotificationDelegate)?
+class NotificationComponentView: UIView {
+    weak var delegate: (any FocusSessionDelegate)?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -67,11 +67,11 @@ class NotificationView: UIView {
     
     func addTarget() {
 //        self.okButton.addTarget(self, action: selcetor, for: .touchUpInside)
-        self.okButton.addTarget(delegate, action: #selector(EndNotificationDelegate.okButtonPressed), for: .touchUpInside)
+        self.okButton.addTarget(delegate, action: #selector(FocusSessionDelegate.okButtonPressed), for: .touchUpInside)
     }
 }
 
-extension NotificationView: ViewCodeProtocol {
+extension NotificationComponentView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(titleLabel)
         self.addSubview(bodyLabel)
@@ -90,14 +90,9 @@ extension NotificationView: ViewCodeProtocol {
             
             okButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             okButton.topAnchor.constraint(equalTo: bodyLabel.topAnchor, constant: padding * 4),
-            //okButton.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -padding),
             okButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 312/360),
             okButton.heightAnchor.constraint(equalTo: okButton.widthAnchor, multiplier: 55/312),
             
         ])
     }
-}
-
-#Preview{
-    NotificationView(title: "Tempo Acabou!", body: "Parabens, Voce chegou ao fim da sua atividade de Biologia", color: UIColor.blue)
 }
