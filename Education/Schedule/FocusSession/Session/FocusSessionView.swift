@@ -7,16 +7,11 @@
 
 import UIKit
 
-class FocusSessionView: UIView, EndNotificationDelegate {
+class FocusSessionView: UIView {
     weak var delegate: FocusSessionDelegate?
     
     // MARK: - Properties
     private let color: UIColor?
-    
-    func okButtonPressed() {
-        self.endNotification.isHidden = true
-        self.delegate?.didTapFinishButton()
-    }
     
     var isPaused: Bool = false {
         didSet {
@@ -134,21 +129,44 @@ class FocusSessionView: UIView, EndNotificationDelegate {
         
         bttn.isHidden = true
         
+        
         bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
         
         return bttn
     }()
     
     private lazy var endNotification: UIView = {
-        let view = NotificationView(title: "Tempo Acabou!",
-                                    body: ((ActivityManager.shared.subject) != nil) ? "Parabens, Voce chegou ao fim da sua atividade de " + (ActivityManager.shared.subject!.unwrappedName)  + " 🎉" :
-                                            "Parabens, Voce chegou ao fim da sua atividade 🎉",
+        let view = NotificationComponentView(title: String(localized: "timeIsUp"),
+                                    body: ((ActivityManager.shared.subject) != nil) ? String(localized: "activityEndCongratulations") + (ActivityManager.shared.subject!.unwrappedName)  + " 🎉" :
+                                                String(localized: "noActivityEndCongratulations"),
                                     color: color ?? UIColor.systemGray5)
-        view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
         
         view.addTarget()
+        
+        return view
+    }()
+    
+    private lazy var finishEarlyNotification: UIView = {
+        let view = NotificationWithCancelView(body: String(localized: "confirmActivityEnd"), color: self.color ?? UIColor.systemGray5)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        
+        view.addYesButtonTarget()
+        view.addCancelButtonTarget()
+        
+        view.layer.shadowColor = UIColor.label.cgColor
+        view.layer.shadowRadius = 20
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowOffset = .init(width: 10, height: 10)
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            view.layer.shadowColor = UIColor.label.cgColor
+        }
         
         return view
     }()
@@ -194,6 +212,10 @@ class FocusSessionView: UIView, EndNotificationDelegate {
         self.endNotification.isHidden = isHidden
     }
     
+    func showFinishNotification(_ isHidden: Bool) {
+        self.finishEarlyNotification.isHidden = isHidden
+    }
+    
     func setVisibilityButton(isActive: Bool) {
         let imageName = isActive ? "eye" : "eye.slash"
         self.visibilityButton.setImage(UIImage(systemName: imageName), for: .normal)
@@ -235,7 +257,7 @@ class FocusSessionView: UIView, EndNotificationDelegate {
     }
     
     @objc private func didTapFinishButton() {
-        self.delegate?.didTapFinishButton()
+        self.showFinishNotification(false)
     }
     
     func startAnimation(timerDuration: Double) {
@@ -283,6 +305,7 @@ extension FocusSessionView: ViewCodeProtocol {
         self.addSubview(restartButton)
         self.addSubview(finishButton)
         self.addSubview(endNotification)
+        self.addSubview(finishEarlyNotification)
         
         let padding = 20.0
         
@@ -325,6 +348,12 @@ extension FocusSessionView: ViewCodeProtocol {
             endNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             endNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
             endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 242/844),
+            
+            finishEarlyNotification.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            finishEarlyNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            finishEarlyNotification.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
+            finishEarlyNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
+            finishEarlyNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 209/844)
         ])
     }
     
