@@ -110,11 +110,11 @@ class FocusSessionView: UIView {
         attributedString.append(restartString)
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(restartImage)
-        attributedString.addAttributes([.font : UIFont.boldSystemFont(ofSize: 16), .foregroundColor : self.color ?? .label], range: .init(location: 0, length: attributedString.length))
+        attributedString.addAttributes([.font : UIFont.boldSystemFont(ofSize: 16), .foregroundColor : UIColor.label.withAlphaComponent(0.55)], range: .init(location: 0, length: attributedString.length))
         
-        let bttn = ButtonComponent(title: String(), textColor: self.color)
+        let bttn = ButtonComponent(title: String(), textColor: nil)
         bttn.setAttributedTitle(attributedString, for: .normal)
-        bttn.backgroundColor = .systemGray5
+        bttn.backgroundColor = .systemGray6
         
         bttn.isHidden = true
         
@@ -124,8 +124,8 @@ class FocusSessionView: UIView {
     }()
     
     private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: self.color)
-        bttn.backgroundColor = .systemGray5
+        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"))
+        bttn.backgroundColor = .systemGray6
         
         bttn.isHidden = true
         
@@ -297,7 +297,11 @@ extension FocusSessionView: ViewCodeProtocol {
         self.addSubview(timerContainerView)
         timerContainerView.addSubview(timerLabel)
         
-        self.addSubview(pauseResumeButton)
+        let pauseResumeButtonContainer = UIView()
+        pauseResumeButtonContainer.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(pauseResumeButtonContainer)
+        pauseResumeButtonContainer.addSubview(pauseResumeButton)
+        
         self.addSubview(restartButton)
         self.addSubview(finishButton)
         self.addSubview(endNotification)
@@ -315,15 +319,20 @@ extension FocusSessionView: ViewCodeProtocol {
             timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 300/844),
             timerContainerView.widthAnchor.constraint(equalTo: timerContainerView.heightAnchor, multiplier: 290/300),
             timerContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            timerContainerView.bottomAnchor.constraint(equalTo: pauseResumeButton.topAnchor, constant: -65),
+            timerContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             timerLabel.centerXAnchor.constraint(equalTo: timerContainerView.centerXAnchor),
             timerLabel.centerYAnchor.constraint(equalTo: timerContainerView.centerYAnchor),
             timerLabel.widthAnchor.constraint(equalTo: timerContainerView.widthAnchor),
             timerLabel.heightAnchor.constraint(equalTo: timerLabel.widthAnchor),
             
-            pauseResumeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            pauseResumeButton.bottomAnchor.constraint(equalTo: restartButton.topAnchor, constant: -34),
+            pauseResumeButtonContainer.topAnchor.constraint(equalTo: timerLabel.bottomAnchor),
+            pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: restartButton.topAnchor),
+            pauseResumeButtonContainer.widthAnchor.constraint(equalTo: self.widthAnchor),
+            pauseResumeButtonContainer.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            pauseResumeButton.centerXAnchor.constraint(equalTo: pauseResumeButtonContainer.centerXAnchor),
+            pauseResumeButton.centerYAnchor.constraint(equalTo: pauseResumeButtonContainer.centerYAnchor),
             
             restartButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             restartButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),

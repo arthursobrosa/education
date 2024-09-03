@@ -19,7 +19,6 @@ class SettingsCoordinator: Coordinator {
         let viewModel = SettingsViewModel()
         let vc = SettingsViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = String(localized: "settingsTab")
         
         self.navigationController.navigationBar.prefersLargeTitles = true
         self.navigationController.pushViewController(vc, animated: false)

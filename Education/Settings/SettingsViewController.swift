@@ -10,7 +10,7 @@ import SwiftUI
 
 class SettingsViewController: UIViewController {
     weak var coordinator: SettingsCoordinator?
-    private let viewModel: SettingsViewModel
+    let viewModel: SettingsViewModel
     
     private lazy var settingsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -41,6 +41,32 @@ class SettingsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.viewModel.isNotificationActive.bind { [weak self] isActive in
+            guard let self else { return }
+            
+            self.reloadTable()
+        }
+        
+        self.navigationItem.title = String(localized: "settingsTab")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.viewModel.requestNoficationAuthorization()
+    }
+    
+    private func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.settingsTableView.reloadData()
+        }
+    }
+    
     private func showFamilyActivityPicker() {
         // Create the SwiftUI view
         let swiftUIView = FamilyActivityPickerView()
@@ -63,60 +89,71 @@ class SettingsViewController: UIViewController {
         
         hostingController.didMove(toParent: self)
     }
+    
+    @objc func didChangeNotificationToggle(_ sender: UISwitch) {
+        sender.setOn(!sender.isOn, animated: true)
+        
+        self.showNotificationAlert(isActivating: !sender.isOn)
+    }
+    
+    private func showNotificationAlert(isActivating: Bool) {
+        let deactivationTitle = String(localized: "deactivateTitle")
+        let deactivationMessage = String(localized: "deactivateMessage")
+        
+        let activationTitle = String(localized: "activationTitle")
+        let activationMessage = String(localized: "activationMessage")
+        
+        var actions = [UIAlertAction]()
+        
+        let activateNowAction = UIAlertAction(title: String(localized: "activateNow"), style: .default) { _ in
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
+            }
+        }
+        let activateLaterAction = UIAlertAction(title: String(localized: "activateLater"), style: .destructive)
+        
+        let okAction = UIAlertAction(title: String(localized: "okAction"), style: .cancel, handler: nil)
+        
+        let title = isActivating ? activationTitle : deactivationTitle
+        let message = isActivating ? activationMessage : deactivationMessage
+        actions = isActivating ? [activateNowAction, activateLaterAction] : [okAction]
+        
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        for action in actions {
+            alert.addAction(action)
+        }
+        
+        self.present(alert, animated: true)
+    }
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = indexPath.section
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         
-        var cellText = String()
-        
-        switch section {
-            case 0:
-                cellText = String(localized: "selectBlockedApps")
-            case 1:
-                cellText = String(localized: "activateNotification")
-            default:
-                break
-        }
-        
-        cell.textLabel?.text = cellText
+        cell.textLabel?.text = self.createCellTitle(for: indexPath)
+        cell.accessoryView = self.createCellAccessoryView(for: indexPath)
         cell.backgroundColor = .systemGray6
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = indexPath.section
-      
-        switch section {
-            case 0:
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let row = indexPath.row
+        
+        switch row {
+            case 1:
                 self.showFamilyActivityPicker()
-            case 1:
-                self.viewModel.requestNoficationAuthorization()
             default:
-                break
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-            case 0:
-                return String(localized: "blockAppsTitle")
-            case 1:
-                return String(localized: "notificationsTitle")
-            default:
-                return String()
+                return
         }
     }
 }

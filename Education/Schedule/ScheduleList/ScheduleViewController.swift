@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import TipKit
 
 class ScheduleViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingScheduleNotification & ShowingScheduleDetailsModal & ShowingFocusSelection)?
+    weak var coordinator: (ShowingScheduleDetails & ShowingFocusImediate & ShowingScheduleNotification & ShowingScheduleDetailsModal & ShowingFocusSelection & ShowingSubjectCreation)?
     let viewModel: ScheduleViewModel
+    
+    var createActivityTip = CreateActivityTip()
     
     // MARK: - Properties
     lazy var scheduleView: ScheduleView = {
@@ -195,7 +198,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 79
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -260,7 +263,17 @@ extension ScheduleViewController {
         
         if isEmpty {
             self.scheduleView.changeEmptyView(isDaily: isDaily)
-            self.addContentSubview(self.scheduleView.emptyView)
+            
+            if let subjects = self.viewModel.subjectManager.fetchSubjects() , subjects.count > 0 {
+                    // Se fetchSubject() não for nulo
+                print(subjects)
+                    self.addContentSubview(self.scheduleView.emptyView)
+                    handleTip()
+                } else {
+                    
+                    // Se fetchSubject() for nulo
+                    self.addContentSubview(self.scheduleView.noSubjectsView)
+                }
         } else {
             if isDaily {
                 self.addContentSubview(self.scheduleView.tableView)
@@ -268,6 +281,24 @@ extension ScheduleViewController {
                 self.addContentSubview(self.scheduleView.collectionView)
             }
         }
+    }
+    
+    private func handleTip(){
+        Task { @MainActor in
+                for await shouldDisplay in createActivityTip.shouldDisplayUpdates {
+                    if shouldDisplay {
+                        if let rightBarButtonItem = self.navigationItem.rightBarButtonItem {
+                            let controller = TipUIPopoverViewController(createActivityTip, sourceItem: rightBarButtonItem)
+                            controller.view.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+                           
+                            
+                            present(controller, animated: true)
+                        }
+                    } else if presentedViewController is TipUIPopoverViewController {
+                        dismiss(animated: true)
+                    }
+                }
+            }
     }
     
     private func addContentSubview(_ subview: UIView) {

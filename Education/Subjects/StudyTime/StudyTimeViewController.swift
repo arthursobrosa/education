@@ -7,11 +7,14 @@
 
 import UIKit
 import SwiftUI
+import TipKit
 
 class StudyTimeViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
     weak var coordinator: ShowingSubjectCreation?
     let viewModel: StudyTimeViewModel
+    
+    var createSubjectTip = CreateSubjectTip()
     
     // MARK: - Properties
     private lazy var studyTimeView: StudyTimeView = {
@@ -70,12 +73,16 @@ class StudyTimeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        handleTip()
+        
         self.viewModel.fetchSubjects()
         self.viewModel.fetchFocusSessions()
     }
     
     // MARK: - Methods
     private func setNavigationItems() {
+        self.navigationItem.title = String(localized: "subjectTab")
+        
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
@@ -86,6 +93,22 @@ class StudyTimeViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItems = [addItem]
 
+    }
+    
+    private func handleTip(){
+        Task { @MainActor in
+                for await shouldDisplay in createSubjectTip.shouldDisplayUpdates {
+                    if shouldDisplay {
+                        if let rightBarButtonItem = self.navigationItem.rightBarButtonItem {
+                            let controller = TipUIPopoverViewController(createSubjectTip, sourceItem: rightBarButtonItem)
+                            controller.view.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+                            present(controller, animated: true)
+                        }
+                    } else if presentedViewController is TipUIPopoverViewController {
+                        dismiss(animated: true)
+                    }
+                }
+            }
     }
     
     func reloadTable() {

@@ -19,7 +19,7 @@ class FocusSessionViewController: UIViewController {
     
     // MARK: - Status bar hidden
     override var prefersStatusBarHidden: Bool {
-        return !self.viewModel.viewWasTapped
+        return self.viewModel.prefersStatusBarHidden
     }
     
     // MARK: - Properties
@@ -114,7 +114,7 @@ class FocusSessionViewController: UIViewController {
                     
                     let timerDuration = Double(timerSeconds)
                     let strokeEnd = self.viewModel.getStrokeEnd()
-                    
+//                    
                     self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
                 } else {
                     let timerSeconds = ActivityManager.shared.timerSeconds
@@ -193,10 +193,10 @@ class FocusSessionViewController: UIViewController {
     
     
     @objc func viewWasTapped() {
-        self.viewModel.viewWasTapped.toggle()
+        self.viewModel.prefersStatusBarHidden.toggle()
+        self.focusSessionView.changeButtonsIsHidden(self.viewModel.prefersStatusBarHidden)
         
         self.setNeedsStatusBarAppearanceUpdate()
-        self.focusSessionView.changeButtonsIsHidden(!self.viewModel.viewWasTapped)
     }
     
     private func blockApps() {
@@ -209,14 +209,6 @@ class FocusSessionViewController: UIViewController {
 // MARK: - Auxiliar Methods
 extension FocusSessionViewController {
     private func showEndTimeAlert() {
-//        let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-//            guard let self else { return }
-//
-//            self.didTapFinishButton()
-//        }
-//
-//        alertController.addAction(okAction)
-
         self.focusSessionView.showEndNotification(false)
     }
     

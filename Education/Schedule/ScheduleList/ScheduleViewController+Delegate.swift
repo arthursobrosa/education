@@ -19,12 +19,19 @@ protocol ScheduleDelegate: AnyObject {
     // MARK: - Floating buttons
     func createAcitivityTapped()
     func startAcitivityTapped()
+    func emptyViewButtonTapped()
     
     // MARK: - Play button
     func playButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?)
 }
 
 extension ScheduleViewController: ScheduleDelegate {
+    
+    func emptyViewButtonTapped() {
+        let vm = StudyTimeViewModel()
+        self.coordinator?.showSubjectCreation(viewModel: vm)
+    }
+    
     // MARK: - View Mode
     func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
         let viewModes = self.viewModel.viewModes.map { $0.name }
@@ -122,7 +129,7 @@ extension ScheduleViewController: ScheduleDelegate {
         let schedule = self.viewModel.schedules[row]
         let subject = self.viewModel.getSubject(fromSchedule: schedule)
         
-        let newFocusSessionModel = FocusSessionModel(isPaused: false, subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
+        let newFocusSessionModel = FocusSessionModel(subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
         
         self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }

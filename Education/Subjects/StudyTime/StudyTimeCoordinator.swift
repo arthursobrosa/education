@@ -21,7 +21,7 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation {
         let viewModel = StudyTimeViewModel()
         let vc = StudyTimeViewController(viewModel: viewModel)
         vc.coordinator = self
-        vc.title = String(localized: "subjectTab")
+        
         self.navigationController.pushViewController(vc, animated: false)
     }
     

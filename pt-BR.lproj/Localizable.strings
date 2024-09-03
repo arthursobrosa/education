@@ -115,7 +115,13 @@
 "blockAppsTitle" = "Bloqueio de apps";
 "notificationsTitle" = "Notificações";
 "selectBlockedApps" = "Selecione os Apps Bloqueados";
-"activateNotification" = "Ativar Notificação";
+"deactivateTitle" = "Desative no seu celular!";
+"deactivateMessage" = "Não é possível desabilitar notificações no app Foca. Para isso, accesse as Configurações do seu celular.";
+"activationTitle" = "Acompanhe os seus estudos!";
+"activationMessage" = "Vamos enviar o status das suas atividades e alertar quando estivar na hora de estudar uma matéria. Sem propagandas adicionadas.";
+"activateNow" = "Ativar agora";
+"activateLater" = "Ativar depois";
+"okAction" = "Ok, entendi";
 
 // MARK: - Modal
 "startButton" = "Iniciar agora";
@@ -127,3 +133,16 @@
 "newActivity" = "Nova Atividade";
 "activityPre" = "Atividade de";
 "activityPost" = "";
+"studyingNow" = "Estudando agora";
+
+//MARK: - TIPS
+"newActivityTip" = "Crie uma nova atividade aqui";
+"explainActivityTip" = "Você pode criar uma atividade recorrente e adicioná-la ao cronograma ou criar uma atividade imediata, onde você já inicia um temporizador de estudo.";
+"newSubjectTip" = "Crie uma matéria aqui";
+"explainSubjectTip" = "As atividades do seu cronograma e o seu tempo de estudo são vinculados a matérias.";
+"newTestTip" = "Crie um novo grupo de testes aqui";
+"explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
+
+//MARK: - EMPTY SUBJECTS VIEW
+"create" = "Criar Matéria";
+"createText" = "Crie uma matéria antes de iniciar seu cronograma";

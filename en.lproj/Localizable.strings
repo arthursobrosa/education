@@ -116,7 +116,13 @@
 "blockAppsTitle" = "Block apps";
 "notificationsTitle" = "Notifications";
 "selectBlockedApps" = "Select Blocked Apps";
-"activateNotification" = "Activate Notification";
+"deactivateTitle" = "Deactivate on your phone!";
+"deactivateMessage" = "It's not possible to disable notifications in the Foca app. To do so, access your phone's Settings.";
+"activationTitle" = "Keep track of your studies!";
+"activationMessage" = "We'll send you the status of your activities and alert you when it's time to study for a subject. No ads included.";
+"activateNow" = "Activate now";
+"activateLater" = "Activate later";
+"okAction" = "Ok, got it";
 
 // MARK: - Modal
 "startButton" = "Start now";
@@ -130,3 +136,16 @@
 "newActivity" = "New Activity";
 "activityPre" = "";
 "activityPost" = "Activity";
+"studyingNow" = "Studying now";
+
+//MARK: - TIPS
+"newActivityTip" = "Create a new activity here";
+"explainActivityTip" = "You can create a recurring activity and add it to the schedule or create an immediate activity where you start a study timer right away.";
+"newSubjectTip" = "Create a subject here";
+"explainSubjectTip" = "Your scheduled activities and study time are linked to subjects.";
+"newTestTip" = "Create a new test group here";
+"explainTestTip" = "In each test group, you can add results and track your progress over time.";
+
+//MARK: - EMPTY SUBJECTS VIEW
+"create" = "Create Subject";
+"createText" = "Create a subject before starting your schedule";

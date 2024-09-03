@@ -74,6 +74,13 @@ class ScheduleView: UIView {
     
     var emptyView = EmptyView(message: String(localized: "emptyDaySchedule"))
     
+    lazy var noSubjectsView: NoSubjectsView = {
+       let view = NoSubjectsView()
+       view.translatesAutoresizingMaskIntoConstraints = false
+       view.setButtonTarget(target: self, action: #selector(emptyViewButtonTapped))
+       return view
+   }()
+    
     lazy var overlayView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
@@ -136,6 +143,12 @@ class ScheduleView: UIView {
         self.delegate?.startAcitivityTapped()
     }
     
+    @objc private func emptyViewButtonTapped() {
+        
+        self.delegate?.emptyViewButtonTapped()
+            
+        }
+    
     func changeEmptyView(isDaily: Bool) {
         let message = isDaily ? String(localized: "emptyDaySchedule") : String(localized: "emptyWeekSchedule")
         
@@ -165,10 +178,10 @@ extension ScheduleView: ViewCodeProtocol {
             picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             picker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
-            contentView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
+            contentView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: 21.5),
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
         
         NSLayoutConstraint.activate([
