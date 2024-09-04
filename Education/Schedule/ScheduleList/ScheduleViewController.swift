@@ -71,6 +71,8 @@ class ScheduleViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.viewModel.selectedWeekday = Calendar.current.component(.weekday, from: Date()) - 1
+        
         self.loadSchedules()
         
         self.setPicker(self.scheduleView.picker)
@@ -126,7 +128,7 @@ class ScheduleViewController: UIViewController {
             if let dayOfWeek = dayView.dayOfWeek {
                 if dayOfWeek.isToday {
                     dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
-                    self.viewModel.selectedDay = dayView.tag
+                    self.viewModel.selectedDate = self.viewModel.daysOfWeek[dayView.tag]
                 }
             }
         }
@@ -147,7 +149,9 @@ class ScheduleViewController: UIViewController {
         
         self.setContentView()
         
-        self.reloadTable()
+        self.scheduleView.tableView.reloadSections(IndexSet(integer: 0), with: .none)
+        
+//        self.reloadTable()
         self.reloadCollection()
     }
     

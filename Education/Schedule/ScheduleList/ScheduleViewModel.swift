@@ -35,13 +35,14 @@ class ScheduleViewModel {
     var viewModes: [ScheduleViewMode] = ScheduleViewMode.allCases
     var selectedViewMode: ScheduleViewMode = .daily
     
-    var selectedDay: Int = Calendar.current.component(.weekday, from: Date()) - 1
+    var selectedDate: Date = Date() {
+        didSet {
+            self.selectedWeekday = self.getWeekday(from: selectedDate)
+        }
+    }
+    var selectedWeekday = Int()
     
-    let daysOfWeek: [Date] = {
-        let calendar = Calendar.current
-        let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
-        return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
-    }()
+    lazy var daysOfWeek: [Date] = self.getDaysOfWeek()
     
     var currentFocusSessionModel: FocusSessionModel?
     
@@ -53,7 +54,7 @@ class ScheduleViewModel {
     
     // MARK: - Methods
     func fetchSchedules() {
-        if let schedules = self.scheduleManager.fetchSchedules(dayOfTheWeek: self.selectedDay) {
+        if let schedules = self.scheduleManager.fetchSchedules(dayOfTheWeek: self.selectedWeekday) {
             let orderedSchedules = schedules.sorted {
                 let calendar = Calendar.current
                 let startTimeComponents1 = calendar.dateComponents([.hour, .minute], from: $0.unwrappedStartTime)
@@ -72,7 +73,7 @@ class ScheduleViewModel {
             self.schedules = orderedSchedules
         }
         
-        if let weekSchedules = self.scheduleManager.fetchSchedules(){
+        if let weekSchedules = self.scheduleManager.fetchSchedules() {
             let orderedWeekSchedules = weekSchedules.sorted {
                 let calendar = Calendar.current
                 let startTimeComponents1 = calendar.dateComponents([.hour, .minute], from: $0.unwrappedStartTime)
@@ -101,6 +102,8 @@ class ScheduleViewModel {
         for schedule in orderedWeekSchedules {
             schedulesByDay[Int(schedule.dayOfTheWeek)].append(schedule)
         }
+        
+        schedulesByDay = Array(schedulesByDay[UserDefaults.dayOfWeek..<schedulesByDay.count]) + Array(schedulesByDay[0..<UserDefaults.dayOfWeek])
         
         return schedulesByDay
     }
@@ -142,5 +145,48 @@ class ScheduleViewModel {
         let year = dateFormatter.string(from: Date()).capitalized
         
         return month + year
+    }
+    
+    private func getDaysOfWeek() -> [Date] {
+        let calendar = Calendar.current
+        var startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
+        
+        startOfWeek = calendar.date(byAdding: .day, value: UserDefaults.dayOfWeek, to: startOfWeek)!
+        
+        var daysOfWeek = (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
+        
+        if let today = calendar.dateComponents([.day], from: Date()).day,
+           let startOfWeekDay = calendar.dateComponents([.day], from: startOfWeek).day {
+            
+            if startOfWeekDay > today {
+                daysOfWeek = daysOfWeek.map { date in
+                    guard let day = calendar.dateComponents([.day], from: date).day,
+                          day > today,
+                          let mappedDate = calendar.date(byAdding: .day, value: -7, to: date) else { return date }
+                    
+                    return mappedDate
+                }
+            }
+        }
+        
+        return daysOfWeek
+    }
+    
+    func updateDaysOfWeek() {
+        self.daysOfWeek = self.getDaysOfWeek()
+    }
+    
+    func isToday(_ date: Date) -> Bool {
+        let calendar = Calendar.current
+        
+        let currentDay = calendar.component(.weekday, from: date) - 1
+        
+        let today = calendar.component(.weekday, from: Date()) - 1
+        
+        return currentDay == today
+    }
+    
+    func getWeekday(from date: Date) -> Int {
+        return Calendar.current.component(.weekday, from: date) - 1
     }
 }
