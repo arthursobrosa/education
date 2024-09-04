@@ -99,7 +99,7 @@ class ScheduleViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
-            self.scheduleView.tableView.reloadData()
+            self.scheduleView.tableView.reloadSections(IndexSet(integer: 0), with: .none)
         }
     }
     
@@ -149,9 +149,7 @@ class ScheduleViewController: UIViewController {
         
         self.setContentView()
         
-        self.scheduleView.tableView.reloadSections(IndexSet(integer: 0), with: .none)
-        
-//        self.reloadTable()
+        self.reloadTable()
         self.reloadCollection()
     }
     
