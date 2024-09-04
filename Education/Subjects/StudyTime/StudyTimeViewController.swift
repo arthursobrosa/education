@@ -11,7 +11,7 @@ import TipKit
 
 class StudyTimeViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: ShowingSubjectCreation?
+    weak var coordinator: (ShowingSubjectCreation & ShowingOtherSubject)? 
     let viewModel: StudyTimeViewModel
     
     var createSubjectTip = CreateSubjectTip()
@@ -155,7 +155,11 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
-              let subject = cell.subject else { return }
+              let subject = cell.subject else {
+            
+            self.coordinator?.showOtherSubject(viewModel: self.viewModel)
+            return
+            }
         
         self.viewModel.currentEditingSubject = subject
         self.viewModel.selectedSubjectColor.value = subject.unwrappedColor
@@ -166,28 +170,49 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         return 0
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.row != self.viewModel.subjects.value.count
-    }
+//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        return indexPath.row != self.viewModel.subjects.value.count
+//    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
         if editingStyle == .delete {
-            let subject = self.viewModel.subjects.value[indexPath.row]
-            
-            let alert = UIAlertController(title: String(localized: "deleteSubjectTitle"), message: String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subject.unwrappedName), preferredStyle: .alert)
-            
-            let deleteAction = UIAlertAction(title: String(localized: "confirm"), style: .destructive) { [weak self] _ in
-                guard let self = self else { return }
-                self.viewModel.removeSubject(subject: subject)
+            if indexPath.row != self.viewModel.subjects.value.count {
+                let subject = self.viewModel.subjects.value[indexPath.row]
+                showDeleteAlert(for: subject.unwrappedName) { [weak self] in
+                    guard let self = self else { return }
+                    self.viewModel.removeSubject(subject: subject)
+                }
+            } else {
+                showDeleteAlert(for: nil) { [weak self] in
+                    guard let self = self else { return }
+                    self.viewModel.removeSubject(subject: nil)
+                }
             }
-            let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
-            
-            alert.addAction(deleteAction)
-            alert.addAction(cancelAction)
-            
-            self.present(alert, animated: true, completion: nil)
         }
+    }
+
+    private func showDeleteAlert(for subjectName: String?, deleteAction: @escaping () -> Void) {
+        let title = subjectName == nil ? "Apagar tempo" : String(localized: "deleteSubjectTitle")
+        let message: String
+        if let subjectName = subjectName {
+            message = String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subjectName)
+        } else {
+            message = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele."
+        }
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let confirmTitle = String(localized: "confirm")
+        let cancelTitle = String(localized: "cancel")
+        
+        let deleteAction = UIAlertAction(title: confirmTitle, style: .destructive) { _ in
+            deleteAction()
+        }
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
