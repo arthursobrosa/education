@@ -71,14 +71,19 @@ class ScheduleViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.viewModel.selectedWeekday = Calendar.current.component(.weekday, from: Date()) - 1
+        
         self.loadSchedules()
+        
+        self.setPicker(self.scheduleView.picker)
     }
     
     // MARK: - Methods
     private func setNavigationItems() {
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
+        addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(addScheduleButtonTapped), for: .touchUpInside)
         addButton.tintColor = .label
         
@@ -94,7 +99,7 @@ class ScheduleViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
-            self.scheduleView.tableView.reloadData()
+            self.scheduleView.tableView.reloadSections(IndexSet(integer: 0), with: .none)
         }
     }
     
@@ -123,7 +128,7 @@ class ScheduleViewController: UIViewController {
             if let dayOfWeek = dayView.dayOfWeek {
                 if dayOfWeek.isToday {
                     dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
-                    self.viewModel.selectedDay = dayView.tag
+                    self.viewModel.selectedDate = self.viewModel.daysOfWeek[dayView.tag]
                 }
             }
         }
@@ -209,18 +214,6 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         self.coordinator?.showScheduleDetailsModal(schedule: schedule)
         
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let schedule = self.viewModel.schedules[indexPath.row]
-        
-        if editingStyle == .delete {
-            NotificationService.shared.cancelNotifications(forDate: schedule.startTime!)
-            
-            self.viewModel.removeSchedule(schedule)
-            
-            self.loadSchedules()
-        }
     }
 }
 

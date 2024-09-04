@@ -147,6 +147,8 @@ class ScheduleTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.selectionStyle = .none
+        
         self.setupUI()
     }
     
@@ -166,8 +168,8 @@ extension ScheduleTableViewCell: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             cardView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5.5),
-            cardView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 12),
-            cardView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -12),
+            cardView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            cardView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             cardView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5.5),
             
             playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),

@@ -117,14 +117,9 @@ class ActivityManager {
                 self.handleTimerEnd()
             }
             
-            switch timerCase {
-                case .pomodoro:
-                    if self.updateAfterBackground {
-                        self.updateAfterBackground = true
-                        self.updateAfterBackground = false
-                    }
-                default:
-                    break
+            if self.updateAfterBackground {
+                self.updateAfterBackground = true
+                self.updateAfterBackground = false
             }
         }
     }
@@ -210,8 +205,6 @@ class ActivityManager {
     }
     
     func handleActivityDismissed(didTapFinish: Bool) {
-        self.isPaused = true
-        
         didTapFinish ? self.resetTimer() : (self.isShowingActivity = true)
     }
     
@@ -304,7 +297,9 @@ class ActivityManager {
         newInLoopTime = self.isAtWorkTime ? newInLoopTime : newInLoopTime - workTime
         
         if (self.currentLoop == self.numberOfLoops - 1 && !self.isAtWorkTime) || (self.currentLoop > self.numberOfLoops - 1) {
-            // Handle timer end
+            self.isAtWorkTime = true
+            self.handleTimerEnd()
+            return
         }
         
         self.totalSeconds = self.isAtWorkTime ? workTime : restTime

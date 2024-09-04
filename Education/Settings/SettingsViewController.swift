@@ -12,13 +12,16 @@ class SettingsViewController: UIViewController {
     weak var coordinator: SettingsCoordinator?
     let viewModel: SettingsViewModel
     
-    private lazy var settingsTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    lazy var settingsTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.separatorStyle = .none
         tableView.backgroundColor = .systemBackground
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
+        tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
     }()
@@ -31,12 +34,6 @@ class SettingsViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    override func loadView() {
-        super.loadView()
-        
-        self.view = self.settingsTableView
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -44,13 +41,17 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .systemBackground
+        
         self.viewModel.isNotificationActive.bind { [weak self] isActive in
             guard let self else { return }
             
             self.reloadTable()
         }
         
-        self.navigationItem.title = String(localized: "settingsTab")
+        self.setNavigationItems()
+        
+        self.setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,6 +66,11 @@ class SettingsViewController: UIViewController {
             
             self.settingsTableView.reloadData()
         }
+    }
+    
+    private func setNavigationItems() {
+        self.navigationItem.title = String(localized: "settingsTab")
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
     }
     
     private func showFamilyActivityPicker() {
@@ -131,17 +137,29 @@ class SettingsViewController: UIViewController {
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.identifier, for: indexPath) as? SettingsTableViewCell else {
+            fatalError("Could not dequeue cell")
+        }
         
-        cell.textLabel?.text = self.createCellTitle(for: indexPath)
-        cell.accessoryView = self.createCellAccessoryView(for: indexPath)
-        cell.backgroundColor = .systemGray6
+        let items: [SettingsCase] = SettingsCase.allCases
+        let row = indexPath.row
+        
+        let item = items[row]
+        
+        let image = UIImage(systemName: item.iconName)
+        
+        cell.configure(withText: item.title, withImage: image!)
+        cell.setAccessoryView(self.createCellAccessoryView(for: row))
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 62
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -152,8 +170,27 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch row {
             case 1:
                 self.showFamilyActivityPicker()
+            case 2:
+                if let popover = self.createDayPopover(forTableView: tableView, at: indexPath) {
+                    self.present(popover, animated: true)
+                }
             default:
                 return
         }
+    }
+}
+
+extension SettingsViewController: ViewCodeProtocol {
+    func setupUI() {
+        self.view.addSubview(settingsTableView)
+        
+        let padding = 12.0
+        
+        NSLayoutConstraint.activate([
+            settingsTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            settingsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            settingsTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: padding),
+            settingsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -padding)
+        ])
     }
 }

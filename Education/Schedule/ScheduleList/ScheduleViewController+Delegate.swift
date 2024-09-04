@@ -26,12 +26,6 @@ protocol ScheduleDelegate: AnyObject {
 }
 
 extension ScheduleViewController: ScheduleDelegate {
-    
-    func emptyViewButtonTapped() {
-        let vm = StudyTimeViewModel()
-        self.coordinator?.showSubjectCreation(viewModel: vm)
-    }
-    
     // MARK: - View Mode
     func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
         let viewModes = self.viewModel.viewModes.map { $0.name }
@@ -45,6 +39,7 @@ extension ScheduleViewController: ScheduleDelegate {
                     case 0:
                         self.selectToday()
                     case 1:
+                        self.selectToday()
                         self.unselectDays()
                     default:
                         break
@@ -63,6 +58,7 @@ extension ScheduleViewController: ScheduleDelegate {
     
     // MARK: Day
     func dayTapped(_ dayView: DayView) {
+        // Day is tapped when weekly view mode is currently on
         if self.scheduleView.viewModeSelector.selectedSegmentIndex == 1 {
             self.scheduleView.viewModeSelector.selectedSegmentIndex = 0
             self.viewModel.selectedViewMode = .daily
@@ -71,17 +67,29 @@ extension ScheduleViewController: ScheduleDelegate {
             return
         }
         
+        // Unable reloading the rows of a table that is already loaded
+        let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
+        let lastDayView = dayViews.first { $0.dayOfWeek!.isSelected }
+        guard dayView != lastDayView else { return }
+        
+        // Logics to selected the day tapped
         self.unselectDays()
         
         guard let dayOfWeek = dayView.dayOfWeek else { return }
         
         dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
-        self.viewModel.selectedDay = dayView.tag
+        self.viewModel.selectedDate = self.viewModel.daysOfWeek[dayView.tag]
         
         self.loadSchedules()
     }
     
     func setPicker(_ picker: UIStackView) {
+        picker.arrangedSubviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        self.viewModel.updateDaysOfWeek()
+        
         let dates = self.viewModel.daysOfWeek
         
         for (index, date) in dates.enumerated() {
@@ -89,9 +97,8 @@ extension ScheduleViewController: ScheduleDelegate {
             
             let dayString = self.viewModel.dayAbbreviation(date)
             let dateString = self.viewModel.dayFormatted(date)
-            let isSelected = self.viewModel.selectedDay == Calendar.current.component(.weekday, from: date) - 1
-            let isToday = self.viewModel.selectedDay == Calendar.current.component(.weekday, from: date) - 1
-            dayView.dayOfWeek = DayOfWeek(day: dayString, date: dateString, isSelected: isSelected, isToday: isToday)
+            let isToday = self.viewModel.isToday(date)
+            dayView.dayOfWeek = DayOfWeek(day: dayString, date: dateString, isSelected: isToday, isToday: isToday)
             
             dayView.tag = index
             dayView.delegate = self
@@ -110,7 +117,7 @@ extension ScheduleViewController: ScheduleDelegate {
             return
         }
         
-        let selectedDay = self.viewModel.selectedViewMode == .daily ? self.viewModel.selectedDay : Calendar.current.component(.weekday, from: Date()) - 1
+        let selectedDay = self.viewModel.selectedViewMode == .daily ? self.viewModel.selectedWeekday : Calendar.current.component(.weekday, from: Date()) - 1
         
         self.coordinator?.showScheduleDetails(schedule: nil, selectedDay: selectedDay)
     }
@@ -118,6 +125,11 @@ extension ScheduleViewController: ScheduleDelegate {
     func startAcitivityTapped() {
         self.dismissButtons()
         self.coordinator?.showFocusImediate()
+    }
+    
+    func emptyViewButtonTapped() {
+        let vm = StudyTimeViewModel()
+        self.coordinator?.showSubjectCreation(viewModel: vm)
     }
     
     // MARK: - Play Button

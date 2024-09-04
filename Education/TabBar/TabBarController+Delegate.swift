@@ -29,8 +29,8 @@ extension TabBarController: TabBarDelegate {
     }
     
     func didTapPlayButton() {
-        ActivityManager.shared.isPaused.toggle()
-        
         self.activityViewTapped()
+        
+        ActivityManager.shared.isPaused.toggle()
     }
 }

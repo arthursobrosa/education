@@ -32,11 +32,11 @@
 "timeLeftNow" = "Agora";
 "timeLeftFinished" = "Concluído";
 "sunday" = "Domingo";
-"monday" = "Segunda-feira";
-"tuesday" = "Terça-feira";
-"wednesday" = "Quarta-feira";
-"thursday" = "Quinta-feira";
-"friday" = "Sexta-feira";
+"monday" = "Segunda";
+"tuesday" = "Terça";
+"wednesday" = "Quarta";
+"thursday" = "Quinta";
+"friday" = "Sexta";
 "saturday" = "Sábado";
 "reminder" = "Lembrete";
 "comingEvent" = "Seu evento de %@ começará em breve!";
@@ -112,9 +112,6 @@
 "themeTableDetail" = "Detalhe";
 
 // MARK: - Settings
-"blockAppsTitle" = "Bloqueio de apps";
-"notificationsTitle" = "Notificações";
-"selectBlockedApps" = "Selecione os Apps Bloqueados";
 "deactivateTitle" = "Desative no seu celular!";
 "deactivateMessage" = "Não é possível desabilitar notificações no app Foca. Para isso, accesse as Configurações do seu celular.";
 "activationTitle" = "Acompanhe os seus estudos!";
@@ -122,6 +119,9 @@
 "activateNow" = "Ativar agora";
 "activateLater" = "Ativar depois";
 "okAction" = "Ok, entendi";
+"notificationsAndAlerts" = "Notificações e Alertas";
+"blockApps" = "Bloqueio de Aplicativos";
+"firstWeekDay" = "Primeiro dia da semana";
 
 // MARK: - Modal
 "startButton" = "Iniciar agora";

@@ -23,7 +23,7 @@ class BlockAppsMonitor: ObservableObject {
     
     func apllyShields() {
         do {
-            guard let data = UserDefaults.standard.data(forKey: "applications") else {return}
+            guard let data = UserDefaults.standard.data(forKey: "applications") else { return }
             let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
             print("tudo ok \(decoded)")
             

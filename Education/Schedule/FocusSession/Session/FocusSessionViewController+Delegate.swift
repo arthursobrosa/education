@@ -19,6 +19,10 @@ import Foundation
 
 extension FocusSessionViewController: FocusSessionDelegate {
     func dismissButtonTapped() {
+        if !ActivityManager.shared.isPaused {
+            ActivityManager.shared.isPaused = true
+        }
+        
         self.coordinator?.dismiss(animated: true)
     }
     
