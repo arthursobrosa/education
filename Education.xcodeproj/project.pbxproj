@@ -10,6 +10,10 @@
 		302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */; };
 		302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */; };
 		30C076822C80E2DC002BBE2C /* CreateSubjectTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C076812C80E2DC002BBE2C /* CreateSubjectTip.swift */; };
+		30D5E2422C8782D30083F353 /* OtherSubjectCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D5E2412C8782D30083F353 /* OtherSubjectCoordinator.swift */; };
+		30D5E2462C8782F10083F353 /* OtherSubjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D5E2452C8782F10083F353 /* OtherSubjectViewController.swift */; };
+		30D5E2482C8783040083F353 /* OtherSubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D5E2472C8783040083F353 /* OtherSubjectView.swift */; };
+		30D5E24A2C8783530083F353 /* ShowingOtherSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */; };
 		30D846E62C82373600E98130 /* CreateActivityTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D846E52C82373600E98130 /* CreateActivityTip.swift */; };
 		30D846E82C82381100E98130 /* CreateTestTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D846E72C82381100E98130 /* CreateTestTip.swift */; };
 		30D846EC2C8261D700E98130 /* NoSubjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D846EB2C8261D700E98130 /* NoSubjectsView.swift */; };
@@ -203,6 +207,10 @@
 		302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
 		302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeChartView.swift; sourceTree = "<group>"; };
 		30C076812C80E2DC002BBE2C /* CreateSubjectTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSubjectTip.swift; sourceTree = "<group>"; };
+		30D5E2412C8782D30083F353 /* OtherSubjectCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSubjectCoordinator.swift; sourceTree = "<group>"; };
+		30D5E2452C8782F10083F353 /* OtherSubjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSubjectViewController.swift; sourceTree = "<group>"; };
+		30D5E2472C8783040083F353 /* OtherSubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSubjectView.swift; sourceTree = "<group>"; };
+		30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingOtherSubject.swift; sourceTree = "<group>"; };
 		30D846E52C82373600E98130 /* CreateActivityTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateActivityTip.swift; sourceTree = "<group>"; };
 		30D846E72C82381100E98130 /* CreateTestTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTestTip.swift; sourceTree = "<group>"; };
 		30D846EB2C8261D700E98130 /* NoSubjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSubjectsView.swift; sourceTree = "<group>"; };
@@ -425,6 +433,16 @@
 			path = TipKit;
 			sourceTree = "<group>";
 		};
+		30D5E2402C87827F0083F353 /* OtherSubject */ = {
+			isa = PBXGroup;
+			children = (
+				30D5E2412C8782D30083F353 /* OtherSubjectCoordinator.swift */,
+				30D5E2452C8782F10083F353 /* OtherSubjectViewController.swift */,
+				30D5E2472C8783040083F353 /* OtherSubjectView.swift */,
+			);
+			path = OtherSubject;
+			sourceTree = "<group>";
+		};
 		30EE4DBD2C59727B00BB64D8 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
@@ -479,6 +497,7 @@
 		317C112F2C3EF70500C5E7A5 /* Subjects */ = {
 			isa = PBXGroup;
 			children = (
+				30D5E2402C87827F0083F353 /* OtherSubject */,
 				68A816822C771216001D5F1E /* StudyTime */,
 				31C102F22C6D19D2009D2751 /* SubjectCreation */,
 			);
@@ -805,6 +824,7 @@
 				31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */,
 				CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */,
 				CE323B422C73C1AC004143E0 /* ShowingScheduleNotification.swift */,
+				30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1066,6 +1086,7 @@
 				CE0BD2342C8234C100E9FBDF /* NotificationComponentView.swift in Sources */,
 				688C25752C6670D700150F7F /* FocusImediateViewController.swift in Sources */,
 				68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */,
+				30D5E2462C8782F10083F353 /* OtherSubjectViewController.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
 				CE0BD2362C862E1300E9FBDF /* NotificationWithCancelView.swift in Sources */,
 				317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */,
@@ -1090,6 +1111,7 @@
 				30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */,
 				68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */,
 				689388922C642133007EE922 /* UIView+Extension.swift in Sources */,
+				30D5E2422C8782D30083F353 /* OtherSubjectCoordinator.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
 				CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */,
 				688C257D2C6674F000150F7F /* FocusSubjectTableViewCell.swift in Sources */,
@@ -1110,6 +1132,7 @@
 				6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
 				6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */,
+				30D5E24A2C8783530083F353 /* ShowingOtherSubject.swift in Sources */,
 				685CBFDA2C61597600EC8E09 /* CustomDateButton.swift in Sources */,
 				688C25732C66709900150F7F /* FocusImediateCoordinator.swift in Sources */,
 				68CA87E02C5D54CD006ED5FA /* ShowingFocusPicker.swift in Sources */,
@@ -1152,6 +1175,7 @@
 				302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */,
 				68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */,
 				317C11332C3EF78200C5E7A5 /* StudyTimeViewModel.swift in Sources */,
+				30D5E2482C8783040083F353 /* OtherSubjectView.swift in Sources */,
 				30D846E82C82381100E98130 /* CreateTestTip.swift in Sources */,
 				68C2D0012C4723A100E2347A /* ScheduleTableViewCell.swift in Sources */,
 				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
