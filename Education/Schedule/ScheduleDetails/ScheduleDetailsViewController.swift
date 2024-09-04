@@ -67,7 +67,7 @@ class ScheduleDetailsViewController: UIViewController {
     private func setNavigationItems() {
         self.navigationItem.title = self.viewModel.getTitleName()
         
-        guard let schedule = self.viewModel.schedule else { return }
+        guard let _ = self.viewModel.schedule else { return }
         
         let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(didTapDeleteButton))
         deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
