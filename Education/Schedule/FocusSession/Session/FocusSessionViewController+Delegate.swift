@@ -7,12 +7,14 @@
 
 import Foundation
 
-protocol FocusSessionDelegate: AnyObject {
+@objc protocol FocusSessionDelegate: AnyObject {
     func dismissButtonTapped()
     func visibilityButtonTapped()
     func pauseResumeButtonTapped()
-    func didTapFinishButton()
+    func didFinish()
     func didTapRestartButton()
+    func okButtonPressed()
+    func cancelButtonPressed()
 }
 
 extension FocusSessionViewController: FocusSessionDelegate {
@@ -35,7 +37,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
         ActivityManager.shared.isPaused.toggle()
     }
     
-    func didTapFinishButton() {
+    func didFinish() {
         self.viewModel.saveFocusSession()
         self.viewModel.didTapFinish = true
         
@@ -46,5 +48,14 @@ extension FocusSessionViewController: FocusSessionDelegate {
     
     func didTapRestartButton() {
         ActivityManager.shared.restartActivity()
+    }
+    
+    func okButtonPressed() {
+        self.hideEndNotification()
+        self.didFinish()
+    }
+    
+    func cancelButtonPressed() {
+        self.hideFinishNotification()
     }
 }
