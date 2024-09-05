@@ -18,26 +18,25 @@ class FocusSubjectTableViewCell: UITableViewCell {
         didSet {
             if let subject {
                 self.subjectButton.setTitle(subject.unwrappedName, for: .normal)
+                self.subjectButton.setTitleColor(UIColor(named: subject.unwrappedColor)!, for: .normal)
+                self.subjectButton.layer.borderColor = UIColor(named: subject.unwrappedColor)!.cgColor
                 return
             }
             
             self.subjectButton.setTitle(String(localized: "none"), for: .normal)
-        }
-    }
-    
-    var color: UIColor? {
-        didSet {
-            self.subjectButton.setTitleColor(color, for: .normal)
-            self.subjectButton.backgroundColor = .white
-            self.backgroundColor = color
+            self.subjectButton.setTitleColor(.label, for: .normal)
+            self.subjectButton.layer.borderColor = UIColor.label.cgColor
+            
         }
     }
     
     private lazy var subjectButton: UIButton = {
         let bttn = UIButton()
-        bttn.titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
+        bttn.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         bttn.titleLabel?.textAlignment = .center
         bttn.layer.cornerRadius = 26
+        bttn.backgroundColor = .clear
+        bttn.layer.borderWidth = 1
         
         bttn.addTarget(self, action: #selector(subjectButtonTapped), for: .touchUpInside)
         

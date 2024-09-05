@@ -45,7 +45,12 @@ class FocusImediateViewController: UIViewController {
         
         self.viewModel.fetchSubjects()
         
-        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
+        if(self.traitCollection.userInterfaceStyle == .light){
+            self.view.backgroundColor = .label.withAlphaComponent(0.2)
+        } else {
+            self.view.backgroundColor = .label.withAlphaComponent(0.1)
+        }
+       
         
         self.viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
@@ -59,6 +64,7 @@ class FocusImediateViewController: UIViewController {
             
             self.reloadTable()
             self.focusImediateView.layer.borderColor = UIColor.label.cgColor
+            
         }
     }
     
@@ -75,9 +81,10 @@ extension FocusImediateViewController: ViewCodeProtocol {
     func setupUI() {
         self.view.addSubview(focusImediateView)
         
+        
         NSLayoutConstraint.activate([
-            focusImediateView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: (588/844)),
-            focusImediateView.widthAnchor.constraint(equalTo: focusImediateView.heightAnchor, multiplier: (359/588)),
+            focusImediateView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: (471/844)),
+            focusImediateView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: (366/390)),
             focusImediateView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             focusImediateView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
@@ -96,9 +103,9 @@ extension FocusImediateViewController: UITableViewDataSource, UITableViewDelegat
             fatalError("Could not dequeue cell")
         }
         
-        let subject: Subject? = row >= self.subjects.count ? nil : self.subjects[row]
+        let subject: Subject? = row == 0 ? nil : self.subjects[row - 1]
         cell.subject = subject
-        cell.color = self.color
+//        cell.color = subject?.unwrappedColor ?? "sealBackgroundColor"
         cell.indexPath = indexPath
         cell.delegate = self
         

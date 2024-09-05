@@ -11,12 +11,17 @@ class FocusImediateView: UIView {
     weak var delegate: FocusImediateDelegate?
     
     private lazy var cancelButton: UIButton = {
-        let bttn = UIButton(configuration: .plain())
-        bttn.setTitle(String(localized: "cancel"), for: .normal)
-        bttn.setTitleColor(self.backgroundColor?.darker(by: 0.6), for: .normal)
+        var configuration = UIButton.Configuration.plain()
+        configuration.title = String(localized: "cancel")
+        configuration.baseForegroundColor = .secondaryLabel
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
+            return outgoing
+        }
         
+        let bttn = UIButton(configuration: configuration)
         bttn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        
         bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
@@ -24,8 +29,8 @@ class FocusImediateView: UIView {
     
     private let topLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 17, weight: .medium)
-        label.textColor = .white
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = -1
         label.lineBreakMode = .byWordWrapping
@@ -51,8 +56,6 @@ class FocusImediateView: UIView {
         
         self.backgroundColor = color
         self.layer.cornerRadius = 12
-        self.layer.borderColor = UIColor.label.cgColor
-        self.layer.borderWidth = 1
         
         self.setupUI()
     }
@@ -78,7 +81,7 @@ extension FocusImediateView: ViewCodeProtocol {
             cancelButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding / 2),
             cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
             
-            topLabel.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: padding),
+            topLabel.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: padding / 2),
             topLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             topLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (296/359)),
             
