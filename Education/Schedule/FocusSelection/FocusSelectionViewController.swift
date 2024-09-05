@@ -36,7 +36,11 @@ class FocusSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .label.withAlphaComponent(0.5)
+        if(self.traitCollection.userInterfaceStyle == .light){
+            self.view.backgroundColor = .label.withAlphaComponent(0.2)
+        } else {
+            self.view.backgroundColor = .label.withAlphaComponent(0.1)
+        }
         
         self.setupUI()
         
