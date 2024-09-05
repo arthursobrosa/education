@@ -28,7 +28,7 @@ class FocusSelectionView: UIView {
         let lbl = UILabel()
         lbl.text = String(localized: "timeCountingQuestion")
         lbl.textAlignment = .center
-        lbl.font = .systemFont(ofSize: 17, weight: .medium)
+        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         lbl.textColor = .label
         lbl.numberOfLines = -1
         lbl.lineBreakMode = .byWordWrapping
@@ -72,7 +72,7 @@ class FocusSelectionView: UIView {
     }()
     
     private lazy var continueButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .gray)
+        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .secondaryLabel)
         bttn.isEnabled = false
         
         bttn.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
@@ -86,9 +86,11 @@ class FocusSelectionView: UIView {
     
     private lazy var cancelButton: UIButton = {
         let bttn = UIButton(configuration: .plain())
-        bttn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-        bttn.setTitle(String(localized: "cancel"), for: .normal)
-        bttn.setTitleColor(.secondaryLabel, for: .normal)
+        
+        let textColor: UIColor? = .secondaryLabel
+        
+        let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? .systemFont(ofSize: 18), .foregroundColor : textColor ?? .label])
+        bttn.setAttributedTitle(attributedString, for: .normal)
         
         bttn.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
@@ -181,7 +183,7 @@ extension FocusSelectionView: ViewCodeProtocol {
             topLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             topLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (213/366)),
             
-            timerButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: padding / 2),
+            timerButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: padding * 1.5),
             timerButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (334/366)),
             timerButton.heightAnchor.constraint(equalTo: timerButton.widthAnchor, multiplier: (68/334)),
             timerButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -196,11 +198,12 @@ extension FocusSelectionView: ViewCodeProtocol {
             stopwatchButton.heightAnchor.constraint(equalTo: timerButton.heightAnchor),
             stopwatchButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
+            continueButton.topAnchor.constraint(equalTo: stopwatchButton.bottomAnchor, constant: padding),
             continueButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (312/366)),
             continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor, multiplier: (60/334)),
             continueButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            cancelButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: padding * 0.7),
+            cancelButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: padding * 0.5),
             cancelButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding)
         ])
