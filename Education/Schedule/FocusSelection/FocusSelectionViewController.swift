@@ -14,7 +14,7 @@ class FocusSelectionViewController: UIViewController {
     private let color: UIColor?
     
     private lazy var focusSelectionView: FocusSelectionView = {
-        let view = FocusSelectionView(color: self.color)
+        let view = FocusSelectionView()
         view.delegate = self
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ class FocusSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
+        self.view.backgroundColor = .label.withAlphaComponent(0.5)
         
         self.setupUI()
         
@@ -53,8 +53,8 @@ extension FocusSelectionViewController: ViewCodeProtocol {
         self.view.addSubview(focusSelectionView)
         
         NSLayoutConstraint.activate([
-            focusSelectionView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: (588/844)),
-            focusSelectionView.widthAnchor.constraint(equalTo: focusSelectionView.heightAnchor, multiplier: (359/588)),
+            focusSelectionView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: (471/844)),
+            focusSelectionView.widthAnchor.constraint(equalTo: focusSelectionView.heightAnchor, multiplier: (359/471)),
             focusSelectionView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             focusSelectionView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
