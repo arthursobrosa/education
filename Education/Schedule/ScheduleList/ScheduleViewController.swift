@@ -21,14 +21,15 @@ class ScheduleViewController: UIViewController {
         
         view.delegate = self
         
-        view.tableView.dataSource = self
-        view.tableView.delegate = self
-        view.tableView.register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.identifier)
+        view.dailyScheduleView.collectionView.dataSource = self
+        view.dailyScheduleView.collectionView.delegate = self
+        view.dailyScheduleView.collectionView.register(ScheduleCell.self, forCellWithReuseIdentifier: ScheduleCell.identifier)
         
-        view.collectionView.dataSource = self
-        view.collectionView.delegate = self
-        view.collectionView.register(TaskCell.self, forCellWithReuseIdentifier: TaskCell.identifier)
-        view.collectionView.register(EmptyCell.self, forCellWithReuseIdentifier: EmptyCell.identifier)
+        view.weeklyScheduleCollection.dataSource = self
+        view.weeklyScheduleCollection.delegate = self
+        view.weeklyScheduleCollection.register(DayColumnCell.self, forCellWithReuseIdentifier: DayColumnCell.identifier)
+        
+//        view.collectionView.register(EmptyCell.self, forCellWithReuseIdentifier: EmptyCell.identifier)
         
         return view
     }()
@@ -75,7 +76,7 @@ class ScheduleViewController: UIViewController {
         
         self.loadSchedules()
         
-        self.setPicker(self.scheduleView.picker)
+        self.setDaysStack(self.scheduleView.dailyScheduleView.daysStack)
     }
     
     // MARK: - Methods
@@ -95,24 +96,17 @@ class ScheduleViewController: UIViewController {
         self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
     }
     
-    func reloadTable() {
+    func reloadCollections() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
-            self.scheduleView.tableView.reloadSections(IndexSet(integer: 0), with: .none)
-        }
-    }
-    
-    func reloadCollection() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            
-            self.scheduleView.collectionView.reloadData()
+            self.scheduleView.dailyScheduleView.collectionView.reloadData()
+            self.scheduleView.weeklyScheduleCollection.reloadData()
         }
     }
     
     func unselectDays() {
-        let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
+        let dayViews = self.scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
         
         dayViews.forEach { dayView in
             if let dayOfWeek = dayView.dayOfWeek {
@@ -122,7 +116,7 @@ class ScheduleViewController: UIViewController {
     }
     
     func selectToday() {
-        let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
+        let dayViews = self.scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
         
         dayViews.forEach { dayView in
             if let dayOfWeek = dayView.dayOfWeek {
@@ -149,8 +143,7 @@ class ScheduleViewController: UIViewController {
         
         self.setContentView()
         
-        self.reloadTable()
-        self.reloadCollection()
+        self.reloadCollections()
     }
     
     @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
@@ -178,45 +171,6 @@ class ScheduleViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource and UITableViewDelegate
-extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.viewModel.schedules.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = indexPath.row
-        
-        let schedule = self.viewModel.schedules[row]
-        let subject = self.viewModel.getSubject(fromSchedule: schedule)
-        let color = subject?.unwrappedColor
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.identifier, for: indexPath) as? ScheduleTableViewCell else { fatalError("Could not dequeue cell") }
-        
-        cell.color = UIColor(named: color ?? "sealBackgroundColor")
-        cell.delegate = self
-        cell.subject = subject
-        cell.schedule = schedule
-        cell.indexPath = indexPath
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 79
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row = indexPath.row
-        
-        let schedule = self.viewModel.schedules[row]
-        
-        self.coordinator?.showScheduleDetailsModal(schedule: schedule)
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
 // MARK: - Sheet Delegate
 extension ScheduleViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
@@ -228,55 +182,82 @@ extension ScheduleViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - UI Setup
 extension ScheduleViewController {
-    private func setContentView() {
-        self.scheduleView.contentView.subviews.forEach { subview in
+    func setContentView() {
+        self.scheduleView.dailyScheduleView.contentView.subviews.forEach { subview in
             subview.removeFromSuperview()
         }
         
+        self.scheduleView.contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+
         var isDaily = false
         var isEmpty = false
-        
+
         if self.viewModel.selectedViewMode == .daily {
             isEmpty = self.viewModel.schedules.isEmpty
             isDaily = true
         } else {
             let numberOfTaks = self.viewModel.tasks.count
             var emptyTasks = 0
-            
+
             for task in self.viewModel.tasks {
                 if task.isEmpty {
                     emptyTasks += 1
                 }
             }
-            
+
             isEmpty = emptyTasks == numberOfTaks
-            
+
             isDaily = false
         }
-        
+
         if isEmpty {
-            self.scheduleView.changeEmptyView(isDaily: isDaily)
+            var childSubview = UIView()
             
-            if let subjects = self.viewModel.subjectManager.fetchSubjects() , subjects.count > 0 {
-                    // Se fetchSubject() não for nulo
-                print(subjects)
-                    self.addContentSubview(self.scheduleView.emptyView)
-                    handleTip()
-                } else {
-                    
-                    // Se fetchSubject() for nulo
-                    self.addContentSubview(self.scheduleView.noSubjectsView)
-                }
+            if let subjects = self.viewModel.subjectManager.fetchSubjects(),
+               subjects.count > 0 {
+                // Se fetchSubject() não for nulo
+                self.scheduleView.changeEmptyView(isDaily: isDaily)
+                
+                self.handleTip()
+                
+                childSubview = self.scheduleView.emptyView
+            } else {
+                // Se fetchSubject() for nulo
+                childSubview = self.scheduleView.noSubjectsView
+            }
+            
+            if isDaily {
+                self.addContentSubview(parentSubview: self.scheduleView.dailyScheduleView.contentView, childSubview: childSubview)
+                self.addContentSubview(parentSubview: self.scheduleView.contentView, childSubview: self.scheduleView.dailyScheduleView)
+            } else {
+                self.addContentSubview(parentSubview: self.scheduleView.contentView, childSubview: childSubview)
+            }
         } else {
             if isDaily {
-                self.addContentSubview(self.scheduleView.tableView)
+                self.addContentSubview(parentSubview: self.scheduleView.dailyScheduleView.contentView, childSubview: self.scheduleView.dailyScheduleView.collectionView)
+                self.addContentSubview(parentSubview: self.scheduleView.contentView, childSubview: self.scheduleView.dailyScheduleView)
             } else {
-                self.addContentSubview(self.scheduleView.collectionView)
+                self.addContentSubview(parentSubview: self.scheduleView.contentView, childSubview: self.scheduleView.weeklyScheduleCollection)
             }
         }
     }
     
-    private func handleTip(){
+    private func addContentSubview(parentSubview: UIView, childSubview: UIView) {
+        parentSubview.addSubview(childSubview)
+        
+        childSubview.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            childSubview.topAnchor.constraint(equalTo: parentSubview.topAnchor),
+            childSubview.leadingAnchor.constraint(equalTo: parentSubview.leadingAnchor),
+            childSubview.trailingAnchor.constraint(equalTo: parentSubview.trailingAnchor),
+            childSubview.bottomAnchor.constraint(equalTo: parentSubview.bottomAnchor)
+        ])
+    }
+    
+    private func handleTip() {
         Task { @MainActor in
                 for await shouldDisplay in createActivityTip.shouldDisplayUpdates {
                     if shouldDisplay {
@@ -292,85 +273,5 @@ extension ScheduleViewController {
                     }
                 }
             }
-    }
-    
-    private func addContentSubview(_ subview: UIView) {
-        self.scheduleView.contentView.addSubview(subview)
-        
-        subview.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            subview.topAnchor.constraint(equalTo: self.scheduleView.contentView.topAnchor),
-            subview.leadingAnchor.constraint(equalTo: self.scheduleView.contentView.leadingAnchor),
-            subview.trailingAnchor.constraint(equalTo: self.scheduleView.contentView.trailingAnchor),
-            subview.bottomAnchor.constraint(equalTo: self.scheduleView.contentView.bottomAnchor)
-        ])
-    }
-}
-
-// MARK: - UICollectionViewDataSource and UICollectionViewDelegateFlowLayout
-extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 7
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return max(viewModel.tasks[section].count, 1)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if viewModel.tasks[indexPath.section].isEmpty {
-            
-            let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyCell.identifier, for: indexPath) as! EmptyCell
-            return emptyCell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TaskCell.identifier, for: indexPath) as? TaskCell else {
-                return UICollectionViewCell()
-            }
-            
-            let task = viewModel.tasks[indexPath.section][indexPath.item]
-            
-            let subject = self.viewModel.getSubject(fromSchedule: task)
-            
-            let formatter = DateFormatter()
-            formatter.timeStyle = .short
-            
-            let firstThreeLetters = self.viewModel.firstThreeLetters(of: subject?.unwrappedName ?? String())
-            
-            cell.configure(with: firstThreeLetters, startTime: formatter.string(from: task.unwrappedStartTime), endTime: formatter.string(from: task.unwrappedEndTime), bgColor: subject?.unwrappedColor ?? "")
-            
-            return cell
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if !viewModel.tasks[indexPath.section].isEmpty {
-            let task = viewModel.tasks[indexPath.section][indexPath.item]
-            
-            self.coordinator?.showScheduleDetailsModal(schedule: task)
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let totalWidth = collectionView.bounds.width
-        let numberOfSections = CGFloat(7)
-        let itemWidth = (totalWidth - 29) / numberOfSections
-        return CGSize(width: itemWidth, height: 67)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let numberOfSections = collectionView.numberOfSections
-        let leftInset: CGFloat = section == 0 ? 2 : 2
-        let rightInset: CGFloat = section == numberOfSections - 1 ? 0 : 2
-        
-        return UIEdgeInsets(top: 0, left: leftInset, bottom: 4, right: rightInset)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
     }
 }

@@ -38,8 +38,6 @@ class TabBarController: UITabBarController {
         self.setTabItems()
         self.startCoordinators()
         
-        self.tabBar.backgroundColor = .systemBackground
-        
         self.viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, settings.navigationController]
     }
     

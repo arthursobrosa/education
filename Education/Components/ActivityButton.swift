@@ -52,7 +52,7 @@ private extension ActivityButton {
         self.addSubview(playImageView)
         
         NSLayoutConstraint.activate([
-            circleView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (40/52)),
+            circleView.widthAnchor.constraint(equalTo: self.widthAnchor),
             circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
             circleView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             circleView.centerYAnchor.constraint(equalTo: self.centerYAnchor),

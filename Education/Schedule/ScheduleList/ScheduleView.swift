@@ -29,20 +29,6 @@ class ScheduleView: UIView {
         return segmentedControl
     }()
     
-    let picker: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.distribution = .fillEqually
-        stack.alignment = .center
-        stack.spacing = 4
-        
-        stack.backgroundColor = .systemBackground
-        
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stack
-    }()
-    
     let contentView: UIView = {
         let view = UIView()
         
@@ -51,33 +37,19 @@ class ScheduleView: UIView {
         return view
     }()
     
-    let tableView: UITableView = {
-        let table = UITableView()
-        table.separatorStyle = .none
-        
-        table.translatesAutoresizingMaskIntoConstraints = false
-        
-        return table
-    }()
-    
-    let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-        collection.translatesAutoresizingMaskIntoConstraints = false
-        
-        return collection
-    }()
+    let dailyScheduleView = DailyScheduleView()
+    let weeklyScheduleCollection = WeeklyScheduleCollectionView()
     
     var emptyView = EmptyView(message: String(localized: "emptyDaySchedule"))
     
     lazy var noSubjectsView: NoSubjectsView = {
-       let view = NoSubjectsView()
-       view.translatesAutoresizingMaskIntoConstraints = false
-       view.setButtonTarget(target: self, action: #selector(emptyViewButtonTapped))
-       return view
+        let view = NoSubjectsView()
+       
+        view.setButtonTarget(target: self, action: #selector(emptyViewButtonTapped))
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
    }()
     
     lazy var overlayView: UIView = {
@@ -143,10 +115,8 @@ class ScheduleView: UIView {
     }
     
     @objc private func emptyViewButtonTapped() {
-        
         self.delegate?.emptyViewButtonTapped()
-            
-        }
+    }
     
     func changeEmptyView(isDaily: Bool) {
         let message = isDaily ? String(localized: "emptyDaySchedule") : String(localized: "emptyWeekSchedule")
@@ -159,7 +129,6 @@ class ScheduleView: UIView {
 extension ScheduleView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(viewModeSelector)
-        self.addSubview(picker)
         self.addSubview(contentView)
         self.addSubview(overlayView)
         overlayView.addSubview(createAcitivityButton)
@@ -170,17 +139,13 @@ extension ScheduleView: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             viewModeSelector.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12),
-            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12),
+            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14),
+            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
             
-            picker.topAnchor.constraint(equalTo: self.viewModeSelector.bottomAnchor, constant: padding),
-            picker.leadingAnchor.constraint(equalTo: viewModeSelector.leadingAnchor),
-            picker.trailingAnchor.constraint(equalTo: viewModeSelector.trailingAnchor),
-            
-            contentView.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: 21.5),
-            contentView.leadingAnchor.constraint(equalTo: viewModeSelector.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: viewModeSelector.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            contentView.topAnchor.constraint(equalTo: viewModeSelector.bottomAnchor, constant: padding),
+            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12),
+            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
         ])
         
         NSLayoutConstraint.activate([
