@@ -9,12 +9,13 @@ import UIKit
 
 class FocusSelectionView: UIView {
     weak var delegate: FocusSelectionDelegate?
+    var lastSelected: UIButton?
     
     // MARK: - Properties
     private lazy var backButton: UIButton = {
         let bttn = UIButton()
         bttn.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        bttn.tintColor = .white
+        bttn.tintColor = .label
         
         bttn.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
@@ -28,7 +29,7 @@ class FocusSelectionView: UIView {
         lbl.text = String(localized: "timeCountingQuestion")
         lbl.textAlignment = .center
         lbl.font = .systemFont(ofSize: 17, weight: .medium)
-        lbl.textColor = .white
+        lbl.textColor = .label
         lbl.numberOfLines = -1
         lbl.lineBreakMode = .byWordWrapping
         
@@ -70,14 +71,15 @@ class FocusSelectionView: UIView {
         return bttn
     }()
     
-    private lazy var continueButton: ActionButton = {
-        let titleColor = self.backgroundColor?.darker(by: 0.6)
-        let bttn = ActionButton(title: String(localized: "continue"), titleColor: titleColor)
+    private lazy var continueButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .gray)
         bttn.isEnabled = false
         
         bttn.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
         
         bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        bttn.backgroundColor = .secondaryLabel
         
         return bttn
     }()
@@ -86,7 +88,7 @@ class FocusSelectionView: UIView {
         let bttn = UIButton(configuration: .plain())
         bttn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
         bttn.setTitle(String(localized: "cancel"), for: .normal)
-        bttn.setTitleColor(self.backgroundColor?.darker(by: 0.6), for: .normal)
+        bttn.setTitleColor(.secondaryLabel, for: .normal)
         
         bttn.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
@@ -96,15 +98,19 @@ class FocusSelectionView: UIView {
     }()
     
     // MARK: - Initializer
-    init(color: UIColor?) {
+    init() {
         super.init(frame: .zero)
         
-        self.backgroundColor = color
+        self.backgroundColor = UIColor.systemBackground
         self.layer.cornerRadius = 12
-        self.layer.borderColor = UIColor.label.cgColor
-        self.layer.borderWidth = 1
-        
+
         self.setupUI()
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            guard let selected = self.lastSelected else { return }
+                self.didTapSelectionButton(selected)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -113,10 +119,12 @@ class FocusSelectionView: UIView {
     
     // MARK: - Auxiliar methods
     private func changeButtonColors(_ button: UIButton, isSelected: Bool) {
-        let color: UIColor = isSelected ? .white : .black
-        
-        button.setTitleColor(color, for: .normal)
+        let color: UIColor = isSelected ? .label : .secondaryLabel
         button.layer.borderColor = color.cgColor
+        
+        continueButton.backgroundColor = .label
+        let attributedString = NSAttributedString(string: continueButton.titleLabel!.text!, attributes: [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? .systemFont(ofSize: 18), .foregroundColor : UIColor.systemBackground])
+        continueButton.setAttributedTitle(attributedString, for: .normal)
     }
     
     @objc private func didTapSelectionButton(_ sender: UIButton) {
@@ -135,6 +143,8 @@ class FocusSelectionView: UIView {
         }
         
         self.delegate?.selectionButtonTapped(tag: sender.tag)
+        
+        lastSelected = sender
     }
     
     @objc private func didTapContinueButton() {
@@ -169,11 +179,11 @@ extension FocusSelectionView: ViewCodeProtocol {
             
             topLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor),
             topLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            topLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (213/359)),
+            topLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (213/366)),
             
             timerButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: padding / 2),
-            timerButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (319/359)),
-            timerButton.heightAnchor.constraint(equalTo: timerButton.widthAnchor, multiplier: (108/319)),
+            timerButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (334/366)),
+            timerButton.heightAnchor.constraint(equalTo: timerButton.widthAnchor, multiplier: (68/334)),
             timerButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             pomodoroButton.topAnchor.constraint(equalTo: timerButton.bottomAnchor, constant: padding / 2),
@@ -186,8 +196,8 @@ extension FocusSelectionView: ViewCodeProtocol {
             stopwatchButton.heightAnchor.constraint(equalTo: timerButton.heightAnchor),
             stopwatchButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            continueButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (330/359)),
-            continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor, multiplier: (70/330)),
+            continueButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (312/366)),
+            continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor, multiplier: (60/334)),
             continueButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             cancelButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: padding * 0.7),
@@ -196,3 +206,4 @@ extension FocusSelectionView: ViewCodeProtocol {
         ])
     }
 }
+
