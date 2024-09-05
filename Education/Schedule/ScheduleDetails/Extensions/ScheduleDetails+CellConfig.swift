@@ -124,6 +124,7 @@ extension ScheduleDetailsViewController {
                     toggleSwitch.isOn = self.viewModel.alarmBefore
                     toggleSwitch.tag = 0
                     toggleSwitch.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
+                    toggleSwitch.onTintColor = UIColor(named: "bluePicker")
                     
                     return toggleSwitch
                 }
@@ -132,6 +133,7 @@ extension ScheduleDetailsViewController {
                 toggleSwitch.isOn = self.viewModel.alarmInTime
                 toggleSwitch.tag = 1
                 toggleSwitch.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
+                toggleSwitch.onTintColor = UIColor(named: "bluePicker")
                 
                 return toggleSwitch
             case 2:
@@ -143,6 +145,7 @@ extension ScheduleDetailsViewController {
                 toggle.isOn = self.viewModel.blocksApps
                 toggle.tag = 2
                 toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .touchUpInside)
+                toggle.onTintColor = UIColor(named: "bluePicker")
                 
                 return toggle
             default:

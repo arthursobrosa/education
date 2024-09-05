@@ -135,6 +135,7 @@ class SettingsViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource and UITableViewDelegate
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3

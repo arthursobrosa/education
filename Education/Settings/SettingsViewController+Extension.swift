@@ -55,6 +55,7 @@ extension SettingsViewController {
             case 0:
                 let toggleSwitch = UISwitch()
                 toggleSwitch.isOn = self.viewModel.isNotificationActive.value
+                toggleSwitch.onTintColor = UIColor(named: "bluePicker")
                 toggleSwitch.addTarget(self, action: #selector(didChangeNotificationToggle(_:)), for: .valueChanged)
                 
                 return toggleSwitch

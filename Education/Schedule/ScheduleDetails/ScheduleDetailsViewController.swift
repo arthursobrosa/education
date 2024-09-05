@@ -61,6 +61,13 @@ class ScheduleDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         self.setNavigationItems()
+        
+//        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+//            (self: Self, previousTraitCollection: UITraitCollection) in
+//            
+//            self.reloadTable()
+//            self.updateTableViewAppearance(self.traitCollection)
+//        }
     }
     
     // MARK: - Methods
@@ -100,6 +107,14 @@ class ScheduleDetailsViewController: UIViewController {
             self.scheduleDetailsView.tableView.reloadData()
         }
     }
+    
+//    private func updateTableViewAppearance(_ traitCollection: UITraitCollection) {
+//        if traitCollection.userInterfaceStyle == .dark {
+//            self.scheduleDetailsView.tableView.layer.borderColor = UIColor.white.withAlphaComponent(0.2).cgColor
+//        } else {
+//            self.scheduleDetailsView.tableView.layer.borderColor = UIColor.black.withAlphaComponent(0.2).cgColor
+//        }
+//    }
     
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         switch sender.tag {
@@ -198,7 +213,8 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         cell.textLabel?.text = self.createCellTitle(for: indexPath)
         cell.accessoryView = self.createAccessoryView(for: indexPath)
         
-        cell.backgroundColor = .systemGray5
+        cell.backgroundColor = .systemBackground
+        //cell.layer.borderColor = UIColor.red.cgColor
         
         return cell
     }
