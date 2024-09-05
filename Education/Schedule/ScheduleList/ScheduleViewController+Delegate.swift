@@ -13,7 +13,7 @@ protocol ScheduleDelegate: AnyObject {
     func setSegmentedControl(_ segmentedControl: UISegmentedControl)
     
     // MARK: - Day
-    func setPicker(_ picker: UIStackView)
+    func setDaysStack(_ picker: UIStackView)
     func dayTapped(_ dayView: DayView)
     
     // MARK: - Floating buttons
@@ -23,6 +23,10 @@ protocol ScheduleDelegate: AnyObject {
     
     // MARK: - Play button
     func playButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?)
+    
+    // MARK: - Schedule Cell
+    func getConfiguredScheduleCell(from cell: ScheduleCell, at indexPath: IndexPath, isDaily: Bool) -> UICollectionViewCell
+    func getNumberOfItemsIn(_ index: Int) -> Int
 }
 
 extension ScheduleViewController: ScheduleDelegate {
@@ -58,21 +62,25 @@ extension ScheduleViewController: ScheduleDelegate {
     
     // MARK: Day
     func dayTapped(_ dayView: DayView) {
+        let dayViews = self.scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
+        
         // Day is tapped when weekly view mode is currently on
         if self.scheduleView.viewModeSelector.selectedSegmentIndex == 1 {
             self.scheduleView.viewModeSelector.selectedSegmentIndex = 0
             self.viewModel.selectedViewMode = .daily
-            self.dayTapped(dayView)
+            
+            let newDayView = dayViews.first { $0.dayOfWeek!.day == dayView.dayOfWeek!.day }
+            
+            self.dayTapped(newDayView ?? dayView)
             
             return
         }
         
         // Unable reloading the rows of a table that is already loaded
-        let dayViews = self.scheduleView.picker.arrangedSubviews.compactMap { $0 as? DayView }
         let lastDayView = dayViews.first { $0.dayOfWeek!.isSelected }
         guard dayView != lastDayView else { return }
         
-        // Logics to selected the day tapped
+        // Logics to select the day tapped
         self.unselectDays()
         
         guard let dayOfWeek = dayView.dayOfWeek else { return }
@@ -83,8 +91,8 @@ extension ScheduleViewController: ScheduleDelegate {
         self.loadSchedules()
     }
     
-    func setPicker(_ picker: UIStackView) {
-        picker.arrangedSubviews.forEach { subview in
+    func setDaysStack(_ stack: UIStackView) {
+        stack.arrangedSubviews.forEach { subview in
             subview.removeFromSuperview()
         }
         
@@ -103,7 +111,7 @@ extension ScheduleViewController: ScheduleDelegate {
             dayView.tag = index
             dayView.delegate = self
             
-            picker.addArrangedSubview(dayView)
+            stack.addArrangedSubview(dayView)
         }
     }
     
@@ -144,5 +152,31 @@ extension ScheduleViewController: ScheduleDelegate {
         let newFocusSessionModel = FocusSessionModel(subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
         
         self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
+    }
+    
+    // MARK: - Schedule Cell
+    func getConfiguredScheduleCell(from cell: ScheduleCell, at indexPath: IndexPath, isDaily: Bool = true) -> UICollectionViewCell {
+        let schedule = isDaily ? self.viewModel.schedules[indexPath.row] : self.viewModel.tasks[indexPath.section][indexPath.row]
+        let subject = self.viewModel.getSubject(fromSchedule: schedule)
+        let color = subject?.unwrappedColor
+
+        cell.delegate = self
+
+        cell.color = UIColor(named: color ?? "sealBackgroundColor")
+        cell.subject = subject
+
+        let timeLabelString = self.getTimeLabelString(for: indexPath, isDaily: isDaily)
+        let eventCase = self.viewModel.getEventCase(for: schedule)
+        cell.configure(with: timeLabelString, and: eventCase)
+
+        cell.indexPath = indexPath
+        
+        cell.isDaily = isDaily
+
+        return cell
+    }
+    
+    func getNumberOfItemsIn(_ index: Int) -> Int {
+        return self.viewModel.tasks[index].count
     }
 }

@@ -26,8 +26,7 @@ class DayView: UIView {
             self.dayLabel.text = dayOfWeek.day.capitalized
             self.dateLabel.text = dayOfWeek.date
             
-            handleDayColors()
-            
+            self.handleDayColors()
         }
     }
     
@@ -35,7 +34,7 @@ class DayView: UIView {
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 13)
         
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -75,6 +74,12 @@ class DayView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.circleView.layer.cornerRadius = self.circleView.bounds.width / 2
+    }
+    
     // MARK: - Methods
     @objc private func dayViewTapped() {
         self.delegate?.dayTapped(self)
@@ -97,35 +102,33 @@ extension DayView: ViewCodeProtocol {
             
             circleView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: padding),
             circleView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            circleView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding),
-            circleView.widthAnchor.constraint(equalToConstant: 36),
-            circleView.heightAnchor.constraint(equalToConstant: 36),
+            circleView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            circleView.widthAnchor.constraint(equalTo: self.widthAnchor),
+            circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
             
             dateLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
             dateLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
         ])
     }
     
-    func handleDayColors(){
+    func handleDayColors() {
         guard let dayOfWeek else { return }
         
-        if dayOfWeek.isSelected {
-            self.dayLabel.textColor = .label
-            self.dateLabel.textColor = .systemBackground
-            self.circleView.layer.borderColor = UIColor.label.cgColor
-            self.circleView.backgroundColor = .label
-        } else if dayOfWeek.isToday {
-            self.dayLabel.textColor = .label
-            self.dateLabel.textColor = .label
-            self.circleView.layer.borderColor = UIColor.label.cgColor
-            self.circleView.layer.borderWidth = 1.0
-            self.circleView.backgroundColor = .clear
-        } else {
-            self.dayLabel.textColor = .secondaryLabel
-            self.dateLabel.textColor = .secondaryLabel
-            self.circleView.layer.borderWidth = 1.0
-            self.circleView.layer.borderColor = UIColor.secondaryLabel.cgColor
-            self.circleView.backgroundColor = .clear
-        }
+        let isSelected = dayOfWeek.isSelected
+        let isToday = dayOfWeek.isToday
+        
+        let dayLabelFontName = (isSelected || isToday) ? Fonts.darkModeOnRegular : Fonts.darkModeOnMedium
+        
+        self.dayLabel.font = UIFont(name: dayLabelFontName, size: 13)
+        self.dayLabel.textColor = (isSelected || isToday) ? .label : .secondaryLabel
+        
+        let dateLabelFontName = isSelected ? Fonts.darkModeOnSemiBold : Fonts.darkModeOnMedium
+        
+        self.dateLabel.font = UIFont(name: dateLabelFontName, size: 15)
+        self.dateLabel.textColor = isSelected ? .systemBackground : (isToday ? .label : .secondaryLabel)
+        
+        self.circleView.layer.borderColor = isToday ? UIColor.label.cgColor : UIColor.secondaryLabel.cgColor
+        self.circleView.layer.borderWidth = isSelected ? 0 : 1
+        self.circleView.backgroundColor = isSelected ? .label : .clear
     }
 }

@@ -189,4 +189,58 @@ class ScheduleViewModel {
     func getWeekday(from date: Date) -> Int {
         return Calendar.current.component(.weekday, from: date) - 1
     }
+    
+    func getShortTimeString(for schedule: Schedule?, isStartTime: Bool) -> String {
+        guard let schedule else { return String() }
+        
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        
+        let time = isStartTime ? schedule.unwrappedStartTime : schedule.unwrappedEndTime
+        
+        return "\(formatter.string(from: time))"
+    }
+    
+    func getEventCase(for schedule: Schedule?) -> ScheduleCell.EventCase {
+        guard let schedule else { return .notToday }
+
+        let calendar = Calendar.current
+        let today = calendar.component(.weekday, from: Date()) - 1
+        
+        guard schedule.dayOfTheWeek == today else { return .notToday }
+        
+        let components: Set<Calendar.Component> = [.hour, .minute]
+        
+        let startTimeComponents = self.getDateComponents(components, from: schedule.unwrappedStartTime)
+        let endTimeComponents = self.getDateComponents(components, from: schedule.unwrappedEndTime)
+        let currentTimeComponents = self.getDateComponents(components, from: Date())
+        
+        guard let startHour = startTimeComponents.hour, let startMinute = startTimeComponents.minute,
+              let endHour = endTimeComponents.hour, let endMinute = endTimeComponents.minute,
+              let currentHour = currentTimeComponents.hour, let currentMinute = currentTimeComponents.minute else {
+            return .notToday
+        }
+        
+        let startTimeInMinutes = startHour * 60 + startMinute
+        let endTimeInMinutes = endHour * 60 + endMinute
+        let currentTimeInMinutes = currentHour * 60 + currentMinute
+        
+        if currentTimeInMinutes < startTimeInMinutes {
+            let differenceInMinutes = startTimeInMinutes - currentTimeInMinutes
+            let hoursLeft = differenceInMinutes / 60
+            let minutesLeft = differenceInMinutes % 60
+            
+            return .upcoming(hoursLeft: String(hoursLeft), minutesLeft: String(minutesLeft))
+        } else if currentTimeInMinutes <= endTimeInMinutes {
+            return .ongoing
+        } else {
+            return .completed
+        }
+    }
+    
+    private func getDateComponents(_ components: Set<Calendar.Component>, from date: Date) -> DateComponents {
+        let calendar = Calendar.current
+        
+        return calendar.dateComponents(components, from: date)
+    }
 }

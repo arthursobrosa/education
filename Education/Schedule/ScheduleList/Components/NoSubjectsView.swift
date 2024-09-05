@@ -5,8 +5,6 @@
 //  Created by Eduardo Dalencon on 30/08/24.
 //
 
-import Foundation
-
 import UIKit
 
 class NoSubjectsView: UIView {
