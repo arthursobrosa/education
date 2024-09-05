@@ -46,7 +46,11 @@ class FocusPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
+        if(self.traitCollection.userInterfaceStyle == .light){
+            self.view.backgroundColor = .label.withAlphaComponent(0.2)
+        } else {
+            self.view.backgroundColor = .label.withAlphaComponent(0.1)
+        }
         
         self.setupUI()
         
@@ -76,8 +80,8 @@ extension FocusPickerViewController: ViewCodeProtocol {
         self.view.addSubview(focusPickerView)
         
         NSLayoutConstraint.activate([
-            focusPickerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: (588/844)),
-            focusPickerView.widthAnchor.constraint(equalTo: focusPickerView.heightAnchor, multiplier: (359/588)),
+            focusPickerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: (542/844)),
+            focusPickerView.widthAnchor.constraint(equalTo: focusPickerView.heightAnchor, multiplier: (366/542)),
             focusPickerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             focusPickerView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
@@ -116,18 +120,24 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         }
         
         cell.textLabel?.text = cellText
-        cell.textLabel?.textColor = .white
+        cell.textLabel?.textColor = .label
+        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        cell.backgroundColor = .systemBackground
+        cell.roundCorners(corners: .allCorners, radius: 14.0, borderWidth: 1, borderColor: .secondaryLabel)
         
         let toggle = UISwitch()
         toggle.isOn = toggleIsOn
         toggle.tag = section
         toggle.addTarget(self, action: #selector(didChangeToggle(_:)), for: .valueChanged)
+        toggle.onTintColor = UIColor(named: "turquoisePicker")
         
         cell.accessoryView = toggle
         
-        cell.backgroundColor = self.color?.darker(by: 0.8)
-        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

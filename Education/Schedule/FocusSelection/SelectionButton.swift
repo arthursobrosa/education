@@ -12,11 +12,11 @@ class SelectionButton: UIButton {
     init(title: String, bold: String, color: UIColor?) {
         super.init(frame: .zero)
         
-        self.layer.borderWidth = 1
+        self.layer.borderWidth = 0.8
         self.layer.borderColor =  UIColor.lightGray.cgColor
         self.setTitleColor(.label, for: .normal)
         
-        let attributedText = self.attributedText(withString: title, boldString: bold, normalFont: UIFont.systemFont(ofSize: 16), boldFont: UIFont.boldSystemFont(ofSize: 16))
+        let attributedText = self.attributedText(withString: title, boldString: bold, normalFont: UIFont(name: Fonts.darkModeOnRegular, size: 14), boldFont: UIFont(name: Fonts.darkModeOnSemiBold, size: 16))
         
         self.setAttributedTitle(attributedText, for: .normal)
         self.backgroundColor = color
