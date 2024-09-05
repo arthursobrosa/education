@@ -19,9 +19,9 @@ class CustomDatePickerView: UIView {
     
     private let hoursLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 50, weight: .semibold)
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 30)
         label.text = "h"
-        label.textColor = .white
+        label.textColor = .label
         label.textAlignment = .center
         label.alpha = 0.8
         
@@ -41,9 +41,9 @@ class CustomDatePickerView: UIView {
     
     private let minutesLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 50, weight: .semibold)
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 30)
         label.text = "min"
-        label.textColor = .white
+        label.textColor = .label
         label.textAlignment = .center
         label.alpha = 0.8
         
@@ -82,7 +82,7 @@ private extension CustomDatePickerView {
         self.addSubview(minutesPicker)
         self.addSubview(minutesLabel)
         
-        let padding = 15.0
+        let padding = 8.0
         
         NSLayoutConstraint.activate([
             hoursPicker.topAnchor.constraint(equalTo: self.topAnchor),
@@ -102,8 +102,4 @@ private extension CustomDatePickerView {
             minutesLabel.leadingAnchor.constraint(equalTo: minutesPicker.trailingAnchor, constant: -padding)
         ])
     }
-}
-
-#Preview {
-    CustomDatePickerView()
 }

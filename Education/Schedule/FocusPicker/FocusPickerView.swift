@@ -14,12 +14,12 @@ class FocusPickerView: UIView {
         }
     }
     
-    private let timerCase: TimerCase?
+    private let timerCase: TimerCase
     
     private lazy var backButton: UIButton = {
         let bttn = UIButton()
         bttn.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        bttn.tintColor = .white
+        bttn.tintColor = .label
         
         bttn.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         
@@ -30,8 +30,6 @@ class FocusPickerView: UIView {
     
     lazy var dateView: DateView = {
         let view = DateView(timerCase: self.timerCase)
-        view.pomodoroWorkDatePicker.color = self.backgroundColor?.darker(by: 0.6)
-        view.pomodoroRestDatePicker.color = self.backgroundColor?.darker(by: 0.8)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -48,8 +46,7 @@ class FocusPickerView: UIView {
     }()
     
     private lazy var startButton: ActionButton = {
-        let titleColor = self.backgroundColor?.darker(by: 0.6)
-        let bttn = ActionButton(title: String(localized: "start"), titleColor: titleColor)
+        let bttn = ActionButton(title: String(localized: "start"), titleColor: .label)
         
         bttn.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         
@@ -62,7 +59,6 @@ class FocusPickerView: UIView {
         let bttn = UIButton(configuration: .plain())
         bttn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
         bttn.setTitle(String(localized: "cancel"), for: .normal)
-        bttn.setTitleColor(self.backgroundColor?.darker(by: 0.6), for: .normal)
         
         bttn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         
@@ -71,12 +67,12 @@ class FocusPickerView: UIView {
         return bttn
     }()
     
-    init(color: UIColor?, timerCase: TimerCase?) {
+    init(timerCase: TimerCase) {
         self.timerCase = timerCase
         
         super.init(frame: .zero)
         
-        self.backgroundColor = color
+        self.backgroundColor = .systemBackground
         self.layer.cornerRadius = 12
         self.layer.borderColor = UIColor.label.cgColor
         self.layer.borderWidth = 1
@@ -109,14 +105,28 @@ extension FocusPickerView: ViewCodeProtocol {
         self.addSubview(startButton)
         self.addSubview(cancelButton)
         
+        var widthMultiplier = Double()
+        var heightMultiplier = Double()
+        
+        switch self.timerCase {
+            case .timer:
+                widthMultiplier = 170 / 359
+                heightMultiplier = 180 / 170
+            case .pomodoro:
+                widthMultiplier = 302 / 359
+                heightMultiplier = 293 / 302
+            default:
+                break
+        }
+        
         let padding = 20.0
         
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
             backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             
-            dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (310/359)),
-            dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: (167/310)),
+            dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: widthMultiplier),
+            dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: heightMultiplier),
             dateView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             dateView.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: padding * 3.5),
             
