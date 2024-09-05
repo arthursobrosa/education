@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol FocusImediateDelegate: AnyObject {
     func cancelButtonTapped()
@@ -21,7 +22,14 @@ extension FocusImediateViewController: FocusImediateDelegate {
         guard let indexPath else { return }
         
         let row = indexPath.row
-        let subject: Subject? = row >= self.subjects.count ? nil : self.subjects[row]
+        let subject: Subject? = row == 0 ? nil : self.subjects[row - 1]
+        
+        var color = UIColor()
+        if let subject {
+            color = UIColor(named: subject.unwrappedColor)!
+        } else {
+            color = UIColor(named: "defaultColor")!
+        }
         
         let newFocusSessionModel = FocusSessionModel(subject: subject, color: color)
         
