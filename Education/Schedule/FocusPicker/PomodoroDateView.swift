@@ -11,6 +11,9 @@ class PomodoroDateView: UIView {
     let workDatePicker: CustomDatePickerView = {
         let picker = CustomDatePickerView()
         
+        picker.hoursPicker.tag = PickerCase.workHours
+        picker.minutesPicker.tag = PickerCase.workMinutes
+        
         picker.translatesAutoresizingMaskIntoConstraints = false
 
         return picker
@@ -19,6 +22,9 @@ class PomodoroDateView: UIView {
     let restDatePicker: CustomDatePickerView = {
         let picker = CustomDatePickerView()
         
+        picker.hoursPicker.tag = PickerCase.restHours
+        picker.minutesPicker.tag = PickerCase.restMinutes
+        
         picker.translatesAutoresizingMaskIntoConstraints = false
 
         return picker
@@ -26,7 +32,7 @@ class PomodoroDateView: UIView {
     
     let repetitionsPicker: UIPickerView = {
         let picker = UIPickerView()
-        picker.tag = 2
+        picker.tag = PickerCase.repetitions
         
         picker.translatesAutoresizingMaskIntoConstraints = false
         

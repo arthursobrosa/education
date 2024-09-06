@@ -10,7 +10,6 @@ import UIKit
 class CustomDatePickerView: UIView {
     let hoursPicker: UIPickerView = {
         let picker = UIPickerView()
-        picker.tag = 0
         
         picker.translatesAutoresizingMaskIntoConstraints = false
         
@@ -32,7 +31,6 @@ class CustomDatePickerView: UIView {
     
     let minutesPicker: UIPickerView = {
         let picker = UIPickerView()
-        picker.tag = 1
         
         picker.translatesAutoresizingMaskIntoConstraints = false
         

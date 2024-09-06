@@ -8,11 +8,7 @@
 import UIKit
 
 class FocusPickerView: UIView {
-    weak var delegate: FocusPickerDelegate? {
-        didSet {
-            dateView.delegate = delegate
-        }
-    }
+    weak var delegate: FocusPickerDelegate?
     
     private let timerCase: TimerCase
     

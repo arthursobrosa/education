@@ -60,6 +60,12 @@ class FocusPickerViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.configurePomodoroPickers()
+    }
+    
     @objc private func didChangeToggle(_ sender: UISwitch) {
         switch sender.tag {
             case 0:
@@ -71,6 +77,39 @@ class FocusPickerViewController: UIViewController {
             default:
                 break
         }
+    }
+    
+    private func configurePomodoroPickers() {
+        let timerCase = self.viewModel.focusSessionModel.timerCase
+        
+        var workSeconds = Int()
+        var restSeconds = Int()
+        var repetitions = Int()
+        
+        switch timerCase {
+            case .pomodoro(let workTime, let restTime, let numberOfLoops):
+                workSeconds = workTime
+                restSeconds = restTime
+                repetitions = numberOfLoops - 1
+            default:
+                return
+        }
+        
+        var hoursAndMinutes = self.viewModel.getHoursAndMinutes(from: workSeconds)
+        
+        self.selectRow(hoursAndMinutes[0], in: self.focusPickerView.dateView.pomodoroDateView.workDatePicker.hoursPicker)
+        self.selectRow(hoursAndMinutes[1] - 1, in: self.focusPickerView.dateView.pomodoroDateView.workDatePicker.minutesPicker)
+        
+        hoursAndMinutes = self.viewModel.getHoursAndMinutes(from: restSeconds)
+        
+        self.selectRow(hoursAndMinutes[0], in: self.focusPickerView.dateView.pomodoroDateView.restDatePicker.hoursPicker)
+        self.selectRow(hoursAndMinutes[1] - 1, in: self.focusPickerView.dateView.pomodoroDateView.restDatePicker.minutesPicker)
+        
+        self.selectRow(repetitions - 1, in: self.focusPickerView.dateView.pomodoroDateView.repetitionsPicker)
+    }
+    
+    private func selectRow(_ row: Int, in picker: UIPickerView) {
+        picker.selectRow(row, inComponent: 0, animated: false)
     }
 }
 
@@ -188,19 +227,31 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch pickerView.tag {
-            case 0:
+            case PickerCase.timerHours, PickerCase.workHours, PickerCase.restHours:
                 return self.viewModel.hours.count
-            case 1:
+            case PickerCase.timerMinutes, PickerCase.workMinutes, PickerCase.restMinutes:
                 return self.viewModel.minutes.count
-            case 2:
-                return (1...9).count
+            case PickerCase.repetitions:
+                return self.viewModel.repetitions.count
             default:
                 return 0
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let selection = pickerView.tag == 0 ? self.viewModel.hours[row] : self.viewModel.minutes[row]
+        var selection = Int()
+        
+        switch pickerView.tag {
+            case PickerCase.timerHours, PickerCase.workHours, PickerCase.restHours:
+                selection = self.viewModel.hours[row]
+            case PickerCase.timerMinutes, PickerCase.workMinutes, PickerCase.restMinutes:
+                selection = self.viewModel.minutes[row]
+            case PickerCase.repetitions:
+                selection = self.viewModel.repetitions[row]
+            default:
+                break
+        }
+        
         let text = selection < 10 ? "0" + String(selection) : String(selection)
         
         let selectedRow = pickerView.selectedRow(inComponent: 0)
@@ -219,10 +270,20 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView.tag {
-            case 0:
-                self.viewModel.selectedHours = self.viewModel.hours[row]
-            case 1:
-                self.viewModel.selectedMinutes = self.viewModel.minutes[row]
+            case PickerCase.timerHours:
+                self.viewModel.selectedTimerHours = self.viewModel.hours[row]
+            case PickerCase.timerMinutes:
+                self.viewModel.selectedTimerMinutes = self.viewModel.minutes[row]
+            case PickerCase.workHours:
+                self.viewModel.selectedWorkHours = self.viewModel.hours[row]
+            case PickerCase.workMinutes:
+                self.viewModel.selectedWorkMinutes = self.viewModel.minutes[row]
+            case PickerCase.restHours:
+                self.viewModel.selectedRestHours = self.viewModel.hours[row]
+            case PickerCase.restMinutes:
+                self.viewModel.selectedRestMinutes = self.viewModel.minutes[row]
+            case PickerCase.repetitions:
+                self.viewModel.selectedRepetitions = self.viewModel.repetitions[row]
             default:
                 break
         }
