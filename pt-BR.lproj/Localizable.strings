@@ -98,6 +98,9 @@
 "subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";
+"newSubject" = "Nova Matéria";
+"editSubject" = "Editar Matéria";
+"subjectName" = "Nome da Matéria";
 
 // MARK: - Themes
 "themeAlertTitle" = "Adicionar prova";

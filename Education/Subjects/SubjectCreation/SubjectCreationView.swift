@@ -18,6 +18,12 @@ class SubjectCreationView: UIView {
         return table
     }()
     
+     let button: ButtonComponent = {
+        let button = ButtonComponent(title: String(localized: "save"))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 50, height: 50)
@@ -51,12 +57,23 @@ extension SubjectCreationView: ViewCodeProtocol {
     // MARK: - UI Setup
     func setupUI() {
         self.addSubview(tableView)
+        self.addSubview(button)
+//        tableView.backgroundColor = .red
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 70),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+            
+//            button.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            button.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40),
+            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 5/28),
+//            button.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
+            
+            
+            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -4),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 4),
+            tableView.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -16)
         ])
     }
 }
