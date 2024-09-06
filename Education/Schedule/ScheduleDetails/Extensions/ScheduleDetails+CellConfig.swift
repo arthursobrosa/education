@@ -107,6 +107,7 @@ extension ScheduleDetailsViewController {
             case 0:
                 if row == 0 {
                     let containerView = self.createAttributedLabel(withText: "\(self.viewModel.selectedDay)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
+                    
                     return containerView
                 }
             
@@ -121,23 +122,13 @@ extension ScheduleDetailsViewController {
                 
                 return datePicker
             case 1:
-                if row == 0 {
-                    let toggleSwitch = UISwitch()
-                    toggleSwitch.isOn = self.viewModel.alarmBefore
-                    toggleSwitch.tag = 0
-                    toggleSwitch.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
-                    toggleSwitch.onTintColor = UIColor(named: "bluePicker")
-                    
-                    return toggleSwitch
-                }
+                let toggle = UISwitch()
+                toggle.isOn = row == 0 ? self.viewModel.alarmBefore : self.viewModel.alarmInTime
+                toggle.tag = row == 0 ? 0 : 1
+                toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
+                toggle.onTintColor = UIColor(named: "bluePicker")
                 
-                let toggleSwitch = UISwitch()
-                toggleSwitch.isOn = self.viewModel.alarmInTime
-                toggleSwitch.tag = 1
-                toggleSwitch.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
-                toggleSwitch.onTintColor = UIColor(named: "bluePicker")
-                
-                return toggleSwitch
+                return toggle
             case 2:
                 let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedSubjectName)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
                 

@@ -20,7 +20,7 @@ class ScheduleDetailsViewController: UIViewController {
         
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
+        view.tableView.register(ScheduleDetailsCell.self, forCellReuseIdentifier: ScheduleDetailsCell.identifier)
         
         return view
     }()
@@ -61,13 +61,6 @@ class ScheduleDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         self.setNavigationItems()
-        
-//        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-//            (self: Self, previousTraitCollection: UITraitCollection) in
-//            
-//            self.reloadTable()
-//            self.updateTableViewAppearance(self.traitCollection)
-//        }
     }
     
     // MARK: - Methods
@@ -99,22 +92,6 @@ class ScheduleDetailsViewController: UIViewController {
         
         self.present(alertController, animated: true)
     }
-    
-    private func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            
-            self.scheduleDetailsView.tableView.reloadData()
-        }
-    }
-    
-//    private func updateTableViewAppearance(_ traitCollection: UITraitCollection) {
-//        if traitCollection.userInterfaceStyle == .dark {
-//            self.scheduleDetailsView.tableView.layer.borderColor = UIColor.white.withAlphaComponent(0.2).cgColor
-//        } else {
-//            self.scheduleDetailsView.tableView.layer.borderColor = UIColor.black.withAlphaComponent(0.2).cgColor
-//        }
-//    }
     
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         switch sender.tag {
@@ -153,33 +130,9 @@ class ScheduleDetailsViewController: UIViewController {
         
         startDatePicker.isEnabled = true
         endDatePicker.isEnabled = true
-        
-        self.reloadTable()
-    }
-    
-    private func showAddSubjectAlert() {
-        let alertController = UIAlertController(title: String(localized: "addSubjectAlertTitle"), message: String(localized: "addSubjectAlertMessage"), preferredStyle: .alert)
-        
-        alertController.addTextField { textField in
-            textField.placeholder = String(localized: "addSubjectAlertPlaceholder")
-        }
-        
-        let addAction = UIAlertAction(title: String(localized: "add"), style: .default) { [weak self] _ in
-            guard let self else { return }
-            
-            if let subjectName = alertController.textFields?.first?.text, !subjectName.isEmpty {
-                self.viewModel.addSubject(name: subjectName)
-            }
-            
-            self.reloadTable()
-        }
-        
-        let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
-        
-        alertController.addAction(addAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+
+        startDatePicker.date = self.viewModel.selectedStartTime
+        endDatePicker.date = self.viewModel.selectedEndTime
     }
     
     func showInvalidDatesAlert(forExistingSchedule: Bool) {
@@ -227,16 +180,17 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleDetailsCell.identifier, for: indexPath) as? ScheduleDetailsCell else {
+            fatalError("Could not dequeue cell")
+        }
+        
         cell.textLabel?.text = self.createCellTitle(for: indexPath)
         cell.accessoryView = self.createAccessoryView(for: indexPath)
         
-        cell.backgroundColor = .systemBackground
-        //cell.layer.borderColor = UIColor.red.cgColor
+        cell.indexPath = indexPath
         
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
@@ -251,11 +205,6 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                     }
                 }
             case 2:
-                if self.viewModel.subjectsNames.isEmpty {
-                    self.showAddSubjectAlert()
-                    break
-                }
-                
                 if let popover = self.createSubjectPopover(forTableView: tableView, at: indexPath) {
                     self.isPopoverOpen.toggle()
                     self.present(popover, animated: true)
@@ -263,7 +212,5 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
             default:
                 break
         }
-        
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

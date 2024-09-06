@@ -132,6 +132,7 @@
 		68C2D00A2C473F8000E2347A /* ScheduleDetails+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D0092C473F8000E2347A /* ScheduleDetails+Picker.swift */; };
 		68C2D00C2C473FC100E2347A /* ScheduleDetails+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D00B2C473FC100E2347A /* ScheduleDetails+Popover.swift */; };
 		68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D00D2C47400A00E2347A /* ScheduleDetails+CellConfig.swift */; };
+		68C572412C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C572402C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift */; };
 		68C8D9AB2C4987FF0092E80D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C8D9A92C4987FF0092E80D /* Localizable.strings */; };
 		68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87D42C5D49F4006ED5FA /* FocusSelectionViewController.swift */; };
 		68CA87D72C5D4F74006ED5FA /* FocusSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA87D62C5D4F74006ED5FA /* FocusSelectionViewModel.swift */; };
@@ -341,6 +342,7 @@
 		68C2D0092C473F8000E2347A /* ScheduleDetails+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+Picker.swift"; sourceTree = "<group>"; };
 		68C2D00B2C473FC100E2347A /* ScheduleDetails+Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+Popover.swift"; sourceTree = "<group>"; };
 		68C2D00D2C47400A00E2347A /* ScheduleDetails+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+CellConfig.swift"; sourceTree = "<group>"; };
+		68C572402C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsCell.swift; sourceTree = "<group>"; };
 		68C8D9AA2C4987FF0092E80D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68C8D9AC2C4988090092E80D /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		68CA87D42C5D49F4006ED5FA /* FocusSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionViewController.swift; sourceTree = "<group>"; };
@@ -769,6 +771,7 @@
 				68D3138C2C6AE4E000F63159 /* ScheduleDetailsCoordinator.swift */,
 				68333DD12C3F81590064BF87 /* ScheduleDetailsViewModel.swift */,
 				6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */,
+				68C572402C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift */,
 				68C2D0042C473A4800E2347A /* ScheduleDetailsViewController+Delegate.swift */,
 				6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */,
 				68C2D0082C473F5800E2347A /* Extensions */,
@@ -1166,6 +1169,7 @@
 				683D25562C894DAF00716444 /* ScheduleVC+Collections.swift in Sources */,
 				CE394D0F2C6E85FC00A8B1F0 /* ScheduleDetailsModalCoordinator.swift in Sources */,
 				31EB254B2C596883008F8893 /* NotificationService.swift in Sources */,
+				68C572412C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
 				30D846EC2C8261D700E98130 /* NoSubjectsView.swift in Sources */,
 				CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */,
