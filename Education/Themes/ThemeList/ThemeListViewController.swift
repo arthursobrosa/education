@@ -11,27 +11,24 @@ import TipKit
 class ThemeListViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
     weak var coordinator: ShowingThemePage?
-    private let viewModel: ThemeListViewModel
+    let viewModel: ThemeListViewModel
     
     var createTestTip = CreateTestTip()
     
     // MARK: - Properties
     private var themes = [Theme]()
     
-    private lazy var themeListTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.backgroundColor = .systemBackground
+    lazy var themeListView: ThemeListView = {
+        let view = ThemeListView()
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
+        view.delegate = self
         
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.tableView.delegate = self
+        view.tableView.dataSource = self
+        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
         
-        return tableView
+        return view
     }()
-    
-    private let emptyView = EmptyView(message: String(localized: "emptyTheme"))
     
     // MARK: - Initialization
     init(viewModel: ThemeListViewModel) {
@@ -45,6 +42,12 @@ class ThemeListViewController: UIViewController {
     }
     
     // MARK: - Lifecycle
+    override func loadView() {
+        super.loadView()
+        
+        self.view = self.themeListView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,37 +56,39 @@ class ThemeListViewController: UIViewController {
         self.viewModel.themes.bind { [weak self] themes in
             guard let self else { return }
             
-            self.setView(isEmpty: themes.isEmpty)
-            
             self.themes = themes
             self.reloadTable()
+            
+            self.setContentView()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        handleTip()
+        self.handleTip()
         
         self.viewModel.fetchThemes()
     }
     
     // MARK: - Methods
     private func setNavigationItems() {
-        self.navigationItem.title = String(localized: "themeTab")
-        
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
+        addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(addThemeButtonTapped), for: .touchUpInside)
         addButton.tintColor = .label
         
         let addItem = UIBarButtonItem(customView: addButton)
         
         self.navigationItem.rightBarButtonItems = [addItem]
+        
+        self.navigationItem.title = String(localized: "themeTab")
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
     }
     
-    private func handleTip(){
+    private func handleTip() {
         Task { @MainActor in
                 for await shouldDisplay in createTestTip.shouldDisplayUpdates {
                     if shouldDisplay {
@@ -99,50 +104,52 @@ class ThemeListViewController: UIViewController {
             }
     }
     
-    private func setView(isEmpty: Bool) {
-        self.view = isEmpty ? self.emptyView : self.themeListTableView
+    private func setContentView() {
+        self.themeListView.contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        let isEmpty = self.themes.isEmpty
+        
+        self.addContentSubview(isEmpty ? self.themeListView.emptyView : self.themeListView.tableView)
+    }
+    
+    private func addContentSubview(_ subview: UIView) {
+        self.themeListView.contentView.addSubview(subview)
+        
+        NSLayoutConstraint.activate([
+            subview.topAnchor.constraint(equalTo: self.themeListView.contentView.topAnchor),
+            subview.bottomAnchor.constraint(equalTo: self.themeListView.contentView.bottomAnchor),
+            subview.leadingAnchor.constraint(equalTo: self.themeListView.contentView.leadingAnchor),
+            subview.trailingAnchor.constraint(equalTo: self.themeListView.contentView.trailingAnchor)
+        ])
     }
     
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
-            self.themeListTableView.reloadData()
+            self.themeListView.tableView.reloadData()
         }
     }
     
     @objc private func addThemeButtonTapped() {
-        self.showAddThemeAlert()
+        self.showNewThemeAlert()
     }
     
-    private func showAddThemeAlert() {
-        let alertController = UIAlertController(title: String(localized: "themeAlertTitle"), message: String(localized: "themeAlertMessage"), preferredStyle: .alert)
-        
-        alertController.addTextField { textField in
-            textField.placeholder = String(localized: "themeAlertPlaceholder")
-        }
-        
-        let addAction = UIAlertAction(title: String(localized: "add"), style: .default) { [weak self] _ in
-            guard let self else { return }
-            
-            if let themeName = alertController.textFields?.first?.text, !themeName.isEmpty {
-                self.viewModel.addTheme(name: themeName)
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
-        
-        alertController.addAction(addAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+    private func showNewThemeAlert() {
+        self.themeListView.newThemeAlert.isHidden = false
     }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return self.themes.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -151,45 +158,41 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         cell.textLabel?.text = theme.name
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
-        cell.accessoryView = createAccessoryView()
         
-        cell.backgroundColor = .systemGray6
+        let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        chevronImageView.tintColor = .label
+        
+        cell.accessoryView = chevronImageView
+        
+        cell.backgroundColor = .systemBackground
+        
+        cell.roundCorners(corners: .allCorners, radius: 18, borderWidth: 2, borderColor: .secondaryLabel)
         
         return cell
     }
     
-    private func createAccessoryView() -> UIView {
-        let containerView = UIView()
-        
-        let detailsLabel = UILabel()
-        detailsLabel.text = String(localized: "themeTableDetail")
-        detailsLabel.textColor = .secondaryLabel
-        detailsLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
-        detailsLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
-        chevronImageView.tintColor = .secondaryLabel
-        chevronImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        containerView.addSubview(detailsLabel)
-        containerView.addSubview(chevronImageView)
-        
-        NSLayoutConstraint.activate([
-            detailsLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            detailsLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            chevronImageView.leadingAnchor.constraint(equalTo: detailsLabel.trailingAnchor, constant: 4),
-            chevronImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            chevronImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            chevronImageView.widthAnchor.constraint(equalToConstant: 10),
-            chevronImageView.heightAnchor.constraint(equalToConstant: 14) 
-        ])
-        
-        containerView.frame.size = CGSize(width: 74, height: 20)
-        
-        return containerView
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 77
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 11
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = UIColor.clear
+        return footerView
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -205,5 +208,19 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         self.coordinator?.showThemePage(theme: theme)
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension ThemeListViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        
+        self.viewModel.newThemeName = text
     }
 }

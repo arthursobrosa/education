@@ -74,7 +74,7 @@
 "pomodoroSelectionTitle" = "Scheduled time with interval";
 "stopwatchSelectionTitle" = "Free (stop when you want)";
 "stopwatchSelectionBold" = "Free";
-"alarm" = "Alarm";
+"alarm" = "Alarm when fineshed";
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
 "subjectActivity" = "Activity";
@@ -108,6 +108,7 @@
 "themeAlertMessage" = "Enter exam name:";
 "themeAlertPlaceholder" = "Exam name";
 "newTest" = "New Test";
+"newTheme" = "New Exam";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
 "wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";

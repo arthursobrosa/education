@@ -12,8 +12,8 @@ class SettingsTableViewCell: UITableViewCell {
     
     private let cardView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemGray5
         view.layer.cornerRadius = 18
+        view.layer.borderWidth = 1.5
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -23,7 +23,7 @@ class SettingsTableViewCell: UITableViewCell {
     private let cardImageView: UIImageView = {
         let imageView = UIImageView()
         
-        imageView.tintColor = .label
+        imageView.tintColor = .label.withAlphaComponent(0.8)
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -32,7 +32,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     private let cardTextLabel: UILabel = {
         let label = UILabel()
-        
+        label.tintColor = .label.withAlphaComponent(0.8)
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -50,8 +50,15 @@ class SettingsTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.setupUI()
+        self.updateCardViewColor(self.traitCollection)
         
         self.selectionStyle = .none
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.updateCardViewColor(self.traitCollection)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -81,6 +88,16 @@ class SettingsTableViewCell: UITableViewCell {
         
         self.customAccessoryView.subviews.forEach { subview in
             subview.removeFromSuperview()
+        }
+    }
+    
+    private func updateCardViewColor(_ traitCollection: UITraitCollection) {
+        if traitCollection.userInterfaceStyle == .dark {
+            cardView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
+            cardView.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
+        } else {
+            cardView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
+            cardView.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
         }
     }
 }

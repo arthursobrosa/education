@@ -20,17 +20,17 @@ class ScheduleDetailsViewController: UIViewController {
         
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
+        view.tableView.register(ScheduleDetailsCell.self, forCellReuseIdentifier: ScheduleDetailsCell.identifier)
         
         return view
     }()
     
     var isPopoverOpen: Bool = false {
         didSet {
-            guard let startTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
-                  let endTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
-                  let startDatePicker = startTimerCell.accessoryView as? UIDatePicker,
-                  let endDatePicker = endTimerCell.accessoryView as? UIDatePicker else { return }
+            guard let startTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
+                  let endTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
+                  let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
+                  let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else { return }
             
             let isEnabled = !isPopoverOpen
             
@@ -93,14 +93,6 @@ class ScheduleDetailsViewController: UIViewController {
         self.present(alertController, animated: true)
     }
     
-    private func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            
-            self.scheduleDetailsView.tableView.reloadData()
-        }
-    }
-    
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         switch sender.tag {
             case 1:
@@ -120,33 +112,27 @@ class ScheduleDetailsViewController: UIViewController {
         }
     }
     
-    @objc func datePickerEditionEnded() {
-        self.reloadTable()
+    @objc func datePickerEditionBegan(_ sender: UIDatePicker) {
+        guard let startTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
+              let endTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
+              let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
+              let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else { return }
+        
+        startDatePicker.isEnabled = sender.tag == 1
+        endDatePicker.isEnabled = sender.tag == 2
     }
     
-    private func showAddSubjectAlert() {
-        let alertController = UIAlertController(title: String(localized: "addSubjectAlertTitle"), message: String(localized: "addSubjectAlertMessage"), preferredStyle: .alert)
+    @objc func datePickerEditionEnded() {
+        guard let startTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
+              let endTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
+              let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
+              let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else { return }
         
-        alertController.addTextField { textField in
-            textField.placeholder = String(localized: "addSubjectAlertPlaceholder")
-        }
-        
-        let addAction = UIAlertAction(title: String(localized: "add"), style: .default) { [weak self] _ in
-            guard let self else { return }
-            
-            if let subjectName = alertController.textFields?.first?.text, !subjectName.isEmpty {
-                self.viewModel.addSubject(name: subjectName)
-            }
-            
-            self.reloadTable()
-        }
-        
-        let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
-        
-        alertController.addAction(addAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+        startDatePicker.isEnabled = true
+        endDatePicker.isEnabled = true
+
+        startDatePicker.date = self.viewModel.selectedStartTime
+        endDatePicker.date = self.viewModel.selectedEndTime
     }
     
     func showInvalidDatesAlert(forExistingSchedule: Bool) {
@@ -194,15 +180,17 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleDetailsCell.identifier, for: indexPath) as? ScheduleDetailsCell else {
+            fatalError("Could not dequeue cell")
+        }
+        
         cell.textLabel?.text = self.createCellTitle(for: indexPath)
         cell.accessoryView = self.createAccessoryView(for: indexPath)
         
-        cell.backgroundColor = .systemGray5
+        cell.indexPath = indexPath
         
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
@@ -217,11 +205,6 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                     }
                 }
             case 2:
-                if self.viewModel.subjectsNames.isEmpty {
-                    self.showAddSubjectAlert()
-                    break
-                }
-                
                 if let popover = self.createSubjectPopover(forTableView: tableView, at: indexPath) {
                     self.isPopoverOpen.toggle()
                     self.present(popover, animated: true)
@@ -229,7 +212,5 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
             default:
                 break
         }
-        
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

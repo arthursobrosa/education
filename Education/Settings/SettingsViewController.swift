@@ -135,6 +135,7 @@ class SettingsViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource and UITableViewDelegate
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
@@ -163,8 +164,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
         let row = indexPath.row
         
         switch row {

@@ -14,14 +14,16 @@ class ThemeListViewModel {
     // MARK: - Properties
     var themes = Box([Theme]())
     
+    var newThemeName = String()
+    
     // MARK: - Initializer
     init(themeManager: ThemeManager = ThemeManager()) {
         self.themeManager = themeManager
     }
     
     // MARK: - Methods
-    func addTheme(name: String) {
-        self.themeManager.createTheme(name: name)
+    func addTheme() {
+        self.themeManager.createTheme(name: self.newThemeName)
         self.fetchThemes()
     }
     
