@@ -104,6 +104,7 @@
 "themeAlertMessage" = "Insira o nome da prova:";
 "themeAlertPlaceholder" = "Nome da prova";
 "newTest" = "Novo Teste";
+"newTheme" = "Nova Prova";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
