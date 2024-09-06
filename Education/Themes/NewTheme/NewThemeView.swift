@@ -1,5 +1,5 @@
 //
-//  NewThemeAlert.swift
+//  NewThemeView.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 06/09/24.
@@ -7,13 +7,8 @@
 
 import UIKit
 
-class NewThemeAlert: UIView {
-    weak var delegate: ThemeListDelegate? {
-        didSet {
-            self.setupUI()
-            self.setTextFieldDelegate()
-        }
-    }
+class NewThemeView: UIView {
+    weak var delegate: NewThemeDelegate?
     
     private let themeTitleLabel: UILabel = {
         let label = UILabel()
@@ -26,7 +21,7 @@ class NewThemeAlert: UIView {
         return label
     }()
     
-    private let textField: PaddedTextField = {
+    private lazy var textField: PaddedTextField = {
         let textField = PaddedTextField()
         textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
         textField.placeholder = String(localized: "themeAlertPlaceholder")
@@ -36,6 +31,8 @@ class NewThemeAlert: UIView {
         textField.layer.borderWidth = 1
         
         textField.layer.cornerRadius = 18
+        
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -68,14 +65,19 @@ class NewThemeAlert: UIView {
         
         self.backgroundColor = .systemBackground
         
-        self.layer.borderColor = UIColor.secondaryLabel.cgColor
-        self.layer.borderWidth = 1.5
-        
         self.layer.cornerRadius = 12
+        
+        self.setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func textFieldDidChange(_ sender: UITextField) {
+        guard let text = sender.text else { return }
+        
+        self.delegate?.textFieldDidChange(newText: text)
     }
     
     @objc private func didTapCancelButton() {
@@ -85,13 +87,9 @@ class NewThemeAlert: UIView {
     @objc private func didTapContinueButton() {
         self.delegate?.didTapContinueButton()
     }
-    
-    private func setTextFieldDelegate() {
-        self.delegate?.setTextFieldDelegate(self.textField)
-    }
 }
 
-extension NewThemeAlert: ViewCodeProtocol {
+extension NewThemeView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(themeTitleLabel)
         self.addSubview(textField)

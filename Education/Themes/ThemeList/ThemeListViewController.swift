@@ -10,7 +10,7 @@ import TipKit
 
 class ThemeListViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: ShowingThemePage?
+    weak var coordinator: (ShowingThemePage & ShowingNewTheme)?
     let viewModel: ThemeListViewModel
     
     var createTestTip = CreateTestTip()
@@ -20,8 +20,6 @@ class ThemeListViewController: UIViewController {
     
     lazy var themeListView: ThemeListView = {
         let view = ThemeListView()
-        
-        view.delegate = self
         
         view.tableView.delegate = self
         view.tableView.dataSource = self
@@ -125,7 +123,7 @@ class ThemeListViewController: UIViewController {
         ])
     }
     
-    private func reloadTable() {
+    func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
@@ -134,11 +132,7 @@ class ThemeListViewController: UIViewController {
     }
     
     @objc private func addThemeButtonTapped() {
-        self.showNewThemeAlert()
-    }
-    
-    private func showNewThemeAlert() {
-        self.themeListView.newThemeAlert.isHidden = false
+        self.coordinator?.showNewTheme(viewModel: self.viewModel)
     }
 }
 
@@ -153,7 +147,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let theme = self.themes[indexPath.row]
+        let theme = self.themes[indexPath.section]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
         cell.textLabel?.text = theme.name

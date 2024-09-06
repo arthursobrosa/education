@@ -115,7 +115,6 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
             guard let scheduleVC = self.navigationController.viewControllers.first as? ScheduleViewController else { return nil }
             
             let dayViews = scheduleVC.scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
-//            let dayViews = scheduleVC.scheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
             
             let weekdays = scheduleVC.viewModel.daysOfWeek.compactMap { scheduleVC.viewModel.getWeekday(from: $0) }
             
