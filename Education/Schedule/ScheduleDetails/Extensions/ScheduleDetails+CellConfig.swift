@@ -111,6 +111,7 @@ extension ScheduleDetailsViewController {
                 }
             
                 let datePicker = UIDatePicker()
+                self.changeDatePickerBackgroundView(datePicker)
                 datePicker.datePickerMode = .time
                 datePicker.date = row == 1 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
                 datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
@@ -151,6 +152,19 @@ extension ScheduleDetailsViewController {
                 return toggle
             default:
                 return nil
+        }
+    }
+    
+    private func changeDatePickerBackgroundView(_ datePicker: UIDatePicker) {
+        datePicker.subviews.first?.subviews.forEach { grayView in
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = .systemBackground
+            grayView.insertSubview(view, at: 0)
+            view.topAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.topAnchor).isActive = true
+            view.bottomAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            view.leadingAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.leadingAnchor).isActive = true
+            view.trailingAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.trailingAnchor).isActive = true
         }
     }
 }
