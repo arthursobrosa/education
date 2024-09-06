@@ -99,6 +99,9 @@
 "subjectCreationNoName" = "Please, insert a name for your subject.";
 "subjectCreationUsedName" = "There is an existing subject with this name.";
 "color" = "Color";
+"newSubject" = "New Subject";
+"editSubject" = "Edit Subject";
+"subjectName" = "Subject's Name";
 
 // MARK: - Themes
 "themeAlertTitle" = "Add exam";

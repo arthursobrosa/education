@@ -15,9 +15,11 @@ class SubjectTimeTableViewCell: UITableViewCell{
             if let subject {
                 self.subjectName.text = subject.unwrappedName
                 self.colorCircle.backgroundColor = UIColor(named: subject.unwrappedColor)
+                self.containerView.layer.borderColor  = UIColor(named: subject.unwrappedColor)!.cgColor
             } else {
                 self.subjectName.text = String(localized: "other")
                 self.colorCircle.backgroundColor = UIColor(named: "sealBackgroundColor")
+                self.containerView.layer.borderColor  = UIColor(named: "sealBackgroundColor")!.cgColor
             }
         }
     }
@@ -38,19 +40,28 @@ class SubjectTimeTableViewCell: UITableViewCell{
         return view
     }()
     
+    private let containerView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 18
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var subjectName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         label.textColor = .label
+        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         return label
     }()
     
-    private lazy var totalHours: UILabel = {
+    lazy var totalHours: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .secondaryLabel
         label.textAlignment = .right
+        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 15)
         return label
     }()
     
@@ -67,24 +78,32 @@ class SubjectTimeTableViewCell: UITableViewCell{
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
     private func setupUI() {
-        self.contentView.addSubview(colorCircle)
-        self.contentView.addSubview(subjectName)
-        self.contentView.addSubview(totalHours)
         
-        let padding = 10.0
+        self.contentView.addSubview(containerView)
+
+        containerView.addSubview(subjectName)
+        containerView.addSubview(totalHours)
+        
+        containerView.layer.borderWidth = 1
+        
+        let padding = 18.0
         
         NSLayoutConstraint.activate([
-            colorCircle.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: padding),
-            colorCircle.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            colorCircle.widthAnchor.constraint(equalToConstant: 25),
-            colorCircle.heightAnchor.constraint(equalToConstant: 25),
             
-            subjectName.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            subjectName.leadingAnchor.constraint(equalTo: colorCircle.trailingAnchor, constant: padding),
+            containerView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: padding),
+            containerView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -padding),
+            containerView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            containerView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
+            containerView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
             
-            totalHours.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            totalHours.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            subjectName.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            subjectName.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
+            
+            totalHours.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            totalHours.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
             
             subjectName.trailingAnchor.constraint(lessThanOrEqualTo: totalHours.leadingAnchor, constant: -padding)
         ])

@@ -19,7 +19,7 @@ class InputTextTableViewCell: UITableViewCell {
     lazy var textField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
-        textField.placeholder = String(localized: "subject")
+        textField.placeholder = String(localized: "subjectName")
         
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         
