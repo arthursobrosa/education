@@ -8,7 +8,11 @@
 import UIKit
 
 class NewThemeView: UIView {
-    weak var delegate: NewThemeDelegate?
+    weak var delegate: NewThemeDelegate? {
+        didSet {
+            self.delegate?.setTextFieldDelegate(self.textField)
+        }
+    }
     
     private let themeTitleLabel: UILabel = {
         let label = UILabel()

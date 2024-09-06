@@ -10,7 +10,7 @@ import UIKit
 
 class ThemePageViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: ShowingTestPage?
+    weak var coordinator: (ShowingTestPage & Dismissing)?
     let viewModel: ThemePageViewModel
     
     // MARK: - Properties
@@ -67,6 +67,7 @@ class ThemePageViewController: UIViewController {
         
         self.view.backgroundColor = .systemBackground
         
+        self.setNavigationItems()
         self.setupUI()
         
         self.viewModel.tests.bind { [weak self] tests in
@@ -86,6 +87,15 @@ class ThemePageViewController: UIViewController {
     }
     
     // MARK: - Methods
+    private func setNavigationItems() {
+        self.navigationItem.title = self.viewModel.theme.unwrappedName
+        
+        let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(didTapDeleteButton))
+        deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
+        
+        self.navigationItem.rightBarButtonItems = [deleteButton]
+    }
+    
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -96,6 +106,11 @@ class ThemePageViewController: UIViewController {
     
     @objc private func addTestButtonTapped() {
         self.coordinator?.showTestPage(viewModel: self.viewModel)
+    }
+    
+    @objc private func didTapDeleteButton() {
+        self.viewModel.removeTheme()
+        self.coordinator?.dismiss(animated: true)
     }
 }
 

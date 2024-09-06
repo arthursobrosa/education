@@ -189,14 +189,6 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         return footerView
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let theme = self.themes[indexPath.row]
-        
-        if editingStyle == .delete {
-            self.viewModel.removeTheme(theme: theme)
-        }
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let theme = self.themes[indexPath.row]
         self.coordinator?.showThemePage(theme: theme)

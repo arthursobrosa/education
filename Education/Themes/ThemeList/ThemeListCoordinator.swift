@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingNewTheme, UINavigationControllerDelegate {
+class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingNewTheme {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -58,6 +58,20 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingNewT
         
         if let themePageViewController = fromViewController as? ThemePageViewController {
             self.childDidFinish(themePageViewController.coordinator as? Coordinator)
+        }
+    }
+}
+
+extension ThemeListCoordinator: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        guard let fromVC = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
+        
+        if navigationController.viewControllers.contains(fromVC) {
+            return
+        }
+        
+        if let themePageVC = fromVC as? ThemePageViewController {
+            self.childDidFinish(themePageVC.coordinator as? Coordinator)
         }
     }
 }

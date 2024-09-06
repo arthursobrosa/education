@@ -5,11 +5,12 @@
 //  Created by Arthur Sobrosa on 06/09/24.
 //
 
-import Foundation
+import UIKit
 
 protocol NewThemeDelegate: AnyObject {
     func didTapCancelButton()
     func didTapContinueButton()
+    func setTextFieldDelegate(_ textField: UITextField)
     func textFieldDidChange(newText: String)
 }
 
@@ -25,6 +26,10 @@ extension NewThemeViewController: NewThemeDelegate {
         self.viewModel.newThemeName = String()
         
         self.coordinator?.dismiss(animated: true)
+    }
+    
+    func setTextFieldDelegate(_ textField: UITextField) {
+        textField.delegate = self
     }
     
     func textFieldDidChange(newText: String) {
