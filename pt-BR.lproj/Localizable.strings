@@ -73,7 +73,7 @@
 "pomodoroSelectionTitle" = "Tempo programado com intervalo";
 "stopwatchSelectionTitle" = "Livre (pare quando quiser)";
 "stopwatchSelectionBold" = "Livre";
-"alarm" = "Alarme";
+"alarm" = "Alarme ao finalizar";
 "showTimeCount" = "Mostrar contagem de tempo";
 "paused" = "Pausado";
 "subjectActivity" = "Atividade de";

@@ -74,7 +74,7 @@
 "pomodoroSelectionTitle" = "Scheduled time with interval";
 "stopwatchSelectionTitle" = "Free (stop when you want)";
 "stopwatchSelectionBold" = "Free";
-"alarm" = "Alarm";
+"alarm" = "Alarm when fineshed";
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
 "subjectActivity" = "Activity";

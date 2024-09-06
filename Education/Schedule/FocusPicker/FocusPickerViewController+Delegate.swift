@@ -9,7 +9,6 @@ import Foundation
 
 protocol FocusPickerDelegate: AnyObject {
     func startButtonTapped()
-    func pomodoroDateChanged(tag: Int, time: Int)
     func dismiss()
     func dismissAll()
 }
@@ -21,17 +20,6 @@ extension FocusPickerViewController: FocusPickerDelegate {
         BlockAppsMonitor.shared.removeShields()
         
         self.coordinator?.showTimer(focusSessionModel: self.viewModel.focusSessionModel)
-    }
-    
-    func pomodoroDateChanged(tag: Int, time: Int) {
-        switch tag {
-            case 0:
-                self.viewModel.selectedWorkTime = time
-            case 1:
-                self.viewModel.selectedRestTime = time
-            default:
-                break
-        }
     }
     
     func dismiss() {

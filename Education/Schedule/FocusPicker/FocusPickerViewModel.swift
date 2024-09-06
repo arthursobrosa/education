@@ -10,12 +10,16 @@ import Foundation
 class FocusPickerViewModel {
     var focusSessionModel: FocusSessionModel
     
-    var selectedHours = Int()
-    var selectedMinutes: Int = 1
+    var selectedTimerHours = Int()
+    var selectedTimerMinutes: Int = 1
     
-    var selectedWorkTime: Int
-    var selectedRestTime: Int
-    var selectedNumberOfLoops: Int
+    var selectedWorkHours = Int()
+    var selectedWorkMinutes: Int = 25
+    
+    var selectedRestHours = Int()
+    var selectedRestMinutes: Int = 5
+    
+    var selectedRepetitions: Int = 2
     
     let hours: [Int] = {
         var hours = [Int]()
@@ -37,29 +41,32 @@ class FocusPickerViewModel {
         return minutes
     }()
     
+    let repetitions: [Int] = {
+        var repetitions = [Int]()
+        
+        for repetition in 1...9 {
+            repetitions.append(repetition)
+        }
+        
+        return repetitions
+    }()
+    
     
     init(focusSessionModel: FocusSessionModel) {
         self.focusSessionModel = focusSessionModel
-        
-        switch self.focusSessionModel.timerCase {
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
-                self.selectedWorkTime = workTime
-                self.selectedRestTime = restTime
-                self.selectedNumberOfLoops = numberOfLoops
-            default:
-                self.selectedWorkTime = Int()
-                self.selectedRestTime = Int()
-                self.selectedNumberOfLoops = Int()
-        }
     }
     
     private func setTimerCase() {
         switch self.focusSessionModel.timerCase {
             case .pomodoro:
-                self.focusSessionModel.timerCase = .pomodoro(workTime: self.selectedWorkTime, restTime: self.selectedRestTime, numberOfLoops: self.selectedNumberOfLoops)
-                self.focusSessionModel.workTime = self.selectedWorkTime
-                self.focusSessionModel.restTime = self.selectedRestTime
-                self.focusSessionModel.numberOfLoops = self.selectedNumberOfLoops
+                let selectedWorkTime = self.selectedWorkHours * 3600 + self.selectedWorkMinutes * 60
+                let selectedRestTime = self.selectedRestHours * 3600 + self.selectedRestMinutes * 60
+                let selectedNumberOfLoops = self.selectedRepetitions + 1
+                
+                self.focusSessionModel.timerCase = .pomodoro(workTime: selectedWorkTime, restTime: selectedRestTime, numberOfLoops: selectedNumberOfLoops)
+                self.focusSessionModel.workTime = selectedWorkTime
+                self.focusSessionModel.restTime = selectedRestTime
+                self.focusSessionModel.numberOfLoops = selectedNumberOfLoops
             default:
                 break
         }
@@ -70,7 +77,7 @@ class FocusPickerViewModel {
         
         switch self.focusSessionModel.timerCase {
             case .timer:
-                totalTime = self.selectedHours * 3600 + self.selectedMinutes * 60
+                totalTime = self.selectedTimerHours * 3600 + self.selectedTimerMinutes * 60
             case .pomodoro(let worktime, _, _):
                 totalTime = worktime
             default:
@@ -84,5 +91,12 @@ class FocusPickerViewModel {
     func setFocusSessionModel() {
         self.setTimerCase()
         self.getTotalTime()
+    }
+    
+    func getHoursAndMinutes(from seconds: Int) -> [Int] {
+        let minutes = seconds / 60 % 60
+        let hours = seconds / 3600
+        
+        return [hours, minutes]
     }
 }
