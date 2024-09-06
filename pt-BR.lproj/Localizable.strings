@@ -8,6 +8,8 @@
 "other" = "Outro";
 "confirm" = "Confirmar";
 "yes" = "Sim";
+"last" = "Último";
+"lastPlural" = "Últimos";
 
 // MARK: - EmptyView
 "emptyDaySchedule" = "Não há nenhum cronograma para esse dia";

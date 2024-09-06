@@ -66,8 +66,8 @@ extension ThemePageView: ViewCodeProtocol {
             
         NSLayoutConstraint.activate([
             picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            picker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            picker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            picker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            picker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             
             chartHostingController.view.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
             chartHostingController.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),

@@ -23,7 +23,7 @@ class ThemeListViewController: UIViewController {
         
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
+        view.tableView.register(ThemeListCell.self, forCellReuseIdentifier: ThemeListCell.identifier)
         
         return view
     }()
@@ -149,9 +149,9 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let theme = self.themes[indexPath.section]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
-        cell.textLabel?.text = theme.name
-        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ThemeListCell.identifier, for: indexPath) as? ThemeListCell else {
+            fatalError("Could not dequeue cell")
+        }
         
         let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
         chevronImageView.tintColor = .label
@@ -162,7 +162,38 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.roundCorners(corners: .allCorners, radius: 18, borderWidth: 2, borderColor: .secondaryLabel)
         
+        let cellContent = self.getCellContent(from: theme)
+        cell.configureContentView(with: cellContent)
+        
         return cell
+    }
+    
+    private func getCellContent(from theme: Theme) -> UIView {
+        let nameLabel = UILabel()
+        nameLabel.text = theme.unwrappedName
+        nameLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
+        nameLabel.textColor = .label
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let test = self.viewModel.getMostRecentTest(from: theme) {
+            let dateLabel = UILabel()
+            dateLabel.text = self.viewModel.getThemeDescription(with: test)
+            dateLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
+            dateLabel.textColor = .secondaryLabel
+            dateLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            let stack = UIStackView()
+            stack.axis = .vertical
+            stack.spacing = 4
+            stack.translatesAutoresizingMaskIntoConstraints = false
+            
+            stack.addArrangedSubview(nameLabel)
+            stack.addArrangedSubview(dateLabel)
+            
+            return stack
+        }
+            
+        return nameLabel
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

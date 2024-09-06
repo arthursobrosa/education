@@ -23,4 +23,8 @@ extension Test {
     var unwrappedThemeID: String {
         return themeID ?? String()
     }
+    
+    var unwrappedDate: Date {
+        return date ?? Date()
+    }
 }

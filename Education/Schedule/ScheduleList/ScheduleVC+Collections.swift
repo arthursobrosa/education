@@ -29,7 +29,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        guard section == 0 else { return .zero }
+        guard collectionView.tag == 1 else { return .zero }
         
         return .init(top: 0, left: 12, bottom: 0, right: 0)
     }
