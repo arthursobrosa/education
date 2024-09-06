@@ -27,10 +27,10 @@ class ScheduleDetailsViewController: UIViewController {
     
     var isPopoverOpen: Bool = false {
         didSet {
-            guard let startTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
-                  let endTimerCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
-                  let startDatePicker = startTimerCell.accessoryView as? UIDatePicker,
-                  let endDatePicker = endTimerCell.accessoryView as? UIDatePicker else { return }
+            guard let startTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
+                  let endTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
+                  let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
+                  let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else { return }
             
             let isEnabled = !isPopoverOpen
             
@@ -135,7 +135,25 @@ class ScheduleDetailsViewController: UIViewController {
         }
     }
     
+    @objc func datePickerEditionBegan(_ sender: UIDatePicker) {
+        guard let startTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
+              let endTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
+              let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
+              let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else { return }
+        
+        startDatePicker.isEnabled = sender.tag == 1
+        endDatePicker.isEnabled = sender.tag == 2
+    }
+    
     @objc func datePickerEditionEnded() {
+        guard let startTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
+              let endTimeCell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
+              let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
+              let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else { return }
+        
+        startDatePicker.isEnabled = true
+        endDatePicker.isEnabled = true
+        
         self.reloadTable()
     }
     
