@@ -15,8 +15,9 @@ struct StudyTimeChartView: View {
             
             VStack{
                 Text(String(localized: "totalTime"))
-                    .bold()
+                    .font(Font.custom(Fonts.darkModeOnMedium, size: 15))
                 Text(viewModel.getTotalAggregatedTime())
+                    .font(Font.custom(Fonts.darkModeOnRegular, size: 14))
             }
             
             
