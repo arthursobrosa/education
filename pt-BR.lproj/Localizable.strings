@@ -10,8 +10,8 @@
 "yes" = "Sim";
 
 // MARK: - EmptyView
-"emptyDaySchedule" = "Não há nenhum cronograma para esse dia";
-"emptyWeekSchedule" = "Não há nenhum cronograma para essa semana";
+"emptyDaySchedule" = "Não há nenhuma atividade para esse dia";
+"emptyWeekSchedule" = "Não há nenhuma atividade para essa semana";
 "emptyStudyTime" = "Nenhuma hora de estudo registrada";
 "emptyTheme" = "Você ainda não registrou nenhuma prova";
 "emptyTest" = "Não há nenhum teste atribuído a essa prova";
@@ -45,10 +45,10 @@
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
 "invalidDateAlertTitle" = "Data inválida";
-"invalidDateAlertMessage1" = "Existe um cronograma para %@ com datas conflitantes";
+"invalidDateAlertMessage1" = "Existe uma atividade para %@ com datas conflitantes";
 "invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
-"noSubjectAlertTitle" = "Cronograma Inválido";
-"noSubjectAlertMessage" = "Você não pode criar um cronograma antes de atribuí-lo a uma matéria";
+"noSubjectAlertTitle" = "Atividade Inválido";
+"noSubjectAlertMessage" = "Você não pode criar uma atividade antes de atribuí-lo a uma matéria";
 "date" = "Data";
 "startDate" = "Início";
 "endDate"= "Fim";
@@ -58,8 +58,8 @@
 "blockApps" = "Bloquear Apps";
 "daily" = "Diário";
 "weekly" = "Semanal";
-"noSubjectTitle" = "Você não pode criar um cronograma";
-"noSubjectMessage" = "Você deve criar uma matéria antes de configurar um cronograma";
+"noSubjectTitle" = "Você não pode criar uma atividade";
+"noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
 "timeIsUp" = "Tempo Acabou!";
 "activityEndCongratulations" = "Parabens, voce chegou ao fim da sua atividade de ";
 "noActivityEndCongratulations" = "Parabens, Voce chegou ao fim da sua atividade 🎉";
@@ -83,6 +83,10 @@
 "timerAlertMessage" = "O seu cronômetro foi finalizado";
 "focusFinish" = "Finalizar";
 "focusRestart" = "Recomeçar";
+"pomodoroFocus" = "Foco";
+"pomodoroInterval" = "Intervalo";
+"pomodoroRepetitions" = "Repetições";
+
 
 // MARK: - Subjects
 "subject" = "Matéria";
@@ -93,7 +97,7 @@
 "studyTimeLastYear" = "Ano";
 "emptySubject" = "matéria";
 "deleteSubjectTitle" = "Excluir matéria";
-"deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades também serão excluídos.";
+"deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades dentro do cronograma também serão excluídos.";
 "subjectCreationTitle" = "Matéria inválida";
 "subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";

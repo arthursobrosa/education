@@ -11,8 +11,8 @@
 
 
 // MARK: - EmptyView
-"emptyDaySchedule" = "There are no schedules for this day";
-"emptyWeekSchedule" = "There are no schedules for this week";
+"emptyDaySchedule" = "There are no activities for this day";
+"emptyWeekSchedule" = "There are no activities for this week";
 "emptyStudyTime" = "No study hours recorded";
 "emptyTheme" = "You haven't recorded any exams yet";
 "emptyTest" = "There are no tests assigned for this exam";
@@ -46,10 +46,10 @@
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";
 "invalidDateAlertTitle" = "Invalid Date";
-"invalidDateAlertMessage1" = "There is an existing schedule at %@ with conflicting dates";
+"invalidDateAlertMessage1" = "There is an existing activity at %@ with conflicting dates";
 "invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date.";
-"noSubjectAlertTitle" = "Invalid Schedule";
-"noSubjectAlertMessage" = "You cannot create a schedule before assigning it to a subject";
+"noSubjectAlertTitle" = "Invalid Activity";
+"noSubjectAlertMessage" = "You cannot create an activity before assigning it to a subject";
 "date" = "Date";
 "startDate" = "Start";
 "endDate"= "End";
@@ -59,8 +59,8 @@
 "blockApps" = "Block Apps";
 "daily" = "Daily";
 "weekly" = "Weekly";
-"noSubjectTitle" = "You cannot create a schedule";
-"noSubjectMessage" = "You have to create a subject before setting a schedule";
+"noSubjectTitle" = "You cannot create an activity";
+"noSubjectMessage" = "You have to create a subject before setting an activity";
 "timeIsUp" = "Time's Up!";
 "activityEndCongratulations" = "Congrats, you've reached the end in your activity of ";
 "noActivityEndCongratulations" = "Congrats, you've reached the end of your activity 🎉";
@@ -74,7 +74,7 @@
 "pomodoroSelectionTitle" = "Scheduled time with interval";
 "stopwatchSelectionTitle" = "Free (stop when you want)";
 "stopwatchSelectionBold" = "Free";
-"alarm" = "Alarm when fineshed";
+"alarm" = "Alarm when finished";
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
 "subjectActivity" = "Activity";
@@ -84,6 +84,9 @@
 "timerAlertMessage" = "Your timer is finished";
 "focusFinish" = "Finish";
 "focusRestart" = "Restart";
+"pomodoroFocus" = "Focus";
+"pomodoroInterval" = "Interval";
+"pomodoroRepetitions" = "Repetitions";
 
 // MARK: - Subjects
 "subject" = "Subject";
@@ -94,7 +97,7 @@
 "studyTimeLastYear" = "Year";
 "emptySubject" = "subject";
 "deleteSubjectTitle" = "Delete subject";
-"deleteSubjectMessage" = "Are you sure you want to delete %@? Its study time and activities will also be deleted.";
+"deleteSubjectMessage" = "Are you sure you want to delete %@? Your study time and schedule activities will also be deleted.";
 "subjectCreationTitle" = "Invalid subject";
 "subjectCreationNoName" = "Please, insert a name for your subject.";
 "subjectCreationUsedName" = "There is an existing subject with this name.";
