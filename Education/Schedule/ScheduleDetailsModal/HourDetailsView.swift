@@ -8,10 +8,12 @@
 import UIKit
 
 class HourDetailsView: UIView {
+    
+    
     private let startTime: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 22)
-        lbl.textColor = .white
+        lbl.font = UIFont(name: Fonts.darkModeOnBold, size: 22)
+        lbl.textColor = .label
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -19,8 +21,8 @@ class HourDetailsView: UIView {
     
     private let endTime: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 22)
-        lbl.textColor = .white
+        lbl.font = UIFont(name: Fonts.darkModeOnBold, size: 22)
+        lbl.textColor = .label
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -57,15 +59,17 @@ class HourDetailsView: UIView {
         return imgView
     }()
     
-    init(starTime: String, endTime: String) {
+    init(starTime: String, endTime: String, color: UIColor) {
         super.init(frame: .zero)
         
         self.startTime.text = starTime
         self.endTime.text = endTime
         
+        
         self.setupUI()
         
-        self.backgroundColor = .white.withAlphaComponent(0.15)
+        self.backgroundColor = color.withAlphaComponent(0.6)
+       
         self.layer.cornerRadius = 14
     }
     

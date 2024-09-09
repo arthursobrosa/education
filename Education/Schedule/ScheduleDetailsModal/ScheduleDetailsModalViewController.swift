@@ -44,12 +44,22 @@ class ScheduleDetailsModalViewController: UIViewController {
         
         self.setupUI()
         
-        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
+        if(self.traitCollection.userInterfaceStyle == .light){
+            self.view.backgroundColor = .label.withAlphaComponent(0.2)
+        } else {
+            self.view.backgroundColor = .label.withAlphaComponent(0.1)
+        }
         
         self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
             (self: Self, previousTraitCollection: UITraitCollection) in
             
             self.scheduleModalView.layer.borderColor = UIColor.label.cgColor
+            
+            if(self.traitCollection.userInterfaceStyle == .light){
+                self.view.backgroundColor = .label.withAlphaComponent(0.2)
+            } else {
+                self.view.backgroundColor = .label.withAlphaComponent(0.1)
+            }
         }
     }
 }
@@ -59,8 +69,8 @@ extension ScheduleDetailsModalViewController: ViewCodeProtocol {
         self.view.addSubview(scheduleModalView)
         
         NSLayoutConstraint.activate([
-            scheduleModalView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 385/844),
-            scheduleModalView.widthAnchor.constraint(equalTo: scheduleModalView.heightAnchor, multiplier: 359/385),
+            scheduleModalView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 471/844),
+            scheduleModalView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 360/390),
             scheduleModalView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             scheduleModalView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
