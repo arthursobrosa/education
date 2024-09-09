@@ -52,12 +52,6 @@ class FocusPickerViewController: UIViewController {
         }
         
         self.setupUI()
-        
-        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, previousTraitCollection: UITraitCollection) in
-            
-            self.focusPickerView.layer.borderColor = UIColor.label.cgColor
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
