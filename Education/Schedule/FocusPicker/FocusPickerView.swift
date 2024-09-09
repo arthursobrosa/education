@@ -64,6 +64,15 @@ class FocusPickerView: UIView {
         return bttn
     }()
     
+    lazy var titleTexto: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        return label
+    }()
+    
     init(timerCase: TimerCase) {
         self.timerCase = timerCase
         
@@ -95,6 +104,7 @@ class FocusPickerView: UIView {
 extension FocusPickerView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(backButton)
+        self.addSubview(titleTexto)
         self.addSubview(dateView)
         self.addSubview(settingsTableView)
         self.addSubview(startButton)
@@ -119,6 +129,10 @@ extension FocusPickerView: ViewCodeProtocol {
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
             backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            
+            titleTexto.topAnchor.constraint(equalTo: backButton.topAnchor),
+            titleTexto.bottomAnchor.constraint(equalTo: backButton.bottomAnchor),
+            titleTexto.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: widthMultiplier),
             dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: heightMultiplier),
