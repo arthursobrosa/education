@@ -22,11 +22,24 @@ class InputTextTableViewCell: UITableViewCell {
         textField.placeholder = String(localized: "subjectName")
         
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        let toolbar = self.createToolbar(withTag: 0)
+        textField.inputAccessoryView = toolbar
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
     }()
+    
+    // MARK: - Methods
+    
+    @objc func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
+        switch sender.tag {
+        case 0:
+            self.textField.resignFirstResponder()
+        default:
+            break
+        }
+    }
     
     @objc private func textFieldDidChange() {
         guard let text = self.textField.text else { return }
@@ -46,5 +59,19 @@ extension InputTextTableViewCell: ViewCodeProtocol {
             textField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0),
             textField.heightAnchor.constraint(equalToConstant: 40)
         ])
+    }
+    
+    private func createToolbar(withTag tag: Int) -> UIToolbar {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
+        doneButton.tag = tag
+        
+        toolbar.setItems([flexSpace, doneButton], animated: false)
+        
+        return toolbar
     }
 }
