@@ -42,12 +42,22 @@ class ScheduleNotificationViewController: UIViewController {
         
         self.setupUI()
         
-        self.view.backgroundColor = .systemBackground.withAlphaComponent(0.6)
+        if(self.traitCollection.userInterfaceStyle == .light){
+            self.view.backgroundColor = .label.withAlphaComponent(0.2)
+        } else {
+            self.view.backgroundColor = .label.withAlphaComponent(0.1)
+        }
         
         self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
             (self: Self, previousTraitCollection: UITraitCollection) in
             
             self.scheduleNotificationView.layer.borderColor = UIColor.label.cgColor
+            
+            if(self.traitCollection.userInterfaceStyle == .light){
+                self.view.backgroundColor = .label.withAlphaComponent(0.2)
+            } else {
+                self.view.backgroundColor = .label.withAlphaComponent(0.1)
+            }
         }
     }
 }
@@ -57,8 +67,8 @@ extension ScheduleNotificationViewController: ViewCodeProtocol {
         self.view.addSubview(scheduleNotificationView)
         
         NSLayoutConstraint.activate([
-            scheduleNotificationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 588/844),
-            scheduleNotificationView.widthAnchor.constraint(equalTo: scheduleNotificationView.heightAnchor, multiplier: 359/588),
+            scheduleNotificationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 471/844),
+            scheduleNotificationView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 359/390),
             scheduleNotificationView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             scheduleNotificationView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])

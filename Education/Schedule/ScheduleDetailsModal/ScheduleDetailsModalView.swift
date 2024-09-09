@@ -23,7 +23,7 @@ class ScheduleDetailsModalView: UIView {
         let img = UIImage(systemName: "xmark")
         btn.setImage(img, for: .normal)
         btn.imageView?.contentMode = .scaleAspectFit
-        btn.imageView?.tintColor = .white
+        btn.imageView?.tintColor = .label
         btn.setPreferredSymbolConfiguration(.init(pointSize: 24), forImageIn: .normal)
         
         btn.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
@@ -40,7 +40,7 @@ class ScheduleDetailsModalView: UIView {
         let img = UIImage(systemName: "square.and.pencil")
         btn.setImage(img, for: .normal)
         btn.imageView?.contentMode = .scaleAspectFit
-        btn.imageView?.tintColor = .white
+        btn.imageView?.tintColor = .label
         btn.setPreferredSymbolConfiguration(.init(pointSize: 24), forImageIn: .normal)
         
         btn.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
@@ -52,8 +52,8 @@ class ScheduleDetailsModalView: UIView {
     
     private let nameLabel: UILabel = {
         let lbl = UILabel()
-        lbl.textColor = .white
-        lbl.font = UIFont.boldSystemFont(ofSize: 32)
+        lbl.textColor = .label
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 32)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -61,6 +61,7 @@ class ScheduleDetailsModalView: UIView {
     
     private let dayLabel: UILabel = {
         let lbl = UILabel()
+        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -68,7 +69,7 @@ class ScheduleDetailsModalView: UIView {
     }()
     
     private lazy var hourDetailView: HourDetailsView = {
-        let view = HourDetailsView(starTime: self.startTime, endTime: self.endTime)
+        let view = HourDetailsView(starTime: self.startTime, endTime: self.endTime, color: self.color!)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -77,17 +78,20 @@ class ScheduleDetailsModalView: UIView {
     private lazy var startButton: UIButton = {
         let btn = UIButton()
         btn.layer.cornerRadius = 25
-        btn.backgroundColor = .black.withAlphaComponent(0.25)
+        btn.backgroundColor = .label
         
         let attributedString = NSMutableAttributedString(string: "")
         
         let imageAttachment = NSTextAttachment()
         let img = UIImage(systemName: "play.fill")
-        imageAttachment.image = img?.withTintColor(.white)
+        imageAttachment.image = img?.withTintColor(.systemBackground)
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 19, height: 19)
         let imageString = NSAttributedString(attachment: imageAttachment)
         
-        let startString = NSAttributedString(string: String(localized: "startButton"), attributes: [.foregroundColor : UIColor.white])
+        let startString = NSAttributedString(string: String(localized: "startButton"), attributes: [
+                .foregroundColor: UIColor.systemBackground,
+                .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 16) ?? UIFont.systemFont(ofSize: 16)
+            ])
         
         attributedString.append(startString)
         attributedString.append(NSAttributedString(string: "  "))
@@ -110,8 +114,8 @@ class ScheduleDetailsModalView: UIView {
         
         super.init(frame: .zero)
         
-        self.backgroundColor = color
-        self.startButton.backgroundColor = color?.darker(by: 0.6)
+        self.backgroundColor = .systemBackground
+//        self.startButton.backgroundColor = color?.darker(by: 0.6)
         
         self.nameLabel.text = subjectName
         
@@ -119,8 +123,8 @@ class ScheduleDetailsModalView: UIView {
         self.setupUI()
         
         self.layer.cornerRadius = 14
-        self.layer.borderWidth = 1.5
-        self.layer.borderColor = UIColor.label.cgColor
+//        self.layer.borderWidth = 1.5
+//        self.layer.borderColor = UIColor.label.cgColor
     }
     
     required init?(coder: NSCoder) {
@@ -131,11 +135,11 @@ class ScheduleDetailsModalView: UIView {
         let attributedString = NSMutableAttributedString()
         
         let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(.white)
+        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(.label)
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 22, height: 22)
         let imageString = NSAttributedString(attachment: imageAttachment)
         
-        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont.systemFont(ofSize: 22), .foregroundColor: UIColor.white])
+        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont.systemFont(ofSize: 22), .foregroundColor: UIColor.label])
         
         attributedString.append(imageString)
         attributedString.append(NSAttributedString(string: "  "))
@@ -178,15 +182,15 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
             nameLabel.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: padding),
             nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            dayLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: padding),
+            dayLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: padding * 2),
             dayLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             
-            hourDetailView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: padding),
+            hourDetailView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: padding * 1.5),
             hourDetailView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             hourDetailView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 102/385),
-            hourDetailView.widthAnchor.constraint(equalTo: hourDetailView.heightAnchor, multiplier: 321/102),
+            hourDetailView.widthAnchor.constraint(equalTo: hourDetailView.heightAnchor, multiplier: 250/102),
             
-            startButton.topAnchor.constraint(equalTo: hourDetailView.bottomAnchor, constant: padding * 2),
+            startButton.topAnchor.constraint(equalTo: hourDetailView.bottomAnchor, constant: padding * 2.5),
             startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             startButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 52/385),
             startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 321/385),

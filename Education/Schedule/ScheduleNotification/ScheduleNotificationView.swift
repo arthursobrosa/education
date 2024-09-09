@@ -21,8 +21,8 @@ class ScheduleNotificationView: UIView {
         let attributedString = NSMutableAttributedString(string: "")
         let imageAttachment = NSTextAttachment()
         
-        lbl.font = UIFont.systemFont(ofSize: 22)
-        imageAttachment.image = UIImage(systemName: "clock.badge.checkmark")?.withTintColor(.white)
+        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 22)
+        imageAttachment.image = UIImage(systemName: "clock.badge.checkmark")?.withTintColor(.label)
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 52, height: 47)
         
         let imageString = NSAttributedString(attachment: imageAttachment)
@@ -39,7 +39,7 @@ class ScheduleNotificationView: UIView {
         
         let lbl = UILabel()
         lbl.text = "Está na hora da sua atividade"
-        lbl.font = UIFont.systemFont(ofSize: 17)
+        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 17)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -47,14 +47,14 @@ class ScheduleNotificationView: UIView {
     
     private lazy var scheduleNotificationCardView: ScheduleNotificationNameCard = {
         
-        let view = ScheduleNotificationNameCard(starTime: self.startTime, endTime: self.endTime, subjectName: self.subjectName)
+        let view = ScheduleNotificationNameCard(starTime: self.startTime, endTime: self.endTime, subjectName: self.subjectName, color: self.color ?? UIColor(named: "defaultColor")!)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
     
     private lazy var startButton: UIButton = {
-        let btn = ActionButton(title: "Iniciar agora", titleColor: color?.darker(by: 0.5))
+        let btn = ButtonComponent(title: "Iniciar agora", textColor: .systemBackground)
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -67,6 +67,7 @@ class ScheduleNotificationView: UIView {
         let btn = UIButton()
         btn.setTitle("Adiar", for: .normal)
         btn.setTitleColor(color?.darker(by: 0.5), for: .normal)
+        btn.titleLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? UIFont.systemFont(ofSize: 16)
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -85,10 +86,10 @@ class ScheduleNotificationView: UIView {
         
         self.setupUI()
         
-        self.backgroundColor = color
+        self.backgroundColor = .systemBackground
         self.layer.cornerRadius = 14
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.label.cgColor
+//        self.layer.borderWidth = 1
+//        self.layer.borderColor = UIColor.label.cgColor
     }
     
     required init?(coder: NSCoder) {
@@ -115,7 +116,7 @@ extension ScheduleNotificationView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            clockLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding * 3),
+            clockLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding * 1.5),
             clockLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             warningLabel.topAnchor.constraint(equalTo: clockLabel.bottomAnchor, constant: padding),
@@ -123,12 +124,12 @@ extension ScheduleNotificationView: ViewCodeProtocol {
             
             scheduleNotificationCardView.topAnchor.constraint(equalTo: warningLabel.bottomAnchor, constant: padding),
             scheduleNotificationCardView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            scheduleNotificationCardView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 219/588),
-            scheduleNotificationCardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 342/359),
+            scheduleNotificationCardView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 250/588),
+            scheduleNotificationCardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 310/359),
             
-            startButton.topAnchor.constraint(equalTo: scheduleNotificationCardView.bottomAnchor, constant: padding * 3),
+            startButton.topAnchor.constraint(equalTo: scheduleNotificationCardView.bottomAnchor, constant: padding ),
             startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            startButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 40/385),
+            startButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 45/385),
             startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 320/385),
             
             delayButton.topAnchor.constraint(equalTo: startButton.bottomAnchor, constant: padding * 0.5),
