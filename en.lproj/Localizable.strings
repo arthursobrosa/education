@@ -74,7 +74,7 @@
 "pomodoroSelectionTitle" = "Scheduled time with interval";
 "stopwatchSelectionTitle" = "Free (stop when you want)";
 "stopwatchSelectionBold" = "Free";
-"alarm" = "Alarm when fineshed";
+"alarm" = "Alarm when finished";
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
 "subjectActivity" = "Activity";
@@ -84,6 +84,9 @@
 "timerAlertMessage" = "Your timer is finished";
 "focusFinish" = "Finish";
 "focusRestart" = "Restart";
+"pomodoroFocus" = "Focus"
+"pomodoroInterval" = "Interval"
+"pomodoroRepetitions" = "Repetitions"
 
 // MARK: - Subjects
 "subject" = "Subject";

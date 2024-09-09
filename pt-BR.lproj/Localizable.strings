@@ -83,6 +83,10 @@
 "timerAlertMessage" = "O seu cronômetro foi finalizado";
 "focusFinish" = "Finalizar";
 "focusRestart" = "Recomeçar";
+"pomodoroFocus" = "Foco"
+"pomodoroInterval" = "Intervalo"
+"pomodoroRepetitions" = "Repetições"
+
 
 // MARK: - Subjects
 "subject" = "Matéria";
