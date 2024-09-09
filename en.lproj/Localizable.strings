@@ -84,9 +84,9 @@
 "timerAlertMessage" = "Your timer is finished";
 "focusFinish" = "Finish";
 "focusRestart" = "Restart";
-"pomodoroFocus" = "Focus"
-"pomodoroInterval" = "Interval"
-"pomodoroRepetitions" = "Repetitions"
+"pomodoroFocus" = "Focus";
+"pomodoroInterval" = "Interval";
+"pomodoroRepetitions" = "Repetitions";
 
 // MARK: - Subjects
 "subject" = "Subject";
