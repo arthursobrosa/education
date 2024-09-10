@@ -15,8 +15,8 @@ class OtherSubjectView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele."
-//        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.text = String(localized: "deleteOtherBodyText")
+        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         label.textAlignment = .center
         label.textColor = .label
         label.numberOfLines = 0
@@ -25,7 +25,7 @@ class OtherSubjectView: UIView {
     }()
     
     private lazy var deleteButton: ButtonComponent = {
-        let button = ButtonComponent(title: "Apagar tempo", textColor: UIColor(named: "redPicker")! )
+        let button = ButtonComponent(title: String(localized: "deleteOther"), textColor: UIColor(named: "redPicker")! )
         button.backgroundColor = .systemGray5
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(deleteTime), for: .touchUpInside)
