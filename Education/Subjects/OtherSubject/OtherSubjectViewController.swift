@@ -17,7 +17,6 @@ class OtherSubjectViewController: UIViewController {
     private lazy var otherSubjectView: OtherSubjectView = {
         let view = OtherSubjectView()
         view.delegate = self
-        // Aqui você pode configurar a view, se necessário
         
         return view
     }()
@@ -66,7 +65,7 @@ protocol OtherSubjectDelegate: AnyObject {
 
 extension OtherSubjectViewController: OtherSubjectDelegate {
     func deleteOtherSubjectTime() {
-        let alert = UIAlertController(title: "Apagar tempo", message: "Você realmente deseja apagar o tempo de estudo?", preferredStyle: .alert)
+        let alert = UIAlertController(title: String(localized: "deleteOther"), message: String(localized: "deleteOtherMessage"), preferredStyle: .alert)
         
         let deleteAction = UIAlertAction(title: String(localized: "confirm"), style: .destructive) { [weak self] _ in
             guard let self = self else { return }
@@ -81,7 +80,6 @@ extension OtherSubjectViewController: OtherSubjectDelegate {
     }
     
     func deleteTime(){
-        print("Deletando tempo")
         self.viewModel.removeSubject(subject: nil)
         self.coordinator?.dismiss(animated: true)
     }

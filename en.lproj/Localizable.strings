@@ -157,3 +157,8 @@
 //MARK: - EMPTY SUBJECTS VIEW
 "create" = "Create Subject";
 "createText" = "Create a subject before starting your schedule";
+
+//MARK: - OTHER SUBJECT
+"deleteOther" = "Erase time";
+"deleteOtherMessage" = "Do you really want to erase your study time?";
+"deleteOtherBodyText" = "This item gathers all the study times you have recorded that are not tied to any particular subject. Although it cannot be deleted, you have the option to erase the study times linked to it.";
