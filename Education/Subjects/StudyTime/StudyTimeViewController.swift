@@ -87,7 +87,8 @@ class StudyTimeViewController: UIViewController {
         
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
+        addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
         addButton.tintColor = .label
         

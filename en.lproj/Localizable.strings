@@ -20,7 +20,7 @@
 "emptyCreateSubject" = "Create new subject";
 
 // MARK: - TabBar
-"scheduleTab" = "Schedule";
+"scheduleTab" = "Studies";
 "subjectTab" = "Subjects";
 "themeTab" = "Exams";
 "settingsTab" = "Settings";
