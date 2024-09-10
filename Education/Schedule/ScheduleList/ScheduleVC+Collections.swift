@@ -35,23 +35,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let isDaily = collectionView.tag == 0
-        
-        var schedule: Schedule?
-        
-        if isDaily {
-            schedule = self.viewModel.schedules[indexPath.row]
-        } else {
-            if !viewModel.tasks[indexPath.section].isEmpty {
-                let task = viewModel.tasks[indexPath.section][indexPath.item]
-
-                self.coordinator?.showScheduleDetailsModal(schedule: task)
-                
-                schedule = task
-            }
-        }
-        
-        guard let schedule else { return }
+        let schedule = self.viewModel.schedules[indexPath.row]
         
         self.coordinator?.showScheduleDetailsModal(schedule: schedule)
     }

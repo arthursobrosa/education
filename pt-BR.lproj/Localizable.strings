@@ -20,7 +20,7 @@
 "emptyCreateSubject" = "Criar nova matéria";
 
 // MARK: - TabBar
-"scheduleTab" = "Cronograma";
+"scheduleTab" = "Estudos";
 "subjectTab" = "Matérias";
 "themeTab" = "Provas";
 "settingsTab" = "Ajustes";
