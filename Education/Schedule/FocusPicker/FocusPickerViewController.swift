@@ -120,9 +120,11 @@ extension FocusPickerViewController: ViewCodeProtocol {
             case .timer:
                 heightMultiplier = 542/844
                 widthMultiplier = 366/542
+                self.focusPickerView.titleTexto.text = String(localized: "timerSelectionBold")
             case .pomodoro:
                 heightMultiplier = 696/844
                 widthMultiplier = 366/696
+                self.focusPickerView.titleTexto.text = String(localized: "pomodoroSelectionTitle")
             default:
                 break
         }

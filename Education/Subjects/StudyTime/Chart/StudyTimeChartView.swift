@@ -11,33 +11,40 @@ struct StudyTimeChartView: View {
     @StateObject var viewModel: StudyTimeViewModel = StudyTimeViewModel()
     
     var body: some View {
-        ZStack{
-            
-            VStack{
-                Text(String(localized: "totalTime"))
-                    .font(Font.custom(Fonts.darkModeOnMedium, size: 15))
-                Text(viewModel.getTotalAggregatedTime())
-                    .font(Font.custom(Fonts.darkModeOnRegular, size: 14))
+        
+        if(viewModel.focusSessions.value.isEmpty){
+            Text(String(localized: "emptyStudyTime"))
+                .font(Font.custom(Fonts.darkModeOnMedium, size: 15))
+        } else {
+            ZStack{
+                
+                VStack{
+                    Text(String(localized: "totalTime"))
+                        .font(Font.custom(Fonts.darkModeOnMedium, size: 15))
+                    Text(viewModel.getTotalAggregatedTime())
+                        .font(Font.custom(Fonts.darkModeOnRegular, size: 14))
+                }
+                
+                
+                Chart(viewModel.aggregatedTimes) { session in
+                    SectorMark(
+                        angle: .value("Time", session.totalTime),
+                        innerRadius: .ratio(0.8),
+                        angularInset: 1.5
+                    )
+                    .cornerRadius(12)
+                    .foregroundStyle(Color(UIColor(named: session.subjectColor) ?? .clear))
+                }
+                .chartLegend(.hidden)
+                .padding()
             }
-            
-            
-            Chart(viewModel.aggregatedTimes) { session in
-                SectorMark(
-                    angle: .value("Time", session.totalTime),
-                    innerRadius: .ratio(0.8),
-                    angularInset: 1.5
-                )
-                .cornerRadius(12)
-                .foregroundStyle(Color(UIColor(named: session.subjectColor) ?? .clear))
+            .onAppear {
+                viewModel.updateAggregatedTimes()
             }
-            .chartLegend(.hidden)
-            .padding()
+            .onChange(of: viewModel.selectedDateRange) { _, _ in
+                viewModel.updateAggregatedTimes()
+            }
         }
-        .onAppear {
-            viewModel.updateAggregatedTimes()
-        }
-        .onChange(of: viewModel.selectedDateRange) { _, _ in
-            viewModel.updateAggregatedTimes()
-        }
+       
     }
 }

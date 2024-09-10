@@ -47,11 +47,11 @@ class PomodoroDateView: UIView {
         var name: String {
             switch self {
                 case .work:
-                    return "Foco"
+                    return String(localized: "pomodoroFocus")
                 case .rest:
-                    return "Intervalo"
+                    return String(localized: "pomodoroInterval")
                 case .repetition:
-                    return "Repetições"
+                    return String(localized: "pomodoroRepetitions")
             }
         }
     }

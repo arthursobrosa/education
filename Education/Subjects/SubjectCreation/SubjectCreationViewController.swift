@@ -56,6 +56,9 @@ class SubjectCreationViewController: UIViewController{
         
         if(self.viewModel.currentEditingSubject != nil){
             self.navigationItem.title = String(localized: "editSubject")
+            let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(deleteSubject))
+            deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
+            navigationItem.rightBarButtonItem = deleteButton
             
         } else {
             self.navigationItem.title = String(localized: "newSubject")
@@ -69,6 +72,31 @@ class SubjectCreationViewController: UIViewController{
             
             self.reloadTable()
         }
+    }
+    
+    @objc func deleteSubject(){
+       showDeleteAlert(for: self.viewModel.currentEditingSubject!)
+    }
+    
+    private func showDeleteAlert(for subject: Subject) {
+        let title = String(localized: "deleteSubjectTitle")
+        
+        let message = String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subject.unwrappedName)
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let confirmTitle = String(localized: "confirm")
+        let cancelTitle = String(localized: "cancel")
+        
+        let deleteAction = UIAlertAction(title: confirmTitle, style: .destructive) { _ in
+            self.viewModel.removeSubject(subject: subject)
+            self.coordinator?.dismiss(animated: true)
+        }
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Methods
