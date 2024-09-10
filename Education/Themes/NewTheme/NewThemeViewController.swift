@@ -20,6 +20,8 @@ class NewThemeViewController: UIViewController {
         return view
     }()
     
+    private var centerYConstraint: NSLayoutConstraint!
+    
     init(viewModel: ThemeListViewModel) {
         self.viewModel = viewModel
         
@@ -52,6 +54,28 @@ class NewThemeViewController: UIViewController {
         }
         
         self.setupUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardChangedFirstResponder(notification: Notification) {
+        guard let info = notification.userInfo else { return }
+        
+        let offset = self.view.bounds.height * (40/844)
+        
+        switch notification.name {
+            case UIResponder.keyboardWillShowNotification:
+                self.centerYConstraint.constant = -offset
+            case UIResponder.keyboardWillHideNotification:
+                self.centerYConstraint.constant += offset
+            default:
+                break
+        }
+        
+        let duration: TimeInterval = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+                
+        UIView.animate(withDuration: duration) { self.view.layoutIfNeeded() }
     }
 }
 
@@ -62,8 +86,18 @@ extension NewThemeViewController: ViewCodeProtocol {
         NSLayoutConstraint.activate([
             newThemeView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 366/390),
             newThemeView.heightAnchor.constraint(equalTo: newThemeView.widthAnchor, multiplier: 228/366),
-            newThemeView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            newThemeView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            newThemeView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
+        
+        self.centerYConstraint = newThemeView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        self.centerYConstraint.isActive = true
+    }
+}
+
+extension NewThemeViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
     }
 }

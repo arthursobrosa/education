@@ -18,7 +18,7 @@ extension ThemePageViewController: ThemePageDelegate {
         let selectedLimit = String(self.viewModel.selectedLimit)
         
         for (index, limit) in limits.enumerated() {
-            let action = UIAction(title: limit) { _ in
+            let action = UIAction(title: "\(String(localized: "lastPlural")) \(limit)") { _ in
                 self.viewModel.selectedLimit = self.viewModel.limits[index]
             }
             

@@ -101,10 +101,6 @@ class SubjectCreationViewController: UIViewController{
     
     // MARK: - Methods
     private func setNavigationItems() {
-//        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(saveSubject))
-//        doneButton.tintColor = .label
-//        navigationItem.rightBarButtonItem = doneButton
-        
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
         
         cancelButton.setTitleTextAttributes([
