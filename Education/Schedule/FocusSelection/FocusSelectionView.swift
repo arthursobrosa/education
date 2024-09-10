@@ -121,7 +121,7 @@ class FocusSelectionView: UIView {
     
     // MARK: - Auxiliar methods
     private func changeButtonColors(_ button: UIButton, isSelected: Bool) {
-        let color: UIColor = isSelected ? .label : .secondaryLabel
+        let color: UIColor = isSelected ? .label : .systemGray6
         button.layer.borderColor = color.cgColor
         
         continueButton.backgroundColor = .label
