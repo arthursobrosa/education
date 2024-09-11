@@ -12,34 +12,26 @@ class ThemePageView: UIView {
     // MARK: - Delegate
     weak var delegate: ThemePageDelegate? {
         didSet {
-            delegate?.setLimitsPicker(self.picker)
+            delegate?.setSegmentedControl(self.segmentedControl)
         }
     }
     
     // MARK: - UI Components
-    private let picker: UISegmentedControl = {
-        let picker = UISegmentedControl()
+    private let segmentedControl: UISegmentedControl = {
+        let control = UISegmentedControl()
         
-        picker.translatesAutoresizingMaskIntoConstraints = false
+        control.translatesAutoresizingMaskIntoConstraints = false
         
-        return picker
+        return control
     }()
     
-    var chartHostingController: UIHostingController<ChartView>? {
+    var customChart: CustomChart? {
         didSet {
-            chartHostingController?.view.translatesAutoresizingMaskIntoConstraints = false
             self.setupUI()
         }
     }
     
-    let testsTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.backgroundColor = .systemBackground
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return tableView
-    }()
+    var tableView: CustomTableView?
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -56,28 +48,30 @@ class ThemePageView: UIView {
 // MARK: - UI Setup
 extension ThemePageView: ViewCodeProtocol {
     func setupUI() {
-        guard let chartHostingController else { return }
+        guard let customChart,
+              let tableView else { return }
         
-        self.addSubview(picker)
-        self.addSubview(chartHostingController.view)
-        self.addSubview(testsTableView)
+        customChart.translatesAutoresizingMaskIntoConstraints = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
-        let padding = 20.0
+        self.addSubview(segmentedControl)
+        self.addSubview(customChart)
+        self.addSubview(tableView)
             
         NSLayoutConstraint.activate([
-            picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            picker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            picker.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            segmentedControl.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
+            segmentedControl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            segmentedControl.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             
-            chartHostingController.view.topAnchor.constraint(equalTo: picker.bottomAnchor, constant: padding),
-            chartHostingController.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            chartHostingController.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            chartHostingController.view.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),
+            customChart.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 40),
+            customChart.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
+            customChart.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
+            customChart.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 167/844),
             
-            testsTableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: padding / 2),
-            testsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            testsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            testsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: customChart.bottomAnchor, constant: 26),
+            tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }

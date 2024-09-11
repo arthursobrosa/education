@@ -20,7 +20,6 @@ class ScheduleDetailsViewController: UIViewController {
         
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.tableView.register(ScheduleDetailsCell.self, forCellReuseIdentifier: ScheduleDetailsCell.identifier)
         
         return view
     }()
@@ -180,14 +179,15 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleDetailsCell.identifier, for: indexPath) as? ScheduleDetailsCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableCell.identifier, for: indexPath) as? CustomTableCell else {
             fatalError("Could not dequeue cell")
         }
         
         cell.textLabel?.text = self.createCellTitle(for: indexPath)
         cell.accessoryView = self.createAccessoryView(for: indexPath)
         
-        cell.indexPath = indexPath
+        cell.row = indexPath.row
+        cell.numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
         
         return cell
     }

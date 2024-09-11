@@ -14,8 +14,6 @@ class ThemePageViewController: UIViewController {
     let viewModel: ThemePageViewModel
     
     // MARK: - Properties
-    private var tests = [Test]()
-    
     private var contentView: UIView = {
         let view = UIView()
         
@@ -28,13 +26,6 @@ class ThemePageViewController: UIViewController {
         let themeView = ThemePageView()
         
         themeView.delegate = self
-        
-        let chartView = ChartView(viewModel: self.viewModel)
-        themeView.chartHostingController = UIHostingController(rootView: chartView)
-        
-        themeView.testsTableView.delegate = self
-        themeView.testsTableView.dataSource = self
-        themeView.testsTableView.register(TestTableViewCell.self, forCellReuseIdentifier: TestTableViewCell.identifier)
         
         themeView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -67,9 +58,6 @@ class ThemePageViewController: UIViewController {
             guard let self else { return }
             
             self.setContentView(isEmpty: tests.isEmpty)
-            
-            self.tests = tests.sorted { $0.date! > $1.date! }
-            self.reloadTable()
         }
     }
     
@@ -104,52 +92,60 @@ class ThemePageViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [deleteItem, addItem]
     }
     
-    private func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            
-            self.themePageView.testsTableView.reloadData()
-        }
-    }
-    
     @objc private func addTestButtonTapped() {
-        self.coordinator?.showTestPage(viewModel: self.viewModel)
+        self.coordinator?.showTestPage(theme: self.viewModel.theme)
     }
     
     @objc private func didTapDeleteButton() {
         self.viewModel.removeTheme()
         self.coordinator?.dismiss(animated: true)
     }
+    
+    func setChart() {
+        self.themePageView.customChart = CustomChart(limit: self.viewModel.selectedLimit)
+        let limitedItems = self.viewModel.getLimitedItems()
+        self.themePageView.customChart?.setData(limitedItems, sorter: \.date, mapTo: \.percentage)
+    }
+    
+    func setTable() {
+        self.themePageView.tableView = CustomTableView()
+        self.themePageView.tableView?.delegate = self
+        self.themePageView.tableView?.dataSource = self
+    }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tests.count
+        return self.viewModel.tests.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let test = self.tests[indexPath.row]
+        let test = self.viewModel.tests.value[indexPath.row]
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TestTableViewCell.identifier, for: indexPath) as? TestTableViewCell else {
-            return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableCell.identifier, for: indexPath) as? CustomTableCell else {
+            fatalError("Could not dequeue cell")
         }
         
-        cell.test = test
+        cell.textLabel?.text = self.viewModel.getDateString(from: test)
+        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
+        
+        let label = UILabel()
+        label.text = self.viewModel.getQuestionsString(from: test)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.textColor = .secondaryLabel
+        label.sizeToFit()
+        
+        cell.accessoryView = label
+        
+        cell.row = indexPath.row
+        cell.numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let test = self.tests[indexPath.row]
-        
-        if editingStyle == .delete {
-            self.viewModel.removeTest(test)
-        }
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let _ = self.tests[indexPath.row]
+        let _ = self.viewModel.tests.value[indexPath.row]
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -170,8 +166,18 @@ extension ThemePageViewController: ViewCodeProtocol {
     }
     
     private func setContentView(isEmpty: Bool) {
-        self.view.removeConstraints(self.emptyView.constraints)
-        self.view.removeConstraints(self.themePageView.constraints)
+        self.contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        self.themePageView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        if !isEmpty {
+            self.setTable()
+            self.setChart()
+        }
         
         self.addContentSubview(isEmpty ? self.emptyView : self.themePageView)
     }

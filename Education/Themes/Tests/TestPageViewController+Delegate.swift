@@ -29,6 +29,6 @@ extension TestPageViewController: TestDelegate {
             totalQuestions: totalQuestions
         )
         
-        self.dismiss(animated: true)
+        self.coordinator?.dismiss(animated: true)
     }
 }

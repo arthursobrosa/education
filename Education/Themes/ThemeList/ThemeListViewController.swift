@@ -221,7 +221,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let theme = self.themes[indexPath.row]
+        let theme = self.themes[indexPath.section]
         self.coordinator?.showThemePage(theme: theme)
         
         tableView.deselectRow(at: indexPath, animated: true)

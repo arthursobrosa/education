@@ -8,8 +8,9 @@
 import UIKit
 
 class TestPageViewController: UIViewController {
-    // MARK: - ViewModel
-    let viewModel: ThemePageViewModel
+    // MARK: - Coordinator and ViewModel
+    weak var coordinator: Dismissing?
+    let viewModel: TestPageViewModel
     
     // MARK: - Properties
     private lazy var themeRightQuestionsView: TestPageView = {
@@ -19,8 +20,9 @@ class TestPageViewController: UIViewController {
     }()
     
     // MARK: - Initialization
-    init(viewModel: ThemePageViewModel) {
+    init(viewModel: TestPageViewModel) {
         self.viewModel = viewModel
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -29,8 +31,16 @@ class TestPageViewController: UIViewController {
     }
     
     // MARK: - View Lifecycle
+    override func loadView() {
+        super.loadView()
+        
+        self.view = self.themeRightQuestionsView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.setNavigationItems()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -43,12 +53,11 @@ class TestPageViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    override func loadView() {
-        super.loadView()
-        self.view = self.themeRightQuestionsView
+    // MARK: - Methods
+    private func setNavigationItems() {
+        self.navigationItem.title = String(localized: "newTest")
     }
     
-    // MARK: - Methods
     func showWrongQuestionsAlert() {
         let alertController = UIAlertController(title: String(localized: "wrongQuestionsTitle"), message: String(localized: "wrongQuestionsMessage"), preferredStyle: .alert)
         

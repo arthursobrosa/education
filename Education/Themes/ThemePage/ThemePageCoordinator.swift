@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemePageCoordinator: Coordinator, ShowingTestPage, Dismissing {
+class ThemePageCoordinator: NSObject, Coordinator, ShowingTestPage, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -25,14 +25,39 @@ class ThemePageCoordinator: Coordinator, ShowingTestPage, Dismissing {
         self.navigationController.pushViewController(vc, animated: true)
     }
     
-    func showTestPage(viewModel: ThemePageViewModel) {
-        let vc = TestPageViewController(viewModel: viewModel)
-        vc.title = String(localized: "newTest")
-        vc.modalPresentationStyle = .pageSheet
-        self.navigationController.present(UINavigationController(rootViewController: vc), animated: true)
+    func showTestPage(theme: Theme) {
+        let child = TestPageCoordinator(navigationController: self.navigationController, theme: theme)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
+        child.start()
     }
     
     func dismiss(animated: Bool) {
         self.navigationController.popViewController(animated: animated)
+    }
+    
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() {
+            if coordinator === child {
+                self.childCoordinators.remove(at: index)
+                break
+            }
+        }
+    }
+}
+
+extension ThemePageCoordinator: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        guard let nav = dismissed as? UINavigationController else { return nil }
+        
+        if let testPageVC = nav.viewControllers.first as? TestPageViewController {
+            self.childDidFinish(testPageVC.coordinator as? Coordinator)
+            
+            if let themePageVC = self.navigationController.viewControllers.last as? ThemePageViewController {
+                themePageVC.viewModel.fetchTests()
+            }
+        }
+        
+        return nil
     }
 }
