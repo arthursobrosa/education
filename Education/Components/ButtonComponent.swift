@@ -25,6 +25,25 @@ class ButtonComponent: UIButton {
         ])
     }
     
+    init(attrString: NSMutableAttributedString, textColor: UIColor? = .systemBackground) {
+        super.init(frame: .zero)
+        
+        attrString.addAttribute(.font, value: UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? .systemFont(ofSize: 18), range: NSRange(location: 0, length: attrString.length))
+        attrString.addAttribute(.foregroundColor, value: textColor ?? .label, range: NSRange(location: 0, length: attrString.length))
+        
+        self.setAttributedTitle(attrString, for: .normal)
+        self.backgroundColor = .label
+        self.layer.cornerRadius = 30
+        
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.heightAnchor.constraint(equalToConstant: 18),
+            self.widthAnchor.constraint(equalToConstant: 104),
+        ])
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
