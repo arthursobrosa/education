@@ -8,13 +8,9 @@
 import UIKit
 
 class FocusPickerView: UIView {
-    weak var delegate: FocusPickerDelegate? {
-        didSet {
-            dateView.delegate = delegate
-        }
-    }
+    weak var delegate: FocusPickerDelegate?
     
-    private let timerCase: TimerCase?
+    private let timerCase: TimerCase
     
     private lazy var backButton: UIButton = {
         let bttn = UIButton()
@@ -30,8 +26,6 @@ class FocusPickerView: UIView {
     
     lazy var dateView: DateView = {
         let view = DateView(timerCase: self.timerCase)
-        view.pomodoroWorkDatePicker.color = .gray //self.backgroundColor?.darker(by: 0.6)
-        view.pomodoroRestDatePicker.color = .gray //self.backgroundColor?.darker(by: 0.8)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -85,15 +79,22 @@ class FocusPickerView: UIView {
         return bttn
     }()
     
-    init(color: UIColor?, timerCase: TimerCase?) {
+    lazy var titleTexto: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        return label
+    }()
+    
+    init(timerCase: TimerCase) {
         self.timerCase = timerCase
         
         super.init(frame: .zero)
         
         self.backgroundColor = .systemBackground
         self.layer.cornerRadius = 12
-//        self.layer.borderColor = UIColor.label.cgColor
-//        self.layer.borderWidth = 1
         
         self.setupUI()
     }
@@ -118,10 +119,25 @@ class FocusPickerView: UIView {
 extension FocusPickerView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(backButton)
+        self.addSubview(titleTexto)
         self.addSubview(dateView)
         self.addSubview(settingsTableView)
         self.addSubview(startButton)
         self.addSubview(cancelButton)
+        
+        var widthMultiplier = Double()
+        var heightMultiplier = Double()
+        
+        switch self.timerCase {
+            case .timer:
+                widthMultiplier = 170 / 359
+                heightMultiplier = 180 / 170
+            case .pomodoro:
+                widthMultiplier = 302 / 359
+                heightMultiplier = 293 / 302
+            default:
+                break
+        }
         
         let padding = 20.0
         
@@ -129,14 +145,18 @@ extension FocusPickerView: ViewCodeProtocol {
             backButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
             backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             
-            dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (310/359)),
-            dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: (167/310)),
+            titleTexto.topAnchor.constraint(equalTo: backButton.topAnchor),
+            titleTexto.bottomAnchor.constraint(equalTo: backButton.bottomAnchor),
+            titleTexto.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: widthMultiplier),
+            dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: heightMultiplier),
             dateView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             dateView.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: padding),
             
             settingsTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             settingsTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            settingsTableView.heightAnchor.constraint(equalTo: settingsTableView.widthAnchor, multiplier: (161/366)),
+            settingsTableView.heightAnchor.constraint(equalTo: settingsTableView.widthAnchor, multiplier: (168/366)),
             settingsTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             settingsTableView.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: padding),
             

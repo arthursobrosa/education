@@ -46,9 +46,11 @@ class StudyTimeView: UIView {
     let emptyView = EmptyView(message: String(localized: "emptyStudyTime"))
     
     let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.backgroundColor = .systemBackground
-        
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.contentInsetAdjustmentBehavior = .never
+        tableView.sectionHeaderTopPadding = 0
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
@@ -74,25 +76,19 @@ class StudyTimeView: UIView {
 extension StudyTimeView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(viewModeControl)
-        self.addSubview(contentView)
         self.addSubview(tableView)
         
-        let padding = 20.0
+        let padding = 16.0
         
         NSLayoutConstraint.activate([
             viewModeControl.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding / 2),
-            viewModeControl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 4),
-            viewModeControl.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding / 4),
+            viewModeControl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding ),
+            viewModeControl.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding ),
             
-            contentView.topAnchor.constraint(equalTo: viewModeControl.bottomAnchor, constant: padding),
-            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            contentView.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -padding),
-            
-            tableView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.27),
+            tableView.topAnchor.constraint(equalTo: viewModeControl.bottomAnchor, constant: 0),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
         ])
     }
 }

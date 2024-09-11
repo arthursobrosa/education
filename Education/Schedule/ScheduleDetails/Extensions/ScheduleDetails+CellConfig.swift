@@ -107,33 +107,28 @@ extension ScheduleDetailsViewController {
             case 0:
                 if row == 0 {
                     let containerView = self.createAttributedLabel(withText: "\(self.viewModel.selectedDay)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
+                    
                     return containerView
                 }
             
                 let datePicker = UIDatePicker()
+                self.changeDatePickerBackgroundView(datePicker)
                 datePicker.datePickerMode = .time
                 datePicker.date = row == 1 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
                 datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
+                datePicker.addTarget(self, action: #selector(datePickerEditionBegan(_:)), for: .editingDidBegin)
                 datePicker.addTarget(self, action: #selector(datePickerEditionEnded), for: .editingDidEnd)
                 datePicker.tag = row
                 
                 return datePicker
             case 1:
-                if row == 0 {
-                    let toggleSwitch = UISwitch()
-                    toggleSwitch.isOn = self.viewModel.alarmBefore
-                    toggleSwitch.tag = 0
-                    toggleSwitch.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
-                    
-                    return toggleSwitch
-                }
+                let toggle = UISwitch()
+                toggle.isOn = row == 0 ? self.viewModel.alarmBefore : self.viewModel.alarmInTime
+                toggle.tag = row == 0 ? 0 : 1
+                toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
+                toggle.onTintColor = UIColor(named: "bluePicker")
                 
-                let toggleSwitch = UISwitch()
-                toggleSwitch.isOn = self.viewModel.alarmInTime
-                toggleSwitch.tag = 1
-                toggleSwitch.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
-                
-                return toggleSwitch
+                return toggle
             case 2:
                 let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedSubjectName)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
                 
@@ -143,10 +138,24 @@ extension ScheduleDetailsViewController {
                 toggle.isOn = self.viewModel.blocksApps
                 toggle.tag = 2
                 toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .touchUpInside)
+                toggle.onTintColor = UIColor(named: "bluePicker")
                 
                 return toggle
             default:
                 return nil
+        }
+    }
+    
+    private func changeDatePickerBackgroundView(_ datePicker: UIDatePicker) {
+        datePicker.subviews.first?.subviews.forEach { grayView in
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = .systemBackground
+            grayView.insertSubview(view, at: 0)
+            view.topAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.topAnchor).isActive = true
+            view.bottomAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            view.leadingAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.leadingAnchor).isActive = true
+            view.trailingAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.trailingAnchor).isActive = true
         }
     }
 }

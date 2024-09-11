@@ -14,8 +14,11 @@ class ScheduleDetailsView: UIView {
     // MARK: - UI Components
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
-        table.translatesAutoresizingMaskIntoConstraints = false
+        
         table.backgroundColor = .systemBackground
+        
+        table.translatesAutoresizingMaskIntoConstraints = false
+        
         return table
     }()
     

@@ -27,15 +27,13 @@ class ColorPickerCell: UITableViewCell {
         return label
     }()
     
-    private let colorCircleView: UIView = {
-        let view = UIView()
+    private let colorCircleView: RainbowCircle = {
+            let view = RainbowCircle(frame: CGRect(x: 0, y: 0, width: 30, height: 30), lineHeight: 2)
+            view.layer.cornerRadius = 15
         view.layer.masksToBounds = true
-        view.layer.cornerRadius = 10
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,8 +57,66 @@ extension ColorPickerCell: ViewCodeProtocol {
             
             colorCircleView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             colorCircleView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            colorCircleView.widthAnchor.constraint(equalToConstant: 20), // Largura da bolinha
-            colorCircleView.heightAnchor.constraint(equalToConstant: 20), // Altura da bolinha
+            colorCircleView.widthAnchor.constraint(equalToConstant: 30), // Largura da bolinha
+            colorCircleView.heightAnchor.constraint(equalToConstant: 30), // Altura da bolinha
         ])
+    }
+}
+
+class RainbowCircle: UIView {
+
+    private var radius: CGFloat {
+        return frame.width>frame.height ? frame.height/2 : frame.width/2
+    }
+
+    private var stroke: CGFloat = 10
+    private var padding: CGFloat = 0
+
+    //MARK: - Drawing
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        drawRainbowCircle(outerRadius: radius - padding, innerRadius: radius - stroke - padding, resolution: 1)
+    }
+
+    init(frame: CGRect, lineHeight: CGFloat) {
+        super.init(frame: frame)
+        stroke = lineHeight
+    }
+
+    required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+
+    private func drawRainbowCircle(outerRadius: CGFloat, innerRadius: CGFloat, resolution: Float) {
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        context.saveGState()
+        context.translateBy(x: self.bounds.midX, y: self.bounds.midY) //Move context to center
+
+        let subdivisions:CGFloat = CGFloat(resolution * 512) //Max subdivisions of 512
+
+        let innerHeight = (CGFloat.pi*innerRadius)/subdivisions //height of the inner wall for each segment
+        let outterHeight = (CGFloat.pi*outerRadius)/subdivisions
+
+        let segment = UIBezierPath()
+        segment.move(to: CGPoint(x: innerRadius, y: -innerHeight/2))
+        segment.addLine(to: CGPoint(x: innerRadius, y: innerHeight/2))
+        segment.addLine(to: CGPoint(x: outerRadius, y: outterHeight/2))
+        segment.addLine(to: CGPoint(x: outerRadius, y: -outterHeight/2))
+        segment.close()
+
+        //Draw each segment and rotate around the center
+        for i in 0 ..< Int(ceil(subdivisions)) {
+            UIColor(hue: CGFloat(i)/subdivisions, saturation: 1, brightness: 1, alpha: 1).set()
+            segment.fill()
+            //let lineTailSpace = CGFloat.pi*2*outerRadius/subdivisions  //The amount of space between the tails of each segment
+            let lineTailSpace = CGFloat.pi*2*outerRadius/subdivisions
+            segment.lineWidth = lineTailSpace //allows for seemless scaling
+            segment.stroke()
+
+            //Rotate to correct location
+            let rotate = CGAffineTransform(rotationAngle: -(CGFloat.pi*2/subdivisions)) //rotates each segment
+            segment.apply(rotate)
+        }
+
+        context.translateBy(x: -self.bounds.midX, y: -self.bounds.midY) //Move context back to original position
+        context.restoreGState()
     }
 }

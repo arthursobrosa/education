@@ -27,6 +27,7 @@ protocol ScheduleDelegate: AnyObject {
     // MARK: - Schedule Cell
     func getConfiguredScheduleCell(from cell: ScheduleCell, at indexPath: IndexPath, isDaily: Bool) -> UICollectionViewCell
     func getNumberOfItemsIn(_ index: Int) -> Int
+    func didSelectWeeklySchedule(at indexPath: IndexPath)
 }
 
 extension ScheduleViewController: ScheduleDelegate {
@@ -178,5 +179,13 @@ extension ScheduleViewController: ScheduleDelegate {
     
     func getNumberOfItemsIn(_ index: Int) -> Int {
         return self.viewModel.tasks[index].count
+    }
+    
+    func didSelectWeeklySchedule(at indexPath: IndexPath) {
+        if !self.viewModel.tasks[indexPath.section].isEmpty {
+            let task = viewModel.tasks[indexPath.section][indexPath.item]
+            
+            self.coordinator?.showScheduleDetailsModal(schedule: task)
+        }
     }
 }

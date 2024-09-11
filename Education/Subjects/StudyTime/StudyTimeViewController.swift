@@ -27,6 +27,7 @@ class StudyTimeViewController: UIViewController {
         view.tableView.delegate = self
         view.tableView.dataSource = self
         view.tableView.register(SubjectTimeTableViewCell.self, forCellReuseIdentifier: SubjectTimeTableViewCell.identifier)
+        view.tableView.register(StudyTimeChartCell.self, forCellReuseIdentifier: StudyTimeChartCell.identifier)
         
         return view
     }()
@@ -82,10 +83,12 @@ class StudyTimeViewController: UIViewController {
     // MARK: - Methods
     private func setNavigationItems() {
         self.navigationItem.title = String(localized: "subjectTab")
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
         
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 32), forImageIn: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
+        addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
         addButton.tintColor = .label
         
@@ -126,32 +129,75 @@ class StudyTimeViewController: UIViewController {
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.subjects.value.count + 1
+        if section == 0 {
+            return 1
+        } else {
+            return self.viewModel.subjects.value.count + 3
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = indexPath.row
-        let isFixedElement = row == self.viewModel.subjects.value.count
-        let subject: Subject? = isFixedElement ? nil : self.viewModel.subjects.value[indexPath.row]
-        let totalTime = self.viewModel.getTotalTime(forSubject: subject)
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
-            fatalError("Could not dequeue cell")
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: StudyTimeChartCell.identifier, for: indexPath) as! StudyTimeChartCell
+            
+            let chartView = StudyTimeChartView(viewModel: self.viewModel)
+            
+            cell.configure(with: chartView)
+            cell.selectionStyle = .none
+            
+            return cell
+            
+        } else {
+            
+            if indexPath.row >= self.viewModel.subjects.value.count + 1 {
+                let cell = UITableViewCell()
+                cell.backgroundColor = .clear
+                cell.selectionStyle = .none
+                return cell
+            }
+            
+            let row = indexPath.row
+            let isFixedElement = row == self.viewModel.subjects.value.count
+            let subject: Subject? = isFixedElement ? nil : self.viewModel.subjects.value[indexPath.row]
+            let totalTime = self.viewModel.getTotalTime(forSubject: subject)
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
+                fatalError("Could not dequeue cell")
+            }
+            
+            let backgroundView = UIView()
+            backgroundView.backgroundColor = UIColor.clear
+            cell.selectedBackgroundView = backgroundView
+            
+            cell.subject = subject
+            cell.backgroundColor = .clear
+            cell.subjectName.textColor = UIColor(named: subject?.unwrappedColor ?? "sealBackgroundColor")
+            cell.totalHours.textColor = UIColor(named: subject?.unwrappedColor ?? "sealBackgroundColor")
+            cell.totalTime = totalTime
+            
+            return cell
         }
         
-        cell.subject = subject
-        cell.subjectName.textColor = UIColor(named: subject?.unwrappedColor ?? "sealBackgroundColor")
-        cell.totalTime = totalTime
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
+        if indexPath.section == 0 {
+            return 300
+        } else {
+            return 60
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (indexPath.section == 0) {return}
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
@@ -159,7 +205,7 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
             
             self.coordinator?.showOtherSubject(viewModel: self.viewModel)
             return
-            }
+        }
         
         self.viewModel.currentEditingSubject = subject
         self.viewModel.selectedSubjectColor.value = subject.unwrappedColor
@@ -168,51 +214,6 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
-    }
-    
-//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//        return indexPath.row != self.viewModel.subjects.value.count
-//    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            if indexPath.row != self.viewModel.subjects.value.count {
-                let subject = self.viewModel.subjects.value[indexPath.row]
-                showDeleteAlert(for: subject.unwrappedName) { [weak self] in
-                    guard let self = self else { return }
-                    self.viewModel.removeSubject(subject: subject)
-                }
-            } else {
-                showDeleteAlert(for: nil) { [weak self] in
-                    guard let self = self else { return }
-                    self.viewModel.removeSubject(subject: nil)
-                }
-            }
-        }
-    }
-
-    private func showDeleteAlert(for subjectName: String?, deleteAction: @escaping () -> Void) {
-        let title = subjectName == nil ? "Apagar tempo" : String(localized: "deleteSubjectTitle")
-        let message: String
-        if let subjectName = subjectName {
-            message = String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subjectName)
-        } else {
-            message = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele."
-        }
-        
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let confirmTitle = String(localized: "confirm")
-        let cancelTitle = String(localized: "cancel")
-        
-        let deleteAction = UIAlertAction(title: confirmTitle, style: .destructive) { _ in
-            deleteAction()
-        }
-        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
-        
-        alert.addAction(deleteAction)
-        alert.addAction(cancelAction)
-        
-        self.present(alert, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

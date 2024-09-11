@@ -12,8 +12,8 @@ class SelectionButton: UIButton {
     init(title: String, bold: String, color: UIColor?) {
         super.init(frame: .zero)
         
-        self.layer.borderWidth = 0.8
-        self.layer.borderColor =  UIColor.lightGray.cgColor
+        self.layer.borderWidth = 1.4
+        self.layer.borderColor =  UIColor.systemGray6.cgColor
         self.setTitleColor(.label, for: .normal)
         
         let attributedText = self.attributedText(withString: title, boldString: bold, normalFont: UIFont(name: Fonts.darkModeOnRegular, size: 14), boldFont: UIFont(name: Fonts.darkModeOnSemiBold, size: 16))

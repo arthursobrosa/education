@@ -54,6 +54,19 @@ class SubjectCreationViewController: UIViewController{
         
         self.setNavigationItems()
         
+        if(self.viewModel.currentEditingSubject != nil){
+            self.navigationItem.title = String(localized: "editSubject")
+            let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(deleteSubject))
+            deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
+            navigationItem.rightBarButtonItem = deleteButton
+            
+        } else {
+            self.navigationItem.title = String(localized: "newSubject")
+         
+        }
+        
+        self.subjectCreationView.button.addTarget(self, action: #selector(saveSubject), for: .touchUpInside)
+        
         self.viewModel.selectedSubjectColor.bind { [weak self] selectedColor in
             guard let self else { return }
             
@@ -61,14 +74,39 @@ class SubjectCreationViewController: UIViewController{
         }
     }
     
+    @objc func deleteSubject(){
+       showDeleteAlert(for: self.viewModel.currentEditingSubject!)
+    }
+    
+    private func showDeleteAlert(for subject: Subject) {
+        let title = String(localized: "deleteSubjectTitle")
+        
+        let message = String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subject.unwrappedName)
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let confirmTitle = String(localized: "confirm")
+        let cancelTitle = String(localized: "cancel")
+        
+        let deleteAction = UIAlertAction(title: confirmTitle, style: .destructive) { _ in
+            self.viewModel.removeSubject(subject: subject)
+            self.coordinator?.dismiss(animated: true)
+        }
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - Methods
     private func setNavigationItems() {
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(saveSubject))
-        doneButton.tintColor = .label
-        navigationItem.rightBarButtonItem = doneButton
-        
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
-        cancelButton.tintColor = UIColor(named: "FocusSettingsColor")
+        
+        cancelButton.setTitleTextAttributes([
+            NSAttributedString.Key.font : UIFont(name: Fonts.darkModeOnRegular, size: 14)!,
+        ], for: .normal)
+        cancelButton.tintColor = .secondaryLabel
         navigationItem.leftBarButtonItem = cancelButton
     }
     
@@ -214,7 +252,11 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20 // Defina como 0.1 para remover o espaçamento entre as seções
+        return 5 // Defina como 0.1 para remover o espaçamento entre as seções
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -243,17 +285,25 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
                     self.subjectName = currentEditingSubject.unwrappedName
                 }
                 
-                cell.backgroundColor = .systemGray5
-                
+                cell.backgroundColor = .clear
+//                cell.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
+//                cell.layer.borderWidth = 1
+            cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.label.withAlphaComponent(0.2))
+                cell.layer.masksToBounds = true
+                    
                 cell.delegate = self
                 
                 return cell
+            
             default:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: ColorPickerCell.identifier, for: indexPath) as? ColorPickerCell else {
                     fatalError("Could not dequeue cell")
                 }
                 
-                cell.backgroundColor = .systemGray5
+                cell.backgroundColor = .clear
+                cell.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
+                cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.label.withAlphaComponent(0.2))
+                cell.layer.masksToBounds = true
                 
                 cell.color = self.viewModel.selectedSubjectColor.value
                 
@@ -277,3 +327,5 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
+

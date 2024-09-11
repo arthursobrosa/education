@@ -8,17 +8,19 @@
 "other" = "Outro";
 "confirm" = "Confirmar";
 "yes" = "Sim";
+"last" = "Último";
+"lastPlural" = "Últimos";
 
 // MARK: - EmptyView
-"emptyDaySchedule" = "Não há nenhum cronograma para esse dia";
-"emptyWeekSchedule" = "Não há nenhum cronograma para essa semana";
+"emptyDaySchedule" = "Não há nenhuma atividade para esse dia";
+"emptyWeekSchedule" = "Não há nenhuma atividade para essa semana";
 "emptyStudyTime" = "Nenhuma hora de estudo registrada";
 "emptyTheme" = "Você ainda não registrou nenhuma prova";
 "emptyTest" = "Não há nenhum teste atribuído a essa prova";
 "emptyCreateSubject" = "Criar nova matéria";
 
 // MARK: - TabBar
-"scheduleTab" = "Cronograma";
+"scheduleTab" = "Estudos";
 "subjectTab" = "Matérias";
 "themeTab" = "Provas";
 "settingsTab" = "Ajustes";
@@ -45,10 +47,10 @@
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
 "invalidDateAlertTitle" = "Data inválida";
-"invalidDateAlertMessage1" = "Existe um cronograma para %@ com datas conflitantes";
+"invalidDateAlertMessage1" = "Existe uma atividade para %@ com datas conflitantes";
 "invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
-"noSubjectAlertTitle" = "Cronograma Inválido";
-"noSubjectAlertMessage" = "Você não pode criar um cronograma antes de atribuí-lo a uma matéria";
+"noSubjectAlertTitle" = "Atividade Inválido";
+"noSubjectAlertMessage" = "Você não pode criar uma atividade antes de atribuí-lo a uma matéria";
 "date" = "Data";
 "startDate" = "Início";
 "endDate"= "Fim";
@@ -58,8 +60,8 @@
 "blockApps" = "Bloquear Apps";
 "daily" = "Diário";
 "weekly" = "Semanal";
-"noSubjectTitle" = "Você não pode criar um cronograma";
-"noSubjectMessage" = "Você deve criar uma matéria antes de configurar um cronograma";
+"noSubjectTitle" = "Você não pode criar uma atividade";
+"noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
 "timeIsUp" = "Tempo Acabou!";
 "activityEndCongratulations" = "Parabens, voce chegou ao fim da sua atividade de ";
 "noActivityEndCongratulations" = "Parabens, Voce chegou ao fim da sua atividade 🎉";
@@ -83,6 +85,10 @@
 "timerAlertMessage" = "O seu cronômetro foi finalizado";
 "focusFinish" = "Finalizar";
 "focusRestart" = "Recomeçar";
+"pomodoroFocus" = "Foco";
+"pomodoroInterval" = "Intervalo";
+"pomodoroRepetitions" = "Repetições";
+
 
 // MARK: - Subjects
 "subject" = "Matéria";
@@ -93,17 +99,21 @@
 "studyTimeLastYear" = "Ano";
 "emptySubject" = "matéria";
 "deleteSubjectTitle" = "Excluir matéria";
-"deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades também serão excluídos.";
+"deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades dentro do cronograma também serão excluídos.";
 "subjectCreationTitle" = "Matéria inválida";
 "subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";
+"newSubject" = "Nova Matéria";
+"editSubject" = "Editar Matéria";
+"subjectName" = "Nome da Matéria";
 
 // MARK: - Themes
 "themeAlertTitle" = "Adicionar prova";
 "themeAlertMessage" = "Insira o nome da prova:";
 "themeAlertPlaceholder" = "Nome da prova";
 "newTest" = "Novo Teste";
+"newTheme" = "Nova Prova";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
@@ -146,3 +156,9 @@
 //MARK: - EMPTY SUBJECTS VIEW
 "create" = "Criar Matéria";
 "createText" = "Crie uma matéria antes de iniciar seu cronograma";
+
+
+//MARK: - OTHER SUBJECT
+"deleteOther" = "Apagar tempo";
+"deleteOtherMessage" = "Você realmente deseja apagar o tempo de estudo?";
+"deleteOtherBodyText" = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele.";

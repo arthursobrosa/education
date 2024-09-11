@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigationControllerDelegate {
+class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingNewTheme {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -33,6 +33,13 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigatio
         child.start()
     }
     
+    func showNewTheme(viewModel: ThemeListViewModel) {
+        let child = NewThemeCoordinator(navigationController: self.navigationController, viewModel: viewModel)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
+        child.start()
+    }
+    
     func childDidFinish(_ child: Coordinator?) {
         for (index, coordinator) in childCoordinators.enumerated() {
             if coordinator === child {
@@ -52,5 +59,35 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, UINavigatio
         if let themePageViewController = fromViewController as? ThemePageViewController {
             self.childDidFinish(themePageViewController.coordinator as? Coordinator)
         }
+    }
+}
+
+extension ThemeListCoordinator: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        guard let fromVC = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
+        
+        if navigationController.viewControllers.contains(fromVC) {
+            return
+        }
+        
+        if let themePageVC = fromVC as? ThemePageViewController {
+            self.childDidFinish(themePageVC.coordinator as? Coordinator)
+        }
+    }
+}
+
+extension ThemeListCoordinator: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        guard let nav = dismissed as? UINavigationController else { return nil }
+        
+        if let newThemeVC = nav.viewControllers.first as? NewThemeViewController {
+            self.childDidFinish(newThemeVC.coordinator as? Coordinator)
+            
+            if let themeListVC = self.navigationController.viewControllers.first as? ThemeListViewController {
+                themeListVC.reloadTable()
+            }
+        }
+        
+        return nil
     }
 }

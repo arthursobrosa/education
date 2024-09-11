@@ -12,7 +12,7 @@ class ScheduleNotificationNameCard: UIView {
     private let subjectName: UILabel = {
         
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 32)
+        lbl.font = UIFont(name: Fonts.darkModeOnBold, size: 32)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -21,7 +21,7 @@ class ScheduleNotificationNameCard: UIView {
     private let startTime: UILabel = {
         
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 22)
+        lbl.font = UIFont(name: Fonts.darkModeOnBold, size: 22)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -30,7 +30,7 @@ class ScheduleNotificationNameCard: UIView {
     private let endTime: UILabel = {
         
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 22)
+        lbl.font = UIFont(name: Fonts.darkModeOnBold, size: 22)
         lbl.alpha = 0.7
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -49,17 +49,18 @@ class ScheduleNotificationNameCard: UIView {
     }()
     
     
-    init(starTime: String, endTime: String, subjectName: String) {
+    init(starTime: String, endTime: String, subjectName: String, color: UIColor) {
         super.init(frame: .zero)
         
         self.startTime.text = starTime
         self.endTime.text = endTime
         self.subjectName.text = subjectName
         
+        self.backgroundColor = color.withAlphaComponent(0.6)
         
         self.setupUI()
         
-        self.backgroundColor = .black.withAlphaComponent(0.2)
+//        self.backgroundColor = .black.withAlphaComponent(0.2)
         self.layer.cornerRadius = 14
     }
     
@@ -84,7 +85,7 @@ extension ScheduleNotificationNameCard: ViewCodeProtocol {
             bracket.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -padding * 2),
             bracket.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 26),
             
-            subjectName.topAnchor.constraint(equalTo: self.topAnchor, constant: padding * 1.5),
+            subjectName.topAnchor.constraint(equalTo: self.topAnchor, constant: padding * 1),
             subjectName.leadingAnchor.constraint(equalTo: bracket.trailingAnchor, constant: 8),
             
             startTime.centerYAnchor.constraint(equalTo: bracket.topAnchor),

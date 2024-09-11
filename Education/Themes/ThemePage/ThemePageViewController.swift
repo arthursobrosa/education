@@ -10,7 +10,7 @@ import UIKit
 
 class ThemePageViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: ShowingTestPage?
+    weak var coordinator: (ShowingTestPage & Dismissing)?
     let viewModel: ThemePageViewModel
     
     // MARK: - Properties
@@ -41,13 +41,6 @@ class ThemePageViewController: UIViewController {
         return themeView
     }()
     
-    private lazy var addTestButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "addTest"))
-        bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
-        
-        return bttn
-    }()
-    
     private let emptyView = EmptyView(message: String(localized: "emptyTest"))
     
     // MARK: - Initialization
@@ -67,6 +60,7 @@ class ThemePageViewController: UIViewController {
         
         self.view.backgroundColor = .systemBackground
         
+        self.setNavigationItems()
         self.setupUI()
         
         self.viewModel.tests.bind { [weak self] tests in
@@ -86,6 +80,30 @@ class ThemePageViewController: UIViewController {
     }
     
     // MARK: - Methods
+    private func setNavigationItems() {
+        self.navigationItem.title = self.viewModel.theme.unwrappedName
+        
+        let addButton = UIButton()
+        addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
+        addButton.imageView?.contentMode = .scaleAspectFit
+        addButton.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
+        addButton.tintColor = .label
+        
+        let addItem = UIBarButtonItem(customView: addButton)
+        
+        let deleteButton = UIButton()
+        deleteButton.setImage(UIImage(systemName: "trash.fill"), for: .normal)
+        deleteButton.setPreferredSymbolConfiguration(.init(pointSize: 30), forImageIn: .normal)
+        deleteButton.imageView?.contentMode = .scaleAspectFit
+        deleteButton.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
+        deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
+        
+        let deleteItem = UIBarButtonItem(customView: deleteButton)
+        
+        self.navigationItem.rightBarButtonItems = [deleteItem, addItem]
+    }
+    
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -96,6 +114,11 @@ class ThemePageViewController: UIViewController {
     
     @objc private func addTestButtonTapped() {
         self.coordinator?.showTestPage(viewModel: self.viewModel)
+    }
+    
+    @objc private func didTapDeleteButton() {
+        self.viewModel.removeTheme()
+        self.coordinator?.dismiss(animated: true)
     }
 }
 
@@ -135,7 +158,6 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
 extension ThemePageViewController: ViewCodeProtocol {
     func setupUI() {
         self.view.addSubview(contentView)
-        self.view.addSubview(addTestButton)
         
         let padding = 20.0
         
@@ -143,12 +165,7 @@ extension ThemePageViewController: ViewCodeProtocol {
             contentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: addTestButton.topAnchor, constant: -padding),
-            
-            addTestButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: padding),
-            addTestButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -padding),
-            addTestButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            addTestButton.heightAnchor.constraint(equalTo: addTestButton.widthAnchor, multiplier: 0.16)
+            contentView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
         ])
     }
     

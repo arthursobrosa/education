@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemePageCoordinator: Coordinator, ShowingTestPage {
+class ThemePageCoordinator: Coordinator, ShowingTestPage, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -19,9 +19,8 @@ class ThemePageCoordinator: Coordinator, ShowingTestPage {
     }
     
     func start() {
-        let viewModel = ThemePageViewModel(themeID: self.theme.unwrappedID)
+        let viewModel = ThemePageViewModel(theme: self.theme)
         let vc = ThemePageViewController(viewModel: viewModel)
-        vc.title = self.theme.unwrappedName
         vc.coordinator = self
         self.navigationController.pushViewController(vc, animated: true)
     }
@@ -31,5 +30,9 @@ class ThemePageCoordinator: Coordinator, ShowingTestPage {
         vc.title = String(localized: "newTest")
         vc.modalPresentationStyle = .pageSheet
         self.navigationController.present(UINavigationController(rootViewController: vc), animated: true)
+    }
+    
+    func dismiss(animated: Bool) {
+        self.navigationController.popViewController(animated: animated)
     }
 }

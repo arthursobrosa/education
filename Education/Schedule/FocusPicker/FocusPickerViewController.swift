@@ -11,13 +11,13 @@ class FocusPickerViewController: UIViewController {
     weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
     let viewModel: FocusPickerViewModel
     
-    private let color: UIColor?
-    
     private lazy var focusPickerView: FocusPickerView = {
-        let view = FocusPickerView(color: self.color, timerCase: self.viewModel.focusSessionModel.timerCase)
+        let view = FocusPickerView(timerCase: self.viewModel.focusSessionModel.timerCase)
         view.delegate = self
         
-        let subpickers = view.dateView.timerDatePicker.subviews.compactMap { $0 as? UIPickerView }
+        let subviews = view.dateView.timerDatePicker.subviews + view.dateView.pomodoroDateView.workDatePicker.subviews + view.dateView.pomodoroDateView.restDatePicker.subviews
+        var subpickers = subviews.compactMap { $0 as? UIPickerView }
+        subpickers.append(view.dateView.pomodoroDateView.repetitionsPicker)
         for subpicker in subpickers {
             subpicker.dataSource = self
             subpicker.delegate = self
@@ -32,9 +32,8 @@ class FocusPickerViewController: UIViewController {
         return view
     }()
     
-    init(viewModel: FocusPickerViewModel, color: UIColor?) {
+    init(viewModel: FocusPickerViewModel) {
         self.viewModel = viewModel
-        self.color = color
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -53,12 +52,12 @@ class FocusPickerViewController: UIViewController {
         }
         
         self.setupUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, previousTraitCollection: UITraitCollection) in
-            
-            self.focusPickerView.layer.borderColor = UIColor.label.cgColor
-        }
+        self.configurePomodoroPickers()
     }
     
     @objc private func didChangeToggle(_ sender: UISwitch) {
@@ -73,15 +72,66 @@ class FocusPickerViewController: UIViewController {
                 break
         }
     }
+    
+    private func configurePomodoroPickers() {
+        let timerCase = self.viewModel.focusSessionModel.timerCase
+        
+        var workSeconds = Int()
+        var restSeconds = Int()
+        var repetitions = Int()
+        
+        switch timerCase {
+            case .pomodoro(let workTime, let restTime, let numberOfLoops):
+                workSeconds = workTime
+                restSeconds = restTime
+                repetitions = numberOfLoops - 1
+            default:
+                return
+        }
+        
+        var hoursAndMinutes = self.viewModel.getHoursAndMinutes(from: workSeconds)
+        
+        self.selectRow(hoursAndMinutes[0], in: self.focusPickerView.dateView.pomodoroDateView.workDatePicker.hoursPicker)
+        self.selectRow(hoursAndMinutes[1] - 1, in: self.focusPickerView.dateView.pomodoroDateView.workDatePicker.minutesPicker)
+        
+        hoursAndMinutes = self.viewModel.getHoursAndMinutes(from: restSeconds)
+        
+        self.selectRow(hoursAndMinutes[0], in: self.focusPickerView.dateView.pomodoroDateView.restDatePicker.hoursPicker)
+        self.selectRow(hoursAndMinutes[1] - 1, in: self.focusPickerView.dateView.pomodoroDateView.restDatePicker.minutesPicker)
+        
+        self.selectRow(repetitions - 1, in: self.focusPickerView.dateView.pomodoroDateView.repetitionsPicker)
+    }
+    
+    private func selectRow(_ row: Int, in picker: UIPickerView) {
+        picker.selectRow(row, inComponent: 0, animated: false)
+    }
 }
 
 extension FocusPickerViewController: ViewCodeProtocol {
     func setupUI() {
         self.view.addSubview(focusPickerView)
         
+        let timerCase = self.viewModel.focusSessionModel.timerCase
+        
+        var heightMultiplier = Double()
+        var widthMultiplier = Double()
+        
+        switch timerCase {
+            case .timer:
+                heightMultiplier = 542/844
+                widthMultiplier = 366/542
+                self.focusPickerView.titleTexto.text = String(localized: "timerSelectionBold")
+            case .pomodoro:
+                heightMultiplier = 696/844
+                widthMultiplier = 366/696
+                self.focusPickerView.titleTexto.text = String(localized: "pomodoroSelectionTitle")
+            default:
+                break
+        }
+        
         NSLayoutConstraint.activate([
-            focusPickerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: (542/844)),
-            focusPickerView.widthAnchor.constraint(equalTo: focusPickerView.heightAnchor, multiplier: (366/542)),
+            focusPickerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: heightMultiplier),
+            focusPickerView.widthAnchor.constraint(equalTo: focusPickerView.heightAnchor, multiplier: widthMultiplier),
             focusPickerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             focusPickerView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
@@ -123,13 +173,13 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         cell.textLabel?.textColor = .label
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         cell.backgroundColor = .systemBackground
-        cell.roundCorners(corners: .allCorners, radius: 14.0, borderWidth: 1, borderColor: .secondaryLabel)
+        cell.roundCorners(corners: .allCorners, radius: 14.0, borderWidth: 2.5, borderColor: .secondaryLabel)
         
         let toggle = UISwitch()
         toggle.isOn = toggleIsOn
         toggle.tag = section
         toggle.addTarget(self, action: #selector(didChangeToggle(_:)), for: .valueChanged)
-        toggle.onTintColor = UIColor(named: "turquoisePicker")
+        toggle.onTintColor = UIColor(named: "bluePicker")
         
         cell.accessoryView = toggle
         
@@ -172,22 +222,41 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerView.tag == 0 ? self.viewModel.hours.count : self.viewModel.minutes.count
+        switch pickerView.tag {
+            case PickerCase.timerHours, PickerCase.workHours, PickerCase.restHours:
+                return self.viewModel.hours.count
+            case PickerCase.timerMinutes, PickerCase.workMinutes, PickerCase.restMinutes:
+                return self.viewModel.minutes.count
+            case PickerCase.repetitions:
+                return self.viewModel.repetitions.count
+            default:
+                return 0
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let selection = pickerView.tag == 0 ? self.viewModel.hours[row] : self.viewModel.minutes[row]
+        var selection = Int()
+        
+        switch pickerView.tag {
+            case PickerCase.timerHours, PickerCase.workHours, PickerCase.restHours:
+                selection = self.viewModel.hours[row]
+            case PickerCase.timerMinutes, PickerCase.workMinutes, PickerCase.restMinutes:
+                selection = self.viewModel.minutes[row]
+            case PickerCase.repetitions:
+                selection = self.viewModel.repetitions[row]
+            default:
+                break
+        }
+        
         let text = selection < 10 ? "0" + String(selection) : String(selection)
         
-        let unselectedColor = self.color?.darker(by: 0.6)?.withAlphaComponent(0.5)
-        
         let selectedRow = pickerView.selectedRow(inComponent: 0)
-        let color: UIColor? = row == selectedRow ? .white : unselectedColor
+        let color: UIColor? = row == selectedRow ? .label : .secondaryLabel
         
-        let fontSize = row == selectedRow ? 50.0 : 40.0
+        let fontSize = row == selectedRow ? 30.0 : 24.0
         
         let label = UILabel()
-        label.font = .systemFont(ofSize: fontSize, weight: .semibold)
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: fontSize)
         label.text = text
         label.textColor = color
         label.textAlignment = .center
@@ -197,10 +266,20 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView.tag {
-            case 0:
-                self.viewModel.selectedHours = self.viewModel.hours[row]
-            case 1:
-                self.viewModel.selectedMinutes = self.viewModel.minutes[row]
+            case PickerCase.timerHours:
+                self.viewModel.selectedTimerHours = self.viewModel.hours[row]
+            case PickerCase.timerMinutes:
+                self.viewModel.selectedTimerMinutes = self.viewModel.minutes[row]
+            case PickerCase.workHours:
+                self.viewModel.selectedWorkHours = self.viewModel.hours[row]
+            case PickerCase.workMinutes:
+                self.viewModel.selectedWorkMinutes = self.viewModel.minutes[row]
+            case PickerCase.restHours:
+                self.viewModel.selectedRestHours = self.viewModel.hours[row]
+            case PickerCase.restMinutes:
+                self.viewModel.selectedRestMinutes = self.viewModel.minutes[row]
+            case PickerCase.repetitions:
+                self.viewModel.selectedRepetitions = self.viewModel.repetitions[row]
             default:
                 break
         }
@@ -209,6 +288,6 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        50
+        30
     }
 }
