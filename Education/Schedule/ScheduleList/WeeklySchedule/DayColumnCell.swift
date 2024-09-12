@@ -118,7 +118,7 @@ extension DayColumnCell: UICollectionViewDataSource, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width: Double = collectionView.frame.width
-        let height: Double = width * (63/147)
+        let height: Double = width * (63/147) + 20
         
         return CGSize(width: width, height: height)
     }

@@ -48,9 +48,9 @@ class ScheduleCell: UICollectionViewCell {
             
             guard let isDaily else { return }
             
-            self.subjectNameLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: isDaily ? 17 : 14)
+            self.subjectNameLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: isDaily ? 17 : 16)
             
-            self.timeLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: isDaily ? 14 : 10)
+            self.timeLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: isDaily ? 14 : 14)
         }
     }
     
@@ -98,7 +98,7 @@ class ScheduleCell: UICollectionViewCell {
     
     private let timeLabel: UILabel = {
         let lbl = UILabel()
-        
+        lbl.numberOfLines = 0
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -165,7 +165,7 @@ extension ScheduleCell: ViewCodeProtocol {
             timeLabel.leadingAnchor.constraint(equalTo: subjectNameLabel.leadingAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: subjectNameLabel.trailingAnchor),
             
-            playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+//            playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             playButton.heightAnchor.constraint(equalTo: playButton.widthAnchor)
         ])
         
@@ -183,16 +183,20 @@ extension ScheduleCell: ViewCodeProtocol {
                 
                 playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (38/366)),
                 playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -15),
+                playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             ])
         } else {
             NSLayoutConstraint.activate([
-                subjectNameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 8),
-                subjectNameLabel.trailingAnchor.constraint(equalTo: playButton.leadingAnchor, constant: -6),
+                subjectNameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 4),
+                subjectNameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
+                subjectNameLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -6),
                 
                 timeLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -8.5),
+                timeLabel.topAnchor.constraint(equalTo: subjectNameLabel.bottomAnchor, constant: 3),
                 
-                playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (30/147)),
+                playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (37/147)),
                 playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -8),
+                playButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -8.5),
             ])
         }
     }
