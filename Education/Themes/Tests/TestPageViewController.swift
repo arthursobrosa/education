@@ -46,28 +46,24 @@ class TestPageViewController: UIViewController {
         super.viewDidLoad()
         
         self.setNavigationItems()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Remove os observadores ao sair da tela
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Methods
     private func setNavigationItems() {
         self.navigationItem.title = self.viewModel.getTitle()
         
-        let cancelButton = UIBarButtonItem(title: String(localized: "cancel"), style: .plain, target: self, action: #selector(didTapCancelButton))
-        cancelButton.tintColor = .secondaryLabel
+        self.navigationController?.navigationBar.titleTextAttributes = [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
         
-        self.navigationItem.leftBarButtonItems = [cancelButton]
+        let cancelButton = UIButton(configuration: .plain())
+        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.secondaryLabel])
+        cancelButton.setAttributedTitle(cancelAttributedString, for: .normal)
+        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
-        if let test = self.viewModel.test {
+        let cancelItem = UIBarButtonItem(customView: cancelButton)
+        
+        self.navigationItem.leftBarButtonItems = [cancelItem]
+        
+        if let _ = self.viewModel.test {
             let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(didTapDeleteButton))
             deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
             
@@ -76,7 +72,7 @@ class TestPageViewController: UIViewController {
     }
     
     @objc private func didTapCancelButton() {
-        print(#function)
+        self.coordinator?.dismiss(animated: true)
     }
     
     func showWrongQuestionsAlert() {
@@ -85,19 +81,6 @@ class TestPageViewController: UIViewController {
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
-    }
-    
-    // MARK: - Keyboard Handling
-    @objc private func keyboardWillShow(notification: NSNotification) {
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
-        if let keyboardSize = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-            self.view.frame.origin.y = -keyboardSize.height / 2
-        }
-    }
-    
-    @objc private func keyboardWillHide(notification: NSNotification) {
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.label]
-        self.view.frame.origin.y = 0
     }
     
     @objc func textFieldDidChange(_ sender: UITextField) {
