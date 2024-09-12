@@ -15,10 +15,10 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch pickerView.tag {
-            case 2:
-                return self.viewModel.subjectsNames.count
             case 0:
                 return self.viewModel.days.count
+            case 1:
+                return self.viewModel.subjectsNames.count
             default:
                 break
         }
@@ -30,7 +30,7 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         switch pickerView.tag {
             case 0:
                 return self.viewModel.days[row]
-            case 2:
+            case 1:
                 return self.viewModel.subjectsNames[row]
             default:
                 break
@@ -40,23 +40,21 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let tableRow = 0
-        let cell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: tableRow, section: pickerView.tag))
+        let cell = self.scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 0, section: pickerView.tag))
         
         switch pickerView.tag {
             case 0:
                 self.viewModel.selectedDay = self.viewModel.days[row]
             
-                let label = UILabel()
-                label.text = "\(self.viewModel.selectedDay)"
-               
-                let containerView = self.createAttributedLabel(withText: "\(self.viewModel.selectedDay)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel,  textColor: .secondaryLabel)
-                cell?.accessoryView = containerView
-            case 2:
+                let label = self.createLabel(with: self.viewModel.selectedDay)
+     
+                cell?.accessoryView = label
+            case 1:
                 self.viewModel.selectedSubjectName = self.viewModel.subjectsNames[row]
+                
+                let label = self.createLabel(with: self.viewModel.selectedSubjectName)
             
-                let containerView = self.createAttributedLabel(withText: "\(self.viewModel.selectedSubjectName)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel,  textColor: .secondaryLabel)
-                cell?.accessoryView = containerView
+                cell?.accessoryView = label
             default:
                 break
         }

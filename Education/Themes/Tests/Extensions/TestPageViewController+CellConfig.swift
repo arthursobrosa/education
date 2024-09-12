@@ -14,7 +14,7 @@ extension TestPageViewController {
         
         switch section {
             case 0:
-                return String(localized: "date")
+                return String(localized: "testDate")
             case 1:
                 if row == 0 {
                     return String(localized: "totalQuestions")

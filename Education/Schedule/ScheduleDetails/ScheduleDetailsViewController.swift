@@ -60,6 +60,10 @@ class ScheduleDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         self.setNavigationItems()
+        
+        if self.viewModel.schedule == nil {
+            self.scheduleDetailsView.hideDeleteButton()
+        }
     }
     
     // MARK: - Methods
@@ -80,24 +84,6 @@ class ScheduleDetailsViewController: UIViewController {
     
     @objc private func didTapCancelButton() {
         self.coordinator?.dismiss(animated: true)
-    }
-    
-    @objc private func didTapDeleteButton() {
-        let alertController = UIAlertController(title: "Schedule Deletion", message: "Are you sure you want to delete this schedule?", preferredStyle: .alert)
-        
-        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
-            guard let schedule = self.viewModel.schedule else { return }
-            NotificationService.shared.cancelNotifications(forDate: schedule.unwrappedStartTime)
-            self.viewModel.removeSchedule(schedule)
-            self.coordinator?.dismiss(animated: true)
-        }
-        
-        let noAction = UIAlertAction(title: "No", style: .cancel)
-        
-        alertController.addAction(yesAction)
-        alertController.addAction(noAction)
-        
-        self.present(alertController, animated: true)
     }
     
     @objc func datePickerChanged(_ sender: UIDatePicker) {
@@ -175,9 +161,9 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         switch section {
             case 0:
                 return 3
-            case 1:
+            case 2:
                 return 2
-            case 2, 3:
+            case 1, 3:
                 return 1
             default:
                 break
@@ -212,7 +198,7 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                         self.present(popover, animated: true)
                     }
                 }
-            case 2:
+            case 1:
                 if let popover = self.createSubjectPopover(forTableView: tableView, at: indexPath) {
                     self.isPopoverOpen.toggle()
                     self.present(popover, animated: true)

@@ -8,6 +8,7 @@
 "other" = "Other";
 "confirm" = "Confirm";
 "yes" = "Yes";
+"no" = "No";
 "last" = "Last";
 "lastPlural" = "Last";
 
@@ -51,9 +52,9 @@
 "invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date.";
 "noSubjectAlertTitle" = "Invalid Activity";
 "noSubjectAlertMessage" = "You cannot create an activity before assigning it to a subject";
-"date" = "Date";
-"startDate" = "Start";
-"endDate"= "End";
+"dayOfWeek" = "Day of the week";
+"startDate" = "Starts";
+"endDate"= "Ends";
 "alarm5Min" = "Alert 5 min. before start time";
 "alarmAtTime" = "Alert at start time";
 "subject" = "Subject";
@@ -66,6 +67,8 @@
 "activityEndCongratulations" = "Congrats, you've reached the end in your activity of ";
 "noActivityEndCongratulations" = "Congrats, you've reached the end of your activity 🎉";
 "confirmActivityEnd" = "Do you want to finish your activity now?";
+"activityDeletionTitle" = "Acitivity deletion";
+"activityDeletionMessage" = "Are you sure you want to delete this schedule?";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
@@ -88,6 +91,7 @@
 "pomodoroFocus" = "Focus";
 "pomodoroInterval" = "Interval";
 "pomodoroRepetitions" = "Repetitions";
+"deleteActivity" = "Delete activity";
 
 // MARK: - Subjects
 "subject" = "Subject";
@@ -117,9 +121,9 @@
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
 "wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
+"testDate" = "Date";
 "rightQuestions" = "Right Questions";
 "totalQuestions" = "Total Questions";
-"themeTableDetail" = "Detail";
 
 // MARK: - Settings
 "deactivateTitle" = "Deactivate on your phone!";

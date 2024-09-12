@@ -8,6 +8,7 @@
 "other" = "Outro";
 "confirm" = "Confirmar";
 "yes" = "Sim";
+"no" = "Não";
 "last" = "Último";
 "lastPlural" = "Últimos";
 
@@ -51,12 +52,12 @@
 "invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
 "noSubjectAlertTitle" = "Atividade Inválido";
 "noSubjectAlertMessage" = "Você não pode criar uma atividade antes de atribuí-lo a uma matéria";
-"date" = "Data";
-"startDate" = "Início";
-"endDate"= "Fim";
+"dayOfWeek" = "Dia da semana";
+"startDate" = "Começa";
+"endDate"= "Termina";
 "alarm5Min" = "Alerta 5 min. antes de iniciar";
 "alarmAtTime" = "Alerta ao iniciar";
-"subject" = "Matéria";
+"subject" = "Disciplina";
 "blockApps" = "Bloquear Apps";
 "daily" = "Diário";
 "weekly" = "Semanal";
@@ -66,6 +67,8 @@
 "activityEndCongratulations" = "Parabens, voce chegou ao fim da sua atividade de ";
 "noActivityEndCongratulations" = "Parabens, Voce chegou ao fim da sua atividade 🎉";
 "confirmActivityEnd" = "Tem certeza que deseja finalizar a sua atividade agora?";
+"activityDeletionTitle" = "Deleção de atividade";
+"activityDeletionMessage" = "Você tem certeza que deseja excluir essa atividade?";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
@@ -88,6 +91,7 @@
 "pomodoroFocus" = "Foco";
 "pomodoroInterval" = "Intervalo";
 "pomodoroRepetitions" = "Repetições";
+"deleteActivity" = "Apagar atividade";
 
 
 // MARK: - Subjects
@@ -119,8 +123,8 @@
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
 "rightQuestions" = "Questões Corretas";
+"testDate" = "Data";
 "totalQuestions" = "Total de Questões";
-"themeTableDetail" = "Detalhe";
 
 // MARK: - Settings
 "deactivateTitle" = "Desative no seu celular!";
