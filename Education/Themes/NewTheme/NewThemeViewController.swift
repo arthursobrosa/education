@@ -59,6 +59,12 @@ class NewThemeViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     @objc private func keyboardChangedFirstResponder(notification: Notification) {
         guard let info = notification.userInfo else { return }
         

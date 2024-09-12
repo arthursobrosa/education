@@ -48,18 +48,6 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingNewT
             }
         }
     }
-    
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        guard let fromViewController = self.navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
-        
-        if self.navigationController.viewControllers.contains(fromViewController) {
-            return
-        }
-        
-        if let themePageViewController = fromViewController as? ThemePageViewController {
-            self.childDidFinish(themePageViewController.coordinator as? Coordinator)
-        }
-    }
 }
 
 extension ThemeListCoordinator: UINavigationControllerDelegate {

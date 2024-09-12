@@ -12,10 +12,8 @@ class ScheduleDetailsView: UIView {
     weak var delegate: ScheduleDetailsDelegate?
     
     // MARK: - UI Components
-    let tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .insetGrouped)
-        
-        table.backgroundColor = .systemBackground
+    let tableView: CustomTableView = {
+        let table = CustomTableView()
         
         table.translatesAutoresizingMaskIntoConstraints = false
         
