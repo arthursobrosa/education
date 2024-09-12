@@ -10,6 +10,7 @@
 		300AD7742C8A349F000D81FA /* StudyTimeChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300AD7732C8A349F000D81FA /* StudyTimeChartCell.swift */; };
 		302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */; };
 		302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */; };
+		30B2E4052C9206FB00383145 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */; };
 		30C076822C80E2DC002BBE2C /* CreateSubjectTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C076812C80E2DC002BBE2C /* CreateSubjectTip.swift */; };
 		30D5E2422C8782D30083F353 /* OtherSubjectCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D5E2412C8782D30083F353 /* OtherSubjectCoordinator.swift */; };
 		30D5E2462C8782F10083F353 /* OtherSubjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D5E2452C8782F10083F353 /* OtherSubjectViewController.swift */; };
@@ -223,6 +224,7 @@
 		300AD7732C8A349F000D81FA /* StudyTimeChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeChartCell.swift; sourceTree = "<group>"; };
 		302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
 		302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeChartView.swift; sourceTree = "<group>"; };
+		30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		30C076812C80E2DC002BBE2C /* CreateSubjectTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSubjectTip.swift; sourceTree = "<group>"; };
 		30D5E2412C8782D30083F353 /* OtherSubjectCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSubjectCoordinator.swift; sourceTree = "<group>"; };
 		30D5E2452C8782F10083F353 /* OtherSubjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSubjectViewController.swift; sourceTree = "<group>"; };
@@ -614,6 +616,7 @@
 				68D218E32C60321C00FA5CD7 /* UIColor+Extension.swift */,
 				689388912C642133007EE922 /* UIView+Extension.swift */,
 				6852F3EC2C8AA175002450A3 /* PickerCase.swift */,
+				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1230,6 +1233,7 @@
 				68E617A82C6D6F4E00488237 /* ActivityManager.swift in Sources */,
 				30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */,
 				CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */,
+				30B2E4052C9206FB00383145 /* CustomSegmentedControl.swift in Sources */,
 				300AD7742C8A349F000D81FA /* StudyTimeChartCell.swift in Sources */,
 				CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */,
 				689388942C6423A7007EE922 /* ActivityView.swift in Sources */,
