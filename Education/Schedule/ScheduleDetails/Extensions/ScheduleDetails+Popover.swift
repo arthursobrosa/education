@@ -15,7 +15,7 @@ extension ScheduleDetailsViewController {
         let section = indexPath.section
         
         let popoverVC = Popover(contentSize: CGSize(width: 200, height: 150))
-        let sourceRect = CGRect(x: cell.bounds.midX,
+        let sourceRect = CGRect(x: cell.bounds.maxX-28,
                                 y: cell.bounds.midY,
                                 width: 0,
                                 height: 0)
@@ -44,7 +44,7 @@ extension ScheduleDetailsViewController {
         let section = indexPath.section
         
         let popoverVC = Popover(contentSize: CGSize(width: 200, height: 150))
-        let sourceRect = CGRect(x: cell.bounds.midX,
+        let sourceRect = CGRect(x: cell.bounds.maxX-28,
                                 y: cell.bounds.midY,
                                 width: 0,
                                 height: 0)
