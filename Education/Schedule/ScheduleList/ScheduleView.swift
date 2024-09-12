@@ -16,16 +16,19 @@ class ScheduleView: UIView {
     }
     
     // MARK: - UI Components
-    let viewModeSelector: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl()
+    let viewModeSelector: CustomSegmentedControl = {
+        let segmentedControl = CustomSegmentedControl()
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         let titleAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 13)!
         ]
-        segmentedControl.setTitleTextAttributes(titleAttributes, for: .normal)
+        let titleAttributesUnselected: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: Fonts.darkModeOnRegular, size: 13)!
+        ]
+        segmentedControl.setTitleTextAttributes(titleAttributesUnselected, for: .normal)
         segmentedControl.setTitleTextAttributes(titleAttributes, for: .selected)
-        
+    
         return segmentedControl
     }()
     
@@ -139,8 +142,8 @@ extension ScheduleView: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             viewModeSelector.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14),
-            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
+            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             
             contentView.topAnchor.constraint(equalTo: viewModeSelector.bottomAnchor, constant: padding),
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
