@@ -25,8 +25,8 @@ class ThemePageCoordinator: NSObject, Coordinator, ShowingTestPage, Dismissing {
         self.navigationController.pushViewController(vc, animated: true)
     }
     
-    func showTestPage(theme: Theme) {
-        let child = TestPageCoordinator(navigationController: self.navigationController, theme: theme)
+    func showTestPage(theme: Theme, test: Test?) {
+        let child = TestPageCoordinator(navigationController: self.navigationController, theme: theme, test: test)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()

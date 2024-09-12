@@ -13,14 +13,16 @@ class TestPageCoordinator: Coordinator, Dismissing {
     var navigationController: UINavigationController
     
     private let theme: Theme
+    private let test: Test?
     
-    init(navigationController: UINavigationController, theme: Theme) {
+    init(navigationController: UINavigationController, theme: Theme, test: Test?) {
         self.navigationController = navigationController
         self.theme = theme
+        self.test = test
     }
     
     func start() {
-        let viewModel = TestPageViewModel(theme: self.theme)
+        let viewModel = TestPageViewModel(theme: self.theme, test: self.test)
         let vc = TestPageViewController(viewModel: viewModel)
         vc.coordinator = self
         

@@ -112,6 +112,7 @@
 		688C257B2C66716600150F7F /* FocusImediateViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257A2C66716600150F7F /* FocusImediateViewController+Delegate.swift */; };
 		688C257D2C6674F000150F7F /* FocusSubjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257C2C6674F000150F7F /* FocusSubjectTableViewCell.swift */; };
 		688C257F2C667F9400150F7F /* ShowingFocusImediate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */; };
+		688C2A422C93212000E8EE81 /* TestPageViewController+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */; };
 		688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */; };
 		689388922C642133007EE922 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388912C642133007EE922 /* UIView+Extension.swift */; };
 		689388942C6423A7007EE922 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388932C6423A7007EE922 /* ActivityView.swift */; };
@@ -333,6 +334,7 @@
 		688C257A2C66716600150F7F /* FocusImediateViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusImediateViewController+Delegate.swift"; sourceTree = "<group>"; };
 		688C257C2C6674F000150F7F /* FocusSubjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSubjectTableViewCell.swift; sourceTree = "<group>"; };
 		688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusImediate.swift; sourceTree = "<group>"; };
+		688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestPageViewController+CellConfig.swift"; sourceTree = "<group>"; };
 		688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityButton.swift; sourceTree = "<group>"; };
 		689388912C642133007EE922 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		689388932C6423A7007EE922 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -571,6 +573,7 @@
 				310B8A182C2F2694005339E8 /* TestPageViewController.swift */,
 				68C2D0062C473BF300E2347A /* TestPageViewController+Delegate.swift */,
 				310B8A1A2C2F26BE005339E8 /* TestPageView.swift */,
+				688C2A432C93353A00E8EE81 /* Extensions */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -853,6 +856,14 @@
 				688C257C2C6674F000150F7F /* FocusSubjectTableViewCell.swift */,
 			);
 			path = FocusImediate;
+			sourceTree = "<group>";
+		};
+		688C2A432C93353A00E8EE81 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		689388972C642B13007EE922 /* TabBar */ = {
@@ -1190,6 +1201,7 @@
 				68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */,
 				68D313892C6ADC6100F63159 /* FocusSessionCoordinator.swift in Sources */,
 				30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */,
+				688C2A422C93212000E8EE81 /* TestPageViewController+CellConfig.swift in Sources */,
 				68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */,
 				689388922C642133007EE922 /* UIView+Extension.swift in Sources */,
 				30D5E2422C8782D30083F353 /* OtherSubjectCoordinator.swift in Sources */,

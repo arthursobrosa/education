@@ -93,7 +93,7 @@ class ThemePageViewController: UIViewController {
     }
     
     @objc private func addTestButtonTapped() {
-        self.coordinator?.showTestPage(theme: self.viewModel.theme)
+        self.coordinator?.showTestPage(theme: self.viewModel.theme, test: nil)
     }
     
     @objc private func didTapDeleteButton() {
@@ -145,9 +145,11 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let _ = self.viewModel.tests.value[indexPath.row]
-        
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let test = self.viewModel.tests.value[indexPath.row]
+        
+        self.coordinator?.showTestPage(theme: self.viewModel.theme, test: test)
     }
 }
 

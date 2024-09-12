@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ShowingTestPage: AnyObject {
-    func showTestPage(theme: Theme)
+    func showTestPage(theme: Theme, test: Test?)
 }

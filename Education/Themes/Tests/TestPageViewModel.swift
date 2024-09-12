@@ -11,17 +11,57 @@ class TestPageViewModel {
     private let testManager: TestManager
     
     private let theme: Theme
+    let test: Test?
     
-    init(testManager: TestManager = TestManager(), theme: Theme) {
+    var date = Date()
+    var totalQuestions = Int()
+    var rightQuestions = Int()
+    
+    init(testManager: TestManager = TestManager(), theme: Theme, test: Test?) {
         self.testManager = testManager
         self.theme = theme
+        self.test = test
+        
+        if let test {
+            self.date = test.unwrappedDate
+            self.totalQuestions = test.unwrappedTotalQuestions
+            self.rightQuestions = test.unwrappedRightQuestions
+        }
     }
     
-    func addNewTest(date: Date, rightQuestions: Int, totalQuestions: Int) {
-        self.testManager.createTest(themeID: self.theme.unwrappedID, date: date, rightQuestions: rightQuestions, totalQuestions: totalQuestions)
+    func saveTest() {
+        if let test {
+            self.updateTest(test)
+            
+            return
+        }
+        
+        self.addNewTest()
     }
     
-    func removeTest(_ test: Test) {
+    private func updateTest(_ test: Test) {
+        test.date = self.date
+        test.totalQuestions = Int64(self.totalQuestions)
+        test.rightQuestions = Int64(self.rightQuestions)
+        
+        self.testManager.updateTest(test)
+    }
+    
+    private func addNewTest() {
+        self.testManager.createTest(themeID: self.theme.unwrappedID, date: self.date, rightQuestions: self.rightQuestions, totalQuestions: self.totalQuestions)
+    }
+    
+    func removeTest() {
+        guard let test else { return }
+        
         self.testManager.deleteTest(test)
+    }
+    
+    func getTitle() -> String {
+        if let _ = self.test {
+            return String(localized: "editTest")
+        }
+        
+        return String(localized: "newTest")
     }
 }
