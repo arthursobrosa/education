@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InputTextTableViewCell: UITableViewCell {
+class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
     static let identifier = "inputTextCell"
     
     weak var delegate: SubjectCreationDelegate? {
@@ -24,6 +24,7 @@ class InputTextTableViewCell: UITableViewCell {
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         let toolbar = self.createToolbar(withTag: 0)
         textField.inputAccessoryView = toolbar
+        textField.delegate = self
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -73,5 +74,12 @@ extension InputTextTableViewCell: ViewCodeProtocol {
         toolbar.setItems([flexSpace, doneButton], animated: false)
         
         return toolbar
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let characterLimit = 15
+        let currentText = textField.text ?? ""
+        let newLength = currentText.count + string.count - range.length
+        return newLength <= characterLimit
     }
 }

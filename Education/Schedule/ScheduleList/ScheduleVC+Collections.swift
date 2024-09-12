@@ -83,7 +83,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
     private func getSizeForItemIn(_ collectionView: UICollectionView) -> CGSize {
         let isDaily = collectionView.tag == 0
         
-        let width = isDaily ? collectionView.frame.width : collectionView.frame.width * (156/390)
+        let width = isDaily ? collectionView.frame.width : collectionView.frame.width * (150/390)
         let height = isDaily ? collectionView.frame.width * (68/366) : collectionView.frame.height
         return CGSize(width: width, height: height)
     }
@@ -103,7 +103,7 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
         let endTimeString = NSAttributedString(string: self.viewModel.getShortTimeString(for: schedule, isStartTime: false), attributes: [.font : font, .foregroundColor : endTimeColor])
         
         attributedString.append(startTimeString)
-        attributedString.append(NSAttributedString(string: " - ", attributes: [.font : font, .foregroundColor : endTimeColor]))
+        isDaily ? attributedString.append(NSAttributedString(string: " - ", attributes: [.font : font, .foregroundColor : endTimeColor])) : attributedString.append(NSAttributedString(string: "\n", attributes: [.font : font, .foregroundColor : endTimeColor]))
         attributedString.append(endTimeString)
         
         return attributedString

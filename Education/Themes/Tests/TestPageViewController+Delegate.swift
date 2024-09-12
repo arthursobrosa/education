@@ -8,11 +8,14 @@
 import Foundation
 
 protocol TestDelegate: AnyObject {
-    func addTestTapped(totalQuestions: Int, rightQuestions: Int, date: Date)
+    func saveButtonTapped()
 }
 
 extension TestPageViewController: TestDelegate {
-    func addTestTapped(totalQuestions: Int, rightQuestions: Int, date: Date) {
+    func saveButtonTapped() {
+        let totalQuestions = self.viewModel.totalQuestions
+        let rightQuestions = self.viewModel.rightQuestions
+        
         guard rightQuestions <= totalQuestions else {
             self.showWrongQuestionsAlert()
             return
@@ -23,12 +26,8 @@ extension TestPageViewController: TestDelegate {
             return
         }
         
-        self.viewModel.addNewTest(
-            date: date,
-            rightQuestions: rightQuestions,
-            totalQuestions: totalQuestions
-        )
+        self.viewModel.saveTest()
         
-        self.dismiss(animated: true)
+        self.coordinator?.dismiss(animated: true)
     }
 }

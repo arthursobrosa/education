@@ -17,12 +17,22 @@ class StudyTimeView: UIView {
     }
     
     // MARK: - UI Components
-    private let viewModeControl: UISegmentedControl = {
-        let picker = UISegmentedControl()
+    private let viewModeControl: CustomSegmentedControl = {
+        let segmentedControl = CustomSegmentedControl()
         
-        picker.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 13)!
+        ]
+        let titleAttributesUnselected: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: Fonts.darkModeOnRegular, size: 13)!
+        ]
+        segmentedControl.setTitleTextAttributes(titleAttributesUnselected, for: .normal)
+        segmentedControl.setTitleTextAttributes(titleAttributes, for: .selected)
         
-        return picker
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return segmentedControl
     }()
     
     let contentView: UIView = {
@@ -78,14 +88,14 @@ extension StudyTimeView: ViewCodeProtocol {
         self.addSubview(viewModeControl)
         self.addSubview(tableView)
         
-        let padding = 16.0
+        let padding = 10.0
         
         NSLayoutConstraint.activate([
-            viewModeControl.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding / 2),
+            viewModeControl.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
             viewModeControl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding ),
             viewModeControl.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding ),
             
-            tableView.topAnchor.constraint(equalTo: viewModeControl.bottomAnchor, constant: 0),
+            tableView.topAnchor.constraint(equalTo: viewModeControl.bottomAnchor, constant: 2),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),

@@ -112,6 +112,7 @@
 "themeAlertMessage" = "Enter exam name:";
 "themeAlertPlaceholder" = "Exam name";
 "newTest" = "New Test";
+"editTest" = "Edit Test";
 "newTheme" = "New Exam";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
@@ -133,7 +134,7 @@
 "firstWeekDay" = "First day of the week";
 
 // MARK: - Modal
-"startButton" = "Start now";
+"startButton" = "Start activityy";
 "delayButton" = "Delay";
 
 

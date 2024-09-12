@@ -42,7 +42,22 @@ class FocusPickerView: UIView {
     }()
     
     private lazy var startButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "start"))
+        
+        let attributedText = NSMutableAttributedString(string: String(localized: "start"))
+        
+        let symbolAttachment = NSTextAttachment()
+        let symbolImage = UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate)
+        symbolAttachment.image = symbolImage
+        symbolAttachment.bounds = CGRect(x: 0, y: -5, width: 20, height: 20)
+
+        let symbolAttributedString = NSAttributedString(attachment: symbolAttachment)
+
+        attributedText.append(NSAttributedString(string: "   "))
+        attributedText.append(symbolAttributedString)
+        
+        let bttn = ButtonComponent(attrString: attributedText)
+        
+        bttn.tintColor = .label
         
         bttn.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         

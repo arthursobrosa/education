@@ -9,7 +9,6 @@ import UIKit
 
 class NotificationWithCancelView: UIView {
     weak var delegate: (any FocusSessionDelegate)?
-    private var color: UIColor
     
     private let bodyLabel: UILabel = {
         let label = UILabel()
@@ -29,15 +28,14 @@ class NotificationWithCancelView: UIView {
     }()
     
     private lazy var cancelButton: UIButton = {
-       let btn = ButtonComponent(title: String(localized: "cancel"), textColor: color)
+       let btn = ButtonComponent(title: String(localized: "cancel"), textColor: UIColor(named: "FocusSettingsColor"))
         
         btn.backgroundColor = UIColor.systemGray5
 
         return btn
     }()
     
-    init(body: String, color: UIColor) {
-        self.color = color
+    init(body: String) {
         
         super.init(frame: .zero)
         
@@ -48,8 +46,6 @@ class NotificationWithCancelView: UIView {
         
         self.backgroundColor = .systemBackground
         self.layer.cornerRadius = 12
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.label.cgColor
     }
     
     required init?(coder: NSCoder) {
