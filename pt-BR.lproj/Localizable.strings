@@ -113,6 +113,7 @@
 "themeAlertMessage" = "Insira o nome da prova:";
 "themeAlertPlaceholder" = "Nome da prova";
 "newTest" = "Novo Teste";
+"editTest" = "Editar Teste";
 "newTheme" = "Nova Prova";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";

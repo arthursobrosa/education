@@ -26,10 +26,8 @@
 		30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */; };
 		30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216BA2C2DEF4800B7114F /* ThemePageView.swift */; };
 		30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */; };
-		30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216BF2C2F26FE00B7114F /* ChartView.swift */; };
 		310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A182C2F2694005339E8 /* TestPageViewController.swift */; };
 		310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1A2C2F26BE005339E8 /* TestPageView.swift */; };
-		310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */; };
 		317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11252C35BBBD00C5E7A5 /* TabBarController.swift */; };
 		317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */; };
 		317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */; };
@@ -44,6 +42,10 @@
 		31C102FC2C6D3168009D2751 /* SubjectCreationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */; };
 		31EB254B2C596883008F8893 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB254A2C596883008F8893 /* NotificationService.swift */; };
 		680038EE2C49F68600851926 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680038ED2C49F68600851926 /* EmptyView.swift */; };
+		6804837E2C920559007FC564 /* CustomChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837D2C920559007FC564 /* CustomChart.swift */; };
+		680483802C922471007FC564 /* CustomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837F2C922471007FC564 /* CustomTableView.swift */; };
+		680483822C9229F0007FC564 /* TestPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680483812C9229F0007FC564 /* TestPageViewModel.swift */; };
+		680483842C922A9C007FC564 /* TestPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680483832C922A9C007FC564 /* TestPageCoordinator.swift */; };
 		6812A8102C8A29E40026C772 /* PomodoroDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6812A80F2C8A29E40026C772 /* PomodoroDateView.swift */; };
 		6823766B2C63E86E00255143 /* DismissingAll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6823766A2C63E86E00255143 /* DismissingAll.swift */; };
 		682376702C63F48100255143 /* ActivityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6823766F2C63F48100255143 /* ActivityButton.swift */; };
@@ -111,6 +113,8 @@
 		688C257B2C66716600150F7F /* FocusImediateViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257A2C66716600150F7F /* FocusImediateViewController+Delegate.swift */; };
 		688C257D2C6674F000150F7F /* FocusSubjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257C2C6674F000150F7F /* FocusSubjectTableViewCell.swift */; };
 		688C257F2C667F9400150F7F /* ShowingFocusImediate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */; };
+		688C2A422C93212000E8EE81 /* TestPageViewController+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */; };
+		688C2A6A2C933F7600E8EE81 /* FakeDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */; };
 		688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */; };
 		689388922C642133007EE922 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388912C642133007EE922 /* UIView+Extension.swift */; };
 		689388942C6423A7007EE922 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388932C6423A7007EE922 /* ActivityView.swift */; };
@@ -139,7 +143,7 @@
 		68C2D00A2C473F8000E2347A /* ScheduleDetails+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D0092C473F8000E2347A /* ScheduleDetails+Picker.swift */; };
 		68C2D00C2C473FC100E2347A /* ScheduleDetails+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D00B2C473FC100E2347A /* ScheduleDetails+Popover.swift */; };
 		68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D00D2C47400A00E2347A /* ScheduleDetails+CellConfig.swift */; };
-		68C572412C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C572402C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift */; };
+		68C572412C8AC52B00B9D0A4 /* CustomTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */; };
 		68C572692C8B493A00B9D0A4 /* ThemeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C572682C8B493A00B9D0A4 /* ThemeListView.swift */; };
 		68C5726D2C8B55ED00B9D0A4 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C5726C2C8B55ED00B9D0A4 /* PaddedTextField.swift */; };
 		68C8D9AB2C4987FF0092E80D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C8D9A92C4987FF0092E80D /* Localizable.strings */; };
@@ -240,10 +244,8 @@
 		30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageViewController.swift; sourceTree = "<group>"; };
 		30F216BA2C2DEF4800B7114F /* ThemePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageView.swift; sourceTree = "<group>"; };
 		30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageViewModel.swift; sourceTree = "<group>"; };
-		30F216BF2C2F26FE00B7114F /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		310B8A182C2F2694005339E8 /* TestPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageViewController.swift; sourceTree = "<group>"; };
 		310B8A1A2C2F26BE005339E8 /* TestPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageView.swift; sourceTree = "<group>"; };
-		310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableViewCell.swift; sourceTree = "<group>"; };
 		317C11252C35BBBD00C5E7A5 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTimer.swift; sourceTree = "<group>"; };
 		317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeViewController.swift; sourceTree = "<group>"; };
@@ -258,6 +260,10 @@
 		31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCreationCoordinator.swift; sourceTree = "<group>"; };
 		31EB254A2C596883008F8893 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		680038ED2C49F68600851926 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		6804837D2C920559007FC564 /* CustomChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChart.swift; sourceTree = "<group>"; };
+		6804837F2C922471007FC564 /* CustomTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableView.swift; sourceTree = "<group>"; };
+		680483812C9229F0007FC564 /* TestPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageViewModel.swift; sourceTree = "<group>"; };
+		680483832C922A9C007FC564 /* TestPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageCoordinator.swift; sourceTree = "<group>"; };
 		6812A80F2C8A29E40026C772 /* PomodoroDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroDateView.swift; sourceTree = "<group>"; };
 		6823766A2C63E86E00255143 /* DismissingAll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissingAll.swift; sourceTree = "<group>"; };
 		6823766F2C63F48100255143 /* ActivityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityButton.swift; sourceTree = "<group>"; };
@@ -331,6 +337,8 @@
 		688C257A2C66716600150F7F /* FocusImediateViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusImediateViewController+Delegate.swift"; sourceTree = "<group>"; };
 		688C257C2C6674F000150F7F /* FocusSubjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSubjectTableViewCell.swift; sourceTree = "<group>"; };
 		688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusImediate.swift; sourceTree = "<group>"; };
+		688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestPageViewController+CellConfig.swift"; sourceTree = "<group>"; };
+		688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDatePicker.swift; sourceTree = "<group>"; };
 		688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityButton.swift; sourceTree = "<group>"; };
 		689388912C642133007EE922 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		689388932C6423A7007EE922 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -359,7 +367,7 @@
 		68C2D0092C473F8000E2347A /* ScheduleDetails+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+Picker.swift"; sourceTree = "<group>"; };
 		68C2D00B2C473FC100E2347A /* ScheduleDetails+Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+Popover.swift"; sourceTree = "<group>"; };
 		68C2D00D2C47400A00E2347A /* ScheduleDetails+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+CellConfig.swift"; sourceTree = "<group>"; };
-		68C572402C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsCell.swift; sourceTree = "<group>"; };
+		68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableCell.swift; sourceTree = "<group>"; };
 		68C572682C8B493A00B9D0A4 /* ThemeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListView.swift; sourceTree = "<group>"; };
 		68C5726C2C8B55ED00B9D0A4 /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		68C8D9AA2C4987FF0092E80D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -518,18 +526,8 @@
 				30F216B82C2DEF3B00B7114F /* ThemePageViewController.swift */,
 				68833D9D2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift */,
 				30F216BA2C2DEF4800B7114F /* ThemePageView.swift */,
-				310B8A1E2C2F4ED5005339E8 /* TestTableViewCell.swift */,
-				30F216BE2C2F26EA00B7114F /* Chart */,
 			);
 			path = ThemePage;
-			sourceTree = "<group>";
-		};
-		30F216BE2C2F26EA00B7114F /* Chart */ = {
-			isa = PBXGroup;
-			children = (
-				30F216BF2C2F26FE00B7114F /* ChartView.swift */,
-			);
-			path = Chart;
 			sourceTree = "<group>";
 		};
 		317C112F2C3EF70500C5E7A5 /* Subjects */ = {
@@ -574,9 +572,12 @@
 		6833B2172C34567E009EA63D /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				680483832C922A9C007FC564 /* TestPageCoordinator.swift */,
+				680483812C9229F0007FC564 /* TestPageViewModel.swift */,
 				310B8A182C2F2694005339E8 /* TestPageViewController.swift */,
 				68C2D0062C473BF300E2347A /* TestPageViewController+Delegate.swift */,
 				310B8A1A2C2F26BE005339E8 /* TestPageView.swift */,
+				688C2A432C93353A00E8EE81 /* Extensions */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -616,7 +617,6 @@
 				68D218E32C60321C00FA5CD7 /* UIColor+Extension.swift */,
 				689388912C642133007EE922 /* UIView+Extension.swift */,
 				6852F3EC2C8AA175002450A3 /* PickerCase.swift */,
-				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -806,7 +806,6 @@
 				68D3138C2C6AE4E000F63159 /* ScheduleDetailsCoordinator.swift */,
 				68333DD12C3F81590064BF87 /* ScheduleDetailsViewModel.swift */,
 				6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */,
-				68C572402C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift */,
 				68C2D0042C473A4800E2347A /* ScheduleDetailsViewController+Delegate.swift */,
 				6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */,
 				68C2D0082C473F5800E2347A /* Extensions */,
@@ -830,6 +829,11 @@
 				CE0BD2332C8234C100E9FBDF /* NotificationComponentView.swift */,
 				CE0BD2352C862E1300E9FBDF /* NotificationWithCancelView.swift */,
 				68C5726C2C8B55ED00B9D0A4 /* PaddedTextField.swift */,
+				6804837D2C920559007FC564 /* CustomChart.swift */,
+				6804837F2C922471007FC564 /* CustomTableView.swift */,
+				68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */,
+				688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */,
+				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -858,6 +862,14 @@
 				688C257C2C6674F000150F7F /* FocusSubjectTableViewCell.swift */,
 			);
 			path = FocusImediate;
+			sourceTree = "<group>";
+		};
+		688C2A432C93353A00E8EE81 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		689388972C642B13007EE922 /* TabBar */ = {
@@ -1195,12 +1207,14 @@
 				68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */,
 				68D313892C6ADC6100F63159 /* FocusSessionCoordinator.swift in Sources */,
 				30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */,
+				688C2A422C93212000E8EE81 /* TestPageViewController+CellConfig.swift in Sources */,
 				68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */,
 				689388922C642133007EE922 /* UIView+Extension.swift in Sources */,
 				30D5E2422C8782D30083F353 /* OtherSubjectCoordinator.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
 				CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */,
 				6852654D2C8B701F009D9678 /* NewThemeViewController.swift in Sources */,
+				688C2A6A2C933F7600E8EE81 /* FakeDatePicker.swift in Sources */,
 				68B9EF962C878095000F03DE /* SettingsTableViewCell.swift in Sources */,
 				688C257D2C6674F000150F7F /* FocusSubjectTableViewCell.swift in Sources */,
 				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
@@ -1208,8 +1222,9 @@
 				685CBFDC2C615CE300EC8E09 /* DateView.swift in Sources */,
 				683D25562C894DAF00716444 /* ScheduleVC+Collections.swift in Sources */,
 				CE394D0F2C6E85FC00A8B1F0 /* ScheduleDetailsModalCoordinator.swift in Sources */,
+				680483822C9229F0007FC564 /* TestPageViewModel.swift in Sources */,
 				31EB254B2C596883008F8893 /* NotificationService.swift in Sources */,
-				68C572412C8AC52B00B9D0A4 /* ScheduleDetailsCell.swift in Sources */,
+				68C572412C8AC52B00B9D0A4 /* CustomTableCell.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
 				30D846EC2C8261D700E98130 /* NoSubjectsView.swift in Sources */,
 				CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */,
@@ -1228,6 +1243,7 @@
 				688C25732C66709900150F7F /* FocusImediateCoordinator.swift in Sources */,
 				68CA87E02C5D54CD006ED5FA /* ShowingFocusPicker.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
+				680483842C922A9C007FC564 /* TestPageCoordinator.swift in Sources */,
 				68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */,
 				68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */,
 				68E617A82C6D6F4E00488237 /* ActivityManager.swift in Sources */,
@@ -1262,7 +1278,6 @@
 				683812F62C48329D0062067A /* UserDefaults.swift in Sources */,
 				302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */,
 				CE323B432C73C1AC004143E0 /* ShowingScheduleNotification.swift in Sources */,
-				30F216C02C2F26FE00B7114F /* ChartView.swift in Sources */,
 				683812F02C481A9C0062067A /* SplashViewController.swift in Sources */,
 				685265532C8B72A5009D9678 /* NewThemeView.swift in Sources */,
 				68CA87E22C5D56DD006ED5FA /* FocusPickerView.swift in Sources */,
@@ -1275,6 +1290,7 @@
 				68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */,
 				317C11332C3EF78200C5E7A5 /* StudyTimeViewModel.swift in Sources */,
 				30D5E2482C8783040083F353 /* OtherSubjectView.swift in Sources */,
+				6804837E2C920559007FC564 /* CustomChart.swift in Sources */,
 				30D846E82C82381100E98130 /* CreateTestTip.swift in Sources */,
 				68C2D0012C4723A100E2347A /* ScheduleCell.swift in Sources */,
 				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
@@ -1317,13 +1333,13 @@
 				683812F42C481C580062067A /* ShowingTabBar.swift in Sources */,
 				68D218E22C60319D00FA5CD7 /* ActionButton.swift in Sources */,
 				6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */,
+				680483802C922471007FC564 /* CustomTableView.swift in Sources */,
 				31C102FA2C6D30BC009D2751 /* ShowingSubjectCreation.swift in Sources */,
 				68CA87DE2C5D543D006ED5FA /* FocusPickerViewController.swift in Sources */,
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
 				68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */,
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
-				310B8A1F2C2F4ED5005339E8 /* TestTableViewCell.swift in Sources */,
 				688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */,
 				CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */,
 				68833D9A2C46B28D00BA4850 /* DefaultCell.swift in Sources */,
