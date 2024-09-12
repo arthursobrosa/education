@@ -22,6 +22,7 @@ class ThemePageCoordinator: NSObject, Coordinator, ShowingTestPage, Dismissing {
         let viewModel = ThemePageViewModel(theme: self.theme)
         let vc = ThemePageViewController(viewModel: viewModel)
         vc.coordinator = self
+        
         self.navigationController.pushViewController(vc, animated: true)
     }
     

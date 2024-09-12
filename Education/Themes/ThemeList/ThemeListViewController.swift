@@ -160,7 +160,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.backgroundColor = .systemBackground
         
-        cell.roundCorners(corners: .allCorners, radius: 18, borderWidth: 2, borderColor: .secondaryLabel)
+        cell.roundCorners(corners: .allCorners, radius: 18, borderWidth: 2, borderColor: .systemGray4)
         
         let cellContent = self.getCellContent(from: theme)
         cell.configureContentView(with: cellContent)

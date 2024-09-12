@@ -90,6 +90,11 @@ class ThemePageViewController: UIViewController {
         let deleteItem = UIBarButtonItem(customView: deleteButton)
         
         self.navigationItem.rightBarButtonItems = [deleteItem, addItem]
+        
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBackButton))
+        backButton.tintColor = .label
+        
+        self.navigationItem.leftBarButtonItems = [backButton]
     }
     
     @objc private func addTestButtonTapped() {
@@ -101,7 +106,13 @@ class ThemePageViewController: UIViewController {
         self.coordinator?.dismiss(animated: true)
     }
     
+    @objc private func didTapBackButton() {
+        self.coordinator?.dismiss(animated: true)
+    }
+    
     func setChart() {
+        self.themePageView.customChart?.removeFromSuperview()
+        
         self.themePageView.customChart = CustomChart(limit: self.viewModel.selectedLimit)
         let limitedItems = self.viewModel.getLimitedItems()
         self.themePageView.customChart?.setData(limitedItems, sorter: \.date, mapTo: \.percentage)

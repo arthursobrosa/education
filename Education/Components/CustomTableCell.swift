@@ -36,7 +36,7 @@ class CustomTableCell: UITableViewCell {
         
         let radius = self.bounds.width * (10/353)
         let borderWidth = self.bounds.width * (2.5/353)
-        let borderColor = UIColor.secondaryLabel
+        let borderColor = UIColor.systemGray4
         
         if self.numberOfRowsInSection == 1 {
             self.roundCorners(corners: .allCorners, radius: radius, borderWidth: borderWidth, borderColor: borderColor)
