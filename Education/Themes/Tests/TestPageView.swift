@@ -54,7 +54,7 @@ extension TestPageView: ViewCodeProtocol {
         self.addSubview(saveButton)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            tableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 60),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             tableView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),

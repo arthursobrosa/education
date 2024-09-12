@@ -17,8 +17,8 @@ class ThemePageView: UIView {
     }
     
     // MARK: - UI Components
-    private let segmentedControl: UISegmentedControl = {
-        let control = UISegmentedControl()
+    private let segmentedControl: CustomSegmentedControl = {
+        let control = CustomSegmentedControl()
         
         control.translatesAutoresizingMaskIntoConstraints = false
         

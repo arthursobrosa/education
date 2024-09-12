@@ -617,7 +617,6 @@
 				68D218E32C60321C00FA5CD7 /* UIColor+Extension.swift */,
 				689388912C642133007EE922 /* UIView+Extension.swift */,
 				6852F3EC2C8AA175002450A3 /* PickerCase.swift */,
-				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -834,6 +833,7 @@
 				6804837F2C922471007FC564 /* CustomTableView.swift */,
 				68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */,
 				688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */,
+				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
