@@ -34,7 +34,7 @@ class SplashView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor(named: "bluePicker")
+        self.backgroundColor = .systemBackground
         
         self.setupUI()
         
