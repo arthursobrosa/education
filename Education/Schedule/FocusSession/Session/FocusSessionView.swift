@@ -149,7 +149,7 @@ class FocusSessionView: UIView {
     }()
     
     private lazy var finishEarlyNotification: UIView = {
-        let view = NotificationWithCancelView(body: String(localized: "confirmActivityEnd"), color: self.color ?? UIColor.systemGray5)
+        let view = NotificationWithCancelView(body: String(localized: "confirmActivityEnd"))
         
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
@@ -159,8 +159,8 @@ class FocusSessionView: UIView {
         
         view.layer.shadowColor = UIColor.label.cgColor
         view.layer.shadowRadius = 20
-        view.layer.shadowOpacity = 0.5
-        view.layer.shadowOffset = .init(width: 10, height: 10)
+        view.layer.shadowOpacity = 0.2
+        view.layer.shadowOffset = .init(width: 0, height: 0)
         
         self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
             (self: Self, previousTraitCollection: UITraitCollection) in
