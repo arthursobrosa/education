@@ -142,9 +142,8 @@
 "totalTime" = "Total Studied Time:";
 
 //MARK: - ACTIVITY
-"newActivity" = "New Activity";
-"activityPre" = "";
-"activityPost" = "Activity";
+"newActivity" = "New activity";
+"editActivity" = "Edit activity";
 "studyingNow" = "Studying now";
 
 //MARK: - TIPS

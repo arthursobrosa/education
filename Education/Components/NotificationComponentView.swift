@@ -8,10 +8,6 @@
 
 import UIKit
 
-//@objc protocol EndNotificationDelegate: AnyObject {
-//    func okButtonPressed()
-//}
-
 class NotificationComponentView: UIView {
     weak var delegate: (any FocusSessionDelegate)?
     
@@ -41,8 +37,14 @@ class NotificationComponentView: UIView {
         return label
     }()
     
-    private let okButton: UIButton = {
-        ButtonComponent(title: "OK")
+    private lazy var okButton: ButtonComponent = {
+        let button = ButtonComponent(title: "OK")
+        
+        button.addTarget(self.delegate, action: #selector(FocusSessionDelegate.okButtonPressed), for: .touchUpInside)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
     }()
     
     init(title: String, body: String, color: UIColor) {
@@ -63,11 +65,6 @@ class NotificationComponentView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func addTarget() {
-//        self.okButton.addTarget(self, action: selcetor, for: .touchUpInside)
-        self.okButton.addTarget(delegate, action: #selector(FocusSessionDelegate.okButtonPressed), for: .touchUpInside)
     }
 }
 
@@ -92,7 +89,6 @@ extension NotificationComponentView: ViewCodeProtocol {
             okButton.topAnchor.constraint(equalTo: bodyLabel.topAnchor, constant: padding * 4),
             okButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 312/360),
             okButton.heightAnchor.constraint(equalTo: okButton.widthAnchor, multiplier: 55/312),
-            
         ])
     }
 }

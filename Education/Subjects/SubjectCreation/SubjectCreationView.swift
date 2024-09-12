@@ -58,17 +58,13 @@ extension SubjectCreationView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(tableView)
         self.addSubview(button)
-//        tableView.backgroundColor = .red
 
         NSLayoutConstraint.activate([
             
-//            button.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             button.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40),
             button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 5/28),
-//            button.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
-            
             
             tableView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -4),

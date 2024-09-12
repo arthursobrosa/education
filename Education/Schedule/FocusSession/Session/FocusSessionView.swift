@@ -120,6 +120,8 @@ class FocusSessionView: UIView {
         
         bttn.addTarget(self, action: #selector(didTapRestartButton), for: .touchUpInside)
         
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
         return bttn
     }()
     
@@ -129,8 +131,9 @@ class FocusSessionView: UIView {
         
         bttn.isHidden = true
         
-        
         bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()
@@ -143,8 +146,6 @@ class FocusSessionView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
         
-        view.addTarget()
-        
         return view
     }()
     
@@ -153,9 +154,6 @@ class FocusSessionView: UIView {
         
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
-        
-        view.addYesButtonTarget()
-        view.addCancelButtonTarget()
         
         view.layer.shadowColor = UIColor.label.cgColor
         view.layer.shadowRadius = 20

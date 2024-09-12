@@ -15,14 +15,6 @@ class ButtonComponent: UIButton {
         self.setAttributedTitle(attributedString, for: .normal)
         self.backgroundColor = .label
         self.layer.cornerRadius = 30
-        
-        
-        self.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 18),
-            self.widthAnchor.constraint(equalToConstant: 104),
-        ])
     }
     
     init(attrString: NSMutableAttributedString, textColor: UIColor? = .systemBackground) {
@@ -34,14 +26,6 @@ class ButtonComponent: UIButton {
         self.setAttributedTitle(attrString, for: .normal)
         self.backgroundColor = .label
         self.layer.cornerRadius = 30
-        
-        
-        self.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 18),
-            self.widthAnchor.constraint(equalToConstant: 104),
-        ])
     }
     
     required init?(coder: NSCoder) {

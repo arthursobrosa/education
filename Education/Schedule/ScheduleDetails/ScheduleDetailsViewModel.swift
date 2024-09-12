@@ -240,15 +240,12 @@ class ScheduleDetailsViewModel {
     
     func getTitleName() -> String {
         let subject = self.subjectManager.fetchSubject(withID: self.schedule?.subjectID)
-        
-        let title: String
 
-        if let name = subject?.name {
-            title = "\(String(localized: "activityPre")) \(name) \(String(localized: "activityPost"))"
+        if let _ = subject {
+            return String(localized: "editActivity")
         } else {
-            title = String(localized: "newActivity")
+            return String(localized: "newActivity")
         }
-        return title
     }
     
     func removeSchedule(_ schedule: Schedule) {

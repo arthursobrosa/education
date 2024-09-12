@@ -141,9 +141,8 @@
 "totalTime" = "Tempo Total de Estudo:";
 
 //MARK: - ACTIVITY
-"newActivity" = "Nova Atividade";
-"activityPre" = "Atividade de";
-"activityPost" = "";
+"newActivity" = "Nova atividade";
+"editActivity" = "Editar atividade";
 "studyingNow" = "Estudando agora";
 
 //MARK: - TIPS

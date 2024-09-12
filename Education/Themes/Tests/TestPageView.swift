@@ -25,6 +25,8 @@ class TestPageView: UIView {
         
         bttn.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
         return bttn
     }()
     

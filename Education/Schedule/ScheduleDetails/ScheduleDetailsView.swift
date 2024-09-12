@@ -22,7 +22,11 @@ class ScheduleDetailsView: UIView {
     
     private lazy var saveButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String(localized: "save"))
+        
         bttn.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
         return bttn
     }()
     
@@ -54,10 +58,10 @@ extension ScheduleDetailsView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            tableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 60),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -padding),
+            tableView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.45),
             
             saveButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             saveButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),

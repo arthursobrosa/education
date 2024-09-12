@@ -66,12 +66,20 @@ class ScheduleDetailsViewController: UIViewController {
     private func setNavigationItems() {
         self.navigationItem.title = self.viewModel.getTitleName()
         
-        guard let _ = self.viewModel.schedule else { return }
+        self.navigationController?.navigationBar.titleTextAttributes = [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
         
-        let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(didTapDeleteButton))
-        deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
+        let cancelButton = UIButton(configuration: .plain())
+        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.secondaryLabel])
+        cancelButton.setAttributedTitle(cancelAttributedString, for: .normal)
+        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
-        self.navigationItem.rightBarButtonItems = [deleteButton]
+        let cancelItem = UIBarButtonItem(customView: cancelButton)
+        
+        self.navigationItem.leftBarButtonItems = [cancelItem]
+    }
+    
+    @objc private func didTapCancelButton() {
+        self.coordinator?.dismiss(animated: true)
     }
     
     @objc private func didTapDeleteButton() {
@@ -212,5 +220,25 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
             default:
                 break
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = UIColor.clear
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 11
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
     }
 }

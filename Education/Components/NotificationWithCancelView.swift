@@ -23,25 +23,33 @@ class NotificationWithCancelView: UIView {
         return label
     }()
     
-    private let yesButton: UIButton = {
-        ButtonComponent(title: String(localized: "yes"))
+    private lazy var yesButton: ButtonComponent = {
+        let button = ButtonComponent(title: String(localized: "yes"))
+        
+        button.addTarget(self.delegate, action: #selector(FocusSessionDelegate.didFinish), for: .touchUpInside)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
     }()
     
-    private lazy var cancelButton: UIButton = {
-       let btn = ButtonComponent(title: String(localized: "cancel"), textColor: UIColor(named: "FocusSettingsColor"))
+    private lazy var cancelButton: ButtonComponent = {
+        let button = ButtonComponent(title: String(localized: "cancel"), textColor: UIColor(named: "FocusSettingsColor"))
         
-        btn.backgroundColor = UIColor.systemGray5
+        button.backgroundColor = UIColor.systemGray5
+        
+        button.addTarget(self.delegate, action: #selector(FocusSessionDelegate.cancelButtonPressed), for: .touchUpInside)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
 
-        return btn
+        return button
     }()
     
     init(body: String) {
-        
         super.init(frame: .zero)
         
         self.bodyLabel.text = body
 
-        
         self.setupUI()
         
         self.backgroundColor = .systemBackground
@@ -50,14 +58,6 @@ class NotificationWithCancelView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func addYesButtonTarget() {
-        self.yesButton.addTarget(delegate, action: #selector(FocusSessionDelegate.didFinish), for: .touchUpInside)
-    }
-    
-    func addCancelButtonTarget() {
-        self.cancelButton.addTarget(delegate, action: #selector(FocusSessionDelegate.cancelButtonPressed), for: .touchUpInside)
     }
 }
 
