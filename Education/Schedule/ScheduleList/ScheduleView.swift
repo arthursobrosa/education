@@ -70,7 +70,7 @@ class ScheduleView: UIView {
         button.setTitle(String(localized: "createActivity"), for: .normal)
         button.setTitleColor(.systemBackground, for: .normal)
         button.tintColor = .label
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        button.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.alpha = 0
@@ -86,7 +86,7 @@ class ScheduleView: UIView {
         button.setTitle(String(localized: "imediateActivity"), for: .normal)
         button.setTitleColor(.systemBackground, for: .normal)
         button.tintColor = .label
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        button.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.alpha = 0
@@ -148,7 +148,7 @@ extension ScheduleView: ViewCodeProtocol {
             contentView.topAnchor.constraint(equalTo: viewModeSelector.bottomAnchor, constant: padding),
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
         
         NSLayoutConstraint.activate([

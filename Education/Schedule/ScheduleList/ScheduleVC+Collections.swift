@@ -33,6 +33,12 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
         
         return .init(top: 0, left: 12, bottom: 0, right: 0)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        let isDaily = collectionView.tag == 0
+        
+        return isDaily ? CGSize(width: collectionView.frame.width, height: 20) : CGSize()
+    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let schedule = self.viewModel.schedules[indexPath.row]

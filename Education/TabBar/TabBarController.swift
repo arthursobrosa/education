@@ -117,6 +117,6 @@ enum TabCase: Int {
                 caseImage = UIImage(systemName: "gearshape")
         }
         
-        return caseImage?.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 18)))
+        return caseImage?.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 16)))
     }
 }
