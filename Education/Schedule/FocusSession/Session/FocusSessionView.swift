@@ -179,22 +179,26 @@ class FocusSessionView: UIView {
         return view
     }()
     
-    private lazy var finishEarlyNotification: UIView = {
-        let view = NotificationWithCancelView(body: String(localized: "confirmActivityEnd"))
+    private let focusAlert: FocusAlertView = {
+        let view = FocusAlertView()
+        
+        view.isHidden = true
+        view.layer.zPosition = 2
         
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.isHidden = true
         
-        view.layer.shadowColor = UIColor.label.cgColor
-        view.layer.shadowRadius = 20
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowOffset = .init(width: 0, height: 0)
+        return view
+    }()
+    
+    private let overlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .label.withAlphaComponent(0.1)
+        view.alpha = 0
+        view.layer.zPosition = 1
         
-        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, previousTraitCollection: UITraitCollection) in
-            
-            view.layer.shadowColor = UIColor.label.cgColor
-        }
+        view.isUserInteractionEnabled = false
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
@@ -228,7 +232,6 @@ class FocusSessionView: UIView {
         self.activityTitle.attributedText = attributedString
     }
     
-    
     func changeButtonsIsHidden(_ isHidden: Bool) {
         let duration: TimeInterval = 1
         
@@ -261,12 +264,17 @@ class FocusSessionView: UIView {
         }
     }
     
-    func showEndNotification(_ isHidden: Bool) {
-        self.endNotification.isHidden = isHidden
+    func showEndNotification(_ isShowing: Bool) {
+        self.endNotification.isHidden = !isShowing
     }
     
-    func showFinishNotification(_ isHidden: Bool) {
-        self.finishEarlyNotification.isHidden = isHidden
+    func showFocusAlert(_ isShowing: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+            
+            self.focusAlert.isHidden = !isShowing
+            self.overlayView.alpha = self.overlayView.alpha == 0 ? 1 : 0
+        }
     }
     
     func setVisibilityButton(isActive: Bool) {
@@ -304,13 +312,13 @@ class FocusSessionView: UIView {
     }
     
     @objc private func didTapRestartButton() {
-        self.delegate?.didTapRestartButton()
-        
-        self.isPaused = false
+        self.focusAlert.configure(with: .restart)
+        self.showFocusAlert(true)
     }
     
     @objc private func didTapFinishButton() {
-        self.showFinishNotification(false)
+        self.focusAlert.configure(with: .finish)
+        self.showFocusAlert(true)
     }
     
     func startAnimation(timerDuration: Double) {
@@ -382,7 +390,7 @@ extension FocusSessionView: ViewCodeProtocol {
         self.addSubview(restartButton)
         self.addSubview(finishButton)
         self.addSubview(endNotification)
-        self.addSubview(finishEarlyNotification)
+        self.addSubview(focusAlert)
         
         let padding = 20.0
         
@@ -428,15 +436,24 @@ extension FocusSessionView: ViewCodeProtocol {
             endNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
             endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 242/844),
             
-            finishEarlyNotification.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            finishEarlyNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            finishEarlyNotification.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
-            finishEarlyNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
-            finishEarlyNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 209/844)
+            focusAlert.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            focusAlert.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
+            focusAlert.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 366/390),
+            focusAlert.heightAnchor.constraint(equalTo: focusAlert.widthAnchor, multiplier: 228/366)
         ])
         
         self.pauseResumeBottomConstraint = pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         self.pauseResumeBottomConstraint.isActive = true
+        
+        
+        self.addSubview(overlayView)
+        
+        NSLayoutConstraint.activate([
+            overlayView.topAnchor.constraint(equalTo: self.topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        ])
     }
     
     func setupLayers(strokeEnd: CGFloat) {

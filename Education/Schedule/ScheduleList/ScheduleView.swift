@@ -55,7 +55,7 @@ class ScheduleView: UIView {
         return view
    }()
     
-    lazy var overlayView: UIView = {
+    let overlayView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
         view.alpha = 0

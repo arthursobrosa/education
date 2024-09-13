@@ -66,7 +66,10 @@
 "timeIsUp" = "Tempo Acabou!";
 "activityEndCongratulations" = "Parabens, voce chegou ao fim da sua atividade de ";
 "noActivityEndCongratulations" = "Parabens, Voce chegou ao fim da sua atividade 🎉";
-"confirmActivityEnd" = "Tem certeza que deseja finalizar a sua atividade agora?";
+"finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
+"finishEarlyAlertTitle" = "Finalizar atividade";
+"restartAlertTitle" = "Recomeçar atividade";
+"restartAlertBody" = "Tem certeza que deseja recomeçar a sua atividade?";
 "activityDeletionTitle" = "Deleção de atividade";
 "activityDeletionMessage" = "Você tem certeza que deseja excluir essa atividade?";
 

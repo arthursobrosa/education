@@ -189,14 +189,6 @@ class FocusSessionViewController: UIViewController {
         self.view.addGestureRecognizer(tapGesture)
     }
     
-    func hideEndNotification() {
-        self.focusSessionView.showEndNotification(true)
-    }
-    
-    func hideFinishNotification() {
-        self.focusSessionView.showFinishNotification(true)
-    }
-    
     @objc func viewWasTapped() {
         self.viewModel.prefersStatusBarHidden.toggle()
         self.focusSessionView.changeButtonsIsHidden(self.viewModel.prefersStatusBarHidden)
@@ -214,7 +206,7 @@ class FocusSessionViewController: UIViewController {
 // MARK: - Auxiliar Methods
 extension FocusSessionViewController {
     private func showEndTimeAlert() {
-        self.focusSessionView.showEndNotification(false)
+        self.focusSessionView.showEndNotification(true)
     }
     
     public func updateViewLabels() {
