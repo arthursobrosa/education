@@ -29,7 +29,7 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var pickerLabel = view as? UILabel
 
-        if (pickerLabel == nil){
+        if pickerLabel == nil {
             pickerLabel = UILabel()
             pickerLabel!.font = UIFont(name: Fonts.darkModeOnRegular, size: 20)
             pickerLabel!.textColor = .gray
