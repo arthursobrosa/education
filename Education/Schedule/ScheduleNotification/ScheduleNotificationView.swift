@@ -54,7 +54,7 @@ class ScheduleNotificationView: UIView {
     }()
     
     private lazy var startButton: UIButton = {
-        let btn = ButtonComponent(title: "Iniciar agora", textColor: .systemBackground)
+        let btn = ButtonComponent(title: "Iniciar agora", textColor: .systemBackground, cornerRadius: 30)
         
         btn.translatesAutoresizingMaskIntoConstraints = false
         

@@ -112,7 +112,7 @@ class FocusSessionView: UIView {
         attributedString.append(restartImage)
         attributedString.addAttributes([.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? UIFont.boldSystemFont(ofSize: 16), .foregroundColor : UIColor.label.withAlphaComponent(0.55)], range: .init(location: 0, length: attributedString.length))
         
-        let bttn = ButtonComponent(title: String(), textColor: nil)
+        let bttn = ButtonComponent(title: String(), textColor: nil, cornerRadius: 30)
         bttn.setAttributedTitle(attributedString, for: .normal)
         bttn.backgroundColor = .systemGray6
         
@@ -126,7 +126,7 @@ class FocusSessionView: UIView {
     }()
     
     private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"))
+        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 30)
         bttn.backgroundColor = .systemGray6
         
         bttn.isHidden = true

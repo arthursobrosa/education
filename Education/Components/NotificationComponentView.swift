@@ -38,7 +38,7 @@ class NotificationComponentView: UIView {
     }()
     
     private lazy var okButton: ButtonComponent = {
-        let button = ButtonComponent(title: "OK")
+        let button = ButtonComponent(title: "OK", cornerRadius: 30)
         
         button.addTarget(self.delegate, action: #selector(FocusSessionDelegate.okButtonPressed), for: .touchUpInside)
         

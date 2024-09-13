@@ -30,7 +30,7 @@
 "schedule" = "Cronograma";
 "newSchedule" = "Novo";
 "createActivity" = "Criar atividade";
-"imediateActivity" = "Criar atividade imediata";
+"imediateActivity" = "Iniciar atividade imediata";
 "timeLeft" = "Em %@h%@m";
 "timeLeftNow" = "Agora";
 "timeLeftFinished" = "Concluído";
