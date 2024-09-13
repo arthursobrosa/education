@@ -41,9 +41,9 @@ class FocusSessionViewModel {
             hours = timerSeconds / 3600
         }
         
-        var secondsText = seconds < 10 ? "0\(seconds)" : "\(seconds)"
-        var minutesText = minutes < 10 ? "0\(minutes)" : "\(minutes)"
-        var hoursText = hours < 10 ? "0\(hours)" : "\(hours)"
+        let secondsText = seconds < 10 ? "0\(seconds)" : "\(seconds)"
+        let minutesText = minutes < 10 ? "0\(minutes)" : "\(minutes)"
+        let hoursText = hours < 10 ? "0\(hours)" : "\(hours)"
         
         return "\(hoursText):\(minutesText):\(secondsText)"
     }

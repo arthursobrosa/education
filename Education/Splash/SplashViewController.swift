@@ -116,7 +116,7 @@ class SplashViewController: UIViewController {
     }
     
     private func applyTranslation(to view: UIView, duration: CFTimeInterval) {
-        let xOffset = self.view.frame.midX / 2.8
+        let xOffset = self.view.frame.width * 0.15
         
         let translationTransform = CATransform3DMakeTranslation(xOffset, 0, 0)
         
@@ -143,14 +143,14 @@ extension SplashViewController: ViewCodeProtocol {
             logoImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             logoImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
             
-            plaImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 0.82),
-            plaImageView.widthAnchor.constraint(equalTo: plaImageView.heightAnchor, multiplier: 196/155),
-            plaImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -(self.view.frame.midX / 3)),
+            plaImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.32),
+            plaImageView.heightAnchor.constraint(equalTo: plaImageView.widthAnchor, multiplier: 155/196),
+            plaImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -(self.view.frame.width * 0.2)),
             plaImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
             
             nnoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 0.5),
             nnoImageView.widthAnchor.constraint(equalTo: nnoImageView.heightAnchor, multiplier: 218/91),
-            nnoImageView.leadingAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -1),
+            nnoImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width * 0.15),
             nnoImageView.centerYAnchor.constraint(equalTo: plaImageView.centerYAnchor)
         ])
     }
