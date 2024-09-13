@@ -46,6 +46,10 @@ class TestPageViewController: UIViewController {
         super.viewDidLoad()
         
         self.setNavigationItems()
+        
+        if self.viewModel.test == nil {
+            self.testPageView.hideDeleteButton()
+        }
     }
     
     // MARK: - Methods
@@ -62,13 +66,6 @@ class TestPageViewController: UIViewController {
         let cancelItem = UIBarButtonItem(customView: cancelButton)
         
         self.navigationItem.leftBarButtonItems = [cancelItem]
-        
-        if let _ = self.viewModel.test {
-            let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(didTapDeleteButton))
-            deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
-            
-            self.navigationItem.rightBarButtonItems = [deleteButton]
-        }
     }
     
     @objc private func didTapCancelButton() {
@@ -111,12 +108,6 @@ class TestPageViewController: UIViewController {
     
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         self.viewModel.date = sender.date
-    }
-    
-    @objc private func didTapDeleteButton() {
-        self.viewModel.removeTest()
-        
-        self.coordinator?.dismiss(animated: true)
     }
 }
 

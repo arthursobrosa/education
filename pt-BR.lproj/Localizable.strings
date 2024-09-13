@@ -125,6 +125,7 @@
 "rightQuestions" = "Questões Corretas";
 "testDate" = "Data";
 "totalQuestions" = "Total de Questões";
+"deleteTest" = "Apagar teste";
 
 // MARK: - Settings
 "deactivateTitle" = "Desative no seu celular!";

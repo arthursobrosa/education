@@ -16,6 +16,8 @@ class SubjectCreationViewController: UIViewController{
     private lazy var subjectCreationView: SubjectCreationView = {
         let view = SubjectCreationView()
         
+        view.delegate = self
+        
         view.tableView.dataSource = self
         view.tableView.delegate = self
         view.tableView.register(InputTextTableViewCell.self, forCellReuseIdentifier: InputTextTableViewCell.identifier)
@@ -45,7 +47,7 @@ class SubjectCreationViewController: UIViewController{
     // MARK: - Lifecycle
     override func loadView() {
         super.loadView()
-
+        
         self.view = self.subjectCreationView
     }
     
@@ -54,31 +56,18 @@ class SubjectCreationViewController: UIViewController{
         
         self.setNavigationItems()
         
-        if(self.viewModel.currentEditingSubject != nil){
-            self.navigationItem.title = String(localized: "editSubject")
-            let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(deleteSubject))
-            deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
-            navigationItem.rightBarButtonItem = deleteButton
-            
-        } else {
-            self.navigationItem.title = String(localized: "newSubject")
-         
-        }
-        
-        self.subjectCreationView.button.addTarget(self, action: #selector(saveSubject), for: .touchUpInside)
-        
         self.viewModel.selectedSubjectColor.bind { [weak self] selectedColor in
             guard let self else { return }
             
             self.reloadTable()
         }
+        
+        if self.viewModel.currentEditingSubject == nil {
+            self.subjectCreationView.hideDeleteButton()
+        }
     }
     
-    @objc func deleteSubject(){
-       showDeleteAlert(for: self.viewModel.currentEditingSubject!)
-    }
-    
-    private func showDeleteAlert(for subject: Subject) {
+    func showDeleteAlert(for subject: Subject) {
         let title = String(localized: "deleteSubjectTitle")
         
         let message = String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subject.unwrappedName)
@@ -101,6 +90,8 @@ class SubjectCreationViewController: UIViewController{
     
     // MARK: - Methods
     private func setNavigationItems() {
+        self.navigationItem.title = self.viewModel.currentEditingSubject != nil ? String(localized: "editSubject") : String(localized: "newSubject")
+        
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
         
         cancelButton.setTitleTextAttributes([
@@ -114,28 +105,7 @@ class SubjectCreationViewController: UIViewController{
         self.coordinator?.dismiss(animated: true)
     }
     
-    @objc func saveSubject() {
-        guard let name = self.subjectName, !name.isEmpty else {
-            showAlert(message: String(localized: "subjectCreationNoName"))
-            return
-        }
-        
-        if self.viewModel.currentEditingSubject != nil {
-            self.viewModel.updateSubject(name: name, color: self.viewModel.selectedSubjectColor.value)
-        } else {
-            let existingSubjects = viewModel.subjects.value
-            if existingSubjects.contains(where: { $0.name?.lowercased() == name.lowercased() }) {
-                showAlert(message: String(localized: "subjectCreationUsedName"))
-                return
-            }
-            
-            self.viewModel.createSubject(name: name, color: self.viewModel.selectedSubjectColor.value)
-        }
-        
-        self.coordinator?.dismiss(animated: true)
-    }
-    
-    private func showAlert(message: String) {
+    func showAlert(message: String) {
         let alert = UIAlertController(title: String(localized: "subjectCreationTitle"), message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -206,7 +176,7 @@ extension SubjectCreationViewController {
                                 height: 0)
         
         popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: .up, sourceRect: sourceRect, delegate: self)
-
+        
         let paddedView = UIView(frame: CGRect(x: 0, y: 0, width: 190, height: 195))
         paddedView.translatesAutoresizingMaskIntoConstraints = false
         popoverVC.view = paddedView
@@ -286,15 +256,12 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
                 }
                 
                 cell.backgroundColor = .clear
-//                cell.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
-//                cell.layer.borderWidth = 1
-            cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.label.withAlphaComponent(0.2))
+                cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.label.withAlphaComponent(0.2))
                 cell.layer.masksToBounds = true
-                    
+                
                 cell.delegate = self
                 
                 return cell
-            
             default:
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: ColorPickerCell.identifier, for: indexPath) as? ColorPickerCell else {
                     fatalError("Could not dequeue cell")

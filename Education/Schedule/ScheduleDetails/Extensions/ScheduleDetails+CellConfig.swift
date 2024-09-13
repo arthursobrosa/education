@@ -108,24 +108,15 @@ extension ScheduleDetailsViewController {
                     return label
                 }
             
-                let datePicker = UIDatePicker()
-                self.changeDatePickerBackgroundView(datePicker)
+                let datePicker = FakeDatePicker()
                 datePicker.datePickerMode = .time
                 datePicker.date = row == 1 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
                 datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
                 datePicker.addTarget(self, action: #selector(datePickerEditionBegan(_:)), for: .editingDidBegin)
                 datePicker.addTarget(self, action: #selector(datePickerEditionEnded), for: .editingDidEnd)
                 datePicker.tag = row
-                datePicker.translatesAutoresizingMaskIntoConstraints = false
                 
-                let containerView = UIView(frame: datePicker.bounds)
-                containerView.addSubview(datePicker)
-                
-                NSLayoutConstraint.activate([
-                    datePicker.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: datePicker.bounds.width * 0.05)
-                ])
-                
-                return containerView
+                return datePicker
             case 1:
                 let label = self.createLabel(with: self.viewModel.selectedSubjectName)
                 
@@ -141,19 +132,6 @@ extension ScheduleDetailsViewController {
                 return toggle
             default:
                 return nil
-        }
-    }
-    
-    private func changeDatePickerBackgroundView(_ datePicker: UIDatePicker) {
-        datePicker.subviews.first?.subviews.forEach { grayView in
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .systemBackground
-            grayView.insertSubview(view, at: 0)
-            view.topAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.topAnchor).isActive = true
-            view.bottomAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.bottomAnchor).isActive = true
-            view.leadingAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.leadingAnchor).isActive = true
-            view.trailingAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.trailingAnchor).isActive = true
         }
     }
 }

@@ -8,11 +8,18 @@
 import Foundation
 
 protocol TestDelegate: AnyObject {
-    func saveButtonTapped()
+    func didTapDeleteButton()
+    func didTapSaveButton()
 }
 
 extension TestPageViewController: TestDelegate {
-    func saveButtonTapped() {
+    func didTapDeleteButton() {
+        self.viewModel.removeTest()
+        
+        self.coordinator?.dismiss(animated: true)
+    }
+    
+    func didTapSaveButton() {
         let totalQuestions = self.viewModel.totalQuestions
         let rightQuestions = self.viewModel.rightQuestions
         

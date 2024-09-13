@@ -33,6 +33,8 @@ extension TestPageViewController {
         switch section {
             case 0:
                 let datePicker = FakeDatePicker()
+                datePicker.maximumDate = Date()
+                datePicker.datePickerMode = .date
                 datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
                 datePicker.date = self.viewModel.date
                 

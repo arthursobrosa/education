@@ -124,6 +124,7 @@
 "testDate" = "Date";
 "rightQuestions" = "Right Questions";
 "totalQuestions" = "Total Questions";
+"deleteTest" = "Delete test";
 
 // MARK: - Settings
 "deactivateTitle" = "Deactivate on your phone!";
