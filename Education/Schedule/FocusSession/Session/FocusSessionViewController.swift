@@ -72,6 +72,13 @@ class FocusSessionViewController: UIViewController {
         
         ActivityManager.shared.isShowingActivity = false
         
+        switch ActivityManager.shared.timerCase {
+            case .pomodoro:
+                self.focusSessionView.showPomodoroLabel()
+            default:
+                break
+        }
+        
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
@@ -182,14 +189,13 @@ class FocusSessionViewController: UIViewController {
         self.view.addGestureRecognizer(tapGesture)
     }
     
-    func hideEndNotification(){
+    func hideEndNotification() {
         self.focusSessionView.showEndNotification(true)
     }
     
-    func hideFinishNotification(){
+    func hideFinishNotification() {
         self.focusSessionView.showFinishNotification(true)
     }
-    
     
     @objc func viewWasTapped() {
         self.viewModel.prefersStatusBarHidden.toggle()
@@ -218,7 +224,7 @@ extension FocusSessionViewController {
     }
     
     private func handleTimerEnd() {
-        self.focusSessionView.hidePauseResumeButton()
+        self.focusSessionView.disablePauseResumeButton()
         
         if ActivityManager.shared.isAlarmOn {
             let audioService = AudioService()

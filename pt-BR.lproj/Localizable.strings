@@ -92,7 +92,8 @@
 "pomodoroInterval" = "Intervalo";
 "pomodoroRepetitions" = "Repetições";
 "deleteActivity" = "Apagar atividade";
-
+"focusTime" = "Tempo de Foco";
+"pauseTime" = "Tempo de Pausa";
 
 // MARK: - Subjects
 "subject" = "Matéria";
