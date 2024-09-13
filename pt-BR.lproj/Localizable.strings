@@ -140,7 +140,7 @@
 "firstWeekDay" = "Primeiro dia da semana";
 
 // MARK: - Modal
-"startButton" = "Iniciar agora";
+"startButton" = "Iniciar atividade";
 
 //MARK: - GRAPH
 "totalTime" = "Tempo Total de Estudo:";

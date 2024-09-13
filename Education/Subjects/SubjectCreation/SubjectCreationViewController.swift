@@ -170,8 +170,8 @@ extension SubjectCreationViewController {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
         
         let popoverVC = Popover(contentSize: CGSize(width: 190, height: 195))
-        let sourceRect = CGRect(x: cell.bounds.midX,
-                                y: cell.bounds.midY,
+        let sourceRect = CGRect(x: cell.bounds.maxX - 31,
+                                y: cell.bounds.midY + 15,
                                 width: 0,
                                 height: 0)
         

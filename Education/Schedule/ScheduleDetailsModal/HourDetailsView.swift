@@ -10,26 +10,26 @@ import UIKit
 class HourDetailsView: UIView {
     
     
-    private let startTime: UILabel = {
+    let startTime: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnBold, size: 22)
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 20)
         lbl.textColor = .label
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
     }()
     
-    private let endTime: UILabel = {
+    let endTime: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnBold, size: 22)
+        lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 20)
         lbl.textColor = .label
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
     }()
     
-    private let bracket: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal1")
+     let bracket: UIImageView = {
+        let img = UIImage(named: "ScheduleDetailsModal1")!.withRenderingMode(.alwaysTemplate)
         
         let imgView = UIImageView(image: img)
 
@@ -39,8 +39,8 @@ class HourDetailsView: UIView {
     }()
     
     
-    private let lineStartTime: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal2")
+     let lineStartTime: UIImageView = {
+         let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
         
         let imgView = UIImageView(image: img)
         
@@ -49,8 +49,8 @@ class HourDetailsView: UIView {
         return imgView
     }()
     
-    private let lineEndTime: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal2")
+     let lineEndTime: UIImageView = {
+        let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
         
         let imgView = UIImageView(image: img)
         
@@ -68,7 +68,7 @@ class HourDetailsView: UIView {
         
         self.setupUI()
         
-        self.backgroundColor = color.withAlphaComponent(0.6)
+        self.backgroundColor = color.withAlphaComponent(0.3)
        
         self.layer.cornerRadius = 14
     }

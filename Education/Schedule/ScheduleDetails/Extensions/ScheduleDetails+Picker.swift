@@ -26,17 +26,28 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         return 0
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var pickerLabel = view as? UILabel
+
+        if (pickerLabel == nil){
+            pickerLabel = UILabel()
+            pickerLabel!.font = UIFont(name: Fonts.darkModeOnRegular, size: 20)
+            pickerLabel!.textColor = .gray
+            pickerLabel!.textAlignment = .center
+        }
+        
         switch pickerView.tag {
             case 0:
-                return self.viewModel.days[row]
+                pickerLabel!.text = self.viewModel.days[row]
+                return pickerLabel!
             case 1:
-                return self.viewModel.subjectsNames[row]
+                pickerLabel!.text = self.viewModel.subjectsNames[row]
+                return pickerLabel!
             default:
                 break
         }
-        
-        return String()
+
+        return UILabel()
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
