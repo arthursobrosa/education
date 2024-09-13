@@ -58,10 +58,8 @@
 		6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */; };
 		683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683812ED2C481A740062067A /* SplashCoordinator.swift */; };
 		683812F02C481A9C0062067A /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683812EF2C481A9C0062067A /* SplashViewController.swift */; };
-		683812F22C481ADA0062067A /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683812F12C481ADA0062067A /* SplashView.swift */; };
 		683812F42C481C580062067A /* ShowingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683812F32C481C580062067A /* ShowingTabBar.swift */; };
 		683812F62C48329D0062067A /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683812F52C48329D0062067A /* UserDefaults.swift */; };
-		683812FB2C483C700062067A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 683812FA2C483C700062067A /* Lottie */; };
 		683812FF2C483EDE0062067A /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 683812FE2C483EDE0062067A /* loading.json */; };
 		683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B45382C1B6F3A00663912 /* AppDelegate.swift */; };
 		683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453A2C1B6F3A00663912 /* SceneDelegate.swift */; };
@@ -274,7 +272,6 @@
 		6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCodeProtocol.swift; sourceTree = "<group>"; };
 		683812ED2C481A740062067A /* SplashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashCoordinator.swift; sourceTree = "<group>"; };
 		683812EF2C481A9C0062067A /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
-		683812F12C481ADA0062067A /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		683812F32C481C580062067A /* ShowingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTabBar.swift; sourceTree = "<group>"; };
 		683812F52C48329D0062067A /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		683812FE2C483EDE0062067A /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
@@ -428,7 +425,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				683812FB2C483C700062067A /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,7 +631,6 @@
 			children = (
 				683812ED2C481A740062067A /* SplashCoordinator.swift */,
 				683812EF2C481A9C0062067A /* SplashViewController.swift */,
-				683812F12C481ADA0062067A /* SplashView.swift */,
 			);
 			path = Splash;
 			sourceTree = "<group>";
@@ -1069,7 +1064,6 @@
 			);
 			name = Education;
 			packageProductDependencies = (
-				683812FA2C483C700062067A /* Lottie */,
 			);
 			productName = Education;
 			productReference = 683B45352C1B6F3A00663912 /* Education.app */;
@@ -1268,7 +1262,6 @@
 				680038EE2C49F68600851926 /* EmptyView.swift in Sources */,
 				684282242C63B83300CEEF1C /* SettingsViewController.swift in Sources */,
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
-				683812F22C481ADA0062067A /* SplashView.swift in Sources */,
 				68C5726D2C8B55ED00B9D0A4 /* PaddedTextField.swift in Sources */,
 				68A8167B2C769277001D5F1E /* InputTextTableViewCell.swift in Sources */,
 				683B5BE22C682B270065121E /* DismissingAfterModal.swift in Sources */,
@@ -1675,14 +1668,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		683812FA2C483C700062067A /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 683812F92C483C700062067A /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */ = {
