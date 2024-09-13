@@ -8,6 +8,8 @@
 import UIKit
 
 class SubjectCreationView: UIView {
+    weak var delegate: SubjectCreationDelegate?
+    
     // MARK: - UI Components
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
@@ -18,8 +20,22 @@ class SubjectCreationView: UIView {
         return table
     }()
     
-     let button: ButtonComponent = {
+    private lazy var deleteButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: String(localized: "deleteSubjectTitle"), textColor: UIColor(named: "FocusSettingsColor"))
+        bttn.backgroundColor = .clear
+        bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
+        bttn.layer.borderWidth = 2
+
+        bttn.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
+    }()
+    
+    private lazy var saveButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "save"))
+        button.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -51,29 +67,43 @@ class SubjectCreationView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Methods
+    @objc private func didTapDeleteButton() {
+        self.delegate?.didTapDeleteButton()
+    }
+    
+    @objc private func didTapSaveButton() {
+        self.delegate?.didTapSaveButton()
+    }
+    
+    func hideDeleteButton() {
+        self.deleteButton.isHidden = true
+    }
 }
 
+// MARK: - UI Setup
 extension SubjectCreationView: ViewCodeProtocol {
-    // MARK: - UI Setup
     func setupUI() {
         self.addSubview(tableView)
-        self.addSubview(button)
-//        tableView.backgroundColor = .red
+        self.addSubview(deleteButton)
+        self.addSubview(saveButton)
 
         NSLayoutConstraint.activate([
-            
-//            button.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            button.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40),
-            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 5/28),
-//            button.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
-            
-            
             tableView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -4),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 4),
-            tableView.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -16)
+            tableView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -16),
+            
+            deleteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 5/28),
+            deleteButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -12),
+            
+            saveButton.leadingAnchor.constraint(equalTo: deleteButton.leadingAnchor),
+            saveButton.trailingAnchor.constraint(equalTo: deleteButton.trailingAnchor),
+            saveButton.heightAnchor.constraint(equalTo: deleteButton.heightAnchor),
+            saveButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40),
         ])
     }
 }

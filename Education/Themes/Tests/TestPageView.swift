@@ -20,10 +20,25 @@ class TestPageView: UIView {
         return table
     }()
     
+    private lazy var deleteButton: ButtonComponent = {
+        let bttn = ButtonComponent(title: String(localized: "deleteTest"), textColor: UIColor(named: "FocusSettingsColor"))
+        bttn.backgroundColor = .clear
+        bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
+        bttn.layer.borderWidth = 2
+
+        bttn.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
+    }()
+    
     private lazy var saveButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String(localized: "save"))
         
-        bttn.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        bttn.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()
@@ -42,8 +57,16 @@ class TestPageView: UIView {
     }
     
     // MARK: - Methods
-    @objc private func saveButtonTapped() {
-        self.delegate?.saveButtonTapped()
+    @objc private func didTapDeleteButton() {
+        self.delegate?.didTapDeleteButton()
+    }
+    
+    @objc private func didTapSaveButton() {
+        self.delegate?.didTapSaveButton()
+    }
+    
+    func hideDeleteButton() {
+        self.deleteButton.isHidden = true
     }
 }
 
@@ -51,6 +74,7 @@ class TestPageView: UIView {
 extension TestPageView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(tableView)
+        self.addSubview(deleteButton)
         self.addSubview(saveButton)
         
         NSLayoutConstraint.activate([
@@ -59,9 +83,14 @@ extension TestPageView: ViewCodeProtocol {
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             tableView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),
             
-            saveButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
-            saveButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -28),
-            saveButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 55/770),
+            deleteButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
+            deleteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -28),
+            deleteButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 55/770),
+            deleteButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -12),
+            
+            saveButton.leadingAnchor.constraint(equalTo: deleteButton.leadingAnchor),
+            saveButton.trailingAnchor.constraint(equalTo: deleteButton.trailingAnchor),
+            saveButton.heightAnchor.constraint(equalTo: deleteButton.heightAnchor),
             saveButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
     }

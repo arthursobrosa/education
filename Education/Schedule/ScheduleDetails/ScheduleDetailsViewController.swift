@@ -60,36 +60,30 @@ class ScheduleDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         self.setNavigationItems()
+        
+        if self.viewModel.schedule == nil {
+            self.scheduleDetailsView.hideDeleteButton()
+        }
     }
     
     // MARK: - Methods
     private func setNavigationItems() {
         self.navigationItem.title = self.viewModel.getTitleName()
         
-        guard let _ = self.viewModel.schedule else { return }
+        self.navigationController?.navigationBar.titleTextAttributes = [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
         
-        let deleteButton = UIBarButtonItem(image: UIImage(systemName: "trash.fill"), style: .plain, target: self, action: #selector(didTapDeleteButton))
-        deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
+        let cancelButton = UIButton(configuration: .plain())
+        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.secondaryLabel])
+        cancelButton.setAttributedTitle(cancelAttributedString, for: .normal)
+        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
-        self.navigationItem.rightBarButtonItems = [deleteButton]
+        let cancelItem = UIBarButtonItem(customView: cancelButton)
+        
+        self.navigationItem.leftBarButtonItems = [cancelItem]
     }
     
-    @objc private func didTapDeleteButton() {
-        let alertController = UIAlertController(title: "Schedule Deletion", message: "Are you sure you want to delete this schedule?", preferredStyle: .alert)
-        
-        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
-            guard let schedule = self.viewModel.schedule else { return }
-            NotificationService.shared.cancelNotifications(forDate: schedule.unwrappedStartTime)
-            self.viewModel.removeSchedule(schedule)
-            self.coordinator?.dismiss(animated: true)
-        }
-        
-        let noAction = UIAlertAction(title: "No", style: .cancel)
-        
-        alertController.addAction(yesAction)
-        alertController.addAction(noAction)
-        
-        self.present(alertController, animated: true)
+    @objc private func didTapCancelButton() {
+        self.coordinator?.dismiss(animated: true)
     }
     
     @objc func datePickerChanged(_ sender: UIDatePicker) {
@@ -167,9 +161,9 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         switch section {
             case 0:
                 return 3
-            case 1:
+            case 2:
                 return 2
-            case 2, 3:
+            case 1, 3:
                 return 1
             default:
                 break
@@ -204,7 +198,7 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                         self.present(popover, animated: true)
                     }
                 }
-            case 2:
+            case 1:
                 if let popover = self.createSubjectPopover(forTableView: tableView, at: indexPath) {
                     self.isPopoverOpen.toggle()
                     self.present(popover, animated: true)
@@ -212,5 +206,25 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
             default:
                 break
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = UIColor.clear
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 11
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
     }
 }

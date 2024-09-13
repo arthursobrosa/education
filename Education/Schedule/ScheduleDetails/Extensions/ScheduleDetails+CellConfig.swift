@@ -16,7 +16,7 @@ extension ScheduleDetailsViewController {
             case 0:
                 switch row {
                     case 0:
-                        return String(localized: "date")
+                        return String(localized: "dayOfWeek")
                     case 1:
                         return String(localized: "startDate")
                     case 2:
@@ -25,9 +25,9 @@ extension ScheduleDetailsViewController {
                         return String()
                 }
             case 1:
-                return row == 0 ? String(localized: "alarm5Min") : String(localized: "alarmAtTime")
-            case 2:
                 return String(localized: "subject")
+            case 2:
+                return row == 0 ? String(localized: "alarmAtTime"): String(localized: "alarm5Min")
             case 3:
                 return String(localized: "blockApps")
             default:
@@ -38,9 +38,9 @@ extension ScheduleDetailsViewController {
     @objc private func switchToggled(_ sender: UISwitch) {
         switch sender.tag {
             case 0:
-                self.viewModel.alarmBefore = sender.isOn
+                self.viewModel.alarmInTime = sender.isOn
                 
-                guard self.viewModel.alarmBefore else { return }
+                guard self.viewModel.alarmInTime else { return }
                 
                 NotificationService.shared.requestAuthorization { granted, error in
                     if granted {
@@ -50,9 +50,9 @@ extension ScheduleDetailsViewController {
                     }
                 }
             case 1:
-                self.viewModel.alarmInTime = sender.isOn
+                self.viewModel.alarmBefore = sender.isOn
                 
-                guard self.viewModel.alarmInTime else { return }
+                guard self.viewModel.alarmBefore else { return }
                 
                 NotificationService.shared.requestAuthorization { granted, error in
                     if granted {
@@ -68,33 +68,30 @@ extension ScheduleDetailsViewController {
         }
     }
     
-    func createAttributedLabel(withText text: String, symbolName: String, symbolColor: UIColor, textColor: UIColor) -> UIView {
+    func createLabel(with text: String) -> UILabel {
         let label = UILabel()
-        
-        // Cria a string de texto com a cor do texto
-        let textAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: textColor
-        ]
-        let textString = NSAttributedString(string: "\(text) ", attributes: textAttributes)
-        
-        // Cria o NSTextAttachment para o símbolo
-        let attachment = NSTextAttachment()
-        let image = UIImage(systemName: symbolName)?.withTintColor(symbolColor, renderingMode: .alwaysOriginal)
-        attachment.image = image
-        let imageString = NSAttributedString(attachment: attachment)
-        
-        // Combina o texto e o símbolo
-        let combinedString = NSMutableAttributedString()
-        combinedString.append(textString)
-        combinedString.append(imageString)
-        
-        // Configura o UILabel
-        label.attributedText = combinedString
+        label.text = text
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.textColor = .secondaryLabel
         label.sizeToFit()
         
-        // Cria uma UIView e adiciona o UILabel a ela
-        let containerView = UIView(frame: label.bounds)
-        containerView.addSubview(label)
+        return label
+    }
+    
+    private func createToggle(withTag tag: Int, isOn: Bool) -> UIView {
+        let toggle = UISwitch()
+        toggle.isOn = isOn
+        toggle.tag = tag
+        toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .touchUpInside)
+        toggle.onTintColor = UIColor(named: "bluePicker")
+        toggle.translatesAutoresizingMaskIntoConstraints = false
+        
+        let containerView = UIView(frame: toggle.bounds)
+        containerView.addSubview(toggle)
+        
+        NSLayoutConstraint.activate([
+            toggle.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: toggle.bounds.width * 0.05)
+        ])
         
         return containerView
     }
@@ -106,13 +103,12 @@ extension ScheduleDetailsViewController {
         switch section {
             case 0:
                 if row == 0 {
-                    let containerView = self.createAttributedLabel(withText: "\(self.viewModel.selectedDay)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
+                    let label = self.createLabel(with: self.viewModel.selectedDay)
                     
-                    return containerView
+                    return label
                 }
             
-                let datePicker = UIDatePicker()
-                self.changeDatePickerBackgroundView(datePicker)
+                let datePicker = FakeDatePicker()
                 datePicker.datePickerMode = .time
                 datePicker.date = row == 1 ? self.viewModel.selectedStartTime : self.viewModel.selectedEndTime
                 datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
@@ -122,40 +118,20 @@ extension ScheduleDetailsViewController {
                 
                 return datePicker
             case 1:
-                let toggle = UISwitch()
-                toggle.isOn = row == 0 ? self.viewModel.alarmBefore : self.viewModel.alarmInTime
-                toggle.tag = row == 0 ? 0 : 1
-                toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
-                toggle.onTintColor = UIColor(named: "bluePicker")
+                let label = self.createLabel(with: self.viewModel.selectedSubjectName)
+                
+                return label
+            case 2:
+                let isOn = row == 0 ? self.viewModel.alarmBefore : self.viewModel.alarmInTime
+                let toggle = self.createToggle(withTag: row, isOn: isOn)
                 
                 return toggle
-            case 2:
-                let containerView = createAttributedLabel(withText: "\(self.viewModel.selectedSubjectName)", symbolName: "chevron.up.chevron.down", symbolColor: .secondaryLabel, textColor: .secondaryLabel)
-                
-                return containerView
             case 3:
-                let toggle = UISwitch()
-                toggle.isOn = self.viewModel.blocksApps
-                toggle.tag = 2
-                toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .touchUpInside)
-                toggle.onTintColor = UIColor(named: "bluePicker")
+                let toggle = self.createToggle(withTag: 2, isOn: self.viewModel.blocksApps)
                 
                 return toggle
             default:
                 return nil
-        }
-    }
-    
-    private func changeDatePickerBackgroundView(_ datePicker: UIDatePicker) {
-        datePicker.subviews.first?.subviews.forEach { grayView in
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .systemBackground
-            grayView.insertSubview(view, at: 0)
-            view.topAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.topAnchor).isActive = true
-            view.bottomAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.bottomAnchor).isActive = true
-            view.leadingAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.leadingAnchor).isActive = true
-            view.trailingAnchor.constraint(equalTo: grayView.safeAreaLayoutGuide.trailingAnchor).isActive = true
         }
     }
 }

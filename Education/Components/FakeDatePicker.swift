@@ -8,6 +8,12 @@
 import UIKit
 
 class FakeDatePicker: UIDatePicker {
+    override var date: Date {
+        didSet {
+            self.dateLabel.text = self.getDateString(from: date)
+        }
+    }
+    
     private let dateContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
@@ -19,10 +25,9 @@ class FakeDatePicker: UIDatePicker {
         return view
     }()
     
-    private lazy var dateLabel: UILabel = {
+    private let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        label.text = self.getDateString()
         label.textColor = .secondaryLabel
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -32,9 +37,6 @@ class FakeDatePicker: UIDatePicker {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.datePickerMode = .date
-        self.maximumDate = Date()
         
         self.addTarget(self, action: #selector(datePickerDidChange), for: .valueChanged)
         
@@ -46,15 +48,26 @@ class FakeDatePicker: UIDatePicker {
     }
     
     @objc private func datePickerDidChange() {
-        self.dateLabel.text = self.getDateString()
+        self.dateLabel.text = self.getDateString(from: self.date)
     }
     
-    private func getDateString() -> String {
+    private func getDateString(from date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
-        dateFormatter.setLocalizedDateFormatFromTemplate("MMddyyyy")
+        
+        if self.datePickerMode == .date {
+            dateFormatter.setLocalizedDateFormatFromTemplate("MMddyyyy")
+        } else {
+            let is24HourFormat = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: Locale.current)?.contains("a") == false
 
-        return dateFormatter.string(from: self.date)
+            if is24HourFormat {
+                dateFormatter.dateFormat = "HH:mm"
+            } else {
+                dateFormatter.dateFormat = "hh:mm a"
+            }
+        }
+        
+        return dateFormatter.string(from: date)
     }
 }
 

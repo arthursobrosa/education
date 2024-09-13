@@ -32,8 +32,7 @@ class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
     }()
     
     // MARK: - Methods
-    
-    @objc func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
+    @objc private func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
         switch sender.tag {
         case 0:
             self.textField.resignFirstResponder()

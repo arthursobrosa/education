@@ -52,6 +52,8 @@ class NewThemeView: UIView {
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
         button.layer.borderWidth = 2
         
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
         return button
     }()
     
