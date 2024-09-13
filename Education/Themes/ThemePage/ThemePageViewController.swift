@@ -80,16 +80,7 @@ class ThemePageViewController: UIViewController {
         
         let addItem = UIBarButtonItem(customView: addButton)
         
-        let deleteButton = UIButton()
-        deleteButton.setImage(UIImage(systemName: "trash.fill"), for: .normal)
-        deleteButton.setPreferredSymbolConfiguration(.init(pointSize: 30), forImageIn: .normal)
-        deleteButton.imageView?.contentMode = .scaleAspectFit
-        deleteButton.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
-        deleteButton.tintColor = UIColor(named: "FocusSettingsColor")
-        
-        let deleteItem = UIBarButtonItem(customView: deleteButton)
-        
-        self.navigationItem.rightBarButtonItems = [deleteItem, addItem]
+        self.navigationItem.rightBarButtonItems = [addItem]
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBackButton))
         backButton.tintColor = .label
@@ -99,11 +90,6 @@ class ThemePageViewController: UIViewController {
     
     @objc private func addTestButtonTapped() {
         self.coordinator?.showTestPage(theme: self.viewModel.theme, test: nil)
-    }
-    
-    @objc private func didTapDeleteButton() {
-        self.viewModel.removeTheme()
-        self.coordinator?.dismiss(animated: true)
     }
     
     @objc private func didTapBackButton() {

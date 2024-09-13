@@ -66,7 +66,7 @@ extension ThemePageView: ViewCodeProtocol {
             customChart.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 40),
             customChart.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
             customChart.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
-            customChart.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 167/844),
+            customChart.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 200/844),
             
             tableView.topAnchor.constraint(equalTo: customChart.bottomAnchor, constant: 26),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),

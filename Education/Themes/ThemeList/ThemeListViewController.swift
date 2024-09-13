@@ -226,6 +226,21 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let theme = self.viewModel.themes.value[indexPath.section]
+        
+        let deleteButton = UIContextualAction(style: .normal, title: "") { _, _, boolValue in
+            self.viewModel.removeTheme(theme)
+            self.viewModel.fetchThemes()
+        }
+        
+        deleteButton.backgroundColor = .systemBackground
+        let image = UIImage(systemName: "trash.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
+        deleteButton.image = image
+        
+        return UISwipeActionsConfiguration(actions: [deleteButton])
+    }
 }
 
 extension ThemeListViewController: UITextFieldDelegate {
