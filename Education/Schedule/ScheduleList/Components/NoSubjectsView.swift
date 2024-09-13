@@ -20,7 +20,7 @@ class NoSubjectsView: UIView {
     }()
     
     private let button: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "create"))
+        let button = ButtonComponent(title: String(localized: "create"), cornerRadius: 30)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

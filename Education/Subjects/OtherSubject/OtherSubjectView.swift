@@ -25,7 +25,7 @@ class OtherSubjectView: UIView {
     }()
     
     private lazy var deleteButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "deleteOther"), textColor: UIColor(named: "redPicker")! )
+        let button = ButtonComponent(title: String(localized: "deleteOther"), textColor: UIColor(named: "redPicker")!, cornerRadius: 30 )
         button.backgroundColor = .systemGray5
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(deleteTime), for: .touchUpInside)

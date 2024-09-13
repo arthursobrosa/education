@@ -21,7 +21,7 @@ class SubjectCreationView: UIView {
     }()
     
     private lazy var deleteButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "deleteSubjectTitle"), textColor: UIColor(named: "FocusSettingsColor"))
+        let bttn = ButtonComponent(title: String(localized: "deleteSubjectTitle"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 32)
         bttn.backgroundColor = .clear
         bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
         bttn.layer.borderWidth = 2
@@ -34,7 +34,7 @@ class SubjectCreationView: UIView {
     }()
     
     private lazy var saveButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "save"))
+        let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 32)
         button.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

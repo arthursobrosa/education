@@ -72,7 +72,7 @@ class FocusSelectionView: UIView {
     }()
     
     private lazy var continueButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .secondaryLabel)
+        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .secondaryLabel, cornerRadius: 26)
         bttn.isEnabled = false
         
         bttn.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)

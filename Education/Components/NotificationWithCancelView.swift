@@ -24,7 +24,7 @@ class NotificationWithCancelView: UIView {
     }()
     
     private lazy var yesButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "yes"))
+        let button = ButtonComponent(title: String(localized: "yes"), cornerRadius: 30)
         
         button.addTarget(self.delegate, action: #selector(FocusSessionDelegate.didFinish), for: .touchUpInside)
         
@@ -34,7 +34,7 @@ class NotificationWithCancelView: UIView {
     }()
     
     private lazy var cancelButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "cancel"), textColor: UIColor(named: "FocusSettingsColor"))
+        let button = ButtonComponent(title: String(localized: "cancel"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 30)
         
         button.backgroundColor = UIColor.systemGray5
         
