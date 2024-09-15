@@ -14,7 +14,6 @@
 
 // MARK: - EmptyView
 "emptyStudyTime" = "No study hours recorded";
-"emptyTest" = "There are no tests assigned for this exam";
 "emptyCreateSubject" = "Create new subject";
 
 // MARK: - TabBar
@@ -131,6 +130,7 @@
 "totalQuestions" = "Total Questions";
 "deleteTest" = "Delete test";
 "emptyTheme" = "You haven't recorded any exams yet";
+"emptyTest" = "You haven't recorded any tests yet";
 
 // MARK: - Settings
 "deactivateTitle" = "Deactivate on your phone!";

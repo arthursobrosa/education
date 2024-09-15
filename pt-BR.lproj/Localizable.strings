@@ -14,7 +14,6 @@
 
 // MARK: - EmptyView
 "emptyStudyTime" = "Nenhuma hora de estudo registrada";
-"emptyTest" = "Não há nenhum teste atribuído a essa prova";
 "emptyCreateSubject" = "Criar nova matéria";
 
 // MARK: - TabBar
@@ -131,6 +130,7 @@
 "totalQuestions" = "Total de Questões";
 "deleteTest" = "Apagar teste";
 "emptyTheme" = "Você ainda não tem nenhuma prova registrada aqui";
+"emptyTest" = "Você ainda não tem nenhum registro de teste";
 
 // MARK: - Settings
 "deactivateTitle" = "Desative no seu celular!";
