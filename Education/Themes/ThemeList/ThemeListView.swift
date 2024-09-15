@@ -26,14 +26,13 @@ class ThemeListView: UIView {
         return table
     }()
     
-    let emptyView: UILabel = {
-        let label = UILabel()
-        label.text = String(localized: "emptyTheme")
-        label.font = UIFont(name: Fonts.darkModeOnBold, size: 16)!
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    let emptyView: NoThemesView = {
+        let view = NoThemesView()
+        view.noThemesCase = .theme
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
     }()
     
     override init(frame: CGRect) {

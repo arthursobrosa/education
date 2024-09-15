@@ -33,6 +33,15 @@ class ThemePageView: UIView {
     
     var tableView: CustomTableView?
     
+    let emptyView: NoThemesView = {
+        let view = NoThemesView()
+        view.noThemesCase = .test
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)

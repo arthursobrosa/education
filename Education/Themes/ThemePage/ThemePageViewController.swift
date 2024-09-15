@@ -32,8 +32,6 @@ class ThemePageViewController: UIViewController {
         return themeView
     }()
     
-    private let emptyView = EmptyView(message: String(localized: "emptyTest"))
-    
     // MARK: - Initialization
     init(viewModel: ThemePageViewModel) {
         self.viewModel = viewModel
@@ -86,10 +84,6 @@ class ThemePageViewController: UIViewController {
         backButton.tintColor = .label
         
         self.navigationItem.leftBarButtonItems = [backButton]
-    }
-    
-    @objc private func addTestButtonTapped() {
-        self.coordinator?.showTestPage(theme: self.viewModel.theme, test: nil)
     }
     
     @objc private func didTapBackButton() {
@@ -178,7 +172,7 @@ extension ThemePageViewController: ViewCodeProtocol {
             self.setChart()
         }
         
-        self.addContentSubview(isEmpty ? self.emptyView : self.themePageView)
+        self.addContentSubview(isEmpty ? self.themePageView.emptyView : self.themePageView)
     }
     
     private func addContentSubview(_ subview: UIView) {

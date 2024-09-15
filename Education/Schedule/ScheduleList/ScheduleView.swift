@@ -43,12 +43,17 @@ class ScheduleView: UIView {
     let dailyScheduleView = DailyScheduleView()
     let weeklyScheduleCollection = WeeklyScheduleCollectionView()
     
-    var emptyView = EmptyView(message: String(localized: "emptyDaySchedule"))
+    var emptyView: NoSchedulesView = {
+        let view = NoSchedulesView()
+        view.noSchedulesCase = .day
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
     
     lazy var noSubjectsView: NoSubjectsView = {
         let view = NoSubjectsView()
-       
-        view.setButtonTarget(target: self, action: #selector(emptyViewButtonTapped))
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -122,9 +127,7 @@ class ScheduleView: UIView {
     }
     
     func changeEmptyView(isDaily: Bool) {
-        let message = isDaily ? String(localized: "emptyDaySchedule") : String(localized: "emptyWeekSchedule")
-        
-        self.emptyView = EmptyView(message: message)
+        self.emptyView.noSchedulesCase = isDaily ? .day : .week
     }
 }
 

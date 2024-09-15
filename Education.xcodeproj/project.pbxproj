@@ -118,6 +118,8 @@
 		689388942C6423A7007EE922 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388932C6423A7007EE922 /* ActivityView.swift */; };
 		689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388982C642B23007EE922 /* TabBarController+Delegate.swift */; };
 		68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A451402C61143B00209786 /* CustomDatePickerView.swift */; };
+		68A80B642C976FEF00CC6D48 /* NoSchedulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A80B632C976FEF00CC6D48 /* NoSchedulesView.swift */; };
+		68A80B672C97785B00CC6D48 /* NoThemesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A80B662C97785B00CC6D48 /* NoThemesView.swift */; };
 		68A8167B2C769277001D5F1E /* InputTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */; };
 		68A8167D2C769296001D5F1E /* ColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8167C2C769296001D5F1E /* ColorPickerCell.swift */; };
 		68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A816852C772140001D5F1E /* SubjectCreationViewController+Delegate.swift */; };
@@ -341,6 +343,8 @@
 		689388932C6423A7007EE922 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		689388982C642B23007EE922 /* TabBarController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarController+Delegate.swift"; sourceTree = "<group>"; };
 		68A451402C61143B00209786 /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
+		68A80B632C976FEF00CC6D48 /* NoSchedulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSchedulesView.swift; sourceTree = "<group>"; };
+		68A80B662C97785B00CC6D48 /* NoThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoThemesView.swift; sourceTree = "<group>"; };
 		68A8167A2C769277001D5F1E /* InputTextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextTableViewCell.swift; sourceTree = "<group>"; };
 		68A8167C2C769296001D5F1E /* ColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCell.swift; sourceTree = "<group>"; };
 		68A816852C772140001D5F1E /* SubjectCreationViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SubjectCreationViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -510,6 +514,7 @@
 				30F216A32C2C885A00B7114F /* ThemeListViewController.swift */,
 				68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */,
 				68C572682C8B493A00B9D0A4 /* ThemeListView.swift */,
+				68A80B652C97784A00CC6D48 /* Components */,
 			);
 			path = ThemeList;
 			sourceTree = "<group>";
@@ -698,6 +703,7 @@
 			isa = PBXGroup;
 			children = (
 				30D846EB2C8261D700E98130 /* NoSubjectsView.swift */,
+				68A80B632C976FEF00CC6D48 /* NoSchedulesView.swift */,
 				68C2D0022C47255700E2347A /* DayView.swift */,
 			);
 			path = Components;
@@ -883,6 +889,14 @@
 				68E617A72C6D6F4E00488237 /* ActivityManager.swift */,
 			);
 			path = Activity;
+			sourceTree = "<group>";
+		};
+		68A80B652C97784A00CC6D48 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				68A80B662C97785B00CC6D48 /* NoThemesView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		68A816792C769238001D5F1E /* Cells */ = {
@@ -1163,6 +1177,7 @@
 			files = (
 				CED3DB3A2C5C17EC00297062 /* FocusSelectionCoordinator.swift in Sources */,
 				CE394D0C2C6E83FF00A8B1F0 /* ScheduleDetailsModalViewModel.swift in Sources */,
+				68A80B642C976FEF00CC6D48 /* NoSchedulesView.swift in Sources */,
 				CE323B412C73BDC5004143E0 /* ScheduleNotificationCoordinator.swift in Sources */,
 				68B2CADC2C82529A00DF8069 /* CustomTabBar.swift in Sources */,
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
@@ -1299,6 +1314,7 @@
 				688C25792C66715A00150F7F /* FocusImediateView.swift in Sources */,
 				317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */,
 				68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */,
+				68A80B672C97785B00CC6D48 /* NoThemesView.swift in Sources */,
 				68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */,
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68833D9E2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift in Sources */,

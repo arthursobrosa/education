@@ -130,8 +130,14 @@ class ThemeListViewController: UIViewController {
             self.themeListView.tableView.reloadData()
         }
     }
-    
-    @objc private func addThemeButtonTapped() {
+}
+
+@objc protocol ThemeListDelegate: AnyObject {
+    func addThemeButtonTapped()
+}
+
+extension ThemeListViewController: ThemeListDelegate {
+    func addThemeButtonTapped() {
         self.coordinator?.showNewTheme(viewModel: self.viewModel)
     }
 }
