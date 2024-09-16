@@ -69,8 +69,8 @@ extension ScheduleDetailsModalViewController: ViewCodeProtocol {
         self.view.addSubview(scheduleModalView)
         
         NSLayoutConstraint.activate([
-            scheduleModalView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 327/844),
             scheduleModalView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 366/390),
+            scheduleModalView.heightAnchor.constraint(equalTo: scheduleModalView.widthAnchor, multiplier: 327/366),
             scheduleModalView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             scheduleModalView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])

@@ -8,39 +8,27 @@
 import UIKit
 
 class HourDetailsView: UIView {
-    
-    
-    let startTime: UILabel = {
-        let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 20)
-        lbl.textColor = .label
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        
-        return lbl
-    }()
-    
-    let endTime: UILabel = {
-        let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 20)
-        lbl.textColor = .label
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        
-        return lbl
-    }()
-    
-     let bracket: UIImageView = {
+    private let bracket: UIImageView = {
         let img = UIImage(named: "ScheduleDetailsModal1")!.withRenderingMode(.alwaysTemplate)
         
         let imgView = UIImageView(image: img)
-
+        
         imgView.translatesAutoresizingMaskIntoConstraints = false
         
         return imgView
     }()
     
+    private let startTime: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 20)
+        
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
     
-     let lineStartTime: UIImageView = {
-         let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
+    private let lineStartTime: UIImageView = {
+        let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
         
         let imgView = UIImageView(image: img)
         
@@ -49,7 +37,16 @@ class HourDetailsView: UIView {
         return imgView
     }()
     
-     let lineEndTime: UIImageView = {
+    private let endTime: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 20)
+        
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
+    
+    private let lineEndTime: UIImageView = {
         let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
         
         let imgView = UIImageView(image: img)
@@ -62,14 +59,22 @@ class HourDetailsView: UIView {
     init(starTime: String, endTime: String, color: UIColor) {
         super.init(frame: .zero)
         
-        self.startTime.text = starTime
-        self.endTime.text = endTime
+        self.bracket.tintColor = color.withAlphaComponent(0.6)
         
+        self.startTime.text = starTime
+        self.startTime.textColor = color.darker(by: 0.8)
+        
+        self.lineStartTime.tintColor = color.withAlphaComponent(0.6)
+        
+        self.endTime.text = endTime
+        self.endTime.textColor = color
+        
+        self.lineEndTime.tintColor = color.withAlphaComponent(0.6)
         
         self.setupUI()
         
-        self.backgroundColor = color.withAlphaComponent(0.3)
-       
+        self.backgroundColor = color.withAlphaComponent(0.15)
+        
         self.layer.cornerRadius = 14
     }
     
@@ -98,7 +103,7 @@ extension HourDetailsView: ViewCodeProtocol {
             lineStartTime.leadingAnchor.constraint(equalTo: startTime.trailingAnchor, constant: 8),
             lineStartTime.centerYAnchor.constraint(equalTo: startTime.centerYAnchor),
             lineStartTime.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 188/321),
-           
+            
             endTime.centerYAnchor.constraint(equalTo: bracket.bottomAnchor, constant: 0),
             endTime.leadingAnchor.constraint(equalTo: bracket.trailingAnchor, constant: 8),
             

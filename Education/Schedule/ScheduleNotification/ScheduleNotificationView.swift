@@ -13,74 +13,84 @@ class ScheduleNotificationView: UIView {
     private let startTime: String
     private let endTime: String
     private let subjectName: String
+    private let dayOfWeek: String
     private var color: UIColor?
     
-    private let clockLabel: UILabel = {
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
+        button.imageView?.tintColor = .label
+        button.imageView?.contentMode = .scaleAspectFit
+        button.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
         
-        let lbl = UILabel()
-        let attributedString = NSMutableAttributedString(string: "")
-        let imageAttachment = NSTextAttachment()
+        button.addTarget(self, action: #selector(didDismiss), for: .touchUpInside)
         
-        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 22)
-        imageAttachment.image = UIImage(systemName: "clock.badge.checkmark")?.withTintColor(.label)
-        imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 52, height: 47)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        attributedString.append(imageString)
-
-        lbl.attributedText = attributedString
-        lbl.alpha = 0.6
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        
-        return lbl
+        return button
     }()
-
-    private let warningLabel: UILabel = {
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = String(localized: "onTimeTitle")
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        label.textColor = .label
         
-        let lbl = UILabel()
-        lbl.text = "Está na hora da sua atividade"
-        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 17)
-        lbl.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
         
-        return lbl
+        return label
+    }()
+    
+    private let messageLabel: UILabel = {
+        let label = UILabel()
+        let message = String(localized: "onTimeMessage")
+        label.text = "\(message) 🕒"
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.textColor = .label
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
     }()
     
     private lazy var scheduleNotificationCardView: ScheduleNotificationNameCard = {
+        let view = ScheduleNotificationNameCard(startTime: self.startTime, endTime: self.endTime, subjectName: self.subjectName, dayOfWeek: self.dayOfWeek, color: self.color!)
         
-        let view = ScheduleNotificationNameCard(starTime: self.startTime, endTime: self.endTime, subjectName: self.subjectName, color: self.color ?? UIColor(named: "defaultColor")!)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
     
-    private lazy var startButton: UIButton = {
-        let btn = ButtonComponent(title: "Iniciar agora", textColor: .systemBackground, cornerRadius: 30)
+    private lazy var startButton: ButtonComponent = {
+        let attributedText = NSMutableAttributedString(string: String(localized: "startNowButton"))
         
-        btn.translatesAutoresizingMaskIntoConstraints = false
+        let symbolAttachment = NSTextAttachment()
+        let symbolImage = UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate)
+        symbolAttachment.image = symbolImage
+        symbolAttachment.bounds = CGRect(x: 0, y: -4, width: 20, height: 20)
+
+        let symbolAttributedString = NSAttributedString(attachment: symbolAttachment)
+
+        attributedText.append(NSAttributedString(string: "   "))
+        attributedText.append(symbolAttributedString)
         
-        btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
+        let bttn = ButtonComponent(attrString: attributedText, cornerRadius: 28)
         
-        return btn
-    }()
-    
-    private lazy var delayButton: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Adiar", for: .normal)
-        btn.setTitleColor(color?.darker(by: 0.5), for: .normal)
-        btn.titleLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? UIFont.systemFont(ofSize: 16)
+        bttn.tintColor = .label
         
-        btn.translatesAutoresizingMaskIntoConstraints = false
+        bttn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
         
-        btn.addTarget(self, action: #selector(didTapDelayButton), for: .touchUpInside)
+        bttn.translatesAutoresizingMaskIntoConstraints = false
         
-        return btn
+        return bttn
     }()
 
-    init(startTime: String, endTime: String, color: UIColor?, subjectName: String) {
+    init(startTime: String, endTime: String, color: UIColor?, subjectName: String, dayOfWeek: String) {
         self.startTime = startTime
         self.endTime = endTime
         self.color = color
         self.subjectName = subjectName
+        self.dayOfWeek = dayOfWeek
         
         super.init(frame: .zero)
         
@@ -94,44 +104,42 @@ class ScheduleNotificationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func didTapStartButton(){
+    @objc private func didTapStartButton() {
         self.delegate?.startButtonTapped()
     }
-    
-    @objc private func didTapDelayButton(){
+                                                
+    @objc private func didDismiss() {
         self.delegate?.dismiss()
     }
 }
 
 extension ScheduleNotificationView: ViewCodeProtocol {
     func setupUI() {
-        addSubview(clockLabel)
-        addSubview(warningLabel)
-        addSubview(scheduleNotificationCardView)
-        addSubview(startButton)
-        addSubview(delayButton)
-        
-        let padding = 20.0
+        self.addSubview(closeButton)
+        self.addSubview(titleLabel)
+        self.addSubview(messageLabel)
+        self.addSubview(scheduleNotificationCardView)
+        self.addSubview(startButton)
         
         NSLayoutConstraint.activate([
-            clockLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding * 1.5),
-            clockLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            closeButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            closeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             
-            warningLabel.topAnchor.constraint(equalTo: clockLabel.bottomAnchor, constant: padding),
-            warningLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: closeButton.topAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            scheduleNotificationCardView.topAnchor.constraint(equalTo: warningLabel.bottomAnchor, constant: padding),
-            scheduleNotificationCardView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            scheduleNotificationCardView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 250/588),
-            scheduleNotificationCardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 310/359),
+            messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            startButton.topAnchor.constraint(equalTo: scheduleNotificationCardView.bottomAnchor, constant: padding ),
+            scheduleNotificationCardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 334/366),
+            scheduleNotificationCardView.heightAnchor.constraint(equalTo: scheduleNotificationCardView.widthAnchor, multiplier: 220/334),
+            scheduleNotificationCardView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            scheduleNotificationCardView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 30),
+            
+            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 334/366),
+            startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: 55/334),
             startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            startButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 45/385),
-            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 320/385),
-            
-            delayButton.topAnchor.constraint(equalTo: startButton.bottomAnchor, constant: padding * 0.5),
-            delayButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            startButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20)
         ])
     }
 }

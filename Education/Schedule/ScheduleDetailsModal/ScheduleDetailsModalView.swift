@@ -14,7 +14,7 @@ class ScheduleDetailsModalView: UIView {
     private let endTime: String
     private let color: UIColor?
     private let dayOfTheWeek: String
-
+    
     
     private lazy var closeButton: UIButton = {
         
@@ -34,7 +34,6 @@ class ScheduleDetailsModalView: UIView {
     }()
     
     private lazy var editButton: UIButton = {
-        
         let btn = UIButton()
         
         let img = UIImage(systemName: "square.and.pencil")
@@ -44,7 +43,7 @@ class ScheduleDetailsModalView: UIView {
         btn.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
         
         btn.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
-                
+        
         btn.translatesAutoresizingMaskIntoConstraints = false
         
         return btn
@@ -58,7 +57,7 @@ class ScheduleDetailsModalView: UIView {
         return lbl
     }()
     
-     let dayLabel: UILabel = {
+    private let dayLabel: UILabel = {
         let lbl = UILabel()
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -74,36 +73,29 @@ class ScheduleDetailsModalView: UIView {
     }()
     
     private lazy var startButton: UIButton = {
-        let btn = UIButton()
-        btn.layer.cornerRadius = 28
-        btn.backgroundColor = .label
+        let attributedText = NSMutableAttributedString(string: String(localized: "startButton"))
         
-        let attributedString = NSMutableAttributedString(string: "")
-        
-        let imageAttachment = NSTextAttachment()
-        let img = UIImage(systemName: "play.fill")
-        imageAttachment.image = img?.withTintColor(.systemBackground)
-        imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 19, height: 19)
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        
-        let startString = NSAttributedString(string: String(localized: "startButton"), attributes: [
-                .foregroundColor: UIColor.systemBackground,
-                .font: UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17)
-            ])
-        
-        attributedString.append(startString)
-        attributedString.append(NSAttributedString(string: "  "))
-        attributedString.append(imageString)
-        
-        btn.setAttributedTitle(attributedString, for: .normal)
-        
-        btn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
-        
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return btn
-    }()
+        let symbolAttachment = NSTextAttachment()
+        let symbolImage = UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate)
+        symbolAttachment.image = symbolImage
+        symbolAttachment.bounds = CGRect(x: 0, y: -4, width: 20, height: 20)
 
+        let symbolAttributedString = NSAttributedString(attachment: symbolAttachment)
+
+        attributedText.append(NSAttributedString(string: "   "))
+        attributedText.append(symbolAttributedString)
+        
+        let bttn = ButtonComponent(attrString: attributedText, cornerRadius: 28)
+        
+        bttn.tintColor = .label
+        
+        bttn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
+    }()
+    
     init(startTime: String, endTime: String, color: UIColor?, subjectName: String, dayOfTheWeek: String) {
         self.startTime = startTime
         self.endTime = endTime
@@ -113,23 +105,14 @@ class ScheduleDetailsModalView: UIView {
         super.init(frame: .zero)
         
         self.backgroundColor = .systemBackground
-//        self.startButton.backgroundColor = color?.darker(by: 0.6)
         
         self.nameLabel.text = subjectName
-        self.nameLabel.textColor = color?.darker(by: 0.6)
-        self.dayLabel.textColor = color?.darker(by: 0.6)
-        self.hourDetailView.startTime.textColor = color?.darker(by: 0.6)
-        self.hourDetailView.endTime.textColor = color
-        self.hourDetailView.lineStartTime.tintColor = color?.darker(by: 0.6)
-        self.hourDetailView.lineEndTime.tintColor = color?.darker(by: 0.6)
-        self.hourDetailView.bracket.tintColor = color?.darker(by: 0.6)
+        self.nameLabel.textColor = color?.darker(by: 0.8)
         
         self.setDayLabel()
         self.setupUI()
         
         self.layer.cornerRadius = 14
-//        self.layer.borderWidth = 1.5
-//        self.layer.borderColor = UIColor.label.cgColor
     }
     
     required init?(coder: NSCoder) {
@@ -139,17 +122,19 @@ class ScheduleDetailsModalView: UIView {
     private func setDayLabel() {
         let attributedString = NSMutableAttributedString()
         
+        let darkerColor: UIColor = self.color?.darker(by: 0.8) ?? .label
+        
         let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(color?.darker(by: 0.6) ?? .label)
+        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(darkerColor)
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 20, height: 20)
         let imageString = NSAttributedString(attachment: imageAttachment)
         
-        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15)])
+        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15), .foregroundColor : darkerColor, .baselineOffset : 2])
         
         attributedString.append(imageString)
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(dayString)
-
+        
         self.dayLabel.attributedText = attributedString
     }
     
@@ -157,11 +142,11 @@ class ScheduleDetailsModalView: UIView {
         self.delegate?.dismiss()
     }
     
-    @objc private func didTapEditButton(){
+    @objc private func didTapEditButton() {
         self.delegate?.editButtonTapped()
     }
     
-    @objc private func didTapStartButton(){
+    @objc private func didTapStartButton() {
         self.delegate?.startButtonTapped()
     }
 }
@@ -178,22 +163,22 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
-            closeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            closeButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            closeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             
-            editButton.bottomAnchor.constraint(equalTo: closeButton.bottomAnchor),
-            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            editButton.topAnchor.constraint(equalTo: closeButton.topAnchor),
+            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             
-            nameLabel.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: -padding),
+            nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 24),
             nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            dayLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: padding / 1.5 ),
-            dayLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding * 1.5),
+            dayLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 24),
+            dayLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 35),
             
-            hourDetailView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: padding - 3),
+            hourDetailView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 334/366),
+            hourDetailView.heightAnchor.constraint(equalTo: hourDetailView.widthAnchor, multiplier: 102/334),
+            hourDetailView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 17),
             hourDetailView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            hourDetailView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 120/385),
-            hourDetailView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 90/100),
             
             startButton.topAnchor.constraint(equalTo: hourDetailView.bottomAnchor, constant: padding * 2.2),
             startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),

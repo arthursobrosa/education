@@ -14,6 +14,16 @@ class ScheduleNotificationViewModel {
     var endTime: Date
     var subject: Subject
     
+    private let days = [
+        String(localized: "sunday"),
+        String(localized: "monday"),
+        String(localized: "tuesday"),
+        String(localized: "wednesday"),
+        String(localized: "thursday"),
+        String(localized: "friday"),
+        String(localized: "saturday")
+    ]
+    
     init(subjectManager: SubjectManager = SubjectManager(), subjectName: String, startTime: Date, endTime: Date) {
         self.subjectManager = subjectManager
         
@@ -39,5 +49,13 @@ class ScheduleNotificationViewModel {
         }
         
         return String()
+    }
+    
+    func getDayOfWeek() -> String {
+        let date = Date()
+        let calendar = Calendar.current
+        let dayOfWeek = calendar.component(.weekday, from: date)
+        
+        return self.days[dayOfWeek - 1]
     }
 }

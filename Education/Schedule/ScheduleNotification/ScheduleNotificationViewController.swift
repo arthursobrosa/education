@@ -13,12 +13,14 @@ class ScheduleNotificationViewController: UIViewController {
     let viewModel: ScheduleNotificationViewModel
     
     private lazy var scheduleNotificationView: ScheduleNotificationView = {
-        let colorName = self.viewModel.subject.unwrappedColor
-        let color = UIColor(named: colorName)
         let startTime = self.viewModel.getTimeString(isStartTime: true)
         let endTime = self.viewModel.getTimeString(isStartTime: false)
+        let subjectName = self.viewModel.subject.unwrappedName
+        let colorName = self.viewModel.subject.unwrappedColor
+        let color = UIColor(named: colorName)
+        let dayOfWeek = self.viewModel.getDayOfWeek()
         
-        let view = ScheduleNotificationView(startTime: startTime, endTime: endTime, color: color, subjectName: self.viewModel.subject.unwrappedName)
+        let view = ScheduleNotificationView(startTime: startTime, endTime: endTime, color: color, subjectName: subjectName, dayOfWeek: dayOfWeek)
         
         view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +70,7 @@ extension ScheduleNotificationViewController: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             scheduleNotificationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 471/844),
-            scheduleNotificationView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 359/390),
+            scheduleNotificationView.widthAnchor.constraint(equalTo: scheduleNotificationView.heightAnchor, multiplier: 366/471),
             scheduleNotificationView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             scheduleNotificationView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
