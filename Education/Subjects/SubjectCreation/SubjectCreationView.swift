@@ -21,7 +21,7 @@ class SubjectCreationView: UIView {
     }()
     
     private lazy var deleteButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "deleteSubjectTitle"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 32)
+        let bttn = ButtonComponent(title: String(localized: "deleteSubjectTitle"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 28)
         bttn.backgroundColor = .clear
         bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
         bttn.layer.borderWidth = 2
@@ -34,7 +34,7 @@ class SubjectCreationView: UIView {
     }()
     
     private lazy var saveButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 32)
+        let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 28)
         button.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -97,7 +97,7 @@ extension SubjectCreationView: ViewCodeProtocol {
             
             deleteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 5/28),
+            deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 55/334),
             deleteButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -12),
             
             saveButton.leadingAnchor.constraint(equalTo: deleteButton.leadingAnchor),
