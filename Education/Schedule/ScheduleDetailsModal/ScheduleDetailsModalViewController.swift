@@ -61,6 +61,21 @@ class ScheduleDetailsModalViewController: UIViewController {
                 self.view.backgroundColor = .label.withAlphaComponent(0.1)
             }
         }
+        
+        self.setGestureRecognizer()
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self.view)
+        
+        guard !self.scheduleModalView.frame.contains(tapLocation) else { return }
+        
+        self.coordinator?.dismiss(animated: true)
     }
 }
 

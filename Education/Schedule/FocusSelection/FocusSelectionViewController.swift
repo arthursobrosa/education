@@ -49,6 +49,21 @@ class FocusSelectionViewController: UIViewController {
             
             self.focusSelectionView.layer.borderColor = UIColor.label.cgColor
         }
+        
+        self.setGestureRecognizer()
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self.view)
+        
+        guard !self.focusSelectionView.frame.contains(tapLocation) else { return }
+        
+        self.coordinator?.dismissAll()
     }
 }
 
