@@ -1,5 +1,5 @@
 //
-//  NotificationWithCancelView.swift
+//  FocusAlertView.swift
 //  Education
 //
 //  Created by Lucas Cunha on 02/09/24.
@@ -7,12 +7,54 @@
 
 import UIKit
 
-class NotificationWithCancelView: UIView {
+enum FocusAlertCase {
+    case restart
+    case finish
+    
+    var title: String {
+        switch self {
+            case .restart:
+                String(localized: "restartAlertTitle")
+            case .finish:
+                String(localized: "finishEarlyAlertTitle")
+        }
+    }
+    
+    var body: String {
+        switch self {
+            case .restart:
+                String(localized: "restartAlertBody")
+            case .finish:
+                String(localized: "finishEarlyAlertBody")
+        }
+    }
+    
+    var action: Selector {
+        switch self {
+            case .restart:
+                #selector(FocusSessionDelegate.didRestart)
+            case .finish:
+                #selector(FocusSessionDelegate.didFinish)
+        }
+    }
+}
+
+class FocusAlertView: UIView {
     weak var delegate: (any FocusSessionDelegate)?
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        label.textColor = .label
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
     
     private let bodyLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 17)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 17)
         label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = -1
@@ -24,9 +66,7 @@ class NotificationWithCancelView: UIView {
     }()
     
     private lazy var yesButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "yes"))
-        
-        button.addTarget(self.delegate, action: #selector(FocusSessionDelegate.didFinish), for: .touchUpInside)
+        let button = ButtonComponent(title: String(localized: "yes"), cornerRadius: 30)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -34,9 +74,11 @@ class NotificationWithCancelView: UIView {
     }()
     
     private lazy var cancelButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "cancel"), textColor: UIColor(named: "FocusSettingsColor"))
+        let button = ButtonComponent(title: String(localized: "cancel"), textColor: .label, cornerRadius: 30)
+        button.backgroundColor = .clear
         
-        button.backgroundColor = UIColor.systemGray5
+        button.layer.borderColor = UIColor.label.cgColor
+        button.layer.borderWidth = 1
         
         button.addTarget(self.delegate, action: #selector(FocusSessionDelegate.cancelButtonPressed), for: .touchUpInside)
         
@@ -45,11 +87,9 @@ class NotificationWithCancelView: UIView {
         return button
     }()
     
-    init(body: String) {
+    override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        self.bodyLabel.text = body
-
         self.setupUI()
         
         self.backgroundColor = .systemBackground
@@ -59,10 +99,17 @@ class NotificationWithCancelView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func configure(with alertCase: FocusAlertCase) {
+        self.titleLabel.text = alertCase.title
+        self.bodyLabel.text = alertCase.body
+        self.yesButton.addTarget(self.delegate, action: alertCase.action, for: .touchUpInside)
+    }
 }
 
-extension NotificationWithCancelView: ViewCodeProtocol {
+extension FocusAlertView: ViewCodeProtocol {
     func setupUI() {
+        self.addSubview(titleLabel)
         self.addSubview(bodyLabel)
         self.addSubview(yesButton)
         self.addSubview(cancelButton)
@@ -70,9 +117,11 @@ extension NotificationWithCancelView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
             
             bodyLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            bodyLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding * 2),
+            bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 18),
             bodyLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 290/360),
             
             cancelButton.topAnchor.constraint(equalTo: bodyLabel.topAnchor, constant: padding * 4),
@@ -83,8 +132,7 @@ extension NotificationWithCancelView: ViewCodeProtocol {
             yesButton.topAnchor.constraint(equalTo: bodyLabel.topAnchor, constant: padding * 4),
             yesButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 12),
             yesButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 160/360),
-            yesButton.heightAnchor.constraint(equalTo: yesButton.widthAnchor, multiplier: 55/160),
-            
+            yesButton.heightAnchor.constraint(equalTo: yesButton.widthAnchor, multiplier: 55/160)
         ])
     }
 }

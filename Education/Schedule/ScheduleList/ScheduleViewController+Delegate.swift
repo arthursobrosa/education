@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - Schedule
-protocol ScheduleDelegate: AnyObject {
+@objc protocol ScheduleDelegate: AnyObject {
     // MARK: - View Mode
     func setSegmentedControl(_ segmentedControl: UISegmentedControl)
     

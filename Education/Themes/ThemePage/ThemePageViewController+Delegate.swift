@@ -7,8 +7,9 @@
 
 import UIKit
 
-protocol ThemePageDelegate: AnyObject {
+@objc protocol ThemePageDelegate: AnyObject {
     func setSegmentedControl(_ segmentedControl: UISegmentedControl)
+    func addTestButtonTapped()
 }
 
 extension ThemePageViewController: ThemePageDelegate {
@@ -28,5 +29,9 @@ extension ThemePageViewController: ThemePageDelegate {
                 segmentedControl.selectedSegmentIndex = index
             }
         }
+    }
+    
+    func addTestButtonTapped() {
+        self.coordinator?.showTestPage(theme: self.viewModel.theme, test: nil)
     }
 }

@@ -41,7 +41,11 @@ class FocusSessionViewModel {
             hours = timerSeconds / 3600
         }
         
-        return "\(hours)h \(minutes)m \(seconds)s"
+        let secondsText = seconds < 10 ? "0\(seconds)" : "\(seconds)"
+        let minutesText = minutes < 10 ? "0\(minutes)" : "\(minutes)"
+        let hoursText = hours < 10 ? "0\(hours)" : "\(hours)"
+        
+        return "\(hoursText):\(minutesText):\(secondsText)"
     }
     
     func saveFocusSession() {

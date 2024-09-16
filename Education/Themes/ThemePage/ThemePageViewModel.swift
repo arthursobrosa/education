@@ -17,8 +17,8 @@ class ThemePageViewModel: ObservableObject {
     
     var theme: Theme
     
-    var limits: [Int] = [7, 15, 30]
-    var selectedLimit: Int = 7
+    var limits: [Int] = [10, 15, 20]
+    var selectedLimit: Int = 10
     
     // MARK: - Initializer
     init(themeManager: ThemeManager = ThemeManager(), testManager: TestManager = TestManager(), theme: Theme) {
@@ -46,10 +46,6 @@ class ThemePageViewModel: ObservableObject {
         }
         
         return testsForChart
-    }
-    
-    func removeTheme() {
-        self.themeManager.deleteTheme(self.theme)
     }
     
     func getDateString(from test: Test) -> String {

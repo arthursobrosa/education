@@ -43,22 +43,26 @@ class ScheduleView: UIView {
     let dailyScheduleView = DailyScheduleView()
     let weeklyScheduleCollection = WeeklyScheduleCollectionView()
     
-    var emptyView = EmptyView(message: String(localized: "emptyDaySchedule"))
+    var emptyView: NoSchedulesView = {
+        let view = NoSchedulesView()
+        view.noSchedulesCase = .day
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
     
     lazy var noSubjectsView: NoSubjectsView = {
         let view = NoSubjectsView()
-       
-        view.setButtonTarget(target: self, action: #selector(emptyViewButtonTapped))
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
    }()
     
-    lazy var overlayView: UIView = {
+    let overlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
-        view.alpha = 0
+        view.backgroundColor = .clear
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -66,12 +70,14 @@ class ScheduleView: UIView {
     }()
     
     lazy var createAcitivityButton: UIButton = {
-        let button = UIButton(configuration: .filled())
-        button.setTitle(String(localized: "createActivity"), for: .normal)
-        button.setTitleColor(.systemBackground, for: .normal)
+        let button = ButtonComponent(
+            insets: NSDirectionalEdgeInsets(top: 16, leading: 24, bottom: 16, trailing: 24),
+            title: String(localized: "createActivity"),
+            fontStyle: Fonts.darkModeOnMedium,
+            fontSize: 16,
+            cornerRadius: 25
+        )
         button.tintColor = .label
-        button.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
-        button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.alpha = 0
         
@@ -81,13 +87,15 @@ class ScheduleView: UIView {
         return button
     }()
     
-    lazy var startActivityButton: UIButton = {
-        let button = UIButton(configuration: .filled())
-        button.setTitle(String(localized: "imediateActivity"), for: .normal)
-        button.setTitleColor(.systemBackground, for: .normal)
+    lazy var startActivityButton: ButtonComponent = {
+        let button = ButtonComponent(
+            insets: NSDirectionalEdgeInsets(top: 16, leading: 24, bottom: 16, trailing: 24),
+            title: String(localized: "imediateActivity"),
+            fontStyle: Fonts.darkModeOnMedium,
+            fontSize: 16,
+            cornerRadius: 25
+        )
         button.tintColor = .label
-        button.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
-        button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.alpha = 0
         
@@ -122,9 +130,7 @@ class ScheduleView: UIView {
     }
     
     func changeEmptyView(isDaily: Bool) {
-        let message = isDaily ? String(localized: "emptyDaySchedule") : String(localized: "emptyWeekSchedule")
-        
-        self.emptyView = EmptyView(message: message)
+        self.emptyView.noSchedulesCase = isDaily ? .day : .week
     }
 }
 
@@ -160,12 +166,10 @@ extension ScheduleView: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             createAcitivityButton.topAnchor.constraint(equalTo: overlayView.topAnchor),
-            createAcitivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
-            createAcitivityButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.045),
+            createAcitivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             
             startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: btnPadding),
-            startActivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -btnPadding),
-            startActivityButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.045)
+            startActivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
         ])
     }
 }
