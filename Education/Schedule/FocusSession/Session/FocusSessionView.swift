@@ -151,7 +151,7 @@ class FocusSessionView: UIView {
     }()
     
     private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"))
+        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 30)
         bttn.backgroundColor = .clear
         
         bttn.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)

@@ -83,8 +83,7 @@ class NoThemesView: UIView {
     private func setButton() {
         guard let noThemesCase else { return }
         
-        self.button = ButtonComponent(title: noThemesCase.buttonTitle, textColor: .label)
-        self.button?.layer.cornerRadius = 27
+        self.button = ButtonComponent(title: noThemesCase.buttonTitle, textColor: .label, cornerRadius: 27)
         self.button?.backgroundColor = .clear
         self.button?.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
         self.button?.layer.borderWidth = 1

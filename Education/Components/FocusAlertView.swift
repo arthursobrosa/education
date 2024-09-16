@@ -74,7 +74,7 @@ class FocusAlertView: UIView {
     }()
     
     private lazy var cancelButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "cancel"), textColor: .label)
+        let button = ButtonComponent(title: String(localized: "cancel"), textColor: .label, cornerRadius: 30)
         button.backgroundColor = .clear
         
         button.layer.borderColor = UIColor.label.cgColor
