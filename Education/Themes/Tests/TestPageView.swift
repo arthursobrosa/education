@@ -21,7 +21,7 @@ class TestPageView: UIView {
     }()
     
     private lazy var deleteButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "deleteTest"), textColor: UIColor(named: "FocusSettingsColor"))
+        let bttn = ButtonComponent(title: String(localized: "deleteTest"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 30)
         bttn.backgroundColor = .clear
         bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
         bttn.layer.borderWidth = 2
@@ -34,7 +34,7 @@ class TestPageView: UIView {
     }()
     
     private lazy var saveButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "save"))
+        let bttn = ButtonComponent(title: String(localized: "save"), cornerRadius: 30)
         
         bttn.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         

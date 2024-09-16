@@ -65,8 +65,8 @@ class FocusAlertView: UIView {
         return label
     }()
     
-    private let yesButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "yes"))
+    private lazy var yesButton: ButtonComponent = {
+        let button = ButtonComponent(title: String(localized: "yes"), cornerRadius: 30)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         

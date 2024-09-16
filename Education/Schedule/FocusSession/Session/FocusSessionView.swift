@@ -134,7 +134,7 @@ class FocusSessionView: UIView {
         attributedString.append(restartImage)
         attributedString.addAttributes([.font : UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium), .foregroundColor : UIColor.label.withAlphaComponent(0.8)], range: .init(location: 0, length: attributedString.length))
         
-        let bttn = ButtonComponent(title: String(), textColor: nil)
+        let bttn = ButtonComponent(title: String(), textColor: nil, cornerRadius: 30)
         bttn.setAttributedTitle(attributedString, for: .normal)
         bttn.backgroundColor = .clear
         
