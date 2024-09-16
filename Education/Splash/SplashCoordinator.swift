@@ -43,5 +43,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
         
         tabBar.selectedIndex = 0
         tabBar.schedule.showScheduleNotification(subjectName: scheduleNotification.subjectName, startTime: scheduleNotification.startTime, endTime: scheduleNotification.endTime)
+        
+        self.scheduleNotification = nil
     }
 }
