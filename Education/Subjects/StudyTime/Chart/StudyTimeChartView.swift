@@ -3,7 +3,6 @@
 //  Created by Eduardo Dalencon on 11/07/24.
 //
 
-import Foundation
 import SwiftUI
 import Charts
 
@@ -11,21 +10,27 @@ struct StudyTimeChartView: View {
     @StateObject var viewModel: StudyTimeViewModel = StudyTimeViewModel()
     
     var body: some View {
-        
-        if(viewModel.focusSessions.value.isEmpty){
-            Text(String(localized: "emptyStudyTime"))
-                .font(Font.custom(Fonts.darkModeOnMedium, size: 15))
-        } else {
-            ZStack{
-                
-                VStack{
-                    Text(String(localized: "totalTime"))
-                        .font(Font.custom(Fonts.darkModeOnMedium, size: 15))
-                    Text(viewModel.getTotalAggregatedTime())
-                        .font(Font.custom(Fonts.darkModeOnRegular, size: 14))
+        ZStack {
+            VStack {
+                Text(viewModel.getTotalAggregatedTime())
+                    .font(Font.custom(viewModel.focusSessions.value.isEmpty ? Fonts.darkModeOnRegular : Fonts.darkModeOnMedium, size: 16))
+                    .foregroundStyle(Color(uiColor: UIColor.label))
+                    .opacity(viewModel.focusSessions.value.isEmpty ? 0.5 : 0.8)
+            }
+            
+            if viewModel.aggregatedTimes.isEmpty {
+                Chart {
+                    SectorMark(
+                        angle: .value("Time", 1),
+                        innerRadius: .ratio(0.8),
+                        angularInset: 1.5
+                    )
+                    .cornerRadius(12)
+                    .foregroundStyle(Color(uiColor: UIColor.label))
+                    .opacity(0.06)
                 }
-                
-                
+                .chartLegend(.hidden)
+            } else {
                 Chart(viewModel.aggregatedTimes) { session in
                     SectorMark(
                         angle: .value("Time", session.totalTime),
@@ -36,15 +41,13 @@ struct StudyTimeChartView: View {
                     .foregroundStyle(Color(UIColor(named: session.subjectColor) ?? .clear))
                 }
                 .chartLegend(.hidden)
-                .padding()
-            }
-            .onAppear {
-                viewModel.updateAggregatedTimes()
-            }
-            .onChange(of: viewModel.selectedDateRange) { _, _ in
-                viewModel.updateAggregatedTimes()
             }
         }
-       
+        .onAppear {
+            viewModel.updateAggregatedTimes()
+        }
+        .onChange(of: viewModel.selectedDateRange) { _, _ in
+            viewModel.updateAggregatedTimes()
+        }
     }
 }

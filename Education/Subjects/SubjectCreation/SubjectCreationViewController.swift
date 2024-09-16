@@ -92,13 +92,14 @@ class SubjectCreationViewController: UIViewController{
     private func setNavigationItems() {
         self.navigationItem.title = self.viewModel.currentEditingSubject != nil ? String(localized: "editSubject") : String(localized: "newSubject")
         
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
+        let cancelButton = UIButton(configuration: .plain())
+        let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])
+        cancelButton.setAttributedTitle(attributedCancelTitle, for: .normal)
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         
-        cancelButton.setTitleTextAttributes([
-            NSAttributedString.Key.font : UIFont(name: Fonts.darkModeOnRegular, size: 14)!,
-        ], for: .normal)
-        cancelButton.tintColor = .secondaryLabel
-        navigationItem.leftBarButtonItem = cancelButton
+        let cancelItem = UIBarButtonItem(customView: cancelButton)
+
+        self.navigationItem.leftBarButtonItem = cancelItem
     }
     
     @objc func cancelButtonTapped() {

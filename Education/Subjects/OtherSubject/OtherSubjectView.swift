@@ -25,11 +25,16 @@ class OtherSubjectView: UIView {
     }()
     
     private lazy var deleteButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "deleteOther"), textColor: UIColor(named: "redPicker")!, cornerRadius: 30 )
-        button.backgroundColor = .systemGray5
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(deleteTime), for: .touchUpInside)
-        return button
+        let bttn = ButtonComponent(title: String(localized: "deleteOther"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 27)
+        bttn.backgroundColor = .clear
+        bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
+        bttn.layer.borderWidth = 1
+
+        bttn.addTarget(self, action: #selector(deleteTime), for: .touchUpInside)
+        
+        bttn.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bttn
     }()
     
     // MARK: - Initialization
@@ -60,10 +65,10 @@ class OtherSubjectView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             
-            deleteButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            deleteButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            deleteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 0.17)
+            deleteButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
+            deleteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -28),
+            deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 55/334),
+            deleteButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -40)
         ])
     }
 }

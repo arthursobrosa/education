@@ -70,11 +70,11 @@ extension StudyTimeCoordinator: UIViewControllerTransitioningDelegate {
             }
         }
         
-        if let subjectCreationVC = nav.viewControllers.first as? OtherSubjectViewController {
-            self.childDidFinish(subjectCreationVC.coordinator as? Coordinator)
+        if let otherSubjectVC = nav.viewControllers.first as? OtherSubjectViewController {
+            self.childDidFinish(otherSubjectVC.coordinator as? Coordinator)
         
-            subjectCreationVC.viewModel.fetchSubjects()
-            subjectCreationVC.viewModel.fetchFocusSessions()
+            otherSubjectVC.viewModel.fetchSubjects()
+            otherSubjectVC.viewModel.fetchFocusSessions()
             
             if let studyTimeVC = self.navigationController.viewControllers.first as? StudyTimeViewController {
                 studyTimeVC.reloadTable()
