@@ -171,9 +171,21 @@ class FocusSessionView: UIView {
     private lazy var endNotification: UIView = {
         let view = NotificationComponentView(title: String(localized: "timeIsUp"),
                                     body: ((ActivityManager.shared.subject) != nil) ? String(localized: "activityEndCongratulations") + (ActivityManager.shared.subject!.unwrappedName)  + " 🎉" :
-                                                String(localized: "noActivityEndCongratulations"),
-                                    color: color ?? UIColor.systemGray5)
+                                                String(localized: "noActivityEndCongratulations"))
         view.translatesAutoresizingMaskIntoConstraints = false
+      
+        
+        return view
+    }()
+    
+    lazy var overlayViewEnd: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.label.withAlphaComponent(0.2)
+        view.layer.zPosition = 2
+        
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
         view.isHidden = true
         
         return view
@@ -265,7 +277,7 @@ class FocusSessionView: UIView {
     }
     
     func showEndNotification(_ isShowing: Bool) {
-        self.endNotification.isHidden = !isShowing
+        self.overlayViewEnd.isHidden = !isShowing
     }
     
     func showFocusAlert(_ isShowing: Bool) {
@@ -389,8 +401,11 @@ extension FocusSessionView: ViewCodeProtocol {
         
         self.addSubview(restartButton)
         self.addSubview(finishButton)
-        self.addSubview(endNotification)
+//        self.addSubview(endNotification)
         self.addSubview(focusAlert)
+        
+        self.addSubview(overlayViewEnd)
+        overlayViewEnd.addSubview(endNotification)
         
         let padding = 20.0
         
@@ -431,10 +446,15 @@ extension FocusSessionView: ViewCodeProtocol {
             finishButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -17),
             finishButton.heightAnchor.constraint(equalTo: restartButton.heightAnchor),
             
+            overlayViewEnd.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            overlayViewEnd.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            overlayViewEnd.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            overlayViewEnd.topAnchor.constraint(equalTo: self.topAnchor),
+            
             endNotification.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             endNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             endNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
-            endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 242/844),
+            endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 228/844),
             
             focusAlert.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             focusAlert.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),

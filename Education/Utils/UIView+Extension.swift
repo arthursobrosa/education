@@ -9,14 +9,23 @@ import UIKit
 
 extension UIView {
     func roundCorners(corners: UIRectCorner, radius: CGFloat, borderWidth: CGFloat, borderColor: UIColor) {
+        // Certifique-se de que os bounds estão definidos
+        self.layoutIfNeeded()
+
+        // Remover subcamadas anteriores relacionadas às bordas
+        self.layer.sublayers?.removeAll(where: { $0 is CAShapeLayer })
+
+        // Criar o caminho arredondado
         let path = UIBezierPath(roundedRect: self.bounds,
                                 byRoundingCorners: corners,
-                                cornerRadii: CGSize(width: radius, height: radius))
+                                cornerRadii: CGSize(width: radius , height: radius))
         
+        // Definir o mask da camada
         let mask = CAShapeLayer()
         mask.path = path.cgPath
         self.layer.mask = mask
         
+        // Adicionar borda à camada
         let borderLayer = CAShapeLayer()
         borderLayer.path = path.cgPath
         borderLayer.fillColor = UIColor.clear.cgColor
@@ -29,7 +38,8 @@ extension UIView {
     
     func createCurve(on roundedCurveCase: RoundedCurveCase, radius: CGFloat = 0, borderWidth: CGFloat, borderColor: UIColor, rect: CGRect) {
         // Cria o path manualmente para desenhar as linhas que você precisa
-        let borderPath = UIBezierPath()
+        let borderPathArc = UIBezierPath()
+        let borderPathLine = UIBezierPath()
         
         var lineWidth = borderWidth
         
@@ -41,49 +51,60 @@ extension UIView {
         
         switch roundedCurveCase {
             case .top:
-                // Começa no canto inferior esquerdo
-                borderPath.move(to: bottomLeft)
+                borderPathLine.move(to: bottomLeft)
                 
-                // Sobe até o canto superior esquerdo e faz a curva
-                borderPath.addLine(to: CGPoint(x: topLeft.x, y: topLeft.y + radius))
-                borderPath.addArc(withCenter: CGPoint(x: topLeft.x + radius, y: topLeft.y + radius),
+                borderPathLine.addLine(to: CGPoint(x: topLeft.x, y: topLeft.y + radius))
+            
+                borderPathArc.move(to: CGPoint(x: topLeft.x, y: topLeft.y + radius))
+                borderPathArc.addArc(withCenter: CGPoint(x:  radius + 0.5, y: topLeft.y + radius + 0.5),
                                   radius: radius,
                                   startAngle: .pi,
                                   endAngle: 3 * .pi / 2,
                                   clockwise: true)
+            
+                borderPathLine.move(to: CGPoint(x: topLeft.x + radius, y: topLeft.y))
                 
-                // Vai até o canto superior direito e faz a curva
-                borderPath.addLine(to: CGPoint(x: topRight.x - radius, y: topRight.y))
-                borderPath.addArc(withCenter: CGPoint(x: topRight.x - radius, y: topRight.y + radius),
+                
+                borderPathLine.addLine(to: CGPoint(x: topRight.x - radius, y: topRight.y))
+            
+                borderPathArc.move(to: CGPoint(x: topRight.x - radius, y: topRight.y))
+                borderPathArc.addArc(withCenter: CGPoint(x: topRight.x - radius - 0.5, y: topRight.y + radius + 0.5),
                                   radius: radius,
                                   startAngle: 3 * .pi / 2,
                                   endAngle: 0,
                                   clockwise: true)
                 
-                // Desce até o canto inferior direito (sem borda na parte inferior)
-                borderPath.addLine(to: bottomRight)
+                borderPathLine.move(to: CGPoint(x: topRight.x , y: topLeft.y + radius))
+            
+                borderPathLine.addLine(to: bottomRight)
+            
             case .bottom:
-                // Começa no canto superior esquerdo
-                borderPath.move(to: topLeft)
+                // Linha esquerda
+                borderPathLine.move(to: topLeft)
+                borderPathLine.addLine(to: CGPoint(x: bottomLeft.x, y: bottomLeft.y - radius - 0.5))
                 
-                // Desce até o canto inferior esquerdo e faz a curva
-                borderPath.addLine(to: CGPoint(x: bottomLeft.x, y: bottomLeft.y - radius))
-                borderPath.addArc(withCenter: CGPoint(x: bottomLeft.x + radius, y: bottomLeft.y - radius),
+                // Linha de baixo
+                borderPathLine.move(to: CGPoint(x: bottomLeft.x + radius + 0.5, y: bottomLeft.y))
+                borderPathLine.addLine(to: CGPoint(x: bottomRight.x - radius - 0.5, y: bottomLeft.y))
+                
+                // Linha direita
+                borderPathLine.move(to: CGPoint(x: bottomRight.x , y: bottomRight.y - radius))
+                borderPathLine.addLine(to: topRight)
+                
+                borderPathArc.move(to: CGPoint(x: bottomLeft.x, y: bottomLeft.y - radius))
+                borderPathArc.addArc(withCenter: CGPoint(x: bottomLeft.x + radius + 0.5, y: bottomLeft.y - radius - 0.5),
                                   radius: radius,
                                   startAngle: .pi,
                                   endAngle: .pi / 2,
                                   clockwise: false)
                 
-                // Vai até o canto inferior direito e faz a curva
-                borderPath.addLine(to: CGPoint(x: bottomRight.x - radius, y: bottomRight.y))
-                borderPath.addArc(withCenter: CGPoint(x: bottomRight.x - radius, y: bottomRight.y - radius),
+                borderPathArc.move(to: CGPoint(x: bottomRight.x - radius, y: bottomRight.y))
+                borderPathArc.addArc(withCenter: CGPoint(x: bottomRight.x - radius - 0.5, y: bottomRight.y - radius - 0.5),
                                   radius: radius,
                                   startAngle: .pi / 2,
                                   endAngle: 0,
                                   clockwise: false)
                 
-                // Sobe até o canto superior direito
-                borderPath.addLine(to: topRight)
             case .laterals:
                 let xOffset = borderWidth * (0.6/2.5)
                 let correctedRect = CGRect(x: self.bounds.origin.x + xOffset, y: self.bounds.origin.y, width: self.bounds.width - xOffset * 2, height: self.bounds.height)
@@ -91,24 +112,32 @@ extension UIView {
                 lineWidth = xOffset * 2
                 
                 // Começa no canto superior esquerdo e desce a lateral esquerda
-                borderPath.move(to: CGPoint(x: correctedRect.minX, y: correctedRect.minY))
-                borderPath.addLine(to: CGPoint(x: correctedRect.minX, y: correctedRect.maxY))
+                borderPathLine.move(to: CGPoint(x: correctedRect.minX, y: correctedRect.minY))
+                borderPathLine.addLine(to: CGPoint(x: correctedRect.minX, y: correctedRect.maxY))
                 
                 // Move para o canto inferior direito e sobe a lateral direita
-                borderPath.move(to: CGPoint(x: correctedRect.maxX, y: correctedRect.minY))
-                borderPath.addLine(to: CGPoint(x: correctedRect.maxX, y: correctedRect.maxY))
+                borderPathLine.move(to: CGPoint(x: correctedRect.maxX, y: correctedRect.minY))
+                borderPathLine.addLine(to: CGPoint(x: correctedRect.maxX, y: correctedRect.maxY))
         }
         
         // Cria a camada de borda e aplica o path
         let borderLayer = CAShapeLayer()
-        borderLayer.path = borderPath.cgPath
+        borderLayer.path = borderPathArc.cgPath
         borderLayer.strokeColor = borderColor.cgColor
         borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.lineWidth = lineWidth
+        borderLayer.lineWidth = lineWidth / 2
         borderLayer.frame = self.bounds
+        
+        let borderLayer2 = CAShapeLayer()
+        borderLayer2.path = borderPathLine.cgPath
+        borderLayer2.strokeColor = borderColor.cgColor
+        borderLayer2.fillColor = UIColor.clear.cgColor
+        borderLayer2.lineWidth = lineWidth
+        borderLayer2.frame = self.bounds
         
         // Adiciona a camada de borda na view
         self.layer.addSublayer(borderLayer)
+        self.layer.addSublayer(borderLayer2)
     }
 }
 

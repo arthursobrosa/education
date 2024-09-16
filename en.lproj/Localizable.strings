@@ -55,9 +55,9 @@
 "weekly" = "Weekly";
 "noSubjectTitle" = "You cannot create an activity";
 "noSubjectMessage" = "You have to create a subject before setting an activity";
-"timeIsUp" = "Time's Up!";
-"activityEndCongratulations" = "Congrats, you've reached the end in your activity of ";
-"noActivityEndCongratulations" = "Congrats, you've reached the end of your activity 🎉";
+"timeIsUp" = "End of activity";
+"activityEndCongratulations" = "Congratulations! You've reached the end of your activity of ";
+"noActivityEndCongratulations" = "Congratulations! You've reached the end of your activity 🎉";
 "finishEarlyAlertBody" = "Are you sure you want to finish your activity now?";
 "finishEarlyAlertTitle" = "Finish activity";
 "restartAlertTitle" = "Restart activity";
