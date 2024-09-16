@@ -22,7 +22,7 @@
 "schedule" = "Schedule";
 "newSchedule" = "New";
 "createActivity" = "Create activity";
-"imediateActivity" = "Start imediate activity";
+"immediateActivity" = "Start imediate activity";
 "timeLeft" = "In %@h%@m";
 "timeLeftNow" = "Now";
 "timeLeftFinished" = "Finished";
@@ -35,7 +35,7 @@
 "saturday" = "Saturday";
 "reminder" = "Reminder";
 "comingEvent" = "Your %@ event is starting soon!";
-"imediateEvent" = "Your %@ event is starting now!";
+"immediateEvent" = "Your %@ event is starting now!";
 "addSubjectAlertTitle" = "Add Subject";
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";
@@ -62,7 +62,7 @@
 "finishEarlyAlertTitle" = "Finish activity";
 "restartAlertTitle" = "Restart activity";
 "restartAlertBody" = "Are you sure you want to restart your activity?";
-"activityDeletionTitle" = "Acitivity deletion";
+"activityDeletionTitle" = "Activity deletion";
 "activityDeletionMessage" = "Are you sure you want to delete this schedule?";
 "emptyDaySchedule" = "You still have no activities scheduled for this day";
 "emptyWeekSchedule" = "You still have no activities scheduled for this week";
@@ -141,7 +141,7 @@
 "firstWeekDay" = "First day of the week";
 
 // MARK: - Modal
-"startButton" = "Start activityy";
+"startButton" = "Start activity";
 "delayButton" = "Delay";
 
 //MARK: - ACTIVITY

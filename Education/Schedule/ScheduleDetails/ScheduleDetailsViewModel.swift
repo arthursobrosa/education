@@ -118,7 +118,7 @@ class ScheduleDetailsViewModel {
         let selectedDate = self.selectedStartTime
         let title = String(localized: "reminder")
         let bodyBefore = String(format: NSLocalizedString("comingEvent", comment: ""), String(selectedSubjectName))
-        let bodyInTime = String(format: NSLocalizedString("imediateEvent", comment: ""), String(selectedSubjectName))
+        let bodyInTime = String(format: NSLocalizedString("immediateEvent", comment: ""), String(selectedSubjectName))
         
         if self.alarmBefore {
             NotificationService.shared.scheduleWeeklyNotification(
