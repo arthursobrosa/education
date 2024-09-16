@@ -43,7 +43,7 @@ class DayColumnCell: UICollectionViewCell {
     private let sectionDividerView: UIView = {
         let view = UIView()
         
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .systemGray5
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -117,7 +117,7 @@ extension DayColumnCell: UICollectionViewDataSource, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width: Double = collectionView.frame.width
+        let width: Double = collectionView.frame.width - 4.0
         let height: Double = width * (63/147) + 20
         
         return CGSize(width: width, height: height)

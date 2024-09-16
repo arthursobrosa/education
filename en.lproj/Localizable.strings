@@ -75,8 +75,8 @@
 "timeCountingQuestion" = "How do you want to tell time?";
 "timerSelectionTitle" = "Scheduled time \n e.g.: 50 minutes";
 "timerSelectionBold" = "Scheduled time";
-"pomodoroSelectionTitle" = "Scheduled time with interval";
-"stopwatchSelectionTitle" = "Free (stop when you want)";
+"pomodoroSelectionTitle" = "Pomodoro";
+"stopwatchSelectionTitle" = "Free \n (stop when you want)";
 "stopwatchSelectionBold" = "Free";
 "alarm" = "Alarm when finished";
 "showTimeCount" = "Show time count";

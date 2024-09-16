@@ -35,11 +35,11 @@
 "timeLeftNow" = "Agora";
 "timeLeftFinished" = "Concluído";
 "sunday" = "Domingo";
-"monday" = "Segunda";
-"tuesday" = "Terça";
-"wednesday" = "Quarta";
-"thursday" = "Quinta";
-"friday" = "Sexta";
+"monday" = "Segunda-feira";
+"tuesday" = "Terça-feira";
+"wednesday" = "Quarta-feira";
+"thursday" = "Quinta-feira";
+"friday" = "Sexta-feira";
 "saturday" = "Sábado";
 "reminder" = "Lembrete";
 "comingEvent" = "Seu evento de %@ começará em breve!";
@@ -72,11 +72,11 @@
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
-"timeCountingQuestion" = "De que forma você deseja contar o tempo?";
+"timeCountingQuestion" = "Como você deseja contar o tempo?";
 "timerSelectionTitle" = "Tempo programado \n Ex.: 50min";
 "timerSelectionBold" = "Tempo programado";
-"pomodoroSelectionTitle" = "Tempo programado com intervalo";
-"stopwatchSelectionTitle" = "Livre (pare quando quiser)";
+"pomodoroSelectionTitle" = "Pomodoro";
+"stopwatchSelectionTitle" = "Livre \n (pare quando quiser)";
 "stopwatchSelectionBold" = "Livre";
 "alarm" = "Alarme ao finalizar";
 "showTimeCount" = "Mostrar contagem de tempo";

@@ -31,7 +31,11 @@ class ScheduleCell: UICollectionViewCell {
         var timeLeftText: String {
             switch self {
                 case .upcoming(let hoursLeft, let minutesLeft):
+                if Int(hoursLeft) == 0 {
+                    return String("Em " + minutesLeft + "min")
+                } else {
                     return String(format: NSLocalizedString("timeLeft", comment: ""), hoursLeft, minutesLeft)
+                }
                 case .ongoing:
                     return String(localized: "timeLeftNow")
                 case .completed:

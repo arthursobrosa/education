@@ -120,11 +120,11 @@ extension FocusPickerViewController: ViewCodeProtocol {
             case .timer:
                 heightMultiplier = 542/844
                 widthMultiplier = 366/542
-                self.focusPickerView.titleTexto.text = String(localized: "timerSelectionBold")
+                self.focusPickerView.titleText.text = String(localized: "timerSelectionBold")
             case .pomodoro:
                 heightMultiplier = 696/844
                 widthMultiplier = 366/696
-                self.focusPickerView.titleTexto.text = String(localized: "pomodoroSelectionTitle")
+                self.focusPickerView.titleText.text = String(localized: "pomodoroSelectionTitle")
             default:
                 break
         }
@@ -173,7 +173,7 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         cell.textLabel?.textColor = .label
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         cell.backgroundColor = .systemBackground
-        cell.roundCorners(corners: .allCorners, radius: 14.0, borderWidth: 2.5, borderColor: .secondaryLabel)
+        cell.roundCorners(corners: .allCorners, radius: 14.0, borderWidth: 2.5, borderColor: .systemGray4)
         
         let toggle = UISwitch()
         toggle.isOn = toggleIsOn

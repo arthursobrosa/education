@@ -10,6 +10,7 @@ import UIKit
 class FocusSelectionView: UIView {
     weak var delegate: FocusSelectionDelegate?
     var lastSelected: UIButton?
+    var subjectName: String
     
     // MARK: - Properties
     private lazy var backButton: UIButton = {
@@ -22,6 +23,18 @@ class FocusSelectionView: UIView {
         bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
+    }()
+    
+    private lazy var nameLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = subjectName
+        lbl.textAlignment = .center
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        lbl.textColor = .label
+        
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
     }()
     
     private let topLabel: UILabel = {
@@ -72,14 +85,14 @@ class FocusSelectionView: UIView {
     }()
     
     private lazy var continueButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .secondaryLabel)
+        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground)
         bttn.isEnabled = false
+        bttn.layer.cornerRadius = 28
+        bttn.backgroundColor = .systemGray4
         
         bttn.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
         
         bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        bttn.backgroundColor = .secondaryLabel
         
         return bttn
     }()
@@ -100,7 +113,10 @@ class FocusSelectionView: UIView {
     }()
     
     // MARK: - Initializer
-    init() {
+    init(subjectName: String?) {
+        
+        self.subjectName = subjectName != nil ? "Atividade de " + subjectName! : "Atividade Imediata"
+        
         super.init(frame: .zero)
         
         self.backgroundColor = UIColor.systemBackground
@@ -121,7 +137,7 @@ class FocusSelectionView: UIView {
     
     // MARK: - Auxiliar methods
     private func changeButtonColors(_ button: UIButton, isSelected: Bool) {
-        let color: UIColor = isSelected ? .label : .systemGray6
+        let color: UIColor = isSelected ? .label : .systemGray4
         button.layer.borderColor = color.cgColor
         
         continueButton.backgroundColor = .label
@@ -166,6 +182,7 @@ class FocusSelectionView: UIView {
 extension FocusSelectionView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(backButton)
+        addSubview(nameLabel)
         self.addSubview(topLabel)
         self.addSubview(timerButton)
         self.addSubview(pomodoroButton)
@@ -176,12 +193,15 @@ extension FocusSelectionView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            backButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
+            backButton.topAnchor.constraint(equalTo: self.topAnchor),
             backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
+            
+            nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
+            nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             topLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor),
             topLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            topLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (213/366)),
+            topLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (270/366)),
             
             timerButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: padding * 1.5),
             timerButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (334/366)),
@@ -199,8 +219,8 @@ extension FocusSelectionView: ViewCodeProtocol {
             stopwatchButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             continueButton.topAnchor.constraint(equalTo: stopwatchButton.bottomAnchor, constant: padding),
-            continueButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (312/366)),
-            continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor, multiplier: (60/334)),
+            continueButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (334/366)),
+            continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor, multiplier: (55/334)),
             continueButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             cancelButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: padding * 0.5),
