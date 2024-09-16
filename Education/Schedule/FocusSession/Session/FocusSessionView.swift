@@ -26,7 +26,7 @@ class FocusSessionView: UIView {
         
         button.addTarget(self, action: #selector(dismisButtonTapped), for: .touchUpInside)
         
-        button.isHidden = true
+        button.alpha = 0
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -43,12 +43,24 @@ class FocusSessionView: UIView {
         return label
     }()
     
+    private let pomodoroLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        lbl.textColor = .label.withAlphaComponent(0.4)
+        
+        lbl.isHidden = true
+        
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
+    
     private lazy var visibilityButton: UIButton = {
         let button = UIButton(configuration: .plain())
         
         button.addTarget(self, action: #selector(visibilityButtonTapped), for: .touchUpInside)
         
-        button.isHidden = true
+        button.alpha = 0
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -64,8 +76,8 @@ class FocusSessionView: UIView {
     private let timerLabel: UILabel = {
         let lbl = UILabel()
         lbl.textAlignment = .center
-        lbl.font = .systemFont(ofSize: 44, weight: .light)
-        lbl.textColor = .label
+        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 37)
+        lbl.textColor = .label.withAlphaComponent(0.8)
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -91,6 +103,16 @@ class FocusSessionView: UIView {
         return strokeEnd
     }()
     
+    private let pauseResumeButtonContainer: UIView = {
+        let view = UIView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    private var pauseResumeBottomConstraint: NSLayoutConstraint!
+    
     private lazy var pauseResumeButton: UIButton = {
         let bttn = UIButton(configuration: .plain())
         bttn.tintColor = self.color
@@ -110,13 +132,16 @@ class FocusSessionView: UIView {
         attributedString.append(restartString)
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(restartImage)
-        attributedString.addAttributes([.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? UIFont.boldSystemFont(ofSize: 16), .foregroundColor : UIColor.label.withAlphaComponent(0.55)], range: .init(location: 0, length: attributedString.length))
+        attributedString.addAttributes([.font : UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium), .foregroundColor : UIColor.label.withAlphaComponent(0.8)], range: .init(location: 0, length: attributedString.length))
         
         let bttn = ButtonComponent(title: String(), textColor: nil, cornerRadius: 30)
         bttn.setAttributedTitle(attributedString, for: .normal)
-        bttn.backgroundColor = .systemGray6
+        bttn.backgroundColor = .clear
         
-        bttn.isHidden = true
+        bttn.layer.borderColor = UIColor.secondaryLabel.cgColor
+        bttn.layer.borderWidth = 1
+        
+        bttn.alpha = 0
         
         bttn.addTarget(self, action: #selector(didTapRestartButton), for: .touchUpInside)
         
@@ -127,9 +152,14 @@ class FocusSessionView: UIView {
     
     private lazy var finishButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 30)
-        bttn.backgroundColor = .systemGray6
+        bttn.backgroundColor = .clear
         
-        bttn.isHidden = true
+        bttn.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
+        
+        bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
+        bttn.layer.borderWidth = 1
+        
+        bttn.alpha = 0
         
         bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
         
@@ -149,22 +179,26 @@ class FocusSessionView: UIView {
         return view
     }()
     
-    private lazy var finishEarlyNotification: UIView = {
-        let view = NotificationWithCancelView(body: String(localized: "confirmActivityEnd"))
+    private let focusAlert: FocusAlertView = {
+        let view = FocusAlertView()
+        
+        view.isHidden = true
+        view.layer.zPosition = 2
         
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.isHidden = true
         
-        view.layer.shadowColor = UIColor.label.cgColor
-        view.layer.shadowRadius = 20
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowOffset = .init(width: 0, height: 0)
+        return view
+    }()
+    
+    private let overlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .label.withAlphaComponent(0.1)
+        view.alpha = 0
+        view.layer.zPosition = 1
         
-        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, previousTraitCollection: UITraitCollection) in
-            
-            view.layer.shadowColor = UIColor.label.cgColor
-        }
+        view.isUserInteractionEnabled = false
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
@@ -198,20 +232,49 @@ class FocusSessionView: UIView {
         self.activityTitle.attributedText = attributedString
     }
     
-    
     func changeButtonsIsHidden(_ isHidden: Bool) {
-        self.dismissButton.isHidden = isHidden
-        self.visibilityButton.isHidden = isHidden
-        self.restartButton.isHidden = isHidden
-        self.finishButton.isHidden = isHidden
+        let duration: TimeInterval = 1
+        
+        UIView.animateKeyframes(withDuration: 1, delay: 0) { [weak self] in
+            guard let self else { return }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.2) {
+                self.pauseResumeButton.alpha = 0
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.2) {
+                self.dismissButton.alpha = isHidden ? 0 : 1
+                self.visibilityButton.alpha = isHidden ? 0 : 1
+                self.restartButton.alpha = isHidden ? 0 : 1
+                self.finishButton.alpha = isHidden ? 0 : 1
+            }
+
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                self.pauseResumeButton.alpha = 1
+            }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration * 0.3) { [weak self] in
+            guard let self else { return }
+            
+            self.removeConstraint(self.pauseResumeBottomConstraint)
+            self.pauseResumeBottomConstraint = isHidden ? self.pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor) : self.pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: self.restartButton.topAnchor)
+            self.pauseResumeBottomConstraint.isActive = true
+        }
     }
     
-    func showEndNotification(_ isHidden: Bool) {
-        self.endNotification.isHidden = isHidden
+    func showEndNotification(_ isShowing: Bool) {
+        self.endNotification.isHidden = !isShowing
     }
     
-    func showFinishNotification(_ isHidden: Bool) {
-        self.finishEarlyNotification.isHidden = isHidden
+    func showFocusAlert(_ isShowing: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+            
+            self.focusAlert.isHidden = !isShowing
+            self.overlayView.alpha = self.overlayView.alpha == 0 ? 1 : 0
+        }
     }
     
     func setVisibilityButton(isActive: Bool) {
@@ -249,13 +312,13 @@ class FocusSessionView: UIView {
     }
     
     @objc private func didTapRestartButton() {
-        self.delegate?.didTapRestartButton()
-        
-        self.isPaused = false
+        self.focusAlert.configure(with: .restart)
+        self.showFocusAlert(true)
     }
     
     @objc private func didTapFinishButton() {
-        self.showFinishNotification(false)
+        self.focusAlert.configure(with: .finish)
+        self.showFocusAlert(true)
     }
     
     func startAnimation(timerDuration: Double) {
@@ -268,7 +331,7 @@ class FocusSessionView: UIView {
         self.timerCircleFillLayer.removeAllAnimations()
     }
     
-    func hidePauseResumeButton() {
+    func disablePauseResumeButton() {
         self.pauseResumeButton.isEnabled = false
         self.timerCircleFillLayer.strokeColor = UIColor.clear.cgColor
     }
@@ -280,10 +343,35 @@ class FocusSessionView: UIView {
     
     func updateLabels(timerString: String) {
         self.timerLabel.text = timerString
+        
+        guard !self.pomodoroLabel.isHidden else { return }
+        
+        let number = ActivityManager.shared.currentLoop + 1
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .ordinal
+        
+        guard let ordinalNumber = formatter.string(from: NSNumber(value: number)) else { return }
+        
+        let suffix = ActivityManager.shared.isAtWorkTime ? String(localized: "focusTime") : String(localized: "pauseTime")
+        
+        self.pomodoroLabel.text = ordinalNumber + " " + suffix
     }
     
     func updateTimerTracker() {
-        self.timerTrackLayer.strokeColor = UIColor.systemGray5.cgColor
+        var isShowing = true
+        
+        switch ActivityManager.shared.timerCase {
+            case .stopwatch:
+                isShowing = false
+            default:
+                break
+        }
+        
+        self.timerTrackLayer.strokeColor = isShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
+    }
+    
+    func showPomodoroLabel() {
+        self.pomodoroLabel.isHidden = false
     }
 }
 
@@ -292,18 +380,17 @@ extension FocusSessionView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(dismissButton)
         self.addSubview(activityTitle)
+        self.addSubview(pomodoroLabel)
         self.addSubview(timerContainerView)
         timerContainerView.addSubview(timerLabel)
         
-        let pauseResumeButtonContainer = UIView()
-        pauseResumeButtonContainer.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(pauseResumeButtonContainer)
         pauseResumeButtonContainer.addSubview(pauseResumeButton)
         
         self.addSubview(restartButton)
         self.addSubview(finishButton)
         self.addSubview(endNotification)
-        self.addSubview(finishEarlyNotification)
+        self.addSubview(focusAlert)
         
         let padding = 20.0
         
@@ -313,6 +400,9 @@ extension FocusSessionView: ViewCodeProtocol {
             
             activityTitle.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             activityTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
+            pomodoroLabel.topAnchor.constraint(equalTo: activityTitle.bottomAnchor, constant: 21),
+            pomodoroLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 300/844),
             timerContainerView.widthAnchor.constraint(equalTo: timerContainerView.heightAnchor, multiplier: 290/300),
@@ -325,7 +415,6 @@ extension FocusSessionView: ViewCodeProtocol {
             timerLabel.heightAnchor.constraint(equalTo: timerLabel.widthAnchor),
             
             pauseResumeButtonContainer.topAnchor.constraint(equalTo: timerLabel.bottomAnchor),
-            pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: restartButton.topAnchor),
             pauseResumeButtonContainer.widthAnchor.constraint(equalTo: self.widthAnchor),
             pauseResumeButtonContainer.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
@@ -347,11 +436,23 @@ extension FocusSessionView: ViewCodeProtocol {
             endNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
             endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 242/844),
             
-            finishEarlyNotification.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            finishEarlyNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            finishEarlyNotification.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
-            finishEarlyNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
-            finishEarlyNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 209/844)
+            focusAlert.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            focusAlert.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
+            focusAlert.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 366/390),
+            focusAlert.heightAnchor.constraint(equalTo: focusAlert.widthAnchor, multiplier: 228/366)
+        ])
+        
+        self.pauseResumeBottomConstraint = pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+        self.pauseResumeBottomConstraint.isActive = true
+        
+        
+        self.addSubview(overlayView)
+        
+        NSLayoutConstraint.activate([
+            overlayView.topAnchor.constraint(equalTo: self.topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
     
@@ -360,8 +461,17 @@ extension FocusSessionView: ViewCodeProtocol {
         
         let lineWidth = self.bounds.height * (7/844)
         
+        var isShowing = true
+        
+        switch ActivityManager.shared.timerCase {
+            case .stopwatch:
+                isShowing = false
+            default:
+                break
+        }
+        
         self.timerTrackLayer.path = arcPath.cgPath
-        self.timerTrackLayer.strokeColor = UIColor.systemGray5.cgColor
+        self.timerTrackLayer.strokeColor = isShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
         self.timerTrackLayer.lineWidth = lineWidth
         self.timerTrackLayer.fillColor = UIColor.clear.cgColor
         self.timerTrackLayer.lineCap = .round

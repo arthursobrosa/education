@@ -130,8 +130,14 @@ class ThemeListViewController: UIViewController {
             self.themeListView.tableView.reloadData()
         }
     }
-    
-    @objc private func addThemeButtonTapped() {
+}
+
+@objc protocol ThemeListDelegate: AnyObject {
+    func addThemeButtonTapped()
+}
+
+extension ThemeListViewController: ThemeListDelegate {
+    func addThemeButtonTapped() {
         self.coordinator?.showNewTheme(viewModel: self.viewModel)
     }
 }
@@ -225,6 +231,21 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         self.coordinator?.showThemePage(theme: theme)
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let theme = self.viewModel.themes.value[indexPath.section]
+        
+        let deleteButton = UIContextualAction(style: .normal, title: "") { _, _, boolValue in
+            self.viewModel.removeTheme(theme)
+            self.viewModel.fetchThemes()
+        }
+        
+        deleteButton.backgroundColor = .systemBackground
+        let image = UIImage(systemName: "trash.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
+        deleteButton.image = image
+        
+        return UISwipeActionsConfiguration(actions: [deleteButton])
     }
 }
 

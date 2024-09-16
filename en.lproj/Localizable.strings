@@ -13,11 +13,7 @@
 "lastPlural" = "Last";
 
 // MARK: - EmptyView
-"emptyDaySchedule" = "There are no activities for this day";
-"emptyWeekSchedule" = "There are no activities for this week";
 "emptyStudyTime" = "No study hours recorded";
-"emptyTheme" = "You haven't recorded any exams yet";
-"emptyTest" = "There are no tests assigned for this exam";
 "emptyCreateSubject" = "Create new subject";
 
 // MARK: - TabBar
@@ -66,9 +62,14 @@
 "timeIsUp" = "Time's Up!";
 "activityEndCongratulations" = "Congrats, you've reached the end in your activity of ";
 "noActivityEndCongratulations" = "Congrats, you've reached the end of your activity 🎉";
-"confirmActivityEnd" = "Do you want to finish your activity now?";
+"finishEarlyAlertBody" = "Are you sure you want to finish your activity now?";
+"finishEarlyAlertTitle" = "Finish activity";
+"restartAlertTitle" = "Restart activity";
+"restartAlertBody" = "Are you sure you want to restart your activity?";
 "activityDeletionTitle" = "Acitivity deletion";
 "activityDeletionMessage" = "Are you sure you want to delete this schedule?";
+"emptyDaySchedule" = "You still have no activities scheduled for this day";
+"emptyWeekSchedule" = "You still have no activities scheduled for this week";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
@@ -92,6 +93,8 @@
 "pomodoroInterval" = "Interval";
 "pomodoroRepetitions" = "Repetitions";
 "deleteActivity" = "Delete activity";
+"focusTime" = "Focus Time";
+"pauseTime" = "Pause Time";
 
 // MARK: - Subjects
 "subject" = "Subject";
@@ -117,7 +120,8 @@
 "themeAlertPlaceholder" = "Exam name";
 "newTest" = "New Test";
 "editTest" = "Edit Test";
-"newTheme" = "New Exam";
+"newTheme" = "New exam";
+"newTest" = "New test";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
 "wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
@@ -125,10 +129,12 @@
 "rightQuestions" = "Right Questions";
 "totalQuestions" = "Total Questions";
 "deleteTest" = "Delete test";
+"emptyTheme" = "You haven't recorded any exams yet";
+"emptyTest" = "You haven't recorded any tests yet";
 
 // MARK: - Settings
 "deactivateTitle" = "Deactivate on your phone!";
-"deactivateMessage" = "It's not possible to disable notifications in the Foca app. To do so, access your phone's Settings.";
+"deactivateMessage" = "It's not possible to disable notifications in the Planno app. To do so, access your phone's Settings.";
 "activationTitle" = "Keep track of your studies!";
 "activationMessage" = "We'll send you the status of your activities and alert you when it's time to study for a subject. No ads included.";
 "activateNow" = "Activate now";
@@ -160,8 +166,9 @@
 "explainTestTip" = "In each test group, you can add results and track your progress over time.";
 
 //MARK: - EMPTY SUBJECTS VIEW
-"create" = "Create Subject";
-"createText" = "Create a subject before starting your schedule";
+"create" = "Create subject";
+"createText" = "To start putting together your schedule, create a new subject";
+"welcomeText" = "Welcome to Planno! 👋";
 
 //MARK: - OTHER SUBJECT
 "deleteOther" = "Erase time";

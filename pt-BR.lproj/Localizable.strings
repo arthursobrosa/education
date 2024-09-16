@@ -13,11 +13,7 @@
 "lastPlural" = "Últimos";
 
 // MARK: - EmptyView
-"emptyDaySchedule" = "Não há nenhuma atividade para esse dia";
-"emptyWeekSchedule" = "Não há nenhuma atividade para essa semana";
 "emptyStudyTime" = "Nenhuma hora de estudo registrada";
-"emptyTheme" = "Você ainda não registrou nenhuma prova";
-"emptyTest" = "Não há nenhum teste atribuído a essa prova";
 "emptyCreateSubject" = "Criar nova matéria";
 
 // MARK: - TabBar
@@ -66,9 +62,14 @@
 "timeIsUp" = "Tempo Acabou!";
 "activityEndCongratulations" = "Parabens, voce chegou ao fim da sua atividade de ";
 "noActivityEndCongratulations" = "Parabens, Voce chegou ao fim da sua atividade 🎉";
-"confirmActivityEnd" = "Tem certeza que deseja finalizar a sua atividade agora?";
+"finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
+"finishEarlyAlertTitle" = "Finalizar atividade";
+"restartAlertTitle" = "Recomeçar atividade";
+"restartAlertBody" = "Tem certeza que deseja recomeçar a sua atividade?";
 "activityDeletionTitle" = "Deleção de atividade";
 "activityDeletionMessage" = "Você tem certeza que deseja excluir essa atividade?";
+"emptyDaySchedule" = "Você ainda não tem atividades programadas para este dia";
+"emptyWeekSchedule" = "Você ainda não tem atividades programadas para esta semana";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
@@ -92,7 +93,8 @@
 "pomodoroInterval" = "Intervalo";
 "pomodoroRepetitions" = "Repetições";
 "deleteActivity" = "Apagar atividade";
-
+"focusTime" = "Tempo de Foco";
+"pauseTime" = "Tempo de Pausa";
 
 // MARK: - Subjects
 "subject" = "Matéria";
@@ -118,7 +120,8 @@
 "themeAlertPlaceholder" = "Nome da prova";
 "newTest" = "Novo Teste";
 "editTest" = "Editar Teste";
-"newTheme" = "Nova Prova";
+"newTheme" = "Nova prova";
+"newTest" = "Novo teste";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
@@ -126,10 +129,12 @@
 "testDate" = "Data";
 "totalQuestions" = "Total de Questões";
 "deleteTest" = "Apagar teste";
+"emptyTheme" = "Você ainda não tem nenhuma prova registrada aqui";
+"emptyTest" = "Você ainda não tem nenhum registro de teste";
 
 // MARK: - Settings
 "deactivateTitle" = "Desative no seu celular!";
-"deactivateMessage" = "Não é possível desabilitar notificações no app Foca. Para isso, accesse as Configurações do seu celular.";
+"deactivateMessage" = "Não é possível desabilitar notificações no app Planno. Para isso, accesse as Configurações do seu celular.";
 "activationTitle" = "Acompanhe os seus estudos!";
 "activationMessage" = "Vamos enviar o status das suas atividades e alertar quando estivar na hora de estudar uma matéria. Sem propagandas adicionadas.";
 "activateNow" = "Ativar agora";
@@ -159,8 +164,9 @@
 "explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
 
 //MARK: - EMPTY SUBJECTS VIEW
-"create" = "Criar Matéria";
-"createText" = "Crie uma matéria antes de iniciar seu cronograma";
+"create" = "Criar matéria";
+"createText" = "Para iniciar a montagem do seu cronograma, crie uma nova matéria";
+"welcomeText" = "Boas-vindas ao Planno! 👋";
 
 
 //MARK: - OTHER SUBJECT

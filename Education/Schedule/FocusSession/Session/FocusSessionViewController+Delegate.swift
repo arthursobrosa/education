@@ -12,7 +12,7 @@ import Foundation
     func visibilityButtonTapped()
     func pauseResumeButtonTapped()
     func didFinish()
-    func didTapRestartButton()
+    func didRestart()
     func okButtonPressed()
     func cancelButtonPressed()
 }
@@ -46,16 +46,18 @@ extension FocusSessionViewController: FocusSessionDelegate {
         BlockAppsMonitor.shared.removeShields()
     }
     
-    func didTapRestartButton() {
+    func didRestart() {
+        self.focusSessionView.showFocusAlert(false)
+        self.focusSessionView.isPaused = false
         ActivityManager.shared.restartActivity()
     }
     
     func okButtonPressed() {
-        self.hideEndNotification()
+        self.focusSessionView.showEndNotification(false)
         self.didFinish()
     }
     
     func cancelButtonPressed() {
-        self.hideFinishNotification()
+        self.focusSessionView.showFocusAlert(false)
     }
 }

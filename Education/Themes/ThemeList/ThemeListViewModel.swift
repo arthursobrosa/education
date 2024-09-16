@@ -60,4 +60,8 @@ class ThemeListViewModel {
         
         return String(localized: "last") + ": " + "\(dateString) | \(test.unwrappedRightQuestions)/\(test.unwrappedTotalQuestions)"
     }
+    
+    func removeTheme(_ theme: Theme) {
+        self.themeManager.deleteTheme(theme)
+    }
 }
