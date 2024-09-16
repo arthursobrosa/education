@@ -20,7 +20,7 @@ class ScheduleDetailsModalView: UIView {
         
         let btn = UIButton()
         
-        let img = UIImage(systemName: "chevron.left")
+        let img = UIImage(systemName: "chevron.down")
         btn.setImage(img, for: .normal)
         btn.imageView?.contentMode = .scaleAspectFit
         btn.imageView?.tintColor = .label
@@ -52,7 +52,7 @@ class ScheduleDetailsModalView: UIView {
     
     private let nameLabel: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 22)
+        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 21)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -60,7 +60,6 @@ class ScheduleDetailsModalView: UIView {
     
      let dayLabel: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -76,7 +75,7 @@ class ScheduleDetailsModalView: UIView {
     
     private lazy var startButton: UIButton = {
         let btn = UIButton()
-        btn.layer.cornerRadius = 30
+        btn.layer.cornerRadius = 28
         btn.backgroundColor = .label
         
         let attributedString = NSMutableAttributedString(string: "")
@@ -89,7 +88,7 @@ class ScheduleDetailsModalView: UIView {
         
         let startString = NSAttributedString(string: String(localized: "startButton"), attributes: [
                 .foregroundColor: UIColor.systemBackground,
-                .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 16) ?? UIFont.systemFont(ofSize: 16)
+                .font: UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17)
             ])
         
         attributedString.append(startString)
@@ -145,7 +144,7 @@ class ScheduleDetailsModalView: UIView {
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 20, height: 20)
         let imageString = NSAttributedString(attachment: imageAttachment)
         
-        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont(name: Fonts.darkModeOnMedium, size: 18) ?? UIFont.systemFont(ofSize: 16)])
+        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15)])
         
         attributedString.append(imageString)
         attributedString.append(NSAttributedString(string: "  "))
@@ -185,21 +184,21 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
             editButton.bottomAnchor.constraint(equalTo: closeButton.bottomAnchor),
             editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             
-            nameLabel.topAnchor.constraint(equalTo: closeButton.bottomAnchor),
+            nameLabel.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: -padding),
             nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             dayLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: padding / 1.5 ),
             dayLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding * 1.5),
             
-            hourDetailView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: padding / 1.5 ),
+            hourDetailView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: padding - 3),
             hourDetailView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             hourDetailView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 120/385),
             hourDetailView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 90/100),
             
-            startButton.topAnchor.constraint(equalTo: hourDetailView.bottomAnchor, constant: padding * 1.5),
+            startButton.topAnchor.constraint(equalTo: hourDetailView.bottomAnchor, constant: padding * 2.2),
             startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            startButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 70/385),
-            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 90/100),
+            startButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 55/327),
+            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 334/366),
         ])
     }
 }

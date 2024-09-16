@@ -23,7 +23,7 @@ class DayView: UIView {
         didSet {
             guard let dayOfWeek else { return }
             
-            self.dayLabel.text = dayOfWeek.day.capitalized
+            self.dayLabel.text = dayOfWeek.day.lowercased()
             self.dateLabel.text = dayOfWeek.date
             
             self.handleDayColors()
