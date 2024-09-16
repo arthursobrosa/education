@@ -35,14 +35,6 @@ class StudyTimeView: UIView {
         return segmentedControl
     }()
     
-    let contentView: UIView = {
-        let view = UIView()
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
     private let chartView: StudyTimeChartView
     
     lazy var chartController: UIHostingController<StudyTimeChartView> = {
@@ -52,8 +44,6 @@ class StudyTimeView: UIView {
         
         return controller
     }()
-    
-    let emptyView = EmptyView(message: String(localized: "emptyStudyTime"))
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)

@@ -12,10 +12,6 @@
 "last" = "Último";
 "lastPlural" = "Últimos";
 
-// MARK: - EmptyView
-"emptyStudyTime" = "Nenhuma hora de estudo registrada";
-"emptyCreateSubject" = "Criar nova matéria";
-
 // MARK: - TabBar
 "scheduleTab" = "Estudos";
 "subjectTab" = "Matérias";
@@ -146,9 +142,6 @@
 
 // MARK: - Modal
 "startButton" = "Iniciar atividade";
-
-//MARK: - GRAPH
-"totalTime" = "Tempo Total de Estudo:";
 
 //MARK: - ACTIVITY
 "newActivity" = "Nova atividade";

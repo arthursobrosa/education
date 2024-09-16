@@ -63,8 +63,6 @@ class StudyTimeViewController: UIViewController {
         self.viewModel.focusSessions.bind { [weak self] focusSessions in
             guard let self else { return }
             
-            self.setContentView(isEmpty: focusSessions.isEmpty)
-            
             self.reloadTable()
         }
         
@@ -74,7 +72,7 @@ class StudyTimeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        handleTip()
+        self.handleTip()
         
         self.viewModel.fetchSubjects()
         self.viewModel.fetchFocusSessions()
@@ -189,14 +187,14 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 300
+            return 269
         } else {
             return 60
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.section == 0) {return}
+        guard indexPath.section != 0 else { return }
         
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -220,28 +218,5 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         let headerView = UIView()
         headerView.backgroundColor = UIColor.clear
         return headerView
-    }
-}
-
-private extension StudyTimeViewController {
-    func setContentView(isEmpty: Bool) {
-        self.studyTimeView.contentView.subviews.forEach { subview in
-            subview.removeFromSuperview()
-        }
-        
-        self.addContentSubview(isEmpty ? self.studyTimeView.emptyView : self.studyTimeView.chartController.view)
-    }
-    
-    func addContentSubview(_ subview: UIView) {
-        self.studyTimeView.contentView.addSubview(subview)
-        
-        subview.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            subview.topAnchor.constraint(equalTo: self.studyTimeView.contentView.topAnchor),
-            subview.leadingAnchor.constraint(equalTo: self.studyTimeView.contentView.leadingAnchor),
-            subview.trailingAnchor.constraint(equalTo: self.studyTimeView.contentView.trailingAnchor),
-            subview.bottomAnchor.constraint(equalTo: self.studyTimeView.contentView.bottomAnchor)
-        ])
     }
 }

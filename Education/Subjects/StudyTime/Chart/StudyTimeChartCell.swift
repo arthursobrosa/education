@@ -30,8 +30,8 @@ class StudyTimeChartCell: UITableViewCell {
         
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            hostingController.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -35),
             hostingController.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
