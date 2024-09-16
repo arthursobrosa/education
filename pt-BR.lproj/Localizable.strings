@@ -22,7 +22,7 @@
 "schedule" = "Cronograma";
 "newSchedule" = "Novo";
 "createActivity" = "Criar atividade";
-"imediateActivity" = "Iniciar atividade imediata";
+"immediateActivity" = "Iniciar atividade imediata";
 "timeLeft" = "Em %@h%@m";
 "timeLeftNow" = "Agora";
 "timeLeftFinished" = "Concluído";
@@ -35,14 +35,14 @@
 "saturday" = "Sábado";
 "reminder" = "Lembrete";
 "comingEvent" = "Seu evento de %@ começará em breve!";
-"imediateEvent" = "Seu evento de %@ começa agora!";
+"immediateEvent" = "Seu evento de %@ começa agora!";
 "addSubjectAlertTitle" = "Adicionar Matéria";
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
 "invalidDateAlertTitle" = "Data inválida";
 "invalidDateAlertMessage1" = "Existe uma atividade para %@ com datas conflitantes";
 "invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
-"noSubjectAlertTitle" = "Atividade Inválido";
+"noSubjectAlertTitle" = "Atividade Inválida";
 "noSubjectAlertMessage" = "Você não pode criar uma atividade antes de atribuí-lo a uma matéria";
 "dayOfWeek" = "Dia da semana";
 "startDate" = "Começa";
@@ -56,8 +56,8 @@
 "noSubjectTitle" = "Você não pode criar uma atividade";
 "noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
 "timeIsUp" = "Tempo Acabou!";
-"activityEndCongratulations" = "Parabens, voce chegou ao fim da sua atividade de ";
-"noActivityEndCongratulations" = "Parabens, Voce chegou ao fim da sua atividade 🎉";
+"activityEndCongratulations" = "Parabéns, voce chegou ao fim da sua atividade de ";
+"noActivityEndCongratulations" = "Parabéns, Voce chegou ao fim da sua atividade 🎉";
 "finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
 "finishEarlyAlertTitle" = "Finalizar atividade";
 "restartAlertTitle" = "Recomeçar atividade";
@@ -130,9 +130,9 @@
 
 // MARK: - Settings
 "deactivateTitle" = "Desative no seu celular!";
-"deactivateMessage" = "Não é possível desabilitar notificações no app Planno. Para isso, accesse as Configurações do seu celular.";
+"deactivateMessage" = "Não é possível desabilitar notificações no app Planno. Para isso, acesse as Configurações do seu celular.";
 "activationTitle" = "Acompanhe os seus estudos!";
-"activationMessage" = "Vamos enviar o status das suas atividades e alertar quando estivar na hora de estudar uma matéria. Sem propagandas adicionadas.";
+"activationMessage" = "Vamos enviar o status das suas atividades e alertar quando estiver na hora de estudar uma matéria. Sem propagandas adicionadas.";
 "activateNow" = "Ativar agora";
 "activateLater" = "Ativar depois";
 "okAction" = "Ok, entendi";

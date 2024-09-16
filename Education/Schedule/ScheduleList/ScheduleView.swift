@@ -90,7 +90,7 @@ class ScheduleView: UIView {
     lazy var startActivityButton: ButtonComponent = {
         let button = ButtonComponent(
             insets: NSDirectionalEdgeInsets(top: 16, leading: 24, bottom: 16, trailing: 24),
-            title: String(localized: "imediateActivity"),
+            title: String(localized: "immediateActivity"),
             fontStyle: Fonts.darkModeOnMedium,
             fontSize: 16,
             cornerRadius: 25
