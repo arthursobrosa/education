@@ -137,27 +137,27 @@ class StudyTimeViewModel: ObservableObject {
     }
     
     func updateAggregatedTimes() {
-            self.aggregatedTimes = []
-            
-            var subjectTotals: [String: Int] = [:]
-            
-            for session in self.focusSessions.value {
-                subjectTotals[session.unwrappedSubjectID, default: 0] += session.unwrappedTotalTime
-            }
-            
-            var subjectColors: [String: String] = [:]
-            for subjectId in subjectTotals.keys {
-                if let subject = self.subjectManager.fetchSubject(withID: subjectId) {
-                    subjectColors[subjectId] = subject.unwrappedColor
-                } 
-            }
-            
-            let times = subjectTotals.map {
-                SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "sealBackgroundColor")
-            }
-            
-            self.aggregatedTimes = times
+        self.aggregatedTimes = []
+        
+        var subjectTotals: [String: Int] = [:]
+        
+        for session in self.focusSessions.value {
+            subjectTotals[session.unwrappedSubjectID, default: 0] += session.unwrappedTotalTime
         }
+        
+        var subjectColors: [String: String] = [:]
+        for subjectId in subjectTotals.keys {
+            if let subject = self.subjectManager.fetchSubject(withID: subjectId) {
+                subjectColors[subjectId] = subject.unwrappedColor
+            }
+        }
+        
+        let times = subjectTotals.map {
+            SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "sealBackgroundColor")
+        }
+        
+        self.aggregatedTimes = times
+    }
     
     private func idToName(subjectId: String) -> String {
         let subject = self.subjectManager.fetchSubject(withID: subjectId)

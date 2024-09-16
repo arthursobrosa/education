@@ -45,26 +45,17 @@ class OtherSubjectViewController: UIViewController {
     
     // MARK: - Methods
     private func setupNavigationItems() {
+        let cancelButton = UIButton(configuration: .plain())
+        let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])
+        cancelButton.setAttributedTitle(attributedCancelTitle, for: .normal)
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
-        cancelButton.tintColor = UIColor(named: "FocusSettingsColor")
-        navigationItem.leftBarButtonItem = cancelButton
+        let cancelItem = UIBarButtonItem(customView: cancelButton)
+
+        self.navigationItem.leftBarButtonItem = cancelItem
     }
     
-    @objc private func cancelButtonTapped() {
-        self.coordinator?.dismiss(animated: true)
-    }
-    
-}
-
-
-
-protocol OtherSubjectDelegate: AnyObject {
-    func deleteOtherSubjectTime()
-}
-
-extension OtherSubjectViewController: OtherSubjectDelegate {
-    func deleteOtherSubjectTime() {
+    func showDeleteAlert() {
         let alert = UIAlertController(title: String(localized: "deleteOther"), message: String(localized: "deleteOtherMessage"), preferredStyle: .alert)
         
         let deleteAction = UIAlertAction(title: String(localized: "confirm"), style: .destructive) { [weak self] _ in
@@ -79,10 +70,7 @@ extension OtherSubjectViewController: OtherSubjectDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func deleteTime(){
-        self.viewModel.removeSubject(subject: nil)
+    @objc private func cancelButtonTapped() {
         self.coordinator?.dismiss(animated: true)
     }
-    
-    
 }
