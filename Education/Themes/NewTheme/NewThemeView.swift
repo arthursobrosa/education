@@ -44,13 +44,20 @@ class NewThemeView: UIView {
     }()
     
     private lazy var cancelButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "cancel"), textColor: .label, cornerRadius: 30)
+        let button = ButtonComponent(
+            insets: NSDirectionalEdgeInsets(top: 16, leading: 45, bottom: 16, trailing: 45),
+            title: String(localized: "cancel"),
+            textColor: .label,
+            fontStyle: Fonts.darkModeOnMedium,
+            fontSize: 17,
+            cornerRadius: 28
+        )
         button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
-        button.backgroundColor = .clear
+        button.tintColor = .systemBackground
         
         button.layer.borderColor = UIColor.secondaryLabel.cgColor
-        button.layer.borderWidth = 2
+        button.layer.borderWidth = 1
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -58,7 +65,7 @@ class NewThemeView: UIView {
     }()
     
     private lazy var continueButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground, cornerRadius: 30)
+        let button = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground, cornerRadius: 28)
         button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
         
         button.translatesAutoresizingMaskIntoConstraints = false
