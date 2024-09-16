@@ -34,12 +34,12 @@ class CustomTableCell: UITableViewCell {
               self.numberOfRowsInSection != 0,
               !self.bordersWereSet else { return }
         
-        let radius = self.bounds.width * (10/353)
-        let borderWidth = self.bounds.width * (2.5/353)
+        let radius = self.bounds.width * (15/353)
+        let borderWidth = self.bounds.width * (1.5/353)
         let borderColor = UIColor.systemGray4
         
         if self.numberOfRowsInSection == 1 {
-            self.roundCorners(corners: .allCorners, radius: radius, borderWidth: borderWidth, borderColor: borderColor)
+            self.roundCorners(corners: .allCorners, radius: radius * 0.95, borderWidth: borderWidth, borderColor: borderColor)
         } else {
             if row == 0 {
                 self.createCurve(on: .top, radius: radius, borderWidth: borderWidth, borderColor: borderColor, rect: self.bounds)

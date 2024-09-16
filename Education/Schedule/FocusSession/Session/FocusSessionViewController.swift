@@ -155,6 +155,7 @@ class FocusSessionViewController: UIViewController {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.showEndTimeAlert()
+                    self.removeTapGestureRecognizer()
                 }
             }
             .store(in: &self.cancellables)
@@ -188,6 +189,16 @@ class FocusSessionViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
         self.view.addGestureRecognizer(tapGesture)
     }
+    
+    private func removeTapGestureRecognizer() {
+            if let gestureRecognizers = self.view.gestureRecognizers {
+                for gesture in gestureRecognizers {
+                    if gesture is UITapGestureRecognizer {
+                        self.view.removeGestureRecognizer(gesture)
+                    }
+                }
+            }
+        }
     
     @objc func viewWasTapped() {
         self.viewModel.prefersStatusBarHidden.toggle()
@@ -228,5 +239,6 @@ extension FocusSessionViewController {
         self.focusSessionView.resetAnimations()
         
         self.showEndTimeAlert()
+        self.removeTapGestureRecognizer()
     }
 }

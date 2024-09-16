@@ -55,9 +55,9 @@
 "weekly" = "Semanal";
 "noSubjectTitle" = "Você não pode criar uma atividade";
 "noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
-"timeIsUp" = "Tempo Acabou!";
-"activityEndCongratulations" = "Parabéns, voce chegou ao fim da sua atividade de ";
-"noActivityEndCongratulations" = "Parabéns, Voce chegou ao fim da sua atividade 🎉";
+"timeIsUp" = "Fim da atividade";
+"activityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade de ";
+"noActivityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade 🎉";
 "finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
 "finishEarlyAlertTitle" = "Finalizar atividade";
 "restartAlertTitle" = "Recomeçar atividade";

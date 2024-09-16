@@ -13,7 +13,7 @@ class NotificationComponentView: UIView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 24)
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
         label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = -1
@@ -26,7 +26,7 @@ class NotificationComponentView: UIView {
     
     private let bodyLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 17)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 17)
         label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = -1
@@ -47,7 +47,7 @@ class NotificationComponentView: UIView {
         return button
     }()
     
-    init(title: String, body: String, color: UIColor) {
+    init(title: String, body: String) {
         super.init(frame: .zero)
         
         self.titleLabel.text = title
@@ -57,10 +57,7 @@ class NotificationComponentView: UIView {
         
         self.setupUI()
         
-        self.backgroundColor = color
         self.layer.cornerRadius = 12
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.label.cgColor
     }
     
     required init?(coder: NSCoder) {
@@ -78,17 +75,17 @@ extension NotificationComponentView: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding * 2),
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
             titleLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 290/360),
             
             bodyLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            bodyLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: padding * 2),
+            bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: padding ),
             bodyLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 290/360),
             
             okButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            okButton.topAnchor.constraint(equalTo: bodyLabel.topAnchor, constant: padding * 4),
+            okButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding ),
             okButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 312/360),
-            okButton.heightAnchor.constraint(equalTo: okButton.widthAnchor, multiplier: 55/312),
+            okButton.heightAnchor.constraint(equalTo: okButton.widthAnchor, multiplier: 56/312),
         ])
     }
 }
