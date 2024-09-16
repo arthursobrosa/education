@@ -136,6 +136,10 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
     private func showScheduleNotification(subjectName: String, startTime: Date, endTime: Date) {
         guard let coordinator else { return }
         
+        if let splashCoordinator = coordinator as? SplashCoordinator {
+            splashCoordinator.scheduleNotification = SplashCoordinator.ScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
+        }
+        
         if let tabBar = coordinator.navigationController.viewControllers.last as? TabBarController {
             tabBar.selectedIndex = 0
             tabBar.schedule.showScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
