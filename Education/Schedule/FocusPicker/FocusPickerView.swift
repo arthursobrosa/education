@@ -68,9 +68,11 @@ class FocusPickerView: UIView {
     
     private lazy var cancelButton: UIButton = {
         let bttn = UIButton(configuration: .plain())
-        bttn.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-        bttn.setTitle(String(localized: "cancel"), for: .normal)
-        bttn.setTitleColor(.secondaryLabel, for: .normal)
+        
+        let textColor: UIColor? = .secondaryLabel
+        
+        let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? .systemFont(ofSize: 18), .foregroundColor : textColor ?? .label])
+        bttn.setAttributedTitle(attributedString, for: .normal)
         
         bttn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         
@@ -79,7 +81,7 @@ class FocusPickerView: UIView {
         return bttn
     }()
     
-    lazy var titleTexto: UILabel = {
+    lazy var titleText: UILabel = {
         let label = UILabel()
         label.text = ""
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
@@ -119,7 +121,7 @@ class FocusPickerView: UIView {
 extension FocusPickerView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(backButton)
-        self.addSubview(titleTexto)
+        self.addSubview(titleText)
         self.addSubview(dateView)
         self.addSubview(settingsTableView)
         self.addSubview(startButton)
@@ -131,7 +133,7 @@ extension FocusPickerView: ViewCodeProtocol {
         switch self.timerCase {
             case .timer:
                 widthMultiplier = 170 / 359
-                heightMultiplier = 180 / 170
+                heightMultiplier = 162 / 170
             case .pomodoro:
                 widthMultiplier = 302 / 359
                 heightMultiplier = 293 / 302
@@ -145,9 +147,9 @@ extension FocusPickerView: ViewCodeProtocol {
             backButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
             backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             
-            titleTexto.topAnchor.constraint(equalTo: backButton.topAnchor),
-            titleTexto.bottomAnchor.constraint(equalTo: backButton.bottomAnchor),
-            titleTexto.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            titleText.topAnchor.constraint(equalTo: backButton.topAnchor),
+            titleText.bottomAnchor.constraint(equalTo: backButton.bottomAnchor),
+            titleText.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             dateView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: widthMultiplier),
             dateView.heightAnchor.constraint(equalTo: dateView.widthAnchor, multiplier: heightMultiplier),
@@ -162,12 +164,13 @@ extension FocusPickerView: ViewCodeProtocol {
             
             startButton.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: padding),
             startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (334/366)),
-            startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: (55/330)),
+            startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: (55/334)),
             startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            cancelButton.topAnchor.constraint(equalTo: startButton.bottomAnchor, constant: padding * 0.5),
+            cancelButton.topAnchor.constraint(equalTo: startButton.bottomAnchor),
             cancelButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding)
+            cancelButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: (55/334)),
+            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }
