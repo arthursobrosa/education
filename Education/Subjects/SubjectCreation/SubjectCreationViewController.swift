@@ -91,6 +91,7 @@ class SubjectCreationViewController: UIViewController{
     // MARK: - Methods
     private func setNavigationItems() {
         self.navigationItem.title = self.viewModel.currentEditingSubject != nil ? String(localized: "editSubject") : String(localized: "newSubject")
+        self.navigationController?.navigationBar.titleTextAttributes = [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 14)!, .foregroundColor : UIColor.label]
         
         let cancelButton = UIButton(configuration: .plain())
         let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])

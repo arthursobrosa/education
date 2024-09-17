@@ -70,7 +70,7 @@
 "onTimeMessage" = "It's time for your activity!";
 
 // MARK: - Focus
-"subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
+"subjectAttributionQuestion" = "Would you like to link this activity to a subject?";
 "timeCountingQuestion" = "How do you want to tell time?";
 "timerSelectionTitle" = "Scheduled time \n e.g.: 50 minutes";
 "timerSelectionBold" = "Scheduled time";
@@ -124,8 +124,8 @@
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
 "wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
 "testDate" = "Date";
-"rightQuestions" = "Right Questions";
-"totalQuestions" = "Total Questions";
+"rightQuestions" = "Right questions";
+"totalQuestions" = "Total questions";
 "deleteTest" = "Delete test";
 "emptyTheme" = "You haven't recorded any exams yet";
 "emptyTest" = "You haven't recorded any tests yet";

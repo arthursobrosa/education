@@ -123,7 +123,7 @@ class CustomChart: UIView {
         self.reloadCollection()
     }
     
-    func setData<T, U, V>(_ data: [T], sorter keyPath: KeyPath<T, U>, mapTo resultKeyPath: KeyPath<T, V>, ascending: Bool = false) where U: Comparable, V: Comparable {
+    func setData<T, U, V>(_ data: [T], sorter keyPath: KeyPath<T, U>, mapTo resultKeyPath: KeyPath<T, V>, ascending: Bool = true) where U: Comparable, V: Comparable {
         self.dataSize = 0
         self.rawData = []
         self.filteredData = []

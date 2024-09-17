@@ -186,7 +186,7 @@ extension SettingsViewController: ViewCodeProtocol {
         let padding = 12.0
         
         NSLayoutConstraint.activate([
-            settingsTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            settingsTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 40),
             settingsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             settingsTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: padding),
             settingsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -padding)
