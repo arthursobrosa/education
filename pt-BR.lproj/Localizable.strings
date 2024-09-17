@@ -2,81 +2,170 @@
 "add" = "Adicionar";
 "cancel" = "Cancelar";
 "save" = "Salvar";
-
-// MARK: - EmptyView
-"emptyMessage" = "Não há %@s aqui... Por que você não tenta criar um(a)?";
-"emptyTheme" = "tema";
-"emptyTest" = "teste";
-"emptyStudyTime" = "tempos de estudo";
-"emptySchedule" = "cronograma";
+"none" = "Nenhuma";
+"continue" = "Continuar";
+"start" = "Começar";
+"other" = "Outro";
+"confirm" = "Confirmar";
+"yes" = "Sim";
+"no" = "Não";
+"last" = "Último";
+"lastPlural" = "Últimos";
 
 // MARK: - TabBar
-"themesTabTitle" = "Temas";
-"timerTabTitle" = "Cronômetro";
-"studyTimeTabTitle" = "Tempo Estudado";
-"scheduleTabTitle" = "Cronograma";
+"scheduleTab" = "Estudos";
+"subjectTab" = "Matérias";
+"themeTab" = "Provas";
+"settingsTab" = "Ajustes";
 
-// MARK: - ThemeList
-"themesTitle" = "Temas";
-"themeAlertTitle" = "Adicinar Tema";
-"themeAlertMessage" = "Insira o nome do tema:";
-"themeAlertPlaceholder" = "Nome do tema";
-"themeTableViewDetail" = "Detalhe";
+// MARK: - Schedule
+"schedule" = "Cronograma";
+"newSchedule" = "Novo";
+"createActivity" = "Criar atividade";
+"immediateActivity" = "Iniciar atividade imediata";
+"timeLeft" = "Em %@h%@m";
+"timeLeftNow" = "Agora";
+"timeLeftFinished" = "Concluído";
+"sunday" = "Domingo";
+"monday" = "Segunda-feira";
+"tuesday" = "Terça-feira";
+"wednesday" = "Quarta-feira";
+"thursday" = "Quinta-feira";
+"friday" = "Sexta-feira";
+"saturday" = "Sábado";
+"reminder" = "Lembrete";
+"comingEvent" = "Seu evento de %@ começará em breve!";
+"immediateEvent" = "Seu evento de %@ começa agora!";
+"addSubjectAlertTitle" = "Adicionar Matéria";
+"addSubjectAlertMessage" = "Insira o nome da matéria:";
+"addSubjectAlertPlaceholder" = "Nome da Matéria";
+"invalidDateAlertTitle" = "Data inválida";
+"invalidDateAlertMessage1" = "Existe uma atividade para %@ com datas conflitantes";
+"invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
+"noSubjectAlertTitle" = "Atividade Inválida";
+"noSubjectAlertMessage" = "Você não pode criar uma atividade antes de atribuí-lo a uma matéria";
+"dayOfWeek" = "Dia da semana";
+"startDate" = "Começa";
+"endDate"= "Termina";
+"alarm5Min" = "Alerta 5 min. antes de iniciar";
+"alarmAtTime" = "Alerta ao iniciar";
+"subject" = "Disciplina";
+"blockApps" = "Bloquear Apps";
+"daily" = "Diário";
+"weekly" = "Semanal";
+"noSubjectTitle" = "Você não pode criar uma atividade";
+"noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
+"timeIsUp" = "Fim da atividade";
+"activityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade de ";
+"noActivityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade 🎉";
+"finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
+"finishEarlyAlertTitle" = "Finalizar atividade";
+"restartAlertTitle" = "Recomeçar atividade";
+"restartAlertBody" = "Tem certeza que deseja recomeçar a sua atividade?";
+"activityDeletionTitle" = "Deleção de atividade";
+"activityDeletionMessage" = "Você tem certeza que deseja excluir essa atividade?";
+"emptyDaySchedule" = "Você ainda não tem atividades programadas para este dia";
+"emptyWeekSchedule" = "Você ainda não tem atividades programadas para esta semana";
+"onTimeTitle" = "Na hora";
+"onTimeMessage" = "Está na hora da sua atividade!";
 
-// MARK: - ThemePage
-"newTest" = "Novo Teste";
-"addTest" = "Adicionar Teste";
-
-// MARK: - TestPage
-"rightQuestions" = "Questões Corretas";
-"totalQuestions" = "Total de Questões";
-
-// MARK: - FocusSession
-"newFocusSession" = "Novo Foco";
-"noneSubject" = "Nenhuma";
-"focusInvalidDateAlertTitle" = "Data Inválida";
-"focusInvalidDateAlertMessage" = "Você escolheu uma data inválida";
-"focusInvalidDateAction" = "Escolha denovo";
-"focusTableSubjectHeader" = "Matéria";
-"focusTableTimerHeader" = "Cronômetro";
-"focusTableAppBlockingHeader" = "Bloqueio de Apps";
-"focusStartButton" = "Iniciar";
-"focusEndsAt" = "Termina às";
-"focusAlarmWhenFinished" = "Alarme ao finalizar";
-"focusBlock" = "Bloquear";
-"focusApps" = "Apps";
-"focusSession" = "Foco";
-"timerAlertTitle" = "Tempo esgotado!";
+// MARK: - Focus
+"subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
+"timeCountingQuestion" = "Como você deseja contar o tempo?";
+"timerSelectionTitle" = "Tempo programado \n Ex.: 50min";
+"timerSelectionBold" = "Tempo programado";
+"pomodoroSelectionTitle" = "Pomodoro";
+"stopwatchSelectionTitle" = "Livre \n (pare quando quiser)";
+"stopwatchSelectionBold" = "Livre";
+"alarm" = "Alarme ao finalizar";
+"showTimeCount" = "Mostrar contagem de tempo";
+"paused" = "Pausado";
+"subjectActivity" = "Atividade de";
+"newActivity" = "Nova atividade";
+"interval" = "Intervalo";
+"timerAlertTitle" = "Tempo acabou!";
 "timerAlertMessage" = "O seu cronômetro foi finalizado";
 "focusFinish" = "Finalizar";
+"focusRestart" = "Recomeçar";
+"pomodoroFocus" = "Foco";
+"pomodoroInterval" = "Intervalo";
+"pomodoroRepetitions" = "Repetições";
+"deleteActivity" = "Apagar atividade";
+"focusTime" = "Tempo de Foco";
+"pauseTime" = "Tempo de Pausa";
 
-// MARK: - StudyTime
-"studyTime" = "Tempo Estudado";
-"studyTimeOther" = "Outro";
+// MARK: - Subjects
+"subject" = "Matéria";
+"saveSubject" = "Salvar Matéria";
+"addSubjectName" = "Insira o nome da matéria";
 "studyTimeLastWeek" = "Semana";
 "studyTimeLastMonth" = "Mês";
 "studyTimeLastYear" = "Ano";
+"emptySubject" = "matéria";
+"deleteSubjectTitle" = "Excluir matéria";
+"deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades dentro do cronograma também serão excluídos.";
+"subjectCreationTitle" = "Matéria inválida";
+"subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
+"subjectCreationUsedName" = "Já existe uma matéria com este nome.";
+"color" = "Cor";
+"newSubject" = "Nova Matéria";
+"editSubject" = "Editar Matéria";
+"subjectName" = "Nome da Matéria";
 
-// MARK: - ScheduleList
-"schedule" = "Cronograma";
-"newSchedule" = "Novo";
+// MARK: - Themes
+"themeAlertTitle" = "Adicionar prova";
+"themeAlertMessage" = "Insira o nome da prova:";
+"themeAlertPlaceholder" = "Nome da prova";
+"newTest" = "Novo Teste";
+"editTest" = "Editar Teste";
+"newTheme" = "Nova prova";
+"newTest" = "Novo teste";
+"addTest" = "Adicionar Teste";
+"wrongQuestionsTitle" = "Número de Acertos Inválido!";
+"wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
+"rightQuestions" = "Questões Corretas";
+"testDate" = "Data";
+"totalQuestions" = "Total de Questões";
+"deleteTest" = "Apagar teste";
+"emptyTheme" = "Você ainda não tem nenhuma prova registrada aqui";
+"emptyTest" = "Você ainda não tem nenhum registro de teste";
 
-// MARK: - ScheduleDetails
-"sunday" = "Domingo";
-"monday" = "Segunda";
-"tuesday" = "Terça";
-"wednesday" = "Quarta";
-"thursday" = "Quinta";
-"friday" = "Sexta";
-"saturday" = "Sábado";
-"addSubjectAlertTitle" = "Adicionar Matéria";
-"addSubjectAlertMessage" = "Insira o nome da matéria:";
-"addSubjectAlertPlaceholder" = "Nome da matéria";
-"scheduleTableDayHeader" = "Dia";
-"scheduleStartDate" = "Início";
-"scheduleEndDate"= "Fim";
-"invalidDateAlertTitle" = "Data Inválida";
-"invalidDateAlertMessage1" = "Já existe um cronograma no(a) %@ com horários conflitantes";
-"invalidDateAlertMessage2" = "Horário de início não pode ser igual ou maior que horário de fim";
-"noSubjectAlertTitle" = "Cronograma Inválido";
-"noSubjectAlertMessage" = "Você não pode criar um cronograma antes de atribuí-lo a uma matéria";
+// MARK: - Settings
+"deactivateTitle" = "Desative no seu celular!";
+"deactivateMessage" = "Não é possível desabilitar notificações no app Planno. Para isso, acesse as Configurações do seu celular.";
+"activationTitle" = "Acompanhe os seus estudos!";
+"activationMessage" = "Vamos enviar o status das suas atividades e alertar quando estiver na hora de estudar uma matéria. Sem propagandas adicionadas.";
+"activateNow" = "Ativar agora";
+"activateLater" = "Ativar depois";
+"okAction" = "Ok, entendi";
+"notificationsAndAlerts" = "Notificações e Alertas";
+"blockApps" = "Bloqueio de Aplicativos";
+"firstWeekDay" = "Primeiro dia da semana";
+
+// MARK: - Modal
+"startButton" = "Iniciar atividade";
+"startNowButton" = "Iniciar agora";
+
+//MARK: - ACTIVITY
+"newActivity" = "Nova atividade";
+"editActivity" = "Editar atividade";
+"studyingNow" = "Estudando agora";
+
+//MARK: - TIPS
+"newActivityTip" = "Crie uma nova atividade aqui";
+"explainActivityTip" = "Você pode criar uma atividade recorrente e adicioná-la ao cronograma ou criar uma atividade imediata, onde você já inicia um temporizador de estudo.";
+"newSubjectTip" = "Crie uma matéria aqui";
+"explainSubjectTip" = "As atividades do seu cronograma e o seu tempo de estudo são vinculados a matérias.";
+"newTestTip" = "Crie um novo grupo de testes aqui";
+"explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
+
+//MARK: - EMPTY SUBJECTS VIEW
+"create" = "Criar matéria";
+"createText" = "Para iniciar a montagem do seu cronograma, crie uma nova matéria";
+"welcomeText" = "Boas-vindas ao Planno! 👋";
+
+
+//MARK: - OTHER SUBJECT
+"deleteOther" = "Apagar tempo";
+"deleteOtherMessage" = "Você realmente deseja apagar o tempo de estudo?";
+"deleteOtherBodyText" = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele.";

@@ -10,12 +10,10 @@ import UIKit
 
 class ThemePageViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: ShowingTestPage?
+    weak var coordinator: (ShowingTestPage & Dismissing)?
     let viewModel: ThemePageViewModel
     
     // MARK: - Properties
-    private var tests = [Test]()
-    
     private var contentView: UIView = {
         let view = UIView()
         
@@ -29,26 +27,10 @@ class ThemePageViewController: UIViewController {
         
         themeView.delegate = self
         
-        let chartView = ChartView(viewModel: self.viewModel)
-        themeView.chartHostingController = UIHostingController(rootView: chartView)
-        
-        themeView.testsTableView.delegate = self
-        themeView.testsTableView.dataSource = self
-        themeView.testsTableView.register(TestTableViewCell.self, forCellReuseIdentifier: TestTableViewCell.identifier)
-        
         themeView.translatesAutoresizingMaskIntoConstraints = false
         
         return themeView
     }()
-    
-    private lazy var addTestButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "addTest"))
-        bttn.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
-        
-        return bttn
-    }()
-    
-    private let emptyView = EmptyView(object: String(localized: "emptyTest"))
     
     // MARK: - Initialization
     init(viewModel: ThemePageViewModel) {
@@ -65,15 +47,15 @@ class ThemePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .systemBackground
+        
+        self.setNavigationItems()
         self.setupUI()
         
         self.viewModel.tests.bind { [weak self] tests in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.setContentView(isEmpty: tests.isEmpty)
-            
-            self.tests = tests.sorted { $0.date! > $1.date! }
-            self.reloadTable()
         }
     }
     
@@ -84,56 +66,87 @@ class ThemePageViewController: UIViewController {
     }
     
     // MARK: - Methods
-    private func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            self.themePageView.testsTableView.reloadData()
-        }
+    private func setNavigationItems() {
+        self.navigationItem.title = self.viewModel.theme.unwrappedName
+        
+        let addButton = UIButton()
+        addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
+        addButton.imageView?.contentMode = .scaleAspectFit
+        addButton.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
+        addButton.tintColor = .label
+        
+        let addItem = UIBarButtonItem(customView: addButton)
+        
+        self.navigationItem.rightBarButtonItems = [addItem]
+        
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBackButton))
+        backButton.tintColor = .label
+        
+        self.navigationItem.leftBarButtonItems = [backButton]
     }
     
-    @objc private func addTestButtonTapped() {
-        self.coordinator?.showTestPage(viewModel: self.viewModel)
+    @objc private func didTapBackButton() {
+        self.coordinator?.dismiss(animated: true)
+    }
+    
+    func setChart() {
+        self.themePageView.customChart?.removeFromSuperview()
+        
+        self.themePageView.customChart = CustomChart(limit: self.viewModel.selectedLimit)
+        let limitedItems = self.viewModel.getLimitedItems()
+        self.themePageView.customChart?.setData(limitedItems, sorter: \.date, mapTo: \.percentage)
+    }
+    
+    func setTable() {
+        self.themePageView.tableView = CustomTableView()
+        self.themePageView.tableView?.delegate = self
+        self.themePageView.tableView?.dataSource = self
     }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
 extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tests.count
+        return self.viewModel.tests.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let test = self.tests[indexPath.row]
+        let test = self.viewModel.tests.value[indexPath.row]
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TestTableViewCell.identifier, for: indexPath) as? TestTableViewCell else {
-            return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableCell.identifier, for: indexPath) as? CustomTableCell else {
+            fatalError("Could not dequeue cell")
         }
         
-        cell.test = test
+        cell.textLabel?.text = self.viewModel.getDateString(from: test)
+        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
+        
+        let label = UILabel()
+        label.text = self.viewModel.getQuestionsString(from: test)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.textColor = .secondaryLabel
+        label.sizeToFit()
+        
+        cell.accessoryView = label
+        
+        cell.row = indexPath.row
+        cell.numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let test = self.tests[indexPath.row]
-        
-        if editingStyle == .delete {
-            self.viewModel.removeTest(test)
-        }
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let _ = self.tests[indexPath.row]
-        
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let test = self.viewModel.tests.value[indexPath.row]
+        
+        self.coordinator?.showTestPage(theme: self.viewModel.theme, test: test)
     }
 }
 
 extension ThemePageViewController: ViewCodeProtocol {
     func setupUI() {
         self.view.addSubview(contentView)
-        self.view.addSubview(addTestButton)
         
         let padding = 20.0
         
@@ -141,20 +154,25 @@ extension ThemePageViewController: ViewCodeProtocol {
             contentView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: addTestButton.topAnchor, constant: -padding),
-            
-            addTestButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: padding),
-            addTestButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -padding),
-            addTestButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            addTestButton.heightAnchor.constraint(equalTo: addTestButton.widthAnchor, multiplier: 0.16)
+            contentView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
         ])
     }
     
     private func setContentView(isEmpty: Bool) {
-        self.view.removeConstraints(self.emptyView.constraints)
-        self.view.removeConstraints(self.themePageView.constraints)
+        self.contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
         
-        self.addContentSubview(isEmpty ? self.emptyView : self.themePageView)
+        self.themePageView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        if !isEmpty {
+            self.setTable()
+            self.setChart()
+        }
+        
+        self.addContentSubview(isEmpty ? self.themePageView.emptyView : self.themePageView)
     }
     
     private func addContentSubview(_ subview: UIView) {

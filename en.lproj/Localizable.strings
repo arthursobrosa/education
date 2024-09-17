@@ -2,66 +2,30 @@
 "add" = "Add";
 "cancel" = "Cancel";
 "save" = "Save";
-
-// MARK: - EmptyView
-"emptyMessage" = "There are no %@s in here... Why don't you try adding one?";
-"emptyTheme" = "theme";
-"emptyTest" = "test";
-"emptyStudyTime" = "study time";
-"emptySchedule" = "schedule";
+"none" = "None";
+"continue" = "Continue";
+"start" = "Start";
+"other" = "Other";
+"confirm" = "Confirm";
+"yes" = "Yes";
+"no" = "No";
+"last" = "Last";
+"lastPlural" = "Last";
 
 // MARK: - TabBar
-"themesTabTitle" = "Themes";
-"timerTabTitle" = "Timer";
-"studyTimeTabTitle" = "Study Time";
-"scheduleTabTitle" = "Schedule";
+"scheduleTab" = "Studies";
+"subjectTab" = "Subjects";
+"themeTab" = "Exams";
+"settingsTab" = "Settings";
 
-// MARK: - ThemeList
-"themesTitle" = "Themes";
-"themeAlertTitle" = "Add Theme";
-"themeAlertMessage" = "Enter theme name:";
-"themeAlertPlaceholder" = "Theme name";
-"themeTableViewDetail" = "Detail";
-
-// MARK: - ThemePage
-"newTest" = "New Test";
-"addTest" = "Add Test";
-
-// MARK: - TestPage
-"rightQuestions" = "Right Questions";
-"totalQuestions" = "Total Questions";
-
-// MARK: - FocusSession
-"newFocusSession" = "New Focus";
-"noneSubject" = "None";
-"focusInvalidDateAlertTitle" = "Invalid Date";
-"focusInvalidDateAlertMessage" = "You chose an invalid date";
-"focusInvalidDateAction" = "Choose again";
-"focusTableSubjectHeader" = "Subject";
-"focusTableTimerHeader" = "Timer";
-"focusTableAppBlockingHeader" = "App Blocking";
-"focusStartButton" = "Start";
-"focusEndsAt" = "Ends At";
-"focusAlarmWhenFinished" = "Alarm when finished";
-"focusBlock" = "Block";
-"focusApps" = "Apps";
-"focusSession" = "Focus";
-"timerAlertTitle" = "Time's up!";
-"timerAlertMessage" = "Your timer is finished";
-"focusFinish" = "Finish";
-
-// MARK: - StudyTime
-"studyTime" = "Study Time";
-"studyTimeOther" = "Other";
-"studyTimeLastWeek" = "Last week";
-"studyTimeLastMonth" = "Last month";
-"studyTimeLastYear" = "Last year";
-
-// MARK: - ScheduleList
+// MARK: - Schedule
 "schedule" = "Schedule";
 "newSchedule" = "New";
-
-// MARK: - ScheduleDetails
+"createActivity" = "Create activity";
+"immediateActivity" = "Start imediate activity";
+"timeLeft" = "In %@h%@m";
+"timeLeftNow" = "Now";
+"timeLeftFinished" = "Finished";
 "sunday" = "Sunday";
 "monday" = "Monday";
 "tuesday" = "Tuesday";
@@ -69,14 +33,138 @@
 "thursday" = "Thursday";
 "friday" = "Friday";
 "saturday" = "Saturday";
+"reminder" = "Reminder";
+"comingEvent" = "Your %@ event is starting soon!";
+"immediateEvent" = "Your %@ event is starting now!";
 "addSubjectAlertTitle" = "Add Subject";
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";
-"scheduleTableDayHeader" = "Day";
-"scheduleStartDate" = "Start";
-"scheduleEndDate"= "End";
 "invalidDateAlertTitle" = "Invalid Date";
-"invalidDateAlertMessage1" = "There is an existing schedule at %@ with conflicting dates";
-"invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date";
-"noSubjectAlertTitle" = "Invalid Schedule";
-"noSubjectAlertMessage" = "You cannot create a schedule before assigning it to a subject";
+"invalidDateAlertMessage1" = "There is an existing activity at %@ with conflicting dates";
+"invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date.";
+"noSubjectAlertTitle" = "Invalid Activity";
+"noSubjectAlertMessage" = "You cannot create an activity before assigning it to a subject";
+"dayOfWeek" = "Day of the week";
+"startDate" = "Starts";
+"endDate"= "Ends";
+"alarm5Min" = "Alert 5 min. before start time";
+"alarmAtTime" = "Alert at start time";
+"subject" = "Subject";
+"blockApps" = "Block Apps";
+"daily" = "Daily";
+"weekly" = "Weekly";
+"noSubjectTitle" = "You cannot create an activity";
+"noSubjectMessage" = "You have to create a subject before setting an activity";
+"timeIsUp" = "End of activity";
+"activityEndCongratulations" = "Congratulations! You've reached the end of your activity of ";
+"noActivityEndCongratulations" = "Congratulations! You've reached the end of your activity 🎉";
+"finishEarlyAlertBody" = "Are you sure you want to finish your activity now?";
+"finishEarlyAlertTitle" = "Finish activity";
+"restartAlertTitle" = "Restart activity";
+"restartAlertBody" = "Are you sure you want to restart your activity?";
+"activityDeletionTitle" = "Activity deletion";
+"activityDeletionMessage" = "Are you sure you want to delete this schedule?";
+"emptyDaySchedule" = "You still have no activities scheduled for this day";
+"emptyWeekSchedule" = "You still have no activities scheduled for this week";
+"onTimeTitle" = "On time";
+"onTimeMessage" = "It's time for your activity!";
+
+// MARK: - Focus
+"subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
+"timeCountingQuestion" = "How do you want to tell time?";
+"timerSelectionTitle" = "Scheduled time \n e.g.: 50 minutes";
+"timerSelectionBold" = "Scheduled time";
+"pomodoroSelectionTitle" = "Pomodoro";
+"stopwatchSelectionTitle" = "Free \n (stop when you want)";
+"stopwatchSelectionBold" = "Free";
+"alarm" = "Alarm when finished";
+"showTimeCount" = "Show time count";
+"paused" = "Paused";
+"subjectActivity" = "Activity";
+"newActivity" = "New activity";
+"interval" = "Interval";
+"timerAlertTitle" = "Time's up!";
+"timerAlertMessage" = "Your timer is finished";
+"focusFinish" = "Finish";
+"focusRestart" = "Restart";
+"pomodoroFocus" = "Focus";
+"pomodoroInterval" = "Interval";
+"pomodoroRepetitions" = "Repetitions";
+"deleteActivity" = "Delete activity";
+"focusTime" = "Focus Time";
+"pauseTime" = "Pause Time";
+
+// MARK: - Subjects
+"subject" = "Subject";
+"saveSubject" = "Save Subject";
+"addSubjectName" = "Insert the subject's name";
+"studyTimeLastWeek" = "Week";
+"studyTimeLastMonth" = "Month";
+"studyTimeLastYear" = "Year";
+"emptySubject" = "subject";
+"deleteSubjectTitle" = "Delete subject";
+"deleteSubjectMessage" = "Are you sure you want to delete %@? Your study time and schedule activities will also be deleted.";
+"subjectCreationTitle" = "Invalid subject";
+"subjectCreationNoName" = "Please, insert a name for your subject.";
+"subjectCreationUsedName" = "There is an existing subject with this name.";
+"color" = "Color";
+"newSubject" = "New Subject";
+"editSubject" = "Edit Subject";
+"subjectName" = "Subject's Name";
+
+// MARK: - Themes
+"themeAlertTitle" = "Add exam";
+"themeAlertMessage" = "Enter exam name:";
+"themeAlertPlaceholder" = "Exam name";
+"newTest" = "New Test";
+"editTest" = "Edit Test";
+"newTheme" = "New exam";
+"newTest" = "New test";
+"addTest" = "Add Test";
+"wrongQuestionsTitle" = "Invalid Number of Hits!";
+"wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
+"testDate" = "Date";
+"rightQuestions" = "Right Questions";
+"totalQuestions" = "Total Questions";
+"deleteTest" = "Delete test";
+"emptyTheme" = "You haven't recorded any exams yet";
+"emptyTest" = "You haven't recorded any tests yet";
+
+// MARK: - Settings
+"deactivateTitle" = "Deactivate on your phone!";
+"deactivateMessage" = "It's not possible to disable notifications in the Planno app. To do so, access your phone's Settings.";
+"activationTitle" = "Keep track of your studies!";
+"activationMessage" = "We'll send you the status of your activities and alert you when it's time to study for a subject. No ads included.";
+"activateNow" = "Activate now";
+"activateLater" = "Activate later";
+"okAction" = "Ok, got it";
+"notificationsAndAlerts" = "Notifications and Alerts";
+"blockApps" = "Block Apps";
+"firstWeekDay" = "First day of the week";
+
+// MARK: - Modal
+"startButton" = "Start activity";
+"startNowButton" = "Start now";
+
+//MARK: - ACTIVITY
+"newActivity" = "New activity";
+"editActivity" = "Edit activity";
+"studyingNow" = "Studying now";
+
+//MARK: - TIPS
+"newActivityTip" = "Create a new activity here";
+"explainActivityTip" = "You can create a recurring activity and add it to the schedule or create an immediate activity where you start a study timer right away.";
+"newSubjectTip" = "Create a subject here";
+"explainSubjectTip" = "Your scheduled activities and study time are linked to subjects.";
+"newTestTip" = "Create a new test group here";
+"explainTestTip" = "In each test group, you can add results and track your progress over time.";
+
+//MARK: - EMPTY SUBJECTS VIEW
+"create" = "Create subject";
+"createText" = "To start putting together your schedule, create a new subject";
+"welcomeText" = "Welcome to Planno! 👋";
+
+//MARK: - OTHER SUBJECT
+"deleteOther" = "Erase time";
+"deleteOtherMessage" = "Do you really want to erase your study time?";
+"deleteOtherBodyText" = "This item gathers all the study times you have recorded that are not tied to any particular subject. Although it cannot be deleted, you have the option to erase the study times linked to it.";

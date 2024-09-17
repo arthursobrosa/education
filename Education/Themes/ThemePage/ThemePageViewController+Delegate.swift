@@ -6,27 +6,32 @@
 //
 
 import UIKit
-import SwiftUI
 
-protocol ThemePageDelegate: AnyObject {
-    func setLimitsPicker(_ picker: UISegmentedControl)
+@objc protocol ThemePageDelegate: AnyObject {
+    func setSegmentedControl(_ segmentedControl: UISegmentedControl)
+    func addTestButtonTapped()
 }
 
 extension ThemePageViewController: ThemePageDelegate {
-    func setLimitsPicker(_ picker: UISegmentedControl) {
+    func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
         let limits = self.viewModel.limits.map { String($0) }
         let selectedLimit = String(self.viewModel.selectedLimit)
         
         for (index, limit) in limits.enumerated() {
-            let action = UIAction(title: limit) { _ in
+            let action = UIAction(title: "\(String(localized: "lastPlural")) \(limit)") { _ in
                 self.viewModel.selectedLimit = self.viewModel.limits[index]
+                self.setChart()
             }
             
-            picker.insertSegment(action: action, at: index, animated: false)
+            segmentedControl.insertSegment(action: action, at: index, animated: false)
             
             if limit == selectedLimit {
-                picker.selectedSegmentIndex = index
+                segmentedControl.selectedSegmentIndex = index
             }
         }
+    }
+    
+    func addTestButtonTapped() {
+        self.coordinator?.showTestPage(theme: self.viewModel.theme, test: nil)
     }
 }

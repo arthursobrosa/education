@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemePageCoordinator: Coordinator, ShowingTestPage {
+class ThemePageCoordinator: NSObject, Coordinator, ShowingTestPage, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -19,17 +19,46 @@ class ThemePageCoordinator: Coordinator, ShowingTestPage {
     }
     
     func start() {
-        let viewModel = ThemePageViewModel(themeID: self.theme.unwrappedID)
+        let viewModel = ThemePageViewModel(theme: self.theme)
         let vc = ThemePageViewController(viewModel: viewModel)
-        vc.title = self.theme.unwrappedName
         vc.coordinator = self
+        
         self.navigationController.pushViewController(vc, animated: true)
     }
     
-    func showTestPage(viewModel: ThemePageViewModel) {
-        let vc = TestPageViewController(viewModel: viewModel)
-        vc.title = String(localized: "newTest")
-        vc.modalPresentationStyle = .pageSheet
-        self.navigationController.present(UINavigationController(rootViewController: vc), animated: true)
+    func showTestPage(theme: Theme, test: Test?) {
+        let child = TestPageCoordinator(navigationController: self.navigationController, theme: theme, test: test)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
+        child.start()
+    }
+    
+    func dismiss(animated: Bool) {
+        self.navigationController.popViewController(animated: animated)
+    }
+    
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() {
+            if coordinator === child {
+                self.childCoordinators.remove(at: index)
+                break
+            }
+        }
+    }
+}
+
+extension ThemePageCoordinator: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        guard let nav = dismissed as? UINavigationController else { return nil }
+        
+        if let testPageVC = nav.viewControllers.first as? TestPageViewController {
+            self.childDidFinish(testPageVC.coordinator as? Coordinator)
+            
+            if let themePageVC = self.navigationController.viewControllers.last as? ThemePageViewController {
+                themePageVC.viewModel.fetchTests()
+            }
+        }
+        
+        return nil
     }
 }

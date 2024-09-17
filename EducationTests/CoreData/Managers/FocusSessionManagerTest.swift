@@ -24,7 +24,7 @@ class FocusSessionManagerTest: XCTestCase {
     }
     
     func test_create_focusSession_with_subject() {
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
         
@@ -44,7 +44,7 @@ class FocusSessionManagerTest: XCTestCase {
     
     func test_fetch_single_focusSession() {
         
-        subjectManager.createSubject(name: "Math")
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
         
