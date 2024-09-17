@@ -56,7 +56,7 @@ class ThemeListViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.setLocalizedDateFormatFromTemplate("dMMMM")
         
-        let dateString = dateFormatter.string(from: test.unwrappedDate).capitalized
+        let dateString = dateFormatter.string(from: test.unwrappedDate)
         
         return String(localized: "last") + ": " + "\(dateString) | \(test.unwrappedRightQuestions)/\(test.unwrappedTotalQuestions)"
     }
