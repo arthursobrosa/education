@@ -59,17 +59,17 @@ class HourDetailsView: UIView {
     init(starTime: String, endTime: String, color: UIColor) {
         super.init(frame: .zero)
         
-        self.bracket.tintColor = color.withAlphaComponent(0.6)
+        self.bracket.tintColor = color.darker(by: 0.6)
         
         self.startTime.text = starTime
         self.startTime.textColor = color.darker(by: 0.8)
         
-        self.lineStartTime.tintColor = color.withAlphaComponent(0.6)
+        self.lineStartTime.tintColor = color.darker(by: 0.6)
         
         self.endTime.text = endTime
         self.endTime.textColor = color
         
-        self.lineEndTime.tintColor = color.withAlphaComponent(0.6)
+        self.lineEndTime.tintColor = color.darker(by: 0.6)
         
         self.setupUI()
         

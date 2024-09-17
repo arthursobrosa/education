@@ -81,17 +81,17 @@ class ScheduleNotificationNameCard: UIView {
         
         self.setDayLabel(withColor: color, and: dayOfWeek)
         
-        self.bracket.tintColor = color.withAlphaComponent(0.6)
+        self.bracket.tintColor = color.darker(by: 0.6)
         
         self.startTime.text = startTime
         self.startTime.textColor = color.darker(by: 0.8)
         
-        self.lineStartTime.tintColor = color.withAlphaComponent(0.6)
+        self.lineStartTime.tintColor = color.darker(by: 0.6)
         
         self.endTime.text = endTime
         self.endTime.textColor = color
         
-        self.lineEndTime.tintColor = color.withAlphaComponent(0.6)
+        self.lineEndTime.tintColor = color.darker(by: 0.6)
         
         self.backgroundColor = color.withAlphaComponent(0.2)
         
