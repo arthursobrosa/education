@@ -66,6 +66,8 @@
 "activityDeletionMessage" = "Are you sure you want to delete this schedule?";
 "emptyDaySchedule" = "You still have no activities scheduled for this day";
 "emptyWeekSchedule" = "You still have no activities scheduled for this week";
+"onTimeTitle" = "On time";
+"onTimeMessage" = "It's time for your activity!";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
@@ -142,7 +144,7 @@
 
 // MARK: - Modal
 "startButton" = "Start activity";
-"delayButton" = "Delay";
+"startNowButton" = "Start now";
 
 //MARK: - ACTIVITY
 "newActivity" = "New activity";

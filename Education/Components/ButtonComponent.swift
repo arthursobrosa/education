@@ -17,7 +17,7 @@ class ButtonComponent: UIButton {
         self.layer.cornerRadius = cornerRadius
     }
     
-    init(attrString: NSMutableAttributedString, textColor: UIColor? = .systemBackground) {
+    init(attrString: NSMutableAttributedString, textColor: UIColor? = .systemBackground, cornerRadius: CGFloat = 30) {
         super.init(frame: .zero)
         
         attrString.addAttribute(.font, value: UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? .systemFont(ofSize: 18), range: NSRange(location: 0, length: attrString.length))
@@ -25,7 +25,7 @@ class ButtonComponent: UIButton {
         
         self.setAttributedTitle(attrString, for: .normal)
         self.backgroundColor = .label
-        self.layer.cornerRadius = 30
+        self.layer.cornerRadius = cornerRadius
     }
     
     init(insets: NSDirectionalEdgeInsets, title: String, textColor: UIColor? = .systemBackground, fontStyle: String, fontSize: CGFloat, cornerRadius: CGFloat) {

@@ -66,6 +66,8 @@ class FocusImediateViewController: UIViewController {
             self.focusImediateView.layer.borderColor = UIColor.label.cgColor
             
         }
+        
+        self.setGestureRecognizer()
     }
     
     private func reloadTable() {
@@ -74,6 +76,19 @@ class FocusImediateViewController: UIViewController {
             
             self.focusImediateView.subjectsTableView.reloadData()
         }
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self.view)
+        
+        guard !self.focusImediateView.frame.contains(tapLocation) else { return }
+        
+        self.coordinator?.dismiss(animated: true)
     }
 }
 

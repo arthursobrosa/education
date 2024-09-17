@@ -61,6 +61,21 @@ class ScheduleDetailsModalViewController: UIViewController {
                 self.view.backgroundColor = .label.withAlphaComponent(0.1)
             }
         }
+        
+        self.setGestureRecognizer()
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self.view)
+        
+        guard !self.scheduleModalView.frame.contains(tapLocation) else { return }
+        
+        self.coordinator?.dismiss(animated: true)
     }
 }
 
@@ -69,8 +84,8 @@ extension ScheduleDetailsModalViewController: ViewCodeProtocol {
         self.view.addSubview(scheduleModalView)
         
         NSLayoutConstraint.activate([
-            scheduleModalView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 327/844),
             scheduleModalView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 366/390),
+            scheduleModalView.heightAnchor.constraint(equalTo: scheduleModalView.widthAnchor, multiplier: 327/366),
             scheduleModalView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             scheduleModalView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])

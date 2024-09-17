@@ -122,7 +122,7 @@ extension ScheduleDetailsViewController {
                 
                 return label
             case 2:
-                let isOn = row == 0 ? self.viewModel.alarmBefore : self.viewModel.alarmInTime
+                let isOn = row == 0 ? self.viewModel.alarmInTime : self.viewModel.alarmBefore
                 let toggle = self.createToggle(withTag: row, isOn: isOn)
                 
                 return toggle

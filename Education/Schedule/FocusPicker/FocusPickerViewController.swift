@@ -52,12 +52,27 @@ class FocusPickerViewController: UIViewController {
         }
         
         self.setupUI()
+        
+        self.setGestureRecognizer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.configurePomodoroPickers()
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self.view)
+        
+        guard !self.focusPickerView.frame.contains(tapLocation) else { return }
+        
+        self.coordinator?.dismissAll()
     }
     
     @objc private func didChangeToggle(_ sender: UISwitch) {

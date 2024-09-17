@@ -42,13 +42,12 @@ class FocusPickerView: UIView {
     }()
     
     private lazy var startButton: ButtonComponent = {
-        
         let attributedText = NSMutableAttributedString(string: String(localized: "start"))
         
         let symbolAttachment = NSTextAttachment()
         let symbolImage = UIImage(systemName: "play.fill")?.withRenderingMode(.alwaysTemplate)
         symbolAttachment.image = symbolImage
-        symbolAttachment.bounds = CGRect(x: 0, y: -5, width: 20, height: 20)
+        symbolAttachment.bounds = CGRect(x: 0, y: -4, width: 20, height: 20)
 
         let symbolAttributedString = NSAttributedString(attachment: symbolAttachment)
 
