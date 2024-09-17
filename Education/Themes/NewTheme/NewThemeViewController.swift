@@ -54,6 +54,7 @@ class NewThemeViewController: UIViewController {
         }
         
         self.setupUI()
+        self.setGestureRecognizer()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -63,6 +64,19 @@ class NewThemeViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self.view)
+        
+        guard !self.newThemeView.frame.contains(tapLocation) else { return }
+        
+        self.coordinator?.dismiss(animated: true)
     }
     
     @objc private func keyboardChangedFirstResponder(notification: Notification) {

@@ -28,10 +28,10 @@ class NewThemeView: UIView {
     private lazy var textField: PaddedTextField = {
         let textField = PaddedTextField()
         textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
-        textField.placeholder = String(localized: "themeAlertPlaceholder")
+        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])
         textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
         
-        textField.layer.borderColor = UIColor.secondaryLabel.cgColor
+        textField.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
         textField.layer.borderWidth = 1
         
         textField.layer.cornerRadius = 18
@@ -56,7 +56,7 @@ class NewThemeView: UIView {
         
         button.tintColor = .systemBackground
         
-        button.layer.borderColor = UIColor.secondaryLabel.cgColor
+        button.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
         button.layer.borderWidth = 1
         
         button.translatesAutoresizingMaskIntoConstraints = false
