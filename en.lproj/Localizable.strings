@@ -119,6 +119,7 @@
 "newTest" = "New Test";
 "editTest" = "Edit Test";
 "newTheme" = "New exam";
+"editTheme" = "Edit exam";
 "newTest" = "New test";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";

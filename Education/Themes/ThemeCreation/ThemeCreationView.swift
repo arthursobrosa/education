@@ -1,5 +1,5 @@
 //
-//  NewThemeView.swift
+//  ThemeCreationView.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 06/09/24.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class NewThemeView: UIView {
-    weak var delegate: NewThemeDelegate? {
+class ThemeCreationView: UIView {
+    weak var delegate: ThemeCreationDelegate? {
         didSet {
             self.delegate?.setTextFieldDelegate(self.textField)
         }
@@ -16,7 +16,6 @@ class NewThemeView: UIView {
     
     private let themeTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = String(localized: "newTheme")
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
         label.textColor = .label
         
@@ -100,9 +99,22 @@ class NewThemeView: UIView {
     @objc private func didTapContinueButton() {
         self.delegate?.didTapContinueButton()
     }
+    
+    func setTitleLabel(theme: Theme?) {
+        var isEditing = Bool()
+        
+        if let theme {
+            isEditing = true
+            self.textField.text = theme.unwrappedName
+        } else {
+            isEditing = false
+        }
+        
+        self.themeTitleLabel.text = isEditing ? String(localized: "editTheme") : String(localized: "newTheme")
+    }
 }
 
-extension NewThemeView: ViewCodeProtocol {
+extension ThemeCreationView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(themeTitleLabel)
         self.addSubview(textField)
