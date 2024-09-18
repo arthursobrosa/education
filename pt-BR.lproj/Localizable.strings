@@ -174,3 +174,7 @@
 "deleteOther" = "Apagar tempo";
 "deleteOtherMessage" = "Você realmente deseja apagar o tempo de estudo?";
 "deleteOtherBodyText" = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele.";
+
+// MARK: - Block
+"endBlockAlertTitle" = "Finalizando bloqueio de apps";
+"endBlockAlertBody" = "Seus apps estão desbloqueados agora";

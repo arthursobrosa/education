@@ -39,8 +39,8 @@ class BlockAppsMonitor: ObservableObject {
         }
         
         let content = UNMutableNotificationContent()
-        content.title = "Ending add block"
-        content.body = "🕺"
+        content.title = String(localized: "endBlockAlertTitle")
+        content.body = String(localized: "endBlockAlertBody")
         content.categoryIdentifier = "alarm"
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
