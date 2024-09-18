@@ -93,6 +93,7 @@
 "deleteActivity" = "Apagar atividade";
 "focusTime" = "Tempo de Foco";
 "pauseTime" = "Tempo de Pausa";
+"imediateActivity" = "Atividade Imediata";
 
 // MARK: - Subjects
 "subject" = "Matéria";
