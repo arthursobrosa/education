@@ -66,7 +66,7 @@ class FocusAlertView: UIView {
     }()
     
     private lazy var yesButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "yes"), cornerRadius: 30)
+        let button = ButtonComponent(title: String(localized: "yes"), cornerRadius: 28)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -74,7 +74,7 @@ class FocusAlertView: UIView {
     }()
     
     private lazy var cancelButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "cancel"), textColor: .label, cornerRadius: 30)
+        let button = ButtonComponent(title: String(localized: "cancel"), textColor: .label, cornerRadius: 28)
         button.backgroundColor = .clear
         
         button.layer.borderColor = UIColor.label.cgColor
@@ -114,8 +114,6 @@ extension FocusAlertView: ViewCodeProtocol {
         self.addSubview(yesButton)
         self.addSubview(cancelButton)
         
-        let padding = 20.0
-        
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
@@ -124,15 +122,15 @@ extension FocusAlertView: ViewCodeProtocol {
             bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 18),
             bodyLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 290/360),
             
-            cancelButton.topAnchor.constraint(equalTo: bodyLabel.topAnchor, constant: padding * 4),
-            cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14),
             cancelButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 160/360),
             cancelButton.heightAnchor.constraint(equalTo: yesButton.widthAnchor, multiplier: 55/160),
+            cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14),
+            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -17),
             
-            yesButton.topAnchor.constraint(equalTo: bodyLabel.topAnchor, constant: padding * 4),
-            yesButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 12),
             yesButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 160/360),
-            yesButton.heightAnchor.constraint(equalTo: yesButton.widthAnchor, multiplier: 55/160)
+            yesButton.heightAnchor.constraint(equalTo: yesButton.widthAnchor, multiplier: 55/160),
+            yesButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 12),
+            yesButton.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor)
         ])
     }
 }

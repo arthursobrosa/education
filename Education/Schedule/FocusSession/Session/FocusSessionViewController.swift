@@ -160,6 +160,16 @@ class FocusSessionViewController: UIViewController {
             }
             .store(in: &self.cancellables)
         
+        ActivityManager.shared.$isAtWorkTime
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                
+                let strokeEnd = self.viewModel.getStrokeEnd()
+                self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
+            }
+            .store(in: &self.cancellables)
+        
         ActivityManager.shared.$updateAfterBackground
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updateAfterBackground in

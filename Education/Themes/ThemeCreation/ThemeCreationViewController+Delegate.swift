@@ -1,5 +1,5 @@
 //
-//  NewThemeViewController+Delegate.swift
+//  ThemeCreationViewController+Delegate.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 06/09/24.
@@ -7,23 +7,23 @@
 
 import UIKit
 
-protocol NewThemeDelegate: AnyObject {
+protocol ThemeCreationDelegate: AnyObject {
     func didTapCancelButton()
     func didTapContinueButton()
     func setTextFieldDelegate(_ textField: UITextField)
     func textFieldDidChange(newText: String)
 }
 
-extension NewThemeViewController: NewThemeDelegate {
+extension ThemeCreationViewController: ThemeCreationDelegate {
     func didTapCancelButton() {
         self.coordinator?.dismiss(animated: true)
     }
     
     func didTapContinueButton() {
-        guard !self.viewModel.newThemeName.isEmpty else { return }
+        guard !self.viewModel.currentThemeName.isEmpty else { return }
         
-        self.viewModel.addTheme()
-        self.viewModel.newThemeName = String()
+        self.viewModel.saveTheme()
+        self.viewModel.currentThemeName = String()
         
         self.coordinator?.dismiss(animated: true)
     }
@@ -33,6 +33,6 @@ extension NewThemeViewController: NewThemeDelegate {
     }
     
     func textFieldDidChange(newText: String) {
-        self.viewModel.newThemeName = newText
+        self.viewModel.currentThemeName = newText
     }
 }

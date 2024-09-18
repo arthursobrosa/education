@@ -71,7 +71,7 @@
 "startsIn" = "In %@min";
 
 // MARK: - Focus
-"subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
+"subjectAttributionQuestion" = "Would you like to link this activity to a subject?";
 "timeCountingQuestion" = "How do you want to tell time?";
 "timerSelectionTitle" = "Scheduled time \n e.g.: 50 minutes";
 "timerSelectionBold" = "Scheduled time";
@@ -96,6 +96,7 @@
 "deleteActivity" = "Delete activity";
 "focusTime" = "Focus Time";
 "pauseTime" = "Pause Time";
+"imediateActivity" = "Imediate Activity";
 
 // MARK: - Subjects
 "subject" = "Subject";
@@ -122,13 +123,14 @@
 "newTest" = "New Test";
 "editTest" = "Edit Test";
 "newTheme" = "New exam";
+"editTheme" = "Edit exam";
 "newTest" = "New test";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
 "wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
 "testDate" = "Date";
-"rightQuestions" = "Right Questions";
-"totalQuestions" = "Total Questions";
+"rightQuestions" = "Right questions";
+"totalQuestions" = "Total questions";
 "deleteTest" = "Delete test";
 "emptyTheme" = "You haven't recorded any exams yet";
 "emptyTest" = "You haven't recorded any tests yet";

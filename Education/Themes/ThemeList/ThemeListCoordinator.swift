@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingNewTheme {
+class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingThemeCreation {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
@@ -33,8 +33,8 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingNewT
         child.start()
     }
     
-    func showNewTheme(viewModel: ThemeListViewModel) {
-        let child = NewThemeCoordinator(navigationController: self.navigationController, viewModel: viewModel)
+    func showThemeCreation(theme: Theme?) {
+        let child = ThemeCreationCoordinator(navigationController: self.navigationController, theme: theme)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -68,10 +68,11 @@ extension ThemeListCoordinator: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
         guard let nav = dismissed as? UINavigationController else { return nil }
         
-        if let newThemeVC = nav.viewControllers.first as? NewThemeViewController {
-            self.childDidFinish(newThemeVC.coordinator as? Coordinator)
+        if let themeCreationVC = nav.viewControllers.first as? ThemeCreationViewController {
+            self.childDidFinish(themeCreationVC.coordinator as? Coordinator)
             
             if let themeListVC = self.navigationController.viewControllers.first as? ThemeListViewController {
+                themeListVC.viewModel.fetchThemes()
                 themeListVC.reloadTable()
             }
         }

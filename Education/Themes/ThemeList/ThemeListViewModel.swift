@@ -15,8 +15,6 @@ class ThemeListViewModel {
     // MARK: - Properties
     var themes = Box([Theme]())
     
-    var newThemeName = String()
-    
     // MARK: - Initializer
     init(themeManager: ThemeManager = ThemeManager(), testManager: TestManager = TestManager()) {
         self.themeManager = themeManager
@@ -24,11 +22,6 @@ class ThemeListViewModel {
     }
     
     // MARK: - Methods
-    func addTheme() {
-        self.themeManager.createTheme(name: self.newThemeName)
-        self.fetchThemes()
-    }
-    
     func removeTheme(theme: Theme) {
         self.themeManager.deleteTheme(theme)
         self.fetchThemes()
@@ -56,7 +49,7 @@ class ThemeListViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.setLocalizedDateFormatFromTemplate("dMMMM")
         
-        let dateString = dateFormatter.string(from: test.unwrappedDate).capitalized
+        let dateString = dateFormatter.string(from: test.unwrappedDate)
         
         return String(localized: "last") + ": " + "\(dateString) | \(test.unwrappedRightQuestions)/\(test.unwrappedTotalQuestions)"
     }

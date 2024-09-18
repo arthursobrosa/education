@@ -80,11 +80,11 @@
 		684BF8972C349074005E63BE /* ThemeManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8962C349074005E63BE /* ThemeManagerTest.swift */; };
 		684BF8992C34961C005E63BE /* TestManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684BF8982C34961C005E63BE /* TestManagerTest.swift */; };
 		684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF962C2C871700A3F392 /* Coordinator.swift */; };
-		6852654B2C8B6FF7009D9678 /* NewThemeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6852654A2C8B6FF7009D9678 /* NewThemeCoordinator.swift */; };
-		6852654D2C8B701F009D9678 /* NewThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6852654C2C8B701F009D9678 /* NewThemeViewController.swift */; };
-		685265512C8B710A009D9678 /* ShowingNewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265502C8B710A009D9678 /* ShowingNewTheme.swift */; };
-		685265532C8B72A5009D9678 /* NewThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265522C8B72A5009D9678 /* NewThemeView.swift */; };
-		685265552C8B72AB009D9678 /* NewThemeViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265542C8B72AB009D9678 /* NewThemeViewController+Delegate.swift */; };
+		6852654B2C8B6FF7009D9678 /* ThemeCreationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6852654A2C8B6FF7009D9678 /* ThemeCreationCoordinator.swift */; };
+		6852654D2C8B701F009D9678 /* ThemeCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6852654C2C8B701F009D9678 /* ThemeCreationViewController.swift */; };
+		685265512C8B710A009D9678 /* ShowingThemeCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265502C8B710A009D9678 /* ShowingThemeCreation.swift */; };
+		685265532C8B72A5009D9678 /* ThemeCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265522C8B72A5009D9678 /* ThemeCreationView.swift */; };
+		685265552C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265542C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift */; };
 		6852F3ED2C8AA175002450A3 /* PickerCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6852F3EC2C8AA175002450A3 /* PickerCase.swift */; };
 		685CBFDA2C61597600EC8E09 /* CustomDateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CBFD92C61597600EC8E09 /* CustomDateButton.swift */; };
 		685CBFDC2C615CE300EC8E09 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CBFDB2C615CE300EC8E09 /* DateView.swift */; };
@@ -166,6 +166,7 @@
 		68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */; };
 		68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */; };
 		68DE198A2C3DBAD800872751 /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE19892C3DBAD800872751 /* Popover.swift */; };
+		68E0BA882C9A29F600C34BFE /* ThemeCreationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E0BA872C9A29F600C34BFE /* ThemeCreationViewModel.swift */; };
 		68E10AA82C7FCBC9008AF82C /* Cocon-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */; };
 		68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E10AA92C7FCE39008AF82C /* Fonts.swift */; };
 		68E617A82C6D6F4E00488237 /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E617A72C6D6F4E00488237 /* ActivityManager.swift */; };
@@ -304,11 +305,11 @@
 		684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Schedule+Extension.swift"; sourceTree = "<group>"; };
 		684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSession+Extension.swift"; sourceTree = "<group>"; };
 		684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Test+Extension.swift"; sourceTree = "<group>"; };
-		6852654A2C8B6FF7009D9678 /* NewThemeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewThemeCoordinator.swift; sourceTree = "<group>"; };
-		6852654C2C8B701F009D9678 /* NewThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewThemeViewController.swift; sourceTree = "<group>"; };
-		685265502C8B710A009D9678 /* ShowingNewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingNewTheme.swift; sourceTree = "<group>"; };
-		685265522C8B72A5009D9678 /* NewThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewThemeView.swift; sourceTree = "<group>"; };
-		685265542C8B72AB009D9678 /* NewThemeViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewThemeViewController+Delegate.swift"; sourceTree = "<group>"; };
+		6852654A2C8B6FF7009D9678 /* ThemeCreationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCreationCoordinator.swift; sourceTree = "<group>"; };
+		6852654C2C8B701F009D9678 /* ThemeCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCreationViewController.swift; sourceTree = "<group>"; };
+		685265502C8B710A009D9678 /* ShowingThemeCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingThemeCreation.swift; sourceTree = "<group>"; };
+		685265522C8B72A5009D9678 /* ThemeCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCreationView.swift; sourceTree = "<group>"; };
+		685265542C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemeCreationViewController+Delegate.swift"; sourceTree = "<group>"; };
 		6852F3EC2C8AA175002450A3 /* PickerCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerCase.swift; sourceTree = "<group>"; };
 		685CBFD92C61597600EC8E09 /* CustomDateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDateButton.swift; sourceTree = "<group>"; };
 		685CBFDB2C615CE300EC8E09 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
@@ -388,6 +389,7 @@
 		68D3138C2C6AE4E000F63159 /* ScheduleDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsCoordinator.swift; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
 		68DE19892C3DBAD800872751 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
+		68E0BA872C9A29F600C34BFE /* ThemeCreationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCreationViewModel.swift; sourceTree = "<group>"; };
 		68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cocon-Regular.ttf"; sourceTree = "<group>"; };
 		68E10AA92C7FCE39008AF82C /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		68E617A72C6D6F4E00488237 /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
@@ -500,7 +502,7 @@
 			isa = PBXGroup;
 			children = (
 				30F216A22C2C884400B7114F /* ThemeList */,
-				685265492C8B6FED009D9678 /* NewTheme */,
+				685265492C8B6FED009D9678 /* ThemeCreation */,
 				30F216B72C2DEF2200B7114F /* ThemePage */,
 				6833B2172C34567E009EA63D /* Tests */,
 			);
@@ -774,15 +776,16 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		685265492C8B6FED009D9678 /* NewTheme */ = {
+		685265492C8B6FED009D9678 /* ThemeCreation */ = {
 			isa = PBXGroup;
 			children = (
-				6852654A2C8B6FF7009D9678 /* NewThemeCoordinator.swift */,
-				6852654C2C8B701F009D9678 /* NewThemeViewController.swift */,
-				685265542C8B72AB009D9678 /* NewThemeViewController+Delegate.swift */,
-				685265522C8B72A5009D9678 /* NewThemeView.swift */,
+				6852654A2C8B6FF7009D9678 /* ThemeCreationCoordinator.swift */,
+				68E0BA872C9A29F600C34BFE /* ThemeCreationViewModel.swift */,
+				6852654C2C8B701F009D9678 /* ThemeCreationViewController.swift */,
+				685265542C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift */,
+				685265522C8B72A5009D9678 /* ThemeCreationView.swift */,
 			);
-			path = NewTheme;
+			path = ThemeCreation;
 			sourceTree = "<group>";
 		};
 		6874A2632C3F78BD00CAC9E4 /* ScheduleList */ = {
@@ -926,7 +929,7 @@
 				CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */,
 				CE323B422C73C1AC004143E0 /* ShowingScheduleNotification.swift */,
 				30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */,
-				685265502C8B710A009D9678 /* ShowingNewTheme.swift */,
+				685265502C8B710A009D9678 /* ShowingThemeCreation.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1211,7 +1214,7 @@
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
-				685265552C8B72AB009D9678 /* NewThemeViewController+Delegate.swift in Sources */,
+				685265552C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift in Sources */,
 				68CA87E42C5D571A006ED5FA /* FocusPickerViewController+Delegate.swift in Sources */,
 				68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */,
 				68D313892C6ADC6100F63159 /* FocusSessionCoordinator.swift in Sources */,
@@ -1222,7 +1225,7 @@
 				30D5E2422C8782D30083F353 /* OtherSubjectCoordinator.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
 				CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */,
-				6852654D2C8B701F009D9678 /* NewThemeViewController.swift in Sources */,
+				6852654D2C8B701F009D9678 /* ThemeCreationViewController.swift in Sources */,
 				688C2A6A2C933F7600E8EE81 /* FakeDatePicker.swift in Sources */,
 				68B9EF962C878095000F03DE /* SettingsTableViewCell.swift in Sources */,
 				688C257D2C6674F000150F7F /* FocusSubjectTableViewCell.swift in Sources */,
@@ -1246,10 +1249,11 @@
 				6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */,
 				683B45392C1B6F3A00663912 /* AppDelegate.swift in Sources */,
 				6887D5B32C3859DF00F037F2 /* ButtonComponent.swift in Sources */,
-				6852654B2C8B6FF7009D9678 /* NewThemeCoordinator.swift in Sources */,
+				6852654B2C8B6FF7009D9678 /* ThemeCreationCoordinator.swift in Sources */,
 				30D5E24A2C8783530083F353 /* ShowingOtherSubject.swift in Sources */,
 				685CBFDA2C61597600EC8E09 /* CustomDateButton.swift in Sources */,
 				688C25732C66709900150F7F /* FocusImediateCoordinator.swift in Sources */,
+				68E0BA882C9A29F600C34BFE /* ThemeCreationViewModel.swift in Sources */,
 				68CA87E02C5D54CD006ED5FA /* ShowingFocusPicker.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
 				680483842C922A9C007FC564 /* TestPageCoordinator.swift in Sources */,
@@ -1266,7 +1270,7 @@
 				CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */,
 				CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */,
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
-				685265512C8B710A009D9678 /* ShowingNewTheme.swift in Sources */,
+				685265512C8B710A009D9678 /* ShowingThemeCreation.swift in Sources */,
 				68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
 				CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */,
@@ -1287,7 +1291,7 @@
 				302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */,
 				CE323B432C73C1AC004143E0 /* ShowingScheduleNotification.swift in Sources */,
 				683812F02C481A9C0062067A /* SplashViewController.swift in Sources */,
-				685265532C8B72A5009D9678 /* NewThemeView.swift in Sources */,
+				685265532C8B72A5009D9678 /* ThemeCreationView.swift in Sources */,
 				68CA87E22C5D56DD006ED5FA /* FocusPickerView.swift in Sources */,
 				68CA87DA2C5D53A6006ED5FA /* FocusPickerCoordinator.swift in Sources */,
 				6852F3ED2C8AA175002450A3 /* PickerCase.swift in Sources */,
@@ -1403,7 +1407,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APP_BUILD = 12;
-				APP_VERSION = 1.0;
+				APP_VERSION = 1.1;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1469,7 +1473,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APP_BUILD = 12;
-				APP_VERSION = 1.0;
+				APP_VERSION = 1.1;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;

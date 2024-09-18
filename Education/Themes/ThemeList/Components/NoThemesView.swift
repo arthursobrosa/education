@@ -16,6 +16,15 @@ class NoThemesView: UIView {
         case theme
         case test
         
+        var icon: String {
+            switch self {
+                case .theme:
+                    "🫧"
+                case .test:
+                    "🪁"
+            }
+        }
+        
         var message: String {
             switch self {
                 case .theme:
@@ -48,7 +57,7 @@ class NoThemesView: UIView {
         didSet {
             guard let noThemesCase else { return }
             
-            self.messageLabel.text = "🫧\n\n\(noThemesCase.message)"
+            self.messageLabel.text = "\(noThemesCase.icon)\n\n\(noThemesCase.message)"
             self.setButton()
             
             self.setupUI()

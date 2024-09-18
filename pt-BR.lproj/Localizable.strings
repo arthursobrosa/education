@@ -96,6 +96,7 @@
 "deleteActivity" = "Apagar atividade";
 "focusTime" = "Tempo de Foco";
 "pauseTime" = "Tempo de Pausa";
+"imediateActivity" = "Atividade Imediata";
 
 // MARK: - Subjects
 "subject" = "Matéria";
@@ -122,13 +123,14 @@
 "newTest" = "Novo Teste";
 "editTest" = "Editar Teste";
 "newTheme" = "Nova prova";
+"editTheme" = "Editar prova";
 "newTest" = "Novo teste";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
-"rightQuestions" = "Questões Corretas";
+"rightQuestions" = "Questões acertadas";
 "testDate" = "Data";
-"totalQuestions" = "Total de Questões";
+"totalQuestions" = "Total de questões";
 "deleteTest" = "Apagar teste";
 "emptyTheme" = "Você ainda não tem nenhuma prova registrada aqui";
 "emptyTest" = "Você ainda não tem nenhum registro de teste";
