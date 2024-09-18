@@ -54,7 +54,7 @@ class FocusPickerView: UIView {
         attributedText.append(NSAttributedString(string: "   "))
         attributedText.append(symbolAttributedString)
         
-        let bttn = ButtonComponent(attrString: attributedText)
+        let bttn = ButtonComponent(attrString: attributedText, cornerRadius: 26)
         
         bttn.tintColor = .label
         
