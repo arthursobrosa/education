@@ -160,6 +160,18 @@ class FocusSessionViewController: UIViewController {
             }
             .store(in: &self.cancellables)
         
+        ActivityManager.shared.$isAtWorkTime
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isAtWorkTime in
+                guard let self else { return }
+                
+                isAtWorkTime ? self.blockApps() : BlockAppsMonitor.shared.removeShields()
+                
+                let strokeEnd = self.viewModel.getStrokeEnd()
+                self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
+            }
+            .store(in: &self.cancellables)
+        
         ActivityManager.shared.$updateAfterBackground
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updateAfterBackground in
@@ -207,8 +219,10 @@ class FocusSessionViewController: UIViewController {
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
-    private func blockApps() {
-        guard ActivityManager.shared.blocksApps else { return }
+    func blockApps() {
+        guard ActivityManager.shared.blocksApps,
+              !ActivityManager.shared.isPaused,
+              ActivityManager.shared.isAtWorkTime else { return }
         
         BlockAppsMonitor.shared.apllyShields()
     }

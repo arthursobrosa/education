@@ -27,6 +27,18 @@ class FocusImediateView: UIView {
         return bttn
     }()
     
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        label.textColor = .label
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = String(localized: "imediateActivity")
+        
+        
+        return label
+    }()
+    
     private let topLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
@@ -73,6 +85,7 @@ extension FocusImediateView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(cancelButton)
         self.addSubview(topLabel)
+        self.addSubview(titleLabel)
         self.addSubview(subjectsTableView)
         
         let padding = 20.0
@@ -80,6 +93,10 @@ extension FocusImediateView: ViewCodeProtocol {
         NSLayoutConstraint.activate([
             cancelButton.topAnchor.constraint(equalTo: self.topAnchor, constant: padding / 2),
             cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding / 2),
+            
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding / 2 ),
+            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor),
             
             topLabel.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: padding / 2),
             topLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),

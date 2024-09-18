@@ -63,9 +63,32 @@ class ScheduleView: UIView {
     let overlayView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
+        view.alpha = 0
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
+        return view
+    }()
+    
+//    let elipseView: UILabel = {
+//        let label = UILabel()
+//        label.backgroundColor = .clear
+//        label.text = ". . . ."
+//        label.font = UIFont(name: Fonts.darkModeOnBold, size: 30)
+//        label.textColor = .label
+//        label.textAlignment = .center
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
+//        label.layer.cornerRadius = 25
+//        label.layer.masksToBounds = true
+//        label.alpha = 0
+//        return label
+//    }()
+    
+    lazy var elipseView: ElipseStackView = {
+        let view = ElipseStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0
         return view
     }()
     
@@ -140,6 +163,7 @@ extension ScheduleView: ViewCodeProtocol {
         self.addSubview(viewModeSelector)
         self.addSubview(contentView)
         self.addSubview(overlayView)
+        overlayView.addSubview(elipseView)
         overlayView.addSubview(createAcitivityButton)
         overlayView.addSubview(startActivityButton)
         
@@ -165,7 +189,12 @@ extension ScheduleView: ViewCodeProtocol {
         ])
         
         NSLayoutConstraint.activate([
-            createAcitivityButton.topAnchor.constraint(equalTo: overlayView.topAnchor),
+            elipseView.topAnchor.constraint(equalTo: overlayView.topAnchor, constant: -50),
+            elipseView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
+            elipseView.widthAnchor.constraint(equalToConstant: 50),
+            elipseView.heightAnchor.constraint(equalToConstant: 50),
+            
+            createAcitivityButton.topAnchor.constraint(equalTo: elipseView.bottomAnchor, constant: btnPadding),
             createAcitivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             
             startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: btnPadding),

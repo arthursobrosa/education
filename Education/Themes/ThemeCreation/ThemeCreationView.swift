@@ -1,5 +1,5 @@
 //
-//  NewThemeView.swift
+//  ThemeCreationView.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 06/09/24.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class NewThemeView: UIView {
-    weak var delegate: NewThemeDelegate? {
+class ThemeCreationView: UIView {
+    weak var delegate: ThemeCreationDelegate? {
         didSet {
             self.delegate?.setTextFieldDelegate(self.textField)
         }
@@ -16,7 +16,6 @@ class NewThemeView: UIView {
     
     private let themeTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = String(localized: "newTheme")
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
         label.textColor = .label
         
@@ -28,10 +27,10 @@ class NewThemeView: UIView {
     private lazy var textField: PaddedTextField = {
         let textField = PaddedTextField()
         textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
-        textField.placeholder = String(localized: "themeAlertPlaceholder")
+        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])
         textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
         
-        textField.layer.borderColor = UIColor.secondaryLabel.cgColor
+        textField.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
         textField.layer.borderWidth = 1
         
         textField.layer.cornerRadius = 18
@@ -56,7 +55,7 @@ class NewThemeView: UIView {
         
         button.tintColor = .systemBackground
         
-        button.layer.borderColor = UIColor.secondaryLabel.cgColor
+        button.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
         button.layer.borderWidth = 1
         
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -100,9 +99,22 @@ class NewThemeView: UIView {
     @objc private func didTapContinueButton() {
         self.delegate?.didTapContinueButton()
     }
+    
+    func setTitleLabel(theme: Theme?) {
+        var isEditing = Bool()
+        
+        if let theme {
+            isEditing = true
+            self.textField.text = theme.unwrappedName
+        } else {
+            isEditing = false
+        }
+        
+        self.themeTitleLabel.text = isEditing ? String(localized: "editTheme") : String(localized: "newTheme")
+    }
 }
 
-extension NewThemeView: ViewCodeProtocol {
+extension ThemeCreationView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(themeTitleLabel)
         self.addSubview(textField)

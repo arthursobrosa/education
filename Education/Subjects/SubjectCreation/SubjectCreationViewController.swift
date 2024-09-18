@@ -37,6 +37,10 @@ class SubjectCreationViewController: UIViewController{
     init(viewModel: StudyTimeViewModel) {
         self.viewModel = viewModel
         
+        if let currentEditingSubject = self.viewModel.currentEditingSubject {
+            self.subjectName = currentEditingSubject.unwrappedName
+        }
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -91,6 +95,7 @@ class SubjectCreationViewController: UIViewController{
     // MARK: - Methods
     private func setNavigationItems() {
         self.navigationItem.title = self.viewModel.currentEditingSubject != nil ? String(localized: "editSubject") : String(localized: "newSubject")
+        self.navigationController?.navigationBar.titleTextAttributes = [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 14)!, .foregroundColor : UIColor.label]
         
         let cancelButton = UIButton(configuration: .plain())
         let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])
@@ -167,7 +172,7 @@ extension SubjectCreationViewController: UICollectionViewDelegate, UICollectionV
 }
 
 extension SubjectCreationViewController {
-    func createSubjectPopover(forTableView tableView: UITableView, at indexPath: IndexPath) -> Popover? {
+    func createColorPopover(forTableView tableView: UITableView, at indexPath: IndexPath) -> Popover? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
         
         let popoverVC = Popover(contentSize: CGSize(width: 190, height: 195))
@@ -251,10 +256,7 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
                     fatalError("Could not dequeue cell")
                 }
                 
-                if let currentEditingSubject = self.viewModel.currentEditingSubject {
-                    cell.textField.text = currentEditingSubject.unwrappedName
-                    self.subjectName = currentEditingSubject.unwrappedName
-                }
+                cell.textField.text = self.subjectName
                 
                 cell.backgroundColor = .clear
                 cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.label.withAlphaComponent(0.2))
@@ -284,7 +286,7 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
         
         switch section {
             case 1:
-                if let popover = self.createSubjectPopover(forTableView: tableView, at: indexPath) {
+                if let popover = self.createColorPopover(forTableView: tableView, at: indexPath) {
                     popover.modalPresentationStyle = .popover
                     self.present(popover, animated: true)
                 }

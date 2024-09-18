@@ -1,5 +1,5 @@
 //
-//  NewThemeViewController.swift
+//  ThemeCreationViewController.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 06/09/24.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-class NewThemeViewController: UIViewController {
+class ThemeCreationViewController: UIViewController {
     weak var coordinator: Dismissing?
-    let viewModel: ThemeListViewModel
+    let viewModel: ThemeCreationViewModel
     
-    private lazy var newThemeView: NewThemeView = {
-        let view = NewThemeView()
+    private lazy var themeCreationView: ThemeCreationView = {
+        let view = ThemeCreationView()
         view.delegate = self
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -22,7 +22,7 @@ class NewThemeViewController: UIViewController {
     
     private var centerYConstraint: NSLayoutConstraint!
     
-    init(viewModel: ThemeListViewModel) {
+    init(viewModel: ThemeCreationViewModel) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -54,6 +54,9 @@ class NewThemeViewController: UIViewController {
         }
         
         self.setupUI()
+        self.setGestureRecognizer()
+        
+        self.themeCreationView.setTitleLabel(theme: self.viewModel.theme)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -63,6 +66,19 @@ class NewThemeViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self.view)
+        
+        guard !self.themeCreationView.frame.contains(tapLocation) else { return }
+        
+        self.coordinator?.dismiss(animated: true)
     }
     
     @objc private func keyboardChangedFirstResponder(notification: Notification) {
@@ -85,25 +101,31 @@ class NewThemeViewController: UIViewController {
     }
 }
 
-extension NewThemeViewController: ViewCodeProtocol {
+extension ThemeCreationViewController: ViewCodeProtocol {
     func setupUI() {
-        self.view.addSubview(newThemeView)
+        self.view.addSubview(themeCreationView)
         
         NSLayoutConstraint.activate([
-            newThemeView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 366/390),
-            newThemeView.heightAnchor.constraint(equalTo: newThemeView.widthAnchor, multiplier: 228/366),
-            newThemeView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            themeCreationView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 366/390),
+            themeCreationView.heightAnchor.constraint(equalTo: themeCreationView.widthAnchor, multiplier: 228/366),
+            themeCreationView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
         
-        self.centerYConstraint = newThemeView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        self.centerYConstraint = themeCreationView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         self.centerYConstraint.isActive = true
     }
 }
 
-extension NewThemeViewController: UITextFieldDelegate {
+extension ThemeCreationViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        
+        self.viewModel.currentThemeName = text
     }
 }

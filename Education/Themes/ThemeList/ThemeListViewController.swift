@@ -10,7 +10,7 @@ import TipKit
 
 class ThemeListViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingThemePage & ShowingNewTheme)?
+    weak var coordinator: (ShowingThemePage & ShowingThemeCreation)?
     let viewModel: ThemeListViewModel
     
     var createTestTip = CreateTestTip()
@@ -138,7 +138,7 @@ class ThemeListViewController: UIViewController {
 
 extension ThemeListViewController: ThemeListDelegate {
     func addThemeButtonTapped() {
-        self.coordinator?.showNewTheme(viewModel: self.viewModel)
+        self.coordinator?.showThemeCreation(theme: nil)
     }
 }
 
@@ -236,29 +236,23 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let theme = self.viewModel.themes.value[indexPath.section]
         
-        let deleteButton = UIContextualAction(style: .normal, title: "") { _, _, boolValue in
+        let editButton = UIContextualAction(style: .normal, title: "") { _, _, _ in
+            self.coordinator?.showThemeCreation(theme: theme)
+        }
+        
+        editButton.backgroundColor = .systemBackground
+        let editImage = UIImage(systemName: "square.and.pencil")?.withRenderingMode(.alwaysOriginal).withTintColor(.label)
+        editButton.image = editImage
+        
+        let deleteButton = UIContextualAction(style: .normal, title: "") { _, _, _ in
             self.viewModel.removeTheme(theme)
             self.viewModel.fetchThemes()
         }
         
         deleteButton.backgroundColor = .systemBackground
-        let image = UIImage(systemName: "trash.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
-        deleteButton.image = image
+        let deleteImage = UIImage(systemName: "trash.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
+        deleteButton.image = deleteImage
         
-        return UISwipeActionsConfiguration(actions: [deleteButton])
-    }
-}
-
-extension ThemeListViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        
-        self.viewModel.newThemeName = text
+        return UISwipeActionsConfiguration(actions: [deleteButton, editButton])
     }
 }

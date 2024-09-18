@@ -29,7 +29,7 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
         } else {
             let existingSubjects = viewModel.subjects.value
             if existingSubjects.contains(where: { $0.name?.lowercased() == name.lowercased() }) {
-                showAlert(message: String(localized: "subjectCreationUsedName"))
+                self.showAlert(message: String(localized: "subjectCreationUsedName"))
                 return
             }
             

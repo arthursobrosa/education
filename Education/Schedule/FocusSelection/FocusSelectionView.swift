@@ -85,9 +85,8 @@ class FocusSelectionView: UIView {
     }()
     
     private lazy var continueButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .secondaryLabel, cornerRadius: 26)
+        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground, cornerRadius: 26)
         bttn.isEnabled = false
-        bttn.layer.cornerRadius = 28
         bttn.backgroundColor = .systemGray4
         
         bttn.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
@@ -115,7 +114,7 @@ class FocusSelectionView: UIView {
     // MARK: - Initializer
     init(subjectName: String?) {
         
-        self.subjectName = subjectName != nil ? "Atividade de " + subjectName! : "Atividade Imediata"
+        self.subjectName = subjectName != nil ? String(format: NSLocalizedString("activityOf", comment: ""),subjectName!) : "\(String(localized: "subjectActivityImediate"))"
         
         super.init(frame: .zero)
         

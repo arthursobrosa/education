@@ -35,6 +35,14 @@ extension FocusSessionViewController: FocusSessionDelegate {
     
     func pauseResumeButtonTapped() {
         ActivityManager.shared.isPaused.toggle()
+        
+        guard ActivityManager.shared.isAtWorkTime else { return }
+        
+        if ActivityManager.shared.isPaused {
+            BlockAppsMonitor.shared.removeShields()
+        } else {
+            self.blockApps()
+        }
     }
     
     func didFinish() {

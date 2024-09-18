@@ -21,7 +21,7 @@ class ScheduleDetailsView: UIView {
     }()
     
     private lazy var deleteButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "deleteActivity"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 30)
+        let bttn = ButtonComponent(title: String(localized: "deleteActivity"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 28)
         bttn.backgroundColor = .clear
         bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
         bttn.layer.borderWidth = 2
@@ -34,7 +34,7 @@ class ScheduleDetailsView: UIView {
     }()
     
     private lazy var saveButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "save"), cornerRadius: 30)
+        let bttn = ButtonComponent(title: String(localized: "save"), cornerRadius: 28)
         
         bttn.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         
@@ -77,17 +77,17 @@ extension ScheduleDetailsView: ViewCodeProtocol {
         self.addSubview(deleteButton)
         self.addSubview(saveButton)
         
-        let padding = 20.0
+        let padding = 28.0
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 60),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            tableView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.45),
+            tableView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.6),
             
             deleteButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             deleteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 0.16),
+            deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 55/334),
             deleteButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -12),
             
             saveButton.leadingAnchor.constraint(equalTo: deleteButton.leadingAnchor),

@@ -68,9 +68,10 @@
 "emptyWeekSchedule" = "You still have no activities scheduled for this week";
 "onTimeTitle" = "On time";
 "onTimeMessage" = "It's time for your activity!";
+"startsIn" = "In %@min";
 
 // MARK: - Focus
-"subjectAttributionQuestion" = "Do you wish to link this activity to a subject?";
+"subjectAttributionQuestion" = "Would you like to link this activity to a subject?";
 "timeCountingQuestion" = "How do you want to tell time?";
 "timerSelectionTitle" = "Scheduled time \n e.g.: 50 minutes";
 "timerSelectionBold" = "Scheduled time";
@@ -81,6 +82,8 @@
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
 "subjectActivity" = "Activity";
+"subjectActivityImediate" = "Imediate Activity";
+"activityOf" = "%@ Activity";
 "newActivity" = "New activity";
 "interval" = "Interval";
 "timerAlertTitle" = "Time's up!";
@@ -93,6 +96,7 @@
 "deleteActivity" = "Delete activity";
 "focusTime" = "Focus Time";
 "pauseTime" = "Pause Time";
+"imediateActivity" = "Imediate Activity";
 
 // MARK: - Subjects
 "subject" = "Subject";
@@ -119,13 +123,14 @@
 "newTest" = "New Test";
 "editTest" = "Edit Test";
 "newTheme" = "New exam";
+"editTheme" = "Edit exam";
 "newTest" = "New test";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits!";
 "wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
 "testDate" = "Date";
-"rightQuestions" = "Right Questions";
-"totalQuestions" = "Total Questions";
+"rightQuestions" = "Right questions";
+"totalQuestions" = "Total questions";
 "deleteTest" = "Delete test";
 "emptyTheme" = "You haven't recorded any exams yet";
 "emptyTest" = "You haven't recorded any tests yet";
@@ -168,3 +173,7 @@
 "deleteOther" = "Erase time";
 "deleteOtherMessage" = "Do you really want to erase your study time?";
 "deleteOtherBodyText" = "This item gathers all the study times you have recorded that are not tied to any particular subject. Although it cannot be deleted, you have the option to erase the study times linked to it.";
+
+// MARK: - Block
+"endBlockAlertTitle" = "Ending app block";
+"endBlockAlertBody" = "Your apps are unblocked now";
