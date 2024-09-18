@@ -68,6 +68,7 @@
 "emptyWeekSchedule" = "You still have no activities scheduled for this week";
 "onTimeTitle" = "On time";
 "onTimeMessage" = "It's time for your activity!";
+"startsIn" = "In %@min";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Would you like to link this activity to a subject?";
@@ -81,6 +82,8 @@
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
 "subjectActivity" = "Activity";
+"subjectActivityImediate" = "Imediate Activity";
+"activityOf" = "%@ Activity";
 "newActivity" = "New activity";
 "interval" = "Interval";
 "timerAlertTitle" = "Time's up!";

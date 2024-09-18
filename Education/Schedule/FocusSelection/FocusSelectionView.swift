@@ -114,7 +114,7 @@ class FocusSelectionView: UIView {
     // MARK: - Initializer
     init(subjectName: String?) {
         
-        self.subjectName = subjectName != nil ? "Atividade de " + subjectName! : "Atividade Imediata"
+        self.subjectName = subjectName != nil ? String(format: NSLocalizedString("activityOf", comment: ""),subjectName!) : "\(String(localized: "subjectActivityImediate"))"
         
         super.init(frame: .zero)
         
