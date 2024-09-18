@@ -19,7 +19,7 @@ class LiveActivityButton: UIButton {
     
     lazy var playButton: UIButton = {
         let button = UIButton(configuration: .plain())
-        button.setImage(UIImage(systemName: "play.fill")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)), for: .normal)
+        button.setImage(UIImage(systemName: "play.fill")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 18, weight: .regular)), for: .normal)
         button.tintColor = self.color
         
         button.translatesAutoresizingMaskIntoConstraints = false
