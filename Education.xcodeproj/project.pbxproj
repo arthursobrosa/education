@@ -40,6 +40,7 @@
 		31C102F62C6D1A9B009D2751 /* SubjectCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102F52C6D1A9B009D2751 /* SubjectCreationViewController.swift */; };
 		31C102FA2C6D30BC009D2751 /* ShowingSubjectCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */; };
 		31C102FC2C6D3168009D2751 /* SubjectCreationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */; };
+		31D098832C9A156F005AFA87 /* ElipseStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D098822C9A156F005AFA87 /* ElipseStackView.swift */; };
 		31EB254B2C596883008F8893 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB254A2C596883008F8893 /* NotificationService.swift */; };
 		6804837E2C920559007FC564 /* CustomChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837D2C920559007FC564 /* CustomChart.swift */; };
 		680483802C922471007FC564 /* CustomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837F2C922471007FC564 /* CustomTableView.swift */; };
@@ -257,6 +258,7 @@
 		31C102F52C6D1A9B009D2751 /* SubjectCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCreationViewController.swift; sourceTree = "<group>"; };
 		31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingSubjectCreation.swift; sourceTree = "<group>"; };
 		31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCreationCoordinator.swift; sourceTree = "<group>"; };
+		31D098822C9A156F005AFA87 /* ElipseStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElipseStackView.swift; sourceTree = "<group>"; };
 		31EB254A2C596883008F8893 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		6804837D2C920559007FC564 /* CustomChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChart.swift; sourceTree = "<group>"; };
 		6804837F2C922471007FC564 /* CustomTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableView.swift; sourceTree = "<group>"; };
@@ -832,6 +834,7 @@
 				68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */,
 				688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */,
 				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
+				31D098822C9A156F005AFA87 /* ElipseStackView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1271,6 +1274,7 @@
 				68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */,
 				CE323B3B2C73BC3E004143E0 /* ScheduleNotificationDelegate.swift in Sources */,
 				68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */,
+				31D098832C9A156F005AFA87 /* ElipseStackView.swift in Sources */,
 				684282242C63B83300CEEF1C /* SettingsViewController.swift in Sources */,
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
 				68C5726D2C8B55ED00B9D0A4 /* PaddedTextField.swift in Sources */,

@@ -32,7 +32,7 @@ class ScheduleCell: UICollectionViewCell {
             switch self {
                 case .upcoming(let hoursLeft, let minutesLeft):
                 if Int(hoursLeft) == 0 {
-                    return String("Em " + minutesLeft + "min")
+                    return String(format: NSLocalizedString("startsIn", comment: ""),minutesLeft)
                 } else {
                     return String(format: NSLocalizedString("timeLeft", comment: ""), hoursLeft, minutesLeft)
                 }

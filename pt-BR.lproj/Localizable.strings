@@ -68,6 +68,7 @@
 "emptyWeekSchedule" = "Você ainda não tem atividades programadas para esta semana";
 "onTimeTitle" = "Na hora";
 "onTimeMessage" = "Está na hora da sua atividade!";
+"startsIn" = "Em %@min";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
@@ -81,6 +82,8 @@
 "showTimeCount" = "Mostrar contagem de tempo";
 "paused" = "Pausado";
 "subjectActivity" = "Atividade de";
+"subjectActivityImediate" = "Atividade imediata";
+"activityOf" = "Atividade de %@";
 "newActivity" = "Nova atividade";
 "interval" = "Intervalo";
 "timerAlertTitle" = "Tempo acabou!";

@@ -133,6 +133,7 @@ class ScheduleViewController: UIViewController {
         
         UIView.animate(withDuration: 0.3) {
             self.scheduleView.overlayView.alpha = newAlpha
+            self.scheduleView.elipseView.alpha = newAlpha
             self.scheduleView.createAcitivityButton.alpha = newAlpha
             self.scheduleView.startActivityButton.alpha = newAlpha
         }
@@ -154,6 +155,7 @@ class ScheduleViewController: UIViewController {
         if self.scheduleView.overlayView.alpha == 1 {
             UIView.animate(withDuration: 0.3) {
                 self.scheduleView.overlayView.alpha = 0
+                self.scheduleView.elipseView.alpha = 0
                 self.scheduleView.createAcitivityButton.alpha = 0
                 self.scheduleView.startActivityButton.alpha = 0
             }
