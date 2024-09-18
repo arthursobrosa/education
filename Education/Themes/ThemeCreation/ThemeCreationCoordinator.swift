@@ -1,5 +1,5 @@
 //
-//  NewThemeCoordinator.swift
+//  ThemeCreationCoordinator.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 06/09/24.
@@ -7,20 +7,21 @@
 
 import UIKit
 
-class NewThemeCoordinator: Coordinator, Dismissing {
+class ThemeCreationCoordinator: Coordinator, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
-    private let viewModel: ThemeListViewModel
+    private var theme: Theme?
     
-    init(navigationController: UINavigationController, viewModel: ThemeListViewModel) {
+    init(navigationController: UINavigationController, theme: Theme?) {
         self.navigationController = navigationController
-        self.viewModel = viewModel
+        self.theme = theme
     }
     
     func start() {
-        let vc = NewThemeViewController(viewModel: self.viewModel)
+        let viewModel = ThemeCreationViewModel(theme: self.theme)
+        let vc = ThemeCreationViewController(viewModel: viewModel)
         vc.coordinator = self
         
         let newNavigationController = UINavigationController(rootViewController: vc)

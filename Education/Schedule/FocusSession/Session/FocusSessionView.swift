@@ -134,7 +134,7 @@ class FocusSessionView: UIView {
         attributedString.append(restartImage)
         attributedString.addAttributes([.font : UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium), .foregroundColor : UIColor.label.withAlphaComponent(0.8)], range: .init(location: 0, length: attributedString.length))
         
-        let bttn = ButtonComponent(title: String(), textColor: nil, cornerRadius: 30)
+        let bttn = ButtonComponent(title: String(), textColor: nil, cornerRadius: 28)
         bttn.setAttributedTitle(attributedString, for: .normal)
         bttn.backgroundColor = .clear
         
@@ -151,7 +151,7 @@ class FocusSessionView: UIView {
     }()
     
     private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 30)
+        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 28)
         bttn.backgroundColor = .clear
         
         bttn.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
@@ -401,7 +401,6 @@ extension FocusSessionView: ViewCodeProtocol {
         
         self.addSubview(restartButton)
         self.addSubview(finishButton)
-//        self.addSubview(endNotification)
         self.addSubview(focusAlert)
         
         self.addSubview(overlayViewEnd)
@@ -477,18 +476,39 @@ extension FocusSessionView: ViewCodeProtocol {
     }
     
     func setupLayers(strokeEnd: CGFloat) {
-        let arcPath = UIBezierPath(arcCenter: CGPoint(x: self.timerLabel.frame.width / 2, y: self.timerLabel.frame.height / 2), radius: self.timerLabel.frame.width / 2, startAngle: -(CGFloat.pi / 2), endAngle: -(CGFloat.pi / 2) + CGFloat.pi * 2, clockwise: true)
+        var clockwise = Bool()
         
-        let lineWidth = self.bounds.height * (7/844)
+        var startAngle = Double()
+        var endAngle = Double()
         
-        var isShowing = true
+        var isShowing = Bool()
         
         switch ActivityManager.shared.timerCase {
             case .stopwatch:
                 isShowing = false
+            case .pomodoro:
+                isShowing = true
+                
+                if ActivityManager.shared.isAtWorkTime {
+                    clockwise = true
+                    startAngle = -(CGFloat.pi / 2)
+                    endAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
+                } else {
+                    clockwise = false
+                    startAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
+                    endAngle = -(CGFloat.pi / 2)
+                }
             default:
-                break
+                isShowing = true
+                
+                clockwise = true
+                startAngle = -(CGFloat.pi / 2)
+                endAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
         }
+        
+        let arcPath = UIBezierPath(arcCenter: CGPoint(x: self.timerLabel.frame.width / 2, y: self.timerLabel.frame.height / 2), radius: self.timerLabel.frame.width / 2, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
+        
+        let lineWidth = self.bounds.height * (7/844)
         
         self.timerTrackLayer.path = arcPath.cgPath
         self.timerTrackLayer.strokeColor = isShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor

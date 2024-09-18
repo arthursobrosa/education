@@ -33,7 +33,7 @@ class ActivityManager {
     var totalSeconds: Int
     @Published var timerSeconds: Int
     
-    var isAtWorkTime: Bool = true
+    @Published var isAtWorkTime: Bool = true
     var workTime: Int = 0
     var restTime: Int = 0
     var numberOfLoops: Int = 0

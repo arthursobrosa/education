@@ -87,7 +87,6 @@ class FocusSelectionView: UIView {
     private lazy var continueButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground, cornerRadius: 26)
         bttn.isEnabled = false
-        bttn.layer.cornerRadius = 28
         bttn.backgroundColor = .systemGray4
         
         bttn.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
