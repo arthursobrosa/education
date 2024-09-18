@@ -63,9 +63,9 @@ class FocusPickerViewModel {
                 let selectedRestTime = self.selectedRestHours * 3600 + self.selectedRestMinutes * 60
                 let selectedNumberOfLoops = self.selectedRepetitions + 1
                 
-                self.focusSessionModel.timerCase = .pomodoro(workTime: selectedWorkTime, restTime: selectedRestTime, numberOfLoops: selectedNumberOfLoops)
-                self.focusSessionModel.workTime = selectedWorkTime
-                self.focusSessionModel.restTime = selectedRestTime
+                self.focusSessionModel.timerCase = .pomodoro(workTime: selectedWorkTime / 60, restTime: selectedRestTime / 60, numberOfLoops: selectedNumberOfLoops)
+                self.focusSessionModel.workTime = selectedWorkTime / 60
+                self.focusSessionModel.restTime = selectedRestTime / 60
                 self.focusSessionModel.numberOfLoops = selectedNumberOfLoops
             default:
                 break
