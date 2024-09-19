@@ -80,7 +80,7 @@ class TestPageViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    @objc func textFieldDidChange(_ sender: UITextField) {
+    @objc func textFieldEditingDidEnd(_ sender: UITextField) {
         guard let text = sender.text else { return }
         
         if text.isEmpty {
@@ -97,6 +97,10 @@ class TestPageViewController: UIViewController {
             default:
                 break
         }
+    }
+    
+    @objc func textFieldEditingDidBegin(_ sender: UITextField) {
+        sender.text = String()
     }
     
     @objc func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {

@@ -53,7 +53,8 @@ extension TestPageViewController {
                 let toolbar = self.createToolbar(withTag: row)
                 textField.inputAccessoryView = toolbar
                 
-                textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidEnd)
+                textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
+                textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
                 
                 return textField
             default:
