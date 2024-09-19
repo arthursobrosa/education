@@ -33,6 +33,8 @@ class SettingsTableViewCell: UITableViewCell {
     private let cardTextLabel: UILabel = {
         let label = UILabel()
         label.tintColor = .label.withAlphaComponent(0.8)
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
