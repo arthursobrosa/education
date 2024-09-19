@@ -65,14 +65,6 @@ class FocusAlertView: UIView {
         return label
     }()
     
-    private lazy var yesButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "yes"), cornerRadius: 28)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
-    }()
-    
     private lazy var cancelButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "cancel"), textColor: .label, cornerRadius: 28)
         button.backgroundColor = .clear
@@ -103,7 +95,29 @@ class FocusAlertView: UIView {
     func configure(with alertCase: FocusAlertCase) {
         self.titleLabel.text = alertCase.title
         self.bodyLabel.text = alertCase.body
-        self.yesButton.addTarget(self.delegate, action: alertCase.action, for: .touchUpInside)
+        self.createYesButton(with: alertCase)
+    }
+    
+    private func createYesButton(with alertCase: FocusAlertCase) {
+        if let previousYesButton = self.subviews.first(where: { $0.tag == 0 }) as? ButtonComponent {
+            previousYesButton.removeFromSuperview()
+        }
+        
+        let yesButton = ButtonComponent(title: String(localized: "yes"), cornerRadius: 28)
+        yesButton.tag = 0
+        
+        yesButton.addTarget(self.delegate, action: alertCase.action, for: .touchUpInside)
+        
+        yesButton.translatesAutoresizingMaskIntoConstraints = false
+
+        self.addSubview(yesButton)
+        
+        NSLayoutConstraint.activate([
+            yesButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor),
+            yesButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
+            yesButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 12),
+            yesButton.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor)
+        ])
     }
 }
 
@@ -111,7 +125,6 @@ extension FocusAlertView: ViewCodeProtocol {
     func setupUI() {
         self.addSubview(titleLabel)
         self.addSubview(bodyLabel)
-        self.addSubview(yesButton)
         self.addSubview(cancelButton)
         
         NSLayoutConstraint.activate([
@@ -123,14 +136,11 @@ extension FocusAlertView: ViewCodeProtocol {
             bodyLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 290/360),
             
             cancelButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 160/360),
-            cancelButton.heightAnchor.constraint(equalTo: yesButton.widthAnchor, multiplier: 55/160),
+            cancelButton.heightAnchor.constraint(equalTo: cancelButton.widthAnchor, multiplier: 55/160),
             cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14),
-            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -17),
-            
-            yesButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 160/360),
-            yesButton.heightAnchor.constraint(equalTo: yesButton.widthAnchor, multiplier: 55/160),
-            yesButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 12),
-            yesButton.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor)
+            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -17)
         ])
+        
+        self.createYesButton(with: FocusAlertCase.finish)
     }
 }
