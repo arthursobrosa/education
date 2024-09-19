@@ -127,7 +127,7 @@
 "newTest" = "Novo teste";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
-"wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior ou igual ao número total de questões. Por favor revise os dados inseridos.";
+"wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior que o número total de questões. Por favor revise os dados inseridos.";
 "rightQuestions" = "Questões acertadas";
 "testDate" = "Data";
 "totalQuestions" = "Total de questões";

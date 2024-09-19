@@ -70,21 +70,6 @@ class ScheduleView: UIView {
         return view
     }()
     
-//    let elipseView: UILabel = {
-//        let label = UILabel()
-//        label.backgroundColor = .clear
-//        label.text = ". . . ."
-//        label.font = UIFont(name: Fonts.darkModeOnBold, size: 30)
-//        label.textColor = .label
-//        label.textAlignment = .center
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
-//        label.layer.cornerRadius = 25
-//        label.layer.masksToBounds = true
-//        label.alpha = 0
-//        return label
-//    }()
-    
     lazy var elipseView: ElipseStackView = {
         let view = ElipseStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +82,7 @@ class ScheduleView: UIView {
             insets: NSDirectionalEdgeInsets(top: 16, leading: 24, bottom: 16, trailing: 24),
             title: String(localized: "createActivity"),
             fontStyle: Fonts.darkModeOnMedium,
-            fontSize: 16,
+            fontSize: 17,
             cornerRadius: 25
         )
         button.tintColor = .label
@@ -115,7 +100,7 @@ class ScheduleView: UIView {
             insets: NSDirectionalEdgeInsets(top: 16, leading: 24, bottom: 16, trailing: 24),
             title: String(localized: "immediateActivity"),
             fontStyle: Fonts.darkModeOnMedium,
-            fontSize: 16,
+            fontSize: 17,
             cornerRadius: 25
         )
         button.tintColor = .label

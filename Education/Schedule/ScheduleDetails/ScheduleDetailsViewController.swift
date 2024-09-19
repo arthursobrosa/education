@@ -178,6 +178,7 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         }
         
         cell.textLabel?.text = self.createCellTitle(for: indexPath)
+        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         cell.accessoryView = self.createAccessoryView(for: indexPath)
         
         cell.row = indexPath.row
