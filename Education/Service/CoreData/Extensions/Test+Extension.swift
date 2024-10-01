@@ -27,4 +27,8 @@ extension Test {
     var unwrappedDate: Date {
         return date ?? Date()
     }
+    
+    var unwrappedComment: String {
+        return comment ?? String()
+    }
 }
