@@ -10,7 +10,7 @@ import CoreData
 
 final class TestManager: ObjectManager {
     // MARK: - Create
-    func createTest(themeID: String, date: Date, rightQuestions: Int, totalQuestions: Int) {
+    func createTest(themeID: String, date: Date, rightQuestions: Int, totalQuestions: Int, comment: String? = "") {
         backgroundContext.performAndWait {
             guard let test = NSEntityDescription.insertNewObject(forEntityName: "Test", into: backgroundContext) as? Test else { return }
             
@@ -18,6 +18,7 @@ final class TestManager: ObjectManager {
             test.date = date
             test.rightQuestions = Int64(rightQuestions)
             test.totalQuestions = Int64(totalQuestions)
+            test.comment = comment
             test.id = UUID().uuidString
             
             try? backgroundContext.save()

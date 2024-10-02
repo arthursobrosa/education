@@ -35,13 +35,14 @@ class TestManagerTest: XCTestCase {
         let dateString = "2023-11-13 09:12:22"
         let date = format.date(from: dateString)!
 
-        testManager.createTest(themeID: theme.unwrappedID, date: date, rightQuestions: 25, totalQuestions: 30)
+        testManager.createTest(themeID: theme.unwrappedID, date: date, rightQuestions: 25, totalQuestions: 30, comment: "test")
         
         let test = testManager.fetchTests(themeID: theme.unwrappedID)!.first!
         
         XCTAssertEqual(test.date, date)
         XCTAssertEqual(test.rightQuestions, 25)
         XCTAssertEqual(test.totalQuestions, 30)
+        XCTAssertEqual(test.unwrappedComment, "test")
     }
     
     func test_fetch_single_test() {
@@ -109,12 +110,13 @@ class TestManagerTest: XCTestCase {
         let dateString = "2023-11-13 09:12:22"
         let date = format.date(from: dateString)!
 
-        testManager.createTest(themeID: theme.unwrappedID, date: date, rightQuestions: 25, totalQuestions: 30)
+        testManager.createTest(themeID: theme.unwrappedID, date: date, rightQuestions: 25, totalQuestions: 30, comment:"test")
         
         let test = testManager.fetchTests(themeID: theme.unwrappedID)!.first!
         
         test.rightQuestions = 7
         test.totalQuestions = 20
+        test.comment = "updatedTest"
         
         let dateStringB = "2023-11-13 10:12:22"
         let dateB = format.date(from: dateStringB)!
@@ -127,6 +129,7 @@ class TestManagerTest: XCTestCase {
         XCTAssertEqual(testUpdated.date, dateB)
         XCTAssertEqual(testUpdated.rightQuestions, 7)
         XCTAssertEqual(testUpdated.totalQuestions, 20)
+        XCTAssertEqual(testUpdated.unwrappedComment, "updatedTest")
         
     }
 }
