@@ -21,8 +21,8 @@
 // MARK: - Schedule
 "schedule" = "Cronograma";
 "newSchedule" = "Novo";
-"createActivity" = "Criar atividade";
-"immediateActivity" = "Iniciar atividade imediata";
+"createActivity" = "Criar Atividade";
+"immediateActivity" = "Iniciar Atividade Imediata";
 "timeLeft" = "Em %@h%@m";
 "timeLeftNow" = "Agora";
 "timeLeftFinished" = "Concluído";
@@ -59,10 +59,10 @@
 "activityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade de ";
 "noActivityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade 🎉";
 "finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
-"finishEarlyAlertTitle" = "Finalizar atividade";
-"restartAlertTitle" = "Recomeçar atividade";
+"finishEarlyAlertTitle" = "Finalizar Atividade";
+"restartAlertTitle" = "Recomeçar Atividade";
 "restartAlertBody" = "Tem certeza que deseja recomeçar a sua atividade?";
-"activityDeletionTitle" = "Deleção de atividade";
+"activityDeletionTitle" = "Deleção de Atividade";
 "activityDeletionMessage" = "Você tem certeza que deseja excluir essa atividade?";
 "emptyDaySchedule" = "Você ainda não tem atividades programadas para este dia";
 "emptyWeekSchedule" = "Você ainda não tem atividades programadas para esta semana";
@@ -73,8 +73,8 @@
 // MARK: - Focus
 "subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
 "timeCountingQuestion" = "Como você deseja contar o tempo?";
-"timerSelectionTitle" = "Tempo programado \n Ex.: 50min";
-"timerSelectionBold" = "Tempo programado";
+"timerSelectionTitle" = "Tempo Programado \n Ex.: 50min";
+"timerSelectionBold" = "Tempo Programado";
 "pomodoroSelectionTitle" = "Pomodoro";
 "stopwatchSelectionTitle" = "Livre \n (pare quando quiser)";
 "stopwatchSelectionBold" = "Livre";
@@ -82,7 +82,7 @@
 "showTimeCount" = "Mostrar contagem de tempo";
 "paused" = "Pausado";
 "subjectActivity" = "Atividade de";
-"subjectActivityImediate" = "Atividade imediata";
+"subjectActivityImediate" = "Atividade Imediata";
 "activityOf" = "Atividade de %@";
 "newActivity" = "Nova atividade";
 "interval" = "Intervalo";
@@ -93,7 +93,7 @@
 "pomodoroFocus" = "Foco";
 "pomodoroInterval" = "Intervalo";
 "pomodoroRepetitions" = "Repetições";
-"deleteActivity" = "Apagar atividade";
+"deleteActivity" = "Apagar Atividade";
 "focusTime" = "Tempo de Foco";
 "pauseTime" = "Tempo de Pausa";
 "imediateActivity" = "Atividade Imediata";
@@ -106,9 +106,9 @@
 "studyTimeLastMonth" = "Mês";
 "studyTimeLastYear" = "Ano";
 "emptySubject" = "matéria";
-"deleteSubjectTitle" = "Excluir matéria";
+"deleteSubjectTitle" = "Excluir Matéria";
 "deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades dentro do cronograma também serão excluídos.";
-"subjectCreationTitle" = "Matéria inválida";
+"subjectCreationTitle" = "Matéria Inválida";
 "subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";
@@ -124,7 +124,7 @@
 "editTest" = "Editar Teste";
 "newTheme" = "Nova prova";
 "editTheme" = "Editar prova";
-"newTest" = "Novo teste";
+"newTest" = "Novo Teste";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior que o número total de questões. Por favor revise os dados inseridos.";
@@ -148,7 +148,7 @@
 "firstWeekDay" = "Primeiro dia da semana";
 
 // MARK: - Modal
-"startButton" = "Iniciar atividade";
+"startButton" = "Iniciar Atividade";
 "startNowButton" = "Iniciar agora";
 
 //MARK: - ACTIVITY
@@ -165,7 +165,7 @@
 "explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
 
 //MARK: - EMPTY SUBJECTS VIEW
-"create" = "Criar matéria";
+"create" = "Criar Matéria";
 "createText" = "Para iniciar a montagem do seu cronograma, crie uma nova matéria";
 "welcomeText" = "Boas-vindas ao Planno! 👋";
 
