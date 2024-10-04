@@ -80,6 +80,8 @@ class StudyTimeViewModel: ObservableObject {
     init(subjectManager: SubjectManager = SubjectManager(), focusSessionManager: FocusSessionManager = FocusSessionManager()) {
         self.subjectManager = subjectManager
         self.focusSessionManager = focusSessionManager
+        
+        selectedSubjectColor = Box(selectAvailableColor())
     }
     
     // MARK: - Methods
@@ -87,6 +89,26 @@ class StudyTimeViewModel: ObservableObject {
         if let focusSessions = self.focusSessionManager.fetchFocusSessions(allSessions: true) {
             self.focusSessions.value = focusSessions.filter { filterSession($0, self.selectedDateRange) }
         }
+    }
+    
+    func selectAvailableColor() -> String {
+        // Obter os subjects existentes
+        let existingSubjects = subjectManager.fetchSubjects() ?? []
+        
+        // Extrair as cores dos subjects já existentes
+        let usedColors = Set(existingSubjects.map { $0.unwrappedColor })
+        
+        print(usedColors)
+        
+        // Verificar qual cor ainda não foi usada
+        for color in subjectColors {
+            if !usedColors.contains(color) {
+                return color
+            }
+        }
+        
+        // Se todas já foram usadas, retornar a primeira cor
+        return subjectColors.first ?? "bluePicker"
     }
     
     func getTotalTime(forSubject subject: Subject?) -> String {

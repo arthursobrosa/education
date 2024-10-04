@@ -63,7 +63,7 @@ extension StudyTimeCoordinator: UIViewControllerTransitioningDelegate {
                 subjectCreationVC.viewModel.currentEditingSubject = nil
             }
             
-            subjectCreationVC.viewModel.selectedSubjectColor.value = subjectCreationVC.viewModel.subjectColors[0]
+            subjectCreationVC.viewModel.selectedSubjectColor.value = subjectCreationVC.viewModel.selectAvailableColor()
             
             if let studyTimeVC = self.navigationController.viewControllers.first as? StudyTimeViewController {
                 studyTimeVC.reloadTable()
