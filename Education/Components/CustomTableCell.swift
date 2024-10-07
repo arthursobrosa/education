@@ -53,6 +53,21 @@ class CustomTableCell: UITableViewCell {
         self.bordersWereSet = true
     }
     
+    func setAccessoryView(_ accessoryView: UIView?) {
+        guard let accessoryView else { return }
+        
+        accessoryView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(accessoryView)
+        
+        NSLayoutConstraint.activate([
+            
+            accessoryView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -17),
+            accessoryView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            
+        ])
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         
