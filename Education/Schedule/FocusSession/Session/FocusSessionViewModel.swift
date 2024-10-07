@@ -10,6 +10,8 @@ import Foundation
 class FocusSessionViewModel {
     // MARK: - FocusSession Handler
     private let focusSessionManager: FocusSessionManager
+    
+//    private let activityManager: ActivityManager
    
     // MARK: - Properties
     var prefersStatusBarHidden = true

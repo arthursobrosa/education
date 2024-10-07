@@ -175,5 +175,7 @@
 "deleteOtherBodyText" = "This item gathers all the study times you have recorded that are not tied to any particular subject. Although it cannot be deleted, you have the option to erase the study times linked to it.";
 
 // MARK: - Block
+"startBlockAlertTitle" = "Starting app block";
+"startBlockAlertBody" = "Your apps are blocked now";
 "endBlockAlertTitle" = "Ending app block";
 "endBlockAlertBody" = "Your apps are unblocked now";

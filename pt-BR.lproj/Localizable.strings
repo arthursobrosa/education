@@ -176,5 +176,7 @@
 "deleteOtherBodyText" = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele.";
 
 // MARK: - Block
+"startBlockAlertTitle" = "Iniciando o bloqueio de apps";
+"startBlockAlertBody" = "Seus apps estão bloqueados agora";
 "endBlockAlertTitle" = "Finalizando bloqueio de apps";
 "endBlockAlertBody" = "Seus apps estão desbloqueados agora";
