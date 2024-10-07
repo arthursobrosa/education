@@ -21,19 +21,24 @@ class BlockAppsMonitor: ObservableObject {
         print(isAuthorized)
     }
     
-    func apllyShields() {
-        do {
-            guard let data = UserDefaults.standard.data(forKey: "applications") else { return }
-            let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
-            print("tudo ok \(decoded)")
-            
+    func applyShields() {
+    do {
+    guard let data = UserDefaults.standard.data(forKey: "applications") else { return }
+    let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
+    print("tudo ok (decoded)")
+
             let applications = decoded.applicationTokens
             let categories = decoded.categoryTokens
-            
-            //MyShieldConfiguration().configuration(shielding: Application(token: applications.first!))
+                        
             store.shield.applications = applications.isEmpty ? nil : applications
             store.shield.applicationCategories = ShieldSettings.ActivityCategoryPolicy.specific(categories, except: Set())
             store.shield.webDomainCategories = ShieldSettings.ActivityCategoryPolicy.specific(categories, except: Set())
+            if(applications.first != nil){
+                MyShieldConfiguration().configuration(shielding: Application(token: applications.first!))
+            }
+            if(categories.first != nil){
+                MyShieldConfiguration().configuration(shielding: Application(token: applications.first!), in: ActivityCategory(token: categories.first!))
+            }
         } catch {
             print("error to decode: \(error)")
         }

@@ -224,7 +224,7 @@ class FocusSessionViewController: UIViewController {
               !ActivityManager.shared.isPaused,
               ActivityManager.shared.isAtWorkTime else { return }
         
-        BlockAppsMonitor.shared.apllyShields()
+        BlockAppsMonitor.shared.applyShields()
     }
 }
 
