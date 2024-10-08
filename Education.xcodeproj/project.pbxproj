@@ -656,7 +656,6 @@
 			isa = PBXGroup;
 			children = (
 				6887D5B62C3869A700F037F2 /* Session */,
-				688A4C212CB4336D00F48674 /* ExtendSession */,
 				CE3B7D2D2C45912100EE5070 /* BlockApps */,
 			);
 			path = FocusSession;
@@ -893,13 +892,6 @@
 				CE3010042C3329F1007BCA07 /* FocusSessionView.swift */,
 			);
 			path = Session;
-			sourceTree = "<group>";
-		};
-		688A4C212CB4336D00F48674 /* ExtendSession */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ExtendSession;
 			sourceTree = "<group>";
 		};
 		688C25712C66707900150F7F /* FocusImediate */ = {
