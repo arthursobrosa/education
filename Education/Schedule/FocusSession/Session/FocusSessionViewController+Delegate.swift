@@ -8,6 +8,7 @@
 import Foundation
 
 @objc protocol FocusSessionDelegate: AnyObject {
+    func createNotificationComponent() -> NotificationComponentView
     func dismissButtonTapped()
     func visibilityButtonTapped()
     func pauseResumeButtonTapped()
@@ -18,31 +19,44 @@ import Foundation
 }
 
 extension FocusSessionViewController: FocusSessionDelegate {
+    func createNotificationComponent() -> NotificationComponentView {
+        let subject = viewModel.getSubject()
+        
+        let title = String(localized: "timeIsUp")
+        let body = subject != nil ?
+            String(localized: "activityEndCongratulations") + (subject!.unwrappedName)  + " 🎉" :
+            String(localized: "noActivityEndCongratulations")
+        
+        return NotificationComponentView(title: title, body: body)
+    }
+    
     func dismissButtonTapped() {
-        if !ActivityManager.shared.isPaused {
-            ActivityManager.shared.isPaused = true
-        }
+        viewModel.changePauseStatus()
         
         self.coordinator?.dismiss(animated: true)
     }
     
     func visibilityButtonTapped() {
-        ActivityManager.shared.isTimeCountOn.toggle()
+        viewModel.changeTimerVisibility()
         
         self.updateViewLabels()
-        self.focusSessionView.setVisibilityButton(isActive: ActivityManager.shared.isTimeCountOn)
+        self.focusSessionView.setVisibilityButton(isActive: viewModel.isTimerVisible())
     }
     
     func pauseResumeButtonTapped() {
-        ActivityManager.shared.isPaused.toggle()
+        let isPaused = viewModel.getPauseStatus()
         
-        guard ActivityManager.shared.isAtWorkTime else { return }
-        
-        if ActivityManager.shared.isPaused {
-            BlockAppsMonitor.shared.removeShields()
-        } else {
-            self.blockApps()
+        if !isPaused && viewModel.prefersStatusBarHidden {
+            viewModel.prefersStatusBarHidden.toggle()
+            focusSessionView.changeButtonsVisibility(isHidden: viewModel.prefersStatusBarHidden)
         }
+        
+        if isPaused && !viewModel.prefersStatusBarHidden {
+            viewModel.prefersStatusBarHidden.toggle()
+            focusSessionView.changeButtonsVisibility(isHidden: viewModel.prefersStatusBarHidden)
+        }
+        
+        viewModel.pauseResumeButtonTapped()
     }
     
     func didFinish() {
@@ -57,7 +71,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
     func didRestart() {
         self.focusSessionView.showFocusAlert(false)
         self.focusSessionView.isPaused = false
-        ActivityManager.shared.restartActivity()
+        viewModel.restartActivity()
     }
     
     func okButtonPressed() {

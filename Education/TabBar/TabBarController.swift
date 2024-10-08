@@ -8,11 +8,14 @@
 import UIKit
 
 class TabBarController: UITabBarController {
+    // MARK: - View Model
+    let viewModel: TabBarViewModel
+    
     // MARK: - Coordinators
-    let schedule = ScheduleCoordinator(navigationController: UINavigationController())
-    private let studytime = StudyTimeCoordinator(navigationController: UINavigationController())
-    private let themeList = ThemeListCoordinator(navigationController: UINavigationController())
-    let settings = SettingsCoordinator(navigationController: UINavigationController())
+    let schedule: ScheduleCoordinator
+    private let studytime: StudyTimeCoordinator
+    private let themeList: ThemeListCoordinator
+    let settings: SettingsCoordinator
     
     // MARK: - Live activity view
     lazy var activityView: ActivityView = {
@@ -28,11 +31,27 @@ class TabBarController: UITabBarController {
     // MARK: - Custom TabBar
     private let customTabBar = CustomTabBar()
     
+    // MARK: - Initializer
+    init(viewModel: TabBarViewModel) {
+        self.viewModel = viewModel
+        
+        schedule = ScheduleCoordinator(navigationController: UINavigationController(), activityManager: viewModel.activityManager)
+        studytime = StudyTimeCoordinator(navigationController: UINavigationController())
+        themeList = ThemeListCoordinator(navigationController: UINavigationController())
+        settings = SettingsCoordinator(navigationController: UINavigationController())
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ActivityManager.shared.delegate = self
+        viewModel.activityManager.delegate = self
         
         self.setValue(self.customTabBar, forKey: "tabBar")
         self.setTabItems()
@@ -41,6 +60,7 @@ class TabBarController: UITabBarController {
         self.viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, settings.navigationController]
     }
     
+    // MARK: - Methods
     private func setTabItems() {
         let titleAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont(name: Fonts.darkModeOnMedium, size: 10)!

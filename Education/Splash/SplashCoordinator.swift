@@ -12,6 +12,8 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     var navigationController: UINavigationController
     let themeListViewModel: ThemeListViewModel
     
+    private let activityManager: ActivityManager
+    
     struct ScheduleNotification {
         var subjectName: String
         var startTime: Date
@@ -20,9 +22,10 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     
     var scheduleNotification: ScheduleNotification?
     
-    init(navigationController: UINavigationController, themeListViewModel: ThemeListViewModel) {
+    init(navigationController: UINavigationController, themeListViewModel: ThemeListViewModel, activityManager: ActivityManager?) {
         self.navigationController = navigationController
         self.themeListViewModel = themeListViewModel
+        self.activityManager = activityManager ?? ActivityManager()
     }
     
     func start() {
@@ -33,7 +36,8 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     }
     
     func showTabBar() {
-        let tabBar = TabBarController()
+        let viewModel = TabBarViewModel(activityManager: activityManager)
+        let tabBar = TabBarController(viewModel: viewModel)
         tabBar.modalPresentationStyle = .fullScreen
         
         self.navigationController.setNavigationBarHidden(true, animated: false)

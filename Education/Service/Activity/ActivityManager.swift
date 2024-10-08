@@ -35,9 +35,6 @@ protocol SessionManaging {
 }
 
 class ActivityManager {
-    // MARK: - Shared Instance
-    static let shared = ActivityManager()
-    
     // MARK: - Delegate and FocusSession manager
     weak var delegate: TabBarDelegate?
     private let focusSessionManager: FocusSessionManager
@@ -49,7 +46,7 @@ class ActivityManager {
     private var pausedTime: TimeInterval = 0
     var timer: Timer?
     
-    @Published var timerDidFinish: Bool = false
+    @Published var timerFinished: Bool = false
     
     var totalSeconds: Int
     @Published var timerSeconds: Int
@@ -70,9 +67,9 @@ class ActivityManager {
     
     @Published var updateAfterBackground: Bool = false
     
-    var isShowingActivity: Bool = false {
+    var isShowingActivityBar: Bool = false {
         didSet {
-            if isShowingActivity {
+            if isShowingActivityBar {
                 self.delegate?.addActivityView()
                 
                 return
@@ -93,7 +90,7 @@ class ActivityManager {
     var color: UIColor?
     
     // MARK: - Initializer
-    private init(focusSessionManager: FocusSessionManager = FocusSessionManager(), timerCase: TimerCase = .timer, totalSeconds: Int = 1, timerSeconds: Int = 1, isPaused: Bool = true, date: Date = Date(), subject: Subject? = nil, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), timerCase: TimerCase = .timer, totalSeconds: Int = 1, timerSeconds: Int = 1, isPaused: Bool = true, date: Date = Date(), subject: Subject? = nil, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
         self.focusSessionManager = focusSessionManager
         
         self.timerCase = timerCase
@@ -175,7 +172,7 @@ extension ActivityManager: TimerManaging {
     func resetTimer() {
         self.isPaused = true
         
-        self.timerDidFinish = false
+        self.timerFinished = false
         
         self.progress = 0
         self.totalSeconds = 0
@@ -194,14 +191,14 @@ extension ActivityManager: TimerManaging {
         switch self.timerCase {
             case .timer:
                 self.stopTimer()
-                self.timerDidFinish = true
+                self.timerFinished = true
                 
                 return
             case .pomodoro:
                 if self.isAtWorkTime {
                     if self.currentLoop >= self.numberOfLoops - 1 {
                         self.stopTimer()
-                        self.timerDidFinish = true
+                        self.timerFinished = true
                         
                         return
                     }
@@ -231,7 +228,7 @@ extension ActivityManager: TimerManaging {
 // MARK: - Session Management
 extension ActivityManager: SessionManaging {
     func handleActivityDismissed(didTapFinish: Bool) {
-        didTapFinish ? self.resetTimer() : (self.isShowingActivity = true)
+        didTapFinish ? self.resetTimer() : (self.isShowingActivityBar = true)
     }
     
     func saveFocusSesssion() {
@@ -256,10 +253,10 @@ extension ActivityManager: SessionManaging {
     }
     
     func finishSession() {
-        guard self.isShowingActivity else { return }
+        guard self.isShowingActivityBar else { return }
         
         self.saveFocusSesssion()
-        self.isShowingActivity = false
+        self.isShowingActivityBar = false
     }
     
     func updateFocusSession(with focusSessionModel: FocusSessionModel) {
