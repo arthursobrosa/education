@@ -9,8 +9,10 @@ import UIKit
 
 class TabBarViewModel {
     let activityManager: ActivityManager
+    let blockingManager: BlockingManager
     
-    init(activityManager: ActivityManager) {
+    init(activityManager: ActivityManager, blockingManager: BlockingManager) {
         self.activityManager = activityManager
+        self.blockingManager = blockingManager
     }
 }

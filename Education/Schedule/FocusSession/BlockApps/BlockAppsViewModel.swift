@@ -11,8 +11,16 @@ import ManagedSettings
 import DeviceActivity
 import SwiftUI
 
-class BlockAppsMonitor: ObservableObject {
-    static let shared = BlockAppsMonitor()
+protocol BlockingManager {
+    var selectionToDiscourage: FamilyActivitySelection { get set }
+    
+    func requestAuthorization()
+    func applyShields()
+    func removeShields()
+    func monitorSchedule()
+}
+
+class BlockAppsMonitor: ObservableObject, BlockingManager {
     let store = ManagedSettingsStore()
     let center = AuthorizationCenter.shared
     
@@ -36,7 +44,7 @@ class BlockAppsMonitor: ObservableObject {
             print("error to decode: \(error)")
         }
         
-        self.createBlockAppsNotification(isStarting: true)
+        createBlockAppsNotification(isStarting: true)
     }
     
     func removeShields() {
@@ -73,7 +81,7 @@ class BlockAppsMonitor: ObservableObject {
         }
     }
     
-    private init() {
+    init() {
         if let savedData = UserDefaults.standard.data(forKey: "applications") {
             do {
                 let decodedSelection = try JSONDecoder().decode(FamilyActivitySelection.self, from: savedData)
@@ -105,16 +113,6 @@ class BlockAppsMonitor: ObservableObject {
         } catch {
             print("Error starting monitoring: \(error.localizedDescription)")
         }
-    }
-}
-
-// Implement Threshold Function
-class MyMonitorExtension: DeviceActivityMonitor {
-    let store = ManagedSettingsStore()
-    
-    override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
-        super.eventDidReachThreshold(event, activity: activity)
-        store.shield.applications = nil
     }
 }
 

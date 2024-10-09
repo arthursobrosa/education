@@ -13,14 +13,16 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing, DismissingA
     var navigationController: UINavigationController
     
     private let focusSessionModel: FocusSessionModel
+    private let blockingManager: BlockingManager
     
-    init(navigationController: UINavigationController, focusSessionModel: FocusSessionModel) {
+    init(navigationController: UINavigationController, focusSessionModel: FocusSessionModel, blockingManager: BlockingManager) {
         self.navigationController = navigationController
         self.focusSessionModel = focusSessionModel
+        self.blockingManager = blockingManager
     }
     
     func start() {
-        let viewModel = FocusPickerViewModel(focusSessionModel: self.focusSessionModel)
+        let viewModel = FocusPickerViewModel(focusSessionModel: self.focusSessionModel, blockingManager: blockingManager)
         let vc = FocusPickerViewController(viewModel: viewModel)
         vc.navigationItem.hidesBackButton = true
         vc.coordinator = self

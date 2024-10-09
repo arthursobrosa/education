@@ -13,8 +13,11 @@ class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Di
     var navigationController: UINavigationController
     var newNavigationController = UINavigationController()
     
-    init(navigationController: UINavigationController) {
+    private let blockingManager: BlockingManager
+    
+    init(navigationController: UINavigationController, blockingManager: BlockingManager) {
         self.navigationController = navigationController
+        self.blockingManager = blockingManager
     }
     
     func start() {
@@ -38,7 +41,7 @@ class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Di
     }
     
     func showFocusSelection(focusSessionModel: FocusSessionModel) {
-        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
+        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel, blockingManager: blockingManager)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()

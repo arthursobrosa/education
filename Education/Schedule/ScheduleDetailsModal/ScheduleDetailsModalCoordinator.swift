@@ -14,10 +14,12 @@ class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelect
     var newNavigationController = UINavigationController()
     
     private let schedule: Schedule
+    private let blockingManager: BlockingManager
     
-    init(navigationController: UINavigationController, schedule: Schedule) {
+    init(navigationController: UINavigationController, schedule: Schedule, blockingManager: BlockingManager) {
         self.navigationController = navigationController
         self.schedule = schedule
+        self.blockingManager = blockingManager
     }
     
     func start() {
@@ -41,7 +43,7 @@ class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelect
     }
     
     func showFocusSelection(focusSessionModel: FocusSessionModel) {
-        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
+        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel, blockingManager: blockingManager)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()

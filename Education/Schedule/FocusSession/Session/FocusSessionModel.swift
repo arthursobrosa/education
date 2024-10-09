@@ -13,17 +13,16 @@ class FocusSessionModel {
     var timerSeconds: Int
     var timerCase: TimerCase
     var subject: Subject?
+    var isAtWorkTime: Bool
     var blocksApps: Bool
     var isTimeCountOn: Bool
     var isAlarmOn: Bool
+    var color: UIColor?
     
-    var isAtWorkTime: Bool
     var workTime = Int()
     var restTime = Int()
     var numberOfLoops = Int()
     var currentLoop = Int()
-    
-    var color: UIColor?
     
     init(date: Date = Date.now, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, subject: Subject? = nil, isAtWorkTime: Bool = true, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
         self.date = date

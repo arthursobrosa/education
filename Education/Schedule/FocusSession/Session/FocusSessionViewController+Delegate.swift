@@ -20,7 +20,7 @@ import Foundation
 
 extension FocusSessionViewController: FocusSessionDelegate {
     func createNotificationComponent() -> NotificationComponentView {
-        let subject = viewModel.getSubject()
+        let subject = viewModel.activityManager.subject
         
         let title = String(localized: "timeIsUp")
         let body = subject != nil ?
@@ -33,26 +33,19 @@ extension FocusSessionViewController: FocusSessionDelegate {
     func dismissButtonTapped() {
         viewModel.changePauseStatus()
         
-        self.coordinator?.dismiss(animated: true)
+        coordinator?.dismiss(animated: true)
     }
     
     func visibilityButtonTapped() {
-        viewModel.changeTimerVisibility()
+        viewModel.activityManager.isTimeCountOn.toggle()
         
-        self.updateViewLabels()
-        self.focusSessionView.setVisibilityButton(isActive: viewModel.isTimerVisible())
+        updateViewLabels()
+        let isTimerVisible = viewModel.activityManager.isTimeCountOn
+        focusSessionView.setVisibilityButton(isActive: isTimerVisible)
     }
     
     func pauseResumeButtonTapped() {
-        let isPaused = viewModel.getPauseStatus()
-        
-        if !isPaused && viewModel.prefersStatusBarHidden {
-            viewModel.prefersStatusBarHidden.toggle()
-            focusSessionView.changeButtonsVisibility(isHidden: viewModel.prefersStatusBarHidden)
-        }
-        
-        if isPaused && !viewModel.prefersStatusBarHidden {
-            viewModel.prefersStatusBarHidden.toggle()
+        if viewModel.shouldChangeVisibility() {
             focusSessionView.changeButtonsVisibility(isHidden: viewModel.prefersStatusBarHidden)
         }
         
@@ -60,26 +53,26 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
     
     func didFinish() {
-        self.viewModel.saveFocusSession()
-        self.viewModel.didTapFinish = true
+        viewModel.activityManager.saveFocusSesssion()
+        viewModel.didTapFinish = true
         
-        self.coordinator?.dismiss(animated: true)
+        coordinator?.dismiss(animated: true)
         
-        BlockAppsMonitor.shared.removeShields()
+        viewModel.unblockApps()
     }
     
     func didRestart() {
-        self.focusSessionView.showFocusAlert(false)
-        self.focusSessionView.isPaused = false
-        viewModel.restartActivity()
+        focusSessionView.showFocusAlert(false)
+        focusSessionView.isPaused = false
+        viewModel.activityManager.restartActivity()
     }
     
     func okButtonPressed() {
-        self.focusSessionView.showEndNotification(false)
-        self.didFinish()
+        focusSessionView.showEndNotification(false)
+        didFinish()
     }
     
     func cancelButtonPressed() {
-        self.focusSessionView.showFocusAlert(false)
+        focusSessionView.showFocusAlert(false)
     }
 }

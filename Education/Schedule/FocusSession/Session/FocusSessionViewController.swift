@@ -24,7 +24,7 @@ class FocusSessionViewController: UIViewController {
     lazy var focusSessionView: FocusSessionView = {
         let view = FocusSessionView(color: self.color)
         view.delegate = self
-        view.isPaused = self.viewModel.getPauseStatus()
+        view.isPaused = viewModel.activityManager.isPaused
         
         return view
     }()
@@ -60,9 +60,9 @@ class FocusSessionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.hideActivityBar()
+        viewModel.activityManager.isShowingActivityBar = false
         
-        let timerCase = viewModel.getTimerCase()
+        let timerCase = viewModel.activityManager.timerCase
         
         switch timerCase {
             case .pomodoro:
@@ -80,7 +80,10 @@ class FocusSessionViewController: UIViewController {
             
             if case .stopwatch = timerCase { return }
             
-            let timerSeconds = viewModel.getTimerSeconds()
+            let isPaused = viewModel.activityManager.isPaused
+            guard !isPaused else { return }
+            
+            let timerSeconds = viewModel.activityManager.timerSeconds
             self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
         }
     }
@@ -89,18 +92,19 @@ class FocusSessionViewController: UIViewController {
 // MARK: - Navigation Items
 extension FocusSessionViewController {
     private func setCustomNavigationItems() {
-        let timerCase = viewModel.getTimerCase()
+        let timerCase = viewModel.activityManager.timerCase
         
         switch timerCase {
             case .timer, .pomodoro:
-                self.focusSessionView.setVisibilityButton(isActive: viewModel.isTimerVisible())
+                let isTimerVisible = viewModel.activityManager.isTimeCountOn
+                self.focusSessionView.setVisibilityButton(isActive: isTimerVisible)
             default:
                 break
         }
     }
     
     private func setTitle() {
-        let subject = viewModel.getSubject()
+        let subject = viewModel.activityManager.subject
         self.focusSessionView.setTitleLabel(for: subject)
     }
 }
@@ -111,17 +115,16 @@ extension FocusSessionViewController {
         viewModel.pauseStatusDidChange = { [weak self] isPaused in
             guard let self else { return }
             
+            let timerSeconds = viewModel.activityManager.timerSeconds
+            
             if isPaused {
                 self.focusSessionView.resetAnimations()
-                
-                let timerSeconds = viewModel.getTimerSeconds()
                 
                 let timerDuration = Double(timerSeconds)
                 let strokeEnd = self.viewModel.getStrokeEnd()
                 
                 self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
             } else {
-                let timerSeconds = viewModel.getTimerSeconds()
                 self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
             }
         }
@@ -149,7 +152,7 @@ extension FocusSessionViewController {
         viewModel.isAtWorkTimeDidChange = { [weak self] isAtWorkTime in
             guard let self else { return }
             
-            isAtWorkTime ? self.viewModel.blockApps() : BlockAppsMonitor.shared.removeShields()
+            isAtWorkTime ? self.viewModel.blockApps() : self.viewModel.unblockApps()
             
             self.setupViewLayers()
         }
@@ -159,7 +162,7 @@ extension FocusSessionViewController {
             
             self.setupViewLayers()
             
-            let timerSeconds = self.viewModel.getTimerSeconds()
+            let timerSeconds = self.viewModel.activityManager.timerSeconds
             self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
             
             self.setTitle()
@@ -201,7 +204,8 @@ extension FocusSessionViewController {
     }
     
     public func updateViewLabels() {
-        let timerString = viewModel.isTimerVisible() ? self.viewModel.getTimerString() : String()
+        let isTimerVisible = viewModel.activityManager.isTimeCountOn
+        let timerString = isTimerVisible ? viewModel.getTimerString() : String()
         
         let pomodoroString = viewModel.getPomodoroString()
         
@@ -211,7 +215,8 @@ extension FocusSessionViewController {
     private func handleTimerEnd() {
         self.focusSessionView.disablePauseResumeButton()
         
-        if viewModel.isAlarmOn() {
+        let isAlarmOn = viewModel.activityManager.isAlarmOn
+        if isAlarmOn {
             let audioService = AudioService()
             if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
                 audioService.playAudio(from: url)

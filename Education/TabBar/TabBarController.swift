@@ -35,10 +35,10 @@ class TabBarController: UITabBarController {
     init(viewModel: TabBarViewModel) {
         self.viewModel = viewModel
         
-        schedule = ScheduleCoordinator(navigationController: UINavigationController(), activityManager: viewModel.activityManager)
+        schedule = ScheduleCoordinator(navigationController: UINavigationController(), activityManager: viewModel.activityManager, blockingManager: viewModel.blockingManager)
         studytime = StudyTimeCoordinator(navigationController: UINavigationController())
         themeList = ThemeListCoordinator(navigationController: UINavigationController())
-        settings = SettingsCoordinator(navigationController: UINavigationController())
+        settings = SettingsCoordinator(navigationController: UINavigationController(), blockingManager: viewModel.blockingManager)
         
         super.init(nibName: nil, bundle: nil)
     }

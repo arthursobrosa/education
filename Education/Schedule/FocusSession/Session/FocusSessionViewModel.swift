@@ -9,10 +9,14 @@ import Foundation
 import Combine
 
 class FocusSessionViewModel {
-    // MARK: - FocusSession Handler
+    // MARK: - CoreData FocusSession Handler
     private let focusSessionManager: FocusSessionManager
     
-    private let activityManager: ActivityManager
+    // MARK: - Service to manage timer and session
+    let activityManager: ActivityManager
+    
+    // MARK: - Service to block apps
+    private let blockingManager: BlockingManager
     
     // MARK: - Combine storage
     private var cancellables = Set<AnyCancellable>()
@@ -37,9 +41,10 @@ class FocusSessionViewModel {
     }
     
     // MARK: - Initializer
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), activityManager: ActivityManager) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), activityManager: ActivityManager, blockingManager: BlockingManager) {
         self.focusSessionManager = focusSessionManager
         self.activityManager = activityManager
+        self.blockingManager = blockingManager
         
         activityManager.date = Date.now
         
@@ -47,40 +52,14 @@ class FocusSessionViewModel {
     }
     
     // MARK: - Methods
-    func getTimerSeconds() -> Int {
-        activityManager.timerSeconds
-    }
-    
-    func getPauseStatus() -> Bool {
-        activityManager.isPaused
-    }
-    
-    func getTimerCase() -> TimerCase {
-        activityManager.timerCase
-    }
-    
-    func getSubject() -> Subject? {
-        activityManager.subject
-    }
-    
-    func isAtWorkTime() -> Bool {
-        activityManager.isAtWorkTime
-    }
-    
-    func isTimerVisible() -> Bool {
-        activityManager.isTimeCountOn
-    }
-    
-    func isAlarmOn() -> Bool {
-        activityManager.isAlarmOn
-    }
-    
-    func hideActivityBar() {
-        activityManager.isShowingActivityBar = false
-    }
-    
-    func changeTimerVisibility() {
-        activityManager.isTimeCountOn.toggle()
+    func shouldChangeVisibility() -> Bool {
+        if (!activityManager.isPaused && prefersStatusBarHidden) 
+            || (activityManager.isPaused && !prefersStatusBarHidden) {
+            prefersStatusBarHidden.toggle()
+            return true
+        }
+        
+        return false
     }
     
     func changePauseStatus() {
@@ -95,22 +74,22 @@ class FocusSessionViewModel {
         guard activityManager.isAtWorkTime else { return }
         
         if activityManager.isPaused {
-            BlockAppsMonitor.shared.removeShields()
+            unblockApps()
         } else {
             blockApps()
         }
     }
     
-    func restartActivity() {
-        activityManager.restartActivity()
-    }
-    
     func getPomodoroString() -> String {
-        let number = activityManager.currentLoop + 1
+        guard case .pomodoro = activityManager.timerCase else {
+            return String()
+        }
+        
+        let loop = activityManager.currentLoop + 1
         let formatter = NumberFormatter()
         formatter.numberStyle = .ordinal
         
-        guard let ordinalNumber = formatter.string(from: NSNumber(value: number)) else { return String() }
+        guard let ordinalNumber = formatter.string(from: NSNumber(value: loop)) else { return String() }
         
         let suffix = activityManager.isAtWorkTime ? String(localized: "focusTime") : String(localized: "pauseTime")
         
@@ -122,7 +101,11 @@ class FocusSessionViewModel {
               !activityManager.isPaused,
               activityManager.isAtWorkTime else { return }
         
-        BlockAppsMonitor.shared.applyShields()
+        blockingManager.applyShields()
+    }
+    
+    func unblockApps() {
+        blockingManager.removeShields()
     }
     
     func getTimerString() -> String {
@@ -143,10 +126,6 @@ class FocusSessionViewModel {
         let hoursText = hours < 10 ? "0\(hours)" : "\(hours)"
         
         return "\(hoursText):\(minutesText):\(secondsText)"
-    }
-    
-    func saveFocusSession() {
-        activityManager.saveFocusSesssion()
     }
 }
 

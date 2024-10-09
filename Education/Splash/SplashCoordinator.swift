@@ -13,6 +13,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     let themeListViewModel: ThemeListViewModel
     
     private let activityManager: ActivityManager
+    private let blockingManager: BlockingManager
     
     struct ScheduleNotification {
         var subjectName: String
@@ -22,10 +23,11 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     
     var scheduleNotification: ScheduleNotification?
     
-    init(navigationController: UINavigationController, themeListViewModel: ThemeListViewModel, activityManager: ActivityManager?) {
+    init(navigationController: UINavigationController, themeListViewModel: ThemeListViewModel, activityManager: ActivityManager?, blockingManager: BlockingManager?) {
         self.navigationController = navigationController
         self.themeListViewModel = themeListViewModel
         self.activityManager = activityManager ?? ActivityManager()
+        self.blockingManager = blockingManager ?? BlockAppsMonitor()
     }
     
     func start() {
@@ -36,7 +38,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     }
     
     func showTabBar() {
-        let viewModel = TabBarViewModel(activityManager: activityManager)
+        let viewModel = TabBarViewModel(activityManager: activityManager, blockingManager: blockingManager)
         let tabBar = TabBarController(viewModel: viewModel)
         tabBar.modalPresentationStyle = .fullScreen
         

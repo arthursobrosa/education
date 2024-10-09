@@ -8,6 +8,8 @@
 import Foundation
 
 class FocusPickerViewModel {
+    private let blockingManager: BlockingManager
+    
     var focusSessionModel: FocusSessionModel
     
     var selectedTimerHours = Int()
@@ -52,8 +54,13 @@ class FocusPickerViewModel {
     }()
     
     
-    init(focusSessionModel: FocusSessionModel) {
+    init(focusSessionModel: FocusSessionModel, blockingManager: BlockingManager) {
         self.focusSessionModel = focusSessionModel
+        self.blockingManager = blockingManager
+    }
+    
+    func unblockApps() {
+        blockingManager.removeShields()
     }
     
     private func setTimerCase() {

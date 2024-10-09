@@ -24,7 +24,7 @@ enum ScheduleViewMode: CaseIterable {
 
 class ScheduleViewModel {
     // MARK: - Subject and Schedule Handlers
-     let subjectManager: SubjectManager
+    let subjectManager: SubjectManager
     private let scheduleManager: ScheduleManager
     
     // MARK: - Properties

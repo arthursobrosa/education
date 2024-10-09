@@ -15,6 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var timerSeconds = Int()
     
     var activityManager: ActivityManager?
+    var blockingManager: BlockingManager?
     
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -23,6 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
+        blockingManager = BlockAppsMonitor()
         UNUserNotificationCenter.current().delegate = self
         
         window = UIWindow(windowScene: windowScene)
@@ -30,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let themeListViewModel = ThemeListViewModel()
         activityManager = ActivityManager()
-        coordinator = SplashCoordinator(navigationController: UINavigationController(), themeListViewModel: themeListViewModel, activityManager: activityManager)
+        coordinator = SplashCoordinator(navigationController: UINavigationController(), themeListViewModel: themeListViewModel, activityManager: activityManager, blockingManager: blockingManager)
         coordinator?.start()
         
         window?.rootViewController = coordinator?.navigationController
@@ -44,7 +46,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
         
         CoreDataStack.shared.saveMainContext()
-        BlockAppsMonitor.shared.removeShields()
+        blockingManager?.removeShields()
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {

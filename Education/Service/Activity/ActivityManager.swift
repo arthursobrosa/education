@@ -7,16 +7,49 @@
 
 import UIKit
 
-enum TimerCase {
+enum TimerCase: Equatable {
     case stopwatch
     case timer
     case pomodoro(workTime: Int, restTime: Int, numberOfLoops: Int)
+    
+    static func ==(lhs: TimerCase, rhs: TimerCase) -> Bool {
+        switch (lhs, rhs) {
+            case (.stopwatch, .stopwatch),
+                 (.timer, .timer):
+                return true
+            case let (.pomodoro(workTime1, restTime1, numberOfLoops1),
+                      .pomodoro(workTime2, restTime2, numberOfLoops2)):
+                return workTime1 == workTime2 &&
+                       restTime1 == restTime2 &&
+                       numberOfLoops1 == numberOfLoops2
+            default:
+                return false
+        }
+    }
+}
+
+protocol TimerProtocol {
+    func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> Void)
+    func invalidate()
+}
+
+class TimerWrapper: TimerProtocol {
+    private var timer: Timer?
+    
+    func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> Void) {
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: repeats, block: block)
+    }
+    
+    func invalidate() {
+        timer?.invalidate()
+        timer = nil
+    }
 }
 
 protocol TimerManaging {
-    func startTimer()
-    func startStopwatch()
-    func stopTimer()
+    func startTimer(timer: TimerProtocol, currentDate: @escaping () -> Date)
+    func startStopwatch(timer: TimerProtocol)
+    func stopTimer(currentDate: () -> Date)
     func resetTimer()
     func handleTimerEnd()
 }
@@ -26,7 +59,7 @@ protocol SessionManaging {
     func finishSession()
     func updateFocusSession(with focusSessionModel: FocusSessionModel)
     func restartActivity()
-    func handleActivityDismissed(didTapFinish: Bool)
+    func handleDismissedActivity(didTapFinish: Bool)
     func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int)
     func handlePomodoro(workTime: Int, restTime: Int, lastTimerSeconds: Int, timeInBackground: TimeInterval)
     func getLoopStartTime(currentLoop: Int, workTime: Int, restTime: Int) -> Int
@@ -43,8 +76,8 @@ class ActivityManager {
     var timerCase: TimerCase
     
     var startTime: Date?
-    private var pausedTime: TimeInterval = 0
-    var timer: Timer?
+    var pausedTime: TimeInterval = 0
+    var timer: TimerProtocol?
     
     @Published var timerFinished: Bool = false
     
@@ -79,6 +112,8 @@ class ActivityManager {
         }
     }
     
+    var totalTime = 0
+    
     // MARK: - Schedule properties
     var date: Date
     
@@ -109,26 +144,27 @@ class ActivityManager {
 
 // MARK: - Timer Management
 extension ActivityManager: TimerManaging {
-    func startTimer() {
-        switch self.timerCase {
+    func startTimer(timer: TimerProtocol = TimerWrapper(), currentDate: @escaping () -> Date = Date.init) {
+        switch timerCase {
             case .stopwatch:
-                self.startStopwatch()
+                startStopwatch()
                 return
             default:
                 break
         }
         
-        if self.startTime == nil {
-            self.startTime = Date()
+        if startTime == nil {
+            startTime = currentDate()
         } else {
-            self.startTime = Date().addingTimeInterval(-self.pausedTime)
+            startTime = currentDate().addingTimeInterval(-pausedTime)
         }
             
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1/60, repeats: true) { [weak self] _ in
+        self.timer = timer
+        self.timer?.scheduledTimer(withTimeInterval: 1/60, repeats: true) { [weak self] _ in
             guard let self else { return }
             
-            let elapsed = Date().timeIntervalSince(self.startTime ?? Date())
-            progress = CGFloat(min(elapsed / Double(self.totalSeconds), 1))
+            let elapsed = currentDate().timeIntervalSince(self.startTime ?? currentDate())
+            self.progress = CGFloat(min(elapsed / Double(self.totalSeconds), 1))
             
             let remainingTime = max(self.totalSeconds - Int(elapsed), 0)
             self.timerSeconds = remainingTime
@@ -144,81 +180,83 @@ extension ActivityManager: TimerManaging {
         }
     }
     
-    func startStopwatch() {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+    func startStopwatch(timer: TimerProtocol = TimerWrapper()) {
+        self.progress = 0
+        
+        self.timer = timer
+        self.timer?.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self else { return }
             
-            self.progress = 0
             self.timerSeconds += 1
         }
     }
     
-    func stopTimer() {
-        self.timer?.invalidate()
-        self.timer = nil
+    func stopTimer(currentDate: () -> Date = Date.init) {
+        timer?.invalidate()
+        timer = nil
         
-        switch self.timerCase {
+        switch timerCase {
             case .timer, .pomodoro:
-                NotificationService.shared.cancelNotificationByName(name: self.subject?.unwrappedName)
+                NotificationService.shared.cancelNotificationByName(name: subject?.unwrappedName)
             default:
                 break
         }
         
-        if let startTime = self.startTime {
-            self.pausedTime = Date().timeIntervalSince(startTime)
+        if let startTime = startTime {
+            pausedTime = currentDate().timeIntervalSince(startTime)
         }
     }
     
     func resetTimer() {
-        self.isPaused = true
+        isPaused = true
         
-        self.timerFinished = false
+        timerFinished = false
         
-        self.progress = 0
-        self.totalSeconds = 0
-        self.timerSeconds = 0
-        self.pausedTime = 0
-        self.startTime = nil
+        progress = 0
+        totalSeconds = 0
+        timerSeconds = 0
+        pausedTime = 0
+        startTime = nil
         
-        self.isAtWorkTime = true
-        self.workTime = 0
-        self.restTime = 0
-        self.numberOfLoops = 0
-        self.currentLoop = 0
+        isAtWorkTime = true
+        workTime = 0
+        restTime = 0
+        numberOfLoops = 0
+        currentLoop = 0
     }
     
     func handleTimerEnd() {
-        switch self.timerCase {
+        switch timerCase {
             case .timer:
-                self.stopTimer()
-                self.timerFinished = true
+                stopTimer()
+                timerFinished = true
                 
                 return
             case .pomodoro:
-                if self.isAtWorkTime {
-                    if self.currentLoop >= self.numberOfLoops - 1 {
-                        self.stopTimer()
-                        self.timerFinished = true
+                if isAtWorkTime {
+                    if currentLoop >= numberOfLoops - 1 {
+                        stopTimer()
+                        timerFinished = true
                         
                         return
                     }
                     
-                    self.isAtWorkTime.toggle()
-                    self.totalSeconds = self.restTime
-                    self.timerSeconds = self.totalSeconds
+                    isAtWorkTime.toggle()
+                    totalSeconds = restTime
+                    timerSeconds = totalSeconds
                 } else {
-                    self.currentLoop += 1
-                    self.isAtWorkTime.toggle()
-                    self.totalSeconds = self.workTime
-                    self.timerSeconds = self.totalSeconds
+                    currentLoop += 1
+                    isAtWorkTime.toggle()
+                    totalSeconds = workTime
+                    timerSeconds = totalSeconds
                 }
                 
-                self.startTime = nil
-                self.pausedTime = 0
-                self.progress = 0
+                startTime = nil
+                pausedTime = 0
+                progress = 0
                 
-                self.isPaused = true
-                self.isPaused = false
+                isPaused = true
+                isPaused = false
             case .stopwatch:
                 return
         }
@@ -227,107 +265,107 @@ extension ActivityManager: TimerManaging {
 
 // MARK: - Session Management
 extension ActivityManager: SessionManaging {
-    func handleActivityDismissed(didTapFinish: Bool) {
-        didTapFinish ? self.resetTimer() : (self.isShowingActivityBar = true)
+    func handleDismissedActivity(didTapFinish: Bool) {
+        didTapFinish ? resetTimer() : (isShowingActivityBar = true)
     }
     
     func saveFocusSesssion() {
-        var totalTime: Int = 0
+        totalTime = 0
         
-        switch self.timerCase {
+        switch timerCase {
             case .stopwatch:
-                totalTime = self.timerSeconds
+                totalTime = timerSeconds
             case .timer:
-                totalTime = self.totalSeconds - self.timerSeconds
+                totalTime = totalSeconds - timerSeconds
             case .pomodoro(let workTime, _, _):
-                if self.isAtWorkTime {
-                    totalTime = (workTime * self.currentLoop) + (self.totalSeconds - self.timerSeconds)
+                if isAtWorkTime {
+                    totalTime = (workTime * currentLoop) + (totalSeconds - timerSeconds)
                 } else {
-                    totalTime = workTime * (self.currentLoop + 1)
+                    totalTime = workTime * (currentLoop + 1)
                 }
         }
         
-        self.focusSessionManager.createFocusSession(date: self.date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
+        focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
         
-        self.resetTimer()
+        resetTimer()
     }
     
     func finishSession() {
-        guard self.isShowingActivityBar else { return }
+        guard isShowingActivityBar else { return }
         
-        self.saveFocusSesssion()
-        self.isShowingActivityBar = false
+        saveFocusSesssion()
+        isShowingActivityBar = false
     }
     
     func updateFocusSession(with focusSessionModel: FocusSessionModel) {
-        self.totalSeconds = focusSessionModel.totalSeconds
-        self.timerSeconds = focusSessionModel.timerSeconds
-        self.timerCase = focusSessionModel.timerCase
-        self.subject = focusSessionModel.subject
-        self.isAtWorkTime = focusSessionModel.isAtWorkTime
-        self.currentLoop = focusSessionModel.currentLoop
-        self.blocksApps = focusSessionModel.blocksApps
-        self.isTimeCountOn = focusSessionModel.isTimeCountOn
-        self.isAlarmOn = focusSessionModel.isAlarmOn
-        self.color = focusSessionModel.color
-        self.workTime = focusSessionModel.workTime
-        self.restTime = focusSessionModel.restTime
-        self.numberOfLoops = focusSessionModel.numberOfLoops
-        self.isPaused = false
+        totalSeconds = focusSessionModel.totalSeconds
+        timerSeconds = focusSessionModel.timerSeconds
+        timerCase = focusSessionModel.timerCase
+        subject = focusSessionModel.subject
+        isAtWorkTime = focusSessionModel.isAtWorkTime
+        currentLoop = focusSessionModel.currentLoop
+        blocksApps = focusSessionModel.blocksApps
+        isTimeCountOn = focusSessionModel.isTimeCountOn
+        isAlarmOn = focusSessionModel.isAlarmOn
+        color = focusSessionModel.color
+        workTime = focusSessionModel.workTime
+        restTime = focusSessionModel.restTime
+        numberOfLoops = focusSessionModel.numberOfLoops
+        isPaused = false
     }
     
     func restartActivity() {
-        let currentFocusSession = FocusSessionModel(date: self.date, totalSeconds: self.totalSeconds, timerSeconds: self.totalSeconds, timerCase: self.timerCase, subject: self.subject, isAtWorkTime: true, blocksApps: self.blocksApps, isTimeCountOn: self.isTimeCountOn, isAlarmOn: self.isAlarmOn)
+        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: totalSeconds, timerSeconds: totalSeconds, timerCase: timerCase, subject: subject, isAtWorkTime: true, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
         currentFocusSession.currentLoop = 0
-        currentFocusSession.color = self.color
-        currentFocusSession.workTime = self.workTime
-        currentFocusSession.restTime = self.restTime
-        currentFocusSession.numberOfLoops = self.numberOfLoops
+        currentFocusSession.color = color
+        currentFocusSession.workTime = workTime
+        currentFocusSession.restTime = restTime
+        currentFocusSession.numberOfLoops = numberOfLoops
         
-        self.resetTimer()
+        resetTimer()
         
-        self.updateFocusSession(with: currentFocusSession)
+        updateFocusSession(with: currentFocusSession)
         
-        self.isPaused = true
-        self.isPaused = false
+        isPaused = true
+        isPaused = false
     }
     
     func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int) {
-        guard !self.isPaused else { return }
+        guard !isPaused else { return }
         
-        switch self.timerCase {
+        switch timerCase {
             case .timer:
                 break
             case .pomodoro(let workTime, let restTime, _):
-                self.handlePomodoro(workTime: workTime, restTime: restTime, lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
-                self.startTimer()
+                handlePomodoro(workTime: workTime, restTime: restTime, lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
+                startTimer()
             case .stopwatch:
-                self.timerSeconds += Int(timeInBackground)
+                timerSeconds += Int(timeInBackground)
                 
                 return
         }
         
-        self.updateAfterBackground = true
+        updateAfterBackground = true
     }
     
     func handlePomodoro(workTime: Int, restTime: Int, lastTimerSeconds: Int, timeInBackground: TimeInterval) {
-        let totalPassedTime = self.getLoopStartTime(currentLoop: self.currentLoop, workTime: workTime, restTime: restTime) + self.getInLoopTime(workTime: workTime, restTime: restTime, isAtWorkTime: self.isAtWorkTime, timerSeconds: lastTimerSeconds) + Int(timeInBackground)
+        let totalPassedTime = getLoopStartTime(currentLoop: currentLoop, workTime: workTime, restTime: restTime) + getInLoopTime(workTime: workTime, restTime: restTime, isAtWorkTime: isAtWorkTime, timerSeconds: lastTimerSeconds) + Int(timeInBackground)
         
-        self.currentLoop = self.getCurrentLoop(workTime: workTime, restTime: restTime, totalPassedTime: totalPassedTime)
-        var newInLoopTime = totalPassedTime - self.getLoopStartTime(currentLoop: self.currentLoop, workTime: workTime, restTime: restTime)
-        self.isAtWorkTime = newInLoopTime < workTime
+        currentLoop = getCurrentLoop(workTime: workTime, restTime: restTime, totalPassedTime: totalPassedTime)
+        var newInLoopTime = totalPassedTime - getLoopStartTime(currentLoop: currentLoop, workTime: workTime, restTime: restTime)
+        isAtWorkTime = newInLoopTime < workTime
         
-        newInLoopTime = self.isAtWorkTime ? newInLoopTime : newInLoopTime - workTime
+        newInLoopTime = isAtWorkTime ? newInLoopTime : newInLoopTime - workTime
         
-        if (self.currentLoop == self.numberOfLoops - 1 && !self.isAtWorkTime) || (self.currentLoop > self.numberOfLoops - 1) {
-            self.isAtWorkTime = true
-            self.handleTimerEnd()
+        if (currentLoop == numberOfLoops - 1 && !isAtWorkTime) || (currentLoop > numberOfLoops - 1) {
+            isAtWorkTime = true
+            handleTimerEnd()
             return
         }
         
-        self.totalSeconds = self.isAtWorkTime ? workTime : restTime
+        totalSeconds = isAtWorkTime ? workTime : restTime
         
-        self.pausedTime = TimeInterval(newInLoopTime)
+        pausedTime = TimeInterval(newInLoopTime)
     }
     
     func getLoopStartTime(currentLoop: Int, workTime: Int, restTime: Int) -> Int {

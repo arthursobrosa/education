@@ -14,14 +14,16 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
     var newNavigationController = UINavigationController()
     
     private let activityManager: ActivityManager
+    private let blockingManager: BlockingManager
     
-    init(navigationController: UINavigationController, activityManager: ActivityManager) {
+    init(navigationController: UINavigationController, activityManager: ActivityManager, blockingManager: BlockingManager) {
         self.navigationController = navigationController
         self.activityManager = activityManager
+        self.blockingManager = blockingManager
     }
     
     func start() {
-        let viewModel = FocusSessionViewModel(activityManager: activityManager)
+        let viewModel = FocusSessionViewModel(activityManager: activityManager, blockingManager: blockingManager, focusSessionService: Focus)
         let vc = FocusSessionViewController(viewModel: viewModel, color: activityManager.color)
         vc.coordinator = self
         
