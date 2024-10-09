@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		300AD7742C8A349F000D81FA /* StudyTimeChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300AD7732C8A349F000D81FA /* StudyTimeChartCell.swift */; };
+		3018A1BD2CB5A49E00AB3978 /* ShowingTestDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3018A1BC2CB5A49E00AB3978 /* ShowingTestDetails.swift */; };
+		3018A1C02CB5A4E500AB3978 /* TestDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3018A1BF2CB5A4E500AB3978 /* TestDetailsCoordinator.swift */; };
+		3018A1C22CB5A53200AB3978 /* TestDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3018A1C12CB5A53200AB3978 /* TestDetailsViewModel.swift */; };
+		3018A1C42CB5A54500AB3978 /* TestDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3018A1C32CB5A54500AB3978 /* TestDetailsViewController.swift */; };
+		3018A1C62CB5A54F00AB3978 /* TestDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3018A1C52CB5A54F00AB3978 /* TestDetailsView.swift */; };
 		302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */; };
 		302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */; };
 		30B2E4052C9206FB00383145 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */; };
@@ -227,6 +232,11 @@
 
 /* Begin PBXFileReference section */
 		300AD7732C8A349F000D81FA /* StudyTimeChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeChartCell.swift; sourceTree = "<group>"; };
+		3018A1BC2CB5A49E00AB3978 /* ShowingTestDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTestDetails.swift; sourceTree = "<group>"; };
+		3018A1BF2CB5A4E500AB3978 /* TestDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailsCoordinator.swift; sourceTree = "<group>"; };
+		3018A1C12CB5A53200AB3978 /* TestDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailsViewModel.swift; sourceTree = "<group>"; };
+		3018A1C32CB5A54500AB3978 /* TestDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailsViewController.swift; sourceTree = "<group>"; };
+		3018A1C52CB5A54F00AB3978 /* TestDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDetailsView.swift; sourceTree = "<group>"; };
 		302E069C2C3F14AB00FAD574 /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
 		302E06A82C45884C00FAD574 /* StudyTimeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeChartView.swift; sourceTree = "<group>"; };
 		30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -444,6 +454,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3018A1BB2CB5A40B00AB3978 /* TestDetails */ = {
+			isa = PBXGroup;
+			children = (
+				3018A1BF2CB5A4E500AB3978 /* TestDetailsCoordinator.swift */,
+				3018A1C12CB5A53200AB3978 /* TestDetailsViewModel.swift */,
+				3018A1C32CB5A54500AB3978 /* TestDetailsViewController.swift */,
+				3018A1C52CB5A54F00AB3978 /* TestDetailsView.swift */,
+			);
+			path = TestDetails;
+			sourceTree = "<group>";
+		};
 		302E06972C3F142600FAD574 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
@@ -501,6 +522,7 @@
 		30F216A12C2C883900B7114F /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				3018A1BB2CB5A40B00AB3978 /* TestDetails */,
 				30F216A22C2C884400B7114F /* ThemeList */,
 				685265492C8B6FED009D9678 /* ThemeCreation */,
 				30F216B72C2DEF2200B7114F /* ThemePage */,
@@ -930,6 +952,7 @@
 				CE323B422C73C1AC004143E0 /* ShowingScheduleNotification.swift */,
 				30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */,
 				685265502C8B710A009D9678 /* ShowingThemeCreation.swift */,
+				3018A1BC2CB5A49E00AB3978 /* ShowingTestDetails.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1205,6 +1228,7 @@
 				CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */,
 				317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */,
 				680E52692C98AA1600AB1141 /* OtherSubjectViewController+Delegate.swift in Sources */,
+				3018A1C62CB5A54F00AB3978 /* TestDetailsView.swift in Sources */,
 				30D846E62C82373600E98130 /* CreateActivityTip.swift in Sources */,
 				CE3B7D2F2C45916600EE5070 /* MyMonitor.swift in Sources */,
 				6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */,
@@ -1223,6 +1247,7 @@
 				68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */,
 				689388922C642133007EE922 /* UIView+Extension.swift in Sources */,
 				30D5E2422C8782D30083F353 /* OtherSubjectCoordinator.swift in Sources */,
+				3018A1C02CB5A4E500AB3978 /* TestDetailsCoordinator.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,
 				CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */,
 				6852654D2C8B701F009D9678 /* ThemeCreationViewController.swift in Sources */,
@@ -1278,6 +1303,7 @@
 				68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */,
 				CE323B3B2C73BC3E004143E0 /* ScheduleNotificationDelegate.swift in Sources */,
 				68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */,
+				3018A1BD2CB5A49E00AB3978 /* ShowingTestDetails.swift in Sources */,
 				31D098832C9A156F005AFA87 /* ElipseStackView.swift in Sources */,
 				684282242C63B83300CEEF1C /* SettingsViewController.swift in Sources */,
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
@@ -1290,6 +1316,7 @@
 				683812F62C48329D0062067A /* UserDefaults.swift in Sources */,
 				302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */,
 				CE323B432C73C1AC004143E0 /* ShowingScheduleNotification.swift in Sources */,
+				3018A1C42CB5A54500AB3978 /* TestDetailsViewController.swift in Sources */,
 				683812F02C481A9C0062067A /* SplashViewController.swift in Sources */,
 				685265532C8B72A5009D9678 /* ThemeCreationView.swift in Sources */,
 				68CA87E22C5D56DD006ED5FA /* FocusPickerView.swift in Sources */,
@@ -1339,6 +1366,7 @@
 				CE1E018D2C6BDD2900811CB9 /* ScheduleDetailsModalViewController.swift in Sources */,
 				68CA87D72C5D4F74006ED5FA /* FocusSelectionViewModel.swift in Sources */,
 				683D25522C88F39A00716444 /* DayColumnCell.swift in Sources */,
+				3018A1C22CB5A53200AB3978 /* TestDetailsViewModel.swift in Sources */,
 				30F216A82C2C887A00B7114F /* ThemeListViewModel.swift in Sources */,
 				68825BD32C2F370B00272451 /* Box.swift in Sources */,
 				68D47D532C2DDCD1000E011C /* Subject+Extension.swift in Sources */,

@@ -10,7 +10,7 @@ import UIKit
 
 class ThemePageViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingTestPage & Dismissing)?
+    weak var coordinator: (ShowingTestDetails & Dismissing & ShowingTestPage)?
     let viewModel: ThemePageViewModel
     
     // MARK: - Properties
@@ -140,7 +140,7 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
         
         let test = self.viewModel.tests.value[indexPath.row]
         
-        self.coordinator?.showTestPage(theme: self.viewModel.theme, test: test)
+        self.coordinator?.showTestDetails(theme: self.viewModel.theme, test: test)
     }
 }
 
