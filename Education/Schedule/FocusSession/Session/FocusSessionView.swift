@@ -165,11 +165,10 @@ class FocusSessionView: UIView {
     
     private var endNotification: NotificationComponentView?
     
-    lazy var overlayViewEnd: UIView = {
+    private lazy var overlayViewEnd: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.label.withAlphaComponent(0.2)
         view.layer.zPosition = 2
-        
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -217,44 +216,44 @@ class FocusSessionView: UIView {
     
     // MARK: - Auxiliar methods
     @objc private func dismissButtonTapped() {
-        self.delegate?.dismissButtonTapped()
+        delegate?.dismissButtonTapped()
     }
     
     @objc private func visibilityButtonTapped() {
-        self.delegate?.visibilityButtonTapped()
+        delegate?.visibilityButtonTapped()
     }
     
     @objc private func pauseResumeButtonTapped() {
-        self.isPaused.toggle()
-        self.delegate?.pauseResumeButtonTapped()
+        isPaused.toggle()
+        delegate?.pauseResumeButtonTapped()
     }
     
     @objc private func didTapRestartButton() {
-        self.focusAlert.configure(with: .restart)
-        self.showFocusAlert(true)
+        focusAlert.configure(with: .restart)
+        showFocusAlert(true)
     }
     
     @objc private func didTapFinishButton() {
-        self.focusAlert.configure(with: .finish)
-        self.showFocusAlert(true)
+        focusAlert.configure(with: .finish)
+        showFocusAlert(true)
     }
 }
 
 // MARK: - Timer Animations
 extension FocusSessionView {
     func startAnimation(timerDuration: Double) {
-        self.timerEndAnimation.duration = timerDuration
+        timerEndAnimation.duration = timerDuration
         
-        self.timerCircleFillLayer.add(self.timerEndAnimation, forKey: "timerEnd")
+        timerCircleFillLayer.add(timerEndAnimation, forKey: "timerEnd")
     }
     
     func resetAnimations() {
-        self.timerCircleFillLayer.removeAllAnimations()
+        timerCircleFillLayer.removeAllAnimations()
     }
     
     func redefineAnimation(timerDuration: Double, strokeEnd: CGFloat) {
-        self.timerCircleFillLayer.strokeEnd = strokeEnd
-        self.timerEndAnimation.duration = timerDuration
+        timerCircleFillLayer.strokeEnd = strokeEnd
+        timerEndAnimation.duration = timerDuration
     }
 }
 
@@ -302,14 +301,14 @@ extension FocusSessionView {
     
     func setVisibilityButton(isActive: Bool) {
         let imageName = isActive ? "eye" : "eye.slash"
-        self.visibilityButton.setImage(UIImage(systemName: imageName), for: .normal)
-        self.visibilityButton.tintColor = .label
+        visibilityButton.setImage(UIImage(systemName: imageName), for: .normal)
+        visibilityButton.tintColor = .label
         
-        self.addSubview(visibilityButton)
+        addSubview(visibilityButton)
         
         NSLayoutConstraint.activate([
             visibilityButton.topAnchor.constraint(equalTo: dismissButton.topAnchor),
-            visibilityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            visibilityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
         ])
     }
 }
@@ -318,35 +317,36 @@ extension FocusSessionView {
 extension FocusSessionView {
     // MARK: - Title
     func showPomodoroLabel() {
-        self.pomodoroLabel.isHidden = false
+        pomodoroLabel.isHidden = false
     }
     
     // MARK: - Timer Labels
     func updateTimerLabels(timerString: String, pomodoroString: String) {
-        self.timerLabel.text = timerString
+        timerLabel.text = timerString
         
-        guard !self.pomodoroLabel.isHidden else { return }
+        guard !pomodoroLabel.isHidden else { return }
         
-        self.pomodoroLabel.text = pomodoroString
+        pomodoroLabel.text = pomodoroString
     }
     
     // MARK: - Pause/Resume Button
     func updatePauseResumeButton() {
         let imageName = isPaused ? "play.fill" : "pause.fill"
         
-        UIView.transition(with: self.pauseResumeButton, duration: 0.3, options: .transitionCrossDissolve) {
+        UIView.transition(with: pauseResumeButton, duration: 0.3, options: .transitionCrossDissolve) { [weak self] in
+            guard let self else { return }
             self.pauseResumeButton.setImage(UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .semibold, scale: .default)), for: .normal)
         }
     }
     
     func disablePauseResumeButton() {
-        self.pauseResumeButton.isEnabled = false
-        self.timerCircleFillLayer.strokeColor = UIColor.clear.cgColor
+        pauseResumeButton.isEnabled = false
+        timerCircleFillLayer.strokeColor = UIColor.clear.cgColor
     }
     
     // MARK: - Timer Tracker
     func updateTimerTracker(isShowing: Bool) {
-        self.timerTrackLayer.strokeColor = isShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
+        timerTrackLayer.strokeColor = isShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
     }
 }
 
@@ -363,7 +363,7 @@ extension FocusSessionView {
     }
     
     func showEndNotification(_ isShowing: Bool) {
-        self.overlayViewEnd.isHidden = !isShowing
+        overlayViewEnd.isHidden = !isShowing
     }
     
     func showFocusAlert(_ isShowing: Bool) {
@@ -400,19 +400,19 @@ extension FocusSessionView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 4),
-            dismissButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            dismissButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 4),
+            dismissButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
         
-            activityTitle.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
-            activityTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            activityTitle.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            activityTitle.centerXAnchor.constraint(equalTo: centerXAnchor),
             
             pomodoroLabel.topAnchor.constraint(equalTo: activityTitle.bottomAnchor, constant: 21),
-            pomodoroLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            pomodoroLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 300/844),
+            timerContainerView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 300/844),
             timerContainerView.widthAnchor.constraint(equalTo: timerContainerView.heightAnchor, multiplier: 290/300),
-            timerContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            timerContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            timerContainerView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            timerContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
             
             timerLabel.centerXAnchor.constraint(equalTo: timerContainerView.centerXAnchor),
             timerLabel.centerYAnchor.constraint(equalTo: timerContainerView.centerYAnchor),
@@ -422,39 +422,39 @@ extension FocusSessionView: ViewCodeProtocol {
             pauseResumeButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             pauseResumeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 100),
             
-            restartButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            restartButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            restartButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            restartButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             restartButton.bottomAnchor.constraint(equalTo: finishButton.topAnchor, constant: -8),
             restartButton.heightAnchor.constraint(equalTo: restartButton.widthAnchor, multiplier: 0.16),
             
-            finishButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            finishButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            finishButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -17),
+            finishButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            finishButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            finishButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -17),
             finishButton.heightAnchor.constraint(equalTo: restartButton.heightAnchor),
             
-            overlayViewEnd.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            overlayViewEnd.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            overlayViewEnd.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            overlayViewEnd.topAnchor.constraint(equalTo: self.topAnchor),
+            overlayViewEnd.leadingAnchor.constraint(equalTo: leadingAnchor),
+            overlayViewEnd.trailingAnchor.constraint(equalTo: trailingAnchor),
+            overlayViewEnd.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlayViewEnd.topAnchor.constraint(equalTo: topAnchor),
             
-            endNotification.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            endNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            endNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
-            endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 228/844),
+            endNotification.centerXAnchor.constraint(equalTo: centerXAnchor),
+            endNotification.centerYAnchor.constraint(equalTo: centerYAnchor),
+            endNotification.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 360/390),
+            endNotification.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 228/844),
             
-            focusAlert.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            focusAlert.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
-            focusAlert.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 366/390),
+            focusAlert.centerXAnchor.constraint(equalTo: centerXAnchor),
+            focusAlert.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -25),
+            focusAlert.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 366/390),
             focusAlert.heightAnchor.constraint(equalTo: focusAlert.widthAnchor, multiplier: 228/366)
         ])
         
-        self.addSubview(overlayView)
+        addSubview(overlayView)
         
         NSLayoutConstraint.activate([
-            overlayView.topAnchor.constraint(equalTo: self.topAnchor),
-            overlayView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            overlayView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            overlayView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            overlayView.topAnchor.constraint(equalTo: topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
     
@@ -480,7 +480,7 @@ extension FocusSessionView: ViewCodeProtocol {
         timerLabel.layer.addSublayer(timerTrackLayer)
         timerLabel.layer.addSublayer(timerCircleFillLayer)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in            guard let self else { return }
             self.timerContainerView.layer.cornerRadius = self.timerContainerView.frame.width / 2
         }
     }
@@ -496,6 +496,6 @@ extension FocusSessionView: ViewCodeProtocol {
         attributedString.append(activityString)
         attributedString.append(subjectString)
         
-        self.activityTitle.attributedText = attributedString
+        activityTitle.attributedText = attributedString
     }
 }

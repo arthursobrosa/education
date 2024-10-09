@@ -23,7 +23,7 @@ class FocusSessionCoordinator: Coordinator, Dismissing {
     }
     
     func start() {
-        let viewModel = FocusSessionViewModel(activityManager: activityManager, blockingManager: blockingManager, focusSessionService: Focus)
+        let viewModel = FocusSessionViewModel(activityManager: activityManager, blockingManager: blockingManager)
         let vc = FocusSessionViewController(viewModel: viewModel, color: activityManager.color)
         vc.coordinator = self
         
