@@ -123,7 +123,7 @@ class ScheduleViewModel {
         return formatter.string(from: date)
     }
     
-    func isThereAnySubject() -> Bool {
+    func hasSubjects() -> Bool {
         guard let subjects = self.subjectManager.fetchSubjects() else { return false }
         
         return !subjects.isEmpty
@@ -263,12 +263,5 @@ class ScheduleViewModel {
         }
         
         return (isDaily, isEmpty)
-    }
-    
-    func hasSubjects() -> Bool {
-        guard let subjects = subjectManager.fetchSubjects(),
-              !subjects.isEmpty else { return true }
-            
-        return false
     }
 }

@@ -120,7 +120,7 @@ extension ScheduleViewController: ScheduleDelegate {
     func createActivityButtonTapped() {
         self.dismissButtons()
         
-        guard self.viewModel.isThereAnySubject() else {
+        guard self.viewModel.hasSubjects() else {
             self.showNoSubjectAlert()
             
             return
