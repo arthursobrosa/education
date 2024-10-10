@@ -44,7 +44,7 @@ class NoSubjectsView: UIView {
     private lazy var button: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "create"), cornerRadius: 25)
         
-        button.addTarget(self.delegate, action: #selector(ScheduleDelegate.emptyViewButtonTapped), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(ScheduleDelegate.emptyViewButtonTapped), for: .touchUpInside)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         

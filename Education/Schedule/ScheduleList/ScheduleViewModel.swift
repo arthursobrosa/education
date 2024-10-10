@@ -93,7 +93,6 @@ class ScheduleViewModel {
             
             self.tasks = schedulesByDay
         }
-        
     }
     
     func organizeSchedulesByDayOfWeek(_ orderedWeekSchedules: [Schedule]) -> [[Schedule]] {
@@ -242,5 +241,34 @@ class ScheduleViewModel {
         let calendar = Calendar.current
         
         return calendar.dateComponents(components, from: date)
+    }
+    
+    func getContentViewInfo() -> (isDaily: Bool, isEmpty: Bool) {
+        var isDaily = false
+        var isEmpty = false
+
+        if selectedViewMode == .daily {
+            isEmpty = schedules.isEmpty
+            isDaily = true
+        } else {
+            isDaily = false
+            
+            var emptyTasks = 0
+            for task in tasks {
+                if task.isEmpty {
+                    emptyTasks += 1
+                }
+            }
+            isEmpty = emptyTasks == tasks.count
+        }
+        
+        return (isDaily, isEmpty)
+    }
+    
+    func hasSubjects() -> Bool {
+        guard let subjects = subjectManager.fetchSubjects(),
+              !subjects.isEmpty else { return true }
+            
+        return false
     }
 }

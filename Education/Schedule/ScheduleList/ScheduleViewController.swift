@@ -29,8 +29,6 @@ class ScheduleViewController: UIViewController {
         view.weeklyScheduleCollection.delegate = self
         view.weeklyScheduleCollection.register(DayColumnCell.self, forCellWithReuseIdentifier: DayColumnCell.identifier)
         
-//        view.collectionView.register(EmptyCell.self, forCellWithReuseIdentifier: EmptyCell.identifier)
-        
         return view
     }()
     
@@ -49,20 +47,18 @@ class ScheduleViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.view = self.scheduleView
+        view = scheduleView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
         
-        self.setNavigationItems()
+        setNavigationItems()
+        setTapGesture()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
-        self.scheduleView.overlayView.addGestureRecognizer(tapGesture)
-        
-        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
             (self: Self, previousTraitCollection: UITraitCollection) in
             
             self.loadSchedules()
@@ -72,11 +68,9 @@ class ScheduleViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.viewModel.selectedWeekday = Calendar.current.component(.weekday, from: Date()) - 1
-        
-        self.loadSchedules()
-        
-        self.setDaysStack(self.scheduleView.dailyScheduleView.daysStack)
+        viewModel.selectedWeekday = Calendar.current.component(.weekday, from: Date()) - 1
+        loadSchedules()
+        setDaysStack(scheduleView.dailyScheduleView.daysStack)
     }
     
     // MARK: - Methods
@@ -90,10 +84,19 @@ class ScheduleViewController: UIViewController {
         
         let addItem = UIBarButtonItem(customView: addButton)
         
-        self.navigationItem.rightBarButtonItems = [addItem]
+        navigationItem.rightBarButtonItems = [addItem]
         
-        self.navigationItem.title = self.viewModel.getTitleString()
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
+        navigationItem.title = viewModel.getTitleString()
+        navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
+    }
+    
+    private func setTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
+        scheduleView.overlayView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
+        self.dismissButtons()
     }
     
     func reloadCollections() {
@@ -106,7 +109,7 @@ class ScheduleViewController: UIViewController {
     }
     
     func unselectDays() {
-        let dayViews = self.scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
+        let dayViews = scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
         
         dayViews.forEach { dayView in
             if let dayOfWeek = dayView.dayOfWeek {
@@ -116,46 +119,44 @@ class ScheduleViewController: UIViewController {
     }
     
     func selectToday() {
-        let dayViews = self.scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
+        let dayViews = scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
         
         dayViews.forEach { dayView in
             if let dayOfWeek = dayView.dayOfWeek {
                 if dayOfWeek.isToday {
                     dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
-                    self.viewModel.selectedDate = self.viewModel.daysOfWeek[dayView.tag]
+                    viewModel.selectedDate = viewModel.daysOfWeek[dayView.tag]
                 }
             }
         }
     }
     
     @objc private func addScheduleButtonTapped() {
-        let newAlpha: CGFloat = self.scheduleView.overlayView.alpha == 0 ? 1 : 0
+        let newAlpha: CGFloat = scheduleView.overlayView.alpha == 0 ? 1 : 0
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            
             self.scheduleView.overlayView.alpha = newAlpha
-            self.scheduleView.elipseView.alpha = newAlpha
+            self.scheduleView.fourDotsView.alpha = newAlpha
             self.scheduleView.createAcitivityButton.alpha = newAlpha
             self.scheduleView.startActivityButton.alpha = newAlpha
         }
     }
     
     func loadSchedules() {
-        self.viewModel.fetchSchedules()
-        
-        self.setContentView()
-        
-        self.reloadCollections()
-    }
-    
-    @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
-        self.dismissButtons()
+        viewModel.fetchSchedules()
+        setContentView()
+        reloadCollections()
     }
     
     func dismissButtons() {
-        if self.scheduleView.overlayView.alpha == 1 {
-            UIView.animate(withDuration: 0.3) {
+        if scheduleView.overlayView.alpha == 1 {
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let self else { return }
+                
                 self.scheduleView.overlayView.alpha = 0
-                self.scheduleView.elipseView.alpha = 0
+                self.scheduleView.fourDotsView.alpha = 0
                 self.scheduleView.createAcitivityButton.alpha = 0
                 self.scheduleView.startActivityButton.alpha = 0
             }
@@ -169,14 +170,14 @@ class ScheduleViewController: UIViewController {
         
         alertController.addAction(okAction)
         
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 }
 
 // MARK: - Sheet Delegate
 extension ScheduleViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        self.loadSchedules()
+        loadSchedules()
         
         return nil
     }
@@ -185,63 +186,43 @@ extension ScheduleViewController: UIViewControllerTransitioningDelegate {
 // MARK: - UI Setup
 extension ScheduleViewController {
     func setContentView() {
-        self.scheduleView.dailyScheduleView.contentView.subviews.forEach { subview in
+        scheduleView.dailyScheduleView.contentView.subviews.forEach { subview in
             subview.removeFromSuperview()
         }
         
-        self.scheduleView.contentView.subviews.forEach { subview in
+        scheduleView.contentView.subviews.forEach { subview in
             subview.removeFromSuperview()
         }
-
-        var isDaily = false
-        var isEmpty = false
-
-        if self.viewModel.selectedViewMode == .daily {
-            isEmpty = self.viewModel.schedules.isEmpty
-            isDaily = true
-        } else {
-            let numberOfTaks = self.viewModel.tasks.count
-            var emptyTasks = 0
-
-            for task in self.viewModel.tasks {
-                if task.isEmpty {
-                    emptyTasks += 1
-                }
-            }
-
-            isEmpty = emptyTasks == numberOfTaks
-
-            isDaily = false
-        }
+        
+        let contentViewInfo = viewModel.getContentViewInfo()
+        let isDaily = contentViewInfo.isDaily
+        let isEmpty = contentViewInfo.isEmpty
 
         if isEmpty {
             var childSubview = UIView()
             
-            if let subjects = self.viewModel.subjectManager.fetchSubjects(),
-               subjects.count > 0 {
-                // Se fetchSubject() não for nulo
-                self.scheduleView.changeEmptyView(isDaily: isDaily)
-                
-                self.handleTip()
-                
-                childSubview = self.scheduleView.emptyView
+            let hasSubjects = viewModel.hasSubjects()
+            
+            if hasSubjects {
+                scheduleView.changeNoSchedulesView(isDaily: isDaily)
+                handleTip()
+                childSubview = scheduleView.noSchedulesView
             } else {
-                // Se fetchSubject() for nulo
-                childSubview = self.scheduleView.noSubjectsView
+                childSubview = scheduleView.noSubjectsView
             }
             
             if isDaily {
-                self.addContentSubview(parentSubview: self.scheduleView.dailyScheduleView.contentView, childSubview: childSubview)
-                self.addContentSubview(parentSubview: self.scheduleView.contentView, childSubview: self.scheduleView.dailyScheduleView)
+                addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: childSubview)
+                addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.dailyScheduleView)
             } else {
-                self.addContentSubview(parentSubview: self.scheduleView.contentView, childSubview: childSubview)
+                addContentSubview(parentSubview: scheduleView.contentView, childSubview: childSubview)
             }
         } else {
             if isDaily {
-                self.addContentSubview(parentSubview: self.scheduleView.dailyScheduleView.contentView, childSubview: self.scheduleView.dailyScheduleView.collectionView)
-                self.addContentSubview(parentSubview: self.scheduleView.contentView, childSubview: self.scheduleView.dailyScheduleView)
+                addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: scheduleView.dailyScheduleView.collectionView)
+                addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.dailyScheduleView)
             } else {
-                self.addContentSubview(parentSubview: self.scheduleView.contentView, childSubview: self.scheduleView.weeklyScheduleCollection)
+                addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.weeklyScheduleCollection)
             }
         }
     }
@@ -267,7 +248,6 @@ extension ScheduleViewController {
                             let controller = TipUIPopoverViewController(createActivityTip, sourceItem: rightBarButtonItem)
                             controller.view.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
                            
-                            
                             present(controller, animated: true)
                         }
                     } else if presentedViewController is TipUIPopoverViewController {

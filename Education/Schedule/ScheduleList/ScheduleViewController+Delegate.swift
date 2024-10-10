@@ -17,8 +17,8 @@ import UIKit
     func dayTapped(_ dayView: DayView)
     
     // MARK: - Floating buttons
-    func createAcitivityTapped()
-    func startAcitivityTapped()
+    func createActivityButtonTapped()
+    func startActivityButtonTapped()
     func emptyViewButtonTapped()
     
     // MARK: - Play button
@@ -117,7 +117,7 @@ extension ScheduleViewController: ScheduleDelegate {
     }
     
     // MARK: - Floating buttons
-    func createAcitivityTapped() {
+    func createActivityButtonTapped() {
         self.dismissButtons()
         
         guard self.viewModel.isThereAnySubject() else {
@@ -131,7 +131,7 @@ extension ScheduleViewController: ScheduleDelegate {
         self.coordinator?.showScheduleDetails(schedule: nil, selectedDay: selectedDay)
     }
     
-    func startAcitivityTapped() {
+    func startActivityButtonTapped() {
         self.dismissButtons()
         self.coordinator?.showFocusImediate()
     }

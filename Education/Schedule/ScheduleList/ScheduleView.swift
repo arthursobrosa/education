@@ -43,7 +43,7 @@ class ScheduleView: UIView {
     let dailyScheduleView = DailyScheduleView()
     let weeklyScheduleCollection = WeeklyScheduleCollectionView()
     
-    var emptyView: NoSchedulesView = {
+    var noSchedulesView: NoSchedulesView = {
         let view = NoSchedulesView()
         view.noSchedulesCase = .day
         
@@ -52,7 +52,7 @@ class ScheduleView: UIView {
         return view
     }()
     
-    lazy var noSubjectsView: NoSubjectsView = {
+    let noSubjectsView: NoSubjectsView = {
         let view = NoSubjectsView()
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -70,10 +70,10 @@ class ScheduleView: UIView {
         return view
     }()
     
-    lazy var elipseView: ElipseStackView = {
-        let view = ElipseStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+    let fourDotsView: FourDotsView = {
+        let view = FourDotsView()
         view.alpha = 0
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -89,7 +89,7 @@ class ScheduleView: UIView {
         button.layer.masksToBounds = true
         button.alpha = 0
         
-        button.addTarget(self, action: #selector(createActivityButtonTapped), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(ScheduleDelegate.createActivityButtonTapped), for: .touchUpInside)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -107,7 +107,7 @@ class ScheduleView: UIView {
         button.layer.masksToBounds = true
         button.alpha = 0
         
-        button.addTarget(self, action: #selector(startActivityTapped), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(ScheduleDelegate.startActivityButtonTapped), for: .touchUpInside)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -118,72 +118,62 @@ class ScheduleView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.setupUI()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func createActivityButtonTapped() {
-        self.delegate?.createAcitivityTapped()
-    }
-    
-    @objc private func startActivityTapped() {
-        self.delegate?.startAcitivityTapped()
-    }
-    
-    @objc private func emptyViewButtonTapped() {
-        self.delegate?.emptyViewButtonTapped()
-    }
-    
-    func changeEmptyView(isDaily: Bool) {
-        self.emptyView.noSchedulesCase = isDaily ? .day : .week
+    // MARK: - Methods
+    func changeNoSchedulesView(isDaily: Bool) {
+        noSchedulesView.noSchedulesCase = isDaily ? .day : .week
     }
 }
 
 // MARK: - UI Setup
 extension ScheduleView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(viewModeSelector)
-        self.addSubview(contentView)
-        self.addSubview(overlayView)
-        overlayView.addSubview(elipseView)
-        overlayView.addSubview(createAcitivityButton)
-        overlayView.addSubview(startActivityButton)
+        addSubview(viewModeSelector)
+        addSubview(contentView)
         
-        let btnPadding = 10.0
         let padding = 10.0
         
         NSLayoutConstraint.activate([
-            viewModeSelector.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            viewModeSelector.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            viewModeSelector.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            viewModeSelector.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
+            viewModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            viewModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             
             contentView.topAnchor.constraint(equalTo: viewModeSelector.bottomAnchor, constant: padding),
-            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
         
-        NSLayoutConstraint.activate([
-            overlayView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            overlayView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            overlayView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            overlayView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        ])
+        addSubview(overlayView)
         
         NSLayoutConstraint.activate([
-            elipseView.topAnchor.constraint(equalTo: overlayView.topAnchor, constant: -50),
-            elipseView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
-            elipseView.widthAnchor.constraint(equalToConstant: 50),
-            elipseView.heightAnchor.constraint(equalToConstant: 50),
+            overlayView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+        
+        overlayView.addSubview(fourDotsView)
+        overlayView.addSubview(createAcitivityButton)
+        overlayView.addSubview(startActivityButton)
+        
+        NSLayoutConstraint.activate([
+            fourDotsView.topAnchor.constraint(equalTo: overlayView.topAnchor, constant: -50),
+            fourDotsView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+            fourDotsView.widthAnchor.constraint(equalToConstant: 50),
+            fourDotsView.heightAnchor.constraint(equalToConstant: 50),
             
-            createAcitivityButton.topAnchor.constraint(equalTo: elipseView.bottomAnchor, constant: btnPadding),
-            createAcitivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            createAcitivityButton.topAnchor.constraint(equalTo: fourDotsView.bottomAnchor, constant: padding),
+            createAcitivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(padding * 2)),
             
-            startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: btnPadding),
-            startActivityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: padding),
+            startActivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(padding * 2)),
         ])
     }
 }
