@@ -181,3 +181,8 @@
 // MARK: - Block
 "endBlockAlertTitle" = "Finalizando bloqueio de apps";
 "endBlockAlertBody" = "Seus apps estão desbloqueados agora";
+
+// MARK: - TestDetails
+"questionsLable" = "Questões";
+"dateLable" = "Data";
+"notesLable" = "Notas";

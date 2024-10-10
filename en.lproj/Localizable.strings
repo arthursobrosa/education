@@ -180,3 +180,8 @@
 // MARK: - Block
 "endBlockAlertTitle" = "Ending app block";
 "endBlockAlertBody" = "Your apps are unblocked now";
+
+// MARK: - TestDetails
+"questionsLable" = "Questions";
+"dateLable" = "Date";
+"notesLable" = "Notes";
