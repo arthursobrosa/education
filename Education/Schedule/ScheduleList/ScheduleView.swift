@@ -11,12 +11,12 @@ class ScheduleView: UIView {
     // MARK: - Delegate
     weak var delegate: ScheduleDelegate? {
         didSet {
-            delegate?.setSegmentedControl(self.viewModeSelector)
+            delegate?.setSegmentedControl(scheduleModeSelector)
         }
     }
     
     // MARK: - UI Components
-    let viewModeSelector: CustomSegmentedControl = {
+    let scheduleModeSelector: CustomSegmentedControl = {
         let segmentedControl = CustomSegmentedControl()
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +54,6 @@ class ScheduleView: UIView {
     
     let noSubjectsView: NoSubjectsView = {
         let view = NoSubjectsView()
-        view.noSubjectsCase = .day
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -130,26 +129,22 @@ class ScheduleView: UIView {
     func changeNoSchedulesView(isDaily: Bool) {
         noSchedulesView.noSchedulesCase = isDaily ? .day : .week
     }
-    
-    func changeNoSubjectsView(isDaily: Bool) {
-        noSubjectsView.noSubjectsCase = isDaily ? .day : .week
-    }
 }
 
 // MARK: - UI Setup
 extension ScheduleView: ViewCodeProtocol {
     func setupUI() {
-        addSubview(viewModeSelector)
+        addSubview(scheduleModeSelector)
         addSubview(contentView)
         
         let padding = 10.0
         
         NSLayoutConstraint.activate([
-            viewModeSelector.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
-            viewModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            viewModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            scheduleModeSelector.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
+            scheduleModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            scheduleModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             
-            contentView.topAnchor.constraint(equalTo: viewModeSelector.bottomAnchor, constant: padding),
+            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: padding),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),

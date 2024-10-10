@@ -8,16 +8,16 @@
 import Foundation
 import UIKit
 
-enum ScheduleViewMode: CaseIterable {
+enum ScheduleMode: CaseIterable {
     case daily
     case weekly
     
     var name: String {
         switch self {
             case .daily:
-                return String(localized: "daily")
+                String(localized: "daily")
             case .weekly:
-                return String(localized: "weekly")
+                String(localized: "weekly")
         }
     }
 }
@@ -32,8 +32,8 @@ class ScheduleViewModel {
     
     var tasks: [[Schedule]] = [[],[],[],[],[],[],[]]
     
-    var viewModes: [ScheduleViewMode] = ScheduleViewMode.allCases
-    var selectedViewMode: ScheduleViewMode = .daily
+    var scheduleModes: [ScheduleMode] = ScheduleMode.allCases
+    var selectedScheduleMode: ScheduleMode = .daily
     
     var selectedDate: Date = Date() {
         didSet {
@@ -247,7 +247,7 @@ class ScheduleViewModel {
         var isDaily = false
         var isEmpty = false
 
-        if selectedViewMode == .daily {
+        if selectedScheduleMode == .daily {
             isEmpty = schedules.isEmpty
             isDaily = true
         } else {

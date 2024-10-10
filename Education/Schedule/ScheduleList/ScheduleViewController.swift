@@ -208,16 +208,11 @@ extension ScheduleViewController {
                 handleTip()
                 childSubview = scheduleView.noSchedulesView
             } else {
-                scheduleView.changeNoSubjectsView(isDaily: isDaily)
                 childSubview = scheduleView.noSubjectsView
             }
             
-            if isDaily {
-                addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: childSubview)
-                addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.dailyScheduleView)
-            } else {
-                addContentSubview(parentSubview: scheduleView.contentView, childSubview: childSubview)
-            }
+            addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: childSubview)
+            addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.dailyScheduleView)
         } else {
             if isDaily {
                 addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: scheduleView.dailyScheduleView.collectionView)
