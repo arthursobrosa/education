@@ -11,12 +11,21 @@ class NoSubjectsView: UIView {
     // MARK: - UI Components
     weak var delegate: (any ScheduleDelegate)?
     
-    private let stack: UIView = {
-        let stack = UIView()
-        
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stack
+    enum NoSubjectsCase {
+        case day
+        case week
+    }
+    
+    var noSubjectsCase: NoSubjectsCase? {
+        didSet {
+            setupUI()
+        }
+    }
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private let welcomeLabel: UILabel = {
@@ -50,44 +59,46 @@ class NoSubjectsView: UIView {
         
         return button
     }()
-    
-    // MARK: - Initialization
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
 
 // MARK: - UI Setup
 extension NoSubjectsView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(stack)
-        self.addSubview(welcomeLabel)
-        self.addSubview(messageLabel)
-        self.addSubview(button)
+        guard let noSubjectsCase else { return }
+        
+        subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        addSubview(welcomeLabel)
+        addSubview(messageLabel)
+        addSubview(button)
+        
+        var topPadding = Double()
+        var horizontalPadding = Double()
+        
+        switch noSubjectsCase {
+            case .day:
+                topPadding = 115
+                horizontalPadding = 100
+            case .week:
+                topPadding = 191
+                horizontalPadding = 112
+        }
         
         NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: self.topAnchor, constant: 115),
-            stack.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 293/390),
-            stack.heightAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 176/293),
-            stack.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            
-            welcomeLabel.topAnchor.constraint(equalTo: stack.topAnchor),
-            welcomeLabel.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
+            welcomeLabel.topAnchor.constraint(equalTo: topAnchor, constant: topPadding),
+            welcomeLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
             messageLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 16),
-            messageLabel.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            messageLabel.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+            messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50),
+            messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50),
             
-            button.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 171/293),
-            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 55/171),
-            button.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
-            button.bottomAnchor.constraint(equalTo: stack.bottomAnchor)
+            button.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
+            button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
+            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 55 / 171),
+            button.centerXAnchor.constraint(equalTo: centerXAnchor),
+            button.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20),
         ])
     }
 }

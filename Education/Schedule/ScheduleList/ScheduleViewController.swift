@@ -208,6 +208,7 @@ extension ScheduleViewController {
                 handleTip()
                 childSubview = scheduleView.noSchedulesView
             } else {
+                scheduleView.changeNoSubjectsView(isDaily: isDaily)
                 childSubview = scheduleView.noSubjectsView
             }
             

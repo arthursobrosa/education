@@ -54,6 +54,7 @@ class ScheduleView: UIView {
     
     let noSubjectsView: NoSubjectsView = {
         let view = NoSubjectsView()
+        view.noSubjectsCase = .day
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -128,6 +129,10 @@ class ScheduleView: UIView {
     // MARK: - Methods
     func changeNoSchedulesView(isDaily: Bool) {
         noSchedulesView.noSchedulesCase = isDaily ? .day : .week
+    }
+    
+    func changeNoSubjectsView(isDaily: Bool) {
+        noSubjectsView.noSubjectsCase = isDaily ? .day : .week
     }
 }
 

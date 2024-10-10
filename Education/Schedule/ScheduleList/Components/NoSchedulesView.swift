@@ -53,11 +53,11 @@ extension NoSchedulesView: ViewCodeProtocol {
     func setupUI() {
         guard let noSchedulesCase else { return }
         
-        self.subviews.forEach { subview in
+        subviews.forEach { subview in
             subview.removeFromSuperview()
         }
         
-        self.addSubview(messageLabel)
+        addSubview(messageLabel)
         
         var topPadding = Double()
         
@@ -69,9 +69,9 @@ extension NoSchedulesView: ViewCodeProtocol {
         }
         
         NSLayoutConstraint.activate([
-            messageLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 245/390),
-            messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            messageLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: topPadding)
+            messageLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 245 / 390),
+            messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            messageLabel.topAnchor.constraint(equalTo: topAnchor, constant: topPadding)
         ])
     }
 }
