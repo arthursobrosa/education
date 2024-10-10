@@ -80,13 +80,13 @@ class CustomChart: UIView {
     }
     
     private func setPercentageIndexesStack() {
-        let percentageIndexes = ["1.0", "0.5", "0"]
+        let percentageIndexes = ["100%", "50%", "0%"]
         
         for (index, percentageIndex) in percentageIndexes.enumerated() {
             let label = UILabel()
             label.text = percentageIndex
-            label.font = .systemFont(ofSize: 13, weight: .semibold)
-            label.textColor = .label
+            label.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
+            label.textColor = .black.withAlphaComponent(0.8)
             label.translatesAutoresizingMaskIntoConstraints = false
             
             self.percentageIndexesStack.addSubview(label)
@@ -269,7 +269,8 @@ extension CustomChart: UICollectionViewDataSource, UICollectionViewDelegate, UIC
             
             let label = UILabel()
             label.text = "\(indicator)"
-            label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 13)
+            label.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
+            label.textColor = .black.withAlphaComponent(0.8)
             label.translatesAutoresizingMaskIntoConstraints = false
             
             dayIndicatorStack.addSubview(label)

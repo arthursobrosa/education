@@ -10,6 +10,7 @@ import Foundation
 protocol TestDelegate: AnyObject {
     func didTapDeleteButton()
     func didTapSaveButton()
+    func didChangeComment(_ text: String)
 }
 
 extension TestPageViewController: TestDelegate {
@@ -34,7 +35,10 @@ extension TestPageViewController: TestDelegate {
         }
         
         self.viewModel.saveTest()
-        
         self.coordinator?.dismiss(animated: true)
+    }
+    
+    func didChangeComment(_ text: String) {
+        self.viewModel.comment = text
     }
 }

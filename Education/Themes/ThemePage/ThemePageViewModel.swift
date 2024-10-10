@@ -49,12 +49,12 @@ class ThemePageViewModel: ObservableObject {
     }
     
     func hasComment(test: Test) -> Bool{
-         let hasComment = true
- //        if (test.comment != nil) {
- //            if (test.unwrappedComment != "") {
- //                hasComment = true
- //            }
- //        }
+         var hasComment = false
+         if (test.comment != nil) {
+             if (test.unwrappedComment != "") {
+                 hasComment = true
+             }
+         }
          return hasComment
      }
     

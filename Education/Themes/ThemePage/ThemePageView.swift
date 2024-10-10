@@ -45,7 +45,7 @@ class ThemePageView: UIView {
         dayLabel.textColor = UIColor.secondaryLabel
         
         let questionsLabel = UILabel()
-        questionsLabel.text = String(localized: "questionsLabel")
+        questionsLabel.text = String(localized: "questionLabel")
         questionsLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
         questionsLabel.textColor = UIColor.secondaryLabel
         

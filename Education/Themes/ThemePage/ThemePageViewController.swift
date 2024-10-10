@@ -129,8 +129,7 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
         
         let commentView = UIImageView()
         commentView.image = UIImage(systemName: "text.bubble")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 18))
-        commentView.tintColor = .secondaryLabel
-        
+        commentView.tintColor = .secondaryLabel        
         let label = UILabel()
         label.text = self.viewModel.getQuestionsString(from: test)
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)

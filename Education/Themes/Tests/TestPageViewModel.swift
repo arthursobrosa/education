@@ -16,6 +16,7 @@ class TestPageViewModel {
     var date = Date()
     var totalQuestions = Int()
     var rightQuestions = Int()
+    var comment = String()
     
     init(testManager: TestManager = TestManager(), theme: Theme, test: Test?) {
         self.testManager = testManager
@@ -26,6 +27,7 @@ class TestPageViewModel {
             self.date = test.unwrappedDate
             self.totalQuestions = test.unwrappedTotalQuestions
             self.rightQuestions = test.unwrappedRightQuestions
+            self.comment = test.unwrappedComment
         }
     }
     
@@ -43,12 +45,19 @@ class TestPageViewModel {
         test.date = self.date
         test.totalQuestions = Int64(self.totalQuestions)
         test.rightQuestions = Int64(self.rightQuestions)
+        test.comment = self.comment
         
         self.testManager.updateTest(test)
     }
     
     private func addNewTest() {
-        self.testManager.createTest(themeID: self.theme.unwrappedID, date: self.date, rightQuestions: self.rightQuestions, totalQuestions: self.totalQuestions)
+        self.testManager.createTest(
+            themeID: self.theme.unwrappedID,
+            date: self.date,
+            rightQuestions: self.rightQuestions,
+            totalQuestions: self.totalQuestions,
+            comment: self.comment
+        )
     }
     
     func removeTest() {
