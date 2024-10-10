@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TestDetailsCoordinator: Coordinator, Dismissing, ShowingTestPage {
+class TestDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingTestPage {
     
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
@@ -28,16 +28,6 @@ class TestDetailsCoordinator: Coordinator, Dismissing, ShowingTestPage {
         vc.coordinator = self
         
         self.navigationController.pushViewController(vc, animated: true)
-        
-//        let newNavigationController = UINavigationController(rootViewController: vc)
-//        
-//        if let themePageCoordinator = self.parentCoordinator as? ThemePageCoordinator {
-//            newNavigationController.transitioningDelegate = themePageCoordinator
-//        }
-//        
-////        newNavigationController.modalPresentationStyle = .pageSheet
-//        
-//        self.navigationController.present(newNavigationController, animated: true)
     }
     
     func showTestPage(theme: Theme, test: Test?) {
@@ -50,5 +40,33 @@ class TestDetailsCoordinator: Coordinator, Dismissing, ShowingTestPage {
     func dismiss(animated: Bool) {
         self.navigationController.dismiss(animated: animated)
     }
+    
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() {
+            if coordinator === child {
+                self.childCoordinators.remove(at: index)
+                break
+            }
+        }
+    }
 }
+
+extension TestDetailsCoordinator: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let nav = dismissed as? UINavigationController else { return nil}
+        
+        if let testPageVC = nav.viewControllers.first as? TestPageViewController {
+            self.childDidFinish(testPageVC.coordinator as? Coordinator)
+            
+            if let testDetailsVC = self.navigationController.viewControllers.last as? TestDetailsViewController {
+                testDetailsVC.viewModel.getUpdatedTest()
+                testDetailsVC.updateInterface()
+            }
+        }
+       
+        
+        return nil
+    }
+}
+
 

@@ -33,6 +33,7 @@
 		30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */; };
 		310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A182C2F2694005339E8 /* TestPageViewController.swift */; };
 		310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1A2C2F26BE005339E8 /* TestPageView.swift */; };
+		31117EDE2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31117EDD2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift */; };
 		317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11252C35BBBD00C5E7A5 /* TabBarController.swift */; };
 		317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */; };
 		317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */; };
@@ -257,6 +258,7 @@
 		30F216BC2C2DEF7400B7114F /* ThemePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePageViewModel.swift; sourceTree = "<group>"; };
 		310B8A182C2F2694005339E8 /* TestPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageViewController.swift; sourceTree = "<group>"; };
 		310B8A1A2C2F26BE005339E8 /* TestPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageView.swift; sourceTree = "<group>"; };
+		31117EDD2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestPageViewController+TextViewDelegate.swift"; sourceTree = "<group>"; };
 		317C11252C35BBBD00C5E7A5 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTimer.swift; sourceTree = "<group>"; };
 		317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyTimeViewController.swift; sourceTree = "<group>"; };
@@ -894,6 +896,7 @@
 			isa = PBXGroup;
 			children = (
 				688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */,
+				31117EDD2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1351,6 +1354,7 @@
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68833D9E2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift in Sources */,
 				682376702C63F48100255143 /* ActivityButton.swift in Sources */,
+				31117EDE2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift in Sources */,
 				CE1E018F2C6BEAD000811CB9 /* HourDetailsView.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
 				317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */,

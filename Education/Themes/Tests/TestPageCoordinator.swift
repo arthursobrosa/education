@@ -32,6 +32,10 @@ class TestPageCoordinator: Coordinator, Dismissing {
             newNavigationController.transitioningDelegate = themePageCoordinator
         }
         
+        if let testDetailsCoordinator = self.parentCoordinator as? TestDetailsCoordinator {
+            newNavigationController.transitioningDelegate = testDetailsCoordinator
+        }
+        
         newNavigationController.modalPresentationStyle = .pageSheet
         
         self.navigationController.present(newNavigationController, animated: true)

@@ -134,6 +134,9 @@
 "deleteTest" = "Delete Test";
 "emptyTheme" = "You haven't recorded any exams yet";
 "emptyTest" = "You haven't recorded any tests yet";
+"dayLabel" = "Day";
+"questionLabel" = "Questions";
+"description" = "Notas sobre o teste/ questões";
 
 // MARK: - Settings
 "deactivateTitle" = "Deactivate on your phone!";
