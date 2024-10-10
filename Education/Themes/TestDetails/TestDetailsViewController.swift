@@ -29,12 +29,7 @@ class TestDetailsViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.testDetailsView.notesContent.text = self.viewModel.test.unwrappedComment
-        self.testDetailsView.questionsLabel.text = "\(self.viewModel.test.rightQuestions)/\(self.viewModel.test.totalQuestions)"
-        self.testDetailsView.titleLabel.text = self.viewModel.theme.unwrappedName
-        self.testDetailsView.circularProgressView.progress = CGFloat(self.viewModel.test.rightQuestions) / CGFloat(self.viewModel.test.totalQuestions)
-        self.testDetailsView.dateLabel.text = self.viewModel.getDateString(from: self.viewModel.test)
-        self.testDetailsView.percentageLabel.text = "\(Int((CGFloat(self.viewModel.test.rightQuestions) / CGFloat(self.viewModel.test.totalQuestions) * 100)))%"
+        updateInterface()
             
         self.view = self.testDetailsView
         
@@ -47,6 +42,16 @@ class TestDetailsViewController: UIViewController {
         
         self.setNavigationItems()
         
+    }
+    
+    
+    func updateInterface(){
+        self.testDetailsView.notesContent.text = self.viewModel.test.unwrappedComment
+        self.testDetailsView.questionsLabel.text = "\(self.viewModel.test.rightQuestions)/\(self.viewModel.test.totalQuestions)"
+        self.testDetailsView.titleLabel.text = self.viewModel.theme.unwrappedName
+        self.testDetailsView.circularProgressView.progress = CGFloat(self.viewModel.test.rightQuestions) / CGFloat(self.viewModel.test.totalQuestions)
+        self.testDetailsView.dateLabel.text = self.viewModel.getDateString(from: self.viewModel.test)
+        self.testDetailsView.percentageLabel.text = "\(Int((CGFloat(self.viewModel.test.rightQuestions) / CGFloat(self.viewModel.test.totalQuestions) * 100)))%"
     }
     
     // MARK: - Methods
