@@ -56,7 +56,7 @@
 "noSubjectTitle" = "Você não pode criar uma atividade";
 "noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
 "timeIsUp" = "Fim da atividade";
-"activityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade de ";
+"activityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade de %@ 🎉";
 "noActivityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade 🎉";
 "finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
 "finishEarlyAlertTitle" = "Finalizar Atividade";
@@ -97,6 +97,7 @@
 "focusTime" = "Tempo de Foco";
 "pauseTime" = "Tempo de Pausa";
 "imediateActivity" = "Atividade Imediata";
+"extendTime" = "Extend time";
 
 // MARK: - Subjects
 "subject" = "Matéria";

@@ -179,7 +179,6 @@
 		68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE02C66D31600805051 /* CustomPushTransition.swift */; };
 		68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE22C66D49800805051 /* CustomPopTransition.swift */; };
 		68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */; };
-		CE0BD2342C8234C100E9FBDF /* NotificationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BD2332C8234C100E9FBDF /* NotificationComponentView.swift */; };
 		CE0BD2362C862E1300E9FBDF /* FocusAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BD2352C862E1300E9FBDF /* FocusAlertView.swift */; };
 		CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */; };
 		CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */; };
@@ -417,7 +416,6 @@
 		68EC5BE02C66D31600805051 /* CustomPushTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPushTransition.swift; sourceTree = "<group>"; };
 		68EC5BE22C66D49800805051 /* CustomPopTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
 		68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListCell.swift; sourceTree = "<group>"; };
-		CE0BD2332C8234C100E9FBDF /* NotificationComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationComponentView.swift; sourceTree = "<group>"; };
 		CE0BD2352C862E1300E9FBDF /* FocusAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAlertView.swift; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
 		CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsModalView.swift; sourceTree = "<group>"; };
@@ -880,7 +878,6 @@
 				6823766F2C63F48100255143 /* ActivityButton.swift */,
 				688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */,
 				689388932C6423A7007EE922 /* ActivityView.swift */,
-				CE0BD2332C8234C100E9FBDF /* NotificationComponentView.swift */,
 				CE0BD2352C862E1300E9FBDF /* FocusAlertView.swift */,
 				68C5726C2C8B55ED00B9D0A4 /* PaddedTextField.swift */,
 				6804837D2C920559007FC564 /* CustomChart.swift */,
@@ -1279,7 +1276,6 @@
 				317C11352C3EF7C700C5E7A5 /* StudyTimeView.swift in Sources */,
 				68C2CFFF2C47233600E2347A /* ScheduleViewController+Delegate.swift in Sources */,
 				6833B2152C345467009EA63D /* ObjectManager.swift in Sources */,
-				CE0BD2342C8234C100E9FBDF /* NotificationComponentView.swift in Sources */,
 				688C25752C6670D700150F7F /* FocusImediateViewController.swift in Sources */,
 				68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */,
 				30D5E2462C8782F10083F353 /* OtherSubjectViewController.swift in Sources */,

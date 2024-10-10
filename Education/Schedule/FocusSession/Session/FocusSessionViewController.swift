@@ -15,7 +15,7 @@ class FocusSessionViewController: UIViewController {
     
     // MARK: - Status bar hidden
     override var prefersStatusBarHidden: Bool {
-        return self.viewModel.prefersStatusBarHidden
+        return viewModel.prefersStatusBarHidden
     }
     
     // MARK: - Properties
@@ -24,7 +24,7 @@ class FocusSessionViewController: UIViewController {
     lazy var focusSessionView: FocusSessionView = {
         let view = FocusSessionView(color: self.color)
         view.delegate = self
-        view.isPaused = viewModel.activityManager.isPaused
+        view.updatePauseResumeButton(isPaused: viewModel.activityManager.isPaused)
         
         return view
     }()
@@ -45,7 +45,7 @@ class FocusSessionViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.view = self.focusSessionView
+        view = focusSessionView
     }
     
     override func viewDidLoad() {
@@ -66,7 +66,7 @@ class FocusSessionViewController: UIViewController {
         
         switch timerCase {
             case .pomodoro:
-                self.focusSessionView.showPomodoroLabel()
+                focusSessionView.showPomodoroLabel()
             default:
                 break
         }
@@ -97,15 +97,14 @@ extension FocusSessionViewController {
         switch timerCase {
             case .timer, .pomodoro:
                 let isTimerVisible = viewModel.activityManager.isTimeCountOn
-                self.focusSessionView.setVisibilityButton(isActive: isTimerVisible)
+                focusSessionView.setEyeButton(isActive: isTimerVisible)
             default:
                 break
         }
     }
     
     private func setTitle() {
-        let subject = viewModel.activityManager.subject
-        self.focusSessionView.setTitleLabel(for: subject)
+        focusSessionView.setTitleLabel()
     }
 }
 
@@ -200,20 +199,22 @@ extension FocusSessionViewController {
     }
     
     private func showEndTimeAlert() {
-        self.focusSessionView.showEndNotification(true)
+        let subject = viewModel.activityManager.subject
+        let alertCase: FocusAlertCase = .finishActivity(subject: subject)
+        
+        focusSessionView.alertView.configure(with: alertCase, atSuperview: focusSessionView)
+        focusSessionView.changeAlertVisibility(isShowing: true)
     }
     
     public func updateViewLabels() {
         let isTimerVisible = viewModel.activityManager.isTimeCountOn
         let timerString = isTimerVisible ? viewModel.getTimerString() : String()
-        
         let pomodoroString = viewModel.getPomodoroString()
-        
-        self.focusSessionView.updateTimerLabels(timerString: timerString, pomodoroString: pomodoroString)
+        focusSessionView.updateTimerLabels(timerString: timerString, pomodoroString: pomodoroString)
     }
     
     private func handleTimerEnd() {
-        self.focusSessionView.disablePauseResumeButton()
+        focusSessionView.disablePauseResumeButton()
         
         let isAlarmOn = viewModel.activityManager.isAlarmOn
         if isAlarmOn {
@@ -223,9 +224,9 @@ extension FocusSessionViewController {
             }
         }
         
-        self.focusSessionView.resetAnimations()
+        focusSessionView.resetAnimations()
         
-        self.showEndTimeAlert()
-        self.removeTapGestureRecognizer()
+        showEndTimeAlert()
+        removeTapGestureRecognizer()
     }
 }

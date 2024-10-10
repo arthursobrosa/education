@@ -5,43 +5,47 @@
 //  Created by Arthur Sobrosa on 15/07/24.
 //
 
-import Foundation
+import UIKit
 
 @objc protocol FocusSessionDelegate: AnyObject {
-    func createNotificationComponent() -> NotificationComponentView
     func dismissButtonTapped()
-    func visibilityButtonTapped()
+    func eyeButtonTapped()
+    func getTitleString() -> NSAttributedString?
     func pauseResumeButtonTapped()
-    func didFinish()
+    func didTapRestartButton()
     func didRestart()
-    func okButtonPressed()
+    func didTapFinishButton()
+    func didFinish()
     func cancelButtonPressed()
 }
 
 extension FocusSessionViewController: FocusSessionDelegate {
-    func createNotificationComponent() -> NotificationComponentView {
-        let subject = viewModel.activityManager.subject
-        
-        let title = String(localized: "timeIsUp")
-        let body = subject != nil ?
-            String(localized: "activityEndCongratulations") + (subject!.unwrappedName)  + " 🎉" :
-            String(localized: "noActivityEndCongratulations")
-        
-        return NotificationComponentView(title: title, body: body)
-    }
-    
     func dismissButtonTapped() {
         viewModel.changePauseStatus()
         
         coordinator?.dismiss(animated: true)
     }
     
-    func visibilityButtonTapped() {
+    func eyeButtonTapped() {
         viewModel.activityManager.isTimeCountOn.toggle()
         
         updateViewLabels()
         let isTimerVisible = viewModel.activityManager.isTimeCountOn
-        focusSessionView.setVisibilityButton(isActive: isTimerVisible)
+        focusSessionView.setEyeButton(isActive: isTimerVisible)
+    }
+    
+    func getTitleString() -> NSAttributedString? {
+        guard let subject = viewModel.activityManager.subject else { return nil }
+        
+        let attributedString = NSMutableAttributedString()
+        
+        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font : UIFont(name: Fonts.darkModeOnMedium, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium), .foregroundColor : UIColor.label.withAlphaComponent(0.7)])
+        let subjectString = NSAttributedString(string: subject.unwrappedName, attributes: [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .semibold), .foregroundColor : UIColor.label.withAlphaComponent(0.85)])
+        
+        attributedString.append(activityString)
+        attributedString.append(subjectString)
+        
+        return attributedString
     }
     
     func pauseResumeButtonTapped() {
@@ -50,6 +54,24 @@ extension FocusSessionViewController: FocusSessionDelegate {
         }
         
         viewModel.pauseResumeButtonTapped()
+        
+        focusSessionView.updatePauseResumeButton(isPaused: viewModel.activityManager.isPaused)
+    }
+    
+    func didTapRestartButton() {
+        focusSessionView.alertView.configure(with: .restart, atSuperview: focusSessionView)
+        focusSessionView.changeAlertVisibility(isShowing: true)
+    }
+    
+    func didRestart() {
+        focusSessionView.changeAlertVisibility(isShowing: false)
+        focusSessionView.updatePauseResumeButton(isPaused: false)
+        viewModel.activityManager.restartActivity()
+    }
+    
+    func didTapFinishButton() {
+        focusSessionView.alertView.configure(with: .finishTimer, atSuperview: focusSessionView)
+        focusSessionView.changeAlertVisibility(isShowing: true)
     }
     
     func didFinish() {
@@ -61,18 +83,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
         viewModel.unblockApps()
     }
     
-    func didRestart() {
-        focusSessionView.showFocusAlert(false)
-        focusSessionView.isPaused = false
-        viewModel.activityManager.restartActivity()
-    }
-    
-    func okButtonPressed() {
-        focusSessionView.showEndNotification(false)
-        didFinish()
-    }
-    
     func cancelButtonPressed() {
-        focusSessionView.showFocusAlert(false)
+        focusSessionView.changeAlertVisibility(isShowing: false)
     }
 }
