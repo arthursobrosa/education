@@ -13,10 +13,15 @@ import UIKit
     func getTitleString() -> NSAttributedString?
     func pauseResumeButtonTapped()
     func didTapRestartButton()
-    func didRestart()
     func didTapFinishButton()
+    func didRestart()
     func didFinish()
-    func cancelButtonPressed()
+    func didStartNextPomodoro()
+    func didCancel()
+    func didTapExtendButton()
+    func didExtendTimer()
+    func didExtendPomodoro()
+    func didCancelExtend()
 }
 
 extension FocusSessionViewController: FocusSessionDelegate {
@@ -59,7 +64,12 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
     
     func didTapRestartButton() {
-        focusSessionView.alertView.configure(with: .restart, atSuperview: focusSessionView)
+        focusSessionView.statusAlertView.configure(with: .restartingCase, atSuperview: focusSessionView)
+        focusSessionView.changeAlertVisibility(isShowing: true)
+    }
+    
+    func didTapFinishButton() {
+        focusSessionView.statusAlertView.configure(with: .finishingEarlyCase, atSuperview: focusSessionView)
         focusSessionView.changeAlertVisibility(isShowing: true)
     }
     
@@ -67,11 +77,6 @@ extension FocusSessionViewController: FocusSessionDelegate {
         focusSessionView.changeAlertVisibility(isShowing: false)
         focusSessionView.updatePauseResumeButton(isPaused: false)
         viewModel.activityManager.restartActivity()
-    }
-    
-    func didTapFinishButton() {
-        focusSessionView.alertView.configure(with: .finishTimer, atSuperview: focusSessionView)
-        focusSessionView.changeAlertVisibility(isShowing: true)
     }
     
     func didFinish() {
@@ -83,7 +88,45 @@ extension FocusSessionViewController: FocusSessionDelegate {
         viewModel.unblockApps()
     }
     
-    func cancelButtonPressed() {
+    func didStartNextPomodoro() {
         focusSessionView.changeAlertVisibility(isShowing: false)
+        focusSessionView.updatePauseResumeButton(isPaused: false)
+        viewModel.activityManager.continuePomodoroTimer()
+        focusSessionView.enablePauseResumeButton()
+        setGestureRecognizer()
+    }
+    
+    func didCancel() {
+        focusSessionView.changeAlertVisibility(isShowing: false)
+    }
+    
+    func didTapExtendButton() {
+        var focusExtensionAlertCase: FocusExtensionAlertCase
+        let timerCase = viewModel.activityManager.timerCase
+        
+        switch timerCase {
+            case .timer:
+                focusExtensionAlertCase = .timer
+            case .pomodoro:
+                let isAtWorkTime = viewModel.activityManager.isAtWorkTime
+                focusExtensionAlertCase = .pomodoro(isAtWorkTime: isAtWorkTime)
+            case .stopwatch:
+                return
+        }
+        
+        focusSessionView.extensionAlertView.isHidden = false
+        focusSessionView.extensionAlertView.configure(with: focusExtensionAlertCase, atSuperview: focusSessionView)
+    }
+    
+    func didExtendTimer() {
+        
+    }
+    
+    func didExtendPomodoro() {
+        //
+    }
+    
+    func didCancelExtend() {
+        focusSessionView.extensionAlertView.isHidden = true
     }
 }

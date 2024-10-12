@@ -141,6 +141,7 @@ extension FocusSessionViewController {
             
             self.focusSessionView.redefineAnimation(timerDuration: 0, strokeEnd: 0)
             self.focusSessionView.resetAnimations()
+            self.focusSessionView.disablePauseResumeButton()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.showEndTimeAlert()
@@ -171,7 +172,7 @@ extension FocusSessionViewController {
 
 // MARK: - View Tapping
 extension FocusSessionViewController {
-    private func setGestureRecognizer() {
+    func setGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
         view.addGestureRecognizer(tapGesture)
     }
@@ -199,34 +200,54 @@ extension FocusSessionViewController {
     }
     
     private func showEndTimeAlert() {
-        let subject = viewModel.activityManager.subject
-        let alertCase: FocusAlertCase = .finishActivity(subject: subject)
+        let timerCase = viewModel.activityManager.timerCase
+        var alertCase: FocusStatusAlertCase
         
-        focusSessionView.alertView.configure(with: alertCase, atSuperview: focusSessionView)
+        switch timerCase {
+            case .timer:
+                let subject = viewModel.activityManager.subject
+                alertCase = .finishingTimerCase(subject: subject)
+            case .pomodoro:
+                let isLastPomodoro = viewModel.activityManager.isLastPomodoro()
+                
+                if isLastPomodoro {
+                    let subject = viewModel.activityManager.subject
+                    alertCase = .finishingTimerCase(subject: subject)
+                } else {
+                    let pomodoroString = viewModel.getPomodoroString()
+                    let isAtWorkTime = viewModel.activityManager.isAtWorkTime
+                    alertCase = .finishingPomodoroCase(pomodoroString: pomodoroString, isAtWorkTime: isAtWorkTime)
+                }
+            case .stopwatch:
+                return
+        }
+        
+        focusSessionView.statusAlertView.configure(with: alertCase, atSuperview: focusSessionView)
         focusSessionView.changeAlertVisibility(isShowing: true)
     }
     
-    public func updateViewLabels() {
+    func updateViewLabels() {
         let isTimerVisible = viewModel.activityManager.isTimeCountOn
         let timerString = isTimerVisible ? viewModel.getTimerString() : String()
         let pomodoroString = viewModel.getPomodoroString()
         focusSessionView.updateTimerLabels(timerString: timerString, pomodoroString: pomodoroString)
     }
     
-    private func handleTimerEnd() {
-        focusSessionView.disablePauseResumeButton()
-        
-        let isAlarmOn = viewModel.activityManager.isAlarmOn
-        if isAlarmOn {
-            let audioService = AudioService()
-            if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
-                audioService.playAudio(from: url)
-            }
-        }
-        
-        focusSessionView.resetAnimations()
-        
-        showEndTimeAlert()
-        removeTapGestureRecognizer()
-    }
+    #warning("handle timer finished audio")
+//    private func handleTimerEnd() {
+//        focusSessionView.disablePauseResumeButton()
+//        
+//        let isAlarmOn = viewModel.activityManager.isAlarmOn
+//        if isAlarmOn {
+//            let audioService = AudioService()
+//            if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
+//                audioService.playAudio(from: url)
+//            }
+//        }
+//        
+//        focusSessionView.resetAnimations()
+//        
+//        showEndTimeAlert()
+//        removeTapGestureRecognizer()
+//    }
 }

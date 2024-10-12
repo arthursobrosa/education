@@ -227,39 +227,45 @@ extension ActivityManager: TimerManaging {
     
     func handleTimerEnd() {
         switch timerCase {
-            case .timer:
+            case .timer, .pomodoro:
                 stopTimer()
                 timerFinished = true
                 
                 return
-            case .pomodoro:
-                if isAtWorkTime {
-                    if currentLoop >= numberOfLoops - 1 {
-                        stopTimer()
-                        timerFinished = true
-                        
-                        return
-                    }
-                    
-                    isAtWorkTime.toggle()
-                    totalSeconds = restTime
-                    timerSeconds = totalSeconds
-                } else {
-                    currentLoop += 1
-                    isAtWorkTime.toggle()
-                    totalSeconds = workTime
-                    timerSeconds = totalSeconds
-                }
-                
-                startTime = nil
-                pausedTime = 0
-                progress = 0
-                
-                isPaused = true
-                isPaused = false
             case .stopwatch:
                 return
         }
+    }
+    
+    func isLastPomodoro() -> Bool {
+        guard isAtWorkTime,
+              currentLoop >= numberOfLoops - 1 else {
+            return false
+        }
+        
+        return true
+    }
+    
+    func continuePomodoroTimer() {
+        guard !isLastPomodoro() else { return }
+        
+        if isAtWorkTime {
+            isAtWorkTime.toggle()
+            totalSeconds = restTime
+            timerSeconds = totalSeconds
+        } else {
+            currentLoop += 1
+            isAtWorkTime.toggle()
+            totalSeconds = workTime
+            timerSeconds = totalSeconds
+        }
+        
+        startTime = nil
+        pausedTime = 0
+        progress = 0
+        
+        isPaused = true
+        isPaused = false
     }
 }
 

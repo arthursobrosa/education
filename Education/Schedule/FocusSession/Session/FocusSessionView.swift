@@ -156,8 +156,19 @@ class FocusSessionView: UIView {
         return bttn
     }()
     
-    let alertView: FocusAlertView = {
-        let view = FocusAlertView()
+    let statusAlertView: FocusStatusAlertView = {
+        let view = FocusStatusAlertView()
+        
+        view.isHidden = true
+        view.layer.zPosition = 2
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    let extensionAlertView: FocusExtensionAlertView = {
+        let view = FocusExtensionAlertView()
         
         view.isHidden = true
         view.layer.zPosition = 2
@@ -300,6 +311,10 @@ extension FocusSessionView {
         }
     }
     
+    func enablePauseResumeButton() {
+        pauseResumeButton.isEnabled = true
+    }
+    
     func disablePauseResumeButton() {
         pauseResumeButton.isEnabled = false
         timerCircleFillLayer.strokeColor = UIColor.clear.cgColor
@@ -317,7 +332,7 @@ extension FocusSessionView {
         UIView.animate(withDuration: 0.5) { [weak self] in
             guard let self else { return }
             
-            self.alertView.isHidden = !isShowing
+            self.statusAlertView.isHidden = !isShowing
             self.overlayView.alpha = self.overlayView.alpha == 0 ? 1 : 0
         }
     }
@@ -336,7 +351,7 @@ extension FocusSessionView: ViewCodeProtocol {
         
         addSubview(restartButton)
         addSubview(finishButton)
-        addSubview(alertView)
+        addSubview(statusAlertView)
         
         let padding = 20.0
         

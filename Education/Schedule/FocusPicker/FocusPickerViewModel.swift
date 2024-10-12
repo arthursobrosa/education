@@ -21,7 +21,7 @@ class FocusPickerViewModel {
     var selectedRestHours = Int()
     var selectedRestMinutes: Int = 5
     
-    var selectedRepetitions: Int = 2
+    var selectedRepetitions: Int = 1
     
     let hours: [Int] = {
         var hours = [Int]()
@@ -63,6 +63,7 @@ class FocusPickerViewModel {
         blockingManager.removeShields()
     }
     
+    #warning("get back to normal pomodoro config after tests")
     private func setTimerCase() {
         switch self.focusSessionModel.timerCase {
             case .pomodoro:
@@ -70,9 +71,10 @@ class FocusPickerViewModel {
                 let selectedRestTime = self.selectedRestHours * 3600 + self.selectedRestMinutes * 60
                 let selectedNumberOfLoops = self.selectedRepetitions + 1
                 
-                self.focusSessionModel.timerCase = .pomodoro(workTime: selectedWorkTime, restTime: selectedRestTime, numberOfLoops: selectedNumberOfLoops)
-                self.focusSessionModel.workTime = selectedWorkTime
-                self.focusSessionModel.restTime = selectedRestTime
+
+                self.focusSessionModel.timerCase = .pomodoro(workTime: selectedWorkTime / 60, restTime: selectedRestTime / 60, numberOfLoops: selectedNumberOfLoops)
+                self.focusSessionModel.workTime = selectedWorkTime / 60
+                self.focusSessionModel.restTime = selectedRestTime / 60
                 self.focusSessionModel.numberOfLoops = selectedNumberOfLoops
             default:
                 break

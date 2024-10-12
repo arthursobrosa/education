@@ -21,6 +21,7 @@
 // MARK: - Schedule
 "schedule" = "Cronograma";
 "newSchedule" = "Novo";
+"activity" = "Atividade";
 "createActivity" = "Criar Atividade";
 "immediateActivity" = "Iniciar Atividade Imediata";
 "timeLeft" = "Em %@h%@m";
@@ -55,13 +56,6 @@
 "weekly" = "Semanal";
 "noSubjectTitle" = "Você não pode criar uma atividade";
 "noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
-"timeIsUp" = "Fim da atividade";
-"activityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade de %@ 🎉";
-"noActivityEndCongratulations" = "Parabéns! Você chegou ao fim da sua atividade 🎉";
-"finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
-"finishEarlyAlertTitle" = "Finalizar Atividade";
-"restartAlertTitle" = "Recomeçar Atividade";
-"restartAlertBody" = "Tem certeza que deseja recomeçar a sua atividade?";
 "activityDeletionTitle" = "Deleção de Atividade";
 "activityDeletionMessage" = "Você tem certeza que deseja excluir essa atividade?";
 "emptyDaySchedule" = "Você ainda não tem atividades programadas para este dia";
@@ -90,14 +84,28 @@
 "timerAlertMessage" = "O seu cronômetro foi finalizado";
 "focusFinish" = "Finalizar";
 "focusRestart" = "Recomeçar";
+"startFocus" = "Iniciar Foco";
+"startInterval" = "Iniciar Pausa";
 "pomodoroFocus" = "Foco";
 "pomodoroInterval" = "Intervalo";
 "pomodoroRepetitions" = "Repetições";
 "deleteActivity" = "Apagar Atividade";
+"imediateActivity" = "Atividade Imediata";
+"extendSomething" = "Estender %@";
+"extendTime" = "Estender Tempo";
+"extendFocus" = "Estender Foco";
+"extendInterval" = "Estender Pausa";
+"finishEarlyAlertBody" = "Tem certeza que deseja finalizar a sua atividade agora?";
+"finishEarlyAlertTitle" = "Finalizar Atividade";
+"restartAlertTitle" = "Recomeçar Atividade";
+"restartAlertBody" = "Tem certeza que deseja recomeçar a sua atividade?";
+"finishTimerAlertTitle" = "Fim da Atividade";
+"finishTimerAlertBody" = "Parabéns! Você chegou ao fim da sua atividade de %@ 🎉";
+"finishTimerAlertBody-noSubject" = "Parabéns! Você chegou ao fim da sua atividade 🎉";
+"finishPomodoroAlertTitle" = "Fim do %@";
+"finishPomodoroAlertBody" = "Você chegou ao fim do %@ da sua atividade";
 "focusTime" = "Tempo de Foco";
 "pauseTime" = "Tempo de Pausa";
-"imediateActivity" = "Atividade Imediata";
-"extendTime" = "Extend time";
 
 // MARK: - Subjects
 "subject" = "Matéria";

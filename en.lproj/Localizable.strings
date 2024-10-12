@@ -21,6 +21,7 @@
 // MARK: - Schedule
 "schedule" = "Schedule";
 "newSchedule" = "New";
+"activity" = "Activity";
 "createActivity" = "Create activity";
 "immediateActivity" = "Start imediate activity";
 "timeLeft" = "In %@h%@m";
@@ -55,13 +56,6 @@
 "weekly" = "Weekly";
 "noSubjectTitle" = "You cannot create an activity";
 "noSubjectMessage" = "You have to create a subject before setting an activity";
-"timeIsUp" = "End of activity";
-"activityEndCongratulations" = "Congratulations! You've reached the end of your activity of %@ 🎉";
-"noActivityEndCongratulations" = "Congratulations! You've reached the end of your activity 🎉";
-"finishEarlyAlertBody" = "Are you sure you want to finish your activity now?";
-"finishEarlyAlertTitle" = "Finish Activity";
-"restartAlertTitle" = "Restart Activity";
-"restartAlertBody" = "Are you sure you want to restart your activity?";
 "activityDeletionTitle" = "Activity Deletion";
 "activityDeletionMessage" = "Are you sure you want to delete this schedule?";
 "emptyDaySchedule" = "You still have no activities scheduled for this day";
@@ -90,14 +84,28 @@
 "timerAlertMessage" = "Your timer is finished";
 "focusFinish" = "Finish";
 "focusRestart" = "Restart";
+"startFocus" = "Start Focus";
+"startInterval" = "Start Interval";
 "pomodoroFocus" = "Focus";
 "pomodoroInterval" = "Interval";
 "pomodoroRepetitions" = "Repetitions";
 "deleteActivity" = "Delete activity";
+"imediateActivity" = "Imediate Activity";
+"extendSomething" = "Extend %@";
+"extendTime" = "Extend Time";
+"extendFocus" = "Extend Focus";
+"extendInterval" = "Extend Interval";
+"finishEarlyAlertBody" = "Are you sure you want to finish your activity now?";
+"finishEarlyAlertTitle" = "Finish Activity";
+"restartAlertTitle" = "Restart Activity";
+"restartAlertBody" = "Are you sure you want to restart your activity?";
+"finishTimerAlertTitle" = "End of Activity";
+"finishTimerAlertBody" = "Congratulations! You've reached the end of your activity of %@ 🎉";
+"finishTimerAlertBody-noSubject" = "Congratulations! You've reached the end of your activity 🎉";
+"finishPomodoroAlertTitle" = "End of %@";
+"finishPomodoroAlertBody" = "You've reached the end of your activity's %@";
 "focusTime" = "Focus Time";
 "pauseTime" = "Pause Time";
-"imediateActivity" = "Imediate Activity";
-"extendTime" = "Extend time";
 
 // MARK: - Subjects
 "subject" = "Subject";
