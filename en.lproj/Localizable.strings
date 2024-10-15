@@ -34,8 +34,8 @@
 "friday" = "Friday";
 "saturday" = "Saturday";
 "reminder" = "Reminder";
-"comingEvent" = "Your %@ event is starting soon!";
-"immediateEvent" = "Your %@ event is starting now!";
+"comingEvent" = "Your %@ activity is starting soon!";
+"immediateEvent" = "Your %@ activity is starting now!";
 "addSubjectAlertTitle" = "Add Subject";
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";

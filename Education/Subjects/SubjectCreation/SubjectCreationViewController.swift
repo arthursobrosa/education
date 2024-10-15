@@ -13,7 +13,7 @@ class SubjectCreationViewController: UIViewController{
     let viewModel: StudyTimeViewModel
     
     // MARK: - Properties
-    private lazy var subjectCreationView: SubjectCreationView = {
+    lazy var subjectCreationView: SubjectCreationView = {
         let view = SubjectCreationView()
         
         view.delegate = self

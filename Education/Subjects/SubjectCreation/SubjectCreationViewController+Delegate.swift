@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol SubjectCreationDelegate: AnyObject {
     func textFieldDidChange(newText: String)
@@ -16,6 +17,11 @@ protocol SubjectCreationDelegate: AnyObject {
 extension SubjectCreationViewController: SubjectCreationDelegate {
     func textFieldDidChange(newText: String) {
         self.subjectName = newText
+        if newText != "" {
+            self.subjectCreationView.saveButton.backgroundColor = UIColor.black
+        }else{
+            self.subjectCreationView.saveButton.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+        }
     }
     
     func didTapSaveButton() {

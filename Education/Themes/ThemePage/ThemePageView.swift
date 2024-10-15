@@ -20,6 +20,15 @@ class ThemePageView: UIView {
     private let segmentedControl: CustomSegmentedControl = {
         let control = CustomSegmentedControl()
         
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 13)!
+        ]
+        let titleAttributesUnselected: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: Fonts.darkModeOnRegular, size: 13)!
+        ]
+        control.setTitleTextAttributes(titleAttributesUnselected, for: .normal)
+        control.setTitleTextAttributes(titleAttributes, for: .selected)
+        
         control.translatesAutoresizingMaskIntoConstraints = false
         
         return control

@@ -34,8 +34,8 @@
 "friday" = "Sexta-feira";
 "saturday" = "Sábado";
 "reminder" = "Lembrete";
-"comingEvent" = "Seu evento de %@ começará em breve!";
-"immediateEvent" = "Seu evento de %@ começa agora!";
+"comingEvent" = "Sua atividade de %@ começará em breve!";
+"immediateEvent" = "Sua atividade de %@ começa agora!";
 "addSubjectAlertTitle" = "Adicionar Matéria";
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
