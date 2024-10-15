@@ -30,9 +30,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.frame = windowScene.coordinateSpace.bounds
         
-        let themeListViewModel = ThemeListViewModel()
         activityManager = ActivityManager()
-        coordinator = SplashCoordinator(navigationController: UINavigationController(), themeListViewModel: themeListViewModel, activityManager: activityManager, blockingManager: blockingManager)
+        coordinator = SplashCoordinator(navigationController: UINavigationController(), activityManager: activityManager, blockingManager: blockingManager)
         coordinator?.start()
         
         window?.rootViewController = coordinator?.navigationController

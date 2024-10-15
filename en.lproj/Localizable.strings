@@ -201,3 +201,9 @@
 "questionsLable" = "Questions";
 "dateLable" = "Date";
 "notesLable" = "Notes";
+
+// MARK: - Sync Monitor
+"noNetworkTitle" = "No network available";
+"noNetworkMessage" = "You are not connected to the internet. Would you like to continue disconnected? All alterations will not be saved to your iCloud account.";
+"accountNotAvailableTitle" = "No iCloud account";
+"accountNotAvailableMessage" = "You are not logged to iCloud. Would you like to continue disconnected? All alterations will not be saved to your iCloud account.";

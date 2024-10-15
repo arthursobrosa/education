@@ -202,3 +202,9 @@
 "questionsLable" = "Questões";
 "dateLable" = "Data";
 "notesLable" = "Notas";
+
+// MARK: - Sync Monitor
+"noNetworkTitle" = "Conexão de internet indisponível";
+"noNetworkMessage" = "Você não está conectado à internet. Gostaria de prosseguir desconectado? Todas as alterações não serão salvas em sua conta do iCloud.";
+"accountNotAvailableTitle" = "Conta iCloud indisponível";
+"accountNotAvailableMessage" = "Você não está logado no iCloud. Gostaria de prosseguir desconectado? Todas as alterações não serão salvas em sua conta do iCloud.";
