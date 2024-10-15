@@ -65,8 +65,9 @@ class FocusPickerViewModel {
                 break
         }
         
-        self.focusSessionModel.totalSeconds = totalTime
-        self.focusSessionModel.timerSeconds = totalTime
+        #warning("change this afterwards")
+        self.focusSessionModel.totalSeconds = totalTime / 12
+        self.focusSessionModel.timerSeconds = totalTime / 12
     }
     
     func setFocusSessionModel() {

@@ -180,6 +180,13 @@
 		68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE02C66D31600805051 /* CustomPushTransition.swift */; };
 		68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE22C66D49800805051 /* CustomPopTransition.swift */; };
 		68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */; };
+		68FF04DE2CBE23FF00E8C48C /* FocusEndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04DD2CBE23FF00E8C48C /* FocusEndViewController.swift */; };
+		68FF04E02CBE242600E8C48C /* FocusEndCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04DF2CBE242600E8C48C /* FocusEndCoordinator.swift */; };
+		68FF04E22CBE244F00E8C48C /* FocusEndViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04E12CBE244F00E8C48C /* FocusEndViewModel.swift */; };
+		68FF04E42CBE24BD00E8C48C /* FocusEndViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04E32CBE24BD00E8C48C /* FocusEndViewController+Delegate.swift */; };
+		68FF04E62CBE24D200E8C48C /* FocusEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04E52CBE24D200E8C48C /* FocusEndView.swift */; };
+		68FF04E82CBE261100E8C48C /* ShowingFocusEnd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04E72CBE261100E8C48C /* ShowingFocusEnd.swift */; };
+		68FF04EA2CBE3DEE00E8C48C /* NotesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04E92CBE3DED00E8C48C /* NotesCell.swift */; };
 		CE0BD2362C862E1300E9FBDF /* FocusStatusAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BD2352C862E1300E9FBDF /* FocusStatusAlertView.swift */; };
 		CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */; };
 		CE1E018B2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */; };
@@ -418,6 +425,13 @@
 		68EC5BE02C66D31600805051 /* CustomPushTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPushTransition.swift; sourceTree = "<group>"; };
 		68EC5BE22C66D49800805051 /* CustomPopTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
 		68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListCell.swift; sourceTree = "<group>"; };
+		68FF04DD2CBE23FF00E8C48C /* FocusEndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusEndViewController.swift; sourceTree = "<group>"; };
+		68FF04DF2CBE242600E8C48C /* FocusEndCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusEndCoordinator.swift; sourceTree = "<group>"; };
+		68FF04E12CBE244F00E8C48C /* FocusEndViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusEndViewModel.swift; sourceTree = "<group>"; };
+		68FF04E32CBE24BD00E8C48C /* FocusEndViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusEndViewController+Delegate.swift"; sourceTree = "<group>"; };
+		68FF04E52CBE24D200E8C48C /* FocusEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusEndView.swift; sourceTree = "<group>"; };
+		68FF04E72CBE261100E8C48C /* ShowingFocusEnd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusEnd.swift; sourceTree = "<group>"; };
+		68FF04E92CBE3DED00E8C48C /* NotesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesCell.swift; sourceTree = "<group>"; };
 		CE0BD2352C862E1300E9FBDF /* FocusStatusAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusStatusAlertView.swift; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
 		CE1E018A2C6BD64A00811CB9 /* ScheduleDetailsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsModalView.swift; sourceTree = "<group>"; };
@@ -484,6 +498,7 @@
 				CED3DB322C5BF9CA00297062 /* FocusSelection */,
 				68CA87D82C5D5387006ED5FA /* FocusPicker */,
 				6833B21D2C345700009EA63D /* FocusSession */,
+				68FF04DC2CBE23E300E8C48C /* FocusEnd */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -981,6 +996,7 @@
 				688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */,
 				682A9A892C62602000FAAD07 /* ShowingFocusSelection.swift */,
 				68CA87DF2C5D54CD006ED5FA /* ShowingFocusPicker.swift */,
+				68FF04E72CBE261100E8C48C /* ShowingFocusEnd.swift */,
 				68BBC96C2C35E13D00D82350 /* Dismissing.swift */,
 				6823766A2C63E86E00255143 /* DismissingAll.swift */,
 				683B5BE12C682B270065121E /* DismissingAfterModal.swift */,
@@ -1062,6 +1078,19 @@
 				68EC5BE22C66D49800805051 /* CustomPopTransition.swift */,
 			);
 			path = Transitions;
+			sourceTree = "<group>";
+		};
+		68FF04DC2CBE23E300E8C48C /* FocusEnd */ = {
+			isa = PBXGroup;
+			children = (
+				68FF04DF2CBE242600E8C48C /* FocusEndCoordinator.swift */,
+				68FF04E12CBE244F00E8C48C /* FocusEndViewModel.swift */,
+				68FF04DD2CBE23FF00E8C48C /* FocusEndViewController.swift */,
+				68FF04E32CBE24BD00E8C48C /* FocusEndViewController+Delegate.swift */,
+				68FF04E52CBE24D200E8C48C /* FocusEndView.swift */,
+				68FF04E92CBE3DED00E8C48C /* NotesCell.swift */,
+			);
+			path = FocusEnd;
 			sourceTree = "<group>";
 		};
 		CE1E01892C6BD5F400811CB9 /* ScheduleDetailsModal */ = {
@@ -1300,6 +1329,7 @@
 				683D25502C88E9D500716444 /* WeeklyScheduleCollectionView.swift in Sources */,
 				68D218E42C60321C00FA5CD7 /* UIColor+Extension.swift in Sources */,
 				30F216BD2C2DEF7400B7114F /* ThemePageViewModel.swift in Sources */,
+				68FF04E42CBE24BD00E8C48C /* FocusEndViewController+Delegate.swift in Sources */,
 				68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */,
 				68825BD12C2F348300272451 /* TestManager.swift in Sources */,
 				685265552C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift in Sources */,
@@ -1323,6 +1353,7 @@
 				683D25562C894DAF00716444 /* ScheduleVC+Collections.swift in Sources */,
 				CE394D0F2C6E85FC00A8B1F0 /* ScheduleDetailsModalCoordinator.swift in Sources */,
 				680483822C9229F0007FC564 /* TestPageViewModel.swift in Sources */,
+				68FF04E82CBE261100E8C48C /* ShowingFocusEnd.swift in Sources */,
 				31EB254B2C596883008F8893 /* NotificationService.swift in Sources */,
 				68C572412C8AC52B00B9D0A4 /* CustomTableCell.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
@@ -1355,6 +1386,7 @@
 				300AD7742C8A349F000D81FA /* StudyTimeChartCell.swift in Sources */,
 				CE3010052C3329F1007BCA07 /* FocusSessionView.swift in Sources */,
 				689388942C6423A7007EE922 /* ActivityView.swift in Sources */,
+				68FF04E62CBE24D200E8C48C /* FocusEndView.swift in Sources */,
 				6874A2602C3F727200CAC9E4 /* ScheduleCoordinator.swift in Sources */,
 				CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */,
 				CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */,
@@ -1363,6 +1395,7 @@
 				68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
 				CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */,
+				68FF04EA2CBE3DEE00E8C48C /* NotesCell.swift in Sources */,
 				CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */,
 				68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */,
 				CE323B3B2C73BC3E004143E0 /* ScheduleNotificationDelegate.swift in Sources */,
@@ -1377,6 +1410,7 @@
 				683D254E2C88E9D000716444 /* DailyScheduleView.swift in Sources */,
 				68C2D00A2C473F8000E2347A /* ScheduleDetails+Picker.swift in Sources */,
 				683812F62C48329D0062067A /* UserDefaults.swift in Sources */,
+				68FF04DE2CBE23FF00E8C48C /* FocusEndViewController.swift in Sources */,
 				302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */,
 				CE323B432C73C1AC004143E0 /* ShowingScheduleNotification.swift in Sources */,
 				683812F02C481A9C0062067A /* SplashViewController.swift in Sources */,
@@ -1389,6 +1423,7 @@
 				68333DD22C3F81590064BF87 /* ScheduleDetailsViewModel.swift in Sources */,
 				302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */,
 				68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */,
+				68FF04E02CBE242600E8C48C /* FocusEndCoordinator.swift in Sources */,
 				317C11332C3EF78200C5E7A5 /* StudyTimeViewModel.swift in Sources */,
 				30D5E2482C8783040083F353 /* OtherSubjectView.swift in Sources */,
 				6804837E2C920559007FC564 /* CustomChart.swift in Sources */,
@@ -1442,6 +1477,7 @@
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
 				688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */,
+				68FF04E22CBE244F00E8C48C /* FocusEndViewModel.swift in Sources */,
 				CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */,
 				68833D9A2C46B28D00BA4850 /* DefaultCell.swift in Sources */,
 			);

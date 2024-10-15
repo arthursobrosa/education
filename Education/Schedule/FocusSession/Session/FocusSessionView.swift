@@ -197,7 +197,7 @@ class FocusSessionView: UIView {
         
         super.init(frame: .zero)
         
-        self.backgroundColor = .systemBackground
+        backgroundColor = .systemBackground
     }
     
     required init?(coder: NSCoder) {

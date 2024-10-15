@@ -106,6 +106,10 @@
 "finishPomodoroAlertBody" = "You've reached the end of your activity's %@";
 "focusTime" = "Focus Time";
 "pauseTime" = "Pause Time";
+"hour" = "Hour";
+"timer" = "Timer";
+"notes"= "Notes";
+"discard" = "Discard";
 
 // MARK: - Subjects
 "subject" = "Subject";

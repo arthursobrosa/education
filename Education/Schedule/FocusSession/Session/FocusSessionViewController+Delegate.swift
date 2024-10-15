@@ -76,11 +76,9 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
     
     func didFinish() {
-        viewModel.activityManager.saveFocusSesssion()
-        viewModel.activityManager.resetTimer()
         viewModel.didTapFinish = true
         
-        coordinator?.dismiss(animated: true)
+        coordinator?.showFocusEnd(activityManager: viewModel.activityManager)
         
         viewModel.unblockApps()
     }

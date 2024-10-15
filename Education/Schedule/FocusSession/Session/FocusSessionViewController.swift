@@ -10,7 +10,7 @@ import AVFoundation
 
 class FocusSessionViewController: UIViewController {
     // MARK: - Coordinator & ViewModel
-    weak var coordinator: Dismissing?
+    weak var coordinator: (ShowingFocusEnd & Dismissing)?
     let viewModel: FocusSessionViewModel
     
     // MARK: - Status bar hidden
