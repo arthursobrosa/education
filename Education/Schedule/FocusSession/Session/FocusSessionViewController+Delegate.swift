@@ -19,8 +19,7 @@ import UIKit
     func didStartNextPomodoro()
     func didCancel()
     func didTapExtendButton()
-    func didExtendTimer()
-    func didExtendPomodoro()
+    func didExtend()
     func didCancelExtend()
 }
 
@@ -59,7 +58,6 @@ extension FocusSessionViewController: FocusSessionDelegate {
         }
         
         viewModel.pauseResumeButtonTapped()
-        
         focusSessionView.updatePauseResumeButton(isPaused: viewModel.activityManager.isPaused)
     }
     
@@ -74,13 +72,12 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
     
     func didRestart() {
-        focusSessionView.changeAlertVisibility(isShowing: false)
-        focusSessionView.updatePauseResumeButton(isPaused: false)
         viewModel.activityManager.restartActivity()
     }
     
     func didFinish() {
         viewModel.activityManager.saveFocusSesssion()
+        viewModel.activityManager.resetTimer()
         viewModel.didTapFinish = true
         
         coordinator?.dismiss(animated: true)
@@ -89,11 +86,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
     
     func didStartNextPomodoro() {
-        focusSessionView.changeAlertVisibility(isShowing: false)
-        focusSessionView.updatePauseResumeButton(isPaused: false)
-        viewModel.activityManager.continuePomodoroTimer()
-        focusSessionView.enablePauseResumeButton()
-        setGestureRecognizer()
+        viewModel.activityManager.continuePomodoro()
     }
     
     func didCancel() {
@@ -118,12 +111,25 @@ extension FocusSessionViewController: FocusSessionDelegate {
         focusSessionView.extensionAlertView.configure(with: focusExtensionAlertCase, atSuperview: focusSessionView)
     }
     
-    func didExtendTimer() {
+    func didExtend() {
+        let hours = focusSessionView.extensionAlertView.selectedHours
+        let minutes = focusSessionView.extensionAlertView.selectedMinutes
+        let extendedTime = viewModel.getExtendedTime(hours: hours, minutes: minutes)
+        let timerCase = viewModel.activityManager.timerCase
         
-    }
-    
-    func didExtendPomodoro() {
-        //
+        switch timerCase {
+            case .timer:
+                viewModel.activityManager.originalTime = viewModel.activityManager.totalSeconds
+            case .pomodoro(let workTime, let restTime, _):
+                let isAtWorkTime = viewModel.activityManager.isAtWorkTime
+                viewModel.activityManager.originalTime = isAtWorkTime ? workTime : restTime
+                viewModel.activityManager.updatePomodoroAfterExtension(seconds: extendedTime)
+            case .stopwatch:
+                break
+        }
+        
+        focusSessionView.extensionAlertView.isHidden = true
+        viewModel.activityManager.extendTimer(in: extendedTime)
     }
     
     func didCancelExtend() {

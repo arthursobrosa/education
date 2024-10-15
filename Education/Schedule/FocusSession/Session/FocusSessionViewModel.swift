@@ -28,7 +28,7 @@ class FocusSessionViewModel {
     
     var pauseStatusDidChange: ((Bool) -> Void)?
     var timerSecondsDidChange: (() -> Void)?
-    var timerFinishedPropertyChanged: (() -> Void)?
+    var timerFinishedPropertyChanged: ((Bool) -> Void)?
     var isAtWorkTimeDidChange: ((Bool) -> Void)?
     var updateAfterBackgroundPropertyDidChange: (() -> Void)?
     
@@ -95,9 +95,7 @@ extension FocusSessionViewModel {
             .sink { [weak self] timerFinished in
                 guard let self else { return }
                 
-                guard timerFinished else { return }
-                
-                timerFinishedPropertyChanged?()
+                timerFinishedPropertyChanged?(timerFinished)
             }
             .store(in: &self.cancellables)
     }
@@ -267,5 +265,12 @@ extension FocusSessionViewModel {
         }
         
         return false
+    }
+}
+
+// MARK: - Extension config
+extension FocusSessionViewModel {
+    func getExtendedTime(hours: Int, minutes: Int) -> Int {
+        hours * 3600 + minutes * 60
     }
 }

@@ -113,6 +113,9 @@ class ActivityManager {
     }
     
     var totalTime = 0
+    var isExtending = false
+    var extendedTime = 0
+    var originalTime = 0
     
     // MARK: - Schedule properties
     var date: Date
@@ -211,6 +214,9 @@ extension ActivityManager: TimerManaging {
         isPaused = true
         
         timerFinished = false
+        isExtending = false
+        extendedTime = 0
+        originalTime = 0
         
         progress = 0
         totalSeconds = 0
@@ -231,10 +237,49 @@ extension ActivityManager: TimerManaging {
                 stopTimer()
                 timerFinished = true
                 
-                return
+                if isExtending {
+                    computeExtendedTime()
+                    isExtending = false
+                }
             case .stopwatch:
                 return
         }
+    }
+    
+    func computeExtendedTime() {
+        switch timerCase {
+            case .timer:
+                extendedTime += totalSeconds
+            case .pomodoro:
+                if isAtWorkTime {
+                    extendedTime += totalSeconds
+                }
+            case .stopwatch:
+                return
+        }
+        
+        resetToOriginalConfig()
+    }
+    
+    func resetToOriginalConfig() {
+        switch timerCase {
+            case .timer:
+                totalSeconds = originalTime
+            case .pomodoro:
+                resetPomodoro()
+            case .stopwatch:
+                return
+        }
+    }
+    
+    private func resetPomodoro() {
+        if isAtWorkTime {
+            workTime = originalTime
+        } else {
+            restTime = originalTime
+        }
+        
+        timerCase = .pomodoro(workTime: workTime, restTime: restTime, numberOfLoops: numberOfLoops)
     }
     
     func isLastPomodoro() -> Bool {
@@ -246,8 +291,10 @@ extension ActivityManager: TimerManaging {
         return true
     }
     
-    func continuePomodoroTimer() {
+    func continuePomodoro() {
         guard !isLastPomodoro() else { return }
+        
+        timerFinished = false
         
         if isAtWorkTime {
             isAtWorkTime.toggle()
@@ -267,6 +314,39 @@ extension ActivityManager: TimerManaging {
         isPaused = true
         isPaused = false
     }
+    
+    func extendTimer(in seconds: Int) {
+        timerFinished = false
+        isExtending = true
+        
+        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: seconds, timerSeconds: seconds, timerCase: timerCase, subject: subject, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
+        currentFocusSession.currentLoop = currentLoop
+        currentFocusSession.color = color
+        currentFocusSession.workTime = workTime
+        currentFocusSession.restTime = restTime
+        currentFocusSession.numberOfLoops = numberOfLoops
+        
+        progress = 0
+        pausedTime = 0
+        startTime = nil
+        
+        updateFocusSession(with: currentFocusSession)
+        
+        isPaused = true
+        isPaused = false
+    }
+    
+    func updatePomodoroAfterExtension(seconds: Int) {
+        guard case .pomodoro = timerCase else { return }
+        
+        if isAtWorkTime {
+            workTime = seconds
+        } else {
+            restTime = seconds
+        }
+        
+        timerCase = .pomodoro(workTime: workTime, restTime: restTime, numberOfLoops: numberOfLoops)
+    }
 }
 
 // MARK: - Session Management
@@ -282,24 +362,51 @@ extension ActivityManager: SessionManaging {
             case .stopwatch:
                 totalTime = timerSeconds
             case .timer:
-                totalTime = totalSeconds - timerSeconds
-            case .pomodoro(let workTime, _, _):
-                if isAtWorkTime {
-                    totalTime = (workTime * currentLoop) + (totalSeconds - timerSeconds)
-                } else {
-                    totalTime = workTime * (currentLoop + 1)
-                }
+                computeTimerTotalTime()
+            case .pomodoro:
+                computePomodoroTotalTime()
         }
         
-        focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: self.subject?.unwrappedID)
+        focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID)
+    }
+    
+    private func computeTimerTotalTime() {
+        guard case .timer = timerCase else { return }
         
-        resetTimer()
+        if isExtending {
+            extendedTime += totalSeconds - timerSeconds
+            totalTime = originalTime + extendedTime
+        } else {
+            totalTime = totalSeconds - timerSeconds + extendedTime
+        }
+    }
+    
+    private func computePomodoroTotalTime() {
+        guard case .pomodoro = timerCase else { return }
+        
+        if isExtending {
+            if isAtWorkTime {
+                extendedTime += workTime - timerSeconds
+                totalTime = originalTime * (currentLoop + 1)
+            } else {
+                totalTime = workTime * (currentLoop + 1)
+            }
+        } else {
+            if isAtWorkTime {
+                totalTime = (workTime * currentLoop) + (workTime - timerSeconds)
+            } else {
+                totalTime = workTime * (currentLoop + 1)
+            }
+        }
+        
+        totalTime += extendedTime
     }
     
     func finishSession() {
         guard isShowingActivityBar else { return }
         
         saveFocusSesssion()
+        resetTimer()
         isShowingActivityBar = false
     }
     
@@ -317,18 +424,21 @@ extension ActivityManager: SessionManaging {
         workTime = focusSessionModel.workTime
         restTime = focusSessionModel.restTime
         numberOfLoops = focusSessionModel.numberOfLoops
-        isPaused = false
     }
     
     func restartActivity() {
-        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: totalSeconds, timerSeconds: totalSeconds, timerCase: timerCase, subject: subject, isAtWorkTime: true, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
-        currentFocusSession.currentLoop = 0
+        timerFinished = false
+        
+        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: totalSeconds, timerSeconds: totalSeconds, timerCase: timerCase, subject: subject, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
+        currentFocusSession.currentLoop = currentLoop
         currentFocusSession.color = color
         currentFocusSession.workTime = workTime
         currentFocusSession.restTime = restTime
         currentFocusSession.numberOfLoops = numberOfLoops
         
-        resetTimer()
+        progress = 0
+        pausedTime = 0
+        startTime = nil
         
         updateFocusSession(with: currentFocusSession)
         

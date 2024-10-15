@@ -63,6 +63,7 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         if let focusSessionModel {
             activityManager.finishSession()
             activityManager.updateFocusSession(with: focusSessionModel)
+            activityManager.isPaused = false
         }
         
         let child = FocusSessionCoordinator(navigationController: self.navigationController, activityManager: activityManager, blockingManager: blockingManager)

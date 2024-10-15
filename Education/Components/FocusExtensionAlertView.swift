@@ -22,10 +22,8 @@ enum FocusExtensionAlertCase {
     
     var primaryButtonAction: Selector {
         switch self {
-            case .timer:
-                #selector(FocusSessionDelegate.didExtendTimer)
-            case .pomodoro:
-                #selector(FocusSessionDelegate.didExtendPomodoro)
+            case .timer, .pomodoro:
+                #selector(FocusSessionDelegate.didExtend)
         }
     }
 }
@@ -33,6 +31,11 @@ enum FocusExtensionAlertCase {
 class FocusExtensionAlertView: UIView {
     // MARK: - Delegate
     weak var delegate: (any FocusSessionDelegate)?
+    
+    private let hours: [Int] = Array(0..<24)
+    private let minutes: [Int] = Array(0..<60)
+    var selectedHours = 0
+    var selectedMinutes = 5
     
     // MARK: - UI Properties
     private let titleLabel: UILabel = {
@@ -43,6 +46,14 @@ class FocusExtensionAlertView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
+    }()
+    
+    private let datePicker: CustomDatePickerView = {
+        let picker = CustomDatePickerView()
+        picker.hoursPicker.tag = PickerCase.timerHours
+        picker.minutesPicker.tag = PickerCase.timerMinutes
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
     }()
     
     private lazy var secondaryButton: ButtonComponent = {
@@ -69,6 +80,7 @@ class FocusExtensionAlertView: UIView {
         backgroundColor = .systemBackground
         layer.cornerRadius = 12
         translatesAutoresizingMaskIntoConstraints = false
+        configurePicker()
     }
     
     required init?(coder: NSCoder) {
@@ -86,16 +98,34 @@ class FocusExtensionAlertView: UIView {
     private func setPrimaryButton(with extendTimerCase: FocusExtensionAlertCase) {
         primaryButton.addTarget(delegate, action: extendTimerCase.primaryButtonAction, for: .touchUpInside)
     }
+    
+    private func configurePicker() {
+        let subviews = datePicker.subviews
+        let subpickers = subviews.compactMap { $0 as? UIPickerView }
+        subpickers.forEach { subpicker in
+            subpicker.dataSource = self
+            subpicker.delegate = self
+        }
+        
+        datePicker.hoursPicker.selectRow(selectedHours, inComponent: 0, animated: false)
+        datePicker.minutesPicker.selectRow(selectedMinutes, inComponent: 0, animated: false)
+    }
 }
 
 // MARK: - UI Setup
 extension FocusExtensionAlertView: ViewCodeProtocol {
     func setupUI() {
         addSubview(titleLabel)
+        addSubview(datePicker)
         
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 18),
+            
+            datePicker.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 169 / 366),
+            datePicker.heightAnchor.constraint(equalTo: datePicker.widthAnchor, multiplier: 140 / 169),
+            datePicker.centerXAnchor.constraint(equalTo: centerXAnchor),
+            datePicker.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
         ])
     }
     
@@ -122,5 +152,74 @@ extension FocusExtensionAlertView: ViewCodeProtocol {
             primaryButton.leadingAnchor.constraint(equalTo: secondaryButton.trailingAnchor, constant: 12),
             primaryButton.bottomAnchor.constraint(equalTo: secondaryButton.bottomAnchor),
         ])
+    }
+}
+
+extension FocusExtensionAlertView: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch pickerView.tag {
+            case PickerCase.timerHours:
+                hours.count
+            case PickerCase.timerMinutes:
+                minutes.count
+            default:
+                0
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var selection = 0
+        
+        switch pickerView.tag {
+            case PickerCase.timerHours:
+                selection = hours[row]
+            case PickerCase.timerMinutes:
+                selection = minutes[row]
+            default:
+                break
+        }
+        
+        let text = selection < 10 ? "0" + String(selection) : String(selection)
+        
+        let selectedRow = pickerView.selectedRow(inComponent: 0)
+        let color: UIColor? = row == selectedRow ? .label : .secondaryLabel
+        
+        let fontSize = row == selectedRow ? 30.0 : 24.0
+        
+        let label = UILabel()
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: fontSize)
+        label.text = text
+        label.textColor = color
+        label.textAlignment = .center
+        
+        return label
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        switch pickerView.tag {
+            case PickerCase.timerHours:
+                selectedHours = hours[row]
+            case PickerCase.timerMinutes:
+                selectedMinutes = minutes[row]
+            default:
+                break
+        }
+        
+        changePrimaryButtonState()
+        pickerView.reloadAllComponents()
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        30
+    }
+    
+    private func changePrimaryButtonState() {
+        let isEnabled = selectedHours != 0 || selectedMinutes != 0
+        primaryButton.isEnabled = isEnabled
+        primaryButton.backgroundColor = isEnabled ? .label : .systemGray4
     }
 }

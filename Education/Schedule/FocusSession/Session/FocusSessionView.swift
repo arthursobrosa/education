@@ -333,7 +333,7 @@ extension FocusSessionView {
             guard let self else { return }
             
             self.statusAlertView.isHidden = !isShowing
-            self.overlayView.alpha = self.overlayView.alpha == 0 ? 1 : 0
+            self.overlayView.alpha = isShowing ? 1 : 0
         }
     }
 }

@@ -136,16 +136,23 @@ extension FocusSessionViewController {
             self.setTitle()
         }
         
-        viewModel.timerFinishedPropertyChanged = { [weak self] in
+        viewModel.timerFinishedPropertyChanged = { [weak self] timerFinished in
             guard let self else { return }
             
-            self.focusSessionView.redefineAnimation(timerDuration: 0, strokeEnd: 0)
-            self.focusSessionView.resetAnimations()
-            self.focusSessionView.disablePauseResumeButton()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.showEndTimeAlert()
-                self.removeTapGestureRecognizer()
+            if timerFinished {
+                self.focusSessionView.redefineAnimation(timerDuration: 0, strokeEnd: 0)
+                self.focusSessionView.resetAnimations()
+                self.focusSessionView.disablePauseResumeButton()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.showEndTimeAlert()
+                    self.removeTapGestureRecognizer()
+                }
+            } else {
+                self.focusSessionView.changeAlertVisibility(isShowing: false)
+                self.focusSessionView.updatePauseResumeButton(isPaused: false)
+                self.focusSessionView.enablePauseResumeButton()
+                self.setGestureRecognizer()
             }
         }
         
@@ -173,14 +180,14 @@ extension FocusSessionViewController {
 // MARK: - View Tapping
 extension FocusSessionViewController {
     func setGestureRecognizer() {
+        guard view.gestureRecognizers == nil else { return }
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
         view.addGestureRecognizer(tapGesture)
     }
     
     private func removeTapGestureRecognizer() {
-        let gestureRecognizers = view.gestureRecognizers?.compactMap({ $0 as? UITapGestureRecognizer })
-        
-        gestureRecognizers?.forEach({ view.removeGestureRecognizer($0) })
+        view.gestureRecognizers = nil
     }
     
     @objc func viewWasTapped() {
