@@ -110,6 +110,7 @@
 "timer" = "Timer";
 "notes"= "Notes";
 "discard" = "Discard";
+"notesPlaceholder" = "Notes about the activity";
 
 // MARK: - Subjects
 "subject" = "Subject";

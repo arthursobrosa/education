@@ -27,8 +27,6 @@ class FocusEndView: UIView {
         tableView.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.layer.borderColor = UIColor.red.cgColor
-        tableView.layer.borderWidth = 2
         return tableView
     }()
     

@@ -110,6 +110,7 @@
 "timer" = "Temporizador";
 "notes"= "Notas";
 "discard" = "Descartar";
+"notesPlaceholder" = "Notas sobre a atividade";
 
 // MARK: - Subjects
 "subject" = "Matéria";
