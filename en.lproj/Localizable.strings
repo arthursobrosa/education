@@ -35,8 +35,8 @@
 "friday" = "Friday";
 "saturday" = "Saturday";
 "reminder" = "Reminder";
-"comingEvent" = "Your %@ event is starting soon!";
-"immediateEvent" = "Your %@ event is starting now!";
+"comingEvent" = "Your %@ activity is starting soon!";
+"immediateEvent" = "Your %@ activity is starting now!";
 "addSubjectAlertTitle" = "Add Subject";
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";
@@ -148,6 +148,9 @@
 "deleteTest" = "Delete Test";
 "emptyTheme" = "You haven't recorded any exams yet";
 "emptyTest" = "You haven't recorded any tests yet";
+"dayLabel" = "Day";
+"questionLabel" = "Questions";
+"description" = "Notas sobre o teste/ questões";
 
 // MARK: - Settings
 "deactivateTitle" = "Deactivate on your phone!";
@@ -193,3 +196,8 @@
 "startBlockAlertBody" = "Your apps are blocked now";
 "endBlockAlertTitle" = "Ending app block";
 "endBlockAlertBody" = "Your apps are unblocked now";
+
+// MARK: - TestDetails
+"questionsLable" = "Questions";
+"dateLable" = "Date";
+"notesLable" = "Notes";

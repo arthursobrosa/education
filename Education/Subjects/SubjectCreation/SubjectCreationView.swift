@@ -33,10 +33,11 @@ class SubjectCreationView: UIView {
         return bttn
     }()
     
-    private lazy var saveButton: ButtonComponent = {
+    lazy var saveButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 27)
         button.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.black.withAlphaComponent(0.15)
         return button
     }()
     

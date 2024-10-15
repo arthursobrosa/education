@@ -1,37 +1,33 @@
 //
-//  ThemePageCoordinator.swift
+//  TestDetailsCoordinator.swift
 //  Education
 //
-//  Created by Arthur Sobrosa on 28/06/24.
+//  Created by Eduardo Dalencon on 08/10/24.
 //
 
 import UIKit
 
-class ThemePageCoordinator: NSObject, Coordinator, ShowingTestDetails, Dismissing, ShowingTestPage {
+class TestDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingTestPage {
     
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    var theme: Theme
     
-    init(navigationController: UINavigationController, theme: Theme) {
+    private let theme: Theme
+    private let test: Test
+    
+    init(navigationController: UINavigationController, theme: Theme, test: Test) {
         self.navigationController = navigationController
         self.theme = theme
+        self.test = test
     }
     
     func start() {
-        let viewModel = ThemePageViewModel(theme: self.theme)
-        let vc = ThemePageViewController(viewModel: viewModel)
+        let viewModel = TestDetailsViewModel(theme: self.theme, test: self.test)
+        let vc = TestDetailsViewController(viewModel: viewModel)
         vc.coordinator = self
         
         self.navigationController.pushViewController(vc, animated: true)
-    }
-    
-    func showTestDetails(theme: Theme, test: Test) {
-        let child = TestDetailsCoordinator(navigationController: self.navigationController, theme: theme, test: test)
-        child.parentCoordinator = self
-        self.childCoordinators.append(child)
-        child.start()
     }
     
     func showTestPage(theme: Theme, test: Test?) {
@@ -42,7 +38,7 @@ class ThemePageCoordinator: NSObject, Coordinator, ShowingTestDetails, Dismissin
     }
     
     func dismiss(animated: Bool) {
-        self.navigationController.popViewController(animated: animated)
+        self.navigationController.dismiss(animated: animated)
     }
     
     func childDidFinish(_ child: Coordinator?) {
@@ -55,18 +51,22 @@ class ThemePageCoordinator: NSObject, Coordinator, ShowingTestDetails, Dismissin
     }
 }
 
-extension ThemePageCoordinator: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        guard let nav = dismissed as? UINavigationController else { return nil }
+extension TestDetailsCoordinator: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let nav = dismissed as? UINavigationController else { return nil}
         
         if let testPageVC = nav.viewControllers.first as? TestPageViewController {
             self.childDidFinish(testPageVC.coordinator as? Coordinator)
             
-            if let themePageVC = self.navigationController.viewControllers.last as? ThemePageViewController {
-                themePageVC.viewModel.fetchTests()
+            if let testDetailsVC = self.navigationController.viewControllers.last as? TestDetailsViewController {
+                testDetailsVC.viewModel.getUpdatedTest()
+                testDetailsVC.updateInterface()
             }
         }
+       
         
         return nil
     }
 }
+
+

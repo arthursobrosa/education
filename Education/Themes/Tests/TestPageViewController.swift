@@ -50,6 +50,9 @@ class TestPageViewController: UIViewController {
         if self.viewModel.test == nil {
             self.testPageView.hideDeleteButton()
         }
+        self.testPageView.textView.delegate = self
+        self.setupTextView()
+        
     }
     
     // MARK: - Methods
@@ -80,7 +83,7 @@ class TestPageViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    @objc func textFieldDidChange(_ sender: UITextField) {
+    @objc func textFieldEditingDidEnd(_ sender: UITextField) {
         guard let text = sender.text else { return }
         
         if text.isEmpty {
@@ -90,12 +93,28 @@ class TestPageViewController: UIViewController {
         guard let intText = Int(text) else { return }
         
         switch sender.tag {
-            case 0:
-                self.viewModel.totalQuestions = intText
-            case 1:
-                self.viewModel.rightQuestions = intText
-            default:
-                break
+        case 0:
+            self.viewModel.totalQuestions = intText
+        case 1:
+            self.viewModel.rightQuestions = intText
+        default:
+            break
+        }
+    }
+    
+    @objc func textFieldEditingDidBegin(_ sender: UITextField) {
+        sender.text = String()
+    }
+    
+    func setupTextView() {
+        if self.viewModel.comment == ""{
+            self.testPageView.textView.text = String(localized: "description")
+            self.testPageView.textView.font = UIFont.italicSystemFont(ofSize: 16)
+            self.testPageView.textView.textColor = UIColor.lightGray
+        }else {
+            self.testPageView.textView.text = self.viewModel.comment
+            self.testPageView.textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+            self.testPageView.textView.textColor = UIColor.black
         }
     }
     

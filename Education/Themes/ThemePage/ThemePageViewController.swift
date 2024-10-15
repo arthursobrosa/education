@@ -10,7 +10,7 @@ import UIKit
 
 class ThemePageViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingTestPage & Dismissing)?
+    weak var coordinator: (ShowingTestDetails & Dismissing & ShowingTestPage)?
     let viewModel: ThemePageViewModel
     
     // MARK: - Properties
@@ -117,17 +117,33 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableCell.identifier, for: indexPath) as? CustomTableCell else {
             fatalError("Could not dequeue cell")
         }
+        let hasComment = self.viewModel.hasComment(test: test)
         
         cell.textLabel?.text = self.viewModel.getDateString(from: test)
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let commentView = UIImageView()
+        commentView.image = UIImage(systemName: "text.bubble")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 18))
+        commentView.tintColor = .secondaryLabel        
         let label = UILabel()
         label.text = self.viewModel.getQuestionsString(from: test)
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.textColor = .secondaryLabel
         label.sizeToFit()
         
-        cell.accessoryView = label
+        if hasComment {
+            stackView.addArrangedSubview(commentView)
+            stackView.addArrangedSubview(label)
+            cell.setAccessoryView(stackView)
+        }
+        else {
+            cell.accessoryView = label
+        }
         
         cell.row = indexPath.row
         cell.numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
@@ -140,7 +156,7 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
         
         let test = self.viewModel.tests.value[indexPath.row]
         
-        self.coordinator?.showTestPage(theme: self.viewModel.theme, test: test)
+        self.coordinator?.showTestDetails(theme: self.viewModel.theme, test: test)
     }
 }
 

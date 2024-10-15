@@ -20,6 +20,15 @@ class ThemePageView: UIView {
     private let segmentedControl: CustomSegmentedControl = {
         let control = CustomSegmentedControl()
         
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 13)!
+        ]
+        let titleAttributesUnselected: [NSAttributedString.Key: Any] = [
+            .font: UIFont(name: Fonts.darkModeOnRegular, size: 13)!
+        ]
+        control.setTitleTextAttributes(titleAttributesUnselected, for: .normal)
+        control.setTitleTextAttributes(titleAttributes, for: .selected)
+        
         control.translatesAutoresizingMaskIntoConstraints = false
         
         return control
@@ -30,6 +39,30 @@ class ThemePageView: UIView {
             self.setupUI()
         }
     }
+    
+    let stackView: UIStackView = {
+        let stackView = UIStackView()
+        
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let dayLabel = UILabel()
+        dayLabel.text = String(localized: "dayLabel")
+        dayLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
+        dayLabel.textColor = UIColor.secondaryLabel
+        
+        let questionsLabel = UILabel()
+        questionsLabel.text = String(localized: "questionLabel")
+        questionsLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
+        questionsLabel.textColor = UIColor.secondaryLabel
+        
+        stackView.addArrangedSubview(dayLabel)
+        stackView.addArrangedSubview(questionsLabel)
+        
+        return stackView
+    }()
     
     var tableView: CustomTableView?
     
@@ -66,6 +99,7 @@ extension ThemePageView: ViewCodeProtocol {
         self.addSubview(segmentedControl)
         self.addSubview(customChart)
         self.addSubview(tableView)
+        self.addSubview(stackView)
             
         NSLayoutConstraint.activate([
             segmentedControl.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -77,10 +111,14 @@ extension ThemePageView: ViewCodeProtocol {
             customChart.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
             customChart.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 200/844),
             
-            tableView.topAnchor.constraint(equalTo: customChart.bottomAnchor, constant: 26),
+            stackView.topAnchor.constraint(equalTo: customChart.bottomAnchor, constant: 50),
+            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
+            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -28),
+            
+            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -20),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 }

@@ -111,6 +111,8 @@ class ScheduleDetailsViewController: UIViewController {
               let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
               let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else { return }
         
+        endDatePicker.minimumDate = self.viewModel.selectedStartTime.addingTimeInterval(60)
+        
         startDatePicker.isEnabled = sender.tag == 1
         endDatePicker.isEnabled = sender.tag == 2
     }

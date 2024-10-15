@@ -35,8 +35,8 @@
 "friday" = "Sexta-feira";
 "saturday" = "Sábado";
 "reminder" = "Lembrete";
-"comingEvent" = "Seu evento de %@ começará em breve!";
-"immediateEvent" = "Seu evento de %@ começa agora!";
+"comingEvent" = "Sua atividade de %@ começará em breve!";
+"immediateEvent" = "Sua atividade de %@ começa agora!";
 "addSubjectAlertTitle" = "Adicionar Matéria";
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
@@ -148,6 +148,9 @@
 "deleteTest" = "Apagar teste";
 "emptyTheme" = "Você ainda não tem nenhuma prova registrada aqui";
 "emptyTest" = "Você ainda não tem nenhum registro de teste";
+"dayLabel" = "Day";
+"questionLabel" = "Questões";
+"description" = "Notas sobre o teste/ questões";
 
 // MARK: - Settings
 "deactivateTitle" = "Desative no seu celular!";
@@ -194,3 +197,8 @@
 "startBlockAlertBody" = "Seus apps estão bloqueados agora";
 "endBlockAlertTitle" = "Finalizando bloqueio de apps";
 "endBlockAlertBody" = "Seus apps estão desbloqueados agora";
+
+// MARK: - TestDetails
+"questionsLable" = "Questões";
+"dateLable" = "Data";
+"notesLable" = "Notas";
