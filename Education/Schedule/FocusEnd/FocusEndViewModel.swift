@@ -57,7 +57,7 @@ class FocusEndViewModel {
     
     private func getDifferenceBetween(_ date1: Date, and date2: Date) -> String {
         let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .abbreviated
+        formatter.unitsStyle = .brief
         formatter.allowedUnits = [.hour, .minute]
         
         guard let differenceString = formatter.string(from: date1, to: date2) else { return String() }
