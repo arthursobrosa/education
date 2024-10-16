@@ -58,7 +58,7 @@
 		6823766B2C63E86E00255143 /* DismissingAll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6823766A2C63E86E00255143 /* DismissingAll.swift */; };
 		682376702C63F48100255143 /* ActivityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6823766F2C63F48100255143 /* ActivityButton.swift */; };
 		682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BCE2C2F342100272451 /* ThemeManager.swift */; };
-		682927512C30AE4000FE29AA /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		682927512C30AE4000FE29AA /* (null) in Sources */ = {isa = PBXBuildFile; };
 		682A9A8A2C62602000FAAD07 /* ShowingFocusSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682A9A892C62602000FAAD07 /* ShowingFocusSelection.swift */; };
 		68333DD22C3F81590064BF87 /* ScheduleDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68333DD12C3F81590064BF87 /* ScheduleDetailsViewModel.swift */; };
 		68333DD82C3F95AD0064BF87 /* ShowingScheduleDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */; };
@@ -1115,7 +1115,6 @@
 				F515C66CECE6469A97E08798 /* Pods-EducationTests.debug.xcconfig */,
 				0BCC28E32C9F6A3F925EE2A4 /* Pods-EducationTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -1440,7 +1439,7 @@
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
 				685265512C8B710A009D9678 /* ShowingThemeCreation.swift in Sources */,
 				68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */,
-				682927512C30AE4000FE29AA /* BuildFile in Sources */,
+				682927512C30AE4000FE29AA /* (null) in Sources */,
 				CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */,
 				68FF04EA2CBE3DEE00E8C48C /* NotesCell.swift in Sources */,
 				CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */,
@@ -1584,7 +1583,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_BUILD = 13;
+				APP_BUILD = 15;
 				APP_VERSION = 1.23;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1650,7 +1649,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_BUILD = 13;
+				APP_BUILD = 15;
 				APP_VERSION = 1.23;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
