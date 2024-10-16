@@ -64,22 +64,26 @@ class SplashViewController: UIViewController {
         
         setupUI()
         
-        viewModel.syncSummaryStatus.bind { [weak self] status in
-            guard let self else { return }
+        viewModel.isAvailable.bind { [weak self] isAvailable in
+            guard let self,
+                  isAvailable else { return }
+            
+            self.showTab(after: self.viewModel.extraAnimationTime)
+            print("Synced with iCloud")
+        }
+        
+        viewModel.unavailableStatus.bind { [weak self] status in
+            guard let self,
+                  let status else { return }
             
             if case .noNetwork = status {
-                self.showAlert(title: status!.title, message: status!.message)
+                self.showAlert(title: status.title, message: status.message)
                 return
             }
             
             if case .accountNotAvailable = status {
-                self.showAlert(title: status!.title, message: status!.message)
+                self.showAlert(title: status.title, message: status.message)
                 return
-            }
-            
-            if case .succeeded = status {
-                print(status!.message)
-                self.showTab(after: self.viewModel.extraAnimationTime)
             }
         }
     }
@@ -94,15 +98,22 @@ class SplashViewController: UIViewController {
     private func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let noAction = UIAlertAction(title: String(localized: "no"), style: .destructive)
-        let yesAction = UIAlertAction(title: String(localized: "yes"), style: .default) { [weak self] _ in
+        let tryAgainAction = UIAlertAction(title: String(localized: "tryAgain"), style: .cancel) { [weak self] _ in
             guard let self else { return }
             
+            self.dismiss(animated: true)
+            self.viewModel.setSyncMonitor()
+        }
+        
+        let continueAction = UIAlertAction(title: String(localized: "continue"), style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            
+            self.dismiss(animated: true)
             self.showTab(after: 0)
         }
         
-        alertController.addAction(noAction)
-        alertController.addAction(yesAction)
+        alertController.addAction(tryAgainAction)
+        alertController.addAction(continueAction)
         
         present(alertController, animated: true)
     }

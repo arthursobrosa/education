@@ -12,13 +12,10 @@ import SwiftUI
 import CloudKit
 
 public class SyncMonitor: ObservableObject {
-    /// A singleton to use
-    public static let shared = SyncMonitor()
-
     // MARK: - Summary properties
     /// Possible values for the summary of the state of iCloud sync
     public enum SyncSummaryStatus {
-        case noNetwork, accountNotAvailable, succeeded
+        case noNetwork, accountNotAvailable
         
         // A string you could use to display the status
         public var title: String {
@@ -27,8 +24,6 @@ public class SyncMonitor: ObservableObject {
                     String(localized: "noNetworkTitle")
                 case .accountNotAvailable:
                     String(localized: "accountNotAvailableTitle")
-                case .succeeded:
-                    "Synced with iCloud"
             }
         }
         
@@ -38,8 +33,6 @@ public class SyncMonitor: ObservableObject {
                     String(localized: "noNetworkMessage")
                 case .accountNotAvailable:
                     String(localized: "accountNotAvailableMessage")
-                case .succeeded:
-                    "Synced with iCloud"
             }
         }
     }

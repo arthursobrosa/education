@@ -10,7 +10,7 @@ import Combine
 
 class SplashViewModel {
     // MARK: - CoreData/CloudKit sync monitor
-    private var syncMonitor: SyncMonitor
+    private var syncMonitor: SyncMonitor?
     
     // MARK: - Combine storage
     private var cancellables = Set<AnyCancellable>()
@@ -20,33 +20,30 @@ class SplashViewModel {
     
     var extraAnimationTime = TimeInterval()
     
-    var syncSummaryStatus: Box<SyncMonitor.SyncSummaryStatus?> = Box(nil)
+    var isAvailable: Box<Bool> = Box(false)
+    var unavailableStatus: Box<SyncMonitor.SyncSummaryStatus?> = Box(nil)
     private var syncCount: Int = 0 {
         didSet {
             guard syncCount == 3 else { return }
             
             setExtraAnimationTime()
-            syncSummaryStatus.value = .succeeded
+            isAvailable.value = true
         }
     }
     
     // MARK: - Initializer
-    init(syncMonitor: SyncMonitor = SyncMonitor.shared) {
-        self.syncMonitor = syncMonitor
-        
-        bindNetworkAvailable()
+    init() {
+        setSyncMonitor()
     }
     
     // MARK: - Methods
     private func bindNetworkAvailable() {
-        syncMonitor.$networkAvailable
+        syncMonitor?.$networkAvailable
             .sink { [weak self] networkAvailable in
                 guard let self else { return }
                 
                 if let networkAvailable {
-                    if networkAvailable == false {
-                        self.syncSummaryStatus.value = .noNetwork
-                    } else {
+                    if networkAvailable {
                         self.bindiCloudAccountStatus()
                     }
                 }
@@ -55,21 +52,19 @@ class SplashViewModel {
     }
     
     private func bindiCloudAccountStatus() {
-        syncMonitor.$iCloudAccountStatus
+        syncMonitor?.$iCloudAccountStatus
             .sink { [weak self] iCloudAccountStatus in
                 guard let self else { return }
                 
                 if case .available = iCloudAccountStatus {
                     self.bindSyncStates()
-                } else {
-                    self.syncSummaryStatus.value = .accountNotAvailable
                 }
             }
             .store(in: &cancellables)
     }
     
     private func bindSyncStates() {
-        syncMonitor.$setupState
+        syncMonitor?.$setupState
             .sink { [weak self] setupState in
                 guard let self else { return }
                 
@@ -77,7 +72,7 @@ class SplashViewModel {
             }
             .store(in: &cancellables)
         
-        syncMonitor.$importState
+        syncMonitor?.$importState
             .sink { [weak self] importState in
                 guard let self else { return }
                 
@@ -85,7 +80,7 @@ class SplashViewModel {
             }
             .store(in: &cancellables)
         
-        syncMonitor.$exportState
+        syncMonitor?.$exportState
             .sink { [weak self] exportState in
                 guard let self else { return }
                 
@@ -98,7 +93,36 @@ class SplashViewModel {
         let syncDuration = Date().timeIntervalSince(syncStartDate)
         
         if syncDuration < 2.0 {
-            self.extraAnimationTime = 2.0 - syncDuration
+            extraAnimationTime = 2.0 - syncDuration
         }
+    }
+    
+    private func waitAndCheckSyncStatus() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            guard let self,
+                  !self.isAvailable.value else { return }
+            
+            if let networkAvailable = self.syncMonitor?.networkAvailable {
+                if !networkAvailable {
+                    self.unavailableStatus.value = .noNetwork
+                    return
+                }
+            }
+             
+            guard case .available = self.syncMonitor?.iCloudAccountStatus else {
+                self.unavailableStatus.value = .accountNotAvailable
+                return
+            }
+        }
+    }
+    
+    func setSyncMonitor() {
+        syncMonitor = nil
+        syncMonitor = SyncMonitor()
+        syncStartDate = Date.now
+        isAvailable.value = false
+        unavailableStatus.value = nil
+        bindNetworkAvailable()
+        waitAndCheckSyncStatus()
     }
 }

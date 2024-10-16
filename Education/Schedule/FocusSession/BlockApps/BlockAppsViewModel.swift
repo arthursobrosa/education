@@ -23,6 +23,7 @@ protocol BlockingManager {
 class BlockAppsMonitor: ObservableObject, BlockingManager {
     let store = ManagedSettingsStore()
     let center = AuthorizationCenter.shared
+    private var isBlocked = false
     
     func requestAuthorization() {
         let isAuthorized = center.authorizationStatus.description
@@ -44,15 +45,19 @@ class BlockAppsMonitor: ObservableObject, BlockingManager {
             print("error to decode: \(error)")
         }
         
+        isBlocked = true
         createBlockAppsNotification(isStarting: true)
     }
     
     func removeShields() {
+        guard isBlocked else { return }
+        
         store.shield.applications =  nil
         store.shield.applicationCategories = nil
         store.shield.webDomainCategories = nil
         
-        self.createBlockAppsNotification(isStarting: false)
+        isBlocked = false
+        createBlockAppsNotification(isStarting: false)
     }
     
     private func createBlockAppsNotification(isStarting: Bool) {
