@@ -34,6 +34,7 @@
 		310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A182C2F2694005339E8 /* TestPageViewController.swift */; };
 		310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310B8A1A2C2F26BE005339E8 /* TestPageView.swift */; };
 		31117EDE2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31117EDD2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift */; };
+		31117EE12CC02B6B00FF2701 /* UXCam in Frameworks */ = {isa = PBXBuildFile; productRef = 31117EE02CC02B6B00FF2701 /* UXCam */; };
 		317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11252C35BBBD00C5E7A5 /* TabBarController.swift */; };
 		317C112C2C35C4F100C5E7A5 /* ShowingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */; };
 		317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C11302C3EF74C00C5E7A5 /* StudyTimeViewController.swift */; };
@@ -481,6 +482,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31117EE12CC02B6B00FF2701 /* UXCam in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1211,6 +1213,7 @@
 			);
 			name = Education;
 			packageProductDependencies = (
+				31117EE02CC02B6B00FF2701 /* UXCam */,
 			);
 			productName = Education;
 			productReference = 683B45352C1B6F3A00663912 /* Education.app */;
@@ -1285,6 +1288,7 @@
 			);
 			mainGroup = 683B452C2C1B6F3A00663912;
 			packageReferences = (
+				31117EDF2CC02B6B00FF2701 /* XCRemoteSwiftPackageReference "ios-sdk" */,
 			);
 			productRefGroup = 683B45362C1B6F3A00663912 /* Products */;
 			projectDirPath = "";
@@ -1928,6 +1932,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		31117EDF2CC02B6B00FF2701 /* XCRemoteSwiftPackageReference "ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/uxcam/ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.6.8;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		31117EE02CC02B6B00FF2701 /* UXCam */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31117EDF2CC02B6B00FF2701 /* XCRemoteSwiftPackageReference "ios-sdk" */;
+			productName = UXCam;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		31AA70A02C2C8632002367CA /* DataBase.xcdatamodeld */ = {

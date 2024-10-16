@@ -1,0 +1,15 @@
+{
+  "originHash" : "4ae660b98443d22448a1e222f71f7bdd1e294348349f3ee57f67b91e26ade48f",
+  "pins" : [
+    {
+      "identity" : "ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/uxcam/ios-sdk",
+      "state" : {
+        "revision" : "10f2de74e670221955d9c47fa574430d4ce3112f",
+        "version" : "3.6.8"
+      }
+    }
+  ],
+  "version" : 3
+}
