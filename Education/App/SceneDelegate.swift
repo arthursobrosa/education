@@ -14,6 +14,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var currentDate = Date()
     private var timerSeconds = Int()
     
+    var activityManager: ActivityManager?
+    var blockingManager: BlockingManager?
+    
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -21,13 +24,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
+        blockingManager = BlockAppsMonitor()
         UNUserNotificationCenter.current().delegate = self
         
         window = UIWindow(windowScene: windowScene)
         window?.frame = windowScene.coordinateSpace.bounds
         
-        let themeListViewModel = ThemeListViewModel()
-        coordinator = SplashCoordinator(navigationController: UINavigationController(), themeListViewModel: themeListViewModel)
+        activityManager = ActivityManager()
+        coordinator = SplashCoordinator(navigationController: UINavigationController(), activityManager: activityManager, blockingManager: blockingManager)
         coordinator?.start()
         
         window?.rootViewController = coordinator?.navigationController
@@ -41,7 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
         
         CoreDataStack.shared.saveMainContext()
-        BlockAppsMonitor.shared.removeShields()
+        blockingManager?.removeShields()
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -59,7 +63,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to undo the changes made on entering the background.
         let timeInBackground = Date().timeIntervalSince(self.currentDate)
         
-        ActivityManager.shared.updateAfterBackground(timeInBackground: timeInBackground, lastTimerSeconds: self.timerSeconds)
+        activityManager?.updateAfterBackground(timeInBackground: timeInBackground, lastTimerSeconds: self.timerSeconds)
         
         guard let coordinator else { return }
         
@@ -75,41 +79,48 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-        guard !ActivityManager.shared.isPaused else { return }
+        guard let activityManager,
+              !activityManager.isPaused else { return }
         
         self.currentDate = Date()
-        self.timerSeconds = ActivityManager.shared.timerSeconds
+        self.timerSeconds = activityManager.timerSeconds
         
-        switch ActivityManager.shared.timerCase {
+        switch activityManager.timerCase {
             case .pomodoro:
-                ActivityManager.shared.stopTimer()
+                activityManager.stopTimer()
             default:
                 break
         }
         
         var date = Date()
         
-        switch ActivityManager.shared.timerCase {
+        switch activityManager.timerCase {
             case .timer:
-                date = Calendar.current.date(byAdding: .second, value: ActivityManager.shared.timerSeconds, to: Date.now)!
+                date = Calendar.current.date(byAdding: .second, value: activityManager.timerSeconds, to: Date.now)!
             case .pomodoro:
-                date = self.notificationDate()
+                guard let notificationDate = notificationDate() else { return }
+                
+                date = notificationDate
             default:
                 break
         }
         
         NotificationService.shared.scheduleEndNotification(
             title: String(localized: "timerAlertMessage"),
-            subjectName: ActivityManager.shared.subject?.unwrappedName,
+            subjectName: activityManager.subject?.unwrappedName,
             date: date)
     }
     
-    private func notificationDate() -> Date {
-        let pomodoro = ActivityManager.shared
+    private func notificationDate() -> Date? {
+        guard let activityManager else { return nil }
         
-        let loopTime = pomodoro.workTime + pomodoro.restTime
-        let totalTime = loopTime * pomodoro.numberOfLoops
-        let timePassed = Double(pomodoro.currentLoop * loopTime) + Date().timeIntervalSince(pomodoro.startTime ?? Date())
+        guard case .pomodoro(let workTime, let restTime, let numberOfLoops) = activityManager.timerCase else {
+            return nil
+        }
+        
+        let loopTime = workTime + restTime
+        let totalTime = loopTime * numberOfLoops
+        let timePassed = Double(activityManager.currentLoop * loopTime) + Date().timeIntervalSince(activityManager.startTime ?? Date())
         
         let timeLeft = Double(totalTime) - timePassed
         

@@ -8,23 +8,23 @@
 import Foundation
 import UIKit
 
-enum ScheduleViewMode: CaseIterable {
+enum ScheduleMode: CaseIterable {
     case daily
     case weekly
     
     var name: String {
         switch self {
             case .daily:
-                return String(localized: "daily")
+                String(localized: "daily")
             case .weekly:
-                return String(localized: "weekly")
+                String(localized: "weekly")
         }
     }
 }
 
 class ScheduleViewModel {
     // MARK: - Subject and Schedule Handlers
-     let subjectManager: SubjectManager
+    let subjectManager: SubjectManager
     private let scheduleManager: ScheduleManager
     
     // MARK: - Properties
@@ -32,8 +32,8 @@ class ScheduleViewModel {
     
     var tasks: [[Schedule]] = [[],[],[],[],[],[],[]]
     
-    var viewModes: [ScheduleViewMode] = ScheduleViewMode.allCases
-    var selectedViewMode: ScheduleViewMode = .daily
+    var scheduleModes: [ScheduleMode] = ScheduleMode.allCases
+    var selectedScheduleMode: ScheduleMode = .daily
     
     var selectedDate: Date = Date() {
         didSet {
@@ -93,7 +93,6 @@ class ScheduleViewModel {
             
             self.tasks = schedulesByDay
         }
-        
     }
     
     func organizeSchedulesByDayOfWeek(_ orderedWeekSchedules: [Schedule]) -> [[Schedule]] {
@@ -124,7 +123,7 @@ class ScheduleViewModel {
         return formatter.string(from: date)
     }
     
-    func isThereAnySubject() -> Bool {
+    func hasSubjects() -> Bool {
         guard let subjects = self.subjectManager.fetchSubjects() else { return false }
         
         return !subjects.isEmpty
@@ -242,5 +241,27 @@ class ScheduleViewModel {
         let calendar = Calendar.current
         
         return calendar.dateComponents(components, from: date)
+    }
+    
+    func getContentViewInfo() -> (isDaily: Bool, isEmpty: Bool) {
+        var isDaily = false
+        var isEmpty = false
+
+        if selectedScheduleMode == .daily {
+            isEmpty = schedules.isEmpty
+            isDaily = true
+        } else {
+            isDaily = false
+            
+            var emptyTasks = 0
+            for task in tasks {
+                if task.isEmpty {
+                    emptyTasks += 1
+                }
+            }
+            isEmpty = emptyTasks == tasks.count
+        }
+        
+        return (isDaily, isEmpty)
     }
 }

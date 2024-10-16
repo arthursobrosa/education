@@ -64,7 +64,6 @@ extension DailyScheduleView: ViewCodeProtocol {
             daysStack.topAnchor.constraint(equalTo: self.topAnchor),
             daysStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             daysStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            daysStack.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             daysStack.heightAnchor.constraint(equalTo: daysStack.widthAnchor, multiplier: (58/359)),
             
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12),

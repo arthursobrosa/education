@@ -9,19 +9,16 @@ import UIKit
 
 class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingScheduleNotification, ShowingTimer, ShowingScheduleDetailsModal, ShowingFocusSelection, ShowingSubjectCreation {
     
-    
-    func showSubjectCreation(viewModel: StudyTimeViewModel) {
-        let child = SubjectCreationCoordinator(navigationController: self.navigationController, viewModel: viewModel)
-        child.parentCoordinator = self
-        self.childCoordinators.append(child)
-        child.start()
-    }
-    
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
+    private let activityManager: ActivityManager
+    private let blockingManager: BlockingManager
+    
+    init(navigationController: UINavigationController, activityManager: ActivityManager, blockingManager: BlockingManager) {
         self.navigationController = navigationController
+        self.activityManager = activityManager
+        self.blockingManager = blockingManager
     }
     
     func start() {
@@ -42,21 +39,21 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     }
     
     func showFocusImediate() {
-        let child = FocusImediateCoordinator(navigationController: self.navigationController)
+        let child = FocusImediateCoordinator(navigationController: self.navigationController, blockingManager: blockingManager)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
     }
     
     func showScheduleNotification(subjectName: String, startTime: Date, endTime: Date) {
-        let child = ScheduleNotificationCoordinator(navigationController: self.navigationController, subjectName: subjectName, startTime: startTime, endTime: endTime)
+        let child = ScheduleNotificationCoordinator(navigationController: self.navigationController, subjectName: subjectName, startTime: startTime, endTime: endTime, blockingManager: blockingManager)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
     }
     
     func showFocusSelection(focusSessionModel: FocusSessionModel) {
-        let child = FocusSelectionCoordinator(navigationController: self.navigationController, isFirstModal: true, focusSessionModel: focusSessionModel)
+        let child = FocusSelectionCoordinator(navigationController: self.navigationController, isFirstModal: true, focusSessionModel: focusSessionModel, blockingManager: blockingManager)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -64,18 +61,26 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     
     func showTimer(focusSessionModel: FocusSessionModel?) {
         if let focusSessionModel {
-            ActivityManager.shared.finishSession()
-            ActivityManager.shared.updateFocusSession(with: focusSessionModel)
+            activityManager.finishSession()
+            activityManager.updateFocusSession(with: focusSessionModel)
+            activityManager.isPaused = false
         }
         
-        let child = FocusSessionCoordinator(navigationController: self.navigationController)
+        let child = FocusSessionCoordinator(navigationController: self.navigationController, activityManager: activityManager, blockingManager: blockingManager)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
     }
     
     func showScheduleDetailsModal(schedule: Schedule) {
-        let child = ScheduleDetailsModalCoordinator(navigationController: self.navigationController, schedule: schedule)
+        let child = ScheduleDetailsModalCoordinator(navigationController: self.navigationController, schedule: schedule, blockingManager: blockingManager)
+        child.parentCoordinator = self
+        self.childCoordinators.append(child)
+        child.start()
+    }
+    
+    func showSubjectCreation(viewModel: StudyTimeViewModel) {
+        let child = SubjectCreationCoordinator(navigationController: self.navigationController, viewModel: viewModel)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -104,7 +109,7 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
         }
         
         if let focusSessionVC = nav.viewControllers.first as? FocusSessionViewController {
-            ActivityManager.shared.handleActivityDismissed(didTapFinish: focusSessionVC.viewModel.didTapFinish)
+            activityManager.handleDismissedActivity(didTapFinish: focusSessionVC.viewModel.didTapFinish)
             
             self.childDidFinish(focusSessionVC.coordinator as? Coordinator)
         }

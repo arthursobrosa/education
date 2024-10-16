@@ -9,6 +9,7 @@
 "confirm" = "Confirm";
 "yes" = "Yes";
 "no" = "No";
+"tryAgain" = "Try again";
 "last" = "Last";
 "lastPlural" = "Last";
 
@@ -21,6 +22,7 @@
 // MARK: - Schedule
 "schedule" = "Schedule";
 "newSchedule" = "New";
+"activity" = "Activity";
 "createActivity" = "Create activity";
 "immediateActivity" = "Start imediate activity";
 "timeLeft" = "In %@h%@m";
@@ -55,13 +57,6 @@
 "weekly" = "Weekly";
 "noSubjectTitle" = "You cannot create an activity";
 "noSubjectMessage" = "You have to create a subject before setting an activity";
-"timeIsUp" = "End of activity";
-"activityEndCongratulations" = "Congratulations! You've reached the end of your activity of ";
-"noActivityEndCongratulations" = "Congratulations! You've reached the end of your activity 🎉";
-"finishEarlyAlertBody" = "Are you sure you want to finish your activity now?";
-"finishEarlyAlertTitle" = "Finish Activity";
-"restartAlertTitle" = "Restart Activity";
-"restartAlertBody" = "Are you sure you want to restart your activity?";
 "activityDeletionTitle" = "Activity Deletion";
 "activityDeletionMessage" = "Are you sure you want to delete this schedule?";
 "emptyDaySchedule" = "You still have no activities scheduled for this day";
@@ -90,13 +85,33 @@
 "timerAlertMessage" = "Your timer is finished";
 "focusFinish" = "Finish";
 "focusRestart" = "Restart";
+"startFocus" = "Start Focus";
+"startInterval" = "Start Interval";
 "pomodoroFocus" = "Focus";
 "pomodoroInterval" = "Interval";
 "pomodoroRepetitions" = "Repetitions";
 "deleteActivity" = "Delete activity";
+"imediateActivity" = "Imediate Activity";
+"extendSomething" = "Extend %@";
+"extendTime" = "Extend Time";
+"extendFocus" = "Extend Focus";
+"extendInterval" = "Extend Interval";
+"finishEarlyAlertBody" = "Are you sure you want to finish your activity now?";
+"finishEarlyAlertTitle" = "Finish Activity";
+"restartAlertTitle" = "Restart Activity";
+"restartAlertBody" = "Are you sure you want to restart your activity?";
+"finishTimerAlertTitle" = "End of Activity";
+"finishTimerAlertBody" = "Congratulations! You've reached the end of your activity of %@ 🎉";
+"finishTimerAlertBody-noSubject" = "Congratulations! You've reached the end of your activity 🎉";
+"finishPomodoroAlertTitle" = "End of %@";
+"finishPomodoroAlertBody" = "You've reached the end of your activity's %@";
 "focusTime" = "Focus Time";
 "pauseTime" = "Pause Time";
-"imediateActivity" = "Imediate Activity";
+"hour" = "Hour";
+"timer" = "Timer";
+"notes"= "Notes";
+"discard" = "Discard";
+"notesPlaceholder" = "Notes about the activity";
 
 // MARK: - Subjects
 "subject" = "Subject";
@@ -178,6 +193,8 @@
 "deleteOtherBodyText" = "This item gathers all the study times you have recorded that are not tied to any particular subject. Although it cannot be deleted, you have the option to erase the study times linked to it.";
 
 // MARK: - Block
+"startBlockAlertTitle" = "Starting app block";
+"startBlockAlertBody" = "Your apps are blocked now";
 "endBlockAlertTitle" = "Ending app block";
 "endBlockAlertBody" = "Your apps are unblocked now";
 
@@ -185,3 +202,9 @@
 "questionsLable" = "Questions";
 "dateLable" = "Date";
 "notesLable" = "Notes";
+
+// MARK: - Sync Monitor
+"noNetworkTitle" = "No network available";
+"noNetworkMessage" = "You are not connected to the internet. Would you like to continue disconnected? All alterations will not be saved to your iCloud account.";
+"accountNotAvailableTitle" = "No iCloud account";
+"accountNotAvailableMessage" = "You are not logged to iCloud. Would you like to continue disconnected? All alterations will not be saved to your iCloud account.";
