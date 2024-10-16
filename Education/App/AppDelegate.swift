@@ -17,10 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // -MARK: UXCam - Descomentar apenas em produção
         
-//        UXCam.optIntoSchematicRecordings()
-//        let configuration = UXCamConfiguration(appKey: "p40ljalqy03uxcg")
-//        configuration.enableAdvancedGestureRecognition = true
-//        UXCam.start(with: configuration)
+        UXCam.optIntoSchematicRecordings()
+        let configuration = UXCamConfiguration(appKey: "p40ljalqy03uxcg")
+        configuration.enableAdvancedGestureRecognition = true
+        UXCam.start(with: configuration)
         
         try? Tips.configure()
         return true
