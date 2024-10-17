@@ -14,6 +14,7 @@ class ThemeListViewModel {
     
     // MARK: - Properties
     var themes = Box([Theme]())
+    var selectedThemeIndex = 0
     
     // MARK: - Initializer
     init(themeManager: ThemeManager = ThemeManager(), testManager: TestManager = TestManager()) {
