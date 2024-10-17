@@ -27,7 +27,7 @@ import UIKit
     // MARK: - Schedule Cell
     func getConfiguredScheduleCell(from cell: ScheduleCell, at indexPath: IndexPath, isDaily: Bool) -> UICollectionViewCell
     func getNumberOfItemsIn(_ index: Int) -> Int
-    func didSelectWeeklySchedule(at indexPath: IndexPath)
+    func didSelectWeeklySchedule(column: Int, row: Int)
 }
 
 extension ScheduleViewController: ScheduleDelegate {
@@ -182,9 +182,9 @@ extension ScheduleViewController: ScheduleDelegate {
         return self.viewModel.tasks[index].count
     }
     
-    func didSelectWeeklySchedule(at indexPath: IndexPath) {
-        if !self.viewModel.tasks[indexPath.section].isEmpty {
-            let task = viewModel.tasks[indexPath.section][indexPath.item]
+    func didSelectWeeklySchedule(column: Int, row: Int) {
+        if !self.viewModel.tasks[column].isEmpty {
+            let task = viewModel.tasks[column][row]
             
             self.coordinator?.showScheduleDetailsModal(schedule: task)
         }
