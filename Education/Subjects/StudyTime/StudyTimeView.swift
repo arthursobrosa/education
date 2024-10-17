@@ -37,7 +37,7 @@ class StudyTimeView: UIView {
         return segmentedControl
     }()
     
-    private let chartView: StudyTimeChartView
+    let chartView: StudyTimeChartView
     
     lazy var chartController: UIHostingController<StudyTimeChartView> = {
         let controller = UIHostingController(rootView: self.chartView)

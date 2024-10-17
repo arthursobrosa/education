@@ -67,6 +67,16 @@ class ScheduleViewController: UIViewController {
             
             self.loadSchedules()
         }
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            if(self.traitCollection.userInterfaceStyle == .light){
+                self.scheduleView.viewModeSelector.segmentImage = UIImage(color: UIColor.systemBackground)
+            } else {
+                self.scheduleView.viewModeSelector.segmentImage = UIImage(color: UIColor.systemBackground)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

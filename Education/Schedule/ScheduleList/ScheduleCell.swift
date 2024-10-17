@@ -64,9 +64,9 @@ class ScheduleCell: UICollectionViewCell {
         didSet {
             guard let color else { return }
             
-            self.cardView.backgroundColor = color.withAlphaComponent(0.2)
+            self.cardView.backgroundColor = color.withAlphaComponent(traitCollection.userInterfaceStyle == .dark ? 0.3 : 0.2)
             
-            let subjectColor = self.traitCollection.userInterfaceStyle == .light ? color.darker(by: 0.6) : color.darker(by: 1.8)
+            let subjectColor = self.traitCollection.userInterfaceStyle == .light ? color.darker(by: 1.4) : color.darker(by: 1.8)
             self.subjectNameLabel.textColor = subjectColor
             self.playButton.playImageView.tintColor = subjectColor
             self.playButton.circleView.backgroundColor = color.withAlphaComponent(0.6)

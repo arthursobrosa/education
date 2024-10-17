@@ -67,6 +67,18 @@ class StudyTimeViewController: UIViewController {
         }
         
         self.setNavigationItems()
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            if(self.traitCollection.userInterfaceStyle == .light){
+                self.studyTimeView.viewModeControl.segmentImage = UIImage(color: UIColor.systemBackground)
+//                self.studyTimeView.chartView.$bgColor = UIColor.label
+            } else {
+                self.studyTimeView.viewModeControl.segmentImage = UIImage(color: UIColor.systemBackground)
+//                self.studyTimeView.chartView.$bgColor = UIColor.label
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
