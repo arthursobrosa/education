@@ -15,4 +15,5 @@ enum Fonts {
     static let darkModeOnMedium = "DarkmodeOnTrial-Medium"
     static let darkModeOnSemiBold = "DarkmodeOnTrial-SemiBold"
     static let darkModeOnBold = "DarkmodeOnTrial-Bold"
+    static let darkModeOnItalic = "DarkmodeOnTrial-Italic"
 }

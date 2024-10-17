@@ -26,9 +26,10 @@ class ThemeCreationView: UIView {
     
     private lazy var textField: PaddedTextField = {
         let textField = PaddedTextField()
-        textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
-        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])
         textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
+        textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
+        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font : UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])
+       
         
         textField.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
         textField.layer.borderWidth = 1
