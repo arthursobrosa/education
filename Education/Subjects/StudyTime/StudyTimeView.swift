@@ -17,7 +17,7 @@ class StudyTimeView: UIView {
     }
     
     // MARK: - UI Components
-    private let viewModeControl: CustomSegmentedControl = {
+    let viewModeControl: CustomSegmentedControl = {
         let segmentedControl = CustomSegmentedControl()
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
@@ -31,6 +31,8 @@ class StudyTimeView: UIView {
         segmentedControl.setTitleTextAttributes(titleAttributes, for: .selected)
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        
         
         return segmentedControl
     }()
@@ -69,6 +71,17 @@ class StudyTimeView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
+    func darkModeSegmentedControl() {
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            viewModeControl.backgroundColor = .white.withAlphaComponent(10)
+        default:
+            viewModeControl.backgroundColor = .black.withAlphaComponent(40)
+        }
     }
 }
 
