@@ -98,8 +98,6 @@ class StudyTimeViewModel: ObservableObject {
         // Extrair as cores dos subjects já existentes
         let usedColors = Set(existingSubjects.map { $0.unwrappedColor })
         
-        print(usedColors)
-        
         // Verificar qual cor ainda não foi usada
         for color in subjectColors {
             if !usedColors.contains(color) {
