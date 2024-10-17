@@ -16,7 +16,7 @@ class ThemeListViewController: UIViewController {
     var createTestTip = CreateTestTip()
     
     // MARK: - Properties
-    private var themes = [Theme]()
+    var themes = [Theme]()
     
     lazy var themeListView: ThemeListView = {
         let view = ThemeListView()
@@ -130,15 +130,10 @@ class ThemeListViewController: UIViewController {
             self.themeListView.tableView.reloadData()
         }
     }
-}
-
-@objc protocol ThemeListDelegate: AnyObject {
-    func addThemeButtonTapped()
-}
-
-extension ThemeListViewController: ThemeListDelegate {
-    func addThemeButtonTapped() {
-        self.coordinator?.showThemeCreation(theme: nil)
+    
+    func didTapTrashButton() {
+        themeListView.deleteAlertView.configure(atSuperview: themeListView)
+        themeListView.changeAlertVisibility(isShowing: true)
     }
 }
 
@@ -234,9 +229,12 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let theme = self.viewModel.themes.value[indexPath.section]
+        let theme = viewModel.themes.value[indexPath.section]
+        viewModel.selectedThemeIndex = indexPath.section
         
-        let editButton = UIContextualAction(style: .normal, title: "") { _, _, _ in
+        let editButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
+            guard let self else { return }
+            
             self.coordinator?.showThemeCreation(theme: theme)
         }
         
@@ -244,9 +242,10 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         let editImage = UIImage(systemName: "square.and.pencil")?.withRenderingMode(.alwaysOriginal).withTintColor(.label)
         editButton.image = editImage
         
-        let deleteButton = UIContextualAction(style: .normal, title: "") { _, _, _ in
-            self.viewModel.removeTheme(theme)
-            self.viewModel.fetchThemes()
+        let deleteButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
+            guard let self else { return }
+            
+            self.didTapTrashButton()
         }
         
         deleteButton.backgroundColor = .systemBackground
