@@ -128,7 +128,8 @@ extension DayColumnCell: UICollectionViewDataSource, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.didSelectWeeklySchedule(at: indexPath)
+        guard let column else { return }
+        delegate?.didSelectWeeklySchedule(column: column, row: indexPath.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
