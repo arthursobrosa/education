@@ -485,12 +485,31 @@ extension ActivityManager: SessionManaging {
     }
     
     func getLoopStartTime(currentLoop: Int, workTime: Int, restTime: Int) -> Int {
-        let pomodoroTotal = workTime + restTime
+        var pomodoroTotal = 0
+        
+        if isExtending {
+            if isAtWorkTime {
+                pomodoroTotal = originalTime + restTime
+            } else {
+                pomodoroTotal = workTime + originalTime
+            }
+        } else {
+            pomodoroTotal = workTime + restTime
+        }
+        
         return currentLoop * pomodoroTotal
     }
     
     func getInLoopTime(workTime: Int, restTime: Int, isAtWorkTime: Bool, timerSeconds: Int) -> Int {
-        return isAtWorkTime ? workTime - timerSeconds : workTime + (restTime - timerSeconds)
+        if isExtending {
+            if isAtWorkTime {
+                return originalTime + (workTime - timerSeconds)
+            } else {
+                return workTime + originalTime + (restTime - timerSeconds)
+            }
+        } else {
+            return isAtWorkTime ? workTime - timerSeconds : workTime + (restTime - timerSeconds)
+        }
     }
     
     func getCurrentLoop(workTime: Int, restTime: Int, totalPassedTime: Int) -> Int {

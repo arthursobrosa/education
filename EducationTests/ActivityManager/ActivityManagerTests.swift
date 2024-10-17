@@ -691,18 +691,59 @@ class SessionTest: XCTestCase {
         XCTAssertEqual(sut.pausedTime, 0)
     }
     
-    func testGetLoopStartTime() {
+    func testGetLoopStartTime_isExtending_workTime() {
         // Arrange
-        let currentLoop = 2
-        let workTime = 60
-        let restTime = 30
+        sut.currentLoop = 2
+        sut.isExtending = true
+        sut.workTime = 30
+        sut.restTime = 60
+        sut.originalTime = 120
+        sut.isAtWorkTime = true
         
         // Act
-        let loopStartTime = sut.getLoopStartTime(currentLoop: currentLoop, workTime: workTime, restTime: restTime)
+        let loopStartTime = sut.getLoopStartTime(currentLoop: sut.currentLoop, workTime: sut.workTime, restTime: sut.restTime)
+        
+        // Assert
+        XCTAssertEqual(loopStartTime, 360)
+    }
+    
+    func testGetLoopStartTime_isExtending_restTime() {
+        // Arrange
+        sut.currentLoop = 2
+        sut.isExtending = true
+        sut.workTime = 30
+        sut.restTime = 60
+        sut.originalTime = 120
+        sut.isAtWorkTime = false
+        
+        // Act
+        let loopStartTime = sut.getLoopStartTime(currentLoop: sut.currentLoop, workTime: sut.workTime, restTime: sut.restTime)
+        
+        // Assert
+        XCTAssertEqual(loopStartTime, 300)
+    }
+    
+    func testGetLoopStartTime_isNotExtending() {
+        // Arrange
+        sut.currentLoop = 2
+        sut.isExtending = false
+        sut.workTime = 30
+        sut.restTime = 60
+        
+        // Act
+        let loopStartTime = sut.getLoopStartTime(currentLoop: sut.currentLoop, workTime: sut.workTime, restTime: sut.restTime)
         
         // Assert
         XCTAssertEqual(loopStartTime, 180)
     }
+    
+//    func testGetInLoopTime_workTime_isExtending() {
+//        // Act
+//        sut.workTime = 30
+//        sut.restTime = 60
+//        sut.originalTime = 120
+//
+//    }
     
     func testGetInLoopTime_workTime() {
         // Arrange
