@@ -112,6 +112,7 @@ class TimerTests: XCTestCase {
         sut.isPaused = false
         sut.timerFinished = true
         sut.isExtending = true
+        sut.isProgressingActivityBar = true
         sut.extendedTime = 10
         sut.originalTime = 20
         sut.progress = 1.0
@@ -133,6 +134,7 @@ class TimerTests: XCTestCase {
         XCTAssertEqual(sut.isPaused, true)
         XCTAssertEqual(sut.timerFinished, false)
         XCTAssertEqual(sut.isExtending, false)
+        XCTAssertEqual(sut.isProgressingActivityBar, false)
         XCTAssertEqual(sut.extendedTime, 0)
         XCTAssertEqual(sut.originalTime, 0)
         XCTAssertEqual(sut.progress, 0)
