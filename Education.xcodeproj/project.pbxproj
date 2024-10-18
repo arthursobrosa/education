@@ -130,7 +130,7 @@
 		688C257F2C667F9400150F7F /* ShowingFocusImediate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */; };
 		688C2A422C93212000E8EE81 /* TestPageViewController+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */; };
 		688C2A6A2C933F7600E8EE81 /* FakeDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */; };
-		688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */; };
+		688CF32C2C851C7B00DE97DD /* ActivityBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688CF32B2C851C7B00DE97DD /* ActivityBarButton.swift */; };
 		689388922C642133007EE922 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388912C642133007EE922 /* UIView+Extension.swift */; };
 		689388942C6423A7007EE922 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388932C6423A7007EE922 /* ActivityView.swift */; };
 		689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388982C642B23007EE922 /* TabBarController+Delegate.swift */; };
@@ -389,7 +389,7 @@
 		688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusImediate.swift; sourceTree = "<group>"; };
 		688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestPageViewController+CellConfig.swift"; sourceTree = "<group>"; };
 		688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDatePicker.swift; sourceTree = "<group>"; };
-		688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityButton.swift; sourceTree = "<group>"; };
+		688CF32B2C851C7B00DE97DD /* ActivityBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityBarButton.swift; sourceTree = "<group>"; };
 		689388912C642133007EE922 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		689388932C6423A7007EE922 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		689388982C642B23007EE922 /* TabBarController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarController+Delegate.swift"; sourceTree = "<group>"; };
@@ -930,7 +930,7 @@
 				68A451402C61143B00209786 /* CustomDatePickerView.swift */,
 				685CBFD92C61597600EC8E09 /* CustomDateButton.swift */,
 				6823766F2C63F48100255143 /* ActivityButton.swift */,
-				688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */,
+				688CF32B2C851C7B00DE97DD /* ActivityBarButton.swift */,
 				689388932C6423A7007EE922 /* ActivityView.swift */,
 				CE0BD2352C862E1300E9FBDF /* FocusStatusAlertView.swift */,
 				68BAAC032CB9DF66003A3ECC /* FocusExtensionAlertView.swift */,
@@ -1538,7 +1538,7 @@
 				68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */,
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
-				688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */,
+				688CF32C2C851C7B00DE97DD /* ActivityBarButton.swift in Sources */,
 				68FF04E22CBE244F00E8C48C /* FocusEndViewModel.swift in Sources */,
 				CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */,
 				68833D9A2C46B28D00BA4850 /* DefaultCell.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  LiveActivityButton.swift
+//  ActivityBarButton.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 01/09/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LiveActivityButton: UIButton {
+class ActivityBarButton: UIButton {
     // MARK: - Properties
     private let color: UIColor?
     private let progress: CGFloat
@@ -65,7 +65,7 @@ class LiveActivityButton: UIButton {
 }
 
 // MARK: - UI Setup
-extension LiveActivityButton: ViewCodeProtocol {
+extension ActivityBarButton: ViewCodeProtocol {
     func setupUI() {
         addSubview(timerContainerView)
         timerContainerView.addSubview(pauseResumeButton)
@@ -86,7 +86,7 @@ extension LiveActivityButton: ViewCodeProtocol {
     private func setupLayers() {
         let arcPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: frame.width / 2, startAngle: -(CGFloat.pi / 2), endAngle: -(CGFloat.pi / 2) + CGFloat.pi * 2, clockwise: true)
         
-        let lineWidth = bounds.width * (4/44)
+        let lineWidth = bounds.width * (4 / 44)
         
         timerTrackLayer.path = arcPath.cgPath
         timerTrackLayer.strokeColor = UIColor.systemGray5.cgColor
