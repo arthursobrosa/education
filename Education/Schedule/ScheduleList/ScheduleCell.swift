@@ -66,7 +66,7 @@ class ScheduleCell: UICollectionViewCell {
             
             self.cardView.backgroundColor = color.withAlphaComponent(traitCollection.userInterfaceStyle == .dark ? 0.3 : 0.2)
             
-            let subjectColor = self.traitCollection.userInterfaceStyle == .light ? color.darker(by: 1.4) : color.darker(by: 1.8)
+            let subjectColor = self.traitCollection.userInterfaceStyle == .light ? color.darker(by: 0.6) : color.darker(by: 1)
             self.subjectNameLabel.textColor = subjectColor
             self.playButton.playImageView.tintColor = subjectColor
             self.playButton.circleView.backgroundColor = color.withAlphaComponent(0.6)
@@ -203,6 +203,18 @@ extension ScheduleCell: ViewCodeProtocol {
                 playButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -8.5),
             ])
         }
+        
+//        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+//            (self: Self, previousTraitCollection: UITraitCollection) in
+//            
+//            if(self.traitCollection.userInterfaceStyle == .light){
+//                let subjectColor =  self.color!.darker(by: 0.6)
+//                self.subjectNameLabel.textColor = subjectColor
+//            } else {
+//                let subjectColor =  self.color!.darker(by: 1)
+//                self.subjectNameLabel.textColor = subjectColor
+//            }
+//        }
     }
 }
 

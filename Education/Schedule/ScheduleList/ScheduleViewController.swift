@@ -103,7 +103,7 @@ class ScheduleViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [addItem]
         
         self.navigationItem.title = self.viewModel.getTitleString()
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : self.traitCollection.userInterfaceStyle == .light ? UIColor.label : UIColor.label.withAlphaComponent(0.8)]
     }
     
     func reloadCollections() {
