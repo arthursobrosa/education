@@ -120,7 +120,7 @@ extension FocusSessionViewController {
                 self.focusSessionView.resetAnimations()
                 
                 let timerDuration = Double(timerSeconds)
-                let strokeEnd = self.viewModel.getStrokeEnd()
+                let strokeEnd = self.viewModel.activityManager.progress
                 
                 self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
             } else {
@@ -201,7 +201,7 @@ extension FocusSessionViewController {
 // MARK: - Auxiliar Methods
 extension FocusSessionViewController {
     private func setupViewLayers() {
-        let layersConfig = viewModel.getLayersConfig()
+        let layersConfig = viewModel.activityManager.getLayersConfig()
         
         focusSessionView.setupLayers(with: layersConfig)
     }
