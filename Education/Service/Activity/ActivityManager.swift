@@ -52,19 +52,58 @@ protocol TimerManaging {
     func stopTimer(currentDate: () -> Date)
     func resetTimer()
     func handleTimerEnd()
+    func getLayersConfig() -> ActivityManager.LayersConfig
+    func isTimerTrackerShowing() -> Bool
+    func isClockwise() -> Bool
+    func getAngles() -> (startAngle: Double, endAngle: Double)
+    func computeExtendedTime()
+    func resetToOriginalConfig()
+    func resetPomodoro()
+    func isLastPomodoro() -> Bool
+    func continuePomodoro()
+    func extendTimer(in seconds: Int)
+    func updatePomodoroAfterExtension(seconds: Int)
 }
 
 protocol SessionManaging {
+    func handleDismissedActivity(didTapFinish: Bool)
     func saveFocusSesssion()
+    func computeTimerTotalTime()
+    func computePomodoroTotalTime()
     func finishSession()
     func updateFocusSession(with focusSessionModel: FocusSessionModel)
     func restartActivity()
-    func handleDismissedActivity(didTapFinish: Bool)
     func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int)
     func handlePomodoro(lastTimerSeconds: Int, timeInBackground: TimeInterval)
     func getLoopStartTime() -> Int
     func getInLoopTime(lastTimerSeconds: Int) -> Int
     func getCurrentLoop(totalPassedTime: Int) -> Int
+}
+
+protocol TimerAnimation {
+    var timerTrackLayer: CAShapeLayer { get set }
+    var timerCircleFillLayer: CAShapeLayer { get set }
+    var timerAnimation: CABasicAnimation { get set }
+    
+    func startAnimation(timerDuration: Double)
+    func resetAnimations()
+    func redefineAnimation(timerDuration: Double, strokeEnd: CGFloat)
+}
+
+extension TimerAnimation {
+    func startAnimation(timerDuration: Double) {
+        timerAnimation.duration = timerDuration
+        timerCircleFillLayer.add(timerAnimation, forKey: "timerEnd")
+    }
+    
+    func resetAnimations() {
+        timerCircleFillLayer.removeAllAnimations()
+    }
+    
+    func redefineAnimation(timerDuration: Double, strokeEnd: CGFloat) {
+        timerCircleFillLayer.strokeEnd = strokeEnd
+        timerAnimation.duration = timerDuration
+    }
 }
 
 class ActivityManager {
@@ -103,14 +142,29 @@ class ActivityManager {
     var isShowingActivityBar: Bool = false {
         didSet {
             if isShowingActivityBar {
-                self.delegate?.addActivityView()
+                if case .pomodoro = timerCase,
+                   !isAtWorkTime {
+                    isProgressingActivityBar = true
+                }
+                
+                delegate?.addActivityView()
                 
                 return
             }
             
-            self.delegate?.removeActivityView()
+            delegate?.removeActivityView()
         }
     }
+    
+    struct LayersConfig {
+        let strokeEnd: CGFloat
+        let isTimerTrackerShowing: Bool
+        let isClockwise: Bool
+        let startAngle: Double
+        let endAngle: Double
+    }
+    
+    var isProgressingActivityBar = false
     
     var totalTime = 0
     var isExtending = false
@@ -172,6 +226,10 @@ extension ActivityManager: TimerManaging {
             let remainingTime = max(self.totalSeconds - Int(elapsed), 0)
             self.timerSeconds = remainingTime
             
+            if isProgressingActivityBar {
+                delegate?.updateTimerSeconds()
+            }
+            
             if elapsed >= Double(self.totalSeconds) {
                 self.handleTimerEnd()
             }
@@ -215,6 +273,7 @@ extension ActivityManager: TimerManaging {
         
         timerFinished = false
         isExtending = false
+        isProgressingActivityBar = false
         extendedTime = 0
         originalTime = 0
         
@@ -232,6 +291,12 @@ extension ActivityManager: TimerManaging {
     }
     
     func handleTimerEnd() {
+        if isProgressingActivityBar {
+            delegate?.activityViewTapped()
+            timerFinished = true
+            return
+        }
+        
         switch timerCase {
             case .timer, .pomodoro:
                 stopTimer()
@@ -244,6 +309,52 @@ extension ActivityManager: TimerManaging {
             case .stopwatch:
                 return
         }
+    }
+    
+    func getLayersConfig() -> LayersConfig {
+        let strokeEnd = progress
+        let isTimerTrackerShowing = isTimerTrackerShowing()
+        let isClockwise = isClockwise()
+        let angles = getAngles()
+        
+        return LayersConfig(strokeEnd: strokeEnd, isTimerTrackerShowing: isTimerTrackerShowing, isClockwise: isClockwise, startAngle: angles.startAngle, endAngle: angles.endAngle)
+    }
+    
+    func isTimerTrackerShowing() -> Bool {
+        guard case .stopwatch = timerCase else {
+            return true
+        }
+        
+        return false
+    }
+    
+    func isClockwise() -> Bool {
+        guard case .pomodoro = timerCase else {
+            return true
+        }
+        
+        if isProgressingActivityBar {
+            return false
+        }
+        
+        return isAtWorkTime
+    }
+    
+    func getAngles() -> (startAngle: Double, endAngle: Double) {
+        var startAngle = 0.0
+        var endAngle = 0.0
+        
+        guard case .pomodoro = timerCase else {
+            startAngle = -(CGFloat.pi / 2)
+            endAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
+            
+            return (startAngle, endAngle)
+        }
+        
+        startAngle = isAtWorkTime ? -(CGFloat.pi / 2) : -(CGFloat.pi / 2) + CGFloat.pi * 2
+        endAngle = isAtWorkTime ? -(CGFloat.pi / 2) + CGFloat.pi * 2 : -(CGFloat.pi / 2)
+        
+        return (startAngle, endAngle)
     }
     
     func computeExtendedTime() {
@@ -272,7 +383,7 @@ extension ActivityManager: TimerManaging {
         }
     }
     
-    private func resetPomodoro() {
+    func resetPomodoro() {
         if isAtWorkTime {
             workTime = originalTime
         } else {
@@ -370,7 +481,7 @@ extension ActivityManager: SessionManaging {
         focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID)
     }
     
-    private func computeTimerTotalTime() {
+    func computeTimerTotalTime() {
         guard case .timer = timerCase else { return }
         
         if isExtending {
@@ -381,7 +492,7 @@ extension ActivityManager: SessionManaging {
         }
     }
     
-    private func computePomodoroTotalTime() {
+    func computePomodoroTotalTime() {
         guard case .pomodoro = timerCase else { return }
         
         if isExtending {
