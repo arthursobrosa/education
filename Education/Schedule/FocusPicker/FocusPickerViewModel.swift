@@ -37,6 +37,7 @@ class FocusPickerViewModel {
         blockingManager.removeShields()
     }
     
+    #warning("change this afterwards")
     private func setTimerCase() {
         switch focusSessionModel.timerCase {
             case .pomodoro:
