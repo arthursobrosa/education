@@ -33,11 +33,10 @@ class NotesCell: UITableViewCell {
         return textView
     }()
     
-    #warning("change font to italic")
     private let placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = String(localized: "notesPlaceholder")
-        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.font = UIFont(name: Fonts.darkModeOnItalic, size: 16)
         label.textColor = .label.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
