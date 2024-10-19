@@ -52,10 +52,10 @@ protocol TimerManaging {
     func stopTimer(currentDate: () -> Date)
     func resetTimer()
     func handleTimerEnd()
-    func getLayersConfig() -> ActivityManager.LayersConfig
     func isTimerTrackerShowing() -> Bool
     func isClockwise() -> Bool
     func getAngles() -> (startAngle: Double, endAngle: Double)
+    func getLayersConfig() -> ActivityManager.LayersConfig
     func computeExtendedTime()
     func resetToOriginalConfig()
     func resetPomodoro()
@@ -73,11 +73,11 @@ protocol SessionManaging {
     func finishSession()
     func updateFocusSession(with focusSessionModel: FocusSessionModel)
     func restartActivity()
-    func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int)
-    func handlePomodoro(lastTimerSeconds: Int, timeInBackground: TimeInterval)
     func getLoopStartTime() -> Int
     func getInLoopTime(lastTimerSeconds: Int) -> Int
     func getCurrentLoop(totalPassedTime: Int) -> Int
+    func handlePomodoro(lastTimerSeconds: Int, timeInBackground: TimeInterval)
+    func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int)
 }
 
 protocol TimerAnimation {
@@ -311,15 +311,6 @@ extension ActivityManager: TimerManaging {
         }
     }
     
-    func getLayersConfig() -> LayersConfig {
-        let strokeEnd = progress
-        let isTimerTrackerShowing = isTimerTrackerShowing()
-        let isClockwise = isClockwise()
-        let angles = getAngles()
-        
-        return LayersConfig(strokeEnd: strokeEnd, isTimerTrackerShowing: isTimerTrackerShowing, isClockwise: isClockwise, startAngle: angles.startAngle, endAngle: angles.endAngle)
-    }
-    
     func isTimerTrackerShowing() -> Bool {
         guard case .stopwatch = timerCase else {
             return true
@@ -355,6 +346,15 @@ extension ActivityManager: TimerManaging {
         endAngle = isAtWorkTime ? -(CGFloat.pi / 2) + CGFloat.pi * 2 : -(CGFloat.pi / 2)
         
         return (startAngle, endAngle)
+    }
+    
+    func getLayersConfig() -> LayersConfig {
+        let strokeEnd = progress
+        let isTimerTrackerShowing = isTimerTrackerShowing()
+        let isClockwise = isClockwise()
+        let angles = getAngles()
+        
+        return LayersConfig(strokeEnd: strokeEnd, isTimerTrackerShowing: isTimerTrackerShowing, isClockwise: isClockwise, startAngle: angles.startAngle, endAngle: angles.endAngle)
     }
     
     func computeExtendedTime() {
@@ -557,22 +557,37 @@ extension ActivityManager: SessionManaging {
         isPaused = false
     }
     
-    func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int) {
-        guard !isPaused else { return }
+    func getLoopStartTime() -> Int {
+        var pomodoroTotal = 0
         
-        switch timerCase {
-            case .timer:
-                break
-            case .pomodoro:
-                handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
-                startTimer()
-            case .stopwatch:
-                timerSeconds += Int(timeInBackground)
-                
-                return
+        if isExtending {
+            if isAtWorkTime {
+                pomodoroTotal = originalTime + restTime
+            } else {
+                pomodoroTotal = workTime + originalTime
+            }
+        } else {
+            pomodoroTotal = workTime + restTime
         }
         
-        updateAfterBackground = true
+        return currentLoop * pomodoroTotal
+    }
+    
+    func getInLoopTime(lastTimerSeconds: Int) -> Int {
+        if isExtending {
+            if isAtWorkTime {
+                return originalTime + (workTime - lastTimerSeconds)
+            } else {
+                return workTime + originalTime + (restTime - lastTimerSeconds)
+            }
+        } else {
+            return isAtWorkTime ? workTime - lastTimerSeconds : workTime + (restTime - lastTimerSeconds)
+        }
+    }
+    
+    func getCurrentLoop(totalPassedTime: Int) -> Int {
+        let pomodoroTotal = workTime + restTime
+        return totalPassedTime / pomodoroTotal
     }
     
     func handlePomodoro(lastTimerSeconds: Int, timeInBackground: TimeInterval) {
@@ -608,36 +623,21 @@ extension ActivityManager: SessionManaging {
         pausedTime = TimeInterval(newInLoopTime)
     }
     
-    func getLoopStartTime() -> Int {
-        var pomodoroTotal = 0
+    func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int) {
+        guard !isPaused else { return }
         
-        if isExtending {
-            if isAtWorkTime {
-                pomodoroTotal = originalTime + restTime
-            } else {
-                pomodoroTotal = workTime + originalTime
-            }
-        } else {
-            pomodoroTotal = workTime + restTime
+        switch timerCase {
+            case .timer:
+                break
+            case .pomodoro:
+                handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
+                startTimer()
+            case .stopwatch:
+                timerSeconds += Int(timeInBackground)
+                
+                return
         }
         
-        return currentLoop * pomodoroTotal
-    }
-    
-    func getInLoopTime(lastTimerSeconds: Int) -> Int {
-        if isExtending {
-            if isAtWorkTime {
-                return originalTime + (workTime - lastTimerSeconds)
-            } else {
-                return workTime + originalTime + (restTime - lastTimerSeconds)
-            }
-        } else {
-            return isAtWorkTime ? workTime - lastTimerSeconds : workTime + (restTime - lastTimerSeconds)
-        }
-    }
-    
-    func getCurrentLoop(totalPassedTime: Int) -> Int {
-        let pomodoroTotal = workTime + restTime
-        return totalPassedTime / pomodoroTotal
+        updateAfterBackground = true
     }
 }
