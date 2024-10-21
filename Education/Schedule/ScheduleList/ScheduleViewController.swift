@@ -96,14 +96,14 @@ class ScheduleViewController: UIViewController {
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
         addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(addScheduleButtonTapped), for: .touchUpInside)
-        addButton.tintColor = .label
+        addButton.tintColor = UIColor(named: "system-text")
         
         let addItem = UIBarButtonItem(customView: addButton)
         
         self.navigationItem.rightBarButtonItems = [addItem]
         
         self.navigationItem.title = self.viewModel.getTitleString()
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : self.traitCollection.userInterfaceStyle == .light ? UIColor.label : UIColor.label.withAlphaComponent(0.8)]
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor(named: "system-text") as Any]
     }
     
     func reloadCollections() {
