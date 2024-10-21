@@ -107,8 +107,6 @@
 		686B46EE2CC2DE2600A5CB56 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686B46ED2CC2DE2600A5CB56 /* WidgetKit.framework */; };
 		686B46F02CC2DE2600A5CB56 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686B46EF2CC2DE2600A5CB56 /* SwiftUI.framework */; };
 		686B46F32CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686B46F22CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift */; };
-		686B46F52CC2DE2600A5CB56 /* WidgetConfigurationLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686B46F42CC2DE2600A5CB56 /* WidgetConfigurationLiveActivity.swift */; };
-		686B46F72CC2DE2600A5CB56 /* WidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686B46F62CC2DE2600A5CB56 /* WidgetConfiguration.swift */; };
 		686B46F92CC2DE2700A5CB56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 686B46F82CC2DE2700A5CB56 /* Assets.xcassets */; };
 		686B46FD2CC2DE2700A5CB56 /* WidgetConfigurationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 686B46EC2CC2DE2600A5CB56 /* WidgetConfigurationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6874A2602C3F727200CAC9E4 /* ScheduleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */; };
@@ -227,6 +225,11 @@
 		CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */; };
 		CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */; };
 		CE6A12522C63EEDC00549DCC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */; };
+		CEBFA82A2CC2DFB6005E1F24 /* TutorialLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */; };
+		CEBFA83C2CC2F0D2005E1F24 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */; };
+		CEBFA83E2CC2F0D8005E1F24 /* LiveActivityManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */; };
+		CEBFA8402CC2F12D005E1F24 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83F2CC2F12D005E1F24 /* TimerAttributes.swift */; };
+		CEBFA8412CC2F12D005E1F24 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83F2CC2F12D005E1F24 /* TimerAttributes.swift */; };
 		CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */; };
 		CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB352C5BFD7E00297062 /* SelectionButton.swift */; };
 		CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */; };
@@ -260,7 +263,7 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		CE3B7D472C45922A00EE5070 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
@@ -268,7 +271,7 @@
 				686B46FD2CC2DE2700A5CB56 /* WidgetConfigurationExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -381,8 +384,6 @@
 		686B46ED2CC2DE2600A5CB56 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		686B46EF2CC2DE2600A5CB56 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		686B46F22CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfigurationBundle.swift; sourceTree = "<group>"; };
-		686B46F42CC2DE2600A5CB56 /* WidgetConfigurationLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfigurationLiveActivity.swift; sourceTree = "<group>"; };
-		686B46F62CC2DE2600A5CB56 /* WidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfiguration.swift; sourceTree = "<group>"; };
 		686B46F82CC2DE2700A5CB56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		686B46FA2CC2DE2700A5CB56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCoordinator.swift; sourceTree = "<group>"; };
@@ -500,6 +501,10 @@
 		CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationViewController.swift; sourceTree = "<group>"; };
 		CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetailsModal.swift; sourceTree = "<group>"; };
 		CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialLiveActivity.swift; sourceTree = "<group>"; };
+		CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityService.swift; sourceTree = "<group>"; };
+		CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManaging.swift; sourceTree = "<group>"; };
+		CEBFA83F2CC2F12D005E1F24 /* TimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAttributes.swift; sourceTree = "<group>"; };
 		CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionView.swift; sourceTree = "<group>"; };
 		CED3DB352C5BFD7E00297062 /* SelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; };
 		CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSelectionViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -928,9 +933,9 @@
 		686B46F12CC2DE2600A5CB56 /* WidgetConfiguration */ = {
 			isa = PBXGroup;
 			children = (
+				CEBFA83F2CC2F12D005E1F24 /* TimerAttributes.swift */,
+				CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */,
 				686B46F22CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift */,
-				686B46F42CC2DE2600A5CB56 /* WidgetConfigurationLiveActivity.swift */,
-				686B46F62CC2DE2600A5CB56 /* WidgetConfiguration.swift */,
 				686B46F82CC2DE2700A5CB56 /* Assets.xcassets */,
 				686B46FA2CC2DE2700A5CB56 /* Info.plist */,
 			);
@@ -1048,6 +1053,8 @@
 		6893889A2C642C11007EE922 /* Activity */ = {
 			isa = PBXGroup;
 			children = (
+				CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */,
+				CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */,
 				68E617A72C6D6F4E00488237 /* ActivityManager.swift */,
 			);
 			path = Activity;
@@ -1430,6 +1437,7 @@
 				CE394D0C2C6E83FF00A8B1F0 /* ScheduleDetailsModalViewModel.swift in Sources */,
 				68A80B642C976FEF00CC6D48 /* NoSchedulesView.swift in Sources */,
 				CE323B412C73BDC5004143E0 /* ScheduleNotificationCoordinator.swift in Sources */,
+				CEBFA83E2CC2F0D8005E1F24 /* LiveActivityManaging.swift in Sources */,
 				68B2CADC2C82529A00DF8069 /* CustomTabBar.swift in Sources */,
 				31AA70A22C2C8632002367CA /* DataBase.xcdatamodeld in Sources */,
 				68C2D00C2C473FC100E2347A /* ScheduleDetails+Popover.swift in Sources */,
@@ -1449,6 +1457,7 @@
 				686965D32CB4A8A400D2985D /* TabBarViewModel.swift in Sources */,
 				6823766B2C63E86E00255143 /* DismissingAll.swift in Sources */,
 				317C11372C3EF8A300C5E7A5 /* StudyTimeCoordinator.swift in Sources */,
+				CEBFA83C2CC2F0D2005E1F24 /* LiveActivityService.swift in Sources */,
 				68CA87DC2C5D5428006ED5FA /* FocusPickerViewModel.swift in Sources */,
 				684282222C63B80A00CEEF1C /* SettingsCoordinator.swift in Sources */,
 				CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */,
@@ -1589,6 +1598,7 @@
 				31117EDE2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift in Sources */,
 				CE1E018F2C6BEAD000811CB9 /* HourDetailsView.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
+				CEBFA8412CC2F12D005E1F24 /* TimerAttributes.swift in Sources */,
 				317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */,
 				CE394D112C6E89A200A8B1F0 /* ScheduleDetailsModalController+Delegate.swift in Sources */,
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
@@ -1650,8 +1660,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				686B46F32CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift in Sources */,
-				686B46F72CC2DE2600A5CB56 /* WidgetConfiguration.swift in Sources */,
-				686B46F52CC2DE2600A5CB56 /* WidgetConfigurationLiveActivity.swift in Sources */,
+				CEBFA82A2CC2DFB6005E1F24 /* TutorialLiveActivity.swift in Sources */,
+				CEBFA8402CC2F12D005E1F24 /* TimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1949,7 +1959,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = D95QWWTUDS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfiguration;
@@ -1961,7 +1971,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = "$(APP_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.ShieldConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucascunha.Education.ShieldConfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1976,7 +1986,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShieldConfiguration/ShieldConfiguration.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = D95QWWTUDS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfiguration;
@@ -1988,7 +1998,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = "$(APP_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.ShieldConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucascunha.Education.ShieldConfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2006,7 +2016,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = D95QWWTUDS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WidgetConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WidgetConfiguration;
@@ -2034,7 +2044,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = D95QWWTUDS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WidgetConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WidgetConfiguration;

@@ -9,9 +9,8 @@ import WidgetKit
 import SwiftUI
 
 @main
-struct WidgetConfigurationBundle: WidgetBundle {
+struct TutorialLiveActivityBundle: WidgetBundle {
     var body: some Widget {
-        WidgetConfiguration()
-        WidgetConfigurationLiveActivity()
+        TutorialLiveActivity()
     }
 }
