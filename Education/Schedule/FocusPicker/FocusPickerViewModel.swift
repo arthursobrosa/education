@@ -8,52 +8,33 @@
 import Foundation
 
 class FocusPickerViewModel {
+    private let blockingManager: BlockingManager
+    
     var focusSessionModel: FocusSessionModel
     
-    var selectedTimerHours = Int()
-    var selectedTimerMinutes: Int = 1
+    var selectedTimerHours = 0
+    var selectedTimerMinutes = 5
     
-    var selectedWorkHours = Int()
-    var selectedWorkMinutes: Int = 25
+    var selectedWorkHours = 0
+    var selectedWorkMinutes = 25
     
-    var selectedRestHours = Int()
-    var selectedRestMinutes: Int = 5
+    var selectedRestHours = 0
+    var selectedRestMinutes = 5
     
-    var selectedRepetitions: Int = 2
+    var selectedRepetitions = 1
     
-    let hours: [Int] = {
-        var hours = [Int]()
-        
-        for hour in 0..<24 {
-            hours.append(hour)
-        }
-        
-        return hours
-    }()
-    
-    let minutes: [Int] = {
-        var minutes = [Int]()
-        
-        for minute in 1..<60 {
-            minutes.append(minute)
-        }
-        
-        return minutes
-    }()
-    
-    let repetitions: [Int] = {
-        var repetitions = [Int]()
-        
-        for repetition in 1...9 {
-            repetitions.append(repetition)
-        }
-        
-        return repetitions
-    }()
+    let hours: [Int] = Array(0..<24)
+    let minutes: [Int] = Array(0..<60)
+    let repetitions: [Int] = Array(1...9)
     
     
-    init(focusSessionModel: FocusSessionModel) {
+    init(focusSessionModel: FocusSessionModel, blockingManager: BlockingManager) {
         self.focusSessionModel = focusSessionModel
+        self.blockingManager = blockingManager
+    }
+    
+    func unblockApps() {
+        blockingManager.removeShields()
     }
     
     private func setTimerCase() {
@@ -93,10 +74,10 @@ class FocusPickerViewModel {
         self.getTotalTime()
     }
     
-    func getHoursAndMinutes(from seconds: Int) -> [Int] {
+    func getHoursAndMinutes(from seconds: Int) -> (hours: Int, minutes: Int) {
         let minutes = seconds / 60 % 60
         let hours = seconds / 3600
         
-        return [hours, minutes]
+        return (hours, minutes)
     }
 }

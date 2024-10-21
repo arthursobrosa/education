@@ -5,67 +5,132 @@
 //  Created by Arthur Sobrosa on 15/07/24.
 //
 
-import Foundation
+import UIKit
 
 @objc protocol FocusSessionDelegate: AnyObject {
     func dismissButtonTapped()
-    func visibilityButtonTapped()
+    func eyeButtonTapped()
+    func getTitleString() -> NSAttributedString?
     func pauseResumeButtonTapped()
-    func didFinish()
+    func didTapRestartButton()
+    func didTapFinishButton()
     func didRestart()
-    func okButtonPressed()
-    func cancelButtonPressed()
+    func didFinish()
+    func didStartNextPomodoro()
+    func didCancel()
+    func didTapExtendButton()
+    func didExtend()
+    func didCancelExtend()
 }
 
 extension FocusSessionViewController: FocusSessionDelegate {
     func dismissButtonTapped() {
-        if !ActivityManager.shared.isPaused {
-            ActivityManager.shared.isPaused = true
-        }
+        viewModel.changePauseStatus()
         
-        self.coordinator?.dismiss(animated: true)
+        coordinator?.dismiss(animated: true)
     }
     
-    func visibilityButtonTapped() {
-        ActivityManager.shared.isTimeCountOn.toggle()
+    func eyeButtonTapped() {
+        viewModel.activityManager.isTimeCountOn.toggle()
         
-        self.updateViewLabels()
-        self.focusSessionView.setVisibilityButton(isActive: ActivityManager.shared.isTimeCountOn)
+        updateViewLabels()
+        let isTimerVisible = viewModel.activityManager.isTimeCountOn
+        focusSessionView.setEyeButton(isActive: isTimerVisible)
+    }
+    
+    func getTitleString() -> NSAttributedString? {
+        guard let subject = viewModel.activityManager.subject else { return nil }
+        
+        let attributedString = NSMutableAttributedString()
+        
+        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font : UIFont(name: Fonts.darkModeOnMedium, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium), .foregroundColor : UIColor.label.withAlphaComponent(0.7)])
+        let subjectString = NSAttributedString(string: subject.unwrappedName, attributes: [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .semibold), .foregroundColor : UIColor.label.withAlphaComponent(0.85)])
+        
+        attributedString.append(activityString)
+        attributedString.append(subjectString)
+        
+        return attributedString
     }
     
     func pauseResumeButtonTapped() {
-        ActivityManager.shared.isPaused.toggle()
-        
-        guard ActivityManager.shared.isAtWorkTime else { return }
-        
-        if ActivityManager.shared.isPaused {
-            BlockAppsMonitor.shared.removeShields()
-        } else {
-            self.blockApps()
+        if viewModel.shouldChangeVisibility() {
+            focusSessionView.changeButtonsVisibility(isHidden: viewModel.prefersStatusBarHidden)
         }
+        
+        viewModel.pauseResumeButtonTapped()
+        focusSessionView.updatePauseResumeButton(isPaused: viewModel.activityManager.isPaused)
     }
     
-    func didFinish() {
-        self.viewModel.saveFocusSession()
-        self.viewModel.didTapFinish = true
-        
-        self.coordinator?.dismiss(animated: true)
-        
-        BlockAppsMonitor.shared.removeShields()
+    func didTapRestartButton() {
+        focusSessionView.statusAlertView.configure(with: .restartingCase, atSuperview: focusSessionView)
+        focusSessionView.changeAlertVisibility(isShowing: true)
+    }
+    
+    func didTapFinishButton() {
+        focusSessionView.statusAlertView.configure(with: .finishingEarlyCase, atSuperview: focusSessionView)
+        focusSessionView.changeAlertVisibility(isShowing: true)
     }
     
     func didRestart() {
-        self.focusSessionView.showFocusAlert(false)
-        self.focusSessionView.isPaused = false
-        ActivityManager.shared.restartActivity()
+        viewModel.activityManager.restartActivity()
     }
     
-    func okButtonPressed() {
-        self.focusSessionView.showEndNotification(false)
-        self.didFinish()
+    func didFinish() {
+        viewModel.didTapFinish = true
+        
+        coordinator?.showFocusEnd(activityManager: viewModel.activityManager)
+        
+        viewModel.unblockApps()
     }
     
-    func cancelButtonPressed() {
-        self.focusSessionView.showFocusAlert(false)
+    func didStartNextPomodoro() {
+        viewModel.activityManager.continuePomodoro()
+    }
+    
+    func didCancel() {
+        focusSessionView.changeAlertVisibility(isShowing: false)
+    }
+    
+    func didTapExtendButton() {
+        var focusExtensionAlertCase: FocusExtensionAlertCase
+        let timerCase = viewModel.activityManager.timerCase
+        
+        switch timerCase {
+            case .timer:
+                focusExtensionAlertCase = .timer
+            case .pomodoro:
+                let isAtWorkTime = viewModel.activityManager.isAtWorkTime
+                focusExtensionAlertCase = .pomodoro(isAtWorkTime: isAtWorkTime)
+            case .stopwatch:
+                return
+        }
+        
+        focusSessionView.extensionAlertView.isHidden = false
+        focusSessionView.extensionAlertView.configure(with: focusExtensionAlertCase, atSuperview: focusSessionView)
+    }
+    
+    func didExtend() {
+        let hours = focusSessionView.extensionAlertView.selectedHours
+        let minutes = focusSessionView.extensionAlertView.selectedMinutes
+        let extendedTime = viewModel.getExtendedTime(hours: hours, minutes: minutes)
+        let timerCase = viewModel.activityManager.timerCase
+        
+        switch timerCase {
+            case .timer:
+                viewModel.activityManager.originalTime = viewModel.activityManager.totalSeconds
+            case .pomodoro(let workTime, let restTime, _):
+                let isAtWorkTime = viewModel.activityManager.isAtWorkTime
+                viewModel.activityManager.originalTime = isAtWorkTime ? workTime : restTime
+                viewModel.activityManager.updatePomodoroAfterExtension(seconds: extendedTime)
+            case .stopwatch:
+                break
+        }
+        
+        focusSessionView.extensionAlertView.isHidden = true
+        viewModel.activityManager.extendTimer(in: extendedTime)
+    }
+    
+    func didCancelExtend() {
+        focusSessionView.extensionAlertView.isHidden = true
     }
 }

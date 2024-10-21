@@ -12,6 +12,8 @@ class SettingsViewController: UIViewController {
     weak var coordinator: SettingsCoordinator?
     let viewModel: SettingsViewModel
     
+    private let blockingManager: BlockingManager
+    
     lazy var settingsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.separatorStyle = .none
@@ -26,10 +28,11 @@ class SettingsViewController: UIViewController {
         return tableView
     }()
     
-    private let swiftUIFamilyPickerView = FamilyActivityPickerView()
+    private lazy var swiftUIFamilyPickerView: FamilyActivityPickerView = FamilyActivityPickerView(pickerDelegate: blockingManager)
     
-    init(viewModel: SettingsViewModel) {
+    init(viewModel: SettingsViewModel, blockingManger: BlockingManager) {
         self.viewModel = viewModel
+        self.blockingManager = blockingManger
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -74,11 +77,8 @@ class SettingsViewController: UIViewController {
     }
     
     private func showFamilyActivityPicker() {
-        // Create the SwiftUI view
-        let swiftUIView = FamilyActivityPickerView()
-        
         // Create the hosting controller with the SwiftUI view
-        let hostingController = UIHostingController(rootView: swiftUIView)
+        let hostingController = UIHostingController(rootView: swiftUIFamilyPickerView)
         
         let swiftuiView = hostingController.view!
             swiftuiView.translatesAutoresizingMaskIntoConstraints = false

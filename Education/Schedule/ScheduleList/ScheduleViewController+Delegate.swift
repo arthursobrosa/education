@@ -17,8 +17,8 @@ import UIKit
     func dayTapped(_ dayView: DayView)
     
     // MARK: - Floating buttons
-    func createAcitivityTapped()
-    func startAcitivityTapped()
+    func createActivityButtonTapped()
+    func startActivityButtonTapped()
     func emptyViewButtonTapped()
     
     // MARK: - Play button
@@ -33,12 +33,14 @@ import UIKit
 extension ScheduleViewController: ScheduleDelegate {
     // MARK: - View Mode
     func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
-        let viewModes = self.viewModel.viewModes.map { $0.name }
-        let selectedViewMode = self.viewModel.selectedViewMode.name
+        let scheduleModes = viewModel.scheduleModes.map { $0.name }
+        let selectedScheduleMode = viewModel.selectedScheduleMode.name
         
-        for (index, viewMode) in viewModes.enumerated() {
-            let action = UIAction(title: viewMode) { _ in
-                self.viewModel.selectedViewMode = self.viewModel.viewModes[index]
+        for (index, scheduleMode) in scheduleModes.enumerated() {
+            let action = UIAction(title: scheduleMode) { [weak self] _ in
+                guard let self else { return }
+                
+                self.viewModel.selectedScheduleMode = self.viewModel.scheduleModes[index]
                 
                 switch index {
                     case 0:
@@ -55,7 +57,7 @@ extension ScheduleViewController: ScheduleDelegate {
             
             segmentedControl.insertSegment(action: action, at: index, animated: false)
             
-            if viewMode == selectedViewMode {
+            if scheduleMode == selectedScheduleMode {
                 segmentedControl.selectedSegmentIndex = index
             }
         }
@@ -63,16 +65,16 @@ extension ScheduleViewController: ScheduleDelegate {
     
     // MARK: Day
     func dayTapped(_ dayView: DayView) {
-        let dayViews = self.scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
+        let dayViews = scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
         
         // Day is tapped when weekly view mode is currently on
-        if self.scheduleView.viewModeSelector.selectedSegmentIndex == 1 {
-            self.scheduleView.viewModeSelector.selectedSegmentIndex = 0
-            self.viewModel.selectedViewMode = .daily
+        if scheduleView.scheduleModeSelector.selectedSegmentIndex == 1 {
+            scheduleView.scheduleModeSelector.selectedSegmentIndex = 0
+            viewModel.selectedScheduleMode = .daily
             
             let newDayView = dayViews.first { $0.dayOfWeek!.day == dayView.dayOfWeek!.day }
             
-            self.dayTapped(newDayView ?? dayView)
+            dayTapped(newDayView ?? dayView)
             
             return
         }
@@ -82,14 +84,14 @@ extension ScheduleViewController: ScheduleDelegate {
         guard dayView != lastDayView else { return }
         
         // Logics to select the day tapped
-        self.unselectDays()
+        unselectDays()
         
         guard let dayOfWeek = dayView.dayOfWeek else { return }
         
         dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
-        self.viewModel.selectedDate = self.viewModel.daysOfWeek[dayView.tag]
+        viewModel.selectedDate = viewModel.daysOfWeek[dayView.tag]
         
-        self.loadSchedules()
+        loadSchedules()
     }
     
     func setDaysStack(_ stack: UIStackView) {
@@ -117,21 +119,20 @@ extension ScheduleViewController: ScheduleDelegate {
     }
     
     // MARK: - Floating buttons
-    func createAcitivityTapped() {
-        self.dismissButtons()
+    func createActivityButtonTapped() {
+        dismissButtons()
         
-        guard self.viewModel.isThereAnySubject() else {
-            self.showNoSubjectAlert()
-            
+        guard viewModel.hasSubjects() else {
+            showNoSubjectAlert()
             return
         }
         
-        let selectedDay = self.viewModel.selectedViewMode == .daily ? self.viewModel.selectedWeekday : Calendar.current.component(.weekday, from: Date()) - 1
+        let selectedDay = viewModel.selectedScheduleMode == .daily ? viewModel.selectedWeekday : Calendar.current.component(.weekday, from: Date()) - 1
         
-        self.coordinator?.showScheduleDetails(schedule: nil, selectedDay: selectedDay)
+        coordinator?.showScheduleDetails(schedule: nil, selectedDay: selectedDay)
     }
     
-    func startAcitivityTapped() {
+    func startActivityButtonTapped() {
         self.dismissButtons()
         self.coordinator?.showFocusImediate()
     }

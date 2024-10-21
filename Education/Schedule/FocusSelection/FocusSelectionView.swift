@@ -113,15 +113,14 @@ class FocusSelectionView: UIView {
     
     // MARK: - Initializer
     init(subjectName: String?) {
-        
         self.subjectName = subjectName != nil ? String(format: NSLocalizedString("activityOf", comment: ""),subjectName!) : "\(String(localized: "subjectActivityImediate"))"
         
         super.init(frame: .zero)
         
-        self.backgroundColor = UIColor.systemBackground
-        self.layer.cornerRadius = 12
+        backgroundColor = UIColor.systemBackground
+        layer.cornerRadius = 12
 
-        self.setupUI()
+        setupUI()
         
         self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
             (self: Self, previousTraitCollection: UITraitCollection) in

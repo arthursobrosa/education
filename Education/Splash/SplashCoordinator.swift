@@ -10,7 +10,9 @@ import UIKit
 class SplashCoordinator: Coordinator, ShowingTabBar {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    let themeListViewModel: ThemeListViewModel
+    
+    private let activityManager: ActivityManager
+    private let blockingManager: BlockingManager
     
     struct ScheduleNotification {
         var subjectName: String
@@ -20,24 +22,27 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     
     var scheduleNotification: ScheduleNotification?
     
-    init(navigationController: UINavigationController, themeListViewModel: ThemeListViewModel) {
+    init(navigationController: UINavigationController, activityManager: ActivityManager?, blockingManager: BlockingManager?) {
         self.navigationController = navigationController
-        self.themeListViewModel = themeListViewModel
+        self.activityManager = activityManager ?? ActivityManager()
+        self.blockingManager = blockingManager ?? BlockAppsMonitor()
     }
     
     func start() {
-        let vc = SplashViewController()
+        let viewModel = SplashViewModel()
+        let vc = SplashViewController(viewModel: viewModel)
         vc.coordinator = self
         
-        self.navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(vc, animated: false)
     }
     
     func showTabBar() {
-        let tabBar = TabBarController()
+        let viewModel = TabBarViewModel(activityManager: activityManager, blockingManager: blockingManager)
+        let tabBar = TabBarController(viewModel: viewModel)
         tabBar.modalPresentationStyle = .fullScreen
         
-        self.navigationController.setNavigationBarHidden(true, animated: false)
-        self.navigationController.pushViewController(tabBar, animated: false)
+        navigationController.setNavigationBarHidden(true, animated: false)
+        navigationController.pushViewController(tabBar, animated: false)
         
         guard let scheduleNotification else { return }
         
