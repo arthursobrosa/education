@@ -14,25 +14,19 @@ import SwiftUI
 protocol BlockingManager {
     var selectionToDiscourage: FamilyActivitySelection { get set }
     
-    func requestAuthorization()
     func applyShields()
     func removeShields()
-    func monitorSchedule()
 }
 
 class BlockAppsMonitor: ObservableObject, BlockingManager {
-    let store = ManagedSettingsStore()
-    let center = AuthorizationCenter.shared
-    private var isBlocked = false
+    static let appsKey = "applications"
     
-    func requestAuthorization() {
-        let isAuthorized = center.authorizationStatus.description
-        print(isAuthorized)
-    }
+    let store = ManagedSettingsStore()
+    private var isBlocked = false
     
     func applyShields() {
         do {
-            guard let data = UserDefaults.standard.data(forKey: "applications") else { return }
+            guard let data = UserDefaults.standard.data(forKey: Self.appsKey) else { return }
             let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
             
             let applications = decoded.applicationTokens
@@ -78,7 +72,7 @@ class BlockAppsMonitor: ObservableObject, BlockingManager {
         didSet {
             do {
                 let encoded = try JSONEncoder().encode(selectionToDiscourage)
-                UserDefaults.standard.set(encoded, forKey: "applications")
+                UserDefaults.standard.set(encoded, forKey: Self.appsKey)
             } catch {
                 print("error to encode data: \(error)")
             }
@@ -86,7 +80,7 @@ class BlockAppsMonitor: ObservableObject, BlockingManager {
     }
     
     init() {
-        if let savedData = UserDefaults.standard.data(forKey: "applications") {
+        if let savedData = UserDefaults.standard.data(forKey: Self.appsKey) {
             do {
                 let decodedSelection = try JSONDecoder().decode(FamilyActivitySelection.self, from: savedData)
                 self.selectionToDiscourage = decodedSelection
@@ -96,26 +90,6 @@ class BlockAppsMonitor: ObservableObject, BlockingManager {
             }
         } else {
             self.selectionToDiscourage = FamilyActivitySelection()
-        }
-    }
-    
-    func monitorSchedule() {
-        let schedule = DeviceActivitySchedule(
-            intervalStart: DateComponents(hour: 15, minute: 19),
-            intervalEnd: DateComponents(hour: 15, minute: 55),
-            repeats: true,
-            warningTime: nil
-        )
-        
-        print("Schedule set: \(schedule)")
-        
-        let center = DeviceActivityCenter()
-        do {
-            try center.startMonitoring(.daily, during: schedule)
-            print("Monitoring started")
-            print(schedule)
-        } catch {
-            print("Error starting monitoring: \(error.localizedDescription)")
         }
     }
 }
