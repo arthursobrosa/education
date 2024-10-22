@@ -200,7 +200,6 @@ class ScheduleViewModel {
         return "\(formatter.string(from: time))"
     }
     
-    #warning("missing 'late' eventCase (maybe use a new flag inside schedule)")
     func getEventCase(for schedule: Schedule?) -> ScheduleCell.EventCase {
         guard let schedule else { return .notToday }
 
@@ -234,7 +233,11 @@ class ScheduleViewModel {
         } else if currentTimeInMinutes <= endTimeInMinutes {
             return .ongoing
         } else {
-            return .completed
+            if schedule.completed {
+                return .completed
+            } else {
+                return .late
+            }
         }
     }
     
