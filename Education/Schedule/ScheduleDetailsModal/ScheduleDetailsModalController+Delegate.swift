@@ -17,19 +17,20 @@ protocol ScheduleDetailsModalDelegate: AnyObject {
 
 extension ScheduleDetailsModalViewController: ScheduleDetailsModalDelegate {
     func startButtonTapped() {
-        let colorName = self.viewModel.subject.unwrappedColor
+        let colorName = viewModel.subject.unwrappedColor
         let color = UIColor(named: colorName)
+        let scheduleID = viewModel.schedule.unwrappedID
         
-        let newFocusSessionModel = FocusSessionModel(subject: self.viewModel.subject, blocksApps: self.viewModel.schedule.blocksApps, isAlarmOn: self.viewModel.schedule.imediateAlarm, color: color)
+        let newFocusSessionModel = FocusSessionModel(scheduleID: scheduleID, subject: viewModel.subject, blocksApps: viewModel.schedule.blocksApps, isAlarmOn: viewModel.schedule.imediateAlarm, color: color)
         
-        self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
+        coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
     
     func editButtonTapped() {
-        self.coordinator?.showScheduleDetails(schedule: self.viewModel.schedule, selectedDay: 1)
+        coordinator?.showScheduleDetails(schedule: viewModel.schedule, selectedDay: 1)
     }
     
     func dismiss() {
-        self.coordinator?.dismiss(animated: true)
+        coordinator?.dismiss(animated: true)
     }
 }
