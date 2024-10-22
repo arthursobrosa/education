@@ -177,6 +177,7 @@ class ActivityManager {
     // MARK: - Schedule properties
     var date: Date
     
+    var scheduleID: String?
     var subject: Subject?
     var blocksApps: Bool
     var isTimeCountOn: Bool
@@ -194,6 +195,7 @@ class ActivityManager {
         self.isPaused = isPaused
         
         self.date = date
+        self.scheduleID = scheduleID
         self.subject = subject
         self.blocksApps = blocksApps
         self.isTimeCountOn = isTimeCountOn
@@ -433,7 +435,7 @@ extension ActivityManager: TimerManaging {
         timerFinished = false
         isExtending = true
         
-        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: seconds, timerSeconds: seconds, timerCase: timerCase, subject: subject, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
+        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: seconds, timerSeconds: seconds, timerCase: timerCase, scheduleID: scheduleID, subject: subject, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
         currentFocusSession.currentLoop = currentLoop
         currentFocusSession.color = color
         currentFocusSession.workTime = workTime
@@ -528,6 +530,7 @@ extension ActivityManager: SessionManaging {
         totalSeconds = focusSessionModel.totalSeconds
         timerSeconds = focusSessionModel.timerSeconds
         timerCase = focusSessionModel.timerCase
+        scheduleID = focusSessionModel.scheduleID
         subject = focusSessionModel.subject
         isAtWorkTime = focusSessionModel.isAtWorkTime
         currentLoop = focusSessionModel.currentLoop
@@ -543,7 +546,7 @@ extension ActivityManager: SessionManaging {
     func restartActivity() {
         timerFinished = false
         
-        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: totalSeconds, timerSeconds: totalSeconds, timerCase: timerCase, subject: subject, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
+        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: totalSeconds, timerSeconds: totalSeconds, timerCase: timerCase, scheduleID: scheduleID, subject: subject, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
         currentFocusSession.currentLoop = currentLoop
         currentFocusSession.color = color
         currentFocusSession.workTime = workTime
