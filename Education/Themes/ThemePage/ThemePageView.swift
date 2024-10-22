@@ -51,12 +51,12 @@ class ThemePageView: UIView {
         let dayLabel = UILabel()
         dayLabel.text = String(localized: "dayLabel")
         dayLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
-        dayLabel.textColor = UIColor.secondaryLabel
+        dayLabel.textColor = .systemText50
         
         let questionsLabel = UILabel()
         questionsLabel.text = String(localized: "questionLabel")
         questionsLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
-        questionsLabel.textColor = UIColor.secondaryLabel
+        questionsLabel.textColor = .systemText50
         
         stackView.addArrangedSubview(dayLabel)
         stackView.addArrangedSubview(questionsLabel)

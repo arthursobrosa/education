@@ -58,11 +58,12 @@ class TestPageViewController: UIViewController {
     // MARK: - Methods
     private func setNavigationItems() {
         self.navigationItem.title = self.viewModel.getTitle()
+        self.navigationController?.navigationBar.tintColor = .systemText
         
         self.navigationController?.navigationBar.titleTextAttributes = [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
         
         let cancelButton = UIButton(configuration: .plain())
-        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.secondaryLabel])
+        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor : UIColor.systemText50])
         cancelButton.setAttributedTitle(cancelAttributedString, for: .normal)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
@@ -110,11 +111,11 @@ class TestPageViewController: UIViewController {
         if self.viewModel.comment == ""{
             self.testPageView.textView.text = String(localized: "description")
             self.testPageView.textView.font = UIFont.italicSystemFont(ofSize: 16)
-            self.testPageView.textView.textColor = UIColor.lightGray
+            self.testPageView.textView.textColor = .systemText40
         }else {
             self.testPageView.textView.text = self.viewModel.comment
             self.testPageView.textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-            self.testPageView.textView.textColor = UIColor.black
+            self.testPageView.textView.textColor = .systemText
         }
     }
     
@@ -153,7 +154,7 @@ extension TestPageViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.textLabel?.text = self.getCellTitle(for: indexPath)
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
-        cell.textLabel?.textColor = .label
+        cell.textLabel?.textColor = .systemText
         
         cell.accessoryView = self.getAccessoryView(for: indexPath)
         

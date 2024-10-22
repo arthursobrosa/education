@@ -70,7 +70,7 @@ class SettingsViewController: UIViewController {
     
     private func setNavigationItems() {
         self.navigationItem.title = String(localized: "settingsTab")
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor(named: "system-text") ?? UIColor.red]
     }
     
     private func showFamilyActivityPicker() {

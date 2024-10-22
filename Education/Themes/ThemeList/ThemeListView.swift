@@ -22,7 +22,7 @@ class ThemeListView: UIView {
         table.backgroundColor = .systemBackground
         
         table.translatesAutoresizingMaskIntoConstraints = false
-        
+        table.layer.borderColor = UIColor.buttonNormal.cgColor
         return table
     }()
     
@@ -41,10 +41,22 @@ class ThemeListView: UIView {
         self.backgroundColor = .systemBackground
         
         self.setupUI()
+        
+        self.updateTableViewColor(self.traitCollection)
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.updateTableViewColor(self.traitCollection)
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func updateTableViewColor(_ traitCollection: UITraitCollection) {
+        tableView.layer.borderColor = UIColor.buttonNormal.cgColor
     }
 }
 

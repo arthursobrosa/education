@@ -76,14 +76,14 @@ class ThemeListViewController: UIViewController {
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
         addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(addThemeButtonTapped), for: .touchUpInside)
-        addButton.tintColor = .label
+        addButton.tintColor = .systemText
         
         let addItem = UIBarButtonItem(customView: addButton)
         
         self.navigationItem.rightBarButtonItems = [addItem]
         
         self.navigationItem.title = String(localized: "themeTab")
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor(named: "system-text") ?? UIColor.red]
     }
     
     private func handleTip() {
@@ -160,13 +160,13 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
-        chevronImageView.tintColor = .label
+        chevronImageView.tintColor = .systemText80
         
         cell.accessoryView = chevronImageView
         
         cell.backgroundColor = .systemBackground
         
-        cell.roundCorners(corners: .allCorners, radius: 18, borderWidth: 2, borderColor: .systemGray4)
+        cell.roundCorners(corners: .allCorners, radius: 18, borderWidth: 2, borderColor: .buttonNormal)
         
         let cellContent = self.getCellContent(from: theme)
         cell.configureContentView(with: cellContent)
@@ -178,14 +178,14 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         let nameLabel = UILabel()
         nameLabel.text = theme.unwrappedName
         nameLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
-        nameLabel.textColor = .label
+        nameLabel.textColor = .systemText80
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         if let test = self.viewModel.getMostRecentTest(from: theme) {
             let dateLabel = UILabel()
             dateLabel.text = self.viewModel.getThemeDescription(with: test)
             dateLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
-            dateLabel.textColor = .secondaryLabel
+            dateLabel.textColor = .systemText50
             dateLabel.translatesAutoresizingMaskIntoConstraints = false
             
             let stack = UIStackView()
@@ -241,7 +241,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         editButton.backgroundColor = .systemBackground
-        let editImage = UIImage(systemName: "square.and.pencil")?.withRenderingMode(.alwaysOriginal).withTintColor(.label)
+        let editImage = UIImage(systemName: "square.and.pencil")?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor(named: "system-text") ?? .red)
         editButton.image = editImage
         
         let deleteButton = UIContextualAction(style: .normal, title: "") { _, _, _ in

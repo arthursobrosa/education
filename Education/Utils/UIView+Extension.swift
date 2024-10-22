@@ -32,6 +32,7 @@ extension UIView {
         borderLayer.strokeColor = borderColor.cgColor
         borderLayer.lineWidth = borderWidth
         borderLayer.frame = self.bounds
+        borderLayer.name = "borderLayer"
         
         self.layer.addSublayer(borderLayer)
     }
@@ -127,6 +128,7 @@ extension UIView {
         borderLayer.fillColor = UIColor.clear.cgColor
         borderLayer.lineWidth = lineWidth / 2
         borderLayer.frame = self.bounds
+        borderLayer.name = "borderLayer"
         
         let borderLayer2 = CAShapeLayer()
         borderLayer2.path = borderPathLine.cgPath
@@ -134,6 +136,7 @@ extension UIView {
         borderLayer2.fillColor = UIColor.clear.cgColor
         borderLayer2.lineWidth = lineWidth
         borderLayer2.frame = self.bounds
+        borderLayer2.name = "borderLayer2"
         
         // Adiciona a camada de borda na view
         self.layer.addSublayer(borderLayer)

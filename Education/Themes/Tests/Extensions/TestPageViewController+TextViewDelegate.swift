@@ -11,13 +11,13 @@ extension TestPageViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if self.viewModel.comment != "" {
             textView.text = self.viewModel.comment
-            textView.textColor = UIColor.black
+            textView.textColor = .systemText
             textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         }
         
-        if textView.textColor == UIColor.lightGray {
+        if textView.textColor == UIColor(named: "system-text-40") {
             textView.text = nil
-            textView.textColor = UIColor.black
+            textView.textColor = .systemText
             textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         }
     }
@@ -25,7 +25,7 @@ extension TestPageViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = String(localized: "description")
-            textView.textColor = UIColor.lightGray
+            textView.textColor = .systemText40
             textView.font = UIFont.italicSystemFont(ofSize: 16)
         }
     }
