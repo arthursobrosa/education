@@ -13,13 +13,13 @@ class SubjectTimeTableViewCell: UITableViewCell{
     var subject: Subject? {
         didSet {
             if let subject {
-                self.subjectName.text = subject.unwrappedName
-                self.colorCircle.backgroundColor = UIColor(named: subject.unwrappedColor)
-                self.containerView.layer.borderColor  = UIColor(named: subject.unwrappedColor)!.cgColor
+                subjectName.text = subject.unwrappedName
+                colorCircle.backgroundColor = UIColor(named: subject.unwrappedColor)
+                containerView.layer.borderColor  = UIColor(named: subject.unwrappedColor)!.cgColor
             } else {
-                self.subjectName.text = String(localized: "other")
-                self.colorCircle.backgroundColor = UIColor(named: "sealBackgroundColor")
-                self.containerView.layer.borderColor  = UIColor(named: "sealBackgroundColor")!.cgColor
+                subjectName.text = String(localized: "other")
+                colorCircle.backgroundColor = UIColor(named: "sealBackgroundColor")
+                containerView.layer.borderColor  = UIColor(named: "sealBackgroundColor")!.cgColor
             }
         }
     }
@@ -47,7 +47,7 @@ class SubjectTimeTableViewCell: UITableViewCell{
         return view
     }()
     
-    lazy var subjectName: UILabel = {
+    let subjectName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -56,7 +56,7 @@ class SubjectTimeTableViewCell: UITableViewCell{
         return label
     }()
     
-    lazy var totalHours: UILabel = {
+    let totalHours: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .secondaryLabel
@@ -69,43 +69,38 @@ class SubjectTimeTableViewCell: UITableViewCell{
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.setupUI()
+        backgroundColor = .systemGray6
         
-        self.backgroundColor = .systemGray6
+        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
-    private func setupUI() {
-        
-        self.contentView.addSubview(containerView)
+}
 
+extension SubjectTimeTableViewCell: ViewCodeProtocol {
+    func setupUI() {
+        contentView.addSubview(containerView)
         containerView.addSubview(subjectName)
         containerView.addSubview(totalHours)
-        
         containerView.layer.borderWidth = 1
         
         let padding = 18.0
         
         NSLayoutConstraint.activate([
-            
-            containerView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: padding),
-            containerView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -padding),
-            containerView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            containerView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
-            containerView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            containerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             
             subjectName.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             subjectName.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
+            subjectName.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding * 3),
             
             totalHours.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             totalHours.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
-            
-            subjectName.trailingAnchor.constraint(lessThanOrEqualTo: totalHours.leadingAnchor, constant: -padding)
         ])
     }
 }
