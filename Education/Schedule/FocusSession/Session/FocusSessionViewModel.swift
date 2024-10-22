@@ -9,9 +9,6 @@ import Foundation
 import Combine
 
 class FocusSessionViewModel {
-    // MARK: - CoreData focus session manager
-    private let focusSessionManager: FocusSessionManager
-    
     // MARK: - Service to manage timer and session
     let activityManager: ActivityManager
     
@@ -33,8 +30,7 @@ class FocusSessionViewModel {
     var updateAfterBackgroundPropertyDidChange: (() -> Void)?
     
     // MARK: - Initializer
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), activityManager: ActivityManager, blockingManager: BlockingManager) {
-        self.focusSessionManager = focusSessionManager
+    init(activityManager: ActivityManager, blockingManager: BlockingManager) {
         self.activityManager = activityManager
         self.blockingManager = blockingManager
         
