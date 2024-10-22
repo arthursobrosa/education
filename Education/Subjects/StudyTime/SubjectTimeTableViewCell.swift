@@ -51,7 +51,6 @@ class SubjectTimeTableViewCell: UITableViewCell{
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.textColor = .label
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         return label
     }()
@@ -59,7 +58,6 @@ class SubjectTimeTableViewCell: UITableViewCell{
     lazy var totalHours: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .secondaryLabel
         label.textAlignment = .right
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 15)
         return label

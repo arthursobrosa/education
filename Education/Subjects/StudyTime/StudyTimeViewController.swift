@@ -67,6 +67,18 @@ class StudyTimeViewController: UIViewController {
         }
         
         self.setNavigationItems()
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            if(self.traitCollection.userInterfaceStyle == .light){
+                self.studyTimeView.viewModeControl.segmentImage = UIImage(color: UIColor.systemBackground)
+//                self.studyTimeView.chartView.$bgColor = UIColor.label
+            } else {
+                self.studyTimeView.viewModeControl.segmentImage = UIImage(color: UIColor.systemBackground)
+//                self.studyTimeView.chartView.$bgColor = UIColor.label
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,14 +93,14 @@ class StudyTimeViewController: UIViewController {
     // MARK: - Methods
     private func setNavigationItems() {
         self.navigationItem.title = String(localized: "subjectTab")
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor(named: "system-text") as Any]
         
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
         addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
-        addButton.tintColor = .label
+        addButton.tintColor = UIColor(named: "system-text")
         
         let addItem = UIBarButtonItem(customView: addButton)
         

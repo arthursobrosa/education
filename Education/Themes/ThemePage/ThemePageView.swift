@@ -17,7 +17,7 @@ class ThemePageView: UIView {
     }
     
     // MARK: - UI Components
-    private let segmentedControl: CustomSegmentedControl = {
+    let segmentedControl: CustomSegmentedControl = {
         let control = CustomSegmentedControl()
         
         let titleAttributes: [NSAttributedString.Key: Any] = [

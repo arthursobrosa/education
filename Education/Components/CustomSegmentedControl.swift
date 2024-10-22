@@ -10,7 +10,7 @@ import UIKit
 
 class CustomSegmentedControl: UISegmentedControl{
     private let segmentInset: CGFloat = 6
-    private let segmentImage: UIImage? = UIImage(color: UIColor.systemBackground)
+    var segmentImage: UIImage? = UIImage(color: UIColor.systemBackground)
 
     
     override var intrinsicContentSize: CGSize {

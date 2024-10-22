@@ -86,7 +86,7 @@ class CustomChart: UIView {
             let label = UILabel()
             label.text = percentageIndex
             label.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
-            label.textColor = .black.withAlphaComponent(0.8)
+            label.textColor = .label.withAlphaComponent(0.8)
             label.translatesAutoresizingMaskIntoConstraints = false
             
             self.percentageIndexesStack.addSubview(label)
@@ -270,7 +270,7 @@ extension CustomChart: UICollectionViewDataSource, UICollectionViewDelegate, UIC
             let label = UILabel()
             label.text = "\(indicator)"
             label.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
-            label.textColor = .black.withAlphaComponent(0.8)
+            label.textColor = .label.withAlphaComponent(0.8)
             label.translatesAutoresizingMaskIntoConstraints = false
             
             dayIndicatorStack.addSubview(label)
@@ -300,7 +300,8 @@ class PercentageCell: UICollectionViewCell {
         didSet {
             guard let isEmpty else { return }
             
-            self.percentageBackgroundView.backgroundColor = isEmpty ? .clear : .label.withAlphaComponent(0.06)
+            let alpha: CGFloat = traitCollection.userInterfaceStyle == .dark ? 0.15 : 0.06
+            self.percentageBackgroundView.backgroundColor = isEmpty ? .clear : .label.withAlphaComponent(alpha)
             self.percentageView.backgroundColor = isEmpty ? .clear : UIColor(named: "bluePicker")
         }
     }

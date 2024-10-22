@@ -57,6 +57,16 @@ class ThemePageViewController: UIViewController {
             
             self.setContentView(isEmpty: tests.isEmpty)
         }
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            if(self.traitCollection.userInterfaceStyle == .light){
+                self.themePageView.segmentedControl.segmentImage = UIImage(color: UIColor.systemBackground)
+            } else {
+                self.themePageView.segmentedControl.segmentImage = UIImage(color: UIColor.systemBackground)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -19,14 +19,8 @@ class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
     lazy var textField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
-        
-        let placeholderText = String(localized: "subjectName")
-        let placeholderAttributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15),
-        .foregroundColor: UIColor.gray
-        ]
-
-        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+        textField.placeholder = String(localized: "subjectName")
+        textField.textColor = UIColor(named: "system-text")
         
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         let toolbar = self.createToolbar(withTag: 0)

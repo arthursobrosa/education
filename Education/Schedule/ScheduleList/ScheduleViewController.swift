@@ -63,6 +63,16 @@ class ScheduleViewController: UIViewController {
             
             self.loadSchedules()
         }
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            if(self.traitCollection.userInterfaceStyle == .light){
+                self.scheduleView.scheduleModeSelector.segmentImage = UIImage(color: UIColor.systemBackground)
+            } else {
+                self.scheduleView.scheduleModeSelector.segmentImage = UIImage(color: UIColor.systemBackground)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,14 +90,14 @@ class ScheduleViewController: UIViewController {
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
         addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(addScheduleButtonTapped), for: .touchUpInside)
-        addButton.tintColor = .label
+        addButton.tintColor = UIColor(named: "system-text")
         
         let addItem = UIBarButtonItem(customView: addButton)
         
         navigationItem.rightBarButtonItems = [addItem]
         
-        navigationItem.title = viewModel.getTitleString()
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor.label]
+        self.navigationItem.title = self.viewModel.getTitleString()
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor(named: "system-text") as Any]
     }
     
     private func setTapGesture() {
