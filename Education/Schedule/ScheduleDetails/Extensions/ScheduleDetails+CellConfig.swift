@@ -70,7 +70,15 @@ extension ScheduleDetailsViewController {
     
     func createLabel(with text: String) -> UILabel {
         let label = UILabel()
-        label.text = text
+        
+        var labelText = text
+        let maxLenght = 22
+        
+        if text.count > maxLenght {
+            labelText = String(text.prefix(maxLenght)) + "..."
+        }
+        
+        label.text = labelText
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.textColor = .secondaryLabel
         label.sizeToFit()
@@ -118,7 +126,6 @@ extension ScheduleDetailsViewController {
                 
                 return datePicker
             case 1:
-                #warning("when subject name is too long, section 1 breaks")
                 let label = self.createLabel(with: self.viewModel.selectedSubjectName)
                 
                 return label
