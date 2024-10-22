@@ -186,8 +186,9 @@ class ActivityManager {
     var color: UIColor?
     
     // MARK: - Initializer
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), timerCase: TimerCase = .timer, totalSeconds: Int = 1, timerSeconds: Int = 1, isPaused: Bool = true, date: Date = Date(), subject: Subject? = nil, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), scheduleManager: ScheduleManager = ScheduleManager(), timerCase: TimerCase = .timer, totalSeconds: Int = 1, timerSeconds: Int = 1, isPaused: Bool = true, date: Date = Date(), scheduleID: String? = nil, subject: Subject? = nil, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
         self.focusSessionManager = focusSessionManager
+        self.scheduleManager = scheduleManager
         
         self.timerCase = timerCase
         self.totalSeconds = totalSeconds
