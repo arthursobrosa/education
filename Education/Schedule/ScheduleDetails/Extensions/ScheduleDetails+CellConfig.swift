@@ -118,6 +118,7 @@ extension ScheduleDetailsViewController {
                 
                 return datePicker
             case 1:
+                #warning("when subject name is too long, section 1 breaks")
                 let label = self.createLabel(with: self.viewModel.selectedSubjectName)
                 
                 return label
