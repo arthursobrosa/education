@@ -267,7 +267,16 @@ extension ScheduleCell: ViewCodeProtocol {
                     playButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -8.5),
                 ])
             } else {
-                
+                if case .completed = eventCase {
+                    updateTimeLeftLabel()
+                    
+                    cardView.addSubview(timeLeftLabel)
+                    
+                    NSLayoutConstraint.activate([
+                        timeLeftLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -18),
+                        timeLeftLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16.5),
+                    ])
+                }
             }
         }
     }
@@ -279,5 +288,19 @@ extension ScheduleCell {
         playButton.isHidden = !eventCase.showsPlayButton
         playButton.styleCase = eventCase.playButtonStyle
         timeLeftLabel.attributedText = eventCase.attributedText
+    }
+    
+    private func updateTimeLeftLabel() {
+        guard let config,
+              case .completed = config.eventCase else { return }
+        
+        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .semibold)
+        let attachment = NSTextAttachment(image: UIImage(systemName: "checkmark")!)
+        let checkmarkString = NSAttributedString(attachment: attachment)
+        let attributedString = NSMutableAttributedString()
+        attributedString.append(checkmarkString)
+        attributedString.addAttributes([.font: semiboldFont, .foregroundColor: config.color ?? UIColor.label], range: NSRange(location: 0, length: attributedString.length))
+        
+        timeLeftLabel.attributedText = attributedString
     }
 }
