@@ -148,10 +148,10 @@ extension ScheduleViewController: ScheduleDelegate {
         
         let row = indexPath.row
         
-        let schedule = self.viewModel.schedules[row]
-        let subject = self.viewModel.getSubject(fromSchedule: schedule)
+        let schedule = viewModel.schedules[row]
+        let subject = viewModel.getSubject(fromSchedule: schedule)
         
-        let newFocusSessionModel = FocusSessionModel(subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
+        let newFocusSessionModel = FocusSessionModel(scheduleID: schedule.unwrappedID, subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
         
         self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
