@@ -15,6 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var timerSeconds = Int()
     
     var activityManager: ActivityManager?
+    var notificationService: NotificationProtocol?
     var blockingManager: BlockingManager?
     
     
@@ -25,13 +26,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         blockingManager = BlockAppsMonitor()
-        UNUserNotificationCenter.current().delegate = self
+        notificationService = NotificationService()
+        notificationService?.setDelegate(self)
+        activityManager = ActivityManager(notificationService: notificationService)
         
         window = UIWindow(windowScene: windowScene)
         window?.frame = windowScene.coordinateSpace.bounds
         
-        activityManager = ActivityManager()
-        coordinator = SplashCoordinator(navigationController: UINavigationController(), activityManager: activityManager, blockingManager: blockingManager)
+        coordinator = SplashCoordinator(navigationController: UINavigationController(), activityManager: activityManager, blockingManager: blockingManager, notificationService: notificationService)
         coordinator?.start()
         
         window?.rootViewController = coordinator?.navigationController
@@ -61,9 +63,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
-        let timeInBackground = Date().timeIntervalSince(self.currentDate)
+        let timeInBackground = Date().timeIntervalSince(currentDate)
         
-        activityManager?.updateAfterBackground(timeInBackground: timeInBackground, lastTimerSeconds: self.timerSeconds)
+        activityManager?.updateAfterBackground(timeInBackground: timeInBackground, lastTimerSeconds: timerSeconds)
         
         guard let coordinator else { return }
         
@@ -71,7 +73,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             guard tabBar.selectedIndex == 3,
                   let settingsVC = tabBar.settings.navigationController.viewControllers.first as? SettingsViewController else { return }
             
-            settingsVC.viewModel.requestNoficationAuthorization()
+            settingsVC.viewModel.requestNoficationsAuthorization()
         }
     }
     
@@ -82,8 +84,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let activityManager,
               !activityManager.isPaused else { return }
         
-        self.currentDate = Date()
-        self.timerSeconds = activityManager.timerSeconds
+        currentDate = Date()
+        timerSeconds = activityManager.timerSeconds
         
         switch activityManager.timerCase {
             case .pomodoro:
@@ -98,33 +100,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             case .timer:
                 date = Calendar.current.date(byAdding: .second, value: activityManager.timerSeconds, to: Date.now)!
             case .pomodoro:
-                guard let notificationDate = notificationDate() else { return }
+                guard let notificationDate = notificationService?.getNotificationDate(for: activityManager) else { return }
                 
                 date = notificationDate
             default:
                 break
         }
         
-        NotificationService.shared.scheduleEndNotification(
+        notificationService?.scheduleEndNotification(
             title: String(localized: "timerAlertMessage"),
             subjectName: activityManager.subject?.unwrappedName,
             date: date)
-    }
-    
-    private func notificationDate() -> Date? {
-        guard let activityManager else { return nil }
-        
-        guard case .pomodoro(let workTime, let restTime, let numberOfLoops) = activityManager.timerCase else {
-            return nil
-        }
-        
-        let loopTime = workTime + restTime
-        let totalTime = loopTime * numberOfLoops
-        let timePassed = Double(activityManager.currentLoop * loopTime) + Date().timeIntervalSince(activityManager.startTime ?? Date())
-        
-        let timeLeft = Double(totalTime) - timePassed
-        
-        return  Date() + timeLeft
     }
 }
 
@@ -139,7 +125,7 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
             return
         }
         
-        self.showScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
+        showScheduleNotification(subjectName: subjectName, startTime: startTime, endTime: endTime)
 
         completionHandler()
     }

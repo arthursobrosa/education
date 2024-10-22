@@ -12,14 +12,16 @@ class SettingsCoordinator: Coordinator {
     var navigationController: UINavigationController
     
     private let blockingManager: BlockingManager
+    private let notificationService: NotificationProtocol?
     
-    init(navigationController: UINavigationController, blockingManager: BlockingManager) {
+    init(navigationController: UINavigationController, blockingManager: BlockingManager, notificationService: NotificationProtocol?) {
         self.navigationController = navigationController
         self.blockingManager = blockingManager
+        self.notificationService = notificationService
     }
     
     func start() {
-        let viewModel = SettingsViewModel()
+        let viewModel = SettingsViewModel(notificationService: notificationService)
         let vc = SettingsViewController(viewModel: viewModel, blockingManger: blockingManager)
         vc.coordinator = self
         

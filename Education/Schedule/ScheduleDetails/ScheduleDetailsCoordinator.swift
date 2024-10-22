@@ -13,32 +13,33 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
     var navigationController: UINavigationController
     private var newNavigationController = UINavigationController()
     
+    private let notificationService: NotificationProtocol?
+    
     private let schedule: Schedule?
     private let selectedDay: Int?
     
-    init(navigationController: UINavigationController, schedule: Schedule?, selectedDay: Int?) {
+    init(navigationController: UINavigationController, notificationService: NotificationProtocol?, schedule: Schedule?, selectedDay: Int?) {
         self.navigationController = navigationController
+        self.notificationService = notificationService
         self.schedule = schedule
         self.selectedDay = selectedDay
     }
     
     func start() {
-        let viewModel = ScheduleDetailsViewModel(schedule: self.schedule, selectedDay: self.selectedDay)
+        let viewModel = ScheduleDetailsViewModel(notificationService: notificationService, schedule: schedule, selectedDay: selectedDay)
         let vc = ScheduleDetailsViewController(viewModel: viewModel)
         vc.coordinator = self
         
-        
-        self.newNavigationController = UINavigationController(rootViewController: vc)
-        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
-            self.newNavigationController.transitioningDelegate = scheduleCoordinator
+        newNavigationController = UINavigationController(rootViewController: vc)
+        if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
+            newNavigationController.transitioningDelegate = scheduleCoordinator
         }
         
-        self.newNavigationController.modalPresentationStyle = .pageSheet
-        
-        self.navigationController.present(self.newNavigationController, animated: true)
+        newNavigationController.modalPresentationStyle = .pageSheet
+        navigationController.present(newNavigationController, animated: true)
     }
     
     func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+        navigationController.dismiss(animated: animated)
     }
 }

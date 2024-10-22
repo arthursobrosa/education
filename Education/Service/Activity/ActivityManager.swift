@@ -114,6 +114,9 @@ class ActivityManager {
     private let focusSessionManager: FocusSessionManager
     private let scheduleManager: ScheduleManager
     
+    // MARK: - Notification Service
+    private let notificationService: NotificationProtocol?
+    
     // MARK: - Timer properties
     var timerCase: TimerCase
     
@@ -186,9 +189,10 @@ class ActivityManager {
     var color: UIColor?
     
     // MARK: - Initializer
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), scheduleManager: ScheduleManager = ScheduleManager(), timerCase: TimerCase = .timer, totalSeconds: Int = 1, timerSeconds: Int = 1, isPaused: Bool = true, date: Date = Date(), scheduleID: String? = nil, subject: Subject? = nil, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), notificationService: NotificationProtocol?, scheduleManager: ScheduleManager = ScheduleManager(), timerCase: TimerCase = .timer, totalSeconds: Int = 1, timerSeconds: Int = 1, isPaused: Bool = true, date: Date = Date(), scheduleID: String? = nil, subject: Subject? = nil, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
         self.focusSessionManager = focusSessionManager
         self.scheduleManager = scheduleManager
+        self.notificationService = notificationService
         
         self.timerCase = timerCase
         self.totalSeconds = totalSeconds
@@ -264,7 +268,7 @@ extension ActivityManager: TimerManaging {
         
         switch timerCase {
             case .timer, .pomodoro:
-                NotificationService.shared.cancelNotificationByName(name: subject?.unwrappedName)
+                notificationService?.cancelNotificationByName(name: subject?.unwrappedName)
             default:
                 break
         }

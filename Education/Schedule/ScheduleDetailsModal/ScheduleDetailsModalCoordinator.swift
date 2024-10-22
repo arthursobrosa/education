@@ -13,17 +13,17 @@ class ScheduleDetailsModalCoordinator: NSObject, Coordinator, ShowingFocusSelect
     var navigationController: UINavigationController
     var newNavigationController = UINavigationController()
     
-    private let schedule: Schedule
     private let blockingManager: BlockingManager
+    private let schedule: Schedule
     
-    init(navigationController: UINavigationController, schedule: Schedule, blockingManager: BlockingManager) {
+    init(navigationController: UINavigationController, blockingManager: BlockingManager, schedule: Schedule) {
         self.navigationController = navigationController
-        self.schedule = schedule
         self.blockingManager = blockingManager
+        self.schedule = schedule
     }
     
     func start() {
-        let viewModel = ScheduleDetailsModalViewModel(schedule: self.schedule)
+        let viewModel = ScheduleDetailsModalViewModel(schedule: schedule)
         let vc = ScheduleDetailsModalViewController(viewModel: viewModel)
         vc.coordinator = self
         

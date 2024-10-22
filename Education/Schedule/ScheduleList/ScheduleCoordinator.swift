@@ -14,11 +14,13 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     
     private let activityManager: ActivityManager
     private let blockingManager: BlockingManager
+    private let notificationService: NotificationProtocol?
     
-    init(navigationController: UINavigationController, activityManager: ActivityManager, blockingManager: BlockingManager) {
+    init(navigationController: UINavigationController, activityManager: ActivityManager, blockingManager: BlockingManager, notificationService: NotificationProtocol?) {
         self.navigationController = navigationController
         self.activityManager = activityManager
         self.blockingManager = blockingManager
+        self.notificationService = notificationService
     }
     
     func start() {
@@ -32,7 +34,7 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     }
     
     func showScheduleDetails(schedule: Schedule?, selectedDay: Int?) {
-        let child = ScheduleDetailsCoordinator(navigationController: self.navigationController, schedule: schedule, selectedDay: selectedDay)
+        let child = ScheduleDetailsCoordinator(navigationController: navigationController, notificationService: notificationService, schedule: schedule, selectedDay: selectedDay)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()
@@ -73,7 +75,7 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     }
     
     func showScheduleDetailsModal(schedule: Schedule) {
-        let child = ScheduleDetailsModalCoordinator(navigationController: self.navigationController, schedule: schedule, blockingManager: blockingManager)
+        let child = ScheduleDetailsModalCoordinator(navigationController: navigationController, blockingManager: blockingManager, schedule: schedule)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()

@@ -13,6 +13,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     
     private let activityManager: ActivityManager
     private let blockingManager: BlockingManager
+    private let notificationService: NotificationProtocol?
     
     struct ScheduleNotification {
         var subjectName: String
@@ -22,9 +23,10 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     
     var scheduleNotification: ScheduleNotification?
     
-    init(navigationController: UINavigationController, activityManager: ActivityManager?, blockingManager: BlockingManager?) {
+    init(navigationController: UINavigationController, activityManager: ActivityManager?, blockingManager: BlockingManager?, notificationService: NotificationProtocol?) {
         self.navigationController = navigationController
-        self.activityManager = activityManager ?? ActivityManager()
+        self.notificationService = notificationService
+        self.activityManager = activityManager ?? ActivityManager(notificationService: notificationService)
         self.blockingManager = blockingManager ?? BlockAppsMonitor()
     }
     
@@ -37,7 +39,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     }
     
     func showTabBar() {
-        let viewModel = TabBarViewModel(activityManager: activityManager, blockingManager: blockingManager)
+        let viewModel = TabBarViewModel(activityManager: activityManager, blockingManager: blockingManager, notificationService: notificationService)
         let tabBar = TabBarController(viewModel: viewModel)
         tabBar.modalPresentationStyle = .fullScreen
         

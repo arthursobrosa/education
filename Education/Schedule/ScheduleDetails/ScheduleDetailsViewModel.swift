@@ -12,6 +12,8 @@ class ScheduleDetailsViewModel {
     private let subjectManager: SubjectManager
     private let scheduleManager: ScheduleManager
     
+    private let notificationService: NotificationProtocol?
+    
     // MARK: - Properties
     var subjectsNames: [String]
     var selectedSubjectName: String
@@ -39,9 +41,10 @@ class ScheduleDetailsViewModel {
     var schedule: Schedule?
     
     // MARK: - Initializer
-    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), schedule: Schedule? = nil, selectedDay: Int?) {
+    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), notificationService: NotificationProtocol?, schedule: Schedule? = nil, selectedDay: Int?) {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
+        self.notificationService = notificationService
         self.schedule = schedule
         
         let currentDate = Date.now
@@ -120,16 +123,16 @@ class ScheduleDetailsViewModel {
         let bodyBefore = String(format: NSLocalizedString("comingEvent", comment: ""), String(selectedSubjectName))
         let bodyInTime = String(format: NSLocalizedString("immediateEvent", comment: ""), String(selectedSubjectName))
         
-        if self.alarmBefore {
-            NotificationService.shared.scheduleWeeklyNotification(
+        if alarmBefore {
+            notificationService?.scheduleWeeklyNotification(
                title: title,
                body: bodyBefore,
                date: selectedDate
            )
         }
         
-        if self.alarmInTime {
-            NotificationService.shared.scheduleWeeklyNotificationAtExactTime(
+        if alarmInTime {
+            notificationService?.scheduleWeeklyNotificationAtExactTime(
                title: title,
                body: bodyInTime,
                date: selectedDate,
@@ -141,28 +144,28 @@ class ScheduleDetailsViewModel {
     }
     
     private func updateSchedule(withID id: String) {
-        if let schedule = self.scheduleManager.fetchSchedule(from: id) {
-            if let subjects = self.subjectManager.fetchSubjects() {
-                if let subject = subjects.first(where: { $0.unwrappedName == self.selectedSubjectName }) {
+        if let schedule = scheduleManager.fetchSchedule(from: id) {
+            if let subjects = subjectManager.fetchSubjects() {
+                if let subject = subjects.first(where: { $0.unwrappedName == selectedSubjectName }) {
                     schedule.subjectID = subject.unwrappedID
                     
-                    if let dayOfTheWeek = self.days.firstIndex(where: { $0 == self.selectedDay }) {
+                    if let dayOfTheWeek = days.firstIndex(where: { $0 == selectedDay }) {
                         schedule.dayOfTheWeek = Int16(dayOfTheWeek)
                     }
                     
-                    NotificationService.shared.cancelNotifications(forDate: schedule.startTime!)
+                    notificationService?.cancelNotifications(forDate: schedule.startTime!)
                     
-                    schedule.startTime = self.selectedStartTime
-                    schedule.endTime = self.selectedEndTime
-                    schedule.blocksApps = self.blocksApps
-                    schedule.earlyAlarm = self.alarmBefore
-                    schedule.imediateAlarm = self.alarmInTime
+                    schedule.startTime = selectedStartTime
+                    schedule.endTime = selectedEndTime
+                    schedule.blocksApps = blocksApps
+                    schedule.earlyAlarm = alarmBefore
+                    schedule.imediateAlarm = alarmInTime
                     
-                    self.handleAlerts()
+                    handleAlerts()
                 }
             }
             
-            self.scheduleManager.updateSchedule(schedule)
+            scheduleManager.updateSchedule(schedule)
         }
     }
     
@@ -248,7 +251,25 @@ class ScheduleDetailsViewModel {
         }
     }
     
-    func removeSchedule(_ schedule: Schedule) {
-        self.scheduleManager.deleteSchedule(schedule)
+    func removeSchedule() {
+        guard let schedule else { return }
+        
+        scheduleManager.deleteSchedule(schedule)
+    }
+    
+    func cancelNotifications() {
+        guard let schedule else { return }
+        
+        notificationService?.cancelNotifications(forDate: schedule.unwrappedStartTime)
+    }
+    
+    func requestNotificationsAuthorization() {
+        notificationService?.requestAuthorization { granted, error in
+            if granted {
+                print("notification persimission granted")
+            } else if let error {
+                print(error.localizedDescription)
+            }
+        }
     }
 }

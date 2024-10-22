@@ -8,6 +8,10 @@
 import Foundation
 
 class SettingsViewModel {
+    // MARK: - Notification Service
+    private let notificationService: NotificationProtocol?
+    
+    // MARK: - Properties
     let days = [
         String(localized: "sunday"),
         String(localized: "monday"),
@@ -17,12 +21,18 @@ class SettingsViewModel {
         String(localized: "friday"),
         String(localized: "saturday")
     ]
-    lazy var selectedDay: String = self.days[UserDefaults.dayOfWeek]
     
+    lazy var selectedDay: String = self.days[UserDefaults.dayOfWeek]
     var isNotificationActive = Box(false)
     
-    func requestNoficationAuthorization() {
-        NotificationService.shared.requestAuthorization { [weak self] granted, error in
+    // MARK: - Initializer
+    init(notificationService: NotificationProtocol?) {
+        self.notificationService = notificationService
+    }
+    
+    // MARK: - Methods
+    func requestNoficationsAuthorization() {
+        notificationService?.requestAuthorization { [weak self] granted, error in
             guard let self else { return }
             
             if let error {

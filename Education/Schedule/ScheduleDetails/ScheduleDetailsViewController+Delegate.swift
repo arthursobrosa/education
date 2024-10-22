@@ -16,10 +16,12 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
     func deleteSchedule() {
         let alertController = UIAlertController(title: String(localized: "activityDeletionTitle"), message: String(localized: "activityDeletionMessage"), preferredStyle: .alert)
         
-        let yesAction = UIAlertAction(title: String(localized: "yes"), style: .destructive) { _ in
-            guard let schedule = self.viewModel.schedule else { return }
-            NotificationService.shared.cancelNotifications(forDate: schedule.unwrappedStartTime)
-            self.viewModel.removeSchedule(schedule)
+        let yesAction = UIAlertAction(title: String(localized: "yes"), style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            
+            self.viewModel.cancelNotifications()
+            self.viewModel.removeSchedule()
+            
             self.coordinator?.dismiss(animated: true)
         }
         
@@ -28,7 +30,7 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
         alertController.addAction(yesAction)
         alertController.addAction(noAction)
         
-        self.present(alertController, animated: true)
+        present(alertController, animated: true)
     }
     
     func saveSchedule() {
