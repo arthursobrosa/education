@@ -28,6 +28,7 @@
 "timeLeft" = "In %@h%@m";
 "timeLeftNow" = "Now";
 "timeLeftFinished" = "Finished";
+"timeLeftLate" = "Late";
 "sunday" = "Sunday";
 "monday" = "Monday";
 "tuesday" = "Tuesday";
