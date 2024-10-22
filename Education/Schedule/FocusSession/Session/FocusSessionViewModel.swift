@@ -70,7 +70,10 @@ extension FocusSessionViewModel {
             .sink { [weak self] _ in
                 guard let self else { return }
                 
-                guard !didTapFinish else { return }
+                if didTapFinish {
+                    self.activityManager.isPaused = true
+                    return
+                }
                 
                 timerSecondsDidChange?()
             }
