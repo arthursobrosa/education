@@ -485,6 +485,12 @@ extension ActivityManager: SessionManaging {
         }
         
         focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID)
+        
+        if let scheduleID,
+           let schedule = scheduleManager.fetchSchedule(from: scheduleID) {
+            schedule.completed = true
+            scheduleManager.updateSchedule(schedule)
+        }
     }
     
     func computeTimerTotalTime() {
