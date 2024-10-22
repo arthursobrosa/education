@@ -35,17 +35,17 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false, completed: true)
         
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
 
         XCTAssertEqual(schedule.dayOfTheWeek, 4)
         XCTAssertEqual(schedule.startTime, dateA)
         XCTAssertEqual(schedule.endTime, dateB)
+        XCTAssertEqual(schedule.completed, true)
     }
     
     func test_fetch_single_schedule() {
-        
         subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
         
         let subject = subjectManager.fetchSubject(withName: "Math")!
@@ -56,9 +56,8 @@ class ScheduleManagerTest: XCTestCase {
         let dateStringB = "2023-11-13 10:12:22"
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
-
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
         
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
         
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
         
@@ -67,7 +66,6 @@ class ScheduleManagerTest: XCTestCase {
         let individualSchedule = scheduleManager.fetchSchedule(from: scheduleId)!
         
         XCTAssertEqual(schedule.dayOfTheWeek, individualSchedule.dayOfTheWeek)
-       
     }
         
     func test_delete_schedule() {
@@ -110,19 +108,21 @@ class ScheduleManagerTest: XCTestCase {
         let dateA = format.date(from: dateStringA)!
         let dateB = format.date(from: dateStringB)!
         
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false, completed: true)
         
         var schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
         
         XCTAssertEqual(schedule.dayOfTheWeek, 4)
         
         schedule.dayOfTheWeek = 5
+        schedule.completed = false
         
         scheduleManager.updateSchedule(schedule)
         
         schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
         
         XCTAssertEqual(schedule.dayOfTheWeek, 5)
+        XCTAssertEqual(schedule.completed, false)
     }
     
     func test_fetch_schedules_by_day_of_the_week() {
