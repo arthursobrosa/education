@@ -107,9 +107,12 @@ extension TimerAnimation {
 }
 
 class ActivityManager {
-    // MARK: - Delegate and FocusSession manager
+    // MARK: - Delegate to connect with TabBar
     weak var delegate: TabBarDelegate?
+    
+    // MARK: - FocusSession and Schedule Managers
     private let focusSessionManager: FocusSessionManager
+    private let scheduleManager: ScheduleManager
     
     // MARK: - Timer properties
     var timerCase: TimerCase
