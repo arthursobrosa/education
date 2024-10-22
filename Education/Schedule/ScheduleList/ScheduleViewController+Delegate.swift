@@ -158,22 +158,24 @@ extension ScheduleViewController: ScheduleDelegate {
     
     // MARK: - Schedule Cell
     func getConfiguredScheduleCell(from cell: ScheduleCell, at indexPath: IndexPath, isDaily: Bool = true) -> UICollectionViewCell {
-        let schedule = isDaily ? self.viewModel.schedules[indexPath.row] : self.viewModel.tasks[indexPath.section][indexPath.row]
-        let subject = self.viewModel.getSubject(fromSchedule: schedule)
-        let color = subject?.unwrappedColor
-
         cell.delegate = self
-
-        cell.color = UIColor(named: color ?? "sealBackgroundColor")
-        cell.subject = subject
-
-        let timeLabelString = self.getTimeLabelString(for: indexPath, isDaily: isDaily)
-        let eventCase = self.viewModel.getEventCase(for: schedule)
-        cell.configure(with: timeLabelString, and: eventCase)
-
-        cell.indexPath = indexPath
         
-        cell.isDaily = isDaily
+        let schedule = isDaily ? viewModel.schedules[indexPath.row] : viewModel.tasks[indexPath.section][indexPath.row]
+        let subject = viewModel.getSubject(fromSchedule: schedule)
+        let color = UIColor(named: subject?.unwrappedColor ?? "sealBackgroundColor")
+        let timeLabelString = getTimeLabelString(for: indexPath, isDaily: isDaily)
+        let eventCase = viewModel.getEventCase(for: schedule)
+        
+        let cellConfig = ScheduleCell.CellConfig(
+            subject: subject,
+            indexPath: indexPath,
+            isDaily: isDaily,
+            attributedText: timeLabelString,
+            eventCase: eventCase,
+            color: color
+        )
+        
+        cell.config = cellConfig
 
         return cell
     }
