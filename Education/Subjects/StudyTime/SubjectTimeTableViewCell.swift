@@ -28,7 +28,7 @@ class SubjectTimeTableViewCell: UITableViewCell{
         didSet {
             guard let totalTime else { return }
             
-            self.totalHours.text = totalTime
+            totalHours.text = totalTime
         }
     }
     
