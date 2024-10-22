@@ -12,6 +12,7 @@ class FocusSessionModel {
     var totalSeconds: Int
     var timerSeconds: Int
     var timerCase: TimerCase
+    var scheduleID: String?
     var subject: Subject?
     var isAtWorkTime: Bool
     var blocksApps: Bool
@@ -24,11 +25,12 @@ class FocusSessionModel {
     var numberOfLoops = Int()
     var currentLoop = Int()
     
-    init(date: Date = Date.now, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, subject: Subject? = nil, isAtWorkTime: Bool = true, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
+    init(date: Date = Date.now, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, scheduleID: String? = nil, subject: Subject? = nil, isAtWorkTime: Bool = true, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
         self.date = date
         self.totalSeconds = totalSeconds
         self.timerSeconds = timerSeconds
         self.timerCase = timerCase
+        self.scheduleID = scheduleID
         self.subject = subject
         self.isAtWorkTime = isAtWorkTime
         self.blocksApps = blocksApps
