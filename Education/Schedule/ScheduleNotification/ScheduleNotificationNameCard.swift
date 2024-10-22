@@ -126,23 +126,24 @@ class ScheduleNotificationNameCard: UIView {
 
 extension ScheduleNotificationNameCard: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(subjectName)
-        self.addSubview(dayLabel)
-        self.addSubview(bracket)
-        self.addSubview(startTime)
-        self.addSubview(lineStartTime)
-        self.addSubview(endTime)
-        self.addSubview(lineEndTime)
+        addSubview(subjectName)
+        addSubview(dayLabel)
+        addSubview(bracket)
+        addSubview(startTime)
+        addSubview(lineStartTime)
+        addSubview(endTime)
+        addSubview(lineEndTime)
         
         NSLayoutConstraint.activate([
-            subjectName.topAnchor.constraint(equalTo: self.topAnchor, constant: 28),
-            subjectName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 25),
+            subjectName.topAnchor.constraint(equalTo: topAnchor, constant: 28),
+            subjectName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25),
+            subjectName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -25),
             
             dayLabel.leadingAnchor.constraint(equalTo: subjectName.leadingAnchor),
             dayLabel.topAnchor.constraint(equalTo: subjectName.bottomAnchor, constant: 16),
             
-            bracket.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 53/220),
-            bracket.widthAnchor.constraint(equalTo: bracket.heightAnchor, multiplier: 6/53),
+            bracket.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 53 / 220),
+            bracket.widthAnchor.constraint(equalTo: bracket.heightAnchor, multiplier: 6 / 53),
             bracket.leadingAnchor.constraint(equalTo: subjectName.leadingAnchor),
             bracket.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 42),
             

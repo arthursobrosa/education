@@ -54,7 +54,7 @@ class ScheduleNotificationView: UIView {
     }()
     
     private lazy var scheduleNotificationCardView: ScheduleNotificationNameCard = {
-        let view = ScheduleNotificationNameCard(startTime: self.startTime, endTime: self.endTime, subjectName: self.subjectName, dayOfWeek: self.dayOfWeek, color: self.color!)
+        let view = ScheduleNotificationNameCard(startTime: startTime, endTime: endTime, subjectName: subjectName, dayOfWeek: dayOfWeek, color: color!)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -115,31 +115,31 @@ class ScheduleNotificationView: UIView {
 
 extension ScheduleNotificationView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(closeButton)
-        self.addSubview(titleLabel)
-        self.addSubview(messageLabel)
-        self.addSubview(scheduleNotificationCardView)
-        self.addSubview(startButton)
+        addSubview(closeButton)
+        addSubview(titleLabel)
+        addSubview(messageLabel)
+        addSubview(scheduleNotificationCardView)
+        addSubview(startButton)
         
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            closeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            closeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             
             titleLabel.topAnchor.constraint(equalTo: closeButton.topAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            scheduleNotificationCardView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 334/366),
-            scheduleNotificationCardView.heightAnchor.constraint(equalTo: scheduleNotificationCardView.widthAnchor, multiplier: 220/334),
-            scheduleNotificationCardView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            scheduleNotificationCardView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 334 / 366),
+            scheduleNotificationCardView.heightAnchor.constraint(equalTo: scheduleNotificationCardView.widthAnchor, multiplier: 220 / 334),
+            scheduleNotificationCardView.centerXAnchor.constraint(equalTo: centerXAnchor),
             scheduleNotificationCardView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 30),
             
-            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 334/366),
-            startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: 55/334),
-            startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            startButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20)
+            startButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 334 / 366),
+            startButton.heightAnchor.constraint(equalTo: startButton.widthAnchor, multiplier: 55 / 334),
+            startButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            startButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
         ])
     }
 }

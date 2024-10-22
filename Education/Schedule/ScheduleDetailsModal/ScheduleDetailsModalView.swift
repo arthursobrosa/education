@@ -49,9 +49,10 @@ class ScheduleDetailsModalView: UIView {
         return btn
     }()
     
-    private let nameLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 21)
+        lbl.textAlignment = .center
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -106,8 +107,8 @@ class ScheduleDetailsModalView: UIView {
         
         self.backgroundColor = .systemBackground
         
-        self.nameLabel.text = subjectName
-        self.nameLabel.textColor = color?.darker(by: 0.8)
+        self.titleLabel.text = subjectName
+        self.titleLabel.textColor = color?.darker(by: 0.8)
         
         self.setDayLabel()
         self.setupUI()
@@ -155,7 +156,7 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
     func setupUI() {
         addSubview(closeButton)
         addSubview(editButton)
-        addSubview(nameLabel)
+        addSubview(titleLabel)
         addSubview(dayLabel)
         addSubview(hourDetailView)
         addSubview(startButton)
@@ -169,11 +170,11 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
             editButton.topAnchor.constraint(equalTo: closeButton.topAnchor),
             editButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             
-            nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            nameLabel.leadingAnchor.constraint(equalTo: closeButton.trailingAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: editButton.leadingAnchor, constant: -8),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
+            titleLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -70),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            dayLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 24),
+            dayLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             dayLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35),
             
             hourDetailView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 334 / 366),
