@@ -7,6 +7,7 @@
 
 import UIKit
 
+#warning("missing dark mode")
 class ScheduleCell: UICollectionViewCell {
     // MARK: - ID and Delegate
     static let identifier = "scheduleCell"
