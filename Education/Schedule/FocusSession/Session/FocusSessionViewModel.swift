@@ -6,34 +6,203 @@
 //
 
 import Foundation
+import Combine
 
 class FocusSessionViewModel {
-    // MARK: - FocusSession Handler
+    // MARK: - CoreData focus session manager
     private let focusSessionManager: FocusSessionManager
+    
+    // MARK: - Service to manage timer and session
+    let activityManager: ActivityManager
+    
+    // MARK: - Service to block apps
+    private let blockingManager: BlockingManager
+    
+    // MARK: - Combine storage
+    private var cancellables = Set<AnyCancellable>()
    
     // MARK: - Properties
     var prefersStatusBarHidden = true
     
     var didTapFinish = false
     
+    var pauseStatusDidChange: ((Bool) -> Void)?
+    var timerSecondsDidChange: (() -> Void)?
+    var timerFinishedPropertyChanged: ((Bool) -> Void)?
+    var isAtWorkTimeDidChange: ((Bool) -> Void)?
+    var updateAfterBackgroundPropertyDidChange: (() -> Void)?
+    
+    struct LayersConfig {
+        let strokeEnd: CGFloat
+        let isTimerTrackerShowing: Bool
+        let isClockwise: Bool
+        let startAngle: Double
+        let endAngle: Double
+    }
+    
     // MARK: - Initializer
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager()) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), activityManager: ActivityManager, blockingManager: BlockingManager) {
         self.focusSessionManager = focusSessionManager
+        self.activityManager = activityManager
+        self.blockingManager = blockingManager
         
-        ActivityManager.shared.date = Date.now
+        activityManager.date = Date.now
+        
+        bindActivityManagerProperties()
+    }
+}
+
+// MARK: - Bind activity manager properties to VC
+extension FocusSessionViewModel {
+    private func bindActivityManagerProperties() {
+        bindPauseState()
+        bindTimerSeconds()
+        bindTimerFinished()
+        bindIsAtWorkTime()
+        bindUpdateAfterBackground()
     }
     
-    // MARK: - Methods
+    private func bindPauseState() {
+        activityManager.$isPaused
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isPaused in
+                guard let self else { return }
+                
+                guard case .stopwatch = activityManager.timerCase else {
+                    pauseStatusDidChange?(activityManager.isPaused)
+                    return
+                }
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func bindTimerSeconds() {
+        activityManager.$timerSeconds
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                
+                guard !didTapFinish else { return }
+                
+                timerSecondsDidChange?()
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func bindTimerFinished() {
+        activityManager.$timerFinished
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] timerFinished in
+                guard let self else { return }
+                
+                timerFinishedPropertyChanged?(timerFinished)
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func bindIsAtWorkTime() {
+        activityManager.$isAtWorkTime
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isAtWorkTime in
+                guard let self else { return }
+                
+                isAtWorkTimeDidChange?(isAtWorkTime)
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func bindUpdateAfterBackground() {
+        activityManager.$updateAfterBackground
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updateAfterBackground in
+                guard let self else { return }
+                
+                guard updateAfterBackground else { return }
+                
+                guard case .stopwatch = activityManager.timerCase else {
+                    updateAfterBackgroundPropertyDidChange?()
+                    return
+                }
+            }
+            .store(in: &self.cancellables)
+    }
+}
+
+// MARK: - Layers config
+extension FocusSessionViewModel {
+    func getLayersConfig() -> LayersConfig {
+        let strokeEnd = getStrokeEnd()
+        let isTimerTrackerShowing = isTimerTrackerShowing()
+        let isClockwise = isClockwise()
+        let angles = getAngles()
+        
+        return LayersConfig(strokeEnd: strokeEnd, isTimerTrackerShowing: isTimerTrackerShowing, isClockwise: isClockwise, startAngle: angles.startAngle, endAngle: angles.endAngle)
+    }
+    
     func getStrokeEnd() -> CGFloat {
-        return ActivityManager.shared.progress
+        activityManager.progress
     }
     
+    private func isTimerTrackerShowing() -> Bool {
+        guard case .stopwatch = activityManager.timerCase else {
+            return true
+        }
+        
+        return false
+    }
+    
+    private func isClockwise() -> Bool {
+        guard case .pomodoro = activityManager.timerCase else {
+            return true
+        }
+        
+        return activityManager.isAtWorkTime
+    }
+    
+    private func getAngles() -> (startAngle: Double, endAngle: Double) {
+        var startAngle = 0.0
+        var endAngle = 0.0
+        
+        guard case .pomodoro = activityManager.timerCase else {
+            startAngle = -(CGFloat.pi / 2)
+            endAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
+            
+            return (startAngle, endAngle)
+        }
+        
+        startAngle = activityManager.isAtWorkTime ? -(CGFloat.pi / 2) : -(CGFloat.pi / 2) + CGFloat.pi * 2
+        endAngle = activityManager.isAtWorkTime ? -(CGFloat.pi / 2) + CGFloat.pi * 2 : -(CGFloat.pi / 2)
+        
+        return (startAngle, endAngle)
+    }
+}
+
+// MARK: - Strings config
+extension FocusSessionViewModel {
+    // MARK: - Pomodoro
+    func getPomodoroString() -> String {
+        guard case .pomodoro = activityManager.timerCase else {
+            return String()
+        }
+        
+        let loop = activityManager.currentLoop + 1
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .ordinal
+        
+        guard let ordinalNumber = formatter.string(from: NSNumber(value: loop)) else { return String() }
+        
+        let suffix = activityManager.isAtWorkTime ? String(localized: "focusTime") : String(localized: "pauseTime")
+        
+        return ordinalNumber + " " + suffix
+    }
+    
+    // MARK: - Timer
     func getTimerString() -> String {
         var seconds = Int()
         var minutes = Int()
         var hours = Int()
         
-        let timerSeconds = ActivityManager.shared.timerSeconds
+        let timerSeconds = activityManager.timerSeconds
         
         if timerSeconds > 0 {
             seconds = timerSeconds % 60
@@ -47,8 +216,61 @@ class FocusSessionViewModel {
         
         return "\(hoursText):\(minutesText):\(secondsText)"
     }
+}
+
+// MARK: - Pause/Resume button state management
+extension FocusSessionViewModel {
+    // MARK: - Pause/Resume button
+    func changePauseStatus() {
+        if !activityManager.isPaused {
+            activityManager.isPaused = true
+        }
+    }
     
-    func saveFocusSession() {
-        ActivityManager.shared.saveFocusSesssion()
+    func pauseResumeButtonTapped() {
+        activityManager.isPaused.toggle()
+        
+        guard activityManager.isAtWorkTime else { return }
+        
+        if activityManager.isPaused {
+            unblockApps()
+        } else {
+            blockApps()
+        }
+    }
+}
+
+// MARK: - Block apps
+extension FocusSessionViewModel {
+    func blockApps() {
+        guard activityManager.blocksApps,
+              !activityManager.isPaused,
+              activityManager.isAtWorkTime else { return }
+        
+        blockingManager.applyShields()
+    }
+    
+    func unblockApps() {
+        blockingManager.removeShields()
+    }
+}
+
+// MARK: - Other auxiliar methods
+extension FocusSessionViewModel {
+    func shouldChangeVisibility() -> Bool {
+        if (!activityManager.isPaused && prefersStatusBarHidden)
+            || (activityManager.isPaused && !prefersStatusBarHidden) {
+            prefersStatusBarHidden.toggle()
+            return true
+        }
+        
+        return false
+    }
+}
+
+// MARK: - Extension config
+extension FocusSessionViewModel {
+    func getExtendedTime(hours: Int, minutes: Int) -> Int {
+        hours * 3600 + minutes * 60
     }
 }

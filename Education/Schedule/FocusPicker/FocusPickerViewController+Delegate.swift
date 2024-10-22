@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol FocusPickerDelegate: AnyObject {
+@objc protocol FocusPickerDelegate: AnyObject {
     func startButtonTapped()
     func dismiss()
     func dismissAll()
@@ -15,18 +15,16 @@ protocol FocusPickerDelegate: AnyObject {
 
 extension FocusPickerViewController: FocusPickerDelegate {
     func startButtonTapped() {
-        self.viewModel.setFocusSessionModel()
-        
-        BlockAppsMonitor.shared.removeShields()
-        
-        self.coordinator?.showTimer(focusSessionModel: self.viewModel.focusSessionModel)
+        viewModel.setFocusSessionModel()
+        viewModel.unblockApps()
+        coordinator?.showTimer(focusSessionModel: viewModel.focusSessionModel)
     }
     
     func dismiss() {
-        self.coordinator?.dismiss(animated: false)
+        coordinator?.dismiss(animated: false)
     }
     
     func dismissAll() {
-        self.coordinator?.dismissAll()
+        coordinator?.dismissAll()
     }
 }

@@ -12,7 +12,7 @@ class FocusPickerViewController: UIViewController {
     let viewModel: FocusPickerViewModel
     
     private lazy var focusPickerView: FocusPickerView = {
-        let view = FocusPickerView(timerCase: self.viewModel.focusSessionModel.timerCase)
+        let view = FocusPickerView(timerCase: viewModel.focusSessionModel.timerCase)
         view.delegate = self
         
         let subviews = view.dateView.timerDatePicker.subviews + view.dateView.pomodoroDateView.workDatePicker.subviews + view.dateView.pomodoroDateView.restDatePicker.subviews
@@ -45,76 +45,70 @@ class FocusPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if(self.traitCollection.userInterfaceStyle == .light){
-            self.view.backgroundColor = .label.withAlphaComponent(0.2)
+        if traitCollection.userInterfaceStyle == .light {
+            view.backgroundColor = .label.withAlphaComponent(0.2)
         } else {
-            self.view.backgroundColor = .label.withAlphaComponent(0.1)
+            view.backgroundColor = .label.withAlphaComponent(0.1)
         }
         
-        self.setupUI()
-        
-        self.setGestureRecognizer()
+        setupUI()
+        setGestureRecognizer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.configurePomodoroPickers()
+        configureTimerPicker()
+        configurePomodoroPickers()
     }
     
     private func setGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
-        self.view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(tapGesture)
     }
     
     @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
-        let tapLocation = sender.location(in: self.view)
+        let tapLocation = sender.location(in: view)
         
-        guard !self.focusPickerView.frame.contains(tapLocation) else { return }
+        guard !focusPickerView.frame.contains(tapLocation) else { return }
         
-        self.coordinator?.dismissAll()
+        coordinator?.dismissAll()
     }
     
     @objc private func didChangeToggle(_ sender: UISwitch) {
         switch sender.tag {
             case 0:
-                self.viewModel.focusSessionModel.isAlarmOn.toggle()
+                viewModel.focusSessionModel.isAlarmOn.toggle()
             case 1:
-                self.viewModel.focusSessionModel.isTimeCountOn.toggle()
+                viewModel.focusSessionModel.isTimeCountOn.toggle()
             case 2:
-                self.viewModel.focusSessionModel.blocksApps.toggle()
+                viewModel.focusSessionModel.blocksApps.toggle()
             default:
                 break
         }
     }
     
+    private func configureTimerPicker() {
+        selectRow(viewModel.selectedTimerHours, in: focusPickerView.dateView.timerDatePicker.hoursPicker)
+        selectRow(viewModel.selectedTimerMinutes, in: focusPickerView.dateView.timerDatePicker.minutesPicker)
+    }
+    
     private func configurePomodoroPickers() {
-        let timerCase = self.viewModel.focusSessionModel.timerCase
+        guard case .pomodoro(let workTime, let restTime, let numberOfLoops) = viewModel.focusSessionModel.timerCase else { return }
         
-        var workSeconds = Int()
-        var restSeconds = Int()
-        var repetitions = Int()
+        let repetitions = numberOfLoops - 1
         
-        switch timerCase {
-            case .pomodoro(let workTime, let restTime, let numberOfLoops):
-                workSeconds = workTime
-                restSeconds = restTime
-                repetitions = numberOfLoops - 1
-            default:
-                return
-        }
+        var hoursAndMinutes = viewModel.getHoursAndMinutes(from: workTime)
         
-        var hoursAndMinutes = self.viewModel.getHoursAndMinutes(from: workSeconds)
+        selectRow(hoursAndMinutes.hours, in: focusPickerView.dateView.pomodoroDateView.workDatePicker.hoursPicker)
+        selectRow(hoursAndMinutes.minutes, in: focusPickerView.dateView.pomodoroDateView.workDatePicker.minutesPicker)
         
-        self.selectRow(hoursAndMinutes[0], in: self.focusPickerView.dateView.pomodoroDateView.workDatePicker.hoursPicker)
-        self.selectRow(hoursAndMinutes[1] - 1, in: self.focusPickerView.dateView.pomodoroDateView.workDatePicker.minutesPicker)
+        hoursAndMinutes = viewModel.getHoursAndMinutes(from: restTime)
         
-        hoursAndMinutes = self.viewModel.getHoursAndMinutes(from: restSeconds)
+        selectRow(hoursAndMinutes.hours, in: focusPickerView.dateView.pomodoroDateView.restDatePicker.hoursPicker)
+        selectRow(hoursAndMinutes.minutes, in: focusPickerView.dateView.pomodoroDateView.restDatePicker.minutesPicker)
         
-        self.selectRow(hoursAndMinutes[0], in: self.focusPickerView.dateView.pomodoroDateView.restDatePicker.hoursPicker)
-        self.selectRow(hoursAndMinutes[1] - 1, in: self.focusPickerView.dateView.pomodoroDateView.restDatePicker.minutesPicker)
-        
-        self.selectRow(repetitions - 1, in: self.focusPickerView.dateView.pomodoroDateView.repetitionsPicker)
+        selectRow(repetitions - 1, in: focusPickerView.dateView.pomodoroDateView.repetitionsPicker)
     }
     
     private func selectRow(_ row: Int, in picker: UIPickerView) {
@@ -124,9 +118,9 @@ class FocusPickerViewController: UIViewController {
 
 extension FocusPickerViewController: ViewCodeProtocol {
     func setupUI() {
-        self.view.addSubview(focusPickerView)
+        view.addSubview(focusPickerView)
         
-        let timerCase = self.viewModel.focusSessionModel.timerCase
+        let timerCase = viewModel.focusSessionModel.timerCase
         
         var heightMultiplier = Double()
         var widthMultiplier = Double()
@@ -135,20 +129,20 @@ extension FocusPickerViewController: ViewCodeProtocol {
             case .timer:
                 heightMultiplier = 542/844
                 widthMultiplier = 366/542
-                self.focusPickerView.titleText.text = String(localized: "timerSelectionBold")
+                focusPickerView.titleLabel.text = String(localized: "timerSelectionBold")
             case .pomodoro:
                 heightMultiplier = 696/844
                 widthMultiplier = 366/696
-                self.focusPickerView.titleText.text = String(localized: "pomodoroSelectionTitle")
+                focusPickerView.titleLabel.text = String(localized: "pomodoroSelectionTitle")
             default:
                 break
         }
         
         NSLayoutConstraint.activate([
-            focusPickerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: heightMultiplier),
+            focusPickerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: heightMultiplier),
             focusPickerView.widthAnchor.constraint(equalTo: focusPickerView.heightAnchor, multiplier: widthMultiplier),
-            focusPickerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            focusPickerView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            focusPickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            focusPickerView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 }
@@ -173,13 +167,13 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         switch section {
             case 0:
                 cellText = String(localized: "alarm")
-                toggleIsOn = self.viewModel.focusSessionModel.isAlarmOn
+                toggleIsOn = viewModel.focusSessionModel.isAlarmOn
             case 1:
                 cellText = String(localized: "showTimeCount")
-                toggleIsOn = self.viewModel.focusSessionModel.isTimeCountOn
+                toggleIsOn = viewModel.focusSessionModel.isTimeCountOn
             case 2:
                 cellText = String(localized: "blockApps")
-                toggleIsOn = self.viewModel.focusSessionModel.blocksApps
+                toggleIsOn = viewModel.focusSessionModel.blocksApps
             default:
                 break
         }
@@ -239,26 +233,26 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch pickerView.tag {
             case PickerCase.timerHours, PickerCase.workHours, PickerCase.restHours:
-                return self.viewModel.hours.count
+                return viewModel.hours.count
             case PickerCase.timerMinutes, PickerCase.workMinutes, PickerCase.restMinutes:
-                return self.viewModel.minutes.count
+                return viewModel.minutes.count
             case PickerCase.repetitions:
-                return self.viewModel.repetitions.count
+                return viewModel.repetitions.count
             default:
                 return 0
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var selection = Int()
+        var selection = 0
         
         switch pickerView.tag {
             case PickerCase.timerHours, PickerCase.workHours, PickerCase.restHours:
-                selection = self.viewModel.hours[row]
+                selection = viewModel.hours[row]
             case PickerCase.timerMinutes, PickerCase.workMinutes, PickerCase.restMinutes:
-                selection = self.viewModel.minutes[row]
+                selection = viewModel.minutes[row]
             case PickerCase.repetitions:
-                selection = self.viewModel.repetitions[row]
+                selection = viewModel.repetitions[row]
             default:
                 break
         }
@@ -282,27 +276,47 @@ extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegat
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView.tag {
             case PickerCase.timerHours:
-                self.viewModel.selectedTimerHours = self.viewModel.hours[row]
+                viewModel.selectedTimerHours = viewModel.hours[row]
             case PickerCase.timerMinutes:
-                self.viewModel.selectedTimerMinutes = self.viewModel.minutes[row]
+                viewModel.selectedTimerMinutes = viewModel.minutes[row]
             case PickerCase.workHours:
-                self.viewModel.selectedWorkHours = self.viewModel.hours[row]
+                viewModel.selectedWorkHours = viewModel.hours[row]
             case PickerCase.workMinutes:
-                self.viewModel.selectedWorkMinutes = self.viewModel.minutes[row]
+                viewModel.selectedWorkMinutes = viewModel.minutes[row]
             case PickerCase.restHours:
-                self.viewModel.selectedRestHours = self.viewModel.hours[row]
+                viewModel.selectedRestHours = viewModel.hours[row]
             case PickerCase.restMinutes:
-                self.viewModel.selectedRestMinutes = self.viewModel.minutes[row]
+                viewModel.selectedRestMinutes = viewModel.minutes[row]
             case PickerCase.repetitions:
-                self.viewModel.selectedRepetitions = self.viewModel.repetitions[row]
+                viewModel.selectedRepetitions = viewModel.repetitions[row]
             default:
                 break
         }
         
+        changeStartButtonState(for: pickerView.tag)
         pickerView.reloadAllComponents()
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         30
+    }
+    
+    private func changeStartButtonState(for tag: Int) {
+        switch tag {
+            case PickerCase.timerHours, PickerCase.timerMinutes:
+                if viewModel.selectedTimerHours == 0 && viewModel.selectedTimerMinutes == 0 {
+                    focusPickerView.changeStartButtonState(isEnabled: false)
+                    return
+                }
+            case PickerCase.workHours, PickerCase.workMinutes, PickerCase.restHours, PickerCase.restMinutes:
+                if (viewModel.selectedWorkHours == 0 && viewModel.selectedWorkMinutes == 0) || (viewModel.selectedRestHours == 0 && viewModel.selectedRestMinutes == 0) {
+                    focusPickerView.changeStartButtonState(isEnabled: false)
+                    return
+                }
+            default:
+                return
+        }
+        
+        focusPickerView.changeStartButtonState(isEnabled: true)
     }
 }

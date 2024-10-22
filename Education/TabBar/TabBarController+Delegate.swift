@@ -16,10 +16,10 @@ protocol TabBarDelegate: AnyObject {
 
 extension TabBarController: TabBarDelegate {
     func addActivityView() {
-        self.activityView.timerSeconds = ActivityManager.shared.timerSeconds
-        self.activityView.subject = ActivityManager.shared.subject
-        self.activityView.color = ActivityManager.shared.color
-        self.activityView.progress = ActivityManager.shared.progress
+        self.activityView.timerSeconds = viewModel.activityManager.timerSeconds
+        self.activityView.subject = viewModel.activityManager.subject
+        self.activityView.color = viewModel.activityManager.color
+        self.activityView.progress = viewModel.activityManager.progress
         
         self.view.addSubview(activityView)
     }
@@ -31,6 +31,6 @@ extension TabBarController: TabBarDelegate {
     func didTapPlayButton() {
         self.activityViewTapped()
         
-        ActivityManager.shared.isPaused.toggle()
+        viewModel.activityManager.isPaused.toggle()
     }
 }

@@ -11,13 +11,16 @@ class SettingsCoordinator: Coordinator {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
+    private let blockingManager: BlockingManager
+    
+    init(navigationController: UINavigationController, blockingManager: BlockingManager) {
         self.navigationController = navigationController
+        self.blockingManager = blockingManager
     }
     
     func start() {
         let viewModel = SettingsViewModel()
-        let vc = SettingsViewController(viewModel: viewModel)
+        let vc = SettingsViewController(viewModel: viewModel, blockingManger: blockingManager)
         vc.coordinator = self
         
         self.navigationController.navigationBar.prefersLargeTitles = true

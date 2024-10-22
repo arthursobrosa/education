@@ -46,32 +46,28 @@ class NoSchedulesView: UIView {
         
         return label
     }()
+    
+    // MARK: - Initializer
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: - UI Setup
 extension NoSchedulesView: ViewCodeProtocol {
     func setupUI() {
-        guard let noSchedulesCase else { return }
-        
-        self.subviews.forEach { subview in
-            subview.removeFromSuperview()
-        }
-        
-        self.addSubview(messageLabel)
-        
-        var topPadding = Double()
-        
-        switch noSchedulesCase {
-            case .day:
-                topPadding = 150
-            case .week:
-                topPadding = 226
-        }
+        addSubview(messageLabel)
         
         NSLayoutConstraint.activate([
-            messageLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 245/390),
-            messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            messageLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: topPadding)
+            messageLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 245 / 390),
+            messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            messageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 150)
         ])
     }
 }

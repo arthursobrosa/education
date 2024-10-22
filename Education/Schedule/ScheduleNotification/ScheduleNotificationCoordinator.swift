@@ -17,11 +17,14 @@ class ScheduleNotificationCoordinator: NSObject, Coordinator, ShowingFocusSelect
     private let startTime: Date
     private let endTime: Date
     
-    init(navigationController: UINavigationController, subjectName: String, startTime: Date, endTime: Date) {
+    private let blockingManager: BlockingManager
+    
+    init(navigationController: UINavigationController, subjectName: String, startTime: Date, endTime: Date, blockingManager: BlockingManager) {
         self.navigationController = navigationController
         self.subjectName = subjectName
         self.startTime = startTime
         self.endTime = endTime
+        self.blockingManager = blockingManager
     }
     
     func start() {
@@ -45,7 +48,7 @@ class ScheduleNotificationCoordinator: NSObject, Coordinator, ShowingFocusSelect
     }
     
     func showFocusSelection(focusSessionModel: FocusSessionModel) {
-        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel)
+        let child = FocusSelectionCoordinator(navigationController: self.newNavigationController, isFirstModal: false, focusSessionModel: focusSessionModel, blockingManager: blockingManager)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()

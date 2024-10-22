@@ -8,6 +8,9 @@
 import UIKit
 
 class HourDetailsView: UIView {
+    
+    var color : UIColor?
+    
     private let bracket: UIImageView = {
         let img = UIImage(named: "ScheduleDetailsModal1")!.withRenderingMode(.alwaysTemplate)
         
@@ -62,7 +65,7 @@ class HourDetailsView: UIView {
         self.bracket.tintColor = color.darker(by: 0.6)
         
         self.startTime.text = starTime
-        self.startTime.textColor = color.darker(by: 0.8)
+        self.startTime.textColor = color.darker(by: self.traitCollection.userInterfaceStyle == .dark ? 1.4 : 0.8)
         
         self.lineStartTime.tintColor = color.darker(by: 0.6)
         
@@ -71,9 +74,12 @@ class HourDetailsView: UIView {
         
         self.lineEndTime.tintColor = color.darker(by: 0.6)
         
+        self.color = color
+        
         self.setupUI()
         
-        self.backgroundColor = color.withAlphaComponent(0.15)
+        
+        self.backgroundColor = color.withAlphaComponent(self.traitCollection.userInterfaceStyle == .dark ? 0.25 : 0.15)
         
         self.layer.cornerRadius = 14
     }
@@ -111,5 +117,20 @@ extension HourDetailsView: ViewCodeProtocol {
             lineEndTime.centerYAnchor.constraint(equalTo: endTime.centerYAnchor),
             lineEndTime.widthAnchor.constraint(equalTo: lineStartTime.widthAnchor)
         ])
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            if(self.traitCollection.userInterfaceStyle == .dark){
+                self.backgroundColor = self.color!.withAlphaComponent(0.25)
+                self.startTime.textColor = self.color!.darker(by: 1.4)
+                self.endTime.textColor = self.color!
+            } else {
+                self.backgroundColor = self.color!.withAlphaComponent(0.15)
+                self.startTime.textColor = self.color!.darker(by: 0.8)
+                self.endTime.textColor = self.color!
+                
+            }
+        }
     }
 }

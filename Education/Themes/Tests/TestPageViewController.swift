@@ -110,7 +110,7 @@ class TestPageViewController: UIViewController {
     func setupTextView() {
         if self.viewModel.comment == ""{
             self.testPageView.textView.text = String(localized: "description")
-            self.testPageView.textView.font = UIFont.italicSystemFont(ofSize: 16)
+            self.testPageView.textView.font = UIFont(name: Fonts.darkModeOnItalic, size: 16)
             self.testPageView.textView.textColor = .systemText40
         }else {
             self.testPageView.textView.text = self.viewModel.comment

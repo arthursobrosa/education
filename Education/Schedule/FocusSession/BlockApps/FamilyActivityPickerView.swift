@@ -24,7 +24,7 @@ class FamilyActivityPickerDelegate: ObservableObject {
 
 struct FamilyActivityPickerView: View {
     @State var isPresented: Bool = true
-    @StateObject var pickerDelegate: BlockAppsMonitor = BlockAppsMonitor()
+    @State var pickerDelegate: BlockingManager
 
     var body: some View {
         VStack {

@@ -20,6 +20,7 @@ class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
         let textField = UITextField()
         textField.backgroundColor = .clear
         textField.placeholder = String(localized: "subjectName")
+        textField.textColor = UIColor(named: "system-text")
         
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         let toolbar = self.createToolbar(withTag: 0)

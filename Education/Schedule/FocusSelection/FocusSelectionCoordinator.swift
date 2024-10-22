@@ -15,11 +15,13 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     private var newNavigationController = UINavigationController()
     
     private let focusSessionModel: FocusSessionModel
+    private let blockingManager: BlockingManager
     
-    init(navigationController: UINavigationController, isFirstModal: Bool, focusSessionModel: FocusSessionModel) {
+    init(navigationController: UINavigationController, isFirstModal: Bool, focusSessionModel: FocusSessionModel, blockingManager: BlockingManager) {
         self.navigationController = navigationController
         self.isFirstModal = isFirstModal
         self.focusSessionModel = focusSessionModel
+        self.blockingManager = blockingManager
     }
     
     func start() {
@@ -49,7 +51,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
     }
     
     func showFocusPicker(focusSessionModel: FocusSessionModel) {
-        let child = FocusPickerCoordinator(navigationController: self.isFirstModal ? self.newNavigationController : self.navigationController, focusSessionModel: focusSessionModel)
+        let child = FocusPickerCoordinator(navigationController: self.isFirstModal ? self.newNavigationController : self.navigationController, focusSessionModel: focusSessionModel, blockingManager: blockingManager)
         child.parentCoordinator = self
         self.childCoordinators.append(child)
         child.start()

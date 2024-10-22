@@ -8,23 +8,21 @@
 import UIKit
 
 class FocusSessionView: UIView {
-    weak var delegate: FocusSessionDelegate?
+    weak var delegate: FocusSessionDelegate? {
+        didSet {
+            setupUI()
+        }
+    }
     
     // MARK: - Properties
     private let color: UIColor?
-    
-    var isPaused: Bool = false {
-        didSet {
-            self.updatePauseResumeButton()
-        }
-    }
     
     private lazy var dismissButton: UIButton = {
         let button = UIButton(configuration: .plain())
         button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
         button.tintColor = .label
         
-        button.addTarget(self, action: #selector(dismisButtonTapped), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(FocusSessionDelegate.dismissButtonTapped), for: .touchUpInside)
         
         button.alpha = 0
         
@@ -55,10 +53,10 @@ class FocusSessionView: UIView {
         return lbl
     }()
     
-    private lazy var visibilityButton: UIButton = {
+    private lazy var eyeButton: UIButton = {
         let button = UIButton(configuration: .plain())
         
-        button.addTarget(self, action: #selector(visibilityButtonTapped), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(FocusSessionDelegate.eyeButtonTapped), for: .touchUpInside)
         
         button.alpha = 0
         
@@ -103,21 +101,11 @@ class FocusSessionView: UIView {
         return strokeEnd
     }()
     
-    private let pauseResumeButtonContainer: UIView = {
-        let view = UIView()
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    private var pauseResumeBottomConstraint: NSLayoutConstraint!
-    
     private lazy var pauseResumeButton: UIButton = {
         let bttn = UIButton(configuration: .plain())
-        bttn.tintColor = self.color
+        bttn.tintColor = color
         bttn.setImage(UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 48, weight: .regular, scale: .default)), for: .normal)
-        bttn.addTarget(self, action: #selector(pauseResumeButtonTapped), for: .touchUpInside)
+        bttn.addTarget(delegate, action: #selector(FocusSessionDelegate.pauseResumeButtonTapped), for: .touchUpInside)
         
         bttn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -143,7 +131,7 @@ class FocusSessionView: UIView {
         
         bttn.alpha = 0
         
-        bttn.addTarget(self, action: #selector(didTapRestartButton), for: .touchUpInside)
+        bttn.addTarget(delegate, action: #selector(FocusSessionDelegate.didTapRestartButton), for: .touchUpInside)
         
         bttn.translatesAutoresizingMaskIntoConstraints = false
         
@@ -161,38 +149,26 @@ class FocusSessionView: UIView {
         
         bttn.alpha = 0
         
-        bttn.addTarget(self, action: #selector(didTapFinishButton), for: .touchUpInside)
+        bttn.addTarget(delegate, action: #selector(FocusSessionDelegate.didTapFinishButton), for: .touchUpInside)
         
         bttn.translatesAutoresizingMaskIntoConstraints = false
         
         return bttn
     }()
     
-    private lazy var endNotification: UIView = {
-        let view = NotificationComponentView(title: String(localized: "timeIsUp"),
-                                    body: ((ActivityManager.shared.subject) != nil) ? String(localized: "activityEndCongratulations") + (ActivityManager.shared.subject!.unwrappedName)  + " 🎉" :
-                                                String(localized: "noActivityEndCongratulations"))
-        view.translatesAutoresizingMaskIntoConstraints = false
-      
-        
-        return view
-    }()
-    
-    lazy var overlayViewEnd: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.label.withAlphaComponent(0.2)
-        view.layer.zPosition = 2
-        
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
+    let statusAlertView: FocusStatusAlertView = {
+        let view = FocusStatusAlertView()
         
         view.isHidden = true
+        view.layer.zPosition = 2
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
     
-    private let focusAlert: FocusAlertView = {
-        let view = FocusAlertView()
+    let extensionAlertView: FocusExtensionAlertView = {
+        let view = FocusExtensionAlertView()
         
         view.isHidden = true
         view.layer.zPosition = 2
@@ -221,313 +197,232 @@ class FocusSessionView: UIView {
         
         super.init(frame: .zero)
         
-        self.backgroundColor = .systemBackground
-        self.setupUI()
+        backgroundColor = .systemBackground
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Auxiliar methods
-    func setTitleLabel(for subject: Subject?) {
-        guard let subject else { return }
-        
-        let attributedString = NSMutableAttributedString()
-        
-        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .medium), .foregroundColor : UIColor.label.withAlphaComponent(0.7)])
-        let subjectString = NSAttributedString(string: subject.unwrappedName, attributes: [.font : UIFont.boldSystemFont(ofSize: 32), .foregroundColor : UIColor.label.withAlphaComponent(0.85)])
-        
-        attributedString.append(activityString)
-        attributedString.append(subjectString)
-        
-        self.activityTitle.attributedText = attributedString
-    }
-    
-    func changeButtonsIsHidden(_ isHidden: Bool) {
-        let duration: TimeInterval = 1
-        
-        UIView.animateKeyframes(withDuration: 1, delay: 0) { [weak self] in
-            guard let self else { return }
-            
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.2) {
-                self.pauseResumeButton.alpha = 0
-            }
-            
-            UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.2) {
-                self.dismissButton.alpha = isHidden ? 0 : 1
-                self.visibilityButton.alpha = isHidden ? 0 : 1
-                self.restartButton.alpha = isHidden ? 0 : 1
-                self.finishButton.alpha = isHidden ? 0 : 1
-            }
+}
 
+// MARK: - Timer Animations
+extension FocusSessionView {
+    func startAnimation(timerDuration: Double) {
+        timerEndAnimation.duration = timerDuration
+        timerCircleFillLayer.add(timerEndAnimation, forKey: "timerEnd")
+    }
+    
+    func resetAnimations() {
+        timerCircleFillLayer.removeAllAnimations()
+    }
+    
+    func redefineAnimation(timerDuration: Double, strokeEnd: CGFloat) {
+        timerCircleFillLayer.strokeEnd = strokeEnd
+        timerEndAnimation.duration = timerDuration
+    }
+}
+
+// MARK: - Visibility
+extension FocusSessionView {
+    // MARK: - Buttons visibility
+    func changeButtonsVisibility(isHidden: Bool) {
+        /// For a better understanding let's separate the buttons in two categories: "pause/resume button" and "other buttons"
+        ///  where "other buttons" is composed of the dismiss, visibility, restart and finish buttons
+        
+        let duration: TimeInterval = 1
+        let alpha: Double = isHidden ? 0 : 1
+        let relativeDuration = Double(duration / 2)
+        let pauseResumeStartTime: Double = isHidden ? 0.5 : 0
+        let otherButtonsStartTime: Double = isHidden ? 0 : 0.5
+        
+        UIView.animateKeyframes(withDuration: duration, delay: 0) { [weak self] in
+            guard let self else { return }
             
-            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
-                self.pauseResumeButton.alpha = 1
+            UIView.addKeyframe(withRelativeStartTime: pauseResumeStartTime, relativeDuration: relativeDuration) {
+                self.applyTranslation(to: self.pauseResumeButton, duration: relativeDuration, isHidden: isHidden)
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: otherButtonsStartTime, relativeDuration: relativeDuration) {
+                self.dismissButton.alpha = alpha
+                self.eyeButton.alpha = alpha
+                self.restartButton.alpha = alpha
+                self.finishButton.alpha = alpha
             }
         }
+    }
+    
+    private func applyTranslation(to view: UIView, duration: CFTimeInterval, isHidden: Bool) {
+        let yOffset = isHidden ? 80.0 : -80.0
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + duration * 0.3) { [weak self] in
-            guard let self else { return }
-            
-            self.removeConstraint(self.pauseResumeBottomConstraint)
-            self.pauseResumeBottomConstraint = isHidden ? self.pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor) : self.pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: self.restartButton.topAnchor)
-            self.pauseResumeBottomConstraint.isActive = true
-        }
+        let translationTransform = CATransform3DMakeTranslation(0, yOffset, 0)
+        
+        let animation = CABasicAnimation(keyPath: "transform")
+        animation.duration = duration
+        animation.fromValue = view.layer.transform
+        animation.toValue = translationTransform
+        view.layer.add(animation, forKey: "transform")
+        
+        view.layer.transform = CATransform3DConcat(view.layer.transform, translationTransform)
     }
     
-    func showEndNotification(_ isShowing: Bool) {
-        self.overlayViewEnd.isHidden = !isShowing
-    }
-    
-    func showFocusAlert(_ isShowing: Bool) {
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            guard let self else { return }
-            
-            self.focusAlert.isHidden = !isShowing
-            self.overlayView.alpha = self.overlayView.alpha == 0 ? 1 : 0
-        }
-    }
-    
-    func setVisibilityButton(isActive: Bool) {
+    // MARK: - Eye button
+    func setEyeButton(isActive: Bool) {
         let imageName = isActive ? "eye" : "eye.slash"
-        self.visibilityButton.setImage(UIImage(systemName: imageName), for: .normal)
-        self.visibilityButton.tintColor = .label
+        eyeButton.setImage(UIImage(systemName: imageName), for: .normal)
+        eyeButton.tintColor = .label
         
-        self.addSubview(visibilityButton)
+        addSubview(eyeButton)
         
         NSLayoutConstraint.activate([
-            visibilityButton.topAnchor.constraint(equalTo: dismissButton.topAnchor),
-            visibilityButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            eyeButton.topAnchor.constraint(equalTo: dismissButton.topAnchor),
+            eyeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
         ])
     }
-    
-    @objc private func dismisButtonTapped() {
-        self.delegate?.dismissButtonTapped()
+}
+
+// MARK: - UI Updates
+extension FocusSessionView {
+    // MARK: - Title
+    func setTitleLabel() {
+        let attributedText = delegate?.getTitleString()
+        activityTitle.attributedText = attributedText
     }
     
-    @objc private func visibilityButtonTapped() {
-        self.delegate?.visibilityButtonTapped()
+    func showPomodoroLabel() {
+        pomodoroLabel.isHidden = false
     }
     
-    @objc private func pauseResumeButtonTapped() {
-        self.isPaused.toggle()
-        self.delegate?.pauseResumeButtonTapped()
+    // MARK: - Timer Labels
+    func updateTimerLabels(timerString: String, pomodoroString: String) {
+        timerLabel.text = timerString
+        
+        guard !pomodoroLabel.isHidden else { return }
+        
+        pomodoroLabel.text = pomodoroString
     }
     
-    func updatePauseResumeButton() {
+    // MARK: - Pause/Resume Button
+    func updatePauseResumeButton(isPaused: Bool) {
         let imageName = isPaused ? "play.fill" : "pause.fill"
         
-        UIView.transition(with: self.pauseResumeButton, duration: 0.3, options: .transitionCrossDissolve) {
+        UIView.transition(with: pauseResumeButton, duration: 0.3, options: .transitionCrossDissolve) { [weak self] in
+            guard let self else { return }
             self.pauseResumeButton.setImage(UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .semibold, scale: .default)), for: .normal)
         }
     }
     
-    @objc private func didTapRestartButton() {
-        self.focusAlert.configure(with: .restart)
-        self.showFocusAlert(true)
-    }
-    
-    @objc private func didTapFinishButton() {
-        self.focusAlert.configure(with: .finish)
-        self.showFocusAlert(true)
-    }
-    
-    func startAnimation(timerDuration: Double) {
-        self.timerEndAnimation.duration = timerDuration
-        
-        self.timerCircleFillLayer.add(self.timerEndAnimation, forKey: "timerEnd")
-    }
-    
-    func resetAnimations() {
-        self.timerCircleFillLayer.removeAllAnimations()
+    func enablePauseResumeButton() {
+        pauseResumeButton.isEnabled = true
     }
     
     func disablePauseResumeButton() {
-        self.pauseResumeButton.isEnabled = false
-        self.timerCircleFillLayer.strokeColor = UIColor.clear.cgColor
+        pauseResumeButton.isEnabled = false
+        timerCircleFillLayer.strokeColor = UIColor.clear.cgColor
     }
     
-    func redefineAnimation(timerDuration: Double, strokeEnd: CGFloat) {
-        self.timerCircleFillLayer.strokeEnd = strokeEnd
-        self.timerEndAnimation.duration = timerDuration
+    // MARK: - Timer Tracker
+    func updateTimerTracker(isShowing: Bool) {
+        timerTrackLayer.strokeColor = isShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
     }
-    
-    func updateLabels(timerString: String) {
-        self.timerLabel.text = timerString
-        
-        guard !self.pomodoroLabel.isHidden else { return }
-        
-        let number = ActivityManager.shared.currentLoop + 1
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .ordinal
-        
-        guard let ordinalNumber = formatter.string(from: NSNumber(value: number)) else { return }
-        
-        let suffix = ActivityManager.shared.isAtWorkTime ? String(localized: "focusTime") : String(localized: "pauseTime")
-        
-        self.pomodoroLabel.text = ordinalNumber + " " + suffix
-    }
-    
-    func updateTimerTracker() {
-        var isShowing = true
-        
-        switch ActivityManager.shared.timerCase {
-            case .stopwatch:
-                isShowing = false
-            default:
-                break
+}
+
+// MARK: - Alerts
+extension FocusSessionView {
+    func changeAlertVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+            
+            self.statusAlertView.isHidden = !isShowing
+            self.overlayView.alpha = isShowing ? 1 : 0
         }
-        
-        self.timerTrackLayer.strokeColor = isShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
-    }
-    
-    func showPomodoroLabel() {
-        self.pomodoroLabel.isHidden = false
     }
 }
 
 // MARK: - UI Setup
 extension FocusSessionView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(dismissButton)
-        self.addSubview(activityTitle)
-        self.addSubview(pomodoroLabel)
-        self.addSubview(timerContainerView)
+        addSubview(dismissButton)
+        addSubview(activityTitle)
+        addSubview(pomodoroLabel)
+        addSubview(timerContainerView)
         timerContainerView.addSubview(timerLabel)
         
-        self.addSubview(pauseResumeButtonContainer)
-        pauseResumeButtonContainer.addSubview(pauseResumeButton)
+        addSubview(pauseResumeButton)
         
-        self.addSubview(restartButton)
-        self.addSubview(finishButton)
-        self.addSubview(focusAlert)
-        
-        self.addSubview(overlayViewEnd)
-        overlayViewEnd.addSubview(endNotification)
+        addSubview(restartButton)
+        addSubview(finishButton)
+        addSubview(statusAlertView)
         
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -6),
-            dismissButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            
-            activityTitle.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            activityTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            dismissButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 4),
+            dismissButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+        
+            activityTitle.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            activityTitle.centerXAnchor.constraint(equalTo: centerXAnchor),
             
             pomodoroLabel.topAnchor.constraint(equalTo: activityTitle.bottomAnchor, constant: 21),
-            pomodoroLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            pomodoroLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 300/844),
-            timerContainerView.widthAnchor.constraint(equalTo: timerContainerView.heightAnchor, multiplier: 290/300),
-            timerContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            timerContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            timerContainerView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 300 / 844),
+            timerContainerView.widthAnchor.constraint(equalTo: timerContainerView.heightAnchor, multiplier: 290 / 300),
+            timerContainerView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            timerContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
             
             timerLabel.centerXAnchor.constraint(equalTo: timerContainerView.centerXAnchor),
             timerLabel.centerYAnchor.constraint(equalTo: timerContainerView.centerYAnchor),
             timerLabel.widthAnchor.constraint(equalTo: timerContainerView.widthAnchor),
             timerLabel.heightAnchor.constraint(equalTo: timerLabel.widthAnchor),
             
-            pauseResumeButtonContainer.topAnchor.constraint(equalTo: timerLabel.bottomAnchor),
-            pauseResumeButtonContainer.widthAnchor.constraint(equalTo: self.widthAnchor),
-            pauseResumeButtonContainer.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            pauseResumeButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            pauseResumeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 100),
             
-            pauseResumeButton.centerXAnchor.constraint(equalTo: pauseResumeButtonContainer.centerXAnchor),
-            pauseResumeButton.centerYAnchor.constraint(equalTo: pauseResumeButtonContainer.centerYAnchor),
-            
-            restartButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            restartButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            restartButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            restartButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             restartButton.bottomAnchor.constraint(equalTo: finishButton.topAnchor, constant: -8),
-            restartButton.heightAnchor.constraint(equalTo: restartButton.widthAnchor, multiplier: 0.16),
+            restartButton.heightAnchor.constraint(equalTo: restartButton.widthAnchor, multiplier: 55 / 334),
             
-            finishButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            finishButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            finishButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -17),
+            finishButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            finishButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -17),
+            finishButton.widthAnchor.constraint(equalTo: restartButton.widthAnchor),
             finishButton.heightAnchor.constraint(equalTo: restartButton.heightAnchor),
-            
-            overlayViewEnd.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            overlayViewEnd.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            overlayViewEnd.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            overlayViewEnd.topAnchor.constraint(equalTo: self.topAnchor),
-            
-            endNotification.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            endNotification.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            endNotification.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 360/390),
-            endNotification.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 228/844),
-            
-            focusAlert.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            focusAlert.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25),
-            focusAlert.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 366/390),
-            focusAlert.heightAnchor.constraint(equalTo: focusAlert.widthAnchor, multiplier: 228/366)
         ])
         
-        self.pauseResumeBottomConstraint = pauseResumeButtonContainer.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
-        self.pauseResumeBottomConstraint.isActive = true
-        
-        
-        self.addSubview(overlayView)
+        addSubview(overlayView)
         
         NSLayoutConstraint.activate([
-            overlayView.topAnchor.constraint(equalTo: self.topAnchor),
-            overlayView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            overlayView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            overlayView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            overlayView.topAnchor.constraint(equalTo: topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
     
-    func setupLayers(strokeEnd: CGFloat) {
-        var clockwise = Bool()
+    func setupLayers(with configuration: FocusSessionViewModel.LayersConfig) {
+        let arcPath = UIBezierPath(arcCenter: CGPoint(x: timerLabel.frame.width / 2, y: timerLabel.frame.height / 2), radius: timerLabel.frame.width / 2, startAngle: configuration.startAngle, endAngle: configuration.endAngle, clockwise: configuration.isClockwise)
         
-        var startAngle = Double()
-        var endAngle = Double()
+        let lineWidth = bounds.height * (7 / 844)
         
-        var isShowing = Bool()
+        timerTrackLayer.path = arcPath.cgPath
+        timerTrackLayer.strokeColor = configuration.isTimerTrackerShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
+        timerTrackLayer.lineWidth = lineWidth
+        timerTrackLayer.fillColor = UIColor.clear.cgColor
+        timerTrackLayer.lineCap = .round
+        timerTrackLayer.strokeEnd = 1
         
-        switch ActivityManager.shared.timerCase {
-            case .stopwatch:
-                isShowing = false
-            case .pomodoro:
-                isShowing = true
-                
-                if ActivityManager.shared.isAtWorkTime {
-                    clockwise = true
-                    startAngle = -(CGFloat.pi / 2)
-                    endAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
-                } else {
-                    clockwise = false
-                    startAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
-                    endAngle = -(CGFloat.pi / 2)
-                }
-            default:
-                isShowing = true
-                
-                clockwise = true
-                startAngle = -(CGFloat.pi / 2)
-                endAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
-        }
+        timerCircleFillLayer.path = arcPath.cgPath
+        timerCircleFillLayer.strokeColor = color?.cgColor
+        timerCircleFillLayer.lineWidth = lineWidth
+        timerCircleFillLayer.fillColor = UIColor.clear.cgColor
+        timerCircleFillLayer.lineCap = .round
+        timerCircleFillLayer.strokeEnd = configuration.strokeEnd
         
-        let arcPath = UIBezierPath(arcCenter: CGPoint(x: self.timerLabel.frame.width / 2, y: self.timerLabel.frame.height / 2), radius: self.timerLabel.frame.width / 2, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
+        timerLabel.layer.addSublayer(timerTrackLayer)
+        timerLabel.layer.addSublayer(timerCircleFillLayer)
         
-        let lineWidth = self.bounds.height * (7/844)
-        
-        self.timerTrackLayer.path = arcPath.cgPath
-        self.timerTrackLayer.strokeColor = isShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
-        self.timerTrackLayer.lineWidth = lineWidth
-        self.timerTrackLayer.fillColor = UIColor.clear.cgColor
-        self.timerTrackLayer.lineCap = .round
-        self.timerTrackLayer.strokeEnd = 1
-        
-        self.timerCircleFillLayer.path = arcPath.cgPath
-        self.timerCircleFillLayer.strokeColor = self.color?.cgColor
-        self.timerCircleFillLayer.lineWidth = lineWidth
-        self.timerCircleFillLayer.fillColor = UIColor.clear.cgColor
-        self.timerCircleFillLayer.lineCap = .round
-        self.timerCircleFillLayer.strokeEnd = strokeEnd
-        
-        self.timerLabel.layer.addSublayer(timerTrackLayer)
-        self.timerLabel.layer.addSublayer(timerCircleFillLayer)
-        
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in            guard let self else { return }
+            
             self.timerContainerView.layer.cornerRadius = self.timerContainerView.frame.width / 2
         }
     }
