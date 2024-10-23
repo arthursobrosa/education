@@ -32,30 +32,12 @@ class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
         
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        let toolbar = self.createToolbar(withTag: 0)
-        textField.inputAccessoryView = toolbar
+        textField.delegate = self
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
     }()
-    
-    // MARK: - Methods
-    @objc private func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
-        switch sender.tag {
-        case 0:
-            self.textField.resignFirstResponder()
-        default:
-            break
-        }
-    }
-    
-    @objc private func textFieldDidChange() {
-        guard let text = self.textField.text else { return }
-        
-        self.delegate?.textFieldDidChange(newText: text)
-    }
 }
 
 extension InputTextTableViewCell: ViewCodeProtocol {
@@ -71,22 +53,8 @@ extension InputTextTableViewCell: ViewCodeProtocol {
         ])
     }
     
-    private func createToolbar(withTag tag: Int) -> UIToolbar {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
-        doneButton.tag = tag
-        
-        toolbar.setItems([flexSpace, doneButton], animated: false)
-        
-        return toolbar
-    }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let characterLimit = 15
+        let characterLimit = 18
         let currentText = textField.text ?? ""
         let newLength = currentText.count + string.count - range.length
         return newLength <= characterLimit
@@ -94,7 +62,22 @@ extension InputTextTableViewCell: ViewCodeProtocol {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text != ""{
-            
         }
+    }
+    
+    func spaceRemover(string: String) -> String {
+        let trimmedString = string.trimmingCharacters(in: .whitespaces)
+        return trimmedString
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let text = textField.text {
+            delegate?.textFieldDidChange(newText: text)
+            if spaceRemover(string: text) != ""{
+                textField.resignFirstResponder()
+            }
+        }
+
+        return true
     }
 }

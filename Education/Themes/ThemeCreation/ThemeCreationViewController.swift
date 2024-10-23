@@ -116,6 +116,12 @@ extension ThemeCreationViewController: ViewCodeProtocol {
     }
 }
 
+
+func spaceRemover(string: String) -> String {
+    let trimmedString = string.trimmingCharacters(in: .whitespaces)
+    return trimmedString
+}
+
 extension ThemeCreationViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -125,7 +131,6 @@ extension ThemeCreationViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        
-        self.viewModel.currentThemeName = text
+        self.viewModel.currentThemeName = spaceRemover(string: text)
     }
 }
