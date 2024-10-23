@@ -175,7 +175,7 @@ class StudyTimeViewModel: ObservableObject {
         }
         
         let times = subjectTotals.map {
-            SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "sealBackgroundColor")
+            SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "button-normal")
         }
         
         self.aggregatedTimes = times

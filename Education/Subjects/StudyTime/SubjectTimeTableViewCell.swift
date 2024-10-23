@@ -18,8 +18,8 @@ class SubjectTimeTableViewCell: UITableViewCell{
                 self.containerView.layer.borderColor  = UIColor(named: subject.unwrappedColor)!.cgColor
             } else {
                 self.subjectName.text = String(localized: "other")
-                self.colorCircle.backgroundColor = UIColor(named: "sealBackgroundColor")
-                self.containerView.layer.borderColor  = UIColor(named: "sealBackgroundColor")!.cgColor
+                self.colorCircle.backgroundColor = UIColor(named: "button-normal")
+                self.containerView.layer.borderColor  = UIColor(named: "button-normal")!.cgColor
             }
         }
     }

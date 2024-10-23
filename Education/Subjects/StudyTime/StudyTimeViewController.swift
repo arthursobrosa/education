@@ -182,14 +182,19 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
                 fatalError("Could not dequeue cell")
             }
             
+            if subject == nil && totalTime == "0s" {
+                cell.isHidden = true
+                return cell
+            }
+            
             let backgroundView = UIView()
             backgroundView.backgroundColor = UIColor.clear
             cell.selectedBackgroundView = backgroundView
             
             cell.subject = subject
             cell.backgroundColor = .clear
-            cell.subjectName.textColor = UIColor(named: subject?.unwrappedColor ?? "sealBackgroundColor")
-            cell.totalHours.textColor = UIColor(named: subject?.unwrappedColor ?? "sealBackgroundColor")
+            cell.subjectName.textColor = UIColor(named: subject?.unwrappedColor ?? "button-normal")
+            cell.totalHours.textColor = UIColor(named: subject?.unwrappedColor ?? "button-normal")
             cell.totalTime = totalTime
             
             return cell
