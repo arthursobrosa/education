@@ -17,7 +17,7 @@ class StudyTimeView: UIView {
     }
     
     // MARK: - UI Components
-    private let viewModeControl: CustomSegmentedControl = {
+    let viewModeControl: CustomSegmentedControl = {
         let segmentedControl = CustomSegmentedControl()
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
@@ -32,10 +32,12 @@ class StudyTimeView: UIView {
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         
+        
+        
         return segmentedControl
     }()
     
-    private let chartView: StudyTimeChartView
+    let chartView: StudyTimeChartView
     
     lazy var chartController: UIHostingController<StudyTimeChartView> = {
         let controller = UIHostingController(rootView: self.chartView)
@@ -69,6 +71,17 @@ class StudyTimeView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
+    func darkModeSegmentedControl() {
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            viewModeControl.backgroundColor = .white.withAlphaComponent(10)
+        default:
+            viewModeControl.backgroundColor = .black.withAlphaComponent(40)
+        }
     }
 }
 

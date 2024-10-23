@@ -18,8 +18,8 @@ class SubjectTimeTableViewCell: UITableViewCell{
                 self.containerView.layer.borderColor  = UIColor(named: subject.unwrappedColor)!.cgColor
             } else {
                 self.subjectName.text = String(localized: "other")
-                self.colorCircle.backgroundColor = UIColor(named: "sealBackgroundColor")
-                self.containerView.layer.borderColor  = UIColor(named: "sealBackgroundColor")!.cgColor
+                self.colorCircle.backgroundColor = UIColor(named: "button-normal")
+                self.containerView.layer.borderColor  = UIColor(named: "button-normal")!.cgColor
             }
         }
     }
@@ -51,7 +51,6 @@ class SubjectTimeTableViewCell: UITableViewCell{
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.textColor = .label
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         return label
     }()
@@ -59,7 +58,6 @@ class SubjectTimeTableViewCell: UITableViewCell{
     lazy var totalHours: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .secondaryLabel
         label.textAlignment = .right
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 15)
         return label
