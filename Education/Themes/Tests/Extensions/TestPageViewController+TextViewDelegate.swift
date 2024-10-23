@@ -26,7 +26,7 @@ extension TestPageViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = String(localized: "description")
             textView.textColor = .systemText40
-            textView.font = UIFont.italicSystemFont(ofSize: 16)
+            textView.font = UIFont(name: Fonts.darkModeOnItalic, size: 16)
         }
     }
     
