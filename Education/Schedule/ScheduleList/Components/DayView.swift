@@ -109,6 +109,12 @@ extension DayView: ViewCodeProtocol {
             dateLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
             dateLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
         ])
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.handleDayColors()
+        }
     }
     
     func handleDayColors() {
@@ -120,15 +126,15 @@ extension DayView: ViewCodeProtocol {
         let dayLabelFontName = (isSelected || isToday) ? Fonts.darkModeOnRegular : Fonts.darkModeOnMedium
         
         self.dayLabel.font = UIFont(name: dayLabelFontName, size: 13)
-        self.dayLabel.textColor = (isSelected || isToday) ? .label : .secondaryLabel
+        self.dayLabel.textColor = (isSelected || isToday) ? UIColor(named: "system-text") : UIColor(named: "system-text-50")
         
         let dateLabelFontName = isSelected ? Fonts.darkModeOnSemiBold : Fonts.darkModeOnMedium
         
         self.dateLabel.font = UIFont(name: dateLabelFontName, size: 15)
-        self.dateLabel.textColor = isSelected ? .systemBackground : (isToday ? .label : .secondaryLabel)
+        self.dateLabel.textColor = isSelected ? .systemBackground : (isToday ? UIColor(named: "system-text") : UIColor(named: "system-text-50"))
         
-        self.circleView.layer.borderColor = isToday ? UIColor.label.cgColor : UIColor.secondaryLabel.cgColor
+        self.circleView.layer.borderColor = isToday ? UIColor(named: "system-text")!.cgColor : UIColor(named: "system-text-50")!.cgColor
         self.circleView.layer.borderWidth = isSelected ? 0 : 1
-        self.circleView.backgroundColor = isSelected ? .label : .clear
+        self.circleView.backgroundColor = isSelected ? UIColor(named: "system-text") : .clear
     }
 }

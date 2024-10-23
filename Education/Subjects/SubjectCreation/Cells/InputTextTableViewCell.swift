@@ -19,14 +19,18 @@ class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
     lazy var textField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
+        textField.textColor = UIColor(named: "system-text")
         
         let placeholderText = String(localized: "subjectName")
-        let placeholderAttributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15),
-        .foregroundColor: UIColor.gray
+        let placeholderFont = UIFont(name: Fonts.darkModeOnItalic, size: 16)
+        let placeholderColor = UIColor(named: "system-text-40")
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: placeholderFont ?? UIFont.systemFont(ofSize: 16),
+            .foregroundColor: placeholderColor as Any
         ]
-
-        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+        
+        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         
         textField.delegate = self
         
