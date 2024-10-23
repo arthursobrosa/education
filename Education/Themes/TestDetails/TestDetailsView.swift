@@ -15,6 +15,7 @@ class TestDetailsView: UIView {
         label.text = "Simulado Geral do ENEM"
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 18)
         label.textAlignment = .center
+        label.textColor = .systemText
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,7 +43,7 @@ class TestDetailsView: UIView {
         let label = UILabel()
         label.text = String(localized: "dateLable")
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
-        label.textColor = .secondaryLabel
+        label.textColor = .systemText50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -50,7 +51,8 @@ class TestDetailsView: UIView {
     lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.text = "28/10/1997"
-        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
+        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 20)
+        label.textColor = .systemText
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -59,7 +61,7 @@ class TestDetailsView: UIView {
         let label = UILabel()
         label.text = String(localized: "questionsLable")
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
-        label.textColor = .secondaryLabel
+        label.textColor = .systemText50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -67,7 +69,8 @@ class TestDetailsView: UIView {
     lazy var questionsLabel: UILabel = {
         let label = UILabel()
         label.text = "17/20"
-        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
+        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
+        label.textColor = .systemText50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -107,7 +110,7 @@ class TestDetailsView: UIView {
         let label = UILabel()
         label.text = String(localized: "notesLable")
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
-        label.textColor = .secondaryLabel
+        label.textColor = .systemText50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -117,6 +120,7 @@ class TestDetailsView: UIView {
         label.text = "Questões erradas:\n3. Genética\n4. Álgebra\n5. História"
         label.numberOfLines = 0
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.textColor = .systemText
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

@@ -17,21 +17,20 @@ class ThemeCreationView: UIView {
     private let themeTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
-        label.textColor = .label
+        label.textColor = .systemText
         
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
-    private lazy var textField: PaddedTextField = {
+    lazy var textField: PaddedTextField = {
         let textField = PaddedTextField()
-        textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
         textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
-        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font : UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular), .foregroundColor : UIColor.label.withAlphaComponent(0.5)])
-       
+        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font : UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular), .foregroundColor : UIColor(named: "system-text-40") ?? UIColor.red])
+        textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
         
-        textField.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
+        textField.layer.borderColor = UIColor(named: "button-normal")?.cgColor
         textField.layer.borderWidth = 1
         
         textField.layer.cornerRadius = 18
@@ -43,20 +42,20 @@ class ThemeCreationView: UIView {
         return textField
     }()
     
-    private lazy var cancelButton: ButtonComponent = {
+    lazy var cancelButton: ButtonComponent = {
         let button = ButtonComponent(
             insets: NSDirectionalEdgeInsets(top: 16, leading: 45, bottom: 16, trailing: 45),
             title: String(localized: "cancel"),
-            textColor: .label,
+            textColor: .systemText80,
             fontStyle: Fonts.darkModeOnMedium,
             fontSize: 17,
             cornerRadius: 28
         )
         button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
-        button.tintColor = .systemBackground
+        button.tintColor = .systemModalBg
         
-        button.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
+        button.layer.borderColor = UIColor(named: "button-normal")?.cgColor
         button.layer.borderWidth = 1
         
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -64,10 +63,10 @@ class ThemeCreationView: UIView {
         return button
     }()
     
-    private lazy var continueButton: ButtonComponent = {
-        let button = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground, cornerRadius: 28)
+    lazy var continueButton: ButtonComponent = {
+        let button = ButtonComponent(title: String(localized: "continue"), textColor: .systemModalBg, cornerRadius: 28)
         button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
-        
+        button.backgroundColor = .buttonSelected
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -76,11 +75,17 @@ class ThemeCreationView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .systemBackground
+        self.backgroundColor = .systemModalBg
         
         self.layer.cornerRadius = 12
         
         self.setupUI()
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.updateViewColor(self.traitCollection)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -113,6 +118,12 @@ class ThemeCreationView: UIView {
         
         self.themeTitleLabel.text = isEditing ? String(localized: "editTheme") : String(localized: "newTheme")
     }
+    
+    private func updateViewColor(_ traitCollection: UITraitCollection) {
+        cancelButton.layer.borderColor = UIColor(named: "button-normal")?.cgColor
+        textField.layer.borderColor = UIColor(named: "button-normal")?.cgColor
+    }
+    
 }
 
 extension ThemeCreationView: ViewCodeProtocol {

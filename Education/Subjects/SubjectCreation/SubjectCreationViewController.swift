@@ -42,6 +42,11 @@ class SubjectCreationViewController: UIViewController{
         }
         
         super.init(nibName: nil, bundle: nil)
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (viewController: SubjectCreationViewController, previousTraitCollection: UITraitCollection?) in
+            guard let self = self else { return }
+            self.updateViewColors()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -65,6 +70,7 @@ class SubjectCreationViewController: UIViewController{
             
             self.reloadTable()
         }
+        self.updateViewColors()
         
         if self.viewModel.currentEditingSubject == nil {
             self.subjectCreationView.hideDeleteButton()
@@ -122,6 +128,12 @@ class SubjectCreationViewController: UIViewController{
             guard let self else { return }
             
             self.subjectCreationView.tableView.reloadData()
+        }
+    }
+    
+    private func updateViewColors() {
+        if let color = UIColor(named: "button-normal", in: nil, compatibleWith: self.traitCollection) {
+            self.subjectCreationView.tableView.layer.borderColor = color.cgColor
         }
     }
 }
@@ -259,7 +271,7 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
                 cell.textField.text = self.subjectName
                 
                 cell.backgroundColor = .clear
-                cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.label.withAlphaComponent(0.2))
+                cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.buttonNormal)
                 cell.layer.masksToBounds = true
                 
                 cell.delegate = self
@@ -272,7 +284,7 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
                 
                 cell.backgroundColor = .clear
                 cell.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
-                cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.label.withAlphaComponent(0.2))
+                cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.buttonNormal)
                 cell.layer.masksToBounds = true
                 
                 cell.color = self.viewModel.selectedSubjectColor.value

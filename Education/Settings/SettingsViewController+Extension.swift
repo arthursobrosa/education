@@ -56,36 +56,37 @@ extension SettingsViewController {
                 let toggleSwitch = UISwitch()
                 toggleSwitch.isOn = self.viewModel.isNotificationActive.value
                 toggleSwitch.onTintColor = UIColor(named: "bluePicker")
+                toggleSwitch.thumbTintColor = .systemBackground
                 toggleSwitch.addTarget(self, action: #selector(didChangeNotificationToggle(_:)), for: .valueChanged)
                 
                 return toggleSwitch
             case 1:
                 let chevronImageView = UIImageView()
                 chevronImageView.image = UIImage(systemName: "chevron.right")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 14))
-                chevronImageView.tintColor = .secondaryLabel
+            chevronImageView.tintColor = .systemText50
                 chevronImageView.contentMode = .scaleAspectFit
                 
                 return chevronImageView
             case 2:
-                let stackView = UIStackView()
-                stackView.axis = .horizontal
-                stackView.spacing = 5
-                
+//                let stackView = UIStackView()
+//                stackView.axis = .horizontal
+//                stackView.spacing = 5
+//                
                 let dayLabel =  UILabel()
                 dayLabel.text = self.viewModel.selectedDay
                 dayLabel.tag = 0
-                dayLabel.textColor = .secondaryLabel
+                dayLabel.textColor = .systemText50
                 dayLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
+//                
+//                let chevronImageView = UIImageView()
+//                chevronImageView.image = UIImage(systemName: "chevron.right")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 14))
+//                chevronImageView.tintColor = .secondaryLabel
+//                chevronImageView.contentMode = .scaleAspectFit
+//                
+//                stackView.addArrangedSubview(dayLabel)
+//                stackView.addArrangedSubview(chevronImageView)
                 
-                let chevronImageView = UIImageView()
-                chevronImageView.image = UIImage(systemName: "chevron.right")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 14))
-                chevronImageView.tintColor = .secondaryLabel
-                chevronImageView.contentMode = .scaleAspectFit
-                
-                stackView.addArrangedSubview(dayLabel)
-                stackView.addArrangedSubview(chevronImageView)
-                
-                return stackView
+                return dayLabel
             default:
                 return nil
         }
@@ -118,7 +119,7 @@ extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         if (pickerLabel == nil){
             pickerLabel = UILabel()
             pickerLabel!.font = UIFont(name: Fonts.darkModeOnRegular, size: 20)
-            pickerLabel!.textColor = .gray
+            pickerLabel!.textColor = UIColor(named: "system-text-80")
             pickerLabel!.textAlignment = .center
         }
         

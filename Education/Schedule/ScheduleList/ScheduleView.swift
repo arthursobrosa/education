@@ -21,9 +21,11 @@ class ScheduleView: UIView {
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         let titleAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemText,
             .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 13)!
         ]
         let titleAttributesUnselected: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemText,
             .font: UIFont(name: Fonts.darkModeOnRegular, size: 13)!
         ]
         segmentedControl.setTitleTextAttributes(titleAttributesUnselected, for: .normal)

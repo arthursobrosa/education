@@ -84,14 +84,14 @@ class ThemePageViewController: UIViewController {
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
         addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
-        addButton.tintColor = .label
+        addButton.tintColor = .systemText
         
         let addItem = UIBarButtonItem(customView: addButton)
         
         self.navigationItem.rightBarButtonItems = [addItem]
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBackButton))
-        backButton.tintColor = .label
+        backButton.tintColor = .systemText
         
         self.navigationItem.leftBarButtonItems = [backButton]
     }
@@ -131,6 +131,7 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.textLabel?.text = self.viewModel.getDateString(from: test)
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
+        cell.textLabel?.textColor = .systemText
         
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -139,11 +140,11 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
         
         let commentView = UIImageView()
         commentView.image = UIImage(systemName: "text.bubble")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 18))
-        commentView.tintColor = .secondaryLabel        
+        commentView.tintColor = .systemText30
         let label = UILabel()
         label.text = self.viewModel.getQuestionsString(from: test)
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        label.textColor = .secondaryLabel
+        label.textColor = .systemText30
         label.sizeToFit()
         
         if hasComment {

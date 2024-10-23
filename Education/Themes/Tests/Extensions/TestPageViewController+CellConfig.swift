@@ -47,7 +47,7 @@ extension TestPageViewController {
                 textField.text = "\(row == 0 ? self.viewModel.totalQuestions : self.viewModel.rightQuestions)"
                 textField.textAlignment = .right
                 textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-                textField.textColor = .secondaryLabel
+                textField.textColor = .systemText50
                 textField.sizeToFit()
                 
                 let toolbar = self.createToolbar(withTag: row)
