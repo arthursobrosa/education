@@ -38,16 +38,16 @@ class FocusPickerViewModel {
     }
     
     private func setTimerCase() {
-        switch self.focusSessionModel.timerCase {
+        switch focusSessionModel.timerCase {
             case .pomodoro:
-                let selectedWorkTime = self.selectedWorkHours * 3600 + self.selectedWorkMinutes * 60
-                let selectedRestTime = self.selectedRestHours * 3600 + self.selectedRestMinutes * 60
-                let selectedNumberOfLoops = self.selectedRepetitions + 1
+                let selectedWorkTime = selectedWorkHours * 3600 + selectedWorkMinutes * 60
+                let selectedRestTime = selectedRestHours * 3600 + selectedRestMinutes * 60
+                let selectedNumberOfLoops = selectedRepetitions + 1
                 
-                self.focusSessionModel.timerCase = .pomodoro(workTime: selectedWorkTime, restTime: selectedRestTime, numberOfLoops: selectedNumberOfLoops)
-                self.focusSessionModel.workTime = selectedWorkTime
-                self.focusSessionModel.restTime = selectedRestTime
-                self.focusSessionModel.numberOfLoops = selectedNumberOfLoops
+                focusSessionModel.timerCase = .pomodoro(workTime: selectedWorkTime, restTime: selectedRestTime, numberOfLoops: selectedNumberOfLoops)
+                focusSessionModel.workTime = selectedWorkTime
+                focusSessionModel.restTime = selectedRestTime
+                focusSessionModel.numberOfLoops = selectedNumberOfLoops
             default:
                 break
         }
@@ -56,22 +56,22 @@ class FocusPickerViewModel {
     private func getTotalTime() {
         var totalTime = Int()
         
-        switch self.focusSessionModel.timerCase {
+        switch focusSessionModel.timerCase {
             case .timer:
-                totalTime = self.selectedTimerHours * 3600 + self.selectedTimerMinutes * 60
+                totalTime = selectedTimerHours * 3600 + selectedTimerMinutes * 60
             case .pomodoro(let worktime, _, _):
                 totalTime = worktime
             default:
                 break
         }
-        
-        self.focusSessionModel.totalSeconds = totalTime
-        self.focusSessionModel.timerSeconds = totalTime
+
+        focusSessionModel.totalSeconds = totalTime
+        focusSessionModel.timerSeconds = totalTime
     }
     
     func setFocusSessionModel() {
-        self.setTimerCase()
-        self.getTotalTime()
+        setTimerCase()
+        getTotalTime()
     }
     
     func getHoursAndMinutes(from seconds: Int) -> (hours: Int, minutes: Int) {

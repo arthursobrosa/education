@@ -8,19 +8,21 @@
 import UIKit
 
 class LiveActivityButton: UIButton {
+    // MARK: - Properties
     private let color: UIColor?
     private let progress: CGFloat
     
+    // MARK: - UI Properties
     private let timerContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    lazy var playButton: UIButton = {
+    lazy var pauseResumeButton: UIButton = {
         let button = UIButton(configuration: .plain())
         button.setImage(UIImage(systemName: "play.fill")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 18, weight: .regular)), for: .normal)
-        button.tintColor = self.color
+        button.tintColor = color
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -30,66 +32,79 @@ class LiveActivityButton: UIButton {
     private let timerTrackLayer = CAShapeLayer()
     private let timerCircleFillLayer = CAShapeLayer()
     
+    // MARK: - Initializer
     init(color: UIColor?, progress: CGFloat) {
         self.color = color
         self.progress = progress
         
         super.init(frame: .zero)
         
-        self.setupUI()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.setupLayers()
+        setupLayers()
+    }
+    
+    func updatePauseResumeButton(isPaused: Bool) {
+        let imageName = isPaused ? "play.fill" : "pause.fill"
+        
+        UIView.transition(with: pauseResumeButton, duration: 0.3, options: .transitionCrossDissolve) { [weak self] in
+            guard let self else { return }
+            
+            self.pauseResumeButton.setImage(UIImage(systemName: imageName)?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 18, weight: .regular)), for: .normal)
+        }
     }
 }
 
-private extension LiveActivityButton {
+// MARK: - UI Setup
+extension LiveActivityButton: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(timerContainerView)
-        timerContainerView.addSubview(playButton)
+        addSubview(timerContainerView)
+        timerContainerView.addSubview(pauseResumeButton)
         
         NSLayoutConstraint.activate([
-            timerContainerView.widthAnchor.constraint(equalTo: self.widthAnchor),
-            timerContainerView.heightAnchor.constraint(equalTo: self.heightAnchor),
-            timerContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            timerContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            timerContainerView.widthAnchor.constraint(equalTo: widthAnchor),
+            timerContainerView.heightAnchor.constraint(equalTo: heightAnchor),
+            timerContainerView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            timerContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
             
-            playButton.widthAnchor.constraint(equalTo: timerContainerView.widthAnchor),
-            playButton.heightAnchor.constraint(equalTo: timerContainerView.heightAnchor),
-            playButton.centerXAnchor.constraint(equalTo: timerContainerView.centerXAnchor),
-            playButton.centerYAnchor.constraint(equalTo: timerContainerView.centerYAnchor)
+            pauseResumeButton.widthAnchor.constraint(equalTo: timerContainerView.widthAnchor),
+            pauseResumeButton.heightAnchor.constraint(equalTo: timerContainerView.heightAnchor),
+            pauseResumeButton.centerXAnchor.constraint(equalTo: timerContainerView.centerXAnchor),
+            pauseResumeButton.centerYAnchor.constraint(equalTo: timerContainerView.centerYAnchor)
         ])
     }
     
     private func setupLayers() {
-        let arcPath = UIBezierPath(arcCenter: CGPoint(x: self.frame.width / 2, y: self.frame.height / 2), radius: self.frame.width / 2, startAngle: -(CGFloat.pi / 2), endAngle: -(CGFloat.pi / 2) + CGFloat.pi * 2, clockwise: true)
+        let arcPath = UIBezierPath(arcCenter: CGPoint(x: frame.width / 2, y: frame.height / 2), radius: frame.width / 2, startAngle: -(CGFloat.pi / 2), endAngle: -(CGFloat.pi / 2) + CGFloat.pi * 2, clockwise: true)
         
-        let lineWidth = self.bounds.width * (4/44)
+        let lineWidth = bounds.width * (4/44)
         
-        self.timerTrackLayer.path = arcPath.cgPath
-        self.timerTrackLayer.strokeColor = UIColor.systemGray5.cgColor
-        self.timerTrackLayer.lineWidth = lineWidth
-        self.timerTrackLayer.fillColor = UIColor.clear.cgColor
-        self.timerTrackLayer.lineCap = .round
-        self.timerTrackLayer.strokeEnd = 1
+        timerTrackLayer.path = arcPath.cgPath
+        timerTrackLayer.strokeColor = UIColor.systemGray5.cgColor
+        timerTrackLayer.lineWidth = lineWidth
+        timerTrackLayer.fillColor = UIColor.clear.cgColor
+        timerTrackLayer.lineCap = .round
+        timerTrackLayer.strokeEnd = 1
         
-        self.timerCircleFillLayer.path = arcPath.cgPath
-        self.timerCircleFillLayer.strokeColor = self.color?.cgColor
-        self.timerCircleFillLayer.lineWidth = lineWidth
-        self.timerCircleFillLayer.fillColor = UIColor.clear.cgColor
-        self.timerCircleFillLayer.lineCap = .round
-        self.timerCircleFillLayer.strokeEnd = self.progress
+        timerCircleFillLayer.path = arcPath.cgPath
+        timerCircleFillLayer.strokeColor = color?.cgColor
+        timerCircleFillLayer.lineWidth = lineWidth
+        timerCircleFillLayer.fillColor = UIColor.clear.cgColor
+        timerCircleFillLayer.lineCap = .round
+        timerCircleFillLayer.strokeEnd = progress
         
-        self.playButton.layer.addSublayer(timerTrackLayer)
-        self.playButton.layer.addSublayer(timerCircleFillLayer)
+        pauseResumeButton.layer.addSublayer(timerTrackLayer)
+        pauseResumeButton.layer.addSublayer(timerCircleFillLayer)
         
-        self.timerContainerView.layer.cornerRadius = self.timerContainerView.frame.width / 2
+        timerContainerView.layer.cornerRadius = timerContainerView.frame.width / 2
     }
 }

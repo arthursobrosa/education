@@ -98,8 +98,6 @@ class StudyTimeViewModel: ObservableObject {
         // Extrair as cores dos subjects já existentes
         let usedColors = Set(existingSubjects.map { $0.unwrappedColor })
         
-        print(usedColors)
-        
         // Verificar qual cor ainda não foi usada
         for color in subjectColors {
             if !usedColors.contains(color) {
@@ -175,7 +173,7 @@ class StudyTimeViewModel: ObservableObject {
         }
         
         let times = subjectTotals.map {
-            SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "sealBackgroundColor")
+            SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "button-normal")
         }
         
         self.aggregatedTimes = times

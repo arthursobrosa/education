@@ -61,10 +61,10 @@ protocol SessionManaging {
     func restartActivity()
     func handleDismissedActivity(didTapFinish: Bool)
     func updateAfterBackground(timeInBackground: TimeInterval, lastTimerSeconds: Int)
-    func handlePomodoro(workTime: Int, restTime: Int, lastTimerSeconds: Int, timeInBackground: TimeInterval)
-    func getLoopStartTime(currentLoop: Int, workTime: Int, restTime: Int) -> Int
-    func getInLoopTime(workTime: Int, restTime: Int, isAtWorkTime: Bool, timerSeconds: Int) -> Int
-    func getCurrentLoop(workTime: Int, restTime: Int, totalPassedTime: Int) -> Int
+    func handlePomodoro(lastTimerSeconds: Int, timeInBackground: TimeInterval)
+    func getLoopStartTime() -> Int
+    func getInLoopTime(lastTimerSeconds: Int) -> Int
+    func getCurrentLoop(totalPassedTime: Int) -> Int
 }
 
 class ActivityManager {
@@ -452,8 +452,8 @@ extension ActivityManager: SessionManaging {
         switch timerCase {
             case .timer:
                 break
-            case .pomodoro(let workTime, let restTime, _):
-                handlePomodoro(workTime: workTime, restTime: restTime, lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
+            case .pomodoro:
+                handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
                 startTimer()
             case .stopwatch:
                 timerSeconds += Int(timeInBackground)
@@ -464,11 +464,24 @@ extension ActivityManager: SessionManaging {
         updateAfterBackground = true
     }
     
-    func handlePomodoro(workTime: Int, restTime: Int, lastTimerSeconds: Int, timeInBackground: TimeInterval) {
-        let totalPassedTime = getLoopStartTime(currentLoop: currentLoop, workTime: workTime, restTime: restTime) + getInLoopTime(workTime: workTime, restTime: restTime, isAtWorkTime: isAtWorkTime, timerSeconds: lastTimerSeconds) + Int(timeInBackground)
+    func handlePomodoro(lastTimerSeconds: Int, timeInBackground: TimeInterval) {
+        var totalPassedTime = getLoopStartTime() + getInLoopTime(lastTimerSeconds: lastTimerSeconds) + Int(timeInBackground)
         
-        currentLoop = getCurrentLoop(workTime: workTime, restTime: restTime, totalPassedTime: totalPassedTime)
-        var newInLoopTime = totalPassedTime - getLoopStartTime(currentLoop: currentLoop, workTime: workTime, restTime: restTime)
+        if isExtending {
+            if Int(timeInBackground) >= lastTimerSeconds {
+                totalPassedTime -= isAtWorkTime ? workTime : restTime
+                computeExtendedTime()
+                isExtending = false
+                currentLoop = getCurrentLoop(totalPassedTime: totalPassedTime)
+            } else {
+                pausedTime = timeInBackground
+                return
+            }
+        } else {
+            currentLoop = getCurrentLoop(totalPassedTime: totalPassedTime)
+        }
+        
+        var newInLoopTime = totalPassedTime - getLoopStartTime()
         isAtWorkTime = newInLoopTime < workTime
         
         newInLoopTime = isAtWorkTime ? newInLoopTime : newInLoopTime - workTime
@@ -484,16 +497,35 @@ extension ActivityManager: SessionManaging {
         pausedTime = TimeInterval(newInLoopTime)
     }
     
-    func getLoopStartTime(currentLoop: Int, workTime: Int, restTime: Int) -> Int {
-        let pomodoroTotal = workTime + restTime
+    func getLoopStartTime() -> Int {
+        var pomodoroTotal = 0
+        
+        if isExtending {
+            if isAtWorkTime {
+                pomodoroTotal = originalTime + restTime
+            } else {
+                pomodoroTotal = workTime + originalTime
+            }
+        } else {
+            pomodoroTotal = workTime + restTime
+        }
+        
         return currentLoop * pomodoroTotal
     }
     
-    func getInLoopTime(workTime: Int, restTime: Int, isAtWorkTime: Bool, timerSeconds: Int) -> Int {
-        return isAtWorkTime ? workTime - timerSeconds : workTime + (restTime - timerSeconds)
+    func getInLoopTime(lastTimerSeconds: Int) -> Int {
+        if isExtending {
+            if isAtWorkTime {
+                return originalTime + (workTime - lastTimerSeconds)
+            } else {
+                return workTime + originalTime + (restTime - lastTimerSeconds)
+            }
+        } else {
+            return isAtWorkTime ? workTime - lastTimerSeconds : workTime + (restTime - lastTimerSeconds)
+        }
     }
     
-    func getCurrentLoop(workTime: Int, restTime: Int, totalPassedTime: Int) -> Int {
+    func getCurrentLoop(totalPassedTime: Int) -> Int {
         let pomodoroTotal = workTime + restTime
         return totalPassedTime / pomodoroTotal
     }
