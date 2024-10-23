@@ -152,6 +152,8 @@
 "dayLabel" = "Day";
 "questionLabel" = "Questions";
 "description" = "Notas sobre o teste/ questões";
+"deleteThemeTitle" = "Delete Theme";
+"deleteThemeBody" = "Are you sure you want to delete this theme? All its tests history and results will be discarded";
 
 // MARK: - Settings
 "deactivateTitle" = "Deactivate on your phone!";

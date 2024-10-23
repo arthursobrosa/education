@@ -36,12 +36,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window?.rootViewController = coordinator?.navigationController
         window?.makeKeyAndVisible()
-        
-        for family in UIFont.familyNames {
-            for name in UIFont.fontNames(forFamilyName: family){
-                print("font: \(name)")
-            }
-        }
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

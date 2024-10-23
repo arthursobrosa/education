@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - Activity
-protocol TabBarDelegate: AnyObject {
+@objc protocol TabBarDelegate: AnyObject {
     func addActivityView()
     func removeActivityView()
     func didTapPlayButton()
@@ -16,20 +16,25 @@ protocol TabBarDelegate: AnyObject {
 
 extension TabBarController: TabBarDelegate {
     func addActivityView() {
-        self.activityView.timerSeconds = viewModel.activityManager.timerSeconds
-        self.activityView.subject = viewModel.activityManager.subject
-        self.activityView.color = viewModel.activityManager.color
-        self.activityView.progress = viewModel.activityManager.progress
+        activityView.timerSeconds = viewModel.activityManager.timerSeconds
+        activityView.subject = viewModel.activityManager.subject
+        activityView.color = viewModel.activityManager.color
+        activityView.progress = viewModel.activityManager.progress
         
-        self.view.addSubview(activityView)
+        view.addSubview(activityView)
+        
+        guard case .pomodoro = viewModel.activityManager.timerCase,
+              !viewModel.activityManager.isAtWorkTime else { return }
+        
+        activityView.liveActivityButton?.updatePauseResumeButton(isPaused: false)
     }
     
     func removeActivityView() {
-        self.activityView.removeFromSuperview()
+        activityView.removeFromSuperview()
     }
     
     func didTapPlayButton() {
-        self.activityViewTapped()
+        activityViewTapped()
         
         viewModel.activityManager.isPaused.toggle()
     }

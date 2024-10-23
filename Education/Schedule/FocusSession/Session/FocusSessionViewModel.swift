@@ -223,7 +223,11 @@ extension FocusSessionViewModel {
     // MARK: - Pause/Resume button
     func changePauseStatus() {
         if !activityManager.isPaused {
-            activityManager.isPaused = true
+            guard case .pomodoro = activityManager.timerCase,
+                  !activityManager.isAtWorkTime else {
+                activityManager.isPaused = true
+                return
+            }
         }
     }
     

@@ -691,42 +691,116 @@ class SessionTest: XCTestCase {
         XCTAssertEqual(sut.pausedTime, 0)
     }
     
-    func testGetLoopStartTime() {
+    func testGetLoopStartTime_workTime_isExtending() {
         // Arrange
-        let currentLoop = 2
-        let workTime = 60
-        let restTime = 30
+        sut.timerCase = .pomodoro(workTime: 30, restTime: 60, numberOfLoops: 3)
+        sut.isExtending = true
+        sut.isAtWorkTime = true
+        sut.currentLoop = 2
+        sut.workTime = 30
+        sut.restTime = 60
+        sut.originalTime = 120
         
         // Act
-        let loopStartTime = sut.getLoopStartTime(currentLoop: currentLoop, workTime: workTime, restTime: restTime)
+        let loopStartTime = sut.getLoopStartTime()
         
         // Assert
-        XCTAssertEqual(loopStartTime, 180)
+        XCTAssertEqual(loopStartTime, 360)
     }
     
-    func testGetInLoopTime_workTime() {
+    func testGetLoopStartTime_restTime_isExtending() {
         // Arrange
-        let workTime = 60
-        let restTime = 30
-        let isAtWorkTime = true
-        let timerSeconds = 15
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 30, numberOfLoops: 3)
+        sut.isExtending = true
+        sut.isAtWorkTime = false
+        sut.currentLoop = 2
+        sut.workTime = 120
+        sut.restTime = 30
+        sut.originalTime = 60
         
         // Act
-        let inLoopTime = sut.getInLoopTime(workTime: workTime, restTime: restTime, isAtWorkTime: isAtWorkTime, timerSeconds: timerSeconds)
+        let loopStartTime = sut.getLoopStartTime()
+        
+        // Assert
+        XCTAssertEqual(loopStartTime, 360)
+    }
+    
+    func testGetLoopStartTime_isNotExtending() {
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 60, numberOfLoops: 3)
+        sut.isExtending = false
+        sut.currentLoop = 2
+        sut.workTime = 120
+        sut.restTime = 60
+        
+        // Act
+        let loopStartTime = sut.getLoopStartTime()
+        
+        // Assert
+        XCTAssertEqual(loopStartTime, 360)
+    }
+    
+    func testGetInLoopTime_workTime_isExtending() {
+        // Act
+        sut.timerCase = .pomodoro(workTime: 30, restTime: 60, numberOfLoops: 3)
+        sut.isExtending = true
+        sut.isAtWorkTime = true
+        sut.workTime = 30
+        sut.restTime = 60
+        sut.originalTime = 120
+        let lastTimerSeconds = 10
+        
+        // Act
+        let inLoopTime = sut.getInLoopTime(lastTimerSeconds: lastTimerSeconds)
+
+        // Assert
+        XCTAssertEqual(inLoopTime, 140)
+    }
+    
+    func testGetInLoopTime_restTime_isExtending() {
+        // Act
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 30, numberOfLoops: 3)
+        sut.isExtending = true
+        sut.isAtWorkTime = false
+        sut.workTime = 120
+        sut.restTime = 30
+        sut.originalTime = 60
+        let lastTimerSeconds = 10
+        
+        // Act
+        let inLooptime = sut.getInLoopTime(lastTimerSeconds: lastTimerSeconds)
+        
+        // Assert
+        XCTAssertEqual(inLooptime, 200)
+    }
+    
+    func testGetInLoopTime_workTime_isNotExtending() {
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 60, restTime: 30, numberOfLoops: 3)
+        sut.isExtending = false
+        sut.isAtWorkTime = true
+        sut.workTime = 60
+        sut.restTime = 30
+        let lastTimerSeconds = 15
+        
+        // Act
+        let inLoopTime = sut.getInLoopTime(lastTimerSeconds: lastTimerSeconds)
         
         // Assert
         XCTAssertEqual(inLoopTime, 45)
     }
     
-    func testGetInLoopTime_restTime() {
+    func testGetInLoopTime_restTime_isNotExtending() {
         // Arrange
-        let workTime = 60
-        let restTime = 30
-        let isAtWorkTime = false
-        let timerSeconds = 15
+        sut.timerCase = .pomodoro(workTime: 60, restTime: 30, numberOfLoops: 3)
+        sut.isExtending = false
+        sut.isAtWorkTime = false
+        sut.workTime = 60
+        sut.restTime = 30
+        let lastTimerSeconds = 15
         
         // Act
-        let inLoopTime = sut.getInLoopTime(workTime: workTime, restTime: restTime, isAtWorkTime: isAtWorkTime, timerSeconds: timerSeconds)
+        let inLoopTime = sut.getInLoopTime(lastTimerSeconds: lastTimerSeconds)
         
         // Assert
         XCTAssertEqual(inLoopTime, 75)
@@ -734,97 +808,192 @@ class SessionTest: XCTestCase {
     
     func testGetCurrentLoop() {
         // Arrange
-        let workTime = 60
-        let restTime = 30
-        let totalPassedTime = 200
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 60, numberOfLoops: 3)
+        sut.isExtending = false
+        sut.currentLoop = 0
+        sut.workTime = 120
+        sut.restTime = 60
+        let totalPassedTime = 300
         
         // Act
-        let currentLoop = sut.getCurrentLoop(workTime: workTime, restTime: restTime, totalPassedTime: totalPassedTime)
+        sut.currentLoop = sut.getCurrentLoop(totalPassedTime: totalPassedTime)
         
         // Assert
-        XCTAssertEqual(currentLoop, 2)
+        XCTAssertEqual(sut.currentLoop, 1)
     }
     
-    func testHandlePomodoro_workTime_didFinishTimer() {
+    func testHandlePomodoro_workTime_isExtending_lesserTimeInBackground() {
         // Arrange
-        sut.currentLoop = 0
-        sut.numberOfLoops = 2
-        sut.workTime = 30
-        sut.restTime = 10
+        sut.timerCase = .pomodoro(workTime: 30, restTime: 60, numberOfLoops: 3)
         sut.isAtWorkTime = true
-        sut.totalSeconds = sut.workTime
-        sut.timerSeconds = 20
-        let timeInBackground = TimeInterval(60)
+        sut.isExtending = true
+        sut.timerFinished = false
+        sut.currentLoop = 0
+        sut.originalTime = 120
+        sut.workTime = 30
+        sut.restTime = 60
+        let lastTimerSeconds = 20
+        let timeInBackground = TimeInterval(5)
         
         // Act
-        sut.handlePomodoro(workTime: sut.workTime, restTime: sut.restTime, lastTimerSeconds: sut.timerSeconds, timeInBackground: timeInBackground)
+        sut.handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
         
         // Assert
         XCTAssertEqual(sut.isAtWorkTime, true)
-        XCTAssertEqual(sut.timerFinished, true)
-    }
-    
-    func testHandlePomodoro_workTime_didNotFinishTimer() {
-        // Arrange
-        sut.currentLoop = 0
-        sut.numberOfLoops = 2
-        sut.workTime = 30
-        sut.restTime = 10
-        sut.isAtWorkTime = true
-        sut.totalSeconds = sut.workTime
-        sut.timerSeconds = 20
-        let timeInBackground = TimeInterval(25)
-        
-        // Act
-        sut.handlePomodoro(workTime: sut.workTime, restTime: sut.restTime, lastTimerSeconds: sut.timerSeconds, timeInBackground: timeInBackground)
-        
-        // Assert
-        XCTAssertEqual(sut.currentLoop, 0)
-        XCTAssertEqual(sut.isAtWorkTime, false)
+        XCTAssertEqual(sut.isExtending, true)
         XCTAssertEqual(sut.timerFinished, false)
-        XCTAssertEqual(sut.totalSeconds, 10)
+        XCTAssertEqual(sut.currentLoop, 0)
+        XCTAssertEqual(sut.originalTime, 120)
+        XCTAssertEqual(sut.workTime, 30)
+        XCTAssertEqual(sut.restTime, 60)
         XCTAssertEqual(sut.pausedTime, TimeInterval(5))
     }
     
-    func testHandlePomodoro_restTime_didFinishTimer() {
+    func testHandlePomodoro_workTime_isExtending_greaterTimeInBackground_timerNotFinished() {
         // Arrange
-        sut.currentLoop = 0
+        sut.timerCase = .pomodoro(workTime: 30, restTime: 60, numberOfLoops: 3)
+        sut.isAtWorkTime = true
+        sut.isExtending = true
+        sut.timerFinished = false
+        sut.currentLoop = 1
         sut.numberOfLoops = 3
+        sut.originalTime = 120
         sut.workTime = 30
-        sut.restTime = 10
-        sut.isAtWorkTime = false
-        sut.totalSeconds = sut.restTime
-        sut.timerSeconds = 5
-        let timeInBackground = TimeInterval(100)
+        sut.restTime = 60
+        sut.totalSeconds = sut.workTime
+        let lastTimerSeconds = 20
+        let timeInBackground = TimeInterval(25)
+        sut.extendedTime = 0
         
         // Act
-        sut.handlePomodoro(workTime: sut.workTime, restTime: sut.restTime, lastTimerSeconds: sut.timerSeconds, timeInBackground: timeInBackground)
+        sut.handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
         
         // Assert
-        XCTAssertEqual(sut.isAtWorkTime, true)
-        XCTAssertEqual(sut.timerFinished, true)
+        XCTAssertEqual(sut.isAtWorkTime, false)
+        XCTAssertEqual(sut.isExtending, false)
+        XCTAssertEqual(sut.timerFinished, false)
+        XCTAssertEqual(sut.currentLoop, 1)
+        XCTAssertEqual(sut.workTime, 120)
+        XCTAssertEqual(sut.restTime, 60)
+        XCTAssertEqual(sut.totalSeconds, sut.restTime)
+        XCTAssertEqual(sut.pausedTime, TimeInterval(5))
+        XCTAssertEqual(sut.extendedTime, 30)
     }
     
-    func testHandlePomodoro_restTime_didNotFinishTimer() {
+    func testHandlePomodoro_workTime_isExtending_greaterTimeInBackground_timerFinished() {
         // Arrange
-        sut.currentLoop = 0
-        sut.numberOfLoops = 3
+        sut.timerCase = .pomodoro(workTime: 30, restTime: 60, numberOfLoops: 2)
+        sut.isAtWorkTime = true
+        sut.isExtending = true
+        sut.timerFinished = false
+        sut.currentLoop = 1
+        sut.numberOfLoops = 2
+        sut.originalTime = 120
         sut.workTime = 30
-        sut.restTime = 10
-        sut.isAtWorkTime = false
-        sut.totalSeconds = sut.restTime
-        sut.timerSeconds = 5
-        let timeInBackground = TimeInterval(55)
+        sut.restTime = 60
+        sut.totalSeconds = sut.workTime
+        let lastTimerSeconds = 20
+        let timeInBackground = TimeInterval(85)
+        sut.extendedTime = 20
         
         // Act
-        sut.handlePomodoro(workTime: sut.workTime, restTime: sut.restTime, lastTimerSeconds: sut.timerSeconds, timeInBackground: timeInBackground)
+        sut.handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
         
         // Assert
-        XCTAssertEqual(sut.currentLoop, 2)
         XCTAssertEqual(sut.isAtWorkTime, true)
+        XCTAssertEqual(sut.isExtending, false)
+        XCTAssertEqual(sut.timerFinished, true)
+        XCTAssertEqual(sut.currentLoop, 2)
+        XCTAssertEqual(sut.workTime, 120)
+        XCTAssertEqual(sut.restTime, 60)
+        XCTAssertEqual(sut.extendedTime, 50)
+    }
+    
+    func testHandlePomodoro_restTime_isExtending_lesserTimeInBackground() {
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 30, numberOfLoops: 2)
+        sut.isExtending = true
+        sut.isAtWorkTime = false
+        sut.timerFinished = false
+        sut.currentLoop = 0
+        sut.originalTime = 60
+        sut.workTime = 120
+        sut.restTime = 30
+        let lastTimerSeconds = 20
+        let timeInBackground = TimeInterval(5)
+        
+        // Act
+        sut.handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
+        
+        // Assert
+        XCTAssertEqual(sut.isAtWorkTime, false)
+        XCTAssertEqual(sut.isExtending, true)
         XCTAssertEqual(sut.timerFinished, false)
-        XCTAssertEqual(sut.totalSeconds, 30)
+        XCTAssertEqual(sut.currentLoop, 0)
+        XCTAssertEqual(sut.originalTime, 60)
+        XCTAssertEqual(sut.workTime, 120)
+        XCTAssertEqual(sut.restTime, 30)
+        XCTAssertEqual(sut.pausedTime, TimeInterval(5))
+    }
+    
+    func testHandlePomodoro_restTime_isExtending_greaterTimeInBackground_timerNotFinished() {
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 30, numberOfLoops: 2)
+        sut.isExtending = true
+        sut.isAtWorkTime = false
+        sut.timerFinished = false
+        sut.currentLoop = 0
+        sut.numberOfLoops = 2
+        sut.originalTime = 60
+        sut.workTime = 120
+        sut.restTime = 30
+        sut.totalSeconds = sut.restTime
+        let lastTimerSeconds = 20
+        let timeInBackground = TimeInterval(30)
+        sut.extendedTime = 0
+        
+        // Act
+        sut.handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
+        
+        // Assert
+        XCTAssertEqual(sut.isAtWorkTime, true)
+        XCTAssertEqual(sut.isExtending, false)
+        XCTAssertEqual(sut.timerFinished, false)
+        XCTAssertEqual(sut.currentLoop, 1)
+        XCTAssertEqual(sut.workTime, 120)
+        XCTAssertEqual(sut.restTime, 60)
+        XCTAssertEqual(sut.totalSeconds, sut.workTime)
         XCTAssertEqual(sut.pausedTime, TimeInterval(10))
+        XCTAssertEqual(sut.extendedTime, 0)
+    }
+    
+    func testHandlePomodoro_restTime_isExtending_greaterTimeInBackground_timerFinished() {
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 30, numberOfLoops: 2)
+        sut.isExtending = true
+        sut.isAtWorkTime = false
+        sut.timerFinished = false
+        sut.currentLoop = 0
+        sut.numberOfLoops = 2
+        sut.originalTime = 60
+        sut.workTime = 120
+        sut.restTime = 30
+        sut.totalSeconds = sut.restTime
+        let lastTimerSeconds = 20
+        let timeInBackground = TimeInterval(200)
+        sut.extendedTime = 10
+        
+        // Act
+        sut.handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
+        
+        // Assert
+        XCTAssertEqual(sut.isAtWorkTime, true)
+        XCTAssertEqual(sut.isExtending, false)
+        XCTAssertEqual(sut.timerFinished, true)
+        XCTAssertEqual(sut.currentLoop, 2)
+        XCTAssertEqual(sut.workTime, 120)
+        XCTAssertEqual(sut.restTime, 60)
+        XCTAssertEqual(sut.extendedTime, 10)
     }
     
     func testUpdateAfterBackground_timer() {
@@ -861,7 +1030,9 @@ class SessionTest: XCTestCase {
         sut.numberOfLoops = 3
         sut.currentLoop = 0
         sut.isAtWorkTime = true
-        sut.totalSeconds = 60
+        sut.workTime = 60
+        sut.restTime = 30
+        sut.totalSeconds = sut.workTime
         sut.timerSeconds = 10
         sut.isPaused = false
         sut.updateAfterBackground = false
