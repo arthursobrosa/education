@@ -31,7 +31,7 @@ class TimerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = ActivityManager()
+        sut = ActivityManager(notificationService: nil)
         mockTimer = MockTimer()
     }
     
@@ -540,7 +540,7 @@ class SessionTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = ActivityManager()
+        sut = ActivityManager(notificationService: nil)
     }
     
     override func tearDown() {
