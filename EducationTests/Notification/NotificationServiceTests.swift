@@ -96,7 +96,7 @@ class NotificationServiceTests: XCTestCase {
         mockNotificationCenter.addRequestExpectation = expectation(description: "Weekly notification scheduled")
         
         let title = "Reminder"
-        let body = "Activity starting soon"
+        let body = "Activity will start now"
         let date = Date().addingTimeInterval(604800)
         let subjectName = "Math"
         let startTime = Date().addingTimeInterval(60)
@@ -163,7 +163,15 @@ class NotificationServiceTests: XCTestCase {
     func testCancelAllNotifications() {
         sut.scheduleEndNotification(title: "Activity finished", subjectName: "Math", date: Date().addingTimeInterval(60))
         
-        XCTAssertEqual(mockNotificationCenter.pendingRequests.count, 1)
+        sut.scheduleWeeklyNotification(
+            title: "Reminder",
+            body: "Activity starting in 5 min",
+            date: Date().addingTimeInterval(604800),
+            isAtExactTime: false,
+            scheduleInfo: nil
+        )
+        
+        XCTAssertEqual(mockNotificationCenter.pendingRequests.count, 2)
         
         sut.cancelAllNotifications()
         
@@ -183,9 +191,15 @@ class NotificationServiceTests: XCTestCase {
     }
     
     func testCancelNoficationsForDate() {
-        let date = Date().addingTimeInterval(360)
+        let date = Date().addingTimeInterval(604800)
         
-        sut.scheduleEndNotification(title: "Activity finished", subjectName: "Math", date: date)
+        sut.scheduleWeeklyNotification(
+            title: "Reminder",
+            body: "Activity starting in 5 min",
+            date: date,
+            isAtExactTime: false,
+            scheduleInfo: nil
+        )
         
         XCTAssertEqual(mockNotificationCenter.pendingRequests.count, 1)
         
