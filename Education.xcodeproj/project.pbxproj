@@ -67,6 +67,7 @@
 		68333DD82C3F95AD0064BF87 /* ShowingScheduleDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */; };
 		6833B2152C345467009EA63D /* ObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6833B2142C345467009EA63D /* ObjectManager.swift */; };
 		6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */; };
+		6837A6F82CC9C73400F8C5B3 /* NotificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6837A6F72CC9C73400F8C5B3 /* NotificationServiceTests.swift */; };
 		683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683812ED2C481A740062067A /* SplashCoordinator.swift */; };
 		683812F02C481A9C0062067A /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683812EF2C481A9C0062067A /* SplashViewController.swift */; };
 		683812F42C481C580062067A /* ShowingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683812F32C481C580062067A /* ShowingTabBar.swift */; };
@@ -135,12 +136,13 @@
 		688C257F2C667F9400150F7F /* ShowingFocusImediate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */; };
 		688C2A422C93212000E8EE81 /* TestPageViewController+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */; };
 		688C2A6A2C933F7600E8EE81 /* FakeDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */; };
-		688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */; };
+		688CF32C2C851C7B00DE97DD /* ActivityBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688CF32B2C851C7B00DE97DD /* ActivityBarButton.swift */; };
 		689388922C642133007EE922 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388912C642133007EE922 /* UIView+Extension.swift */; };
 		689388942C6423A7007EE922 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388932C6423A7007EE922 /* ActivityView.swift */; };
 		689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689388982C642B23007EE922 /* TabBarController+Delegate.swift */; };
 		68A083ED2CBF195300B3272D /* SyncMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A083EC2CBF195300B3272D /* SyncMonitor.swift */; };
 		68A083EF2CBF19B600B3272D /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A083EE2CBF19B600B3272D /* SplashViewModel.swift */; };
+		68A17DD22CC6C6C100F01F8C /* BlockMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A17DD12CC6C6C100F01F8C /* BlockMonitorTests.swift */; };
 		68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A451402C61143B00209786 /* CustomDatePickerView.swift */; };
 		68A80B642C976FEF00CC6D48 /* NoSchedulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A80B632C976FEF00CC6D48 /* NoSchedulesView.swift */; };
 		68A80B672C97785B00CC6D48 /* NoThemesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A80B662C97785B00CC6D48 /* NoThemesView.swift */; };
@@ -333,6 +335,7 @@
 		68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetails.swift; sourceTree = "<group>"; };
 		6833B2142C345467009EA63D /* ObjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
 		6833B21B2C3456D7009EA63D /* ViewCodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCodeProtocol.swift; sourceTree = "<group>"; };
+		6837A6F72CC9C73400F8C5B3 /* NotificationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceTests.swift; sourceTree = "<group>"; };
 		683812ED2C481A740062067A /* SplashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashCoordinator.swift; sourceTree = "<group>"; };
 		683812EF2C481A9C0062067A /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		683812F32C481C580062067A /* ShowingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTabBar.swift; sourceTree = "<group>"; };
@@ -413,12 +416,13 @@
 		688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingFocusImediate.swift; sourceTree = "<group>"; };
 		688C2A412C93212000E8EE81 /* TestPageViewController+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestPageViewController+CellConfig.swift"; sourceTree = "<group>"; };
 		688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDatePicker.swift; sourceTree = "<group>"; };
-		688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityButton.swift; sourceTree = "<group>"; };
+		688CF32B2C851C7B00DE97DD /* ActivityBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityBarButton.swift; sourceTree = "<group>"; };
 		689388912C642133007EE922 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		689388932C6423A7007EE922 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		689388982C642B23007EE922 /* TabBarController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarController+Delegate.swift"; sourceTree = "<group>"; };
 		68A083EC2CBF195300B3272D /* SyncMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncMonitor.swift; sourceTree = "<group>"; };
 		68A083EE2CBF19B600B3272D /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
+		68A17DD12CC6C6C100F01F8C /* BlockMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockMonitorTests.swift; sourceTree = "<group>"; };
 		68A451402C61143B00209786 /* CustomDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerView.swift; sourceTree = "<group>"; };
 		68A80B632C976FEF00CC6D48 /* NoSchedulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSchedulesView.swift; sourceTree = "<group>"; };
 		68A80B662C97785B00CC6D48 /* NoThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoThemesView.swift; sourceTree = "<group>"; };
@@ -752,6 +756,14 @@
 			path = FocusSession;
 			sourceTree = "<group>";
 		};
+		6837A6F62CC9C72500F8C5B3 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				6837A6F72CC9C73400F8C5B3 /* NotificationServiceTests.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		683812EC2C481A610062067A /* Splash */ = {
 			isa = PBXGroup;
 			children = (
@@ -850,6 +862,8 @@
 		684BF8822C346E9A005E63BE /* EducationTests */ = {
 			isa = PBXGroup;
 			children = (
+				6837A6F62CC9C72500F8C5B3 /* Notification */,
+				68A17DD02CC6C6A200F01F8C /* BlockMonitor */,
 				686965D42CB5D6CD00D2985D /* ActivityManager */,
 				684BF88C2C346F51005E63BE /* CoreData */,
 			);
@@ -981,7 +995,7 @@
 				68A451402C61143B00209786 /* CustomDatePickerView.swift */,
 				685CBFD92C61597600EC8E09 /* CustomDateButton.swift */,
 				6823766F2C63F48100255143 /* ActivityButton.swift */,
-				688CF32B2C851C7B00DE97DD /* LiveActivityButton.swift */,
+				688CF32B2C851C7B00DE97DD /* ActivityBarButton.swift */,
 				689388932C6423A7007EE922 /* ActivityView.swift */,
 				CE0BD2352C862E1300E9FBDF /* FocusStatusAlertView.swift */,
 				68BAAC032CB9DF66003A3ECC /* FocusExtensionAlertView.swift */,
@@ -1066,6 +1080,14 @@
 				68A083EC2CBF195300B3272D /* SyncMonitor.swift */,
 			);
 			path = CDCKSync;
+			sourceTree = "<group>";
+		};
+		68A17DD02CC6C6A200F01F8C /* BlockMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				68A17DD12CC6C6C100F01F8C /* BlockMonitorTests.swift */,
+			);
+			path = BlockMonitor;
 			sourceTree = "<group>";
 		};
 		68A80B652C97784A00CC6D48 /* Components */ = {
@@ -1626,7 +1648,7 @@
 				68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */,
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
-				688CF32C2C851C7B00DE97DD /* LiveActivityButton.swift in Sources */,
+				688CF32C2C851C7B00DE97DD /* ActivityBarButton.swift in Sources */,
 				68FF04E22CBE244F00E8C48C /* FocusEndViewModel.swift in Sources */,
 				CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */,
 				68833D9A2C46B28D00BA4850 /* DefaultCell.swift in Sources */,
@@ -1637,11 +1659,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68A17DD22CC6C6C100F01F8C /* BlockMonitorTests.swift in Sources */,
 				684BF8932C347856005E63BE /* ScheduleManagerTest.swift in Sources */,
 				684BF8992C34961C005E63BE /* TestManagerTest.swift in Sources */,
 				684BF8912C346FE3005E63BE /* SubjectManagerTest.swift in Sources */,
 				684BF88B2C346F1F005E63BE /* CoreDataTestStack.swift in Sources */,
 				684BF8972C349074005E63BE /* ThemeManagerTest.swift in Sources */,
+				6837A6F82CC9C73400F8C5B3 /* NotificationServiceTests.swift in Sources */,
 				684BF8952C348BF2005E63BE /* FocusSessionManagerTest.swift in Sources */,
 				686965D62CB5D6DB00D2985D /* ActivityManagerTests.swift in Sources */,
 			);

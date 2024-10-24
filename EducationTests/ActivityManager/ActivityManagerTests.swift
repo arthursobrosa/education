@@ -31,7 +31,7 @@ class TimerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = ActivityManager()
+        sut = ActivityManager(notificationService: nil)
         mockTimer = MockTimer()
     }
     
@@ -112,6 +112,7 @@ class TimerTests: XCTestCase {
         sut.isPaused = false
         sut.timerFinished = true
         sut.isExtending = true
+        sut.isProgressingActivityBar = true
         sut.extendedTime = 10
         sut.originalTime = 20
         sut.progress = 1.0
@@ -133,6 +134,7 @@ class TimerTests: XCTestCase {
         XCTAssertEqual(sut.isPaused, true)
         XCTAssertEqual(sut.timerFinished, false)
         XCTAssertEqual(sut.isExtending, false)
+        XCTAssertEqual(sut.isProgressingActivityBar, false)
         XCTAssertEqual(sut.extendedTime, 0)
         XCTAssertEqual(sut.originalTime, 0)
         XCTAssertEqual(sut.progress, 0)
@@ -172,6 +174,115 @@ class TimerTests: XCTestCase {
         // Assert
         XCTAssertEqual(sut.timerFinished, true)
         XCTAssertEqual(sut.isExtending, false)
+    }
+    
+    func testIsTimerTrackerShowing() {
+        // Arrange
+        sut.timerCase = .timer
+        // Act
+        var isTimerTrackerShowing = sut.isTimerTrackerShowing()
+        // Assert
+        XCTAssertEqual(isTimerTrackerShowing, true)
+        
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 60, numberOfLoops: 2)
+        // Act
+        isTimerTrackerShowing = sut.isTimerTrackerShowing()
+        // Assert
+        XCTAssertEqual(isTimerTrackerShowing, true)
+        
+        // Arrange
+        sut.timerCase = .stopwatch
+        // Act
+        isTimerTrackerShowing = sut.isTimerTrackerShowing()
+        // Assert
+        XCTAssertEqual(isTimerTrackerShowing, false)
+    }
+    
+    func testIsClockwise() {
+        // Arrange
+        sut.timerCase = .stopwatch
+        // Act
+        var isClockwise = sut.isClockwise()
+        // Assert
+        XCTAssertEqual(isClockwise, true)
+        
+        // Arrange
+        sut.timerCase = .timer
+        // Act
+        isClockwise = sut.isClockwise()
+        // Assert
+        XCTAssertEqual(isClockwise, true)
+        
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 60, numberOfLoops: 2)
+        sut.isProgressingActivityBar = true
+        // Act
+        isClockwise = sut.isClockwise()
+        // Assert
+        XCTAssertEqual(isClockwise, false)
+        
+        // Arrange
+        sut.isProgressingActivityBar = false
+        sut.isAtWorkTime = false
+        // Act
+        isClockwise = sut.isClockwise()
+        // Assert
+        XCTAssertEqual(isClockwise, sut.isAtWorkTime)
+    }
+    
+    func testGetAngles() {
+        // Arrange
+        sut.timerCase = .stopwatch
+        // Act
+        var angles = sut.getAngles()
+        // Assert
+        XCTAssertEqual(angles.startAngle, -(CGFloat.pi / 2))
+        XCTAssertEqual(angles.endAngle, -(CGFloat.pi / 2) + CGFloat.pi * 2)
+        
+        // Arrange
+        sut.timerCase = .timer
+        // Act
+        angles = sut.getAngles()
+        // Assert
+        XCTAssertEqual(angles.startAngle, -(CGFloat.pi / 2))
+        XCTAssertEqual(angles.endAngle, -(CGFloat.pi / 2) + CGFloat.pi * 2)
+        
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 60, numberOfLoops: 2)
+        sut.isAtWorkTime = true
+        // Act
+        angles = sut.getAngles()
+        // Assert
+        XCTAssertEqual(angles.startAngle, -(CGFloat.pi / 2))
+        XCTAssertEqual(angles.endAngle, -(CGFloat.pi / 2) + CGFloat.pi * 2)
+        
+        // Arrange
+        sut.isAtWorkTime = false
+        // Act
+        angles = sut.getAngles()
+        // Assert
+        XCTAssertEqual(angles.startAngle, -(CGFloat.pi / 2) + CGFloat.pi * 2)
+        XCTAssertEqual(angles.endAngle, -(CGFloat.pi / 2))
+    }
+    
+    func testGetLayersConfig() {
+        // Arrange
+        sut.progress = 0.5
+        sut.timerCase = .timer
+        let isTimerTrackerShowing = sut.isTimerTrackerShowing()
+        let isClockwise = sut.isClockwise()
+        let angles = sut.getAngles()
+        
+        // Act
+        let layersConfig = sut.getLayersConfig()
+        
+        // Assert
+        XCTAssertEqual(layersConfig.strokeEnd, sut.progress)
+        XCTAssertEqual(layersConfig.isTimerTrackerShowing, isTimerTrackerShowing)
+        XCTAssertEqual(layersConfig.isClockwise, isClockwise)
+        XCTAssertEqual(layersConfig.startAngle, angles.startAngle)
+        XCTAssertEqual(layersConfig.endAngle, angles.endAngle)
     }
     
     func testComputeExtendedTime_timer() {
@@ -429,7 +540,7 @@ class SessionTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = ActivityManager()
+        sut = ActivityManager(notificationService: nil)
     }
     
     override func tearDown() {
@@ -599,6 +710,106 @@ class SessionTest: XCTestCase {
         // Assert
         XCTAssertEqual(sut.extendedTime, 40)
         XCTAssertEqual(sut.totalTime, 220)
+    }
+    
+    func testComputeTimerTotalTime_isExtending() {
+        // Arrange
+        sut.timerCase = .timer
+        sut.isExtending = true
+        sut.totalSeconds = 60
+        sut.timerSeconds = 30
+        sut.originalTime = 120
+        sut.extendedTime = 10
+        sut.totalTime = 0
+        
+        // Act
+        sut.computeTimerTotalTime()
+        
+        // Assert
+        XCTAssertEqual(sut.extendedTime, 40)
+        XCTAssertEqual(sut.totalTime, 160)
+    }
+    
+    func testComputeTimerTotalTime_isNotExtending() {
+        // Arrange
+        sut.timerCase = .timer
+        sut.isExtending = false
+        sut.totalSeconds = 60
+        sut.timerSeconds = 30
+        sut.extendedTime = 10
+        sut.totalTime = 0
+        
+        // Act
+        sut.computeTimerTotalTime()
+        
+        // Assert
+        XCTAssertEqual(sut.extendedTime, 10)
+        XCTAssertEqual(sut.totalTime, 40)
+    }
+    
+    func testComputePomodoroTotalTime_workTime_isExtending() {
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 60, numberOfLoops: 2)
+        sut.isExtending = true
+        sut.isAtWorkTime = true
+        sut.extendedTime = 5
+        sut.totalTime = 0
+        sut.workTime = 30
+        sut.originalTime = 120
+        sut.timerSeconds = 10
+        sut.currentLoop = 0
+        
+        // Act
+        sut.computePomodoroTotalTime()
+        
+        // Assert
+        XCTAssertEqual(sut.extendedTime, 25)
+        XCTAssertEqual(sut.totalTime, 145)
+    }
+    
+    func testComputePomodoroTotalTime_workTime_isNotExtending() {
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 60, numberOfLoops: 2)
+        sut.isExtending = false
+        sut.isAtWorkTime = true
+        sut.extendedTime = 5
+        sut.totalTime = 0
+        sut.workTime = 120
+        sut.timerSeconds = 10
+        sut.currentLoop = 0
+        
+        // Act
+        sut.computePomodoroTotalTime()
+        
+        // Assert
+        XCTAssertEqual(sut.extendedTime, 5)
+        XCTAssertEqual(sut.totalTime, 115)
+    }
+    
+    func testComputePomodoroTotalTime_restTime() {
+        // Arrange
+        sut.timerCase = .pomodoro(workTime: 120, restTime: 60, numberOfLoops: 2)
+        sut.isExtending = true
+        sut.isAtWorkTime = false
+        sut.extendedTime = 25
+        sut.totalTime = 0
+        sut.workTime = 90
+        sut.timerSeconds = 10
+        sut.currentLoop = 0
+        
+        // Act
+        sut.computePomodoroTotalTime()
+        
+        // Assert
+        XCTAssertEqual(sut.extendedTime, 25)
+        XCTAssertEqual(sut.totalTime, 115)
+        
+        // Arrange
+        sut.isExtending = false
+        // Act
+        sut.computePomodoroTotalTime()
+        XCTAssertEqual(sut.extendedTime, 25)
+        XCTAssertEqual(sut.totalTime, 115)
     }
     
     func testFinishSession() {

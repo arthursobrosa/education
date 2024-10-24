@@ -22,7 +22,7 @@ class TabBarController: UITabBarController {
         let view = ActivityView()
         view.delegate = self
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(activityViewTapped))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(TabBarDelegate.activityViewTapped))
         view.addGestureRecognizer(tapGesture)
         
         return view
@@ -35,10 +35,10 @@ class TabBarController: UITabBarController {
     init(viewModel: TabBarViewModel) {
         self.viewModel = viewModel
         
-        schedule = ScheduleCoordinator(navigationController: UINavigationController(), activityManager: viewModel.activityManager, blockingManager: viewModel.blockingManager)
+        schedule = ScheduleCoordinator(navigationController: UINavigationController(), activityManager: viewModel.activityManager, blockingManager: viewModel.blockingManager, notificationService: viewModel.notificationService)
         studytime = StudyTimeCoordinator(navigationController: UINavigationController())
         themeList = ThemeListCoordinator(navigationController: UINavigationController())
-        settings = SettingsCoordinator(navigationController: UINavigationController(), blockingManager: viewModel.blockingManager)
+        settings = SettingsCoordinator(navigationController: UINavigationController(), blockingManager: viewModel.blockingManager, notificationService: viewModel.notificationService)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -95,12 +95,6 @@ class TabBarController: UITabBarController {
         
         self.activityView.frame = CGRect(x: lateralPadding, y: self.view.bounds.height - self.tabBar.frame.height - (height + 15), width: width, height: height)
         self.customTabBar.frame = CGRect(x: 0, y: self.view.bounds.height - self.customTabBar.frame.height, width: self.view.bounds.width, height: self.view.bounds.height * (65/844))
-    }
-    
-    @objc func activityViewTapped() {
-        self.selectedIndex = self.schedule.navigationController.tabBarItem.tag
-        
-        self.schedule.showTimer(focusSessionModel: nil)
     }
 }
 

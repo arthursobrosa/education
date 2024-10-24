@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FocusSessionView: UIView {
+class FocusSessionView: UIView, TimerAnimation {
     weak var delegate: FocusSessionDelegate? {
         didSet {
             setupUI()
@@ -82,22 +82,14 @@ class FocusSessionView: UIView {
         return lbl
     }()
     
-    private let timerTrackLayer = CAShapeLayer()
-    private let timerCircleFillLayer = CAShapeLayer()
+    var timerTrackLayer = CAShapeLayer()
+    var timerCircleFillLayer = CAShapeLayer()
     
-    private let timerEndAnimation: CABasicAnimation = {
+    var timerAnimation: CABasicAnimation = {
         let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
         strokeEnd.toValue = 1
         strokeEnd.fillMode = .forwards
         strokeEnd.isRemovedOnCompletion = true
-        return strokeEnd
-    }()
-    
-    private let timerResetAnimation: CABasicAnimation = {
-        let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
-        strokeEnd.toValue = 0
-        strokeEnd.fillMode = .forwards
-        strokeEnd.isRemovedOnCompletion = false
         return strokeEnd
     }()
     
@@ -202,23 +194,6 @@ class FocusSessionView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-// MARK: - Timer Animations
-extension FocusSessionView {
-    func startAnimation(timerDuration: Double) {
-        timerEndAnimation.duration = timerDuration
-        timerCircleFillLayer.add(timerEndAnimation, forKey: "timerEnd")
-    }
-    
-    func resetAnimations() {
-        timerCircleFillLayer.removeAllAnimations()
-    }
-    
-    func redefineAnimation(timerDuration: Double, strokeEnd: CGFloat) {
-        timerCircleFillLayer.strokeEnd = strokeEnd
-        timerEndAnimation.duration = timerDuration
     }
 }
 
@@ -399,7 +374,7 @@ extension FocusSessionView: ViewCodeProtocol {
         ])
     }
     
-    func setupLayers(with configuration: FocusSessionViewModel.LayersConfig) {
+    func setupLayers(with configuration: ActivityManager.LayersConfig) {
         let arcPath = UIBezierPath(arcCenter: CGPoint(x: timerLabel.frame.width / 2, y: timerLabel.frame.height / 2), radius: timerLabel.frame.width / 2, startAngle: configuration.startAngle, endAngle: configuration.endAngle, clockwise: configuration.isClockwise)
         
         let lineWidth = bounds.height * (7 / 844)
@@ -421,7 +396,8 @@ extension FocusSessionView: ViewCodeProtocol {
         timerLabel.layer.addSublayer(timerTrackLayer)
         timerLabel.layer.addSublayer(timerCircleFillLayer)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in            guard let self else { return }
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) { [weak self] in
+            guard let self else { return }
             
             self.timerContainerView.layer.cornerRadius = self.timerContainerView.frame.width / 2
         }

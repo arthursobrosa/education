@@ -38,31 +38,19 @@ extension ScheduleDetailsViewController {
     @objc private func switchToggled(_ sender: UISwitch) {
         switch sender.tag {
             case 0:
-                self.viewModel.alarmInTime = sender.isOn
+                viewModel.alarmInTime = sender.isOn
                 
-                guard self.viewModel.alarmInTime else { return }
+                guard viewModel.alarmInTime else { return }
                 
-                NotificationService.shared.requestAuthorization { granted, error in
-                    if granted {
-                        print("notification persimission granted")
-                    } else if let error {
-                        print(error.localizedDescription)
-                    }
-                }
+                viewModel.requestNotificationsAuthorization()
             case 1:
-                self.viewModel.alarmBefore = sender.isOn
+                viewModel.alarmBefore = sender.isOn
                 
-                guard self.viewModel.alarmBefore else { return }
+                guard viewModel.alarmBefore else { return }
                 
-                NotificationService.shared.requestAuthorization { granted, error in
-                    if granted {
-                        print("notification persimission granted")
-                    } else if let error {
-                        print(error.localizedDescription)
-                    }
-                }
+                viewModel.requestNotificationsAuthorization()
             case 2:
-                self.viewModel.blocksApps = sender.isOn
+                viewModel.blocksApps = sender.isOn
             default:
                 break
         }
@@ -70,7 +58,15 @@ extension ScheduleDetailsViewController {
     
     func createLabel(with text: String) -> UILabel {
         let label = UILabel()
-        label.text = text
+        
+        var labelText = text
+        let maxLenght = 22
+        
+        if text.count > maxLenght {
+            labelText = String(text.prefix(maxLenght)) + "..."
+        }
+        
+        label.text = labelText
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.textColor = .secondaryLabel
         label.sizeToFit()

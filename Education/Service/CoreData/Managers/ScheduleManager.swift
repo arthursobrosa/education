@@ -10,7 +10,7 @@ import CoreData
 
 final class ScheduleManager: ObjectManager {
     // MARK: - Create
-    func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date, blocksApps: Bool, earlyAlarm: Bool, imediateAlarm: Bool) {
+    func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date, blocksApps: Bool, earlyAlarm: Bool, imediateAlarm: Bool, completed: Bool = false) {
         backgroundContext.performAndWait {
             guard let schedule = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: backgroundContext) as? Schedule else { return }
             
@@ -21,6 +21,7 @@ final class ScheduleManager: ObjectManager {
             schedule.blocksApps = blocksApps
             schedule.earlyAlarm = earlyAlarm
             schedule.imediateAlarm = imediateAlarm
+            schedule.completed = completed
             schedule.id = UUID().uuidString
             
             

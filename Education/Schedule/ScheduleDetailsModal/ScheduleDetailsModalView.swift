@@ -49,9 +49,10 @@ class ScheduleDetailsModalView: UIView {
         return btn
     }()
     
-    private let nameLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 21)
+        lbl.textAlignment = .center
         lbl.translatesAutoresizingMaskIntoConstraints = false
         
         return lbl
@@ -108,8 +109,8 @@ class ScheduleDetailsModalView: UIView {
         
         self.backgroundColor = .systemBackground
         
-        self.nameLabel.text = subjectName
-        self.nameLabel.textColor = UIColor(named: "system-text")
+        self.titleLabel.text = subjectName
+        self.titleLabel.textColor = UIColor(named: "system-text")
         
         self.setDayLabel()
         self.setupUI()
@@ -156,7 +157,7 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
     func setupUI() {
         addSubview(closeButton)
         addSubview(editButton)
-        addSubview(nameLabel)
+        addSubview(titleLabel)
         addSubview(dayLabel)
         addSubview(hourDetailView)
         addSubview(startButton)
@@ -164,27 +165,28 @@ extension ScheduleDetailsModalView: ViewCodeProtocol {
         let padding = 20.0
         
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            closeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            closeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             
             editButton.topAnchor.constraint(equalTo: closeButton.topAnchor),
-            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            editButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             
-            nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 24),
-            nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
+            titleLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -70),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            dayLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 24),
-            dayLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 35),
+            dayLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
+            dayLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35),
             
-            hourDetailView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 334/366),
-            hourDetailView.heightAnchor.constraint(equalTo: hourDetailView.widthAnchor, multiplier: 102/334),
+            hourDetailView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 334 / 366),
+            hourDetailView.heightAnchor.constraint(equalTo: hourDetailView.widthAnchor, multiplier: 102 / 334),
             hourDetailView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 17),
-            hourDetailView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            hourDetailView.centerXAnchor.constraint(equalTo: centerXAnchor),
             
             startButton.topAnchor.constraint(equalTo: hourDetailView.bottomAnchor, constant: padding * 2.2),
-            startButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            startButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 55/327),
-            startButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 334/366),
+            startButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            startButton.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 55 / 327),
+            startButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 334 / 366),
         ])
     }
 }

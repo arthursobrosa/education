@@ -7,78 +7,109 @@
 
 import UIKit
 
+#warning("missing dark mode")
 class ScheduleCell: UICollectionViewCell {
     // MARK: - ID and Delegate
     static let identifier = "scheduleCell"
     weak var delegate: ScheduleDelegate?
     
     // MARK: - Properties
+    struct CellConfig {
+        var subject: Subject?
+        var indexPath: IndexPath
+        var isDaily: Bool
+        var attributedText: NSAttributedString
+        var eventCase: EventCase
+        var color: UIColor?
+    }
+    
     enum EventCase {
         case notToday
         case upcoming(hoursLeft: String, minutesLeft: String)
         case ongoing
         case completed
+        case late
         
         var showsPlayButton: Bool {
             switch self {
-                case .notToday:
-                    return false
-                default:
-                    return true
+                case .notToday, .completed:
+                    false
+                case .upcoming, .ongoing, .late:
+                    true
             }
         }
         
-        var timeLeftText: String {
+        var playButtonStyle: ActivityButton.PlayButtonCase? {
             switch self {
-                case .upcoming(let hoursLeft, let minutesLeft):
-                if Int(hoursLeft) == 0 {
-                    return String(format: NSLocalizedString("startsIn", comment: ""),minutesLeft)
-                } else {
-                    return String(format: NSLocalizedString("timeLeft", comment: ""), hoursLeft, minutesLeft)
-                }
+                case .notToday, .completed:
+                    nil
+                case .upcoming, .late:
+                    .fill
                 case .ongoing:
-                    return String(localized: "timeLeftNow")
-                case .completed:
-                    return String(localized: "timeLeftFinished")
-                default:
-                    return String()
+                    .stroke
             }
         }
-    }
-    
-    var isDaily: Bool? {
-        didSet {
-            self.setupUI()
+        
+        var attributedText: NSMutableAttributedString {
+            let mediumFont: UIFont = UIFont(name: Fonts.darkModeOnMedium, size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .semibold)
+            let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .semibold)
             
-            guard let isDaily else { return }
+            switch self {
+                case .notToday:
+                    return NSMutableAttributedString()
+                case .upcoming:
+                    return NSMutableAttributedString(string: getUpcomingString(), attributes: [.font: mediumFont])
+                case .ongoing:
+                    return NSMutableAttributedString(string: String(localized: "timeLeftNow"), attributes: [.font: semiboldFont])
+                case .completed:
+                    let attributedString = getCompletedAttributedString()
+                    attributedString.addAttributes([.font: mediumFont], range: NSRange(location: 0, length: attributedString.length))
+                    return attributedString
+                case .late:
+                    return NSMutableAttributedString(string: String(localized: "timeLeftLate"), attributes: [.font: mediumFont])
+            }
+        }
+        
+        private func getUpcomingString() -> String {
+            guard case .upcoming(let hoursLeft, let minutesLeft) = self else {
+                return String()
+            }
             
-            self.subjectNameLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: isDaily ? 17 : 16)
-            
-            self.timeLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: isDaily ? 14 : 14)
+            if Int(hoursLeft) == 0 {
+                return String(format: NSLocalizedString("startsIn", comment: ""), minutesLeft)
+            } else {
+                return String(format: NSLocalizedString("timeLeft", comment: ""), hoursLeft, minutesLeft)
+            }
+        }
+        
+        private func getCompletedAttributedString() -> NSMutableAttributedString {
+            guard case .completed = self else {
+                return NSMutableAttributedString()
+            }
+
+            let completedString = NSAttributedString(string: String(localized: "timeLeftFinished"))
+            let attachment = NSTextAttachment(image: UIImage(systemName: "checkmark")!)
+            let checkmarkString = NSAttributedString(attachment: attachment)
+            let attributedString = NSMutableAttributedString()
+            attributedString.append(completedString)
+            attributedString.append(NSAttributedString(string: "  "))
+            attributedString.append(checkmarkString)
+            return attributedString
         }
     }
     
-    var indexPath: IndexPath?
-    
-    var color: UIColor? {
+    var config: CellConfig? {
         didSet {
-            guard let color else { return }
+            guard let config,
+                  let subject = config.subject else { return }
             
-            self.cardView.backgroundColor = color.withAlphaComponent(traitCollection.userInterfaceStyle == .dark ? 0.3 : 0.2)
-            
-            let subjectColor = self.traitCollection.userInterfaceStyle == .light ? color.darker(by: 0.6) : color.darker(by: 1)
-            self.subjectNameLabel.textColor = subjectColor
-            self.playButton.playImageView.tintColor = subjectColor
-            self.playButton.circleView.backgroundColor = color.withAlphaComponent(0.6)
-            self.timeLeftLabel.textColor = self.traitCollection.userInterfaceStyle == .light ? color : color.darker(by: 0.8)
-        }
-    }
-    
-    var subject: Subject? {
-        didSet {
-            guard let subject else { return }
-            
-            self.subjectNameLabel.text = subject.unwrappedName
+            subjectNameLabel.text = subject.unwrappedName
+            subjectNameLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: config.isDaily ? 17 : 16)
+            timeLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: config.isDaily ? 14 : 14)
+            timeLabel.attributedText = config.attributedText
+            updateView(for: config.eventCase)
+            setupUI()
+            configure()
         }
     }
     
@@ -86,17 +117,13 @@ class ScheduleCell: UICollectionViewCell {
     private let cardView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
-        
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         return view
     }()
     
     private let subjectNameLabel: UILabel = {
         let lbl = UILabel()
-        
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        
         return lbl
     }()
     
@@ -104,91 +131,123 @@ class ScheduleCell: UICollectionViewCell {
         let lbl = UILabel()
         lbl.numberOfLines = 0
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        
         return lbl
     }()
     
     private let timeLeftLabel: UILabel = {
         let lbl = UILabel()
         lbl.textAlignment = .right
-        lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
-        
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        
         return lbl
     }()
     
     private lazy var playButton: ActivityButton = {
         let bttn = ActivityButton()
-        
         bttn.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        
         bttn.translatesAutoresizingMaskIntoConstraints = false
-        
         return bttn
     }()
     
-    // MARK: - Methods
-    func configure(with attributedString: NSAttributedString, and eventCase: EventCase) {
-        self.timeLabel.attributedText = attributedString
-        
-        self.updateView(for: eventCase)
-    }
-    
-    @objc private func playButtonTapped() {
-        self.delegate?.playButtonTapped(at: self.indexPath, withColor: self.color)
-    }
-    
+    // MARK: - Lifecycle
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.contentView.subviews.forEach { subview in
+        config = nil
+        
+        cardView.subviews.forEach { subview in
             subview.removeFromSuperview()
         }
+        
+        contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+    }
+    
+    // MARK: - Methods
+    private func configure() {
+        guard let config,
+              let color = config.color else { return }
+        
+        cardView.backgroundColor = color.withAlphaComponent(traitCollection.userInterfaceStyle == .dark ? 0.3 : 0.2)
+        
+        let subjectColor = traitCollection.userInterfaceStyle == .light ? color.darker(by: 0.6) : color.darker(by: 1)
+        subjectNameLabel.textColor = subjectColor
+        playButton.playImageView.tintColor = subjectColor
+        playButton.circleView.backgroundColor = color.withAlphaComponent(0.6)
+        
+        var stringColor: UIColor = color
+        
+        if case .ongoing = config.eventCase {
+            stringColor = color.darker(by: 0.6) ?? color
+        }
+        
+        let timeLeftAttributedString = NSMutableAttributedString(attributedString: timeLeftLabel.attributedText!)
+        timeLeftAttributedString.addAttributes([.foregroundColor: stringColor], range: NSRange(location: 0, length: timeLeftAttributedString.length))
+        timeLeftLabel.attributedText = timeLeftAttributedString
+    }
+    
+    @objc private func playButtonTapped() {
+        guard let config else { return }
+        
+        delegate?.playButtonTapped(at: config.indexPath, withColor: config.color)
     }
 }
 
 // MARK: - UI Setup
 extension ScheduleCell: ViewCodeProtocol {
     func setupUI() {
-        guard let isDaily else { return }
-        
-        self.contentView.addSubview(cardView)
-        cardView.addSubview(subjectNameLabel)
-        cardView.addSubview(timeLabel)
-        cardView.addSubview(playButton)
+        contentView.addSubview(cardView)
         
         NSLayoutConstraint.activate([
-            subjectNameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 9.5),
-            
-            cardView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-            cardView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-            cardView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-            cardView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-            
+            cardView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+        ])
+        
+        layoutTimeLeftLabel()
+    }
+    
+    private func layoutTimeLeftLabel() {
+        guard let config else { return }
+        let isDaily = config.isDaily
+        let eventCase = config.eventCase
+        
+        cardView.addSubview(subjectNameLabel)
+        cardView.addSubview(timeLabel)
+        
+        NSLayoutConstraint.activate([
             timeLabel.leadingAnchor.constraint(equalTo: subjectNameLabel.leadingAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: subjectNameLabel.trailingAnchor),
-            
-//            playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-            playButton.heightAnchor.constraint(equalTo: playButton.widthAnchor)
         ])
         
         if isDaily {
             cardView.addSubview(timeLeftLabel)
             
             NSLayoutConstraint.activate([
+                subjectNameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 9.5),
                 subjectNameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 15),
                 subjectNameLabel.trailingAnchor.constraint(equalTo: timeLeftLabel.leadingAnchor, constant: -28),
                 
-                timeLeftLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-                timeLeftLabel.trailingAnchor.constraint(equalTo: playButton.leadingAnchor, constant: -7),
-                
                 timeLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -9.5),
                 
-                playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (38/366)),
-                playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -15),
-                playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+                timeLeftLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             ])
+            
+            if eventCase.showsPlayButton {
+                cardView.addSubview(playButton)
+                
+                NSLayoutConstraint.activate([
+                    timeLeftLabel.trailingAnchor.constraint(equalTo: playButton.leadingAnchor, constant: -7),
+                    
+                    playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 38 / 366),
+                    playButton.heightAnchor.constraint(equalTo: playButton.widthAnchor),
+                    playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -15),
+                    playButton.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+                ])
+            } else {
+                timeLeftLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20).isActive = true
+            }
         } else {
             NSLayoutConstraint.activate([
                 subjectNameLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 4),
@@ -197,31 +256,51 @@ extension ScheduleCell: ViewCodeProtocol {
                 
                 timeLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -8.5),
                 timeLabel.topAnchor.constraint(equalTo: subjectNameLabel.bottomAnchor, constant: 3),
-                
-                playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: (37/147)),
-                playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -8),
-                playButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -8.5),
             ])
+            
+            if eventCase.showsPlayButton {
+                cardView.addSubview(playButton)
+                
+                NSLayoutConstraint.activate([
+                    playButton.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 37 / 147),
+                    playButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -8),
+                    playButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -8.5),
+                ])
+            } else {
+                if case .completed = eventCase {
+                    updateTimeLeftLabel()
+                    
+                    cardView.addSubview(timeLeftLabel)
+                    
+                    NSLayoutConstraint.activate([
+                        timeLeftLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -18),
+                        timeLeftLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16.5),
+                    ])
+                }
+            }
         }
-        
-//        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-//            (self: Self, previousTraitCollection: UITraitCollection) in
-//            
-//            if(self.traitCollection.userInterfaceStyle == .light){
-//                let subjectColor =  self.color!.darker(by: 0.6)
-//                self.subjectNameLabel.textColor = subjectColor
-//            } else {
-//                let subjectColor =  self.color!.darker(by: 1)
-//                self.subjectNameLabel.textColor = subjectColor
-//            }
-//        }
     }
 }
 
 // MARK: - Cell UI
 extension ScheduleCell {
     private func updateView(for eventCase: EventCase) {
-        self.playButton.isHidden = !eventCase.showsPlayButton
-        self.timeLeftLabel.text = eventCase.timeLeftText
+        playButton.isHidden = !eventCase.showsPlayButton
+        playButton.styleCase = eventCase.playButtonStyle
+        timeLeftLabel.attributedText = eventCase.attributedText
+    }
+    
+    private func updateTimeLeftLabel() {
+        guard let config,
+              case .completed = config.eventCase else { return }
+        
+        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .semibold)
+        let attachment = NSTextAttachment(image: UIImage(systemName: "checkmark")!)
+        let checkmarkString = NSAttributedString(attachment: attachment)
+        let attributedString = NSMutableAttributedString()
+        attributedString.append(checkmarkString)
+        attributedString.addAttributes([.font: semiboldFont, .foregroundColor: config.color ?? UIColor.label], range: NSRange(location: 0, length: attributedString.length))
+        
+        timeLeftLabel.attributedText = attributedString
     }
 }

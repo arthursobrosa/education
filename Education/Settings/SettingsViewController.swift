@@ -60,7 +60,7 @@ class SettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.viewModel.requestNoficationAuthorization()
+        self.viewModel.requestNoficationsAuthorization()
     }
     
     private func reloadTable() {

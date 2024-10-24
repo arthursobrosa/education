@@ -110,33 +110,28 @@ class StudyTimeViewModel: ObservableObject {
     }
     
     func getTotalTime(forSubject subject: Subject?) -> String {
-        let focusSessions = self.focusSessions.value.filter { $0.subjectID == subject?.unwrappedID }
-        let totalTime = self.getTime(from: focusSessions)
-        
-        let hours = totalTime / 3600
-        let minutes = (totalTime / 60) % 60
-        
-        if totalTime >= 3600 {
-            return "\(hours)h\(minutes)m"
-        } else if totalTime >= 60 {
-            return "\(minutes)m"
-        } else {
-            return "\(totalTime)s"
-        }
+        let focusSessions = focusSessions.value.filter { $0.subjectID == subject?.unwrappedID }
+        let totalTime = getTime(from: focusSessions)
+        return formatTime(from: totalTime)
     }
     
     func getTotalAggregatedTime() -> String {
-        let totalTime = self.getTime(from: focusSessions.value)
+        let totalTime = getTime(from: focusSessions.value)
+        return formatTime(from: totalTime)
+    }
+    
+    private func formatTime(from time: Int) -> String {
+        let hours = time / 3600
+        let minutes = (time / 60) % 60
         
-        let hours = totalTime / 3600
-        let minutes = (totalTime / 60) % 60
-        
-        if totalTime >= 3600 {
-            return "\(hours)h\(minutes)m"
-        } else if totalTime >= 60 {
-            return "\(minutes)m"
+        if time >= 3600 {
+            return "\(hours)h\(minutes)min"
+        } else if time >= 60 {
+            return "\(minutes)min"
+        } else if time > 0 {
+            return "\(time)s"
         } else {
-            return "\(totalTime)s"
+            return "\(time)min"
         }
     }
     

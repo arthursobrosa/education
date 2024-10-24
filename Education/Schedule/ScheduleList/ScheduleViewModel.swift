@@ -233,7 +233,11 @@ class ScheduleViewModel {
         } else if currentTimeInMinutes <= endTimeInMinutes {
             return .ongoing
         } else {
-            return .completed
+            if schedule.completed {
+                return .completed
+            } else {
+                return .late
+            }
         }
     }
     

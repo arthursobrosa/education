@@ -9,9 +9,6 @@ import Foundation
 import Combine
 
 class FocusSessionViewModel {
-    // MARK: - CoreData focus session manager
-    private let focusSessionManager: FocusSessionManager
-    
     // MARK: - Service to manage timer and session
     let activityManager: ActivityManager
     
@@ -32,17 +29,8 @@ class FocusSessionViewModel {
     var isAtWorkTimeDidChange: ((Bool) -> Void)?
     var updateAfterBackgroundPropertyDidChange: (() -> Void)?
     
-    struct LayersConfig {
-        let strokeEnd: CGFloat
-        let isTimerTrackerShowing: Bool
-        let isClockwise: Bool
-        let startAngle: Double
-        let endAngle: Double
-    }
-    
     // MARK: - Initializer
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), activityManager: ActivityManager, blockingManager: BlockingManager) {
-        self.focusSessionManager = focusSessionManager
+    init(activityManager: ActivityManager, blockingManager: BlockingManager) {
         self.activityManager = activityManager
         self.blockingManager = blockingManager
         
@@ -82,7 +70,10 @@ extension FocusSessionViewModel {
             .sink { [weak self] _ in
                 guard let self else { return }
                 
-                guard !didTapFinish else { return }
+                if didTapFinish {
+                    self.activityManager.isPaused = true
+                    return
+                }
                 
                 timerSecondsDidChange?()
             }
@@ -125,55 +116,6 @@ extension FocusSessionViewModel {
                 }
             }
             .store(in: &self.cancellables)
-    }
-}
-
-// MARK: - Layers config
-extension FocusSessionViewModel {
-    func getLayersConfig() -> LayersConfig {
-        let strokeEnd = getStrokeEnd()
-        let isTimerTrackerShowing = isTimerTrackerShowing()
-        let isClockwise = isClockwise()
-        let angles = getAngles()
-        
-        return LayersConfig(strokeEnd: strokeEnd, isTimerTrackerShowing: isTimerTrackerShowing, isClockwise: isClockwise, startAngle: angles.startAngle, endAngle: angles.endAngle)
-    }
-    
-    func getStrokeEnd() -> CGFloat {
-        activityManager.progress
-    }
-    
-    private func isTimerTrackerShowing() -> Bool {
-        guard case .stopwatch = activityManager.timerCase else {
-            return true
-        }
-        
-        return false
-    }
-    
-    private func isClockwise() -> Bool {
-        guard case .pomodoro = activityManager.timerCase else {
-            return true
-        }
-        
-        return activityManager.isAtWorkTime
-    }
-    
-    private func getAngles() -> (startAngle: Double, endAngle: Double) {
-        var startAngle = 0.0
-        var endAngle = 0.0
-        
-        guard case .pomodoro = activityManager.timerCase else {
-            startAngle = -(CGFloat.pi / 2)
-            endAngle = -(CGFloat.pi / 2) + CGFloat.pi * 2
-            
-            return (startAngle, endAngle)
-        }
-        
-        startAngle = activityManager.isAtWorkTime ? -(CGFloat.pi / 2) : -(CGFloat.pi / 2) + CGFloat.pi * 2
-        endAngle = activityManager.isAtWorkTime ? -(CGFloat.pi / 2) + CGFloat.pi * 2 : -(CGFloat.pi / 2)
-        
-        return (startAngle, endAngle)
     }
 }
 

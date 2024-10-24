@@ -36,15 +36,7 @@ class ActivityView: UIView {
             studyingNowLabel.textColor = color?.darker(by: 1.3)
             activityTitle.textColor = color?.darker(by: 0.6)
             activityTimer.textColor = color
-        }
-    }
-    
-    var progress: CGFloat? {
-        didSet {
-            guard let color,
-                  let progress else { return }
-            
-            addLiveActivityButton(color: color, progress: progress)
+            activityBarButton.color = color
         }
     }
     
@@ -77,7 +69,12 @@ class ActivityView: UIView {
         return lbl
     }()
     
-    var liveActivityButton: LiveActivityButton?
+    lazy var activityBarButton: ActivityBarButton = {
+        let button = ActivityBarButton()
+        button.pauseResumeButton.addTarget(delegate, action: #selector(TabBarDelegate.didTapPlayButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -135,6 +132,7 @@ extension ActivityView: ViewCodeProtocol {
         addSubview(studyingNowLabel)
         addSubview(activityTitle)
         addSubview(activityTimer)
+        addSubview(activityBarButton)
         
         NSLayoutConstraint.activate([
             studyingNowLabel.topAnchor.constraint(equalTo: topAnchor, constant: 7),
@@ -144,25 +142,13 @@ extension ActivityView: ViewCodeProtocol {
             activityTitle.leadingAnchor.constraint(equalTo: studyingNowLabel.leadingAnchor),
             
             activityTimer.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 80 / 366),
-            activityTimer.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
-    }
-    
-    private func addLiveActivityButton(color: UIColor?, progress: CGFloat) {
-        liveActivityButton = LiveActivityButton(color: color, progress: progress)
-        liveActivityButton?.pauseResumeButton.addTarget(delegate, action: #selector(TabBarDelegate.didTapPlayButton), for: .touchUpInside)
-        liveActivityButton?.translatesAutoresizingMaskIntoConstraints = false
-        
-        guard let liveActivityButton else { return }
-        
-        addSubview(liveActivityButton)
-        
-        NSLayoutConstraint.activate([
-            liveActivityButton.leadingAnchor.constraint(equalTo: activityTimer.trailingAnchor, constant: 13),
-            liveActivityButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 44 / 366),
-            liveActivityButton.heightAnchor.constraint(equalTo: liveActivityButton.widthAnchor),
-            liveActivityButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            liveActivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
+            activityTimer.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            activityBarButton.leadingAnchor.constraint(equalTo: activityTimer.trailingAnchor, constant: 13),
+            activityBarButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 44 / 366),
+            activityBarButton.heightAnchor.constraint(equalTo: activityBarButton.widthAnchor),
+            activityBarButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            activityBarButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
         ])
     }
 }
