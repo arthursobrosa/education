@@ -13,12 +13,12 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
     var navigationController: UINavigationController
     private var newNavigationController = UINavigationController()
     
-    private let notificationService: NotificationProtocol?
+    private let notificationService: NotificationServiceProtocol?
     
     private let schedule: Schedule?
     private let selectedDay: Int?
     
-    init(navigationController: UINavigationController, notificationService: NotificationProtocol?, schedule: Schedule?, selectedDay: Int?) {
+    init(navigationController: UINavigationController, notificationService: NotificationServiceProtocol?, schedule: Schedule?, selectedDay: Int?) {
         self.navigationController = navigationController
         self.notificationService = notificationService
         self.schedule = schedule

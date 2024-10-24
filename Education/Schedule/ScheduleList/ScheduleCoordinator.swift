@@ -14,9 +14,9 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     
     private let activityManager: ActivityManager
     private let blockingManager: BlockingManager
-    private let notificationService: NotificationProtocol?
+    private let notificationService: NotificationServiceProtocol?
     
-    init(navigationController: UINavigationController, activityManager: ActivityManager, blockingManager: BlockingManager, notificationService: NotificationProtocol?) {
+    init(navigationController: UINavigationController, activityManager: ActivityManager, blockingManager: BlockingManager, notificationService: NotificationServiceProtocol?) {
         self.navigationController = navigationController
         self.activityManager = activityManager
         self.blockingManager = blockingManager

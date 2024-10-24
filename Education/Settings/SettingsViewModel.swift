@@ -9,7 +9,7 @@ import Foundation
 
 class SettingsViewModel {
     // MARK: - Notification Service
-    private let notificationService: NotificationProtocol?
+    private let notificationService: NotificationServiceProtocol?
     
     // MARK: - Properties
     let days = [
@@ -26,7 +26,7 @@ class SettingsViewModel {
     var isNotificationActive = Box(false)
     
     // MARK: - Initializer
-    init(notificationService: NotificationProtocol?) {
+    init(notificationService: NotificationServiceProtocol?) {
         self.notificationService = notificationService
     }
     

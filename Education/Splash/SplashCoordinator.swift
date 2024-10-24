@@ -13,7 +13,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     
     private let activityManager: ActivityManager
     private let blockingManager: BlockingManager
-    private let notificationService: NotificationProtocol?
+    private let notificationService: NotificationServiceProtocol?
     
     struct ScheduleNotification {
         var subjectName: String
@@ -23,7 +23,7 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
     
     var scheduleNotification: ScheduleNotification?
     
-    init(navigationController: UINavigationController, activityManager: ActivityManager?, blockingManager: BlockingManager?, notificationService: NotificationProtocol?) {
+    init(navigationController: UINavigationController, activityManager: ActivityManager?, blockingManager: BlockingManager?, notificationService: NotificationServiceProtocol?) {
         self.navigationController = navigationController
         self.notificationService = notificationService
         self.activityManager = activityManager ?? ActivityManager(notificationService: notificationService)

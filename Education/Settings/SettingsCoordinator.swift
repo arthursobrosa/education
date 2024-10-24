@@ -12,9 +12,9 @@ class SettingsCoordinator: Coordinator {
     var navigationController: UINavigationController
     
     private let blockingManager: BlockingManager
-    private let notificationService: NotificationProtocol?
+    private let notificationService: NotificationServiceProtocol?
     
-    init(navigationController: UINavigationController, blockingManager: BlockingManager, notificationService: NotificationProtocol?) {
+    init(navigationController: UINavigationController, blockingManager: BlockingManager, notificationService: NotificationServiceProtocol?) {
         self.navigationController = navigationController
         self.blockingManager = blockingManager
         self.notificationService = notificationService

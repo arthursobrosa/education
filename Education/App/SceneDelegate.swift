@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var timerSeconds = Int()
     
     var activityManager: ActivityManager?
-    var notificationService: NotificationProtocol?
+    var notificationService: NotificationServiceProtocol?
     var blockingManager: BlockingManager?
     
     
