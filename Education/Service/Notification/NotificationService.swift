@@ -8,14 +8,35 @@
 import UIKit
 import UserNotifications
 
-protocol NotificationProtocol {
-    var notificationCenter: UNUserNotificationCenter { get set }
+protocol UNUserNotificationCenterProtocol: AnyObject {
+    var delegate: (any UNUserNotificationCenterDelegate)? { get set }
     
+    func add(_ request: UNNotificationRequest,
+             withCompletionHandler completionHandler: ((Error?) -> Void)?)
+    func requestAuthorization(
+        options: UNAuthorizationOptions,
+        completionHandler: @escaping (Bool, (any Error)?) -> Void)
+    func removeAllPendingNotificationRequests()
+    func getPendingNotificationRequests(completionHandler: @escaping ([UNNotificationRequest]) -> Void)
+    func removePendingNotificationRequests(withIdentifiers identifiers: [String])
+}
+
+extension UNUserNotificationCenter: UNUserNotificationCenterProtocol {}
+
+struct ScheduleInfo {
+    var subjectName: String
+    var dates: (startTime: Date, endTime: Date)
+    
+    func getUserInfo() -> [AnyHashable : Any] {
+        ["subjectName": subjectName, "startTime": dates.startTime, "endTime": dates.endTime]
+    }
+}
+
+protocol NotificationServiceProtocol {
     func setDelegate(_ delegate: (any UNUserNotificationCenterDelegate)?)
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Void)
     func scheduleEndNotification(title: String, subjectName: String?, date: Date)
-    func scheduleWeeklyNotification(title: String, body: String, date: Date)
-    func scheduleWeeklyNotificationAtExactTime(title: String, body: String, date: Date, subjectName: String, startTime: Date, endTime: Date)
+    func scheduleWeeklyNotification(title: String, body: String, date: Date, isAtExactTime: Bool, scheduleInfo: ScheduleInfo?)
     func cancelAllNotifications()
     func cancelNotificationByName(name: String?)
     func cancelNotifications(forDate date: Date)
@@ -23,8 +44,8 @@ protocol NotificationProtocol {
     func getNotificationDate(for activityManager: ActivityManager?) -> Date?
 }
 
-class NotificationService: NotificationProtocol {
-    var notificationCenter: UNUserNotificationCenter = .current()
+class NotificationService: NotificationServiceProtocol {
+    var notificationCenter: UNUserNotificationCenterProtocol = UNUserNotificationCenter.current()
     
     func setDelegate(_ delegate: (any UNUserNotificationCenterDelegate)?) {
         notificationCenter.delegate = delegate
@@ -50,8 +71,8 @@ class NotificationService: NotificationProtocol {
         let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute, .second], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
         
-        let requestId = body
-        let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
+        let requestID = body
+        let request = UNNotificationRequest(identifier: requestID, content: content, trigger: trigger)
         
         notificationCenter.add(request) { error in
             if let error {
@@ -60,46 +81,33 @@ class NotificationService: NotificationProtocol {
         }
     }
     
-    func scheduleWeeklyNotification(title: String, body: String, date: Date) {
+    func scheduleWeeklyNotification(title: String, body: String, date: Date, isAtExactTime: Bool, scheduleInfo: ScheduleInfo?) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
         
-        let triggerDate = Calendar.current.date(byAdding: .minute, value: -5, to: date)!
+        if let scheduleInfo {
+            let userInfo = scheduleInfo.getUserInfo()
+            content.userInfo = userInfo
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd-HH-mm"
+        let dateString = dateFormatter.string(from: date)
+        var requestID = "\(dateString)"
+        
+        var triggerDate = date
+        
+        if !isAtExactTime {
+            triggerDate = Calendar.current.date(byAdding: .minute, value: -5, to: date)!
+            requestID = "\(dateString)-5"
+        }
+        
         let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute], from: triggerDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd-HH-mm"
-        let dateString = dateFormatter.string(from: date)
-        
-        let requestId = "\(dateString)-5"
-        let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
-        
-        notificationCenter.add(request) { error in
-            if let error {
-                print("Error scheduling notification: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    func scheduleWeeklyNotificationAtExactTime(title: String, body: String, date: Date, subjectName: String, startTime: Date, endTime: Date) {
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.body = body
-        content.sound = .default
-        content.userInfo = ["subjectName": subjectName, "startTime": startTime, "endTime": endTime]
-        
-        let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute], from: date)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd-HH-mm"
-        let dateString = dateFormatter.string(from: date)
-        
-        let requestId = "\(dateString)"
-        let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: requestID, content: content, trigger: trigger)
         
         notificationCenter.add(request) { error in
             if let error {
@@ -131,8 +139,9 @@ class NotificationService: NotificationProtocol {
         notificationCenter.getPendingNotificationRequests { [weak self] requests in
             guard let self else { return }
             
-            let requestIds = requests.filter { $0.identifier.hasPrefix(dateString) }.map { $0.identifier }
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: requestIds)
+            let requestIDs = requests.filter { $0.identifier.hasPrefix(dateString) }.map { $0.identifier }
+            
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: requestIDs)
         }
     }
     
