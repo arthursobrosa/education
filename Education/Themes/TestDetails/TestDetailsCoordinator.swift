@@ -38,7 +38,7 @@ class TestDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingTestPage
     }
     
     func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+        self.navigationController.popViewController(animated: true)
     }
     
     func childDidFinish(_ child: Coordinator?) {
@@ -56,11 +56,17 @@ extension TestDetailsCoordinator: UIViewControllerTransitioningDelegate {
         guard let nav = dismissed as? UINavigationController else { return nil}
         
         if let testPageVC = nav.viewControllers.first as? TestPageViewController {
-            self.childDidFinish(testPageVC.coordinator as? Coordinator)
+            guard let testPageCoordinator = childCoordinators.first as? TestPageCoordinator else { return nil }
+            
+            let isRemovingTest = testPageCoordinator.isRemovingTest
+            
+            childDidFinish(testPageVC.coordinator as? Coordinator)
             
             if let testDetailsVC = self.navigationController.viewControllers.last as? TestDetailsViewController {
-                testDetailsVC.viewModel.getUpdatedTest()
-                testDetailsVC.updateInterface()
+                if !isRemovingTest {
+                    testDetailsVC.viewModel.getUpdatedTest()
+                    testDetailsVC.updateInterface()
+                }
             }
         }
        

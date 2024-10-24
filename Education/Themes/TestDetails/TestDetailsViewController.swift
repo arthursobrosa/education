@@ -41,7 +41,6 @@ class TestDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         self.setNavigationItems()
-        
     }
     
     
