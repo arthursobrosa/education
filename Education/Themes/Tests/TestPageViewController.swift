@@ -9,7 +9,7 @@ import UIKit
 
 class TestPageViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: Dismissing?
+    weak var coordinator: (Dismissing & DismissingAll)?
     let viewModel: TestPageViewModel
     
     // MARK: - Properties

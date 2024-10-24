@@ -7,10 +7,12 @@
 
 import UIKit
 
-class TestPageCoordinator: Coordinator, Dismissing {
+class TestPageCoordinator: Coordinator, Dismissing, DismissingAll {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    private var newNavigationController = UINavigationController()
+    var isRemovingTest: Bool = false
     
     private let theme: Theme
     private let test: Test?
@@ -26,7 +28,7 @@ class TestPageCoordinator: Coordinator, Dismissing {
         let vc = TestPageViewController(viewModel: viewModel)
         vc.coordinator = self
         
-        let newNavigationController = UINavigationController(rootViewController: vc)
+        newNavigationController = UINavigationController(rootViewController: vc)
         
         if let themePageCoordinator = self.parentCoordinator as? ThemePageCoordinator {
             newNavigationController.transitioningDelegate = themePageCoordinator
@@ -43,5 +45,14 @@ class TestPageCoordinator: Coordinator, Dismissing {
     
     func dismiss(animated: Bool) {
         self.navigationController.dismiss(animated: animated)
+    }
+    
+    func dismissAll() {
+        isRemovingTest = true
+        dismiss(animated: true)
+        
+        if let testDetailsCoordinator = parentCoordinator as? TestDetailsCoordinator {
+            testDetailsCoordinator.dismiss(animated: false)
+        }
     }
 }
