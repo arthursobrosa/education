@@ -116,8 +116,8 @@ final class SubjectManager: ObjectManager {
         //let ufpaSubjects = ["Biologia", "Filosofia", "Física", "Geografia", "História", "Literatura", "Matemática", "Português", "Química", "Sociologia"]
         
         let enemSubjects = ["Português", "Literatura", "Inglês/Espanhol", "Artes", "Ed. Física", "Tec. Informação", "História", "Geografia", "Filosofia", "Sociologia", "Química", "Física", "Biologia", "Matemática"]
-        let publicTenderSubjects = ["Língua Portuguesa", "Raciocínio Lógico", "Informatica" ,"Matemática Básica", "Atualidades", "Redação", "Legislação"]
-        let medicineSubjects = ["Legislação SUS", "Artigos 196-200", "Lei Orgân. 8080", "Decreto 7.508", "PNAB", "PNH"] //Considerar aumentar de 15 pra 18 o limite
+//        let publicTenderSubjects = ["Língua Portuguesa", "Raciocínio Lógico", "Informatica" ,"Matemática Básica", "Atualidades", "Redação", "Legislação"]
+//        let medicineSubjects = ["Legislação SUS", "Artigos 196-200", "Lei Orgân. 8080", "Decreto 7.508", "PNAB", "PNH"] //Considerar aumentar de 15 pra 18 o limite
         
         for subject in enemSubjects {
             self.createSubject(name: subject, color: "turquoisePicker")
