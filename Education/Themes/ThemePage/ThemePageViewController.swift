@@ -104,6 +104,7 @@ class ThemePageViewController: UIViewController {
         self.themePageView.customChart?.removeFromSuperview()
         
         self.themePageView.customChart = CustomChart(limit: self.viewModel.selectedLimit)
+        self.themePageView.customChart?.delegate = self
         let limitedItems = self.viewModel.getLimitedItems()
         self.themePageView.customChart?.setData(limitedItems, sorter: \.date, mapTo: \.percentage)
     }
@@ -147,13 +148,25 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
         label.textColor = .systemText30
         label.sizeToFit()
         
+        let percentage = UILabel()
+        let percentDouble = Double(test.unwrappedRightQuestions * 100) / Double(test.unwrappedTotalQuestions)
+        let percentInt = Int(percentDouble)
+        let percentText = String(percentInt)
+        percentage.text = "(" + percentText + "%)"
+        percentage.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        percentage.textColor = .systemGray
+        percentage.sizeToFit()
+        
         if hasComment {
             stackView.addArrangedSubview(commentView)
             stackView.addArrangedSubview(label)
+            stackView.addArrangedSubview(percentage)
             cell.setAccessoryView(stackView)
         }
         else {
-            cell.accessoryView = label
+            stackView.addArrangedSubview(label)
+            stackView.addArrangedSubview(percentage)
+            cell.setAccessoryView(stackView)
         }
         
         cell.row = indexPath.row
