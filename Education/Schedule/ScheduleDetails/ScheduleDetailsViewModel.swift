@@ -125,20 +125,26 @@ class ScheduleDetailsViewModel {
         
         if alarmBefore {
             notificationService?.scheduleWeeklyNotification(
-               title: title,
-               body: bodyBefore,
-               date: selectedDate
-           )
+                title: title,
+                body: bodyBefore,
+                date: selectedDate,
+                isAtExactTime: false,
+                scheduleInfo: nil
+            )
         }
         
         if alarmInTime {
-            notificationService?.scheduleWeeklyNotificationAtExactTime(
+            let scheduleInfo = ScheduleInfo(
+                subjectName: selectedSubjectName,
+                dates: (selectedStartTime, selectedEndTime)
+            )
+            
+            notificationService?.scheduleWeeklyNotification(
                title: title,
                body: bodyInTime,
                date: selectedDate,
-               subjectName: selectedSubjectName,
-               startTime: selectedStartTime,
-               endTime: selectedEndTime
+               isAtExactTime: true,
+               scheduleInfo: scheduleInfo
            )
         }
     }
