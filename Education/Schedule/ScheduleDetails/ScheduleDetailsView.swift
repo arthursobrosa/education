@@ -23,7 +23,7 @@ class ScheduleDetailsView: UIView {
     private lazy var deleteButton: ButtonComponent = {
         let bttn = ButtonComponent(title: String(localized: "deleteActivity"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 28)
         bttn.backgroundColor = .clear
-        bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
+        bttn.layer.borderColor = UIColor.focusColorRed.cgColor
         bttn.layer.borderWidth = 2
 
         bttn.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)

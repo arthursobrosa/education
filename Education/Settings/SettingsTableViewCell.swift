@@ -23,7 +23,7 @@ class SettingsTableViewCell: UITableViewCell {
     private let cardImageView: UIImageView = {
         let imageView = UIImageView()
         
-        imageView.tintColor = .label.withAlphaComponent(0.8)
+        imageView.tintColor = .systemText80
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -32,9 +32,8 @@ class SettingsTableViewCell: UITableViewCell {
     
     private let cardTextLabel: UILabel = {
         let label = UILabel()
-        label.tintColor = .label.withAlphaComponent(0.8)
+        label.tintColor = .systemText80
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -94,13 +93,7 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     private func updateCardViewColor(_ traitCollection: UITraitCollection) {
-        if traitCollection.userInterfaceStyle == .dark {
-            cardView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
-            cardView.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
-        } else {
-            cardView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
-            cardView.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
-        }
+        cardView.layer.borderColor = UIColor(named: "button-normal")?.cgColor
     }
 }
 

@@ -19,39 +19,25 @@ class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
     lazy var textField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
+        textField.textColor = UIColor(named: "system-text")
         
         let placeholderText = String(localized: "subjectName")
-        let placeholderAttributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15),
-        .foregroundColor: UIColor.gray
-        ]
-
-        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+        let placeholderFont = UIFont(name: Fonts.darkModeOnItalic, size: 16)
+        let placeholderColor = UIColor(named: "system-text-40")
         
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        let toolbar = self.createToolbar(withTag: 0)
-        textField.inputAccessoryView = toolbar
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: placeholderFont ?? UIFont.systemFont(ofSize: 16),
+            .foregroundColor: placeholderColor as Any
+        ]
+        
+        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+        
+        textField.delegate = self
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
     }()
-    
-    // MARK: - Methods
-    @objc private func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
-        switch sender.tag {
-        case 0:
-            self.textField.resignFirstResponder()
-        default:
-            break
-        }
-    }
-    
-    @objc private func textFieldDidChange() {
-        guard let text = self.textField.text else { return }
-        
-        self.delegate?.textFieldDidChange(newText: text)
-    }
 }
 
 extension InputTextTableViewCell: ViewCodeProtocol {
@@ -67,22 +53,8 @@ extension InputTextTableViewCell: ViewCodeProtocol {
         ])
     }
     
-    private func createToolbar(withTag tag: Int) -> UIToolbar {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
-        doneButton.tag = tag
-        
-        toolbar.setItems([flexSpace, doneButton], animated: false)
-        
-        return toolbar
-    }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let characterLimit = 15
+        let characterLimit = 18
         let currentText = textField.text ?? ""
         let newLength = currentText.count + string.count - range.length
         return newLength <= characterLimit
@@ -90,7 +62,22 @@ extension InputTextTableViewCell: ViewCodeProtocol {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text != ""{
-            
         }
+    }
+    
+    func spaceRemover(string: String) -> String {
+        let trimmedString = string.trimmingCharacters(in: .whitespaces)
+        return trimmedString
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let text = textField.text {
+            delegate?.textFieldDidChange(newText: text)
+            if spaceRemover(string: text) != ""{
+                textField.resignFirstResponder()
+            }
+        }
+
+        return true
     }
 }

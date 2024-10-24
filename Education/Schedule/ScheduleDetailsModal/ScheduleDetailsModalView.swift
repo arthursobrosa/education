@@ -23,7 +23,7 @@ class ScheduleDetailsModalView: UIView {
         let img = UIImage(systemName: "chevron.down")
         btn.setImage(img, for: .normal)
         btn.imageView?.contentMode = .scaleAspectFit
-        btn.imageView?.tintColor = .label
+        btn.imageView?.tintColor = UIColor(named: "system-text")
         btn.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
         
         btn.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
@@ -39,7 +39,7 @@ class ScheduleDetailsModalView: UIView {
         let img = UIImage(systemName: "square.and.pencil")
         btn.setImage(img, for: .normal)
         btn.imageView?.contentMode = .scaleAspectFit
-        btn.imageView?.tintColor = .label
+        btn.imageView?.tintColor = UIColor(named: "system-text")
         btn.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
         
         btn.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
@@ -86,9 +86,11 @@ class ScheduleDetailsModalView: UIView {
         attributedText.append(NSAttributedString(string: "   "))
         attributedText.append(symbolAttributedString)
         
-        let bttn = ButtonComponent(attrString: attributedText, cornerRadius: 28)
+        let bttn = ButtonComponent(attrString: attributedText,textColor: UIColor(named: "system-modal-bg") ,cornerRadius: 28)
         
-        bttn.tintColor = .label
+        bttn.tintColor = UIColor(named: "system-text")
+        
+        bttn.backgroundColor = UIColor(named: "button-selected")
         
         bttn.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
         
@@ -108,7 +110,7 @@ class ScheduleDetailsModalView: UIView {
         self.backgroundColor = .systemBackground
         
         self.titleLabel.text = subjectName
-        self.titleLabel.textColor = color?.darker(by: 0.8)
+        self.titleLabel.textColor = UIColor(named: "system-text")
         
         self.setDayLabel()
         self.setupUI()
@@ -123,14 +125,13 @@ class ScheduleDetailsModalView: UIView {
     private func setDayLabel() {
         let attributedString = NSMutableAttributedString()
         
-        let darkerColor: UIColor = self.color?.darker(by: 0.8) ?? .label
         
         let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(darkerColor)
+        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(UIColor(named: "system-text-50")!)
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 20, height: 20)
         let imageString = NSAttributedString(attachment: imageAttachment)
         
-        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15), .foregroundColor : darkerColor, .baselineOffset : 2])
+        let dayString = NSAttributedString(string: self.dayOfTheWeek, attributes: [.font : UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15), .foregroundColor : UIColor(named: "system-text-50") as Any, .baselineOffset : 2])
         
         attributedString.append(imageString)
         attributedString.append(NSAttributedString(string: "  "))

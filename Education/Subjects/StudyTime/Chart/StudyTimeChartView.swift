@@ -8,6 +8,7 @@ import Charts
 
 struct StudyTimeChartView: View {
     @StateObject var viewModel: StudyTimeViewModel = StudyTimeViewModel()
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ZStack {
@@ -26,8 +27,8 @@ struct StudyTimeChartView: View {
                         angularInset: 1.5
                     )
                     .cornerRadius(12)
-                    .foregroundStyle(Color(uiColor: UIColor.label))
-                    .opacity(0.06)
+                    .foregroundStyle(colorScheme == .dark ? .white : .black)
+                    .opacity(colorScheme == .dark ? 0.15 : 0.06)
                 }
                 .chartLegend(.hidden)
             } else {

@@ -41,7 +41,6 @@ class TestDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         self.setNavigationItems()
-        
     }
     
     
@@ -59,12 +58,13 @@ class TestDetailsViewController: UIViewController {
         self.navigationItem.title = self.viewModel.getDateFullString(from: self.viewModel.test)
         
         self.navigationController?.navigationBar.titleTextAttributes = [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
+        self.navigationController?.navigationBar.tintColor = .systemText
         
         let editButton = UIButton(configuration: .plain())
         editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
         editButton.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
         editButton.imageView?.contentMode = .scaleAspectFit
-        editButton.tintColor = .label
+        editButton.tintColor = .systemText
         
         editButton.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
         

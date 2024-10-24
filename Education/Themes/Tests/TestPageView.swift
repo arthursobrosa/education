@@ -32,8 +32,8 @@ class TestPageView: UIView {
         
         textV.translatesAutoresizingMaskIntoConstraints = false
         
-        textV.layer.borderWidth = 0.5
-        textV.layer.borderColor = UIColor.black.withAlphaComponent(0.4).cgColor
+        textV.layer.borderWidth = 0.7
+        textV.layer.borderColor = UIColor.buttonNormal.cgColor
         textV.layer.cornerRadius = 18
         
         textV.textContainerInset = UIEdgeInsets(top: 12, left: 17, bottom: 12, right: 17)
@@ -45,10 +45,12 @@ class TestPageView: UIView {
         return textV
     }()
     
-    private lazy var deleteButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "deleteTest"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 28)
+    lazy var deleteButton: ButtonComponent = {
+        
+        
+        let bttn = ButtonComponent(title: String(localized: "deleteTest"), textColor: .focusColorRed, cornerRadius: 28)
         bttn.backgroundColor = .clear
-        bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
+        bttn.layer.borderColor = UIColor.focusColorRed.cgColor
         bttn.layer.borderWidth = 2
 
         bttn.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
@@ -77,6 +79,12 @@ class TestPageView: UIView {
         self.setupKeyboardObservers()
         
         self.setupUI()
+        
+        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, previousTraitCollection: UITraitCollection) in
+            
+            self.updateViewColor(self.traitCollection)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -110,6 +118,10 @@ class TestPageView: UIView {
         toolBar.items = [flexSpace, doneButton]
         
         return toolBar
+    }
+    
+    private func updateViewColor(_ traitCollection: UITraitCollection) {
+        textView.layer.borderColor = UIColor(named: "button-normal")?.cgColor
     }
     
     @objc private func dismissKeyboard() {

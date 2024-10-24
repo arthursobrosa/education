@@ -21,6 +21,7 @@ class ColorPickerCell: UITableViewCell {
     private let colorLabel: UILabel = {
         let label = UILabel()
         label.text = String(localized: "color")
+        label.textColor = UIColor(named: "button-selected")
         
         label.translatesAutoresizingMaskIntoConstraints = false
         

@@ -168,10 +168,9 @@ class ScheduleCell: UICollectionViewCell {
         guard let config,
               let color = config.color else { return }
         
-        cardView.backgroundColor = color.withAlphaComponent(0.2)
+        cardView.backgroundColor = color.withAlphaComponent(traitCollection.userInterfaceStyle == .dark ? 0.3 : 0.2)
         
-        let subjectColor = color.darker(by: 0.6)
-//            let subjectColor = traitCollection.userInterfaceStyle == .light ? color.darker(by: 0.6) : color.darker(by: 1.8)
+        let subjectColor = traitCollection.userInterfaceStyle == .light ? color.darker(by: 0.6) : color.darker(by: 1)
         subjectNameLabel.textColor = subjectColor
         playButton.playImageView.tintColor = subjectColor
         playButton.circleView.backgroundColor = color.withAlphaComponent(0.6)
@@ -185,7 +184,6 @@ class ScheduleCell: UICollectionViewCell {
         let timeLeftAttributedString = NSMutableAttributedString(attributedString: timeLeftLabel.attributedText!)
         timeLeftAttributedString.addAttributes([.foregroundColor: stringColor], range: NSRange(location: 0, length: timeLeftAttributedString.length))
         timeLeftLabel.attributedText = timeLeftAttributedString
-//            timeLeftLabel.textColor = traitCollection.userInterfaceStyle == .light ? color : color.darker(by: 0.8)
     }
     
     @objc private func playButtonTapped() {

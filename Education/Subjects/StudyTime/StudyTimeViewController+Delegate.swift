@@ -27,6 +27,21 @@ extension StudyTimeViewController: StudyTimeDelegate {
                 segmentedControl.selectedSegmentIndex = index
             }
         }
+        
+        let fontRegular = UIFont(name: Fonts.darkModeOnRegular, size: 13)
+        let fontBold = UIFont(name: Fonts.darkModeOnSemiBold, size: 13)
+        
+        let normalTextAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.systemText,
+                .font: fontRegular ?? UIFont.systemFont(ofSize: 13)
+        ]
+        segmentedControl.setTitleTextAttributes(normalTextAttributes, for: .normal)
+        
+        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemText,
+            .font: fontBold ?? UIFont.systemFont(ofSize: 13)
+        ]
+        segmentedControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
     }
 }
 

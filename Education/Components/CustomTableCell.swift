@@ -28,29 +28,32 @@ class CustomTableCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
+        
         super.layoutSubviews()
+        self.removeBorderLayers()
         
         guard let row,
-              self.numberOfRowsInSection != 0,
-              !self.bordersWereSet else { return }
+              self.numberOfRowsInSection != 0 else { return }
         
-        let radius = self.bounds.width * (15/353)
-        let borderWidth = self.bounds.width * (1.5/353)
-        let borderColor = UIColor.systemGray4
-        
-        if self.numberOfRowsInSection == 1 {
-            self.roundCorners(corners: .allCorners, radius: radius * 0.95, borderWidth: borderWidth, borderColor: borderColor)
-        } else {
-            if row == 0 {
-                self.createCurve(on: .top, radius: radius, borderWidth: borderWidth, borderColor: borderColor, rect: self.bounds)
-            } else if row == self.numberOfRowsInSection - 1 {
-                self.createCurve(on: .bottom, radius: radius, borderWidth: borderWidth, borderColor: borderColor, rect: self.bounds)
+        if !bordersWereSet {
+            let radius = self.bounds.width * (15/353)
+            let borderWidth = self.bounds.width * (1.5/353)
+            let borderColor = UIColor.buttonNormal
+            
+            if self.numberOfRowsInSection == 1 {
+                self.roundCorners(corners: .allCorners, radius: radius * 0.95, borderWidth: borderWidth, borderColor: borderColor)
             } else {
-                self.createCurve(on: .laterals, borderWidth: borderWidth, borderColor: borderColor, rect: self.bounds)
+                if row == 0 {
+                    self.createCurve(on: .top, radius: radius, borderWidth: borderWidth, borderColor: borderColor, rect: self.bounds)
+                } else if row == self.numberOfRowsInSection - 1 {
+                    self.createCurve(on: .bottom, radius: radius, borderWidth: borderWidth, borderColor: borderColor, rect: self.bounds)
+                } else {
+                    self.createCurve(on: .laterals, borderWidth: borderWidth, borderColor: borderColor, rect: self.bounds)
+                }
             }
+            
+            self.bordersWereSet = true
         }
-        
-        self.bordersWereSet = true
     }
     
     func setAccessoryView(_ accessoryView: UIView?) {
@@ -73,5 +76,30 @@ class CustomTableCell: UITableViewCell {
         
         self.row = nil
         self.numberOfRowsInSection = 0
+        self.bordersWereSet = false
+        self.removeBorderLayers()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            bordersWereSet = false
+            updateBorderColor(traitCollection)
+        }
+    }
+    
+    private func updateBorderColor(_ traitCollection: UITraitCollection) {
+        self.setNeedsLayout()
+    }
+    
+    private func removeBorderLayers() {
+        guard let sublayers = self.layer.sublayers else { return }
+        
+        for layer in sublayers {
+            if layer.name == "borderLayer" || layer.name == "borderLayer2"{
+                layer.removeFromSuperlayer()
+            }
+        }
     }
 }

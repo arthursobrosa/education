@@ -15,7 +15,11 @@ class SplashViewController: UIViewController {
     // MARK: - Properties
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "books")
+        if(UITraitCollection.current.userInterfaceStyle == .light){
+            imageView.image = UIImage(named: "books")
+        } else {
+            imageView.image = UIImage(named: "books-dark")
+        }
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -23,7 +27,12 @@ class SplashViewController: UIViewController {
     
     private let plaImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "pla")
+        if(UITraitCollection.current.userInterfaceStyle == .light){
+            imageView.image = UIImage(named: "pla")
+        } else {
+            imageView.image = UIImage(named: "pla-dark")
+        }
+        
         imageView.contentMode = .scaleAspectFit
         imageView.alpha = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +41,11 @@ class SplashViewController: UIViewController {
     
     private let nnoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "nno")
+        if(UITraitCollection.current.userInterfaceStyle == .light){
+            imageView.image = UIImage(named: "nno")
+        } else {
+            imageView.image = UIImage(named: "nno-dark")
+        }
         imageView.contentMode = .scaleAspectFit
         imageView.alpha = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -151,7 +164,7 @@ class SplashViewController: UIViewController {
     private func applyRotation(to view: UIView, duration: CFTimeInterval) {
         let rotationAndScaleTransform = CATransform3DConcat(
             CATransform3DMakeRotation(CGFloat.pi / 2, 0, 0, 1),
-            CATransform3DMakeScale(0.5, 0.5, 1)
+            CATransform3DMakeScale(0.45, 0.45, 1)
         )
         
         let animation = CABasicAnimation(keyPath: "transform")
@@ -163,7 +176,7 @@ class SplashViewController: UIViewController {
     }
     
     private func applyTranslation(to view: UIView, duration: CFTimeInterval) {
-        let xOffset = self.view.frame.width * 0.15
+        let xOffset = self.view.frame.width * 0.16
         
         let translationTransform = CATransform3DMakeTranslation(xOffset, 0, 0)
         
@@ -190,15 +203,15 @@ extension SplashViewController: ViewCodeProtocol {
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            plaImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.32),
-            plaImageView.heightAnchor.constraint(equalTo: plaImageView.widthAnchor, multiplier: 155 / 196),
-            plaImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -(view.frame.width * 0.2)),
-            plaImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            plaImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.288),
+            plaImageView.heightAnchor.constraint(equalTo: plaImageView.widthAnchor, multiplier: 155/196),
+            plaImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -(self.view.frame.width * 0.16)),
+            plaImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
             
-            nnoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 0.5),
-            nnoImageView.widthAnchor.constraint(equalTo: nnoImageView.heightAnchor, multiplier: 218 / 91),
-            nnoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: view.frame.width * 0.15),
-            nnoImageView.centerYAnchor.constraint(equalTo: plaImageView.centerYAnchor),
+            nnoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 0.45),
+            nnoImageView.widthAnchor.constraint(equalTo: nnoImageView.heightAnchor, multiplier: 218/91),
+            nnoImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width * 0.16),
+            nnoImageView.centerYAnchor.constraint(equalTo: plaImageView.centerYAnchor)
         ])
     }
 }
