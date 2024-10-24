@@ -17,7 +17,7 @@ extension TestPageViewController: TestDelegate {
     func didTapDeleteButton() {
         self.viewModel.removeTest()
         
-        self.coordinator?.dismiss(animated: true)
+        self.coordinator?.dismissAll()
     }
     
     func didTapSaveButton() {
