@@ -8,6 +8,7 @@
 import UIKit
 
 class DailyScheduleView: UIView {
+    // MARK: - UI Properties
     let daysStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -44,10 +45,11 @@ class DailyScheduleView: UIView {
         return collection
     }()
     
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.setupUI()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
@@ -55,21 +57,22 @@ class DailyScheduleView: UIView {
     }
 }
 
+// MARK: - UI Setup
 extension DailyScheduleView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(daysStack)
-        self.addSubview(contentView)
+        addSubview(daysStack)
+        addSubview(contentView)
         
         NSLayoutConstraint.activate([
-            daysStack.topAnchor.constraint(equalTo: self.topAnchor),
-            daysStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            daysStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            daysStack.heightAnchor.constraint(equalTo: daysStack.widthAnchor, multiplier: (58/359)),
+            daysStack.topAnchor.constraint(equalTo: topAnchor),
+            daysStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            daysStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            daysStack.heightAnchor.constraint(equalTo: daysStack.widthAnchor, multiplier: 58 / 359),
             
-            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12),
-            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             contentView.topAnchor.constraint(equalTo: daysStack.bottomAnchor, constant: 18),
-            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }

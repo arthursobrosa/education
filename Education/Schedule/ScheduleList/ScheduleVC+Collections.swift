@@ -11,15 +11,15 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let isDaily = collectionView.tag == 0
         
-        return isDaily ? self.viewModel.schedules.count : 7
+        return isDaily ? viewModel.schedules.count : 7
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return self.getCellFor(collectionView, at: indexPath)
+        getCellFor(collectionView, at: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        self.getSizeForItemIn(collectionView)
+        getSizeForItemIn(collectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -39,14 +39,18 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
         
         return isDaily ? CGSize(width: collectionView.frame.width, height: 20) : CGSize()
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let schedule = self.viewModel.schedules[indexPath.row]
+        let isDaily = collectionView.tag == 0
         
-        self.coordinator?.showScheduleDetailsModal(schedule: schedule)
+        guard isDaily else { return }
+        
+        let schedule = viewModel.schedules[indexPath.row]
+        
+        coordinator?.showScheduleDetailsModal(schedule: schedule)
     }
     
-    // MARK: - Auxiliar Methods
+    // MARK: - Auxiliar Methods    
     private func getCellFor(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         let isDaily = collectionView.tag == 0
         
@@ -54,8 +58,8 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
         
         if isDaily {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScheduleCell.identifier, for: indexPath) as? ScheduleCell else { fatalError("Could not dequeue cell") }
-
-            return self.getConfiguredScheduleCell(from: cell, at: indexPath)
+            
+            return getConfiguredScheduleCell(from: cell, at: indexPath)
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayColumnCell.identifier, for: indexPath) as? DayColumnCell else {
                 fatalError("Could not dequeue cell")
@@ -83,8 +87,8 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
     private func getSizeForItemIn(_ collectionView: UICollectionView) -> CGSize {
         let isDaily = collectionView.tag == 0
         
-        let width = isDaily ? collectionView.frame.width : collectionView.frame.width * (150/390)
-        let height = isDaily ? collectionView.frame.width * (68/366) : collectionView.frame.height
+        let width = isDaily ? collectionView.frame.width : collectionView.frame.width * 150 / 390
+        let height = isDaily ? collectionView.frame.width * 68 / 366 : collectionView.frame.height
         return CGSize(width: width, height: height)
     }
     

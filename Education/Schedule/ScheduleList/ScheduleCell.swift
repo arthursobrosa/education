@@ -148,6 +148,21 @@ class ScheduleCell: UICollectionViewCell {
         return bttn
     }()
     
+    // MARK: - Lifecycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        config = nil
+        
+        cardView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+    }
+    
     // MARK: - Methods
     private func configure() {
         guard let config,
@@ -177,20 +192,6 @@ class ScheduleCell: UICollectionViewCell {
         guard let config else { return }
         
         delegate?.playButtonTapped(at: config.indexPath, withColor: config.color)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        config = nil
-        
-        cardView.subviews.forEach { subview in
-            subview.removeFromSuperview()
-        }
-        
-        contentView.subviews.forEach { subview in
-            subview.removeFromSuperview()
-        }
     }
 }
 
