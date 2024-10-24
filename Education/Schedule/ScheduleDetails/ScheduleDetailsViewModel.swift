@@ -12,7 +12,7 @@ class ScheduleDetailsViewModel {
     private let subjectManager: SubjectManager
     private let scheduleManager: ScheduleManager
     
-    private let notificationService: NotificationProtocol?
+    private let notificationService: NotificationServiceProtocol?
     
     // MARK: - Properties
     var subjectsNames: [String]
@@ -41,7 +41,7 @@ class ScheduleDetailsViewModel {
     var schedule: Schedule?
     
     // MARK: - Initializer
-    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), notificationService: NotificationProtocol?, schedule: Schedule? = nil, selectedDay: Int?) {
+    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), notificationService: NotificationServiceProtocol?, schedule: Schedule? = nil, selectedDay: Int?) {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
         self.notificationService = notificationService
