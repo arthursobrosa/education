@@ -97,13 +97,11 @@ class NoThemesView: UIView {
         self.button?.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
         self.button?.layer.borderWidth = 1
         
-        if(noThemesCase == .theme){
+        if noThemesCase == .theme {
             self.button?.addTarget(self.themeDelegate, action: noThemesCase.action, for: .touchUpInside)
         } else {
             self.button?.addTarget(self.testDelegate, action: noThemesCase.action, for: .touchUpInside)
         }
-        
-       //self.button?.addTarget(noThemesCase == .theme ? self.themeDelegate : self.testDelegate, action: noThemesCase.action, for: .touchUpInside)
         
         self.button?.translatesAutoresizingMaskIntoConstraints = false
     }

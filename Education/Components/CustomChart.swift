@@ -8,6 +8,8 @@
 import UIKit
 
 class CustomChart: UIView {
+    weak var delegate: ThemePageDelegate?
+    
     private var limit: Int
     
     private var rawData = [any Comparable]()
@@ -28,6 +30,18 @@ class CustomChart: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
+    }()
+    
+    private var dateLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "17/05/2024"
+        label.font = .preferredFont(forTextStyle: .caption1)
+        label.textColor = .label
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
     }()
     
     private lazy var percentagesCollectionView: UICollectionView = {
@@ -157,15 +171,16 @@ private extension CustomChart {
         self.addSubview(dividerView)
         
         NSLayoutConstraint.activate([
+            
             percentageIndexesStack.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 24/344),
             percentageIndexesStack.heightAnchor.constraint(equalTo: percentageIndexesStack.widthAnchor, multiplier: 148/24),
-            percentageIndexesStack.topAnchor.constraint(equalTo: self.topAnchor),
+            percentageIndexesStack.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             percentageIndexesStack.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             
             percentagesContainerView.heightAnchor.constraint(equalTo: percentagesContainerView.widthAnchor, multiplier: 132/288),
             percentagesContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 35),
             percentagesContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -21),
-            percentagesContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 6),
+            percentagesContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6),
             
             percentagesCollectionView.widthAnchor.constraint(equalTo: percentagesContainerView.widthAnchor),
             percentagesCollectionView.heightAnchor.constraint(equalTo: percentagesContainerView.heightAnchor),
@@ -178,11 +193,31 @@ private extension CustomChart {
             dividerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5)
         ])
     }
+    
+    private func layoutDateLabel(at xPosition: CGFloat) {
+        dateLabel.removeFromSuperview()
+        self.addSubview(dateLabel)
+        
+        NSLayoutConstraint.activate([
+            dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            dateLabel.centerXAnchor.constraint(equalTo: self.leadingAnchor, constant: xPosition + 36),
+        ])
+        
+    }
 }
 
 extension CustomChart: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? PercentageCell else {
+            fatalError("Could not dequeue cell")
+        }
+        cell.isSelected = true
+        layoutDateLabel(at: cell.center.x)
+        dateLabel.text = delegate?.getSelectedTestDateString(for: indexPath.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -293,6 +328,19 @@ class PercentageCell: UICollectionViewCell {
             guard let _ = percentage else { return }
             
             self.setupUI()
+        }
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            guard let isEmpty,
+                  !isEmpty else { return }
+            
+            let lighterBy = 0.6
+            
+            let alpha: CGFloat = traitCollection.userInterfaceStyle == .dark ? 0.15 : 0.06
+            self.percentageBackgroundView.backgroundColor = isSelected ? .label.withAlphaComponent(alpha * lighterBy) : .label.withAlphaComponent(alpha)
+            self.percentageView.backgroundColor = isSelected ? .bluePicker.withAlphaComponent(1 * lighterBy) : .bluePicker
         }
     }
     

@@ -20,14 +20,20 @@ class ThemePageView: UIView {
     let segmentedControl: CustomSegmentedControl = {
         let control = CustomSegmentedControl()
         
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 13)!
+        let fontRegular = UIFont(name: Fonts.darkModeOnRegular, size: 13)
+        let fontBold = UIFont(name: Fonts.darkModeOnSemiBold, size: 13)
+        
+        let normalTextAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.systemText,
+                .font: fontRegular ?? UIFont.systemFont(ofSize: 13)
         ]
-        let titleAttributesUnselected: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: Fonts.darkModeOnRegular, size: 13)!
+        control.setTitleTextAttributes(normalTextAttributes, for: .normal)
+        
+        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemText,
+            .font: fontBold ?? UIFont.systemFont(ofSize: 13)
         ]
-        control.setTitleTextAttributes(titleAttributesUnselected, for: .normal)
-        control.setTitleTextAttributes(titleAttributes, for: .selected)
+        control.setTitleTextAttributes(selectedTextAttributes, for: .selected)
         
         control.translatesAutoresizingMaskIntoConstraints = false
         
@@ -109,7 +115,7 @@ extension ThemePageView: ViewCodeProtocol {
             customChart.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 40),
             customChart.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
             customChart.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
-            customChart.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 200/844),
+            customChart.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 260/844),
             
             stackView.topAnchor.constraint(equalTo: customChart.bottomAnchor, constant: 50),
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
