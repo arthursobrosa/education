@@ -6,14 +6,14 @@
 //
 
 import ActivityKit
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
-struct TutorialLiveActivityEntryView : View {
+struct TutorialLiveActivityEntryView: View {
     let context: ActivityViewContext<TimerAttributes>
 
     var body: some View {
-        VStack{
+        VStack {
             Text(context.attributes.timerName)
                 .font(.headline)
             Text(context.state.endTime, style: .timer)
@@ -22,25 +22,24 @@ struct TutorialLiveActivityEntryView : View {
     }
 }
 
-
 struct TutorialLiveActivity: Widget {
 //    let kind: String = "TutorialLiveActivity"
 
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: TimerAttributes.self) { context in
             TutorialLiveActivityEntryView(context: context)
-        } dynamicIsland: { context in
+        } dynamicIsland: { _ in
             DynamicIsland {
-                DynamicIslandExpandedRegion(.leading){
+                DynamicIslandExpandedRegion(.leading) {
                     Text("Algo")
                 }
-                DynamicIslandExpandedRegion(.trailing){
+                DynamicIslandExpandedRegion(.trailing) {
                     Text("Algo")
                 }
-                DynamicIslandExpandedRegion(.center){
+                DynamicIslandExpandedRegion(.center) {
                     Text("Algo")
                 }
-                DynamicIslandExpandedRegion(.bottom){
+                DynamicIslandExpandedRegion(.bottom) {
                     Text("Algo")
                 }
             } compactLeading: {
@@ -50,8 +49,6 @@ struct TutorialLiveActivity: Widget {
             } minimal: {
                 Image(systemName: "arrow.2.circlepath.circle")
             }
-
         }
-
     }
 }

@@ -5,8 +5,8 @@
 //  Created by Arthur Sobrosa on 28/06/24.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 /*
  This is the CoreDataManager used by the app. It saves changes to disk.
@@ -19,32 +19,32 @@ import CoreData
 
 class CoreDataStack {
     static let shared = CoreDataStack()
-    
+
     let persistentContainer: NSPersistentCloudKitContainer
     let backgroundContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
-    
+
     private init() {
         persistentContainer = NSPersistentCloudKitContainer(name: "DataBase")
         let description = persistentContainer.persistentStoreDescriptions.first
         description?.type = NSSQLiteStoreType
-        
-        persistentContainer.loadPersistentStores { description, error in
+
+        persistentContainer.loadPersistentStores { _, error in
             guard error == nil else {
                 fatalError("was unable to load store \(error!)")
             }
         }
-        
+
         mainContext = persistentContainer.viewContext
-        
+
         backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        backgroundContext.parent = self.mainContext
+        backgroundContext.parent = mainContext
     }
-    
+
     func saveMainContext() {
-        guard self.mainContext.hasChanges else { return }
-        
+        guard mainContext.hasChanges else { return }
+
         mainContext.performAndWait {
             do {
                 try self.mainContext.save()

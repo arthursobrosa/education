@@ -8,18 +8,17 @@
 import Foundation
 
 class TestDetailsViewModel {
-    
     private let testManager: TestManager
-    
+
     let theme: Theme
     var test: Test
 
     init(theme: Theme, test: Test) {
         self.theme = theme
         self.test = test
-        self.testManager = TestManager()
+        testManager = TestManager()
     }
-    
+
     func getDateString(from test: Test) -> String {
         let date = test.unwrappedDate
 
@@ -29,7 +28,7 @@ class TestDetailsViewModel {
 
         return dateFormatter.string(from: date)
     }
-    
+
     func getDateFullString(from test: Test) -> String {
         let date = test.unwrappedDate
 
@@ -44,17 +43,13 @@ class TestDetailsViewModel {
 
         return dateFormatter.string(from: date)
     }
-    
-    func getUpdatedTest(){
-        
-        let testId = self.test.unwrappedID
-        
+
+    func getUpdatedTest() {
+        let testId = test.unwrappedID
+
         let updatedTest = testManager.fetchTest(id: testId)
-        
-        guard let updatedTest else {return}
-        self.test = updatedTest
-        
+
+        guard let updatedTest else { return }
+        test = updatedTest
     }
-    
-    
 }

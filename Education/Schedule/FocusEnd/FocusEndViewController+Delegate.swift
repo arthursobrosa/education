@@ -18,7 +18,7 @@ extension FocusEndViewController: FocusEndDelegate {
         viewModel.activityManager.resetTimer()
         coordinator?.dismiss(animated: true)
     }
-    
+
     func didTapDiscardButton() {
         viewModel.activityManager.resetTimer()
         coordinator?.dismiss(animated: true)

@@ -11,7 +11,7 @@ extension Theme {
     var unwrappedID: String {
         return id ?? String()
     }
-    
+
     var unwrappedName: String {
         return name ?? String()
     }

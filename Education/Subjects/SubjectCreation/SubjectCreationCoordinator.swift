@@ -8,38 +8,37 @@
 import UIKit
 
 class SubjectCreationCoordinator: Coordinator, Dismissing {
-    
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
 
     var navigationController: UINavigationController
     private var newNavigationController = UINavigationController()
     private let viewModel: StudyTimeViewModel
-    
+
     init(navigationController: UINavigationController, viewModel: StudyTimeViewModel) {
         self.navigationController = navigationController
         self.viewModel = viewModel
     }
-    
+
     func start() {
-        let vc = SubjectCreationViewController(viewModel: self.viewModel)
+        let vc = SubjectCreationViewController(viewModel: viewModel)
         vc.coordinator = self
-        
-        self.newNavigationController = UINavigationController(rootViewController: vc)
-        
-        if let studyTimeCoordinator = self.parentCoordinator as? StudyTimeCoordinator {
-            self.newNavigationController.transitioningDelegate = studyTimeCoordinator
+
+        newNavigationController = UINavigationController(rootViewController: vc)
+
+        if let studyTimeCoordinator = parentCoordinator as? StudyTimeCoordinator {
+            newNavigationController.transitioningDelegate = studyTimeCoordinator
         }
-        
-        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
-            self.newNavigationController.transitioningDelegate = scheduleCoordinator
+
+        if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
+            newNavigationController.transitioningDelegate = scheduleCoordinator
         }
-        
-        self.newNavigationController.modalPresentationStyle = .pageSheet
-        self.navigationController.present(self.newNavigationController, animated: true)
+
+        newNavigationController.modalPresentationStyle = .pageSheet
+        navigationController.present(newNavigationController, animated: true)
     }
-    
+
     func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+        navigationController.dismiss(animated: animated)
     }
 }

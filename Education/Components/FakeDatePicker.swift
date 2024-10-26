@@ -10,52 +10,53 @@ import UIKit
 class FakeDatePicker: UIDatePicker {
     override var date: Date {
         didSet {
-            self.dateLabel.text = self.getDateString(from: date)
+            dateLabel.text = getDateString(from: date)
         }
     }
-    
+
     private let dateContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
-        
+
         view.isUserInteractionEnabled = false
-        
+
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return view
     }()
-    
+
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.textColor = .secondaryLabel
-        
+
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return label
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.addTarget(self, action: #selector(datePickerDidChange), for: .valueChanged)
-        
-        self.setupUI()
+
+        addTarget(self, action: #selector(datePickerDidChange), for: .valueChanged)
+
+        setupUI()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func datePickerDidChange() {
-        self.dateLabel.text = self.getDateString(from: self.date)
+        dateLabel.text = getDateString(from: date)
     }
-    
+
     private func getDateString(from date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
-        
-        if self.datePickerMode == .date {
+
+        if datePickerMode == .date {
             dateFormatter.setLocalizedDateFormatFromTemplate("MMddyyyy")
         } else {
             let is24HourFormat = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: Locale.current)?.contains("a") == false
@@ -66,24 +67,24 @@ class FakeDatePicker: UIDatePicker {
                 dateFormatter.dateFormat = "hh:mm a"
             }
         }
-        
+
         return dateFormatter.string(from: date)
     }
 }
 
 private extension FakeDatePicker {
     func setupUI() {
-        self.addSubview(dateContainerView)
-        self.addSubview(dateLabel)
-        
+        addSubview(dateContainerView)
+        addSubview(dateLabel)
+
         NSLayoutConstraint.activate([
-            dateContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            dateContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            dateContainerView.widthAnchor.constraint(equalTo: self.widthAnchor),
-            dateContainerView.heightAnchor.constraint(equalTo: self.heightAnchor),
-            
+            dateContainerView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            dateContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            dateContainerView.widthAnchor.constraint(equalTo: widthAnchor),
+            dateContainerView.heightAnchor.constraint(equalTo: heightAnchor),
+
             dateLabel.trailingAnchor.constraint(equalTo: dateContainerView.trailingAnchor),
-            dateLabel.centerYAnchor.constraint(equalTo: dateContainerView.centerYAnchor)
+            dateLabel.centerYAnchor.constraint(equalTo: dateContainerView.centerYAnchor),
         ])
     }
 }

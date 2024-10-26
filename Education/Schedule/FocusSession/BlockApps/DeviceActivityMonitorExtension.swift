@@ -14,34 +14,34 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         super.intervalDidStart(for: activity)
         // Handle the start of the interval.
     }
-    
+
     override func intervalDidEnd(for activity: DeviceActivityName) {
         super.intervalDidEnd(for: activity)
-        
+
         // Handle the end of the interval.
     }
-    
+
     override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
         super.eventDidReachThreshold(event, activity: activity)
-        
+
         // Handle the event reaching its threshold.
     }
-    
+
     override func intervalWillStartWarning(for activity: DeviceActivityName) {
         super.intervalWillStartWarning(for: activity)
         print("interval is about to start")
         // Handle the warning before the interval starts.
     }
-    
+
     override func intervalWillEndWarning(for activity: DeviceActivityName) {
         super.intervalWillEndWarning(for: activity)
         print("interval is about to end")
         // Handle the warning before the interval ends.
     }
-    
+
     override func eventWillReachThresholdWarning(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
         super.eventWillReachThresholdWarning(event, activity: activity)
-        
+
         // Handle the warning before the event reaches its threshold.
     }
 }

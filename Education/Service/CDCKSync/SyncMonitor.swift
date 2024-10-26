@@ -5,34 +5,35 @@
 //  Created by Arthur Sobrosa on 15/10/24.
 //
 
+import CloudKit
 import Combine
 import CoreData
 import Network
 import SwiftUI
-import CloudKit
 
 public class SyncMonitor: ObservableObject {
     // MARK: - Summary properties
+
     /// Possible values for the summary of the state of iCloud sync
     public enum SyncSummaryStatus {
         case noNetwork, accountNotAvailable
-        
+
         // A string you could use to display the status
         public var title: String {
             switch self {
-                case .noNetwork:
-                    String(localized: "noNetworkTitle")
-                case .accountNotAvailable:
-                    String(localized: "accountNotAvailableTitle")
+            case .noNetwork:
+                String(localized: "noNetworkTitle")
+            case .accountNotAvailable:
+                String(localized: "accountNotAvailableTitle")
             }
         }
-        
+
         public var message: String {
             switch self {
-                case .noNetwork:
-                    String(localized: "noNetworkMessage")
-                case .accountNotAvailable:
-                    String(localized: "accountNotAvailableMessage")
+            case .noNetwork:
+                String(localized: "noNetworkMessage")
+            case .accountNotAvailable:
+                String(localized: "accountNotAvailableMessage")
             }
         }
     }
@@ -42,8 +43,9 @@ public class SyncMonitor: ObservableObject {
     }
 
     public var shouldBeSyncing: Bool {
-        if case .available = iCloudAccountStatus, self.networkAvailable == true, !syncError,
-           case .succeeded = setupState {
+        if case .available = iCloudAccountStatus, networkAvailable == true, !syncError,
+           case .succeeded = setupState
+        {
             return true
         }
         return false
@@ -78,6 +80,7 @@ public class SyncMonitor: ObservableObject {
     }
 
     // MARK: - Specific Status Properties
+
     /// The state of `NSPersistentCloudKitContainer`'s "setup" event
     @Published public private(set) var setupState: SyncState = .notStarted
 
@@ -101,6 +104,7 @@ public class SyncMonitor: ObservableObject {
     public private(set) var iCloudAccountStatusUpdateError: Error?
 
     // MARK: - Diagnosis properties
+
     /// Contains the last Error encountered.
     ///
     /// This can be helpful in diagnosing "notSyncing" issues or other "partial error"s from which CloudKit thinks it recovered, but didn't really.
@@ -119,19 +123,21 @@ public class SyncMonitor: ObservableObject {
     private let monitorQueue = DispatchQueue(label: "NetworkMonitor")
 
     // MARK: - Initializers
+
     /// Creates a new sync monitor and sets up listeners to sync and network changes
     public init(setupState: SyncState = .notStarted, importState: SyncState = .notStarted,
                 exportState: SyncState = .notStarted, networkAvailable: Bool? = nil,
                 iCloudAccountStatus: CKAccountStatus? = nil,
                 lastErrorText: String? = nil,
-                listen: Bool = true) {
+                listen: Bool = true)
+    {
         self.setupState = setupState
         self.importState = importState
         self.exportState = exportState
         self.networkAvailable = networkAvailable
         self.iCloudAccountStatus = iCloudAccountStatus
         if let e = lastErrorText {
-            self.lastError = NSError(domain: e, code: 0, userInfo: nil)
+            lastError = NSError(domain: e, code: 0, userInfo: nil)
         }
 
         guard listen else { return }
@@ -139,7 +145,8 @@ public class SyncMonitor: ObservableObject {
         NotificationCenter.default.publisher(for: NSPersistentCloudKitContainer.eventChangedNotification)
             .sink(receiveValue: { notification in
                 if let cloudEvent = notification.userInfo?[NSPersistentCloudKitContainer.eventNotificationUserInfoKey]
-                    as? NSPersistentCloudKitContainer.Event {
+                    as? NSPersistentCloudKitContainer.Event
+                {
                     let event = SyncEvent(from: cloudEvent) // To make testing possible
                     // Properties need to be set on the main thread for SwiftUI, so we'll do that here
                     // instead of maing setProperties run async code, which is inconvenient for testing.
@@ -147,7 +154,6 @@ public class SyncMonitor: ObservableObject {
                 }
             })
             .store(in: &disposables)
-        
 
         monitor.pathUpdateHandler = { path in
             DispatchQueue.main.async {
@@ -157,10 +163,10 @@ public class SyncMonitor: ObservableObject {
         monitor.start(queue: monitorQueue)
 
         // Monitor changes to the iCloud account (e.g. login/logout)
-        self.updateiCloudAccountStatus()
+        updateiCloudAccountStatus()
         NotificationCenter.default.publisher(for: .CKAccountChanged)
             .debounce(for: 0.5, scheduler: DispatchQueue.main)
-            .sink(receiveValue: { notification in
+            .sink(receiveValue: { _ in
                 self.updateiCloudAccountStatus()
             })
             .store(in: &disposables)
@@ -170,20 +176,21 @@ public class SyncMonitor: ObservableObject {
     ///
     ///     let syncMonitor = SyncMonitor(importSuccessful: false, errorText: "Cloud distrupted by weather net")
     public init(setupSuccessful: Bool = true, importSuccessful: Bool = true, exportSuccessful: Bool = true,
-                networkAvailable: Bool = true, iCloudAccountStatus: CKAccountStatus = .available, errorText: String?) {
+                networkAvailable: Bool = true, iCloudAccountStatus: CKAccountStatus = .available, errorText: String?)
+    {
         var error: Error? = nil
         if let errorText = errorText {
             error = NSError(domain: errorText, code: 0, userInfo: nil)
         }
         let startDate = Date(timeIntervalSinceNow: -15) // a 15 second sync. :o
         let endDate = Date()
-        self.setupState = setupSuccessful
+        setupState = setupSuccessful
             ? SyncState.succeeded(started: startDate, ended: endDate)
             : .failed(started: startDate, ended: endDate, error: error)
-        self.importState = importSuccessful
+        importState = importSuccessful
             ? .succeeded(started: startDate, ended: endDate)
             : .failed(started: startDate, ended: endDate, error: error)
-        self.exportState = exportSuccessful
+        exportState = exportSuccessful
             ? .succeeded(started: startDate, ended: endDate)
             : .failed(started: startDate, ended: endDate, error: error)
         self.networkAvailable = networkAvailable
@@ -196,13 +203,13 @@ public class SyncMonitor: ObservableObject {
     /// fires off a `.CKAccountChanged` notification.
     private func updateiCloudAccountStatus() {
         #if DEBUG
-        let isPreview = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-        if isPreview {
-            return
-        }
+            let isPreview = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+            if isPreview {
+                return
+            }
         #endif
-            
-        CKContainer.default().accountStatus { (accountStatus, error) in
+
+        CKContainer.default().accountStatus { accountStatus, error in
             DispatchQueue.main.async {
                 if let e = error {
                     self.iCloudAccountStatusUpdateError = e
@@ -214,8 +221,9 @@ public class SyncMonitor: ObservableObject {
     }
 
     // MARK: - Processing NSPersistentCloudKitContainer events
+
     /// Set the appropriate State property (importState, exportState, setupState) based on the provided event
-    internal func setProperties(from event: SyncEvent) {
+    func setProperties(from event: SyncEvent) {
         // First, set the SyncState for the event
         var state: SyncState = .notStarted
         // NSPersistentCloudKitContainer sends a notification when an event starts, and another when it
@@ -247,7 +255,7 @@ public class SyncMonitor: ObservableObject {
     }
 
     /// A sync event containing the values from NSPersistentCloudKitContainer.Event that we track
-    internal struct SyncEvent {
+    struct SyncEvent {
         var type: NSPersistentCloudKitContainer.EventType
         var startDate: Date?
         var endDate: Date?
@@ -256,7 +264,8 @@ public class SyncMonitor: ObservableObject {
 
         /// Creates a SyncEvent from explicitly provided values (for testing)
         init(type: NSPersistentCloudKitContainer.EventType, startDate: Date?, endDate: Date?, succeeded: Bool,
-             error: Error?) {
+             error: Error?)
+        {
             self.type = type
             self.startDate = startDate
             self.endDate = endDate
@@ -266,15 +275,16 @@ public class SyncMonitor: ObservableObject {
 
         /// Creates a SyncEvent from an NSPersistentCloudKitContainer Event
         init(from cloudKitEvent: NSPersistentCloudKitContainer.Event) {
-            self.type = cloudKitEvent.type
-            self.startDate = cloudKitEvent.startDate
-            self.endDate = cloudKitEvent.endDate
-            self.succeeded = cloudKitEvent.succeeded
-            self.error = cloudKitEvent.error
+            type = cloudKitEvent.type
+            startDate = cloudKitEvent.startDate
+            endDate = cloudKitEvent.endDate
+            succeeded = cloudKitEvent.succeeded
+            error = cloudKitEvent.error
         }
     }
 
     // MARK: - Defining state
+
     /// The state of a CloudKit import, export, or setup event as reported by an `NSPersistentCloudKitContainer` notification
     public enum SyncState {
         /// No event has been reported
@@ -316,7 +326,7 @@ public class SyncMonitor: ObservableObject {
         /// Note that this property will report all errors, including those caused by normal things like being offline.
         /// See also `SyncMonitor.importError` and `SyncMonitor.exportError` for more intelligent error reporting.
         var error: Error? {
-            if case let .failed(_,_,error) = self, let e = error {
+            if case let .failed(_, _, error) = self, let e = error {
                 return e
             }
             return nil

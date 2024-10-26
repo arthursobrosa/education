@@ -13,44 +13,44 @@ class TestPageCoordinator: Coordinator, Dismissing, DismissingAll {
     var navigationController: UINavigationController
     private var newNavigationController = UINavigationController()
     var isRemovingTest: Bool = false
-    
+
     private let theme: Theme
     private let test: Test?
-    
+
     init(navigationController: UINavigationController, theme: Theme, test: Test?) {
         self.navigationController = navigationController
         self.theme = theme
         self.test = test
     }
-    
+
     func start() {
-        let viewModel = TestPageViewModel(theme: self.theme, test: self.test)
+        let viewModel = TestPageViewModel(theme: theme, test: test)
         let vc = TestPageViewController(viewModel: viewModel)
         vc.coordinator = self
-        
+
         newNavigationController = UINavigationController(rootViewController: vc)
-        
-        if let themePageCoordinator = self.parentCoordinator as? ThemePageCoordinator {
+
+        if let themePageCoordinator = parentCoordinator as? ThemePageCoordinator {
             newNavigationController.transitioningDelegate = themePageCoordinator
         }
-        
-        if let testDetailsCoordinator = self.parentCoordinator as? TestDetailsCoordinator {
+
+        if let testDetailsCoordinator = parentCoordinator as? TestDetailsCoordinator {
             newNavigationController.transitioningDelegate = testDetailsCoordinator
         }
-        
+
         newNavigationController.modalPresentationStyle = .pageSheet
-        
-        self.navigationController.present(newNavigationController, animated: true)
+
+        navigationController.present(newNavigationController, animated: true)
     }
-    
+
     func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+        navigationController.dismiss(animated: animated)
     }
-    
+
     func dismissAll() {
         isRemovingTest = true
         dismiss(animated: true)
-        
+
         if let testDetailsCoordinator = parentCoordinator as? TestDetailsCoordinator {
             testDetailsCoordinator.dismiss(animated: false)
         }

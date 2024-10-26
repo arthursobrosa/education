@@ -5,8 +5,8 @@
 //  Created by Arthur Sobrosa on 18/10/24.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 @main
 struct TutorialLiveActivityBundle: WidgetBundle {

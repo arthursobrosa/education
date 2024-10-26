@@ -1,77 +1,81 @@
 //
-//  StudyTimeCoordinator.swift
+//  StudyTimeViewController.swift
 //  Education
 //
 //  Created by Leandro Silva on 10/07/24.
 //
 
-import UIKit
 import SwiftUI
 import TipKit
+import UIKit
 
 class StudyTimeViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    weak var coordinator: (ShowingSubjectCreation & ShowingOtherSubject)? 
+
+    weak var coordinator: (ShowingSubjectCreation & ShowingOtherSubject)?
     let viewModel: StudyTimeViewModel
-    
+
     var createSubjectTip = CreateSubjectTip()
-    
+
     // MARK: - Properties
+
     private lazy var studyTimeView: StudyTimeView = {
         let studyTimeChartView = StudyTimeChartView(viewModel: self.viewModel)
-        
+
         let view = StudyTimeView(chartView: studyTimeChartView)
-        
+
         view.delegate = self
-        
+
         view.tableView.delegate = self
         view.tableView.dataSource = self
         view.tableView.register(SubjectTimeTableViewCell.self, forCellReuseIdentifier: SubjectTimeTableViewCell.identifier)
         view.tableView.register(StudyTimeChartCell.self, forCellReuseIdentifier: StudyTimeChartCell.identifier)
-        
+
         return view
     }()
-    
-    
+
     // MARK: - Initialization
+
     init(viewModel: StudyTimeViewModel) {
         self.viewModel = viewModel
-        
+
         super.init(nibName: nil, bundle: nil)
     }
-    
-    required init?(coder aDecoder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Lifecycle
+
     override func loadView() {
         super.loadView()
-        
-        self.view = self.studyTimeView
+
+        view = studyTimeView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.viewModel.subjects.bind { [weak self] subjects in
+
+        viewModel.subjects.bind { [weak self] _ in
             guard let self else { return }
-            
+
             self.reloadTable()
         }
-        
-        self.viewModel.focusSessions.bind { [weak self] focusSessions in
+
+        viewModel.focusSessions.bind { [weak self] _ in
             guard let self else { return }
-            
+
             self.reloadTable()
         }
-        
-        self.setNavigationItems()
-        
-        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, previousTraitCollection: UITraitCollection) in
-            
-            if(self.traitCollection.userInterfaceStyle == .light){
+
+        setNavigationItems()
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+            (self: Self, _: UITraitCollection) in
+
+            if self.traitCollection.userInterfaceStyle == .light {
                 self.studyTimeView.viewModeControl.segmentImage = UIImage(color: UIColor.systemBackground)
 //                self.studyTimeView.chartView.$bgColor = UIColor.label
             } else {
@@ -80,158 +84,155 @@ class StudyTimeViewController: UIViewController {
             }
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.handleTip()
-        
-        self.viewModel.fetchSubjects()
-        self.viewModel.fetchFocusSessions()
+
+        handleTip()
+
+        viewModel.fetchSubjects()
+        viewModel.fetchFocusSessions()
     }
-    
+
     // MARK: - Methods
+
     private func setNavigationItems() {
-        self.navigationItem.title = String(localized: "subjectTab")
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font : UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor : UIColor(named: "system-text") as Any]
-        
+        navigationItem.title = String(localized: "subjectTab")
+        navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor: UIColor(named: "system-text") as Any]
+
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
         addButton.imageView?.contentMode = .scaleAspectFit
         addButton.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
         addButton.tintColor = UIColor(named: "system-text")
-        
-        let addItem = UIBarButtonItem(customView: addButton)
-        
-        self.navigationItem.rightBarButtonItems = [addItem]
 
+        let addItem = UIBarButtonItem(customView: addButton)
+
+        navigationItem.rightBarButtonItems = [addItem]
     }
-    
-    private func handleTip(){
+
+    private func handleTip() {
         Task { @MainActor in
-                for await shouldDisplay in createSubjectTip.shouldDisplayUpdates {
-                    if shouldDisplay {
-                        if let rightBarButtonItem = self.navigationItem.rightBarButtonItem {
-                            let controller = TipUIPopoverViewController(createSubjectTip, sourceItem: rightBarButtonItem)
-                            controller.view.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
-                            present(controller, animated: true)
-                        }
-                    } else if presentedViewController is TipUIPopoverViewController {
-                        dismiss(animated: true)
+            for await shouldDisplay in createSubjectTip.shouldDisplayUpdates {
+                if shouldDisplay {
+                    if let rightBarButtonItem = self.navigationItem.rightBarButtonItem {
+                        let controller = TipUIPopoverViewController(createSubjectTip, sourceItem: rightBarButtonItem)
+                        controller.view.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+                        present(controller, animated: true)
                     }
+                } else if presentedViewController is TipUIPopoverViewController {
+                    dismiss(animated: true)
                 }
             }
+        }
     }
-    
+
     func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            
+
             self.studyTimeView.tableView.reloadData()
         }
     }
-    
+
     @objc func listButtonTapped() {
-        self.coordinator?.showSubjectCreation(viewModel: viewModel)
+        coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
+
 extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in _: UITableView) -> Int {
         return 2
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
         } else {
-            return self.viewModel.subjects.value.count + 3
+            return viewModel.subjects.value.count + 3
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: StudyTimeChartCell.identifier, for: indexPath) as! StudyTimeChartCell
-            
+
             let chartView = StudyTimeChartView(viewModel: self.viewModel)
-            
+
             cell.configure(with: chartView)
             cell.selectionStyle = .none
-            
+
             return cell
-            
+
         } else {
-            
-            if indexPath.row >= self.viewModel.subjects.value.count + 1 {
+            if indexPath.row >= viewModel.subjects.value.count + 1 {
                 let cell = UITableViewCell()
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
                 return cell
             }
-            
+
             let row = indexPath.row
-            let isFixedElement = row == self.viewModel.subjects.value.count
-            let subject: Subject? = isFixedElement ? nil : self.viewModel.subjects.value[indexPath.row]
-            let totalTime = self.viewModel.getTotalTime(forSubject: subject)
-            
+            let isFixedElement = row == viewModel.subjects.value.count
+            let subject: Subject? = isFixedElement ? nil : viewModel.subjects.value[indexPath.row]
+            let totalTime = viewModel.getTotalTime(forSubject: subject)
+
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SubjectTimeTableViewCell.identifier, for: indexPath) as? SubjectTimeTableViewCell else {
                 fatalError("Could not dequeue cell")
             }
-            
+
             if subject == nil && totalTime == "0s" {
                 cell.isHidden = true
                 return cell
             }
-            
+
             let backgroundView = UIView()
             backgroundView.backgroundColor = UIColor.clear
             cell.selectedBackgroundView = backgroundView
-            
+
             cell.subject = subject
             cell.backgroundColor = .clear
             cell.subjectName.textColor = UIColor(named: subject?.unwrappedColor ?? "button-normal")
             cell.totalHours.textColor = UIColor(named: subject?.unwrappedColor ?? "button-normal")
             cell.totalTime = totalTime
-            
+
             return cell
         }
-        
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+    func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return 269
         } else {
             return 60
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section != 0 else { return }
-        
+
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
-              let subject = cell.subject else {
-            
-            self.coordinator?.showOtherSubject(viewModel: self.viewModel)
+              let subject = cell.subject
+        else {
+            coordinator?.showOtherSubject(viewModel: viewModel)
             return
         }
-        
-        self.viewModel.currentEditingSubject = subject
-        self.viewModel.selectedSubjectColor.value = subject.unwrappedColor
-        self.coordinator?.showSubjectCreation(viewModel: self.viewModel)
+
+        viewModel.currentEditingSubject = subject
+        viewModel.selectedSubjectColor.value = subject.unwrappedColor
+        coordinator?.showSubjectCreation(viewModel: viewModel)
     }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
+    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
         return 0
     }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = UIColor.clear
         return headerView

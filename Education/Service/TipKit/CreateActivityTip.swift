@@ -8,8 +8,8 @@
 import Foundation
 
 import Foundation
-import TipKit
 import SwiftUI
+import TipKit
 import UIKit
 
 struct CreateActivityTip: Tip {
@@ -17,9 +17,8 @@ struct CreateActivityTip: Tip {
         Text(String(localized: "newActivityTip"))
             .bold()
     }
-    
+
     var message: Text? {
         Text(String(localized: "explainActivityTip"))
     }
-    
 }

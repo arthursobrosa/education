@@ -9,9 +9,11 @@ import UIKit
 
 class NotesCell: UITableViewCell {
     // MARK: - Identifier
+
     static let identifier = "notesCell"
-    
+
     // MARK: - Properties
+
     private let strokeView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -21,7 +23,7 @@ class NotesCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var textView: UIView = {
         let textView = UITextView()
         textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
@@ -32,7 +34,7 @@ class NotesCell: UITableViewCell {
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
-    
+
     private let placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = String(localized: "notesPlaceholder")
@@ -41,57 +43,61 @@ class NotesCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - Initializer
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         setupUI()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Methods
+
     private func createToolbar() -> UIToolbar {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-        
+
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
+
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
-        
+
         toolbar.setItems([flexSpace, doneButton], animated: false)
-        
+
         return toolbar
     }
-    
-    @objc private func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
+
+    @objc private func doneKeyboardButtonTapped(_: UIBarButtonItem) {
         textView.resignFirstResponder()
     }
 }
 
 // MARK: - UI Setup
+
 extension NotesCell: ViewCodeProtocol {
     func setupUI() {
         contentView.addSubview(strokeView)
         contentView.addSubview(textView)
         contentView.addSubview(placeholderLabel)
-        
+
         let padding = 10.0
-        
+
         NSLayoutConstraint.activate([
             strokeView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             strokeView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -padding),
             strokeView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             strokeView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
+
             textView.topAnchor.constraint(equalTo: strokeView.topAnchor, constant: padding),
             textView.bottomAnchor.constraint(equalTo: strokeView.bottomAnchor, constant: -padding),
             textView.leadingAnchor.constraint(equalTo: strokeView.leadingAnchor, constant: padding),
             textView.trailingAnchor.constraint(equalTo: strokeView.trailingAnchor, constant: -padding),
-            
+
             placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: padding / 2),
             placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
             placeholderLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
@@ -100,14 +106,16 @@ extension NotesCell: ViewCodeProtocol {
 }
 
 // MARK: - Text View Delegate
+
 extension NotesCell: UITextViewDelegate {
-    func textViewDidBeginEditing(_ textView: UITextView) {
+    func textViewDidBeginEditing(_: UITextView) {
         placeholderLabel.isHidden = true
     }
-    
+
     func textViewDidEndEditing(_ textView: UITextView) {
         if let text = textView.text,
-           !text.isEmpty {
+           !text.isEmpty
+        {
             placeholderLabel.isHidden = true
         } else {
             placeholderLabel.isHidden = false

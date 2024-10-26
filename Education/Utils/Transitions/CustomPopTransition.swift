@@ -8,13 +8,14 @@
 import UIKit
 
 class CustomPopTransition: NSObject, UIViewControllerAnimatedTransitioning {
-    func transitionDuration(using transitionContext: (any UIViewControllerContextTransitioning)?) -> TimeInterval {
+    func transitionDuration(using _: (any UIViewControllerContextTransitioning)?) -> TimeInterval {
         return 0.3
     }
-    
+
     func animateTransition(using transitionContext: any UIViewControllerContextTransitioning) {
         guard let fromVC = transitionContext.viewController(forKey: .from),
-              let toVC = transitionContext.viewController(forKey: .to) else {
+              let toVC = transitionContext.viewController(forKey: .to)
+        else {
             return
         }
 
@@ -23,7 +24,7 @@ class CustomPopTransition: NSObject, UIViewControllerAnimatedTransitioning {
 
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             fromVC.view.alpha = 0.0
-        }) { finished in
+        }) { _ in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }

@@ -19,11 +19,11 @@ extension FocusPickerViewController: FocusPickerDelegate {
         viewModel.unblockApps()
         coordinator?.showTimer(focusSessionModel: viewModel.focusSessionModel)
     }
-    
+
     func dismiss() {
         coordinator?.dismiss(animated: false)
     }
-    
+
     func dismissAll() {
         coordinator?.dismissAll()
     }

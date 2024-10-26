@@ -15,30 +15,30 @@ protocol TestDelegate: AnyObject {
 
 extension TestPageViewController: TestDelegate {
     func didTapDeleteButton() {
-        self.viewModel.removeTest()
-        
-        self.coordinator?.dismissAll()
+        viewModel.removeTest()
+
+        coordinator?.dismissAll()
     }
-    
+
     func didTapSaveButton() {
-        let totalQuestions = self.viewModel.totalQuestions
-        let rightQuestions = self.viewModel.rightQuestions
-        
+        let totalQuestions = viewModel.totalQuestions
+        let rightQuestions = viewModel.rightQuestions
+
         guard rightQuestions <= totalQuestions else {
-            self.showWrongQuestionsAlert()
+            showWrongQuestionsAlert()
             return
         }
-        
+
         if totalQuestions == 0 {
-            self.showWrongQuestionsAlert()
+            showWrongQuestionsAlert()
             return
         }
-        
-        self.viewModel.saveTest()
-        self.coordinator?.dismiss(animated: true)
+
+        viewModel.saveTest()
+        coordinator?.dismiss(animated: true)
     }
-    
+
     func didChangeComment(_ text: String) {
-        self.viewModel.comment = text
+        viewModel.comment = text
     }
 }

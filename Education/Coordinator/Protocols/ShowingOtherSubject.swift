@@ -10,4 +10,3 @@ import Foundation
 protocol ShowingOtherSubject: AnyObject {
     func showOtherSubject(viewModel: StudyTimeViewModel)
 }
-

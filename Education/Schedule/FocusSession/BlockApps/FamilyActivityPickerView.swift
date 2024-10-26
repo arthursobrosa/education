@@ -4,9 +4,9 @@
 //
 //  Created by Lucas Cunha on 15/07/24.
 //
+import FamilyControls
 import SwiftUI
 import UIKit
-import FamilyControls
 
 class FamilyActivityPickerDelegate: ObservableObject {
     @Published var selectionToDiscourage = FamilyActivitySelection() {
