@@ -9,6 +9,7 @@ import CoreData
 @testable import Education
 import XCTest
 
+// swiftlint:disable force_unwrapping
 class FocusSessionManagerTest: XCTestCase {
     var subjectManager: SubjectManager!
     var focusSessionManager: FocusSessionManager!
@@ -126,3 +127,4 @@ class FocusSessionManagerTest: XCTestCase {
         XCTAssertEqual(focusSession.totalTime, 30)
     }
 }
+// swiftlint:enable force_unwrapping

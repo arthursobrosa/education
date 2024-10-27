@@ -164,7 +164,7 @@ class CustomChart: UIView {
     }
 }
 
-private extension CustomChart {
+extension CustomChart: ViewCodeProtocol {
     func setupUI() {
         addSubview(percentageIndexesStack)
         addSubview(percentagesContainerView)
@@ -234,8 +234,8 @@ extension CustomChart: UICollectionViewDataSource, UICollectionViewDelegate, UIC
         var isEmpty = true
 
         if row < filteredData.count,
-           let percent = filteredData[row] as? Double
-        {
+           let percent = filteredData[row] as? Double {
+            
             isEmpty = false
             percentage = percent
         }
@@ -332,8 +332,7 @@ class PercentageCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            guard let isEmpty,
-                  !isEmpty else { return }
+            guard !isEmpty else { return }
 
             let lighterBy = 0.6
 
@@ -343,10 +342,8 @@ class PercentageCell: UICollectionViewCell {
         }
     }
 
-    var isEmpty: Bool? {
+    var isEmpty: Bool = false {
         didSet {
-            guard let isEmpty else { return }
-
             let alpha: CGFloat = traitCollection.userInterfaceStyle == .dark ? 0.15 : 0.06
             percentageBackgroundView.backgroundColor = isEmpty ? .clear : .label.withAlphaComponent(alpha)
             percentageView.backgroundColor = isEmpty ? .clear : UIColor(named: "bluePicker")
@@ -384,11 +381,11 @@ class PercentageCell: UICollectionViewCell {
         }
 
         percentage = nil
-        isEmpty = nil
+        isEmpty = false
     }
 }
 
-private extension PercentageCell {
+extension PercentageCell: ViewCodeProtocol {
     func setupUI() {
         guard let percentage else { return }
 

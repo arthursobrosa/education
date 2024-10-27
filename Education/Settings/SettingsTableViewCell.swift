@@ -55,9 +55,7 @@ class SettingsTableViewCell: UITableViewCell {
 
         selectionStyle = .none
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.updateCardViewColor(self.traitCollection)
         }
     }
@@ -67,8 +65,8 @@ class SettingsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(withText text: String, withImage image: UIImage) {
-        cardImageView.image = image.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 20))
+    func configure(withText text: String, withImage image: UIImage?) {
+        cardImageView.image = image?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 20))
         cardTextLabel.text = text
     }
 

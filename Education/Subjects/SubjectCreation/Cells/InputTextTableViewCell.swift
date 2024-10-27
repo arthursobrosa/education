@@ -60,10 +60,6 @@ extension InputTextTableViewCell: ViewCodeProtocol {
         return newLength <= characterLimit
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.text != "" {}
-    }
-
     func spaceRemover(string: String) -> String {
         let trimmedString = string.trimmingCharacters(in: .whitespaces)
         return trimmedString
@@ -72,7 +68,7 @@ extension InputTextTableViewCell: ViewCodeProtocol {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let text = textField.text {
             delegate?.textFieldDidChange(newText: text)
-            if spaceRemover(string: text) != "" {
+            if spaceRemover(string: text).isEmpty {
                 textField.resignFirstResponder()
             }
         }

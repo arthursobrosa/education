@@ -24,10 +24,10 @@ class FocusSessionCoordinator: NSObject, Coordinator, ShowingFocusEnd, Dismissin
 
     func start() {
         let viewModel = FocusSessionViewModel(activityManager: activityManager, blockingManager: blockingManager)
-        let vc = FocusSessionViewController(viewModel: viewModel, color: activityManager.color)
-        vc.coordinator = self
+        let viewController = FocusSessionViewController(viewModel: viewModel, color: activityManager.color)
+        viewController.coordinator = self
 
-        newNavigationController = UINavigationController(rootViewController: vc)
+        newNavigationController = UINavigationController(rootViewController: viewController)
 
         if let delegateCoordinator = getTransitioningDelegate() as? UIViewControllerTransitioningDelegate {
             newNavigationController.transitioningDelegate = delegateCoordinator
@@ -45,21 +45,29 @@ class FocusSessionCoordinator: NSObject, Coordinator, ShowingFocusEnd, Dismissin
         var delegateCoordinator: Coordinator?
 
         if let focusPickerCoordinator = parentCoordinator as? FocusPickerCoordinator {
+            
             delegateCoordinator = focusPickerCoordinator
-
             focusPickerCoordinator.dismissAll()
+            
         } else if let focusSelectionCoordinator = parentCoordinator as? FocusSelectionCoordinator {
+            
             if let focusImediateCoordinator = focusSelectionCoordinator.parentCoordinator as? FocusImediateCoordinator,
-               let scheduleCoordinator = focusImediateCoordinator.parentCoordinator as? ScheduleCoordinator
-            {
+               let scheduleCoordinator = focusImediateCoordinator.parentCoordinator as? ScheduleCoordinator {
+                
                 delegateCoordinator = scheduleCoordinator
+                
             } else if let scheduleCoordinator = focusSelectionCoordinator.parentCoordinator as? ScheduleCoordinator {
+                
                 delegateCoordinator = scheduleCoordinator
+                
             }
 
             focusSelectionCoordinator.dismissAll()
+            
         } else if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
+            
             delegateCoordinator = scheduleCoordinator
+            
         }
 
         return delegateCoordinator
@@ -78,11 +86,9 @@ class FocusSessionCoordinator: NSObject, Coordinator, ShowingFocusEnd, Dismissin
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
         }
     }
 }

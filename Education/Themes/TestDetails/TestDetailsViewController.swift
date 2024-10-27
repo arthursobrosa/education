@@ -1,5 +1,3 @@
-
-
 import UIKit
 
 class TestDetailsViewController: UIViewController {
@@ -32,33 +30,21 @@ class TestDetailsViewController: UIViewController {
     // MARK: - View Lifecycle
 
     override func loadView() {
-        super.loadView()
-
-        updateInterface()
-
         view = testDetailsView
-
-        navigationController?.navigationBar.prefersLargeTitles = false
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setNavigationItems()
-    }
-
-    func updateInterface() {
-        testDetailsView.notesContent.text = viewModel.test.unwrappedComment
-        testDetailsView.questionsLabel.text = "\(viewModel.test.rightQuestions)/\(viewModel.test.totalQuestions)"
-        testDetailsView.titleLabel.text = viewModel.theme.unwrappedName
-        testDetailsView.circularProgressView.progress = CGFloat(viewModel.test.rightQuestions) / CGFloat(viewModel.test.totalQuestions)
-        testDetailsView.dateLabel.text = viewModel.getDateString(from: viewModel.test)
-        testDetailsView.percentageLabel.text = "\(Int(CGFloat(viewModel.test.rightQuestions) / CGFloat(viewModel.test.totalQuestions) * 100))%"
+        updateInterface()
     }
 
     // MARK: - Methods
 
     private func setNavigationItems() {
+        navigationController?.navigationBar.prefersLargeTitles = false
+        
         navigationItem.title = viewModel.getDateFullString(from: viewModel.test)
 
         navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
@@ -76,8 +62,18 @@ class TestDetailsViewController: UIViewController {
 
         navigationItem.rightBarButtonItems = [editItem]
     }
+    
+    func updateInterface() {
+        testDetailsView.notesContent.text = viewModel.test.unwrappedComment
+        testDetailsView.questionsLabel.text = "\(viewModel.test.rightQuestions)/\(viewModel.test.totalQuestions)"
+        testDetailsView.titleLabel.text = viewModel.theme.unwrappedName
+        testDetailsView.circularProgressView.progress = CGFloat(viewModel.test.rightQuestions) / CGFloat(viewModel.test.totalQuestions)
+        testDetailsView.dateLabel.text = viewModel.getDateString(from: viewModel.test)
+        testDetailsView.percentageLabel.text = "\(Int(CGFloat(viewModel.test.rightQuestions) / CGFloat(viewModel.test.totalQuestions) * 100))%"
+    }
 
-    @objc private func didTapEditButton() {
+    @objc 
+    private func didTapEditButton() {
         coordinator?.showTestPage(theme: viewModel.theme, test: viewModel.test)
     }
 }

@@ -68,7 +68,8 @@ class FocusPickerViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
 
-    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+    @objc 
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: view)
 
         guard !focusPickerView.frame.contains(tapLocation) else { return }
@@ -76,7 +77,8 @@ class FocusPickerViewController: UIViewController {
         coordinator?.dismissAll()
     }
 
-    @objc private func didChangeToggle(_ sender: UISwitch) {
+    @objc 
+    private func didChangeToggle(_ sender: UISwitch) {
         switch sender.tag {
         case 0:
             viewModel.focusSessionModel.isAlarmOn.toggle()

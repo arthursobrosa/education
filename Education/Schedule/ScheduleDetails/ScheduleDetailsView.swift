@@ -62,11 +62,13 @@ class ScheduleDetailsView: UIView {
 
     // MARK: - Methods
 
-    @objc private func didTapDeleteButton() {
+    @objc 
+    private func didTapDeleteButton() {
         delegate?.deleteSchedule()
     }
 
-    @objc private func didTapSaveButton() {
+    @objc 
+    private func didTapSaveButton() {
         delegate?.saveSchedule()
     }
 

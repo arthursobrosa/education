@@ -19,10 +19,10 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
         navigationController.navigationBar.prefersLargeTitles = true
 
         let viewModel = StudyTimeViewModel()
-        let vc = StudyTimeViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = StudyTimeViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
 
     func showSubjectCreation(viewModel: StudyTimeViewModel) {
@@ -40,11 +40,9 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
         }
     }
 }

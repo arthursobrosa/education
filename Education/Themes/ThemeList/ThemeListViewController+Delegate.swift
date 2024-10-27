@@ -7,7 +7,8 @@
 
 import Foundation
 
-@objc protocol ThemeListDelegate: AnyObject {
+@objc 
+protocol ThemeListDelegate: AnyObject {
     func addThemeButtonTapped()
     func dismissDeleteAlert()
     func removeTheme()

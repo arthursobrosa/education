@@ -51,15 +51,14 @@ class ThemePageViewModel: ObservableObject {
 
         return testsForChart
     }
-
+    
     func hasComment(test: Test) -> Bool {
-        var hasComment = false
-        if test.comment != nil {
-            if test.unwrappedComment != "" {
-                hasComment = true
-            }
+        if test.comment != nil,
+           test.unwrappedComment.isEmpty {
+            return true
         }
-        return hasComment
+        
+        return false
     }
 
     func getDateString(from test: Test) -> String {

@@ -25,6 +25,7 @@ final class MockTimer: TimerProtocol {
     }
 }
 
+// swiftlint:disable type_body_length
 class TimerTests: XCTestCase {
     var sut: ActivityManager!
     var mockTimer: MockTimer!
@@ -527,13 +528,26 @@ class TimerTests: XCTestCase {
         XCTAssertEqual(sut.timerCase, .pomodoro(workTime: sut.workTime, restTime: extendedTime, numberOfLoops: sut.numberOfLoops))
     }
 }
+// swiftlint:enable type_body_length
 
+// swiftlint:disable type_body_length
 class SessionTest: XCTestCase {
     var sut: ActivityManager!
     var mockFocusSessionModel: FocusSessionModel = {
         let fakeDate = Date(timeIntervalSince1970: 0)
         let timerCase: TimerCase = .pomodoro(workTime: 60, restTime: 30, numberOfLoops: 3)
-        let model = FocusSessionModel(date: fakeDate, totalSeconds: 60, timerSeconds: 60, timerCase: timerCase, subject: nil, isAtWorkTime: true, blocksApps: true, isTimeCountOn: true, isAlarmOn: false, color: UIColor.black)
+        let model = FocusSessionModel(
+            date: fakeDate,
+            totalSeconds: 60,
+            timerSeconds: 60,
+            timerCase: timerCase,
+            subject: nil,
+            isAtWorkTime: true,
+            blocksApps: true,
+            isTimeCountOn: true,
+            isAlarmOn: false,
+            color: UIColor.black
+        )
 
         return model
     }()
@@ -1260,3 +1274,4 @@ class SessionTest: XCTestCase {
         XCTAssertEqual(sut.pausedTime, TimeInterval(10))
     }
 }
+// swiftlint:enable type_body_length

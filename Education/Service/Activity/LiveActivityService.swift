@@ -9,7 +9,7 @@ import ActivityKit
 import Foundation
 
 final class LiveActivityService: LiveActivityManaging {
-    private var activity: Activity<TimerAttributes>? = nil
+    private var activity: Activity<TimerAttributes>?
 
     // Function to start the Live Activity
     func startActivity() {

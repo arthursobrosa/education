@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 protocol ShowingTestDetails: AnyObject {
     func showTestDetails(theme: Theme, test: Test)
 }

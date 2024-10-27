@@ -74,11 +74,13 @@ class SubjectCreationView: UIView {
 
     // MARK: - Methods
 
-    @objc private func didTapDeleteButton() {
+    @objc 
+    private func didTapDeleteButton() {
         delegate?.didTapDeleteButton()
     }
 
-    @objc private func didTapSaveButton() {
+    @objc 
+    private func didTapSaveButton() {
         delegate?.didTapSaveButton()
     }
 

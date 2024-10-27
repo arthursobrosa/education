@@ -45,9 +45,7 @@ class FocusSelectionViewController: UIViewController {
 
         setupUI()
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.focusSelectionView.layer.borderColor = UIColor.label.cgColor
         }
 
@@ -59,7 +57,8 @@ class FocusSelectionViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
 
-    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+    @objc 
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: view)
 
         guard !focusSelectionView.frame.contains(tapLocation) else { return }

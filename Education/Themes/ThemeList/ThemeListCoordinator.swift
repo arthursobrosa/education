@@ -20,10 +20,10 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingThem
         navigationController.navigationBar.prefersLargeTitles = true
 
         let viewModel = ThemeListViewModel()
-        let vc = ThemeListViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = ThemeListViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
 
     func showThemePage(theme: Theme) {
@@ -41,11 +41,9 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingThem
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
         }
     }
 }

@@ -70,7 +70,11 @@ class StudyTimeViewModel: ObservableObject {
 
     private let filterSession = { (session: FocusSession, dateRange: DateRange) -> Bool in
         let startDate = dateRange.getStartDate()
-        return session.date! >= startDate
+        
+        guard let sessionDate = session.date,
+              sessionDate >= startDate else { return false }
+        
+        return true
     }
 
     let subjectColors = ["bluePicker", "blueSkyPicker", "olivePicker", "orangePicker", "pinkPicker", "redPicker", "turquoisePicker", "violetPicker", "yellowPicker"]
@@ -103,10 +107,8 @@ class StudyTimeViewModel: ObservableObject {
         let usedColors = Set(existingSubjects.map { $0.unwrappedColor })
 
         // Verificar qual cor ainda não foi usada
-        for color in subjectColors {
-            if !usedColors.contains(color) {
-                return color
-            }
+        for color in subjectColors where !usedColors.contains(color) {
+            return color
         }
 
         // Se todas já foram usadas, retornar a primeira cor

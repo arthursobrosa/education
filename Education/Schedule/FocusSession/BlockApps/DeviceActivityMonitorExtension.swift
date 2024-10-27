@@ -7,6 +7,7 @@
 
 import DeviceActivity
 
+// swiftlint:disable unneeded_override
 // Optionally override any of the functions below.
 // Make sure that your class name matches the NSExtensionPrincipalClass in your Info.plist.
 class DeviceActivityMonitorExtension: DeviceActivityMonitor {
@@ -45,3 +46,4 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         // Handle the warning before the event reaches its threshold.
     }
 }
+// swiftlint:enable unneeded_override

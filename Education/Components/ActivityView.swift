@@ -90,9 +90,7 @@ class ActivityView: UIView {
         layer.shadowOpacity = 0.1
         layer.shadowRadius = 20
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.layer.shadowColor = UIColor.label.cgColor
         }
 

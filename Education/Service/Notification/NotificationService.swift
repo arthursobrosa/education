@@ -98,21 +98,23 @@ class NotificationService: NotificationServiceProtocol {
         let dateString = dateFormatter.string(from: date)
         var requestID = "\(dateString)"
 
-        var triggerDate = date
+        var triggerDate: Date? = date
 
         if !isAtExactTime {
-            triggerDate = Calendar.current.date(byAdding: .minute, value: -5, to: date)!
+            triggerDate = Calendar.current.date(byAdding: .minute, value: -5, to: date)
             requestID = "\(dateString)-5"
         }
 
-        let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute], from: triggerDate)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)
+        if let triggerDate {
+            let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute], from: triggerDate)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)
 
-        let request = UNNotificationRequest(identifier: requestID, content: content, trigger: trigger)
-
-        notificationCenter.add(request) { error in
-            if let error {
-                print("Error scheduling notification: \(error.localizedDescription)")
+            let request = UNNotificationRequest(identifier: requestID, content: content, trigger: trigger)
+            
+            notificationCenter.add(request) { error in
+                if let error {
+                    print("Error scheduling notification: \(error.localizedDescription)")
+                }
             }
         }
     }

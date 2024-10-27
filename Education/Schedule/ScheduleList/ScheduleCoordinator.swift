@@ -7,7 +7,16 @@
 
 import UIKit
 
-class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, ShowingFocusImediate, ShowingScheduleNotification, ShowingTimer, ShowingScheduleDetailsModal, ShowingFocusSelection, ShowingSubjectCreation {
+class ScheduleCoordinator: NSObject,
+                           Coordinator,
+                           ShowingScheduleDetails,
+                           ShowingFocusImediate,
+                           ShowingScheduleNotification,
+                           ShowingTimer,
+                           ShowingScheduleDetailsModal,
+                           ShowingFocusSelection,
+                           ShowingSubjectCreation {
+    
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
@@ -26,10 +35,10 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
         navigationController.navigationBar.prefersLargeTitles = true
 
         let viewModel = ScheduleViewModel()
-        let vc = ScheduleViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = ScheduleViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
 
     func showScheduleDetails(schedule: Schedule?, selectedDay: Int?) {
@@ -88,11 +97,9 @@ class ScheduleCoordinator: NSObject, Coordinator, ShowingScheduleDetails, Showin
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
         }
     }
 }
@@ -125,8 +132,7 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
             let weekdays = scheduleVC.viewModel.daysOfWeek.compactMap { scheduleVC.viewModel.getWeekday(from: $0) }
 
             if let selectedWeekdayIndex = scheduleDetailsVC.viewModel.days.firstIndex(where: { $0 == scheduleDetailsVC.viewModel.selectedDay }),
-               let weekdayIndex = weekdays.firstIndex(where: { $0 == Int(selectedWeekdayIndex) })
-            {
+               let weekdayIndex = weekdays.firstIndex(where: { $0 == Int(selectedWeekdayIndex) }) {
                 let selectedDayView = dayViews[weekdayIndex]
                 scheduleVC.dayTapped(selectedDayView)
             }

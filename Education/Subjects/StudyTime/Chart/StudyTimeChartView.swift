@@ -1,4 +1,3 @@
-
 //
 //  Created by Eduardo Dalencon on 11/07/24.
 //
@@ -8,7 +7,9 @@ import SwiftUI
 
 struct StudyTimeChartView: View {
     @StateObject var viewModel: StudyTimeViewModel = .init()
-    @Environment(\.colorScheme) var colorScheme
+    
+    @Environment(\.colorScheme) 
+    var colorScheme
 
     var body: some View {
         ZStack {

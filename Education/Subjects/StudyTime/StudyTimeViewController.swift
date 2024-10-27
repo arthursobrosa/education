@@ -50,8 +50,6 @@ class StudyTimeViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func loadView() {
-        super.loadView()
-
         view = studyTimeView
     }
 
@@ -72,15 +70,11 @@ class StudyTimeViewController: UIViewController {
 
         setNavigationItems()
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             if self.traitCollection.userInterfaceStyle == .light {
                 self.studyTimeView.viewModeControl.segmentImage = UIImage(color: UIColor.systemBackground)
-//                self.studyTimeView.chartView.$bgColor = UIColor.label
             } else {
                 self.studyTimeView.viewModeControl.segmentImage = UIImage(color: UIColor.systemBackground)
-//                self.studyTimeView.chartView.$bgColor = UIColor.label
             }
         }
     }
@@ -98,7 +92,8 @@ class StudyTimeViewController: UIViewController {
 
     private func setNavigationItems() {
         navigationItem.title = String(localized: "subjectTab")
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor: UIColor(named: "system-text") as Any]
+        let regularFont: UIFont = UIFont(name: Fonts.coconRegular, size: Fonts.titleSize) ?? UIFont.systemFont(ofSize: Fonts.titleSize, weight: .regular)
+        navigationController?.navigationBar.largeTitleTextAttributes = [.font: regularFont, .foregroundColor: UIColor(named: "system-text") as Any]
 
         let addButton = UIButton()
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
@@ -136,7 +131,8 @@ class StudyTimeViewController: UIViewController {
         }
     }
 
-    @objc func listButtonTapped() {
+    @objc 
+    func listButtonTapped() {
         coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 }
@@ -158,7 +154,9 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: StudyTimeChartCell.identifier, for: indexPath) as! StudyTimeChartCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyTimeChartCell.identifier, for: indexPath) as? StudyTimeChartCell else {
+                fatalError("Could not dequeue StudyTimeChartCell")
+            }
 
             let chartView = StudyTimeChartView(viewModel: self.viewModel)
 

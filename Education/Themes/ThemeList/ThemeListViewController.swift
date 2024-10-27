@@ -46,8 +46,6 @@ class ThemeListViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func loadView() {
-        super.loadView()
-
         view = themeListView
     }
 
@@ -89,7 +87,8 @@ class ThemeListViewController: UIViewController {
         navigationItem.rightBarButtonItems = [addItem]
 
         navigationItem.title = String(localized: "themeTab")
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor: UIColor(named: "system-text") ?? UIColor.red]
+        let regularFont: UIFont = UIFont(name: Fonts.coconRegular, size: Fonts.titleSize) ?? UIFont.systemFont(ofSize: Fonts.titleSize, weight: .regular)
+        navigationController?.navigationBar.largeTitleTextAttributes = [.font: regularFont, .foregroundColor: UIColor(named: "system-text") ?? UIColor.red]
     }
 
     private func handleTip() {

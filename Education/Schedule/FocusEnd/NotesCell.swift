@@ -72,7 +72,8 @@ class NotesCell: UITableViewCell {
         return toolbar
     }
 
-    @objc private func doneKeyboardButtonTapped(_: UIBarButtonItem) {
+    @objc 
+    private func doneKeyboardButtonTapped(_: UIBarButtonItem) {
         textView.resignFirstResponder()
     }
 }
@@ -114,9 +115,10 @@ extension NotesCell: UITextViewDelegate {
 
     func textViewDidEndEditing(_ textView: UITextView) {
         if let text = textView.text,
-           !text.isEmpty
-        {
+           !text.isEmpty {
+            
             placeholderLabel.isHidden = true
+            
         } else {
             placeholderLabel.isHidden = false
         }

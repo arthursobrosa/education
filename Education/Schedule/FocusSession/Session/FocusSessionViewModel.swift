@@ -31,7 +31,7 @@ class FocusSessionViewModel {
     var timerSecondsDidChange: (() -> Void)?
     var timerFinishedPropertyChanged: ((Bool) -> Void)?
     var isAtWorkTimeDidChange: ((Bool) -> Void)?
-    var updateAfterBackgroundPropertyDidChange: (() -> Void)?
+    var updatePropertyDidChange: (() -> Void)?
 
     // MARK: - Initializer
 
@@ -117,7 +117,7 @@ extension FocusSessionViewModel {
                 guard updateAfterBackground else { return }
 
                 guard case .stopwatch = activityManager.timerCase else {
-                    updateAfterBackgroundPropertyDidChange?()
+                    updatePropertyDidChange?()
                     return
                 }
             }
@@ -232,8 +232,8 @@ extension FocusSessionViewModel {
 extension FocusSessionViewModel {
     func shouldChangeVisibility() -> Bool {
         if (!activityManager.isPaused && prefersStatusBarHidden)
-            || (activityManager.isPaused && !prefersStatusBarHidden)
-        {
+            || (activityManager.isPaused && !prefersStatusBarHidden) {
+            
             prefersStatusBarHidden.toggle()
             return true
         }

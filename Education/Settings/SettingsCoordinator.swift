@@ -22,10 +22,10 @@ class SettingsCoordinator: Coordinator {
 
     func start() {
         let viewModel = SettingsViewModel(notificationService: notificationService)
-        let vc = SettingsViewController(viewModel: viewModel, blockingManger: blockingManager)
-        vc.coordinator = self
+        let viewController = SettingsViewController(viewModel: viewModel, blockingManger: blockingManager)
+        viewController.coordinator = self
 
         navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
 }

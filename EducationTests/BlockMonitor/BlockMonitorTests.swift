@@ -26,7 +26,7 @@ final class MockBlockAppsMonitor: BlockingManager {
 
     var store = MockManagedSettingsStore()
     var isBlocked = false
-    var isCreatingBlockAppsNotification = false
+    var isCreatingNotification = false
 
     init() {
         if let savedData = UserDefaults.standard.data(forKey: Self.appsKey) {
@@ -59,7 +59,7 @@ final class MockBlockAppsMonitor: BlockingManager {
         }
 
         isBlocked = true
-        isCreatingBlockAppsNotification = true
+        isCreatingNotification = true
     }
 
     func removeShields() {
@@ -69,7 +69,7 @@ final class MockBlockAppsMonitor: BlockingManager {
         store.shield.applicationCategories = nil
 
         isBlocked = false
-        isCreatingBlockAppsNotification = false
+        isCreatingNotification = false
     }
 }
 
@@ -171,7 +171,7 @@ class BlockMonitorTests: XCTestCase {
         XCTAssertNil(monitor.store.shield.applications)
         XCTAssertNil(monitor.store.shield.applicationCategories)
         XCTAssertEqual(monitor.isBlocked, true)
-        XCTAssertEqual(monitor.isCreatingBlockAppsNotification, true)
+        XCTAssertEqual(monitor.isCreatingNotification, true)
     }
 
     func testRemoveShields() {
@@ -180,7 +180,7 @@ class BlockMonitorTests: XCTestCase {
         monitor.store.shield.applications = ["foo", "bar"]
         monitor.store.shield.applicationCategories = ["X"]
         monitor.isBlocked = true
-        monitor.isCreatingBlockAppsNotification = true
+        monitor.isCreatingNotification = true
 
         // Act
         monitor.removeShields()
@@ -188,6 +188,6 @@ class BlockMonitorTests: XCTestCase {
         // Assert
         XCTAssertNil(monitor.store.shield.applications)
         XCTAssertNil(monitor.store.shield.applicationCategories)
-        XCTAssertEqual(monitor.isCreatingBlockAppsNotification, false)
+        XCTAssertEqual(monitor.isCreatingNotification, false)
     }
 }

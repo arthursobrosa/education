@@ -7,7 +7,8 @@
 
 import Foundation
 
-@objc protocol FocusEndDelegate: AnyObject {
+@objc 
+protocol FocusEndDelegate: AnyObject {
     func didTapSaveButton()
     func didTapDiscardButton()
 }

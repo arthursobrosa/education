@@ -12,7 +12,6 @@ class OtherSubjectCoordinator: Coordinator, Dismissing {
     var childCoordinators = [Coordinator]()
 
     var navigationController: UINavigationController
-    private var newNavigationController = UINavigationController()
     private let viewModel: StudyTimeViewModel
 
     init(navigationController: UINavigationController, viewModel: StudyTimeViewModel) {
@@ -21,10 +20,10 @@ class OtherSubjectCoordinator: Coordinator, Dismissing {
     }
 
     func start() {
-        let vc = OtherSubjectViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = OtherSubjectViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        newNavigationController = UINavigationController(rootViewController: vc)
+        let newNavigationController = UINavigationController(rootViewController: viewController)
 
         if let studyTimeCoordinator = parentCoordinator as? StudyTimeCoordinator {
             newNavigationController.transitioningDelegate = studyTimeCoordinator

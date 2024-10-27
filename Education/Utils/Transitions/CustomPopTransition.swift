@@ -21,10 +21,10 @@ class CustomPopTransition: NSObject, UIViewControllerAnimatedTransitioning {
 
         let containerView = transitionContext.containerView
         containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
-
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+        
+        UIView.animate(withDuration: transitionDuration(using: transitionContext)) {
             fromVC.view.alpha = 0.0
-        }) { _ in
+        } completion: { _ in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }

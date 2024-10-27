@@ -7,7 +7,8 @@
 
 import Foundation
 
-@objc protocol FocusPickerDelegate: AnyObject {
+@objc 
+protocol FocusPickerDelegate: AnyObject {
     func startButtonTapped()
     func dismiss()
     func dismissAll()

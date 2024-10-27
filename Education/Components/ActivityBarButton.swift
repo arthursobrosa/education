@@ -99,7 +99,13 @@ extension ActivityBarButton: ViewCodeProtocol {
         let viewWidth = superview.frame.width * (44 / 366)
         let viewHeight = viewWidth
 
-        let arcPath = UIBezierPath(arcCenter: CGPoint(x: viewWidth / 2, y: viewHeight / 2), radius: viewWidth / 2, startAngle: configuration.startAngle, endAngle: configuration.endAngle, clockwise: configuration.isClockwise)
+        let arcPath = UIBezierPath(
+            arcCenter: CGPoint(x: viewWidth / 2, y: viewHeight / 2),
+            radius: viewWidth / 2,
+            startAngle: configuration.startAngle,
+            endAngle: configuration.endAngle,
+            clockwise: configuration.isClockwise
+        )
 
         let lineWidth = viewWidth * (4 / 44)
 

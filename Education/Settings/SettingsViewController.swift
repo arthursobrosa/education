@@ -74,20 +74,23 @@ class SettingsViewController: UIViewController {
 
     private func setNavigationItems() {
         navigationItem.title = String(localized: "settingsTab")
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: Fonts.coconRegular, size: Fonts.titleSize)!, .foregroundColor: UIColor(named: "system-text") ?? UIColor.red]
+        let regularFont: UIFont = UIFont(name: Fonts.coconRegular, size: Fonts.titleSize) ?? UIFont.systemFont(ofSize: Fonts.titleSize, weight: .regular)
+        navigationController?.navigationBar.largeTitleTextAttributes = [.font: regularFont, .foregroundColor: UIColor(named: "system-text") ?? UIColor.red]
     }
 
     private func showFamilyActivityPicker() {
         // Create the hosting controller with the SwiftUI view
         let hostingController = UIHostingController(rootView: swiftUIFamilyPickerView)
 
-        let swiftuiView = hostingController.view!
-        swiftuiView.translatesAutoresizingMaskIntoConstraints = false
+        let swiftuiView = hostingController.view
+        swiftuiView?.translatesAutoresizingMaskIntoConstraints = false
 
         // Add the hosting controller as a child view controller
         addChild(hostingController)
         hostingController.view.frame = view.bounds
         view.addSubview(hostingController.view)
+        
+        guard let swiftuiView else { return }
 
         NSLayoutConstraint.activate([
             swiftuiView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -97,7 +100,8 @@ class SettingsViewController: UIViewController {
         hostingController.didMove(toParent: self)
     }
 
-    @objc func didChangeNotificationToggle(_ sender: UISwitch) {
+    @objc 
+    func didChangeNotificationToggle(_ sender: UISwitch) {
         sender.setOn(!sender.isOn, animated: true)
 
         showNotificationAlert(isActivating: !sender.isOn)
@@ -154,7 +158,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
         let image = UIImage(systemName: item.iconName)
 
-        cell.configure(withText: item.title, withImage: image!)
+        cell.configure(withText: item.title, withImage: image)
         cell.setAccessoryView(createCellAccessoryView(for: row))
 
         return cell

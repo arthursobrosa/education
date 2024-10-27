@@ -9,7 +9,8 @@ import UIKit
 
 // MARK: - Activity
 
-@objc protocol TabBarDelegate: AnyObject {
+@objc 
+protocol TabBarDelegate: AnyObject {
     func addActivityView()
     func updateTimerSeconds()
     func removeActivityView()

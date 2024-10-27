@@ -90,7 +90,8 @@ class ScheduleCell: UICollectionViewCell {
             }
 
             let completedString = NSAttributedString(string: String(localized: "timeLeftFinished"))
-            let attachment = NSTextAttachment(image: UIImage(systemName: "checkmark")!)
+            let attachmentImage: UIImage = UIImage(systemName: "checkmark") ?? UIImage()
+            let attachment = NSTextAttachment(image: attachmentImage)
             let checkmarkString = NSAttributedString(attachment: attachment)
             let attributedString = NSMutableAttributedString()
             attributedString.append(completedString)
@@ -186,12 +187,15 @@ class ScheduleCell: UICollectionViewCell {
             stringColor = color.darker(by: 0.6) ?? color
         }
 
-        let timeLeftAttributedString = NSMutableAttributedString(attributedString: timeLeftLabel.attributedText!)
-        timeLeftAttributedString.addAttributes([.foregroundColor: stringColor], range: NSRange(location: 0, length: timeLeftAttributedString.length))
-        timeLeftLabel.attributedText = timeLeftAttributedString
+        if let attributedText = timeLeftLabel.attributedText {
+            let timeLeftAttributedString = NSMutableAttributedString(attributedString: attributedText)
+            timeLeftAttributedString.addAttributes([.foregroundColor: stringColor], range: NSRange(location: 0, length: timeLeftAttributedString.length))
+            timeLeftLabel.attributedText = timeLeftAttributedString
+        }
     }
 
-    @objc private func playButtonTapped() {
+    @objc 
+    private func playButtonTapped() {
         guard let config else { return }
 
         delegate?.playButtonTapped(at: config.indexPath, withColor: config.color)
@@ -302,7 +306,8 @@ extension ScheduleCell {
               case .completed = config.eventCase else { return }
 
         let semiboldFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .semibold)
-        let attachment = NSTextAttachment(image: UIImage(systemName: "checkmark")!)
+        let attachmentImage: UIImage = UIImage(systemName: "checkmark") ?? UIImage()
+        let attachment = NSTextAttachment(image: attachmentImage)
         let checkmarkString = NSAttributedString(attachment: attachment)
         let attributedString = NSMutableAttributedString()
         attributedString.append(checkmarkString)

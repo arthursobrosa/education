@@ -11,7 +11,6 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    private var newNavigationController = UINavigationController()
 
     private let notificationService: NotificationServiceProtocol?
 
@@ -27,10 +26,10 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
 
     func start() {
         let viewModel = ScheduleDetailsViewModel(notificationService: notificationService, schedule: schedule, selectedDay: selectedDay)
-        let vc = ScheduleDetailsViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = ScheduleDetailsViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        newNavigationController = UINavigationController(rootViewController: vc)
+        let newNavigationController = UINavigationController(rootViewController: viewController)
         if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
             newNavigationController.transitioningDelegate = scheduleCoordinator
         }

@@ -107,7 +107,8 @@ class CustomDateButton: UIView {
         datePicker.transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
     }
 
-    @objc private func didTapPicker(_ sender: UIDatePicker) {
+    @objc 
+    private func didTapPicker(_ sender: UIDatePicker) {
         let calendar = Calendar.current
 
         let dateComponents = calendar.dateComponents([.hour, .minute], from: sender.date)

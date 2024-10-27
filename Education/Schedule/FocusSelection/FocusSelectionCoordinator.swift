@@ -26,11 +26,11 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
 
     func start() {
         let viewModel = FocusSelectionViewModel(focusSessionModel: focusSessionModel)
-        let vc = FocusSelectionViewController(viewModel: viewModel, color: focusSessionModel.color)
-        vc.coordinator = self
+        let viewController = FocusSelectionViewController(viewModel: viewModel, color: focusSessionModel.color)
+        viewController.coordinator = self
 
         if isFirstModal {
-            newNavigationController = UINavigationController(rootViewController: vc)
+            newNavigationController = UINavigationController(rootViewController: viewController)
 
             newNavigationController.delegate = self
             if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
@@ -47,7 +47,7 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
             return
         }
 
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
 
     func showFocusPicker(focusSessionModel: FocusSessionModel) {
@@ -67,13 +67,15 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
         var parentCoordinator: Coordinator?
 
         if let focusImediateCoordinator = self.parentCoordinator as? FocusImediateCoordinator,
-           let scheduleCoordinator = focusImediateCoordinator.parentCoordinator as? ScheduleCoordinator
-        {
+           let scheduleCoordinator = focusImediateCoordinator.parentCoordinator as? ScheduleCoordinator {
+            
             parentCoordinator = scheduleCoordinator
-        } else if let scheduleDetailsModalCoordinator = self.parentCoordinator as? ScheduleDetailsModalCoordinator,
-                  let scheduleCoordinator = scheduleDetailsModalCoordinator.parentCoordinator as? ScheduleCoordinator
-        {
+            
+        } else if let scheduleDMCoordinator = self.parentCoordinator as? ScheduleDetailsModalCoordinator,
+                  let scheduleCoordinator = scheduleDMCoordinator.parentCoordinator as? ScheduleCoordinator {
+            
             parentCoordinator = scheduleCoordinator
+            
         } else if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
             parentCoordinator = scheduleCoordinator
         }
@@ -100,21 +102,19 @@ class FocusSelectionCoordinator: NSObject, Coordinator, ShowingFocusPicker, Show
             focusImediateCoordinator.dismiss(animated: false)
         }
 
-        if let scheduleDetailsModalCoordinator = parentCoordinator as? ScheduleDetailsModalCoordinator {
-            scheduleDetailsModalCoordinator.dismiss(animated: false)
+        if let scheduleDMCoordinator = parentCoordinator as? ScheduleDetailsModalCoordinator {
+            scheduleDMCoordinator.dismiss(animated: false)
         }
 
-        if let scheduleNotificationCoordinator = parentCoordinator as? ScheduleNotificationCoordinator {
-            scheduleNotificationCoordinator.dismiss(animated: false)
+        if let notificationCoordinator = parentCoordinator as? ScheduleNotificationCoordinator {
+            notificationCoordinator.dismiss(animated: false)
         }
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
         }
     }
 }

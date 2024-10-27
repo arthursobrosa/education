@@ -40,7 +40,12 @@ class TabBarController: UITabBarController {
     init(viewModel: TabBarViewModel) {
         self.viewModel = viewModel
 
-        schedule = ScheduleCoordinator(navigationController: UINavigationController(), activityManager: viewModel.activityManager, blockingManager: viewModel.blockingManager, notificationService: viewModel.notificationService)
+        schedule = ScheduleCoordinator(
+            navigationController: UINavigationController(),
+            activityManager: viewModel.activityManager,
+            blockingManager: viewModel.blockingManager,
+            notificationService: viewModel.notificationService
+        )
         studytime = StudyTimeCoordinator(navigationController: UINavigationController())
         themeList = ThemeListCoordinator(navigationController: UINavigationController())
         settings = SettingsCoordinator(navigationController: UINavigationController(), blockingManager: viewModel.blockingManager, notificationService: viewModel.notificationService)
@@ -70,8 +75,9 @@ class TabBarController: UITabBarController {
     // MARK: - Methods
 
     private func setTabItems() {
+        let mediumFont: UIFont = UIFont(name: Fonts.darkModeOnMedium, size: 10) ?? UIFont.systemFont(ofSize: 10, weight: .medium)
         let titleAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: Fonts.darkModeOnMedium, size: 10)!,
+            .font: mediumFont,
         ]
 
         schedule.navigationController.tabBarItem = UITabBarItem(title: TabCase.schedule.title, image: TabCase.schedule.image, tag: TabCase.schedule.rawValue)

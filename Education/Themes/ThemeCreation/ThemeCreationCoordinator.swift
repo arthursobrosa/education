@@ -21,10 +21,10 @@ class ThemeCreationCoordinator: Coordinator, Dismissing {
 
     func start() {
         let viewModel = ThemeCreationViewModel(theme: theme)
-        let vc = ThemeCreationViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = ThemeCreationViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        let newNavigationController = UINavigationController(rootViewController: vc)
+        let newNavigationController = UINavigationController(rootViewController: viewController)
 
         if let themeListCoordinator = parentCoordinator as? ThemeListCoordinator {
             newNavigationController.transitioningDelegate = themeListCoordinator

@@ -28,7 +28,7 @@ class ScheduleDetailsModalViewModel {
         self.subjectManager = subjectManager
 
         self.schedule = schedule
-        subject = self.subjectManager.fetchSubject(withID: self.schedule.unwrappedSubjectID)!
+        subject = self.subjectManager.fetchSubject(withID: self.schedule.unwrappedSubjectID) ?? Subject()
 
         selectedDayIndex = schedule.unwrappedDay
     }
@@ -41,8 +41,8 @@ class ScheduleDetailsModalViewModel {
         let dateComponents = calendar.dateComponents([.hour, .minute], from: date)
 
         if let hour = dateComponents.hour,
-           let minute = dateComponents.minute
-        {
+           let minute = dateComponents.minute {
+            
             let hourText = hour > 9 ? "\(hour)" : "0\(hour)"
             let minuteText = minute > 9 ? "\(minute)" : "0\(minute)"
 

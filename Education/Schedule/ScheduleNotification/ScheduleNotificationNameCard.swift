@@ -26,12 +26,9 @@ class ScheduleNotificationNameCard: UIView {
     }()
 
     private let bracket: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal1")!.withRenderingMode(.alwaysTemplate)
-
+        let img = UIImage(named: "ScheduleDetailsModal1")?.withRenderingMode(.alwaysTemplate)
         let imgView = UIImageView(image: img)
-
         imgView.translatesAutoresizingMaskIntoConstraints = false
-
         return imgView
     }()
 
@@ -45,31 +42,23 @@ class ScheduleNotificationNameCard: UIView {
     }()
 
     private let lineStartTime: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
-
+        let img = UIImage(named: "ScheduleDetailsModal2")?.withRenderingMode(.alwaysTemplate)
         let imgView = UIImageView(image: img)
-
         imgView.translatesAutoresizingMaskIntoConstraints = false
-
         return imgView
     }()
 
     private let endTime: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 20)
-
         lbl.translatesAutoresizingMaskIntoConstraints = false
-
         return lbl
     }()
 
     private let lineEndTime: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
-
+        let img = UIImage(named: "ScheduleDetailsModal2")?.withRenderingMode(.alwaysTemplate)
         let imgView = UIImageView(image: img)
-
         imgView.translatesAutoresizingMaskIntoConstraints = false
-
         return imgView
     }()
 
@@ -115,7 +104,8 @@ class ScheduleNotificationNameCard: UIView {
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 20, height: 20)
         let imageString = NSAttributedString(attachment: imageAttachment)
 
-        let dayString = NSAttributedString(string: dayOfWeek, attributes: [.font: UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .medium), .foregroundColor: darkerColor, .baselineOffset: 2])
+        let mediumFont: UIFont = UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .medium)
+        let dayString = NSAttributedString(string: dayOfWeek, attributes: [.font: mediumFont, .foregroundColor: darkerColor, .baselineOffset: 2])
 
         attributedString.append(imageString)
         attributedString.append(NSAttributedString(string: "  "))

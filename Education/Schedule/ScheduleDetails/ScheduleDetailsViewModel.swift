@@ -44,7 +44,12 @@ class ScheduleDetailsViewModel {
 
     // MARK: - Initializer
 
-    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), notificationService: NotificationServiceProtocol?, schedule: Schedule? = nil, selectedDay: Int?) {
+    init(subjectManager: SubjectManager = SubjectManager(), 
+         scheduleManager: ScheduleManager = ScheduleManager(),
+         notificationService: NotificationServiceProtocol?,
+         schedule: Schedule? = nil,
+         selectedDay: Int?) {
+        
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
         self.notificationService = notificationService
@@ -55,7 +60,7 @@ class ScheduleDetailsViewModel {
         var selectedSubjectName = String()
         var selectedStartTime: Date = currentDate
         var selectedEndTime: Date = selectedStartTime.addingTimeInterval(60)
-        var selectedDayIndex = selectedDay != nil ? selectedDay! : 0
+        var selectedDayIndex: Int = selectedDay ?? 0
 
         subjectsNames = [String]()
 
@@ -116,8 +121,18 @@ class ScheduleDetailsViewModel {
 
         if let selectedIndex = days.firstIndex(where: { $0 == selectedDay }) {
             let dayOfTheWeek = Int(selectedIndex)
+            
             handleAlerts()
-            scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: selectedStartTime, endTime: selectedEndTime, blocksApps: blocksApps, earlyAlarm: alarmBefore, imediateAlarm: alarmInTime)
+            
+            scheduleManager.createSchedule(
+                subjectID: subject.unwrappedID,
+                dayOfTheWeek: dayOfTheWeek,
+                startTime: selectedStartTime,
+                endTime: selectedEndTime,
+                blocksApps: blocksApps,
+                earlyAlarm: alarmBefore,
+                imediateAlarm: alarmInTime
+            )
         }
     }
 
@@ -159,11 +174,12 @@ class ScheduleDetailsViewModel {
                 if let subject = subjects.first(where: { $0.unwrappedName == selectedSubjectName }) {
                     schedule.subjectID = subject.unwrappedID
 
-                    if let dayOfTheWeek = days.firstIndex(where: { $0 == selectedDay }) {
+                    if let dayOfTheWeek = days.firstIndex(where: { $0 == selectedDay }),
+                       let startTime = schedule.startTime {
+                        
                         schedule.dayOfTheWeek = Int16(dayOfTheWeek)
+                        notificationService?.cancelNotifications(forDate: startTime)
                     }
-
-                    notificationService?.cancelNotifications(forDate: schedule.startTime!)
 
                     schedule.startTime = selectedStartTime
                     schedule.endTime = selectedEndTime
@@ -211,14 +227,13 @@ class ScheduleDetailsViewModel {
               let newEndTime = formatDate(selectedEndTime) else { return false }
 
         for schedule in existingSchedules {
+
             if let existingStartTime = formatDate(schedule.unwrappedStartTime),
-               let existingEndTime = formatDate(schedule.unwrappedEndTime)
-            {
-                if newStartTime < existingEndTime && newEndTime > existingStartTime {
-                    if schedule.unwrappedID != scheduleID {
-                        return false
-                    }
-                }
+               let existingEndTime = formatDate(schedule.unwrappedEndTime),
+               newStartTime < existingEndTime && newEndTime > existingStartTime,
+               schedule.unwrappedID != scheduleID {
+                
+                return false
             }
 
             break

@@ -74,7 +74,7 @@ class CustomDatePickerView: UIView {
     }
 }
 
-private extension CustomDatePickerView {
+extension CustomDatePickerView: ViewCodeProtocol {
     func setupUI() {
         addSubview(hoursPicker)
         addSubview(hoursLabel)

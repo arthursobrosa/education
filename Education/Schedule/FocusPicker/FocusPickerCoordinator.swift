@@ -23,11 +23,11 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing, DismissingA
 
     func start() {
         let viewModel = FocusPickerViewModel(focusSessionModel: focusSessionModel, blockingManager: blockingManager)
-        let vc = FocusPickerViewController(viewModel: viewModel)
-        vc.navigationItem.hidesBackButton = true
-        vc.coordinator = self
+        let viewController = FocusPickerViewController(viewModel: viewModel)
+        viewController.navigationItem.hidesBackButton = true
+        viewController.coordinator = self
 
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
 
     func showTimer(focusSessionModel: FocusSessionModel?) {

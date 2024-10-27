@@ -11,12 +11,9 @@ class HourDetailsView: UIView {
     var color: UIColor?
 
     private let bracket: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal1")!.withRenderingMode(.alwaysTemplate)
-
+        let img = UIImage(named: "ScheduleDetailsModal1")?.withRenderingMode(.alwaysTemplate)
         let imgView = UIImageView(image: img)
-
         imgView.translatesAutoresizingMaskIntoConstraints = false
-
         return imgView
     }()
 
@@ -30,31 +27,23 @@ class HourDetailsView: UIView {
     }()
 
     private let lineStartTime: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
-
+        let img = UIImage(named: "ScheduleDetailsModal2")?.withRenderingMode(.alwaysTemplate)
         let imgView = UIImageView(image: img)
-
         imgView.translatesAutoresizingMaskIntoConstraints = false
-
         return imgView
     }()
 
     private let endTime: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 20)
-
         lbl.translatesAutoresizingMaskIntoConstraints = false
-
         return lbl
     }()
 
     private let lineEndTime: UIImageView = {
-        let img = UIImage(named: "ScheduleDetailsModal2")!.withRenderingMode(.alwaysTemplate)
-
+        let img = UIImage(named: "ScheduleDetailsModal2")?.withRenderingMode(.alwaysTemplate)
         let imgView = UIImageView(image: img)
-
         imgView.translatesAutoresizingMaskIntoConstraints = false
-
         return imgView
     }()
 
@@ -117,17 +106,15 @@ extension HourDetailsView: ViewCodeProtocol {
             lineEndTime.widthAnchor.constraint(equalTo: lineStartTime.widthAnchor),
         ])
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             if self.traitCollection.userInterfaceStyle == .dark {
-                self.backgroundColor = self.color!.withAlphaComponent(0.25)
-                self.startTime.textColor = self.color!.darker(by: 1.4)
-                self.endTime.textColor = self.color!
+                self.backgroundColor = self.color?.withAlphaComponent(0.25)
+                self.startTime.textColor = self.color?.darker(by: 1.4)
+                self.endTime.textColor = self.color
             } else {
-                self.backgroundColor = self.color!.withAlphaComponent(0.15)
-                self.startTime.textColor = self.color!.darker(by: 0.8)
-                self.endTime.textColor = self.color!
+                self.backgroundColor = self.color?.withAlphaComponent(0.15)
+                self.startTime.textColor = self.color?.darker(by: 0.8)
+                self.endTime.textColor = self.color
             }
         }
     }

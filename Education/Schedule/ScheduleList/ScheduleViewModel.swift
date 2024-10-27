@@ -66,8 +66,7 @@ class ScheduleViewModel {
                 let startTimeComponents2 = calendar.dateComponents([.hour, .minute], from: $1.unwrappedStartTime)
 
                 if let hour1 = startTimeComponents1.hour, let minute1 = startTimeComponents1.minute,
-                   let hour2 = startTimeComponents2.hour, let minute2 = startTimeComponents2.minute
-                {
+                   let hour2 = startTimeComponents2.hour, let minute2 = startTimeComponents2.minute {
                     if hour1 == hour2 {
                         return minute1 < minute2
                     }
@@ -86,8 +85,7 @@ class ScheduleViewModel {
                 let startTimeComponents2 = calendar.dateComponents([.hour, .minute], from: $1.unwrappedStartTime)
 
                 if let hour1 = startTimeComponents1.hour, let minute1 = startTimeComponents1.minute,
-                   let hour2 = startTimeComponents2.hour, let minute2 = startTimeComponents2.minute
-                {
+                   let hour2 = startTimeComponents2.hour, let minute2 = startTimeComponents2.minute {
                     if hour1 == hour2 {
                         return minute1 < minute2
                     }
@@ -155,23 +153,21 @@ class ScheduleViewModel {
 
     private func getDaysOfWeek() -> [Date] {
         let calendar = Calendar.current
-        var startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
-
-        startOfWeek = calendar.date(byAdding: .day, value: UserDefaults.dayOfWeek, to: startOfWeek)!
+        guard let baseDate = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())),
+              let startOfWeek = calendar.date(byAdding: .day, value: UserDefaults.dayOfWeek, to: baseDate) else { return [] }
 
         var daysOfWeek = (0 ..< 7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
 
         if let today = calendar.dateComponents([.day], from: Date()).day,
-           let startOfWeekDay = calendar.dateComponents([.day], from: startOfWeek).day
-        {
-            if startOfWeekDay > today {
-                daysOfWeek = daysOfWeek.map { date in
-                    guard let day = calendar.dateComponents([.day], from: date).day,
-                          day > today,
-                          let mappedDate = calendar.date(byAdding: .day, value: -7, to: date) else { return date }
+           let startOfWeekDay = calendar.dateComponents([.day], from: startOfWeek).day,
+           startOfWeekDay > today {
+            
+            daysOfWeek = daysOfWeek.map { date in
+                guard let day = calendar.dateComponents([.day], from: date).day,
+                      day > today,
+                      let mappedDate = calendar.date(byAdding: .day, value: -7, to: date) else { return date }
 
-                    return mappedDate
-                }
+                return mappedDate
             }
         }
 
@@ -266,10 +262,8 @@ class ScheduleViewModel {
             isDaily = false
 
             var emptyTasks = 0
-            for task in tasks {
-                if task.isEmpty {
-                    emptyTasks += 1
-                }
+            for task in tasks where task.isEmpty {
+                emptyTasks += 1
             }
             isEmpty = emptyTasks == tasks.count
         }

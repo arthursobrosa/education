@@ -11,6 +11,7 @@ import CoreData
 import Network
 import SwiftUI
 
+// swiftlint:disable all
 public class SyncMonitor: ObservableObject {
     // MARK: - Summary properties
 
@@ -333,3 +334,4 @@ public class SyncMonitor: ObservableObject {
         }
     }
 }
+// swiftlint:enable all

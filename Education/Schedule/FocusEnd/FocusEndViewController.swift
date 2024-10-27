@@ -41,13 +41,7 @@ class FocusEndViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func loadView() {
-        super.loadView()
-
         view = focusView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
 }
 

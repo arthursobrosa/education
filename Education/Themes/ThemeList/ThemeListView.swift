@@ -69,9 +69,7 @@ class ThemeListView: UIView {
 
         updateTableViewColor(traitCollection)
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.updateTableViewColor(self.traitCollection)
         }
     }

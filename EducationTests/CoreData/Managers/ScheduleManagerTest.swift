@@ -9,6 +9,7 @@ import CoreData
 @testable import Education
 import XCTest
 
+// swiftlint:disable force_unwrapping
 class ScheduleManagerTest: XCTestCase {
     var subjectManager: SubjectManager!
     var scheduleManager: ScheduleManager!
@@ -152,3 +153,4 @@ class ScheduleManagerTest: XCTestCase {
         XCTAssertEqual(thursdaySchedules.first?.dayOfTheWeek, 4)
     }
 }
+// swiftlint:enable force_unwrapping

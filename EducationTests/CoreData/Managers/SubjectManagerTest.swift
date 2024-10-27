@@ -9,6 +9,7 @@ import CoreData
 @testable import Education
 import XCTest
 
+// swiftlint:disable force_unwrapping
 class SubjectManagerTest: XCTestCase {
     var subjectManager: SubjectManager!
     var coreDataStack: CoreDataTestStack!
@@ -63,3 +64,4 @@ class SubjectManagerTest: XCTestCase {
         XCTAssertEqual(updatedSubject.unwrappedName, "Geography")
     }
 }
+// swiftlint:enable force_unwrapping

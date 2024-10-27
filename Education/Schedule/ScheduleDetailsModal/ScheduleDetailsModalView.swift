@@ -65,7 +65,8 @@ class ScheduleDetailsModalView: UIView {
     }()
 
     private lazy var hourDetailView: HourDetailsView = {
-        let view = HourDetailsView(starTime: self.startTime, endTime: self.endTime, color: self.color!)
+        let unwrappedColor: UIColor = color ?? .red
+        let view = HourDetailsView(starTime: startTime, endTime: endTime, color: unwrappedColor)
         view.translatesAutoresizingMaskIntoConstraints = false
 
         return view
@@ -122,14 +123,20 @@ class ScheduleDetailsModalView: UIView {
     }
 
     private func setDayLabel() {
+        guard let systemText50Color = UIColor(named: "system-text-50") else { return }
+        
         let attributedString = NSMutableAttributedString()
 
         let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(UIColor(named: "system-text-50")!)
+        imageAttachment.image = UIImage(systemName: "clock")?.withTintColor(systemText50Color)
         imageAttachment.bounds = CGRect(x: 0, y: -3.0, width: 20, height: 20)
         let imageString = NSAttributedString(attachment: imageAttachment)
 
-        let dayString = NSAttributedString(string: dayOfTheWeek, attributes: [.font: UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15), .foregroundColor: UIColor(named: "system-text-50") as Any, .baselineOffset: 2])
+        let mediumFont: UIFont = UIFont(name: Fonts.darkModeOnMedium, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .medium)
+        let dayString = NSAttributedString(
+            string: dayOfTheWeek,
+            attributes: [.font: mediumFont, .foregroundColor: systemText50Color as Any, .baselineOffset: 2]
+        )
 
         attributedString.append(imageString)
         attributedString.append(NSAttributedString(string: "  "))
@@ -138,15 +145,18 @@ class ScheduleDetailsModalView: UIView {
         dayLabel.attributedText = attributedString
     }
 
-    @objc private func didTapCloseButton() {
+    @objc 
+    private func didTapCloseButton() {
         delegate?.dismiss()
     }
 
-    @objc private func didTapEditButton() {
+    @objc 
+    private func didTapEditButton() {
         delegate?.editButtonTapped()
     }
 
-    @objc private func didTapStartButton() {
+    @objc 
+    private func didTapStartButton() {
         delegate?.startButtonTapped()
     }
 }

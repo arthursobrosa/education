@@ -51,7 +51,11 @@ enum FocusStatusAlertCase {
         case .finishingTimerCase:
             String(localized: "extendTime")
         case let .finishingPomodoroCase(_, isAtWorkTime):
-            isAtWorkTime ? String(localized: "extendFocus") : String(localized: "extendInterval")
+            if isAtWorkTime {
+                String(localized: "extendFocus")
+            } else {
+                String(localized: "extendInterval")
+            }
         }
     }
 
@@ -62,7 +66,11 @@ enum FocusStatusAlertCase {
         case .finishingTimerCase:
             String(localized: "focusFinish")
         case let .finishingPomodoroCase(_, isAtWorkTime):
-            isAtWorkTime ? String(localized: "startInterval") : String(localized: "startFocus")
+            if isAtWorkTime {
+                String(localized: "startInterval")
+            } else {
+                String(localized: "startFocus")
+            }
         }
     }
 

@@ -29,9 +29,7 @@ class CustomTabBar: UITabBar {
         addLayer()
 
         // Reagindo ao dark e light mode
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             if let roundLayer = self.layer.sublayers?.first(where: { $0 is CAShapeLayer }) as? CAShapeLayer {
                 if self.traitCollection.userInterfaceStyle == .dark {
                     roundLayer.shadowColor = UIColor(named: "tab-shadow")?.cgColor

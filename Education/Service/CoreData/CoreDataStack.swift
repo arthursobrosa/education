@@ -31,7 +31,7 @@ class CoreDataStack {
 
         persistentContainer.loadPersistentStores { _, error in
             guard error == nil else {
-                fatalError("was unable to load store \(error!)")
+                fatalError("was unable to load store \(String(describing: error?.localizedDescription))")
             }
         }
 

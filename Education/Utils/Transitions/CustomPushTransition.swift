@@ -21,9 +21,10 @@ class CustomPushTransition: NSObject, UIViewControllerAnimatedTransitioning {
         containerView.addSubview(toVC.view)
 
         toVC.view.alpha = 0.0
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+        
+        UIView.animate(withDuration: transitionDuration(using: transitionContext)) {
             toVC.view.alpha = 1.0
-        }) { _ in
+        } completion: { _ in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }

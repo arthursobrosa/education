@@ -49,8 +49,6 @@ class FocusSessionViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func loadView() {
-        super.loadView()
-
         view = focusSessionView
     }
 
@@ -166,13 +164,17 @@ extension FocusSessionViewController {
 
         viewModel.isAtWorkTimeDidChange = { [weak self] isAtWorkTime in
             guard let self else { return }
-
-            isAtWorkTime ? self.viewModel.blockApps() : self.viewModel.unblockApps()
+            
+            if isAtWorkTime {
+                self.viewModel.blockApps()
+            } else {
+                self.viewModel.unblockApps()
+            }
 
             self.setupViewLayers()
         }
 
-        viewModel.updateAfterBackgroundPropertyDidChange = { [weak self] in
+        viewModel.updatePropertyDidChange = { [weak self] in
             guard let self else { return }
 
             self.setupViewLayers()
@@ -199,7 +201,8 @@ extension FocusSessionViewController {
         view.gestureRecognizers = nil
     }
 
-    @objc func viewWasTapped() {
+    @objc 
+    func viewWasTapped() {
         viewModel.prefersStatusBarHidden.toggle()
         focusSessionView.changeButtonsVisibility(isHidden: viewModel.prefersStatusBarHidden)
 

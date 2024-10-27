@@ -29,10 +29,10 @@ class ScheduleNotificationCoordinator: NSObject, Coordinator, ShowingFocusSelect
 
     func start() {
         let viewModel = ScheduleNotificationViewModel(subjectName: subjectName, startTime: startTime, endTime: endTime)
-        let vc = ScheduleNotificationViewController(color: .red, viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = ScheduleNotificationViewController(color: .red, viewModel: viewModel)
+        viewController.coordinator = self
 
-        newNavigationController = UINavigationController(rootViewController: vc)
+        newNavigationController = UINavigationController(rootViewController: viewController)
 
         newNavigationController.delegate = self
         if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
@@ -59,11 +59,9 @@ class ScheduleNotificationCoordinator: NSObject, Coordinator, ShowingFocusSelect
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
         }
     }
 }

@@ -32,10 +32,10 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
 
     func start() {
         let viewModel = SplashViewModel()
-        let vc = SplashViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = SplashViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
 
     func showTabBar() {

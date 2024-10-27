@@ -23,10 +23,10 @@ class TestDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingTestPage
 
     func start() {
         let viewModel = TestDetailsViewModel(theme: theme, test: test)
-        let vc = TestDetailsViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = TestDetailsViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        navigationController.pushViewController(vc, animated: true)
+        navigationController.pushViewController(viewController, animated: true)
     }
 
     func showTestPage(theme: Theme, test: Test?) {
@@ -41,11 +41,9 @@ class TestDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingTestPage
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
         }
     }
 }

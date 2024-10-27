@@ -17,7 +17,7 @@ protocol SubjectCreationDelegate: AnyObject {
 extension SubjectCreationViewController: SubjectCreationDelegate {
     func textFieldDidChange(newText: String) {
         subjectName = newText
-        if newText != "" {
+        if newText.isEmpty {
             subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
         } else {
             subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-off")
@@ -51,6 +51,8 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
     }
 
     func didTapDeleteButton() {
-        showDeleteAlert(for: viewModel.currentEditingSubject!)
+        if let subject = viewModel.currentEditingSubject {
+            showDeleteAlert(for: subject)
+        }
     }
 }

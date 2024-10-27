@@ -15,11 +15,11 @@ class SubjectTimeTableViewCell: UITableViewCell {
             if let subject {
                 subjectName.text = subject.unwrappedName
                 colorCircle.backgroundColor = UIColor(named: subject.unwrappedColor)
-                containerView.layer.borderColor = UIColor(named: subject.unwrappedColor)!.cgColor
+                containerView.layer.borderColor = UIColor(named: subject.unwrappedColor)?.cgColor
             } else {
                 subjectName.text = String(localized: "other")
                 colorCircle.backgroundColor = UIColor(named: "button-normal")
-                containerView.layer.borderColor = UIColor(named: "button-normal")!.cgColor
+                containerView.layer.borderColor = UIColor(named: "button-normal")?.cgColor
             }
         }
     }

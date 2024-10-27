@@ -7,7 +7,8 @@
 
 import UIKit
 
-@objc protocol ThemePageDelegate: AnyObject {
+@objc 
+protocol ThemePageDelegate: AnyObject {
     func setSegmentedControl(_ segmentedControl: UISegmentedControl)
     func addTestButtonTapped()
     func getSelectedTestDateString(for row: Int) -> String

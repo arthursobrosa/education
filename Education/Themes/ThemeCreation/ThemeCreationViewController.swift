@@ -44,9 +44,7 @@ class ThemeCreationViewController: UIViewController {
             view.backgroundColor = .label.withAlphaComponent(0.1)
         }
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, previousTraitCollection: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, previousTraitCollection: UITraitCollection) in
             if previousTraitCollection.userInterfaceStyle == .dark {
                 self.view.backgroundColor = .label.withAlphaComponent(0.2)
             } else {
@@ -74,7 +72,8 @@ class ThemeCreationViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
 
-    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+    @objc 
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: view)
 
         guard !themeCreationView.frame.contains(tapLocation) else { return }
@@ -82,7 +81,8 @@ class ThemeCreationViewController: UIViewController {
         coordinator?.dismiss(animated: true)
     }
 
-    @objc private func keyboardChangedFirstResponder(notification: Notification) {
+    @objc 
+    private func keyboardChangedFirstResponder(notification: Notification) {
         guard let info = notification.userInfo else { return }
 
         let offset = view.bounds.height * (40 / 844)
@@ -95,10 +95,13 @@ class ThemeCreationViewController: UIViewController {
         default:
             break
         }
+        
+        guard let duration: TimeInterval = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else { return }
 
-        let duration: TimeInterval = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
-
-        UIView.animate(withDuration: duration) { self.view.layoutIfNeeded() }
+        UIView.animate(withDuration: duration) { [weak self] in
+            guard let self else { return }
+            self.view.layoutIfNeeded()
+        }
     }
 }
 

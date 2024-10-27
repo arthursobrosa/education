@@ -9,7 +9,7 @@ import UIKit
 
 extension TestPageViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if viewModel.comment != "" {
+        if viewModel.comment.isEmpty {
             textView.text = viewModel.comment
             textView.textColor = .systemText
             textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)

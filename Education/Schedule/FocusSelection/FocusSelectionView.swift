@@ -102,7 +102,8 @@ class FocusSelectionView: UIView {
 
         let textColor: UIColor? = .secondaryLabel
 
-        let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? .systemFont(ofSize: 18), .foregroundColor: textColor ?? .label])
+        let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .regular)
+        let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: textColor ?? .label])
         bttn.setAttributedTitle(attributedString, for: .normal)
 
         bttn.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
@@ -133,8 +134,7 @@ class FocusSelectionView: UIView {
 
         setupUI()
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             guard let selected = self.lastSelected else { return }
             self.didTapSelectionButton(selected)
         }
@@ -152,11 +152,16 @@ class FocusSelectionView: UIView {
         button.layer.borderColor = color.cgColor
 
         continueButton.backgroundColor = .label
-        let attributedString = NSAttributedString(string: continueButton.titleLabel!.text!, attributes: [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? .systemFont(ofSize: 18), .foregroundColor: UIColor.systemBackground])
-        continueButton.setAttributedTitle(attributedString, for: .normal)
+        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .semibold)
+        
+        if let continueButtonText = continueButton.titleLabel?.text {
+            let attributedString = NSAttributedString(string: continueButtonText, attributes: [.font: semiboldFont, .foregroundColor: UIColor.systemBackground])
+            continueButton.setAttributedTitle(attributedString, for: .normal)
+        }
     }
 
-    @objc private func didTapSelectionButton(_ sender: UIButton) {
+    @objc 
+    private func didTapSelectionButton(_ sender: UIButton) {
         continueButton.isEnabled = true
 
         var selectionButtons = subviews.compactMap { $0 as? SelectionButton }
@@ -176,15 +181,18 @@ class FocusSelectionView: UIView {
         lastSelected = sender
     }
 
-    @objc private func didTapContinueButton() {
+    @objc 
+    private func didTapContinueButton() {
         delegate?.continueButtonTapped()
     }
 
-    @objc private func didTapCancelButton() {
+    @objc 
+    private func didTapCancelButton() {
         delegate?.dismissAll()
     }
 
-    @objc private func didTapBackButton() {
+    @objc 
+    private func didTapBackButton() {
         delegate?.dismiss()
     }
 }

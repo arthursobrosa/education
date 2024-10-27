@@ -32,18 +32,18 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
 
         if pickerLabel == nil {
             pickerLabel = UILabel()
-            pickerLabel!.font = UIFont(name: Fonts.darkModeOnRegular, size: 20)
-            pickerLabel!.textColor = .gray
-            pickerLabel!.textAlignment = .center
+            pickerLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 20)
+            pickerLabel?.textColor = .gray
+            pickerLabel?.textAlignment = .center
         }
 
         switch pickerView.tag {
         case 0:
-            pickerLabel!.text = viewModel.days[row]
-            return pickerLabel!
+            pickerLabel?.text = viewModel.days[row]
+            return pickerLabel ?? UIView()
         case 1:
-            pickerLabel!.text = viewModel.subjectsNames[row]
-            return pickerLabel!
+            pickerLabel?.text = viewModel.subjectsNames[row]
+            return pickerLabel ?? UIView()
         default:
             break
         }

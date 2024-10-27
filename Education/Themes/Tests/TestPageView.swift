@@ -80,9 +80,7 @@ class TestPageView: UIView {
 
         setupUI()
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.updateViewColor(self.traitCollection)
         }
     }
@@ -98,11 +96,13 @@ class TestPageView: UIView {
 
     // MARK: - Methods
 
-    @objc private func didTapDeleteButton() {
+    @objc 
+    private func didTapDeleteButton() {
         delegate?.didTapDeleteButton()
     }
 
-    @objc private func didTapSaveButton() {
+    @objc 
+    private func didTapSaveButton() {
         delegate?.didTapSaveButton()
     }
 
@@ -126,7 +126,8 @@ class TestPageView: UIView {
         textView.layer.borderColor = UIColor(named: "button-normal")?.cgColor
     }
 
-    @objc private func dismissKeyboard() {
+    @objc 
+    private func dismissKeyboard() {
         textView.resignFirstResponder()
     }
 
@@ -135,7 +136,8 @@ class TestPageView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    @objc private func keyboardWillShow(notification: NSNotification) {
+    @objc 
+    private func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 
@@ -153,7 +155,8 @@ class TestPageView: UIView {
         }
     }
 
-    @objc private func keyboardWillHide(notification _: NSNotification) {
+    @objc 
+    private func keyboardWillHide(notification _: NSNotification) {
         let contentInsets = UIEdgeInsets.zero
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets

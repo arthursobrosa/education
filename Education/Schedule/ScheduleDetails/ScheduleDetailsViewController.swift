@@ -56,8 +56,6 @@ class ScheduleDetailsViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func loadView() {
-        super.loadView()
-
         view = scheduleDetailsView
     }
 
@@ -79,7 +77,8 @@ class ScheduleDetailsViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
 
         let cancelButton = UIButton(configuration: .plain())
-        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor: UIColor.secondaryLabel])
+        let regularFont = UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: UIColor.secondaryLabel])
         cancelButton.setAttributedTitle(cancelAttributedString, for: .normal)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
 
@@ -88,11 +87,13 @@ class ScheduleDetailsViewController: UIViewController {
         navigationItem.leftBarButtonItems = [cancelItem]
     }
 
-    @objc private func didTapCancelButton() {
+    @objc 
+    private func didTapCancelButton() {
         coordinator?.dismiss(animated: true)
     }
 
-    @objc func datePickerChanged(_ sender: UIDatePicker) {
+    @objc 
+    func datePickerChanged(_ sender: UIDatePicker) {
         switch sender.tag {
         case 1:
             viewModel.selectedStartTime = sender.date
@@ -111,7 +112,8 @@ class ScheduleDetailsViewController: UIViewController {
         }
     }
 
-    @objc func datePickerEditionBegan(_ sender: UIDatePicker) {
+    @objc 
+    func datePickerEditionBegan(_ sender: UIDatePicker) {
         guard let startTimeCell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
               let endTimeCell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
               let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
@@ -123,7 +125,8 @@ class ScheduleDetailsViewController: UIViewController {
         endDatePicker.isEnabled = sender.tag == 2
     }
 
-    @objc func datePickerEditionEnded() {
+    @objc 
+    func datePickerEditionEnded() {
         guard let startTimeCell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
               let endTimeCell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
               let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
@@ -137,7 +140,12 @@ class ScheduleDetailsViewController: UIViewController {
     }
 
     func showInvalidDatesAlert(forExistingSchedule: Bool) {
-        let message = forExistingSchedule ? String(format: NSLocalizedString("invalidDateAlertMessage1", comment: ""), viewModel.selectedDay.lowercased()) : String(localized: "invalidDateAlertMessage2")
+        var message: String
+        if forExistingSchedule {
+            message = String(format: NSLocalizedString("invalidDateAlertMessage1", comment: ""), viewModel.selectedDay.lowercased())
+        } else {
+            message = String(localized: "invalidDateAlertMessage2")
+        }
 
         let alertController = UIAlertController(title: String(localized: "invalidDateAlertTitle"), message: message, preferredStyle: .alert)
 

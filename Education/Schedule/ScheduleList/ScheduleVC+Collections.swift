@@ -108,7 +108,13 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
         let endTimeString = NSAttributedString(string: viewModel.getShortTimeString(for: schedule, isStartTime: false), attributes: [.font: font, .foregroundColor: endTimeColor])
 
         attributedString.append(startTimeString)
-        isDaily ? attributedString.append(NSAttributedString(string: " - ", attributes: [.font: font, .foregroundColor: endTimeColor])) : attributedString.append(NSAttributedString(string: "\n", attributes: [.font: font, .foregroundColor: endTimeColor]))
+        
+        if isDaily {
+            attributedString.append(NSAttributedString(string: " - ", attributes: [.font: font, .foregroundColor: endTimeColor]))
+        } else {
+            attributedString.append(NSAttributedString(string: "\n", attributes: [.font: font, .foregroundColor: endTimeColor]))
+        }
+        
         attributedString.append(endTimeString)
 
         return attributedString

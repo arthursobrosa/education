@@ -50,7 +50,8 @@ class OtherSubjectView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc private func deleteTime() {
+    @objc 
+    private func deleteTime() {
         delegate?.deleteOtherSubjectTime()
     }
 

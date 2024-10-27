@@ -76,7 +76,8 @@ class FocusImediateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc private func cancelButtonTapped() {
+    @objc 
+    private func cancelButtonTapped() {
         delegate?.cancelButtonTapped()
     }
 }

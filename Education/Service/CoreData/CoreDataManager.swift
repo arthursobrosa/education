@@ -8,9 +8,12 @@
 import CoreData
 import UIKit
 
+// swiftlint:disable type_body_length
 class CoreDataManager {
     static let shared = CoreDataManager()
+    // swiftlint:disable force_cast
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    // swiftlint:enable force_cast
 
     // MARK: - Subject CRUD
 
@@ -344,3 +347,4 @@ class CoreDataManager {
         appDelegate.saveContext()
     }
 }
+// swiftlint:enable type_body_length

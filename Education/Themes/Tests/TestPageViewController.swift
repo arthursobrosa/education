@@ -42,8 +42,6 @@ class TestPageViewController: UIViewController {
     // MARK: - View Lifecycle
 
     override func loadView() {
-        super.loadView()
-
         view = testPageView
     }
 
@@ -68,7 +66,8 @@ class TestPageViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
 
         let cancelButton = UIButton(configuration: .plain())
-        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor: UIColor.systemText50])
+        let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: UIColor.systemText50])
         cancelButton.setAttributedTitle(cancelAttributedString, for: .normal)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
 
@@ -77,7 +76,8 @@ class TestPageViewController: UIViewController {
         navigationItem.leftBarButtonItems = [cancelItem]
     }
 
-    @objc private func didTapCancelButton() {
+    @objc 
+    private func didTapCancelButton() {
         coordinator?.dismiss(animated: true)
     }
 
@@ -89,7 +89,8 @@ class TestPageViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    @objc func textFieldEditingDidEnd(_ sender: UITextField) {
+    @objc 
+    func textFieldEditingDidEnd(_ sender: UITextField) {
         guard let text = sender.text else { return }
 
         if text.isEmpty {
@@ -108,12 +109,13 @@ class TestPageViewController: UIViewController {
         }
     }
 
-    @objc func textFieldEditingDidBegin(_ sender: UITextField) {
+    @objc 
+    func textFieldEditingDidBegin(_ sender: UITextField) {
         sender.text = String()
     }
 
     func setupTextView() {
-        if viewModel.comment == "" {
+        if viewModel.comment.isEmpty {
             testPageView.textView.text = String(localized: "description")
             testPageView.textView.font = UIFont(name: Fonts.darkModeOnItalic, size: 16)
             testPageView.textView.textColor = .systemText40
@@ -124,14 +126,16 @@ class TestPageViewController: UIViewController {
         }
     }
 
-    @objc func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
+    @objc 
+    func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
         guard let cell = testPageView.tableView.cellForRow(at: IndexPath(row: sender.tag, section: 1)),
               let textField = cell.accessoryView as? UITextField else { return }
 
         textField.resignFirstResponder()
     }
 
-    @objc func datePickerChanged(_ sender: UIDatePicker) {
+    @objc 
+    func datePickerChanged(_ sender: UIDatePicker) {
         viewModel.date = sender.date
     }
 }

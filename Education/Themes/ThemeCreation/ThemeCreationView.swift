@@ -27,7 +27,9 @@ class ThemeCreationView: UIView {
     lazy var textField: PaddedTextField = {
         let textField = PaddedTextField()
         textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
-        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font: UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular), .foregroundColor: UIColor(named: "system-text-40") ?? UIColor.red])
+        let italicFont: UIFont = UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular)
+        let systemText40Color: UIColor = UIColor(named: "system-text-40") ?? .red
+        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font: italicFont, .foregroundColor: systemText40Color])
         textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
 
         textField.layer.borderColor = UIColor(named: "button-normal")?.cgColor
@@ -81,9 +83,7 @@ class ThemeCreationView: UIView {
 
         setupUI()
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.updateViewColor(self.traitCollection)
         }
     }
@@ -93,17 +93,20 @@ class ThemeCreationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc private func textFieldDidChange(_ sender: UITextField) {
+    @objc 
+    private func textFieldDidChange(_ sender: UITextField) {
         guard let text = sender.text else { return }
 
         delegate?.textFieldDidChange(newText: text)
     }
 
-    @objc private func didTapCancelButton() {
+    @objc 
+    private func didTapCancelButton() {
         delegate?.didTapCancelButton()
     }
 
-    @objc private func didTapContinueButton() {
+    @objc 
+    private func didTapContinueButton() {
         delegate?.didTapContinueButton()
     }
 

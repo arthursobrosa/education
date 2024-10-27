@@ -35,7 +35,8 @@ extension ScheduleDetailsViewController {
         }
     }
 
-    @objc private func switchToggled(_ sender: UISwitch) {
+    @objc 
+    private func switchToggled(_ sender: UISwitch) {
         switch sender.tag {
         case 0:
             viewModel.alarmInTime = sender.isOn

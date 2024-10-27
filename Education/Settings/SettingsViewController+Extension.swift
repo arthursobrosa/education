@@ -110,22 +110,18 @@ extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         return viewModel.days.count
     }
 
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        return self.viewModel.days[row]
-//    }
-
     func pickerView(_: UIPickerView, viewForRow row: Int, forComponent _: Int, reusing view: UIView?) -> UIView {
         var pickerLabel = view as? UILabel
 
         if pickerLabel == nil {
             pickerLabel = UILabel()
-            pickerLabel!.font = UIFont(name: Fonts.darkModeOnRegular, size: 20)
-            pickerLabel!.textColor = UIColor(named: "system-text-80")
-            pickerLabel!.textAlignment = .center
+            pickerLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 20)
+            pickerLabel?.textColor = UIColor(named: "system-text-80")
+            pickerLabel?.textAlignment = .center
         }
 
-        pickerLabel!.text = viewModel.days[row]
-        return pickerLabel!
+        pickerLabel?.text = viewModel.days[row]
+        return pickerLabel ?? UIView()
     }
 
     func pickerView(_: UIPickerView, didSelectRow row: Int, inComponent _: Int) {

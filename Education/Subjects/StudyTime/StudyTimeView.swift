@@ -23,11 +23,13 @@ class StudyTimeView: UIView {
         let segmentedControl = CustomSegmentedControl()
 
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .semibold)
+        let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .regular)
         let titleAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: Fonts.darkModeOnSemiBold, size: 13)!,
+            .font: semiboldFont,
         ]
         let titleAttributesUnselected: [NSAttributedString.Key: Any] = [
-            .font: UIFont(name: Fonts.darkModeOnRegular, size: 13)!,
+            .font: regularFont,
         ]
         segmentedControl.setTitleTextAttributes(titleAttributesUnselected, for: .normal)
         segmentedControl.setTitleTextAttributes(titleAttributes, for: .selected)

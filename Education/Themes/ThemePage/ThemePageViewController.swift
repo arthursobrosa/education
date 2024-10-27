@@ -63,9 +63,7 @@ class ThemePageViewController: UIViewController {
             self.setContentView(isEmpty: tests.isEmpty)
         }
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             if self.traitCollection.userInterfaceStyle == .light {
                 self.themePageView.segmentedControl.segmentImage = UIImage(color: UIColor.systemBackground)
             } else {
@@ -102,13 +100,13 @@ class ThemePageViewController: UIViewController {
         navigationItem.leftBarButtonItems = [backButton]
     }
 
-    @objc private func didTapBackButton() {
+    @objc 
+    private func didTapBackButton() {
         coordinator?.dismiss(animated: true)
     }
 
     func setChart() {
         themePageView.customChart?.removeFromSuperview()
-
         themePageView.customChart = CustomChart(limit: viewModel.selectedLimit)
         themePageView.customChart?.delegate = self
         let limitedItems = viewModel.getLimitedItems()

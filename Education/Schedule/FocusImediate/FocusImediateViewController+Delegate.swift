@@ -24,11 +24,11 @@ extension FocusImediateViewController: FocusImediateDelegate {
         let row = indexPath.row
         let subject: Subject? = row == 0 ? nil : subjects[row - 1]
 
-        var color = UIColor()
+        var color: UIColor?
         if let subject {
-            color = UIColor(named: subject.unwrappedColor)!
+            color = UIColor(named: subject.unwrappedColor)
         } else {
-            color = UIColor(named: "defaultColor")!
+            color = UIColor(named: "defaultColor")
         }
 
         let newFocusSessionModel = FocusSessionModel(subject: subject, color: color)

@@ -38,7 +38,6 @@ class OtherSubjectViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func loadView() {
-        super.loadView()
         view = otherSubjectView
     }
 
@@ -52,7 +51,8 @@ class OtherSubjectViewController: UIViewController {
 
     private func setupNavigationItems() {
         let cancelButton = UIButton(configuration: .plain())
-        let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor: UIColor.label.withAlphaComponent(0.5)])
+        let regularFont = UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+        let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: UIColor.label.withAlphaComponent(0.5)])
         cancelButton.setAttributedTitle(attributedCancelTitle, for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
 
@@ -76,7 +76,8 @@ class OtherSubjectViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    @objc private func cancelButtonTapped() {
+    @objc 
+    private func cancelButtonTapped() {
         coordinator?.dismiss(animated: true)
     }
 }

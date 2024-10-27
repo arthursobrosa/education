@@ -25,8 +25,8 @@ class FocusSubjectTableViewCell: UITableViewCell {
             if let subject {
                 let formattedSubjectName = formattedText(subject.unwrappedName)
                 subjectButton.setTitle(formattedSubjectName, for: .normal)
-                subjectButton.setTitleColor(UIColor(named: subject.unwrappedColor)!, for: .normal)
-                subjectButton.layer.borderColor = UIColor(named: subject.unwrappedColor)!.cgColor
+                subjectButton.setTitleColor(UIColor(named: subject.unwrappedColor), for: .normal)
+                subjectButton.layer.borderColor = UIColor(named: subject.unwrappedColor)?.cgColor
                 return
             }
 
@@ -68,7 +68,8 @@ class FocusSubjectTableViewCell: UITableViewCell {
 
     // MARK: - Methods
 
-    @objc private func subjectButtonTapped() {
+    @objc 
+    private func subjectButtonTapped() {
         delegate?.subjectButtonTapped(indexPath: indexPath)
     }
 

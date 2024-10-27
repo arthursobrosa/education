@@ -87,7 +87,8 @@ class DayView: UIView {
 
     // MARK: - Methods
 
-    @objc private func dayViewTapped() {
+    @objc 
+    private func dayViewTapped() {
         delegate?.dayTapped(self)
     }
 }
@@ -117,9 +118,7 @@ extension DayView: ViewCodeProtocol {
             dateLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
         ])
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.handleDayColors()
         }
     }
@@ -140,7 +139,11 @@ extension DayView: ViewCodeProtocol {
         dateLabel.font = UIFont(name: dateLabelFontName, size: 15)
         dateLabel.textColor = isSelected ? .systemBackground : (isToday ? UIColor(named: "system-text") : UIColor(named: "system-text-50"))
 
-        circleView.layer.borderColor = isToday ? UIColor(named: "system-text")!.cgColor : UIColor(named: "system-text-50")!.cgColor
+        if let systemTextColor = UIColor(named: "system-text")?.cgColor,
+           let systemText50Color = UIColor(named: "system-text-50")?.cgColor {
+            circleView.layer.borderColor = isToday ? systemTextColor : systemText50Color
+        }
+
         circleView.layer.borderWidth = isSelected ? 0 : 1
         circleView.backgroundColor = isSelected ? UIColor(named: "system-text") : .clear
     }

@@ -108,12 +108,14 @@ class FocusSessionView: UIView, TimerAnimation {
     private lazy var restartButton: ButtonComponent = {
         let attributedString = NSMutableAttributedString()
         let restartString = NSAttributedString(string: String(localized: "focusRestart"))
-        let restartAttachment = NSTextAttachment(image: UIImage(systemName: "arrow.counterclockwise")!)
+        let attachmentImage = UIImage(systemName: "arrow.counterclockwise") ?? UIImage()
+        let restartAttachment = NSTextAttachment(image: attachmentImage)
         let restartImage = NSAttributedString(attachment: restartAttachment)
         attributedString.append(restartString)
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(restartImage)
-        attributedString.addAttributes([.font: UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium), .foregroundColor: UIColor.label.withAlphaComponent(0.8)], range: .init(location: 0, length: attributedString.length))
+        let mediumFont = UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium)
+        attributedString.addAttributes([.font: mediumFont, .foregroundColor: UIColor.label.withAlphaComponent(0.8)], range: .init(location: 0, length: attributedString.length))
 
         let bttn = ButtonComponent(title: String(), textColor: nil, cornerRadius: 28)
         bttn.setAttributedTitle(attributedString, for: .normal)
@@ -388,7 +390,13 @@ extension FocusSessionView: ViewCodeProtocol {
     }
 
     func setupLayers(with configuration: ActivityManager.LayersConfig) {
-        let arcPath = UIBezierPath(arcCenter: CGPoint(x: timerLabel.frame.width / 2, y: timerLabel.frame.height / 2), radius: timerLabel.frame.width / 2, startAngle: configuration.startAngle, endAngle: configuration.endAngle, clockwise: configuration.isClockwise)
+        let arcPath = UIBezierPath(
+            arcCenter: CGPoint(x: timerLabel.frame.width / 2, y: timerLabel.frame.height / 2), 
+            radius: timerLabel.frame.width / 2,
+            startAngle: configuration.startAngle,
+            endAngle: configuration.endAngle,
+            clockwise: configuration.isClockwise
+        )
 
         let lineWidth = bounds.height * (7 / 844)
 

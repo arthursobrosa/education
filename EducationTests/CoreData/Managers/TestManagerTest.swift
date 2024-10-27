@@ -9,6 +9,7 @@ import CoreData
 @testable import Education
 import XCTest
 
+// swiftlint:disable force_unwrapping
 class TestManagerTest: XCTestCase {
     var testManager: TestManager!
     var themeManager: ThemeManager!
@@ -126,3 +127,4 @@ class TestManagerTest: XCTestCase {
         XCTAssertEqual(testUpdated.unwrappedComment, "updatedTest")
     }
 }
+// swiftlint:enable force_unwrapping

@@ -54,7 +54,8 @@ class ScheduleNotificationView: UIView {
     }()
 
     private lazy var scheduleNotificationCardView: ScheduleNotificationNameCard = {
-        let view = ScheduleNotificationNameCard(startTime: startTime, endTime: endTime, subjectName: subjectName, dayOfWeek: dayOfWeek, color: color!)
+        let unwrappedColor: UIColor = color ?? .red
+        let view = ScheduleNotificationNameCard(startTime: startTime, endTime: endTime, subjectName: subjectName, dayOfWeek: dayOfWeek, color: unwrappedColor)
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -105,11 +106,13 @@ class ScheduleNotificationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc private func didTapStartButton() {
+    @objc 
+    private func didTapStartButton() {
         delegate?.startButtonTapped()
     }
 
-    @objc private func didDismiss() {
+    @objc 
+    private func didDismiss() {
         delegate?.dismiss()
     }
 }

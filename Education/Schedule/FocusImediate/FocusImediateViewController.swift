@@ -59,9 +59,7 @@ class FocusImediateViewController: UIViewController {
             self.reloadTable()
         }
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.reloadTable()
             self.focusImediateView.layer.borderColor = UIColor.label.cgColor
         }
@@ -82,7 +80,8 @@ class FocusImediateViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
 
-    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+    @objc 
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: view)
 
         guard !focusImediateView.frame.contains(tapLocation) else { return }
@@ -118,7 +117,6 @@ extension FocusImediateViewController: UITableViewDataSource, UITableViewDelegat
 
         let subject: Subject? = row == 0 ? nil : subjects[row - 1]
         cell.subject = subject
-//        cell.color = subject?.unwrappedColor ?? "sealBackgroundColor"
         cell.indexPath = indexPath
         cell.delegate = self
 

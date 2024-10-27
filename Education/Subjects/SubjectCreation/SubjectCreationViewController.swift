@@ -60,8 +60,6 @@ class SubjectCreationViewController: UIViewController {
     // MARK: - Lifecycle
 
     override func loadView() {
-        super.loadView()
-
         view = subjectCreationView
     }
 
@@ -107,10 +105,12 @@ class SubjectCreationViewController: UIViewController {
 
     private func setNavigationItems() {
         navigationItem.title = viewModel.currentEditingSubject != nil ? String(localized: "editSubject") : String(localized: "newSubject")
-        navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14)!, .foregroundColor: UIColor(named: "system-text") as Any]
+        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .semibold)
+        navigationController?.navigationBar.titleTextAttributes = [.font: semiboldFont, .foregroundColor: UIColor(named: "system-text") as Any]
 
         let cancelButton = UIButton(configuration: .plain())
-        let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular), .foregroundColor: UIColor(named: "system-text-50") as Any])
+        let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+        let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: UIColor(named: "system-text-50") as Any])
         cancelButton.setAttributedTitle(attributedCancelTitle, for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
 
@@ -119,7 +119,8 @@ class SubjectCreationViewController: UIViewController {
         navigationItem.leftBarButtonItem = cancelItem
     }
 
-    @objc func cancelButtonTapped() {
+    @objc
+    func cancelButtonTapped() {
         coordinator?.dismiss(animated: true)
     }
 

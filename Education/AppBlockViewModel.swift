@@ -26,7 +26,7 @@ class MyModel: ObservableObject {
     func requestAuthorization() {
         AuthorizationCenter.shared.requestAuthorization { result in
             switch result {
-            case .success():
+            case .success:
                 print("Authorization successful")
             case let .failure(error):
                 print("Authorization failed: \(error.localizedDescription)")
@@ -113,7 +113,7 @@ class MyShieldActionExtension: ShieldActionDelegate {
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
-            fatalError()
+            return
         }
     }
 }

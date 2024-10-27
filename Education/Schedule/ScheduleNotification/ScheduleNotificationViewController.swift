@@ -51,9 +51,7 @@ class ScheduleNotificationViewController: UIViewController {
             view.backgroundColor = .label.withAlphaComponent(0.1)
         }
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, _: UITraitCollection) in
-
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.scheduleNotificationView.layer.borderColor = UIColor.label.cgColor
 
             if self.traitCollection.userInterfaceStyle == .light {
@@ -71,7 +69,8 @@ class ScheduleNotificationViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
 
-    @objc private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+    @objc 
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: view)
 
         guard !scheduleNotificationView.frame.contains(tapLocation) else { return }

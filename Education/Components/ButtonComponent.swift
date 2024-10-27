@@ -11,7 +11,8 @@ class ButtonComponent: UIButton {
     init(title: String, textColor: UIColor? = .systemBackground, cornerRadius: CGFloat) {
         super.init(frame: .zero)
 
-        let attributedString = NSAttributedString(string: title, attributes: [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 17) ?? .systemFont(ofSize: 17), .foregroundColor: textColor ?? .label])
+        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .semibold)
+        let attributedString = NSAttributedString(string: title, attributes: [.font: semiboldFont, .foregroundColor: textColor ?? .label])
         setAttributedTitle(attributedString, for: .normal)
         backgroundColor = .label
         layer.cornerRadius = cornerRadius

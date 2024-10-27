@@ -153,8 +153,7 @@ class ActivityManager {
         didSet {
             if isShowingActivityBar {
                 if case .pomodoro = timerCase,
-                   !isAtWorkTime
-                {
+                   !isAtWorkTime {
                     isProgressingActivityBar = true
                 }
 
@@ -196,7 +195,21 @@ class ActivityManager {
 
     // MARK: - Initializer
 
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), notificationService: NotificationServiceProtocol?, scheduleManager: ScheduleManager = ScheduleManager(), timerCase: TimerCase = .timer, totalSeconds: Int = 1, timerSeconds: Int = 1, isPaused: Bool = true, date: Date = Date(), scheduleID: String? = nil, subject: Subject? = nil, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), 
+         notificationService: NotificationServiceProtocol?, 
+         scheduleManager: ScheduleManager = ScheduleManager(),
+         timerCase: TimerCase = .timer,
+         totalSeconds: Int = 1,
+         timerSeconds: Int = 1,
+         isPaused: Bool = true,
+         date: Date = Date(),
+         scheduleID: String? = nil,
+         subject: Subject? = nil,
+         blocksApps: Bool = false,
+         isTimeCountOn: Bool = true,
+         isAlarmOn: Bool = false,
+         color: UIColor? = nil) {
+        
         self.focusSessionManager = focusSessionManager
         self.scheduleManager = scheduleManager
         self.notificationService = notificationService
@@ -449,7 +462,18 @@ extension ActivityManager: TimerManaging {
         timerFinished = false
         isExtending = true
 
-        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: seconds, timerSeconds: seconds, timerCase: timerCase, scheduleID: scheduleID, subject: subject, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
+        let currentFocusSession = FocusSessionModel(
+            date: date,
+            totalSeconds: seconds,
+            timerSeconds: seconds,
+            timerCase: timerCase,
+            scheduleID: scheduleID,
+            subject: subject,
+            isAtWorkTime: isAtWorkTime,
+            blocksApps: blocksApps,
+            isTimeCountOn: isTimeCountOn,
+            isAlarmOn: isAlarmOn
+        )
         currentFocusSession.currentLoop = currentLoop
         currentFocusSession.color = color
         currentFocusSession.workTime = workTime
@@ -501,8 +525,7 @@ extension ActivityManager: SessionManaging {
         focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID)
 
         if let scheduleID,
-           let schedule = scheduleManager.fetchSchedule(from: scheduleID)
-        {
+           let schedule = scheduleManager.fetchSchedule(from: scheduleID) {
             schedule.completed = true
             scheduleManager.updateSchedule(schedule)
         }
@@ -568,7 +591,18 @@ extension ActivityManager: SessionManaging {
     func restartActivity() {
         timerFinished = false
 
-        let currentFocusSession = FocusSessionModel(date: date, totalSeconds: totalSeconds, timerSeconds: totalSeconds, timerCase: timerCase, scheduleID: scheduleID, subject: subject, isAtWorkTime: isAtWorkTime, blocksApps: blocksApps, isTimeCountOn: isTimeCountOn, isAlarmOn: isAlarmOn)
+        let currentFocusSession = FocusSessionModel(
+            date: date,
+            totalSeconds: totalSeconds,
+            timerSeconds: totalSeconds,
+            timerCase: timerCase,
+            scheduleID: scheduleID,
+            subject: subject,
+            isAtWorkTime: isAtWorkTime,
+            blocksApps: blocksApps,
+            isTimeCountOn: isTimeCountOn,
+            isAlarmOn: isAlarmOn
+        )
         currentFocusSession.currentLoop = currentLoop
         currentFocusSession.color = color
         currentFocusSession.workTime = workTime

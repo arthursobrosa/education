@@ -30,7 +30,7 @@ class ScheduleNotificationViewModel {
         self.startTime = startTime
         self.endTime = endTime
 
-        subject = self.subjectManager.fetchSubject(withName: subjectName)!
+        subject = self.subjectManager.fetchSubject(withName: subjectName) ?? Subject()
     }
 
     func getTimeString(isStartTime: Bool) -> String {
@@ -41,8 +41,8 @@ class ScheduleNotificationViewModel {
         let dateComponents = calendar.dateComponents([.hour, .minute], from: date)
 
         if let hour = dateComponents.hour,
-           let minute = dateComponents.minute
-        {
+           let minute = dateComponents.minute {
+            
             let hourText = hour > 9 ? "\(hour)" : "0\(hour)"
             let minuteText = minute > 9 ? "\(minute)" : "0\(minute)"
 

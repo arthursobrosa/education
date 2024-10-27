@@ -9,6 +9,7 @@ import CoreData
 @testable import Education
 import XCTest
 
+// swiftlint:disable force_unwrapping
 class ThemeManagerTest: XCTestCase {
     var themeManager: ThemeManager!
     var coreDataStack: CoreDataTestStack!
@@ -63,3 +64,4 @@ class ThemeManagerTest: XCTestCase {
         XCTAssertEqual(themeUpdated.unwrappedName, "Just math")
     }
 }
+// swiftlint:enable force_unwrapping

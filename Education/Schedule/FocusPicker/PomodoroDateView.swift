@@ -124,8 +124,13 @@ extension PomodoroDateView: ViewCodeProtocol {
         }
 
         guard let picker = stack.subviews.last else { return nil }
-
-        let pickerHorizontalConstraint = stackCase == .repetition ? picker.centerXAnchor.constraint(equalTo: stack.centerXAnchor, constant: -4) : picker.trailingAnchor.constraint(equalTo: stack.trailingAnchor, constant: -4)
+        
+        var pickerHorizontalConstraint: NSLayoutConstraint
+        if case .repetition = stackCase {
+            pickerHorizontalConstraint = picker.centerXAnchor.constraint(equalTo: stack.centerXAnchor, constant: -4)
+        } else {
+            pickerHorizontalConstraint = picker.trailingAnchor.constraint(equalTo: stack.trailingAnchor, constant: -4)
+        }
 
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: stack.leadingAnchor),

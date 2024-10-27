@@ -20,10 +20,10 @@ class ThemePageCoordinator: NSObject, Coordinator, ShowingTestDetails, Dismissin
 
     func start() {
         let viewModel = ThemePageViewModel(theme: theme)
-        let vc = ThemePageViewController(viewModel: viewModel)
-        vc.coordinator = self
+        let viewController = ThemePageViewController(viewModel: viewModel)
+        viewController.coordinator = self
 
-        navigationController.pushViewController(vc, animated: true)
+        navigationController.pushViewController(viewController, animated: true)
     }
 
     func showTestDetails(theme: Theme, test: Test) {
@@ -45,11 +45,9 @@ class ThemePageCoordinator: NSObject, Coordinator, ShowingTestDetails, Dismissin
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
         }
     }
 }

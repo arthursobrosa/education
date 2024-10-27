@@ -68,7 +68,7 @@ class DayColumnCell: UICollectionViewCell {
     }
 }
 
-private extension DayColumnCell {
+extension DayColumnCell: ViewCodeProtocol {
     func setupUI() {
         guard let dayView else { return }
 

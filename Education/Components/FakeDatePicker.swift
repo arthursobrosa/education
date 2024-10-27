@@ -48,7 +48,8 @@ class FakeDatePicker: UIDatePicker {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc private func datePickerDidChange() {
+    @objc
+    private func datePickerDidChange() {
         dateLabel.text = getDateString(from: date)
     }
 
@@ -72,7 +73,7 @@ class FakeDatePicker: UIDatePicker {
     }
 }
 
-private extension FakeDatePicker {
+extension FakeDatePicker: ViewCodeProtocol {
     func setupUI() {
         addSubview(dateContainerView)
         addSubview(dateLabel)

@@ -9,7 +9,8 @@ import UIKit
 
 // MARK: - Schedule
 
-@objc protocol ScheduleDelegate: AnyObject {
+@objc 
+protocol ScheduleDelegate: AnyObject {
     // MARK: - View Mode
 
     func setSegmentedControl(_ segmentedControl: UISegmentedControl)
@@ -79,8 +80,14 @@ extension ScheduleViewController: ScheduleDelegate {
         if scheduleView.scheduleModeSelector.selectedSegmentIndex == 1 {
             scheduleView.scheduleModeSelector.selectedSegmentIndex = 0
             viewModel.selectedScheduleMode = .daily
-
-            let newDayView = dayViews.first { $0.dayOfWeek!.day == dayView.dayOfWeek!.day }
+            
+            let newDayView = dayViews.first { element in
+                guard let newDay = element.dayOfWeek?.day,
+                      let lastDay = dayView.dayOfWeek?.day,
+                      newDay == lastDay else { return false }
+                
+                return true
+            }
 
             dayTapped(newDayView ?? dayView)
 
@@ -88,7 +95,11 @@ extension ScheduleViewController: ScheduleDelegate {
         }
 
         // Unable reloading the rows of a table that is already loaded
-        let lastDayView = dayViews.first { $0.dayOfWeek!.isSelected }
+        let lastDayView = dayViews.first { element in
+            guard let isSelected = element.dayOfWeek?.isSelected,
+                  isSelected else { return false }
+            return true
+        }
         guard dayView != lastDayView else { return }
 
         // Logics to select the day tapped
@@ -147,8 +158,8 @@ extension ScheduleViewController: ScheduleDelegate {
     }
 
     func emptyViewButtonTapped() {
-        let vm = StudyTimeViewModel()
-        coordinator?.showSubjectCreation(viewModel: vm)
+        let viewModel = StudyTimeViewModel()
+        coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 
     // MARK: - Play Button

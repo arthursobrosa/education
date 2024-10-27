@@ -25,7 +25,18 @@ class FocusSessionModel {
     var numberOfLoops = Int()
     var currentLoop = Int()
 
-    init(date: Date = Date.now, totalSeconds: Int = 1, timerSeconds: Int = 1, timerCase: TimerCase = .timer, scheduleID: String? = nil, subject: Subject? = nil, isAtWorkTime: Bool = true, blocksApps: Bool = false, isTimeCountOn: Bool = true, isAlarmOn: Bool = false, color: UIColor? = nil) {
+    init(date: Date = Date.now, 
+         totalSeconds: Int = 1,
+         timerSeconds: Int = 1,
+         timerCase: TimerCase = .timer,
+         scheduleID: String? = nil,
+         subject: Subject? = nil,
+         isAtWorkTime: Bool = true,
+         blocksApps: Bool = false,
+         isTimeCountOn: Bool = true,
+         isAlarmOn: Bool = false,
+         color: UIColor? = nil) {
+        
         self.date = date
         self.totalSeconds = totalSeconds
         self.timerSeconds = timerSeconds

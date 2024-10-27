@@ -7,7 +7,8 @@
 
 import UIKit
 
-@objc protocol FocusSessionDelegate: AnyObject {
+@objc 
+protocol FocusSessionDelegate: AnyObject {
     func dismissButtonTapped()
     func eyeButtonTapped()
     func getTitleString() -> NSAttributedString?
@@ -43,8 +44,10 @@ extension FocusSessionViewController: FocusSessionDelegate {
 
         let attributedString = NSMutableAttributedString()
 
-        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font: UIFont(name: Fonts.darkModeOnMedium, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium), .foregroundColor: UIColor.label.withAlphaComponent(0.7)])
-        let subjectString = NSAttributedString(string: subjectName, attributes: [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .semibold), .foregroundColor: UIColor.label.withAlphaComponent(0.85)])
+        let mediumFont: UIFont = UIFont(name: Fonts.darkModeOnMedium, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
+        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .semibold)
+        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font: mediumFont, .foregroundColor: UIColor.label.withAlphaComponent(0.7)])
+        let subjectString = NSAttributedString(string: subjectName, attributes: [.font: semiboldFont, .foregroundColor: UIColor.label.withAlphaComponent(0.85)])
 
         attributedString.append(activityString)
         attributedString.append(subjectString)

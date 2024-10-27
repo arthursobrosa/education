@@ -21,9 +21,9 @@ class FocusEndCoordinator: Coordinator, Dismissing {
 
     func start() {
         let viewModel = FocusEndViewModel(activityManager: activityManager)
-        let vc = FocusEndViewController(viewModel: viewModel)
-        vc.coordinator = self
-        navigationController.pushViewController(vc, animated: true)
+        let viewController = FocusEndViewController(viewModel: viewModel)
+        viewController.coordinator = self
+        navigationController.pushViewController(viewController, animated: true)
     }
 
     func dismiss(animated: Bool) {

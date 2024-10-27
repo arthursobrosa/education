@@ -77,7 +77,8 @@ class FocusPickerView: UIView {
 
         let textColor: UIColor? = .secondaryLabel
 
-        let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? .systemFont(ofSize: 18), .foregroundColor: textColor ?? .label])
+        let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .regular)
+        let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: textColor ?? .label])
         bttn.setAttributedTitle(attributedString, for: .normal)
 
         bttn.addTarget(delegate, action: #selector(FocusPickerDelegate.dismissAll), for: .touchUpInside)
