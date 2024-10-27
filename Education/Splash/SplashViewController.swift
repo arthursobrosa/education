@@ -7,6 +7,7 @@
 
 import UIKit
 
+#warning("Dark mode images seem to be of low quality")
 class SplashViewController: UIViewController {
     // MARK: - Coordinator
 
