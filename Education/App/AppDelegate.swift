@@ -8,12 +8,18 @@
 import CoreData
 import TipKit
 import UIKit
+import UXCam
 
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        UXCam.optIntoSchematicRecordings()
+        let configuration = UXCamConfiguration(appKey: "p40ljalqy03uxcg")
+        configuration.enableAdvancedGestureRecognition = true
+        UXCam.start(with: configuration)
         
         try? Tips.configure()
         return true
