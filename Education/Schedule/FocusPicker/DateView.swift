@@ -9,69 +9,70 @@ import UIKit
 
 class DateView: UIView {
     private let timerCase: TimerCase?
-    
+
     let timerDatePicker: CustomDatePickerView = {
         let picker = CustomDatePickerView()
-        
+
         picker.hoursPicker.tag = PickerCase.timerHours
         picker.minutesPicker.tag = PickerCase.timerMinutes
-        
+
         picker.translatesAutoresizingMaskIntoConstraints = false
 
         return picker
     }()
-    
+
     let pomodoroDateView: PomodoroDateView = {
         let view = PomodoroDateView()
-        
+
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return view
     }()
-    
+
     init(timerCase: TimerCase?) {
         self.timerCase = timerCase
-        
+
         super.init(frame: .zero)
-        
-        self.setupUI()
+
+        setupUI()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupUI() {
         guard let timerCase else { return }
-        
+
         switch timerCase {
-            case .timer:
-                self.setTimer()
-            case .pomodoro:
-                self.setPomodoro()
-            default:
-                break
+        case .timer:
+            setTimer()
+        case .pomodoro:
+            setPomodoro()
+        default:
+            break
         }
     }
-    
+
     private func setTimer() {
-        self.addSubview(timerDatePicker)
-        
+        addSubview(timerDatePicker)
+
         NSLayoutConstraint.activate([
-            timerDatePicker.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            timerDatePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            timerDatePicker.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            timerDatePicker.centerYAnchor.constraint(equalTo: centerYAnchor),
+            timerDatePicker.leadingAnchor.constraint(equalTo: leadingAnchor),
+            timerDatePicker.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
-    
+
     private func setPomodoro() {
-        self.addSubview(pomodoroDateView)
-        
+        addSubview(pomodoroDateView)
+
         NSLayoutConstraint.activate([
-            pomodoroDateView.topAnchor.constraint(equalTo: self.topAnchor),
-            pomodoroDateView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            pomodoroDateView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            pomodoroDateView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            pomodoroDateView.topAnchor.constraint(equalTo: topAnchor),
+            pomodoroDateView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            pomodoroDateView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            pomodoroDateView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
 }

@@ -9,39 +9,39 @@ import Foundation
 
 class ThemeCreationViewModel {
     private let themeManager: ThemeManager
-    
+
     var theme: Theme?
     var currentThemeName: String
-    
+
     init(themeManager: ThemeManager = ThemeManager(), theme: Theme?) {
         self.themeManager = themeManager
-        
+
         self.theme = theme
-        
+
         if let theme {
-            self.currentThemeName = theme.unwrappedName
+            currentThemeName = theme.unwrappedName
         } else {
-            self.currentThemeName = String()
+            currentThemeName = String()
         }
     }
-    
+
     func saveTheme() {
         if let theme {
-            self.updateTheme(theme)
+            updateTheme(theme)
         } else {
-            self.addTheme()
+            addTheme()
         }
     }
-    
+
     private func updateTheme(_ theme: Theme) {
-        if let editingTheme = self.themeManager.fetchTheme(withName: theme.unwrappedName) {
-            editingTheme.name = self.currentThemeName
-            
-            self.themeManager.updateTheme(editingTheme)
+        if let editingTheme = themeManager.fetchTheme(withName: theme.unwrappedName) {
+            editingTheme.name = currentThemeName
+
+            themeManager.updateTheme(editingTheme)
         }
     }
-    
+
     private func addTheme() {
-        self.themeManager.createTheme(name: self.currentThemeName)
+        themeManager.createTheme(name: currentThemeName)
     }
 }

@@ -16,23 +16,23 @@ protocol ThemeCreationDelegate: AnyObject {
 
 extension ThemeCreationViewController: ThemeCreationDelegate {
     func didTapCancelButton() {
-        self.coordinator?.dismiss(animated: true)
+        coordinator?.dismiss(animated: true)
     }
-    
+
     func didTapContinueButton() {
-        guard !self.viewModel.currentThemeName.isEmpty else { return }
-        
-        self.viewModel.saveTheme()
-        self.viewModel.currentThemeName = String()
-        
-        self.coordinator?.dismiss(animated: true)
+        guard !viewModel.currentThemeName.isEmpty else { return }
+
+        viewModel.saveTheme()
+        viewModel.currentThemeName = String()
+
+        coordinator?.dismiss(animated: true)
     }
-    
+
     func setTextFieldDelegate(_ textField: UITextField) {
         textField.delegate = self
     }
-    
+
     func textFieldDidChange(newText: String) {
-        self.viewModel.currentThemeName = newText
+        viewModel.currentThemeName = newText
     }
 }

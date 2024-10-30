@@ -8,18 +8,17 @@
 import Foundation
 
 class TestDetailsViewModel {
-    
     private let testManager: TestManager
-    
+
     let theme: Theme
     var test: Test
 
     init(theme: Theme, test: Test) {
         self.theme = theme
         self.test = test
-        self.testManager = TestManager()
+        testManager = TestManager()
     }
-    
+
     func getDateString(from test: Test) -> String {
         let date = test.unwrappedDate
 
@@ -29,32 +28,29 @@ class TestDetailsViewModel {
 
         return dateFormatter.string(from: date)
     }
-    
+
     func getDateFullString(from test: Test) -> String {
-        let date = test.unwrappedDate
-
+        let dayOfTheWeekString = getDayOfTheWeekString(from: test.unwrappedDate)
+        
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current // Usar o idioma atual do sistema
-        dateFormatter.dateFormat = "EEEE, dd 'de' MMMM 'de' yyyy"
+        dateFormatter.setLocalizedDateFormatFromTemplate("dMMMM, yyyy")
+        let dateString = dateFormatter.string(from: test.unwrappedDate)
 
-        // Ajustar o formato do texto "de" para idiomas como inglês
-        if Locale.current.languageCode == "en" {
-            dateFormatter.dateFormat = "EEEE, MMMM dd, yyyy"
-        }
-
+        return dayOfTheWeekString + ", " + dateString
+    }
+    
+    private func getDayOfTheWeekString(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
         return dateFormatter.string(from: date)
     }
-    
-    func getUpdatedTest(){
-        
-        let testId = self.test.unwrappedID
-        
+
+    func getUpdatedTest() {
+        let testId = test.unwrappedID
+
         let updatedTest = testManager.fetchTest(id: testId)
-        
-        guard let updatedTest else {return}
-        self.test = updatedTest
-        
+
+        guard let updatedTest else { return }
+        test = updatedTest
     }
-    
-    
 }

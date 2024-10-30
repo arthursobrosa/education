@@ -8,34 +8,32 @@
 import UIKit
 
 class OtherSubjectCoordinator: Coordinator, Dismissing {
-    
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
 
     var navigationController: UINavigationController
-    private var newNavigationController = UINavigationController()
     private let viewModel: StudyTimeViewModel
-    
+
     init(navigationController: UINavigationController, viewModel: StudyTimeViewModel) {
         self.navigationController = navigationController
         self.viewModel = viewModel
     }
-    
+
     func start() {
-        let vc = OtherSubjectViewController(viewModel: self.viewModel)
-        vc.coordinator = self
-        
-        self.newNavigationController = UINavigationController(rootViewController: vc)
-        
-        if let studyTimeCoordinator = self.parentCoordinator as? StudyTimeCoordinator {
-            self.newNavigationController.transitioningDelegate = studyTimeCoordinator
+        let viewController = OtherSubjectViewController(viewModel: viewModel)
+        viewController.coordinator = self
+
+        let newNavigationController = UINavigationController(rootViewController: viewController)
+
+        if let studyTimeCoordinator = parentCoordinator as? StudyTimeCoordinator {
+            newNavigationController.transitioningDelegate = studyTimeCoordinator
         }
-        
-        self.newNavigationController.modalPresentationStyle = .pageSheet
-        self.navigationController.present(self.newNavigationController, animated: true)
+
+        newNavigationController.modalPresentationStyle = .pageSheet
+        navigationController.present(newNavigationController, animated: true)
     }
-    
+
     func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+        navigationController.dismiss(animated: animated)
     }
 }

@@ -7,7 +7,8 @@
 
 import Foundation
 
-@objc protocol FocusEndDelegate: AnyObject {
+@objc 
+protocol FocusEndDelegate: AnyObject {
     func didTapSaveButton()
     func didTapDiscardButton()
 }
@@ -18,7 +19,7 @@ extension FocusEndViewController: FocusEndDelegate {
         viewModel.activityManager.resetTimer()
         coordinator?.dismiss(animated: true)
     }
-    
+
     func didTapDiscardButton() {
         viewModel.activityManager.resetTimer()
         coordinator?.dismiss(animated: true)

@@ -13,11 +13,11 @@ protocol OtherSubjectDelegate: AnyObject {
 
 extension OtherSubjectViewController: OtherSubjectDelegate {
     func deleteOtherSubjectTime() {
-        self.showDeleteAlert()
+        showDeleteAlert()
     }
-    
+
     func deleteTime() {
-        self.viewModel.removeSubject(subject: nil)
-        self.coordinator?.dismiss(animated: true)
+        viewModel.removeSubject(subject: nil)
+        coordinator?.dismiss(animated: true)
     }
 }

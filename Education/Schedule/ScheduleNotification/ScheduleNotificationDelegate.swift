@@ -5,7 +5,6 @@
 //  Created by Lucas Cunha on 19/08/24.
 //
 
-
 import UIKit
 
 protocol ScheduleNotificationDelegate: AnyObject {
@@ -14,18 +13,16 @@ protocol ScheduleNotificationDelegate: AnyObject {
 }
 
 extension ScheduleNotificationViewController: ScheduleNotificationDelegate {
-    
     func startButtonTapped() {
-        let colorName = self.viewModel.subject.unwrappedColor
+        let colorName = viewModel.subject.unwrappedColor
         let color = UIColor(named: colorName)
-        
-        let newFocusSessionModel = FocusSessionModel(subject: self.viewModel.subject, color: color)
-        
-        self.coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
+
+        let newFocusSessionModel = FocusSessionModel(subject: viewModel.subject, color: color)
+
+        coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
-    
+
     func dismiss() {
-        self.navigationController?.dismiss(animated: true)
+        navigationController?.dismiss(animated: true)
     }
-    
 }

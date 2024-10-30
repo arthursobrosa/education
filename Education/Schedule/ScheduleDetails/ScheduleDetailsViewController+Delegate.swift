@@ -15,41 +15,41 @@ protocol ScheduleDetailsDelegate: AnyObject {
 extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
     func deleteSchedule() {
         let alertController = UIAlertController(title: String(localized: "activityDeletionTitle"), message: String(localized: "activityDeletionMessage"), preferredStyle: .alert)
-        
+
         let yesAction = UIAlertAction(title: String(localized: "yes"), style: .destructive) { [weak self] _ in
             guard let self else { return }
-            
+
             self.viewModel.cancelNotifications()
             self.viewModel.removeSchedule()
-            
+
             self.coordinator?.dismiss(animated: true)
         }
-        
+
         let noAction = UIAlertAction(title: String(localized: "no"), style: .cancel)
-        
+
         alertController.addAction(yesAction)
         alertController.addAction(noAction)
-        
+
         present(alertController, animated: true)
     }
-    
+
     func saveSchedule() {
-        if self.viewModel.selectedSubjectName.isEmpty {
-            self.showNoSubjectAlert()
+        if viewModel.selectedSubjectName.isEmpty {
+            showNoSubjectAlert()
             return
         }
-        
-        if self.viewModel.selectedStartTime >= self.viewModel.selectedEndTime {
-            self.showInvalidDatesAlert(forExistingSchedule: false)
+
+        if viewModel.selectedStartTime >= viewModel.selectedEndTime {
+            showInvalidDatesAlert(forExistingSchedule: false)
             return
         }
-        
-        if !self.viewModel.isNewScheduleAvailable() {
-            self.showInvalidDatesAlert(forExistingSchedule: true)
+
+        if !viewModel.isNewScheduleAvailable() {
+            showInvalidDatesAlert(forExistingSchedule: true)
             return
         }
-        
-        self.viewModel.saveSchedule()
-        self.coordinator?.dismiss(animated: true)
+
+        viewModel.saveSchedule()
+        coordinator?.dismiss(animated: true)
     }
 }

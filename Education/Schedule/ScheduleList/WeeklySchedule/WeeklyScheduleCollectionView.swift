@@ -8,18 +8,19 @@
 import UIKit
 
 class WeeklyScheduleCollectionView: UICollectionView {
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+    override init(frame: CGRect, collectionViewLayout _: UICollectionViewLayout) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        
+
         super.init(frame: frame, collectionViewLayout: layout)
-        
-        self.showsHorizontalScrollIndicator = false
-        
-        self.tag = 1
+
+        showsHorizontalScrollIndicator = false
+
+        tag = 1
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

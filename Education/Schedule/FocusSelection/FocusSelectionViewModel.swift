@@ -9,7 +9,7 @@ import Foundation
 
 class FocusSelectionViewModel {
     var focusSessionModel: FocusSessionModel
-    
+
     init(focusSessionModel: FocusSessionModel) {
         self.focusSessionModel = focusSessionModel
     }

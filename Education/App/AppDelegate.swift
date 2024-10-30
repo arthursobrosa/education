@@ -5,9 +5,9 @@
 //  Created by Arthur Sobrosa on 13/06/24.
 //
 
-import UIKit
 import CoreData
 import TipKit
+import UIKit
 
 
 @main

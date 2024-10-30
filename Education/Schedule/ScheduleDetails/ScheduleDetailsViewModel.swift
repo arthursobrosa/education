@@ -9,15 +9,17 @@ import Foundation
 
 class ScheduleDetailsViewModel {
     // MARK: - Subject and Schedule Handlers
+
     private let subjectManager: SubjectManager
     private let scheduleManager: ScheduleManager
-    
+
     private let notificationService: NotificationServiceProtocol?
-    
+
     // MARK: - Properties
+
     var subjectsNames: [String]
     var selectedSubjectName: String
-    
+
     let days = [
         String(localized: "sunday"),
         String(localized: "monday"),
@@ -25,104 +27,121 @@ class ScheduleDetailsViewModel {
         String(localized: "wednesday"),
         String(localized: "thursday"),
         String(localized: "friday"),
-        String(localized: "saturday")
+        String(localized: "saturday"),
     ]
     var selectedDay: String
-    
+
     var selectedStartTime: Date
     var selectedEndTime: Date
-    
+
     var alarmBefore: Bool
     var alarmInTime: Bool
-    
+
     var blocksApps: Bool
-    
+
     private var scheduleID: String?
     var schedule: Schedule?
-    
+
     // MARK: - Initializer
-    init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager(), notificationService: NotificationServiceProtocol?, schedule: Schedule? = nil, selectedDay: Int?) {
+
+    init(subjectManager: SubjectManager = SubjectManager(), 
+         scheduleManager: ScheduleManager = ScheduleManager(),
+         notificationService: NotificationServiceProtocol?,
+         schedule: Schedule? = nil,
+         selectedDay: Int?) {
+        
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
         self.notificationService = notificationService
         self.schedule = schedule
-        
+
         let currentDate = Date.now
-        
-        var selectedSubjectName: String = String()
+
+        var selectedSubjectName = String()
         var selectedStartTime: Date = currentDate
         var selectedEndTime: Date = selectedStartTime.addingTimeInterval(60)
-        var selectedDayIndex = selectedDay != nil ? selectedDay! : 0
-        
-        self.subjectsNames = [String]()
-        
+        var selectedDayIndex: Int = selectedDay ?? 0
+
+        subjectsNames = [String]()
+
         if let subjects = self.subjectManager.fetchSubjects() {
-            self.subjectsNames = subjects.map({ $0.unwrappedName })
+            subjectsNames = subjects.map { $0.unwrappedName }
             if !subjectsNames.isEmpty {
-                selectedSubjectName = self.subjectsNames[0]
+                selectedSubjectName = subjectsNames[0]
             }
         }
-        
-        self.alarmBefore = false
-        self.alarmInTime = false
-        
+
+        alarmBefore = false
+        alarmInTime = false
+
         if let schedule {
             if let subject = self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID) {
                 selectedSubjectName = subject.unwrappedName
             }
-            
+
             selectedStartTime = schedule.unwrappedStartTime
             selectedEndTime = schedule.unwrappedEndTime
-            self.alarmBefore = schedule.earlyAlarm
-            self.alarmInTime = schedule.imediateAlarm
+            alarmBefore = schedule.earlyAlarm
+            alarmInTime = schedule.imediateAlarm
             selectedDayIndex = schedule.unwrappedDay
         }
 
-        self.selectedDay = self.days[selectedDayIndex]
+        self.selectedDay = days[selectedDayIndex]
         self.selectedSubjectName = selectedSubjectName
         self.selectedStartTime = selectedStartTime
         self.selectedEndTime = selectedEndTime
-        self.scheduleID = schedule?.unwrappedID
-        self.blocksApps = schedule?.blocksApps ?? false
+        scheduleID = schedule?.unwrappedID
+        blocksApps = schedule?.blocksApps ?? false
     }
-    
+
     // MARK: - Methods
+
     func fetchSubjects() {
-        if let subjects = self.subjectManager.fetchSubjects() {
-            self.subjectsNames = subjects.map({ $0.unwrappedName })
+        if let subjects = subjectManager.fetchSubjects() {
+            subjectsNames = subjects.map { $0.unwrappedName }
         }
     }
-    
+
     func addSubject(name: String) {
-        self.subjectManager.createSubject(name: name, color: "FocusSelectionColor")
-        self.fetchSubjects()
-        self.selectedSubjectName = name
+        subjectManager.createSubject(name: name, color: "FocusSelectionColor")
+        fetchSubjects()
+        selectedSubjectName = name
     }
-    
+
     func saveSchedule() {
         if let scheduleID {
-            self.updateSchedule(withID: scheduleID)
+            updateSchedule(withID: scheduleID)
         } else {
-            self.createNewSchedule()
+            createNewSchedule()
         }
     }
-    
+
     private func createNewSchedule() {
-        guard let subject = self.subjectManager.fetchSubject(withName: self.selectedSubjectName) else { return }
-        
-        if let selectedIndex = self.days.firstIndex(where: { $0 == selectedDay }) {
+        guard let subject = subjectManager.fetchSubject(withName: selectedSubjectName) else { return }
+
+        if let selectedIndex = days.firstIndex(where: { $0 == selectedDay }) {
             let dayOfTheWeek = Int(selectedIndex)
+            
             handleAlerts()
-            self.scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: dayOfTheWeek, startTime: self.selectedStartTime, endTime: self.selectedEndTime, blocksApps: self.blocksApps, earlyAlarm: self.alarmBefore, imediateAlarm: self.alarmInTime)
+            
+            scheduleManager.createSchedule(
+                subjectID: subject.unwrappedID,
+                dayOfTheWeek: dayOfTheWeek,
+                startTime: selectedStartTime,
+                endTime: selectedEndTime,
+                blocksApps: blocksApps,
+                earlyAlarm: alarmBefore,
+                imediateAlarm: alarmInTime
+            )
         }
     }
-    
+
     private func handleAlerts() {
-        let selectedDate = self.selectedStartTime
+        let selectedDate = selectedStartTime
         let title = String(localized: "reminder")
         let bodyBefore = String(format: NSLocalizedString("comingEvent", comment: ""), String(selectedSubjectName))
         let bodyInTime = String(format: NSLocalizedString("immediateEvent", comment: ""), String(selectedSubjectName))
-        
+
         if alarmBefore {
             notificationService?.scheduleWeeklyNotification(
                 title: title,
@@ -132,108 +151,109 @@ class ScheduleDetailsViewModel {
                 scheduleInfo: nil
             )
         }
-        
+
         if alarmInTime {
             let scheduleInfo = ScheduleInfo(
                 subjectName: selectedSubjectName,
                 dates: (selectedStartTime, selectedEndTime)
             )
-            
+
             notificationService?.scheduleWeeklyNotification(
-               title: title,
-               body: bodyInTime,
-               date: selectedDate,
-               isAtExactTime: true,
-               scheduleInfo: scheduleInfo
-           )
+                title: title,
+                body: bodyInTime,
+                date: selectedDate,
+                isAtExactTime: true,
+                scheduleInfo: scheduleInfo
+            )
         }
     }
-    
+
     private func updateSchedule(withID id: String) {
         if let schedule = scheduleManager.fetchSchedule(from: id) {
             if let subjects = subjectManager.fetchSubjects() {
                 if let subject = subjects.first(where: { $0.unwrappedName == selectedSubjectName }) {
                     schedule.subjectID = subject.unwrappedID
-                    
-                    if let dayOfTheWeek = days.firstIndex(where: { $0 == selectedDay }) {
+
+                    if let dayOfTheWeek = days.firstIndex(where: { $0 == selectedDay }),
+                       let startTime = schedule.startTime {
+                        
                         schedule.dayOfTheWeek = Int16(dayOfTheWeek)
+                        notificationService?.cancelNotifications(forDate: startTime)
                     }
-                    
-                    notificationService?.cancelNotifications(forDate: schedule.startTime!)
-                    
+
                     schedule.startTime = selectedStartTime
                     schedule.endTime = selectedEndTime
                     schedule.blocksApps = blocksApps
                     schedule.earlyAlarm = alarmBefore
                     schedule.imediateAlarm = alarmInTime
-                    
+
                     handleAlerts()
                 }
             }
-            
+
             scheduleManager.updateSchedule(schedule)
         }
     }
-    
+
     func isNewScheduleAvailable() -> Bool {
-        var isAvailable: Bool = true
-        
+        var isAvailable = true
+
         var allSchedules = [Schedule]()
-        
-        if let subjects = self.subjectManager.fetchSubjects() {
-            subjects.forEach { subject in
-                if let schedules = self.scheduleManager.fetchSchedules(subjectID: subject.unwrappedID) {
+
+        if let subjects = subjectManager.fetchSubjects() {
+            for subject in subjects {
+                if let schedules = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID) {
                     allSchedules.append(contentsOf: schedules)
                 }
             }
         }
-        
+
         var filteredSchedules = allSchedules
-        
-        if let selectedIndex = self.days.firstIndex(where: { $0 == self.selectedDay }) {
+
+        if let selectedIndex = days.firstIndex(where: { $0 == self.selectedDay }) {
             let dayOfWeek = Int(selectedIndex)
             filteredSchedules = filteredSchedules.filter { $0.dayOfTheWeek == dayOfWeek }
         }
-        
+
         if !filteredSchedules.isEmpty {
-            isAvailable = self.isTimeSlotAvailable(existingSchedules: filteredSchedules)
+            isAvailable = isTimeSlotAvailable(existingSchedules: filteredSchedules)
         }
-        
+
         return isAvailable
     }
-    
+
     private func isTimeSlotAvailable(existingSchedules: [Schedule]) -> Bool {
-        guard let newStartTime = self.formatDate(self.selectedStartTime),
-              let newEndTime = self.formatDate(self.selectedEndTime) else { return false }
-        
+        guard let newStartTime = formatDate(selectedStartTime),
+              let newEndTime = formatDate(selectedEndTime) else { return false }
+
         for schedule in existingSchedules {
-            if let existingStartTime = self.formatDate(schedule.unwrappedStartTime),
-               let existingEndTime = self.formatDate(schedule.unwrappedEndTime) {
-                if (newStartTime < existingEndTime && newEndTime > existingStartTime) {
-                    if schedule.unwrappedID != self.scheduleID {
-                        return false
-                    }
-                }
+
+            if let existingStartTime = formatDate(schedule.unwrappedStartTime),
+               let existingEndTime = formatDate(schedule.unwrappedEndTime),
+               newStartTime < existingEndTime && newEndTime > existingStartTime,
+               schedule.unwrappedID != scheduleID {
+                
+                return false
             }
-            
+
             break
         }
-        
+
         return true
     }
-    
+
     private func getMinuteFrom(date: Date) -> Int? {
         return Calendar.current.dateComponents([.minute], from: date).minute
     }
-    
+
     private func getHourFrom(date: Date) -> Int? {
         return Calendar.current.dateComponents([.hour], from: date).hour
     }
-    
+
     private func formatDate(_ date: Date) -> Date? {
-        guard let firstDateHour = self.getHourFrom(date: date),
-              let firstDateMinute = self.getMinuteFrom(date: date) else { return nil }
-        
+        guard let firstDateHour = getHourFrom(date: date),
+              let firstDateMinute = getMinuteFrom(date: date) else { return nil }
+
         let dateComponents = DateComponents(
             year: 0,
             month: 1,
@@ -241,14 +261,14 @@ class ScheduleDetailsViewModel {
             minute: firstDateMinute,
             second: 0
         )
-        
+
         guard let returnedDate = Calendar.current.date(from: dateComponents) else { return nil }
-        
+
         return returnedDate
     }
-    
+
     func getTitleName() -> String {
-        let subject = self.subjectManager.fetchSubject(withID: self.schedule?.subjectID)
+        let subject = subjectManager.fetchSubject(withID: schedule?.subjectID)
 
         if let _ = subject {
             return String(localized: "editActivity")
@@ -256,19 +276,19 @@ class ScheduleDetailsViewModel {
             return String(localized: "newActivity")
         }
     }
-    
+
     func removeSchedule() {
         guard let schedule else { return }
-        
+
         scheduleManager.deleteSchedule(schedule)
     }
-    
+
     func cancelNotifications() {
         guard let schedule else { return }
-        
+
         notificationService?.cancelNotifications(forDate: schedule.unwrappedStartTime)
     }
-    
+
     func requestNotificationsAuthorization() {
         notificationService?.requestAuthorization { granted, error in
             if granted {

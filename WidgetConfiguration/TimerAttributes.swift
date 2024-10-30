@@ -8,12 +8,12 @@
 import ActivityKit
 import SwiftUI
 
-struct TimerAttributes: ActivityAttributes{
-    public typealias TimerStatus = ContentState
-    
-    public struct ContentState: Codable, Hashable{
+struct TimerAttributes: ActivityAttributes {
+    typealias TimerStatus = ContentState
+
+    struct ContentState: Codable, Hashable {
         var endTime: Date
     }
-    
+
     var timerName: String
 }

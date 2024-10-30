@@ -24,10 +24,9 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             primaryButtonLabel: ShieldConfiguration.Label(text: "Close", color: .label),
             primaryButtonBackgroundColor: .cyan,
             secondaryButtonLabel: ShieldConfiguration.Label(text: "Defer", color: .label)
-
         )
     }
-    
+
     override func configuration(shielding application: Application, in category: ActivityCategory) -> ShieldConfiguration {
         // Customize the shield as needed for applications shielded because of their category.
         ShieldConfiguration(
@@ -39,15 +38,14 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             primaryButtonLabel: ShieldConfiguration.Label(text: "Close", color: .label),
             primaryButtonBackgroundColor: .cyan,
             secondaryButtonLabel: ShieldConfiguration.Label(text: "Defer", color: .label)
-
         )
     }
-    
+
     override func configuration(shielding webDomain: WebDomain) -> ShieldConfiguration {
         // Customize the shield as needed for web domains.
         ShieldConfiguration()
     }
-    
+
     override func configuration(shielding webDomain: WebDomain, in category: ActivityCategory) -> ShieldConfiguration {
         // Customize the shield as needed for web domains shielded because of their category.
         ShieldConfiguration()

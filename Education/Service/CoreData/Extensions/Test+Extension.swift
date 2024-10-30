@@ -11,23 +11,23 @@ extension Test {
     var unwrappedID: String {
         return id ?? String()
     }
-    
+
     var unwrappedRightQuestions: Int {
         return Int(rightQuestions)
     }
-    
+
     var unwrappedTotalQuestions: Int {
         return Int(totalQuestions)
     }
-    
+
     var unwrappedThemeID: String {
         return themeID ?? String()
     }
-    
+
     var unwrappedDate: Date {
         return date ?? Date()
     }
-    
+
     var unwrappedComment: String {
         return comment ?? String()
     }

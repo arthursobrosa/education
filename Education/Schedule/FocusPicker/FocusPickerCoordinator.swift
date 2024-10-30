@@ -11,54 +11,54 @@ class FocusPickerCoordinator: Coordinator, ShowingTimer, Dismissing, DismissingA
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    
+
     private let focusSessionModel: FocusSessionModel
     private let blockingManager: BlockingManager
-    
+
     init(navigationController: UINavigationController, focusSessionModel: FocusSessionModel, blockingManager: BlockingManager) {
         self.navigationController = navigationController
         self.focusSessionModel = focusSessionModel
         self.blockingManager = blockingManager
     }
-    
+
     func start() {
-        let viewModel = FocusPickerViewModel(focusSessionModel: self.focusSessionModel, blockingManager: blockingManager)
-        let vc = FocusPickerViewController(viewModel: viewModel)
-        vc.navigationItem.hidesBackButton = true
-        vc.coordinator = self
-        
-        self.navigationController.pushViewController(vc, animated: false)
+        let viewModel = FocusPickerViewModel(focusSessionModel: focusSessionModel, blockingManager: blockingManager)
+        let viewController = FocusPickerViewController(viewModel: viewModel)
+        viewController.navigationItem.hidesBackButton = true
+        viewController.coordinator = self
+
+        navigationController.pushViewController(viewController, animated: false)
     }
-    
+
     func showTimer(focusSessionModel: FocusSessionModel?) {
-        guard let parentCoordinator = self.getParentCoordinator() as? ScheduleCoordinator else { return }
-        
+        guard let parentCoordinator = getParentCoordinator() as? ScheduleCoordinator else { return }
+
         parentCoordinator.showTimer(focusSessionModel: focusSessionModel)
     }
-    
+
     func getParentCoordinator() -> Coordinator? {
         var parentCoordinator: Coordinator?
-        
+
         if let focusSelectionCoordinator = self.parentCoordinator as? FocusSelectionCoordinator {
             parentCoordinator = focusSelectionCoordinator.getParentCoordinator()
         }
-        
+
         return parentCoordinator
     }
-    
+
     func dismiss(animated: Bool) {
-        self.navigationController.popViewController(animated: animated)
+        navigationController.popViewController(animated: animated)
     }
-    
+
     func dismissAll() {
-        self.dismiss(animated: false)
-        
-        if let focusSelectionCoordinator = self.parentCoordinator as? FocusSelectionCoordinator {
+        dismiss(animated: false)
+
+        if let focusSelectionCoordinator = parentCoordinator as? FocusSelectionCoordinator {
             if focusSelectionCoordinator.isFirstModal {
                 focusSelectionCoordinator.dismiss(animated: false)
                 return
             }
-            
+
             focusSelectionCoordinator.dismissAll()
         }
     }

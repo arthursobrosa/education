@@ -16,41 +16,43 @@ protocol SubjectCreationDelegate: AnyObject {
 
 extension SubjectCreationViewController: SubjectCreationDelegate {
     func textFieldDidChange(newText: String) {
-        self.subjectName = newText
-        if newText != "" {
-            self.subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
-        }else{
-            self.subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-off")
+        subjectName = newText
+        if newText.isEmpty {
+            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
+        } else {
+            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-off")
         }
     }
-    
+
     func spaceRemover(string: String) -> String {
         let trimmedString = string.trimmingCharacters(in: .whitespaces)
         return trimmedString
     }
-    
+
     func didTapSaveButton() {
-        guard let name = self.subjectName, !name.isEmpty else {
+        guard let name = subjectName, !name.isEmpty else {
             showAlert(message: String(localized: "subjectCreationNoName"))
             return
         }
         let cleanName = spaceRemover(string: name)
-        if self.viewModel.currentEditingSubject != nil {
-            self.viewModel.updateSubject(name: cleanName, color: self.viewModel.selectedSubjectColor.value)
+        if viewModel.currentEditingSubject != nil {
+            viewModel.updateSubject(name: cleanName, color: viewModel.selectedSubjectColor.value)
         } else {
             let existingSubjects = viewModel.subjects.value
             if existingSubjects.contains(where: { $0.name?.lowercased() == cleanName.lowercased() }) {
-                self.showAlert(message: String(localized: "subjectCreationUsedName"))
+                showAlert(message: String(localized: "subjectCreationUsedName"))
                 return
             }
-            
-            self.viewModel.createSubject(name: cleanName, color: self.viewModel.selectedSubjectColor.value)
+
+            viewModel.createSubject(name: cleanName, color: viewModel.selectedSubjectColor.value)
         }
-        
-        self.coordinator?.dismiss(animated: true)
+
+        coordinator?.dismiss(animated: true)
     }
-    
+
     func didTapDeleteButton() {
-        self.showDeleteAlert(for: self.viewModel.currentEditingSubject!)
+        if let subject = viewModel.currentEditingSubject {
+            showDeleteAlert(for: subject)
+        }
     }
 }

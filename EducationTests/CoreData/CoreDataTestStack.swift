@@ -5,9 +5,9 @@
 //  Created by Arthur Sobrosa on 02/07/24.
 //
 
-import XCTest
 import CoreData
 @testable import Education
+import XCTest
 
 /*
  This is the CoreDataManager used by tests. It saves nothing to disk. All in-memory.
@@ -23,24 +23,24 @@ struct CoreDataTestStack {
     let persistentContainer: NSPersistentContainer
     let backgroundContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
-    
+
     init() {
         persistentContainer = NSPersistentContainer(name: "DataBase")
         let description = persistentContainer.persistentStoreDescriptions.first
         description?.type = NSInMemoryStoreType
-        
-        persistentContainer.loadPersistentStores { description, error in
+
+        persistentContainer.loadPersistentStores { _, error in
             guard error == nil else {
-                fatalError("was unable to load store \(error!)")
+                fatalError("was unable to load store \(String(describing: error?.localizedDescription))")
             }
         }
-        
+
         mainContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         mainContext.automaticallyMergesChangesFromParent = true
         mainContext.persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator
 
         backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        backgroundContext.parent = self.mainContext
+        backgroundContext.parent = mainContext
     }
 }
