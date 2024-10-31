@@ -84,8 +84,8 @@ class StudyTimeViewController: UIViewController {
 
         handleTip()
 
-        viewModel.fetchSubjects()
         viewModel.fetchFocusSessions()
+        viewModel.fetchSubjects()
     }
 
     // MARK: - Methods
@@ -182,7 +182,7 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
                 fatalError("Could not dequeue cell")
             }
 
-            if subject == nil && totalTime == "0s" {
+            if subject == nil && totalTime == "0min" {
                 cell.isHidden = true
                 return cell
             }
