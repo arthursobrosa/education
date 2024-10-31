@@ -60,6 +60,7 @@ class StudyTimeViewModel: ObservableObject {
     @Published var selectedDateRange: DateRange = .lastWeek {
         didSet {
             fetchFocusSessions()
+            fetchSubjects()
         }
     }
 
@@ -153,7 +154,15 @@ class StudyTimeViewModel: ObservableObject {
 
     func fetchSubjects() {
         if let subjects = subjectManager.fetchSubjects() {
-            self.subjects.value = subjects
+            let subjectTimes = subjects.map { subject -> (subject: Subject, totalTime: Int) in
+                let focusSessionsForSubject = focusSessions.value.filter { $0.subjectID == subject.unwrappedID }
+                let totalTime = getTime(from: focusSessionsForSubject)
+                return (subject, totalTime)
+            }
+            
+            let sortedSubjects = subjectTimes.sorted(by: { $0.totalTime > $1.totalTime }).map { $0.subject }
+            
+            self.subjects.value = sortedSubjects
         }
     }
 
@@ -175,7 +184,7 @@ class StudyTimeViewModel: ObservableObject {
 
         let times = subjectTotals.map {
             SubjectTime(subject: idToName(subjectId: $0.key), totalTime: $0.value, subjectColor: subjectColors[$0.key] ?? "button-normal")
-        }
+        }.sorted(by: { $0.totalTime > $1.totalTime })
 
         aggregatedTimes = times
     }
