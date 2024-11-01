@@ -54,7 +54,7 @@ class ThemePageViewModel: ObservableObject {
     
     func hasComment(test: Test) -> Bool {
         if test.comment != nil,
-           test.unwrappedComment.isEmpty {
+           !test.unwrappedComment.isEmpty {
             return true
         }
         

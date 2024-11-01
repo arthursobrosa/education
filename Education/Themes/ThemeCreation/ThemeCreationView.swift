@@ -27,9 +27,18 @@ class ThemeCreationView: UIView {
     lazy var textField: PaddedTextField = {
         let textField = PaddedTextField()
         textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
-        let italicFont: UIFont = UIFont(name: Fonts.darkModeOnItalic, size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular)
-        let systemText40Color: UIColor = UIColor(named: "system-text-40") ?? .red
-        textField.attributedPlaceholder = NSAttributedString(string: String(localized: "themeAlertPlaceholder"), attributes: [.font: italicFont, .foregroundColor: systemText40Color])
+        
+        let placeholderColor = UIColor.systemText40
+        let placeholderFont = UIFont(name: Fonts.darkModeOnItalic, size: 15)
+        let placeholderText = String(localized: "themeAlertPlaceholder")
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: placeholderFont ?? UIFont.italicSystemFont(ofSize: 15),
+            .foregroundColor: placeholderColor as Any,
+        ]
+        
+        textField.attributedPlaceholder = NSAttributedString(string: placeholderText,attributes: attributes)
+        
         textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
 
         textField.layer.borderColor = UIColor(named: "button-normal")?.cgColor

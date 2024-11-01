@@ -7,15 +7,18 @@
 
 import UIKit
 
-class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
+class InputTextTableViewCell: UITableViewCell {
+    // MARK: - ID
     static let identifier = "inputTextCell"
 
+    // MARK: - Delegate to connect to subject creation
     weak var delegate: SubjectCreationDelegate? {
         didSet {
             setupUI()
         }
     }
 
+    // MARK: - UI Properties
     lazy var textField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
@@ -40,6 +43,7 @@ class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
     }()
 }
 
+// MARK: - UI Setup
 extension InputTextTableViewCell: ViewCodeProtocol {
     func setupUI() {
         contentView.addSubview(textField)
@@ -52,26 +56,25 @@ extension InputTextTableViewCell: ViewCodeProtocol {
             textField.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
+}
 
+// MARK: - TextField Delegate
+extension InputTextTableViewCell: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let characterLimit = 18
         let currentText = textField.text ?? ""
         let newLength = currentText.count + string.count - range.length
         return newLength <= characterLimit
     }
-
-    func spaceRemover(string: String) -> String {
-        let trimmedString = string.trimmingCharacters(in: .whitespaces)
-        return trimmedString
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text {
+            delegate?.textFieldDidChange(newText: text)
+        }
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let text = textField.text {
-            delegate?.textFieldDidChange(newText: text)
-            if spaceRemover(string: text).isEmpty {
-                textField.resignFirstResponder()
-            }
-        }
+        textField.resignFirstResponder()
 
         return true
     }

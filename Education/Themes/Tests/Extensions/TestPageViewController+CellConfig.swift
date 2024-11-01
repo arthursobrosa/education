@@ -50,8 +50,8 @@ extension TestPageViewController {
             textField.textColor = .systemText50
             textField.sizeToFit()
 
-            let toolbar = createToolbar(withTag: row)
-            textField.inputAccessoryView = toolbar
+//            let toolbar = createToolbar(withTag: row)
+//            textField.inputAccessoryView = toolbar
 
             textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
             textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
@@ -62,17 +62,17 @@ extension TestPageViewController {
         }
     }
 
-    private func createToolbar(withTag tag: Int) -> UIToolbar {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
-        doneButton.tag = tag
-
-        toolbar.setItems([flexSpace, doneButton], animated: false)
-
-        return toolbar
-    }
+//    private func createToolbar(withTag tag: Int) -> UIToolbar {
+//        let toolbar = UIToolbar()
+//        toolbar.sizeToFit()
+//
+//        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//
+//        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
+//        doneButton.tag = tag
+//
+//        toolbar.setItems([flexSpace], animated: false)
+//
+//        return toolbar
+//    }
 }
