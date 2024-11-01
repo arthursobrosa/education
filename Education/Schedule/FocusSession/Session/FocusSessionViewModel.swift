@@ -16,6 +16,10 @@ class FocusSessionViewModel {
     // MARK: - Service to block apps
 
     private let blockingManager: BlockingManager
+    
+    // MARK: - Service to play sounds
+    
+    private let audioService: AudioServiceProtocol
 
     // MARK: - Combine storage
 
@@ -35,9 +39,10 @@ class FocusSessionViewModel {
 
     // MARK: - Initializer
 
-    init(activityManager: ActivityManager, blockingManager: BlockingManager) {
+    init(activityManager: ActivityManager, blockingManager: BlockingManager, audioServiceProtocol: AudioServiceProtocol = AudioService()) {
         self.activityManager = activityManager
         self.blockingManager = blockingManager
+        self.audioService = audioServiceProtocol
 
         activityManager.date = Date.now
 
@@ -247,5 +252,21 @@ extension FocusSessionViewModel {
 extension FocusSessionViewModel {
     func getExtendedTime(hours: Int, minutes: Int) -> Int {
         hours * 3600 + minutes * 60
+    }
+}
+
+// MARK: - Audio Service methods
+
+extension FocusSessionViewModel {
+    func playAlarm() {
+        guard activityManager.isAlarmOn else { return }
+        
+        audioService.playSound(.alarm)
+    }
+    
+    func stopAlarm() {
+        guard activityManager.isAlarmOn else { return }
+        
+        audioService.stopSound(.alarm)
     }
 }
