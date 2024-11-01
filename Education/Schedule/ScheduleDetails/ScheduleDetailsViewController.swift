@@ -22,6 +22,7 @@ class ScheduleDetailsViewController: UIViewController {
 
         view.tableView.delegate = self
         view.tableView.dataSource = self
+        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
 
         return view
     }()
@@ -170,36 +171,99 @@ class ScheduleDetailsViewController: UIViewController {
 // MARK: - UITableViewDataSource and UITableViewDelegate
 
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in _: UITableView) -> Int {
-        return 4
-    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if cell.responds(to: #selector(getter: UIView.tintColor)) {
+            /// store cell's bounds
+            let bounds = cell.bounds
+            
+            /// cell initial config
+            let cornerRadius: CGFloat = bounds.width * (15 / 353)
+            let borderWidth: CGFloat = 1.5
+            cell.backgroundColor = .systemBackground
+            cell.selectionStyle = .none
 
-    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+            /// layer and path initialization for border
+            let layer = CAShapeLayer()
+            let path = CGMutablePath()
+
+            /// depending on the row, a line will drawn or not
+            var addLine = false
+            
+            /// if current row is the first and section only has one row
+            if indexPath.row == 0 && tableView.numberOfRows(inSection: indexPath.section) == 1 {
+                /// then add a rounded rectangle around its bounds
+                cell.roundCorners(corners: .allCorners, radius: cornerRadius * 0.95, borderWidth: borderWidth, borderColor: UIColor.buttonNormal)
+
+            /// if it's the first row but section has more than one row
+            } else if indexPath.row == 0 {
+                /// then create an arc at the top
+                cell.createCurve(on: .top, radius: cornerRadius, borderWidth: borderWidth, borderColor: UIColor.buttonNormal)
+                
+                /// and a line will need to be created below this row
+                addLine = true
+
+            /// if it's the last row of a section with more than one row
+            } else if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+                /// then create an arc at the bottom
+                cell.createCurve(on: .bottom, radius: cornerRadius, borderWidth: borderWidth, borderColor: UIColor.buttonNormal)
+
+            /// if it's an inbetween row
+            } else {
+                /// then create two lines at the sides
+                cell.createCurve(on: .laterals, borderWidth: borderWidth, borderColor: UIColor.buttonNormal)
+                
+                /// and a line will also need to be created below this row
+                addLine = true
+            }
+
+            /// create separator line for the rows that need to
+            if addLine {
+                let lineHeight: CGFloat = 1 / UIScreen.main.scale
+                let offset = bounds.width / 21.53 /// little offset to imitate native line separator style
+                layer.frame = CGRect(x: bounds.minX + offset, y: bounds.height - lineHeight, width: bounds.width - offset, height: lineHeight)
+                layer.backgroundColor = tableView.separatorColor?.cgColor
+                
+                /// guarantee separator layer colors are updated correctly both at light and dark mode
+                registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
+                    layer.backgroundColor = tableView.separatorColor?.cgColor
+                }
+            }
+
+            /// create UIView with the same size of the cell and the created layers to it
+            let backgroundView = UIView(frame: bounds)
+            backgroundView.layer.insertSublayer(layer, at: 0)
+            backgroundView.backgroundColor = .clear
+
+            /// set new background view as cell's background view
+            cell.backgroundView = backgroundView
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        4
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 3
+            3
+        case 1:
+            1
         case 2:
-            return 2
-        case 1, 3:
-            return 1
+            2
+        case 3:
+            1
         default:
-            break
+            0
         }
-
-        return Int()
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableCell.identifier, for: indexPath) as? CustomTableCell else {
-            fatalError("Could not dequeue cell")
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
 
         cell.textLabel?.text = createCellTitle(for: indexPath)
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         cell.accessoryView = createAccessoryView(for: indexPath)
-
-        cell.row = indexPath.row
-        cell.numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
 
         return cell
     }
@@ -226,27 +290,17 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         }
     }
 
-    func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return 50
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        50
     }
 
-    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
-    }
-
-    func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView()
         footerView.backgroundColor = UIColor.clear
         return footerView
     }
 
-    func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-        return 11
-    }
-
-    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        return 0
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        11
     }
 }
