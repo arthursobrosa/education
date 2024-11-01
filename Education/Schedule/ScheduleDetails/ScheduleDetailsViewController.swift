@@ -22,7 +22,6 @@ class ScheduleDetailsViewController: UIViewController {
 
         view.tableView.delegate = self
         view.tableView.dataSource = self
-        view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
 
         return view
     }()
@@ -172,71 +171,8 @@ class ScheduleDetailsViewController: UIViewController {
 
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if cell.responds(to: #selector(getter: UIView.tintColor)) {
-            /// store cell's bounds
-            let bounds = cell.bounds
-            
-            /// cell initial config
-            let cornerRadius: CGFloat = bounds.width * (15 / 353)
-            let borderWidth: CGFloat = 1.5
-            cell.backgroundColor = .systemBackground
-            cell.selectionStyle = .none
-
-            /// layer and path initialization for border
-            let layer = CAShapeLayer()
-            let path = CGMutablePath()
-
-            /// depending on the row, a line will drawn or not
-            var addLine = false
-            
-            /// if current row is the first and section only has one row
-            if indexPath.row == 0 && tableView.numberOfRows(inSection: indexPath.section) == 1 {
-                /// then add a rounded rectangle around its bounds
-                cell.roundCorners(corners: .allCorners, radius: cornerRadius * 0.95, borderWidth: borderWidth, borderColor: UIColor.buttonNormal)
-
-            /// if it's the first row but section has more than one row
-            } else if indexPath.row == 0 {
-                /// then create an arc at the top
-                cell.createCurve(on: .top, radius: cornerRadius, borderWidth: borderWidth, borderColor: UIColor.buttonNormal)
-                
-                /// and a line will need to be created below this row
-                addLine = true
-
-            /// if it's the last row of a section with more than one row
-            } else if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
-                /// then create an arc at the bottom
-                cell.createCurve(on: .bottom, radius: cornerRadius, borderWidth: borderWidth, borderColor: UIColor.buttonNormal)
-
-            /// if it's an inbetween row
-            } else {
-                /// then create two lines at the sides
-                cell.createCurve(on: .laterals, borderWidth: borderWidth, borderColor: UIColor.buttonNormal)
-                
-                /// and a line will also need to be created below this row
-                addLine = true
-            }
-
-            /// create separator line for the rows that need to
-            if addLine {
-                let lineHeight: CGFloat = 1 / UIScreen.main.scale
-                let offset = bounds.width / 21.53 /// little offset to imitate native line separator style
-                layer.frame = CGRect(x: bounds.minX + offset, y: bounds.height - lineHeight, width: bounds.width - offset, height: lineHeight)
-                layer.backgroundColor = tableView.separatorColor?.cgColor
-                
-                /// guarantee separator layer colors are updated correctly both at light and dark mode
-                registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
-                    layer.backgroundColor = tableView.separatorColor?.cgColor
-                }
-            }
-
-            /// create UIView with the same size of the cell and the created layers to it
-            let backgroundView = UIView(frame: bounds)
-            backgroundView.layer.insertSublayer(layer, at: 0)
-            backgroundView.backgroundColor = .clear
-
-            /// set new background view as cell's background view
-            cell.backgroundView = backgroundView
-        }
+        guard let cell = cell as? BorderedTableCell else { return }
+        cell.configureCell(tableView: tableView, forRowAt: indexPath)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -259,7 +195,9 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BorderedTableCell.identifier, for: indexPath) as? BorderedTableCell else {
+            fatalError("Could not dequeue bordered table cell")
+        }
 
         cell.textLabel?.text = createCellTitle(for: indexPath)
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)

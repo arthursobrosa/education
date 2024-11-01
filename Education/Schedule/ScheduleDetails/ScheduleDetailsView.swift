@@ -14,14 +14,10 @@ class ScheduleDetailsView: UIView {
 
     // MARK: - UI Components
 
-    let tableView: UITableView = {
-        let table = UITableView()
-        table.separatorStyle = .none
-        table.backgroundColor = .systemBackground
-
-        table.translatesAutoresizingMaskIntoConstraints = false
-
-        return table
+    let tableView: BorderedTableView = {
+        let tableView = BorderedTableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
 
     private lazy var deleteButton: ButtonComponent = {
