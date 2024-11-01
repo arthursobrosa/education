@@ -72,7 +72,7 @@ class ThemePageView: UIView {
         return stackView
     }()
 
-    var tableView: CustomTableView?
+    var tableView: BorderedTableView?
 
     let emptyView: NoThemesView = {
         let view = NoThemesView()
@@ -126,9 +126,9 @@ extension ThemePageView: ViewCodeProtocol {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
 
-            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -20),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 5),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             tableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
         ])
     }
