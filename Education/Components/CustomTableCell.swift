@@ -44,11 +44,11 @@ class CustomTableCell: UITableViewCell {
                 roundCorners(corners: .allCorners, radius: radius * 0.95, borderWidth: borderWidth, borderColor: borderColor)
             } else {
                 if row == 0 {
-                    createCurve(on: .top, radius: radius, borderWidth: borderWidth, borderColor: borderColor, rect: bounds)
+                    createCurve(on: .top, radius: radius, borderWidth: borderWidth, borderColor: borderColor)
                 } else if row == numberOfRowsInSection - 1 {
-                    createCurve(on: .bottom, radius: radius, borderWidth: borderWidth, borderColor: borderColor, rect: bounds)
+                    createCurve(on: .bottom, radius: radius, borderWidth: borderWidth, borderColor: borderColor)
                 } else {
-                    createCurve(on: .laterals, borderWidth: borderWidth, borderColor: borderColor, rect: bounds)
+                    createCurve(on: .laterals, borderWidth: borderWidth, borderColor: borderColor)
                 }
             }
 
