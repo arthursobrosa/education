@@ -9,10 +9,11 @@ import UIKit
 
 class BorderedTableView: UITableView {
     init() {
-        super.init(frame: .zero, style: .insetGrouped)
+        super.init(frame: .zero, style: .plain)
 
         register(BorderedTableCell.self, forCellReuseIdentifier: BorderedTableCell.identifier)
 
+        separatorStyle = .none
         backgroundColor = .systemBackground
     }
 
