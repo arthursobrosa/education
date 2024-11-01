@@ -39,12 +39,21 @@ class TestDetailsViewController: UIViewController {
         setNavigationItems()
         updateInterface()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
 
     // MARK: - Methods
 
     private func setNavigationItems() {
-        navigationController?.navigationBar.prefersLargeTitles = false
-        
         navigationItem.title = viewModel.getDateFullString(from: viewModel.test)
 
         navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]

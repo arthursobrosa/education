@@ -75,8 +75,14 @@ class ThemePageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = viewModel.theme.unwrappedName
         viewModel.fetchTests()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        navigationItem.title = ""
     }
 
     // MARK: - Methods
