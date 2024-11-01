@@ -30,11 +30,11 @@
 "timeLeftFinished" = "Concluído";
 "timeLeftLate" = "Atrasado";
 "sunday" = "Domingo";
-"monday" = "Segunda-feira";
-"tuesday" = "Terça-feira";
-"wednesday" = "Quarta-feira";
-"thursday" = "Quinta-feira";
-"friday" = "Sexta-feira";
+"monday" = "Segunda";
+"tuesday" = "Terça";
+"wednesday" = "Quarta";
+"thursday" = "Quinta";
+"friday" = "Sexta";
 "saturday" = "Sábado";
 "reminder" = "Lembrete";
 "comingEvent" = "Sua atividade de %@ começará em breve!";

@@ -76,7 +76,7 @@ class TestPageView: UIView {
         super.init(frame: frame)
 
         backgroundColor = .systemBackground
-        setupKeyboardObservers()
+        //setupKeyboardObservers()
 
         setupUI()
 
@@ -110,57 +110,57 @@ class TestPageView: UIView {
         deleteButton.isHidden = true
     }
 
-    private func createToolBar() -> UIToolbar {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
-
-        toolBar.items = [flexSpace, doneButton]
-
-        return toolBar
-    }
+//    private func createToolBar() -> UIToolbar {
+//        let toolBar = UIToolbar()
+//        toolBar.sizeToFit()
+//
+//        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+//
+//        toolBar.items = [flexSpace]
+//
+//        return toolBar
+//    }
 
     private func updateViewColor(_: UITraitCollection) {
         textView.layer.borderColor = UIColor(named: "button-normal")?.cgColor
     }
 
-    @objc 
-    private func dismissKeyboard() {
-        textView.resignFirstResponder()
-    }
+//    @objc 
+//    private func dismissKeyboard() {
+//        textView.resignFirstResponder()
+//    }
+//
+//    private func setupKeyboardObservers() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
 
-    private func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    @objc 
-    private func keyboardWillShow(notification: NSNotification) {
-        guard let userInfo = notification.userInfo,
-              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-
-        let keyboardHeight = keyboardFrame.height
-
-        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-
-        var visibleRect = frame
-        visibleRect.size.height -= keyboardHeight
-        let textViewFrameInSuperview = textView.convert(textView.bounds, to: self)
-        if !visibleRect.contains(textViewFrameInSuperview.origin) {
-            scrollView.scrollRectToVisible(textViewFrameInSuperview, animated: true)
-        }
-    }
-
-    @objc 
-    private func keyboardWillHide(notification _: NSNotification) {
-        let contentInsets = UIEdgeInsets.zero
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
+//    @objc 
+//    private func keyboardWillShow(notification: NSNotification) {
+//        guard let userInfo = notification.userInfo,
+//              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+//
+//        let keyboardHeight = keyboardFrame.height
+//
+//        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+//        scrollView.contentInset = contentInsets
+//        scrollView.scrollIndicatorInsets = contentInsets
+//
+//        var visibleRect = frame
+//        visibleRect.size.height -= keyboardHeight
+//        let textViewFrameInSuperview = textView.convert(textView.bounds, to: self)
+//        if !visibleRect.contains(textViewFrameInSuperview.origin) {
+//            scrollView.scrollRectToVisible(textViewFrameInSuperview, animated: true)
+//        }
+//    }
+//
+//    @objc 
+//    private func keyboardWillHide(notification _: NSNotification) {
+//        let contentInsets = UIEdgeInsets.zero
+//        scrollView.contentInset = contentInsets
+//        scrollView.scrollIndicatorInsets = contentInsets
+//    }
 }
 
 // MARK: - UI Setup
@@ -172,7 +172,7 @@ extension TestPageView: ViewCodeProtocol {
         addSubview(deleteButton)
         addSubview(saveButton)
 
-        textView.inputAccessoryView = createToolBar()
+        //textView.inputAccessoryView = createToolBar()
 
         let padding = 20.0
 

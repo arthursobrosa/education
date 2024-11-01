@@ -57,7 +57,7 @@ extension ScheduleDetailsViewController {
         }
     }
 
-    func createLabel(with text: String) -> UILabel {
+    func createLabel(text: String, color: String?) -> UILabel {
         let label = UILabel()
 
         var labelText = text
@@ -68,8 +68,8 @@ extension ScheduleDetailsViewController {
         }
 
         label.text = labelText
-        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        label.textColor = .secondaryLabel
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 17)
+        label.textColor = UIColor(named: color ?? "system-text-50")
         label.sizeToFit()
 
         return label
@@ -100,7 +100,7 @@ extension ScheduleDetailsViewController {
         switch section {
         case 0:
             if row == 0 {
-                let label = createLabel(with: viewModel.selectedDay)
+                let label = createLabel(text: viewModel.selectedDay, color: nil)
 
                 return label
             }
@@ -115,7 +115,7 @@ extension ScheduleDetailsViewController {
 
             return datePicker
         case 1:
-            let label = createLabel(with: viewModel.selectedSubjectName)
+            let label = createLabel(text: viewModel.selectedSubjectName, color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName))
 
             return label
         case 2:

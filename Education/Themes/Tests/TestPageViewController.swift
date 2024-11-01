@@ -126,13 +126,13 @@ class TestPageViewController: UIViewController {
         }
     }
 
-    @objc 
-    func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
-        guard let cell = testPageView.tableView.cellForRow(at: IndexPath(row: sender.tag, section: 1)),
-              let textField = cell.accessoryView as? UITextField else { return }
-
-        textField.resignFirstResponder()
-    }
+//    @objc 
+//    func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
+//        guard let cell = testPageView.tableView.cellForRow(at: IndexPath(row: sender.tag, section: 1)),
+//              let textField = cell.accessoryView as? UITextField else { return }
+//
+//        textField.resignFirstResponder()
+//    }
 
     @objc 
     func datePickerChanged(_ sender: UIDatePicker) {
