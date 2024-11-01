@@ -171,7 +171,7 @@
 		68C2D00A2C473F8000E2347A /* ScheduleDetails+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D0092C473F8000E2347A /* ScheduleDetails+Picker.swift */; };
 		68C2D00C2C473FC100E2347A /* ScheduleDetails+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D00B2C473FC100E2347A /* ScheduleDetails+Popover.swift */; };
 		68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2D00D2C47400A00E2347A /* ScheduleDetails+CellConfig.swift */; };
-		68C572412C8AC52B00B9D0A4 /* CustomTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */; };
+		68C572412C8AC52B00B9D0A4 /* BorderedTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C572402C8AC52B00B9D0A4 /* BorderedTableCell.swift */; };
 		68C572692C8B493A00B9D0A4 /* ThemeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C572682C8B493A00B9D0A4 /* ThemeListView.swift */; };
 		68C5726D2C8B55ED00B9D0A4 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C5726C2C8B55ED00B9D0A4 /* PaddedTextField.swift */; };
 		68C8D9AB2C4987FF0092E80D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C8D9A92C4987FF0092E80D /* Localizable.strings */; };
@@ -451,7 +451,7 @@
 		68C2D0092C473F8000E2347A /* ScheduleDetails+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+Picker.swift"; sourceTree = "<group>"; };
 		68C2D00B2C473FC100E2347A /* ScheduleDetails+Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+Popover.swift"; sourceTree = "<group>"; };
 		68C2D00D2C47400A00E2347A /* ScheduleDetails+CellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScheduleDetails+CellConfig.swift"; sourceTree = "<group>"; };
-		68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableCell.swift; sourceTree = "<group>"; };
+		68C572402C8AC52B00B9D0A4 /* BorderedTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedTableCell.swift; sourceTree = "<group>"; };
 		68C572682C8B493A00B9D0A4 /* ThemeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListView.swift; sourceTree = "<group>"; };
 		68C5726C2C8B55ED00B9D0A4 /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		68C8D9AA2C4987FF0092E80D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1005,7 +1005,7 @@
 				68C5726C2C8B55ED00B9D0A4 /* PaddedTextField.swift */,
 				6804837D2C920559007FC564 /* CustomChart.swift */,
 				6804837F2C922471007FC564 /* BorderedTableView.swift */,
-				68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */,
+				68C572402C8AC52B00B9D0A4 /* BorderedTableCell.swift */,
 				688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */,
 				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
 				31D098822C9A156F005AFA87 /* FourDotsView.swift */,
@@ -1548,7 +1548,7 @@
 				680483822C9229F0007FC564 /* TestPageViewModel.swift in Sources */,
 				68FF04E82CBE261100E8C48C /* ShowingFocusEnd.swift in Sources */,
 				31EB254B2C596883008F8893 /* NotificationService.swift in Sources */,
-				68C572412C8AC52B00B9D0A4 /* CustomTableCell.swift in Sources */,
+				68C572412C8AC52B00B9D0A4 /* BorderedTableCell.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
 				30D846EC2C8261D700E98130 /* NoSubjectsView.swift in Sources */,
 				CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */,
