@@ -18,9 +18,9 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
     func textFieldDidChange(newText: String) {
         subjectName = newText
         if newText.isEmpty {
-            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
-        } else {
             subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-off")
+        } else {
+            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
         }
     }
 
