@@ -200,6 +200,7 @@
 		CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */; };
 		CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */; };
 		CE6A12522C63EEDC00549DCC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */; };
+		CEAB1DD42CD2CC6B000C9A0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */; };
 		CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB352C5BFD7E00297062 /* SelectionButton.swift */; };
 		CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */; };
@@ -1238,6 +1239,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEAB1DD42CD2CC6B000C9A0D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1736,7 +1738,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = D95QWWTUDS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfiguration;
@@ -1763,7 +1765,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShieldConfiguration/ShieldConfiguration.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = D95QWWTUDS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfiguration;

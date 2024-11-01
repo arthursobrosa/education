@@ -33,12 +33,6 @@ class BlockAppsMonitor: ObservableObject {
             store.shield.applications = applications.isEmpty ? nil : applications
             store.shield.applicationCategories = ShieldSettings.ActivityCategoryPolicy.specific(categories, except: Set())
             store.shield.webDomainCategories = ShieldSettings.ActivityCategoryPolicy.specific(categories, except: Set())
-            if(applications.first != nil){
-                MyShieldConfiguration().configuration(shielding: Application(token: applications.first!))
-            }
-            if(categories.first != nil){
-                MyShieldConfiguration().configuration(shielding: Application(token: applications.first!), in: ActivityCategory(token: categories.first!))
-            }
         } catch {
             print("error to decode: \(error)")
         }
