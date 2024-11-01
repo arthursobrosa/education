@@ -52,7 +52,7 @@
 		31D098832C9A156F005AFA87 /* FourDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D098822C9A156F005AFA87 /* FourDotsView.swift */; };
 		31EB254B2C596883008F8893 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB254A2C596883008F8893 /* NotificationService.swift */; };
 		6804837E2C920559007FC564 /* CustomChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837D2C920559007FC564 /* CustomChart.swift */; };
-		680483802C922471007FC564 /* CustomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837F2C922471007FC564 /* CustomTableView.swift */; };
+		680483802C922471007FC564 /* BorderedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837F2C922471007FC564 /* BorderedTableView.swift */; };
 		680483822C9229F0007FC564 /* TestPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680483812C9229F0007FC564 /* TestPageViewModel.swift */; };
 		680483842C922A9C007FC564 /* TestPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680483832C922A9C007FC564 /* TestPageCoordinator.swift */; };
 		680E52692C98AA1600AB1141 /* OtherSubjectViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680E52682C98AA1600AB1141 /* OtherSubjectViewController+Delegate.swift */; };
@@ -322,7 +322,7 @@
 		31D098822C9A156F005AFA87 /* FourDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourDotsView.swift; sourceTree = "<group>"; };
 		31EB254A2C596883008F8893 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		6804837D2C920559007FC564 /* CustomChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChart.swift; sourceTree = "<group>"; };
-		6804837F2C922471007FC564 /* CustomTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableView.swift; sourceTree = "<group>"; };
+		6804837F2C922471007FC564 /* BorderedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedTableView.swift; sourceTree = "<group>"; };
 		680483812C9229F0007FC564 /* TestPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageViewModel.swift; sourceTree = "<group>"; };
 		680483832C922A9C007FC564 /* TestPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPageCoordinator.swift; sourceTree = "<group>"; };
 		680E52682C98AA1600AB1141 /* OtherSubjectViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OtherSubjectViewController+Delegate.swift"; sourceTree = "<group>"; };
@@ -1004,7 +1004,7 @@
 				6831D3522CC19D3F00D92361 /* DeleterAlertView.swift */,
 				68C5726C2C8B55ED00B9D0A4 /* PaddedTextField.swift */,
 				6804837D2C920559007FC564 /* CustomChart.swift */,
-				6804837F2C922471007FC564 /* CustomTableView.swift */,
+				6804837F2C922471007FC564 /* BorderedTableView.swift */,
 				68C572402C8AC52B00B9D0A4 /* CustomTableCell.swift */,
 				688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */,
 				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
@@ -1668,7 +1668,7 @@
 				688C25772C6670FF00150F7F /* FocusImediateViewModel.swift in Sources */,
 				683812F42C481C580062067A /* ShowingTabBar.swift in Sources */,
 				6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */,
-				680483802C922471007FC564 /* CustomTableView.swift in Sources */,
+				680483802C922471007FC564 /* BorderedTableView.swift in Sources */,
 				31C102FA2C6D30BC009D2751 /* ShowingSubjectCreation.swift in Sources */,
 				68CA87DE2C5D543D006ED5FA /* FocusPickerViewController.swift in Sources */,
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
