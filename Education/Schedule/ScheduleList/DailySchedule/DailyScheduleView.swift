@@ -31,19 +31,12 @@ class DailyScheduleView: UIView {
 
         return view
     }()
-
-    let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.showsVerticalScrollIndicator = false
-
-        collection.tag = 0
-
-        collection.translatesAutoresizingMaskIntoConstraints = false
-
-        return collection
+    
+    let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
 
     // MARK: - Initializer

@@ -203,7 +203,7 @@ class ScheduleViewModel {
         return "\(formatter.string(from: time))"
     }
 
-    func getEventCase(for schedule: Schedule?) -> ScheduleCell.EventCase {
+    func getEventCase(for schedule: Schedule?) -> EventCase {
         guard let schedule else { return .notToday }
 
         let calendar = Calendar.current

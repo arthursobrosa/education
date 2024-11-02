@@ -44,6 +44,8 @@ class ActivityButton: UIButton {
             setupUI()
         }
     }
+    
+    var focusConfig: (indexPath: IndexPath?, color: UIColor?, isDaily: Bool)?
 
     // MARK: - UI Properties
 

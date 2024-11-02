@@ -34,7 +34,7 @@ class DayColumnCell: UICollectionViewCell {
         collection.dataSource = self
         collection.delegate = self
 
-        collection.register(ScheduleCell.self, forCellWithReuseIdentifier: ScheduleCell.identifier)
+        collection.register(WeeklyScheduleCell.self, forCellWithReuseIdentifier: WeeklyScheduleCell.identifier)
 
         collection.translatesAutoresizingMaskIntoConstraints = false
 
@@ -108,13 +108,17 @@ extension DayColumnCell: UICollectionViewDataSource, UICollectionViewDelegate, U
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScheduleCell.identifier, for: indexPath) as? ScheduleCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeeklyScheduleCell.identifier, for: indexPath) as? WeeklyScheduleCell else {
             fatalError("Could not dequeue cell")
         }
 
         let newIndexPath = IndexPath(row: indexPath.row, section: column ?? 0)
+        
+        guard let configuredCell = delegate?.getConfiguredScheduleCell(from: cell, at: newIndexPath, isDaily: false) as? WeeklyScheduleCell else {
+            return cell
+        }
 
-        return delegate?.getConfiguredScheduleCell(from: cell, at: newIndexPath, isDaily: false) ?? cell
+        return configuredCell
     }
 
     func collectionView(_ collectionView: UICollectionView, layout _: UICollectionViewLayout, sizeForItemAt _: IndexPath) -> CGSize {
