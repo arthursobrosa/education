@@ -227,7 +227,7 @@ extension ScheduleViewController {
             let hasSubjects = viewModel.hasSubjects()
 
             if hasSubjects {
-                scheduleView.changeNoSchedulesView(isDaily: isDaily)
+                scheduleView.setNoSchedulesView(isDaily: isDaily)
                 handleTip()
                 childSubview = scheduleView.noSchedulesView
             } else {
