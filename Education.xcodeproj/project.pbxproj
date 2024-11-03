@@ -78,7 +78,6 @@
 		683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B453A2C1B6F3A00663912 /* SceneDelegate.swift */; };
 		683B45422C1B6F3B00663912 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		683B45452C1B6F3B00663912 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 683B45442C1B6F3B00663912 /* Base */; };
-		683B5BE22C682B270065121E /* DismissingAfterModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B5BE12C682B270065121E /* DismissingAfterModal.swift */; };
 		683D254E2C88E9D000716444 /* DailyScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683D254D2C88E9D000716444 /* DailyScheduleView.swift */; };
 		683D25502C88E9D500716444 /* WeeklyScheduleCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683D254F2C88E9D500716444 /* WeeklyScheduleCollectionView.swift */; };
 		683D25522C88F39A00716444 /* DayColumnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683D25512C88F39A00716444 /* DayColumnCell.swift */; };
@@ -351,7 +350,6 @@
 		683B45412C1B6F3B00663912 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		683B45442C1B6F3B00663912 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		683B45462C1B6F3B00663912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		683B5BE12C682B270065121E /* DismissingAfterModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissingAfterModal.swift; sourceTree = "<group>"; };
 		683D254D2C88E9D000716444 /* DailyScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyScheduleView.swift; sourceTree = "<group>"; };
 		683D254F2C88E9D500716444 /* WeeklyScheduleCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyScheduleCollectionView.swift; sourceTree = "<group>"; };
 		683D25512C88F39A00716444 /* DayColumnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayColumnCell.swift; sourceTree = "<group>"; };
@@ -1122,23 +1120,22 @@
 			isa = PBXGroup;
 			children = (
 				683812F32C481C580062067A /* ShowingTabBar.swift */,
-				68825BD62C2F469D00272451 /* ShowingThemePage.swift */,
-				6881123D2C33388A003012D0 /* ShowingTestPage.swift */,
-				317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */,
 				68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */,
+				CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */,
 				688C257E2C667F9400150F7F /* ShowingFocusImediate.swift */,
 				682A9A892C62602000FAAD07 /* ShowingFocusSelection.swift */,
 				68CA87DF2C5D54CD006ED5FA /* ShowingFocusPicker.swift */,
+				317C112B2C35C4F100C5E7A5 /* ShowingTimer.swift */,
 				68FF04E72CBE261100E8C48C /* ShowingFocusEnd.swift */,
+				CE323B422C73C1AC004143E0 /* ShowingScheduleNotification.swift */,
+				31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */,
+				30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */,
+				68825BD62C2F469D00272451 /* ShowingThemePage.swift */,
+				685265502C8B710A009D9678 /* ShowingThemeCreation.swift */,
+				6881123D2C33388A003012D0 /* ShowingTestPage.swift */,
+				3018A1BC2CB5A49E00AB3978 /* ShowingTestDetails.swift */,
 				68BBC96C2C35E13D00D82350 /* Dismissing.swift */,
 				6823766A2C63E86E00255143 /* DismissingAll.swift */,
-				683B5BE12C682B270065121E /* DismissingAfterModal.swift */,
-				31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */,
-				CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */,
-				CE323B422C73C1AC004143E0 /* ShowingScheduleNotification.swift */,
-				30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */,
-				685265502C8B710A009D9678 /* ShowingThemeCreation.swift */,
-				3018A1BC2CB5A49E00AB3978 /* ShowingTestDetails.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1611,7 +1608,6 @@
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
 				68C5726D2C8B55ED00B9D0A4 /* PaddedTextField.swift in Sources */,
 				68A8167B2C769277001D5F1E /* InputTextTableViewCell.swift in Sources */,
-				683B5BE22C682B270065121E /* DismissingAfterModal.swift in Sources */,
 				682927502C30AE2F00FE29AA /* ThemeManager.swift in Sources */,
 				683D254E2C88E9D000716444 /* DailyScheduleView.swift in Sources */,
 				68A083ED2CBF195300B3272D /* SyncMonitor.swift in Sources */,
