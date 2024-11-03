@@ -97,6 +97,11 @@ extension ScheduleViewModel {
             tasks = schedulesByDay
         }
     }
+    
+    func removeSchedule(at index: Int) {
+        let schedule = schedules[index]
+        scheduleManager.deleteSchedule(schedule)
+    }
 
     func organizeSchedulesByDayOfWeek(_ orderedWeekSchedules: [Schedule]) -> [[Schedule]] {
         var schedulesByDay: [[Schedule]] = Array(repeating: [], count: 7)
