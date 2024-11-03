@@ -48,4 +48,31 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         let schedule = viewModel.schedules[indexPath.section]
         coordinator?.showScheduleDetailsModal(schedule: schedule)
     }
+    
+    func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let schedule = viewModel.schedules[indexPath.section]
+
+        let editButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
+            guard let self else { return }
+
+            self.coordinator?.showScheduleDetails(schedule: schedule, selectedDay: 1)
+        }
+
+        editButton.backgroundColor = .systemBackground
+        let editImage = UIImage(systemName: "square.and.pencil")?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor(named: "system-text") ?? .red)
+        editButton.image = editImage
+
+        let deleteButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
+            guard let self else { return }
+
+            self.viewModel.removeSchedule(at: indexPath.section)
+            self.loadSchedules()
+        }
+
+        deleteButton.backgroundColor = .systemBackground
+        let deleteImage = UIImage(systemName: "trash")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
+        deleteButton.image = deleteImage
+
+        return UISwipeActionsConfiguration(actions: [deleteButton, editButton])
+    }
 }
