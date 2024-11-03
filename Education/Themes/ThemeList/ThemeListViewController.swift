@@ -254,7 +254,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
         deleteButton.backgroundColor = .systemBackground
-        let deleteImage = UIImage(systemName: "trash.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
+        let deleteImage = UIImage(systemName: "trash")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
         deleteButton.image = deleteImage
 
         return UISwipeActionsConfiguration(actions: [deleteButton, editButton])
