@@ -31,9 +31,7 @@ class ScheduleViewModel {
     // MARK: - Properties
 
     var schedules = [Schedule]()
-
     var tasks: [[Schedule]] = [[], [], [], [], [], [], []]
-
     var scheduleModes: [ScheduleMode] = ScheduleMode.allCases
     var selectedScheduleMode: ScheduleMode = .daily
 
@@ -44,9 +42,7 @@ class ScheduleViewModel {
     }
 
     var selectedWeekday = Int()
-
     lazy var daysOfWeek: [Date] = self.getDaysOfWeek()
-
     var currentFocusSessionModel: FocusSessionModel?
 
     // MARK: - Initializer
@@ -55,9 +51,11 @@ class ScheduleViewModel {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
     }
+}
 
-    // MARK: - Methods
+// MARK: - Schedule Handling
 
+extension ScheduleViewModel {
     func fetchSchedules() {
         if let schedules = scheduleManager.fetchSchedules(dayOfTheWeek: selectedWeekday) {
             let orderedSchedules = schedules.sorted {
@@ -111,98 +109,7 @@ class ScheduleViewModel {
 
         return schedulesByDay
     }
-
-    func getSubject(fromSchedule schedule: Schedule) -> Subject? {
-        return subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID)
-    }
-
-    func dayAbbreviation(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E"
-        return formatter.string(from: date).prefix(3).uppercased()
-    }
-
-    func dayFormatted(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd"
-        return formatter.string(from: date)
-    }
-
-    func hasSubjects() -> Bool {
-        guard let subjects = subjectManager.fetchSubjects() else { return false }
-
-        return !subjects.isEmpty
-    }
-
-    func firstThreeLetters(of text: String) -> String {
-        return String(text.prefix(3))
-    }
-
-    func getTitleString() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM, "
-
-        let month = dateFormatter.string(from: Date()).capitalized
-
-        dateFormatter.dateFormat = "YYYY"
-
-        let year = dateFormatter.string(from: Date()).capitalized
-
-        return month + year
-    }
-
-    private func getDaysOfWeek() -> [Date] {
-        let calendar = Calendar.current
-        guard let baseDate = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())),
-              let startOfWeek = calendar.date(byAdding: .day, value: UserDefaults.dayOfWeek, to: baseDate) else { return [] }
-
-        var daysOfWeek = (0 ..< 7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
-
-        if let today = calendar.dateComponents([.day], from: Date()).day,
-           let startOfWeekDay = calendar.dateComponents([.day], from: startOfWeek).day,
-           startOfWeekDay > today {
-            
-            daysOfWeek = daysOfWeek.map { date in
-                guard let day = calendar.dateComponents([.day], from: date).day,
-                      day > today,
-                      let mappedDate = calendar.date(byAdding: .day, value: -7, to: date) else { return date }
-
-                return mappedDate
-            }
-        }
-
-        return daysOfWeek
-    }
-
-    func updateDaysOfWeek() {
-        daysOfWeek = getDaysOfWeek()
-    }
-
-    func isToday(_ date: Date) -> Bool {
-        let calendar = Calendar.current
-
-        let currentDay = calendar.component(.weekday, from: date) - 1
-
-        let today = calendar.component(.weekday, from: Date()) - 1
-
-        return currentDay == today
-    }
-
-    func getWeekday(from date: Date) -> Int {
-        return Calendar.current.component(.weekday, from: date) - 1
-    }
-
-    func getShortTimeString(for schedule: Schedule?, isStartTime: Bool) -> String {
-        guard let schedule else { return String() }
-
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-
-        let time = isStartTime ? schedule.unwrappedStartTime : schedule.unwrappedEndTime
-
-        return "\(formatter.string(from: time))"
-    }
-
+    
     func getEventCase(for schedule: Schedule?) -> EventCase {
         guard let schedule else { return .notToday }
 
@@ -244,13 +151,112 @@ class ScheduleViewModel {
             }
         }
     }
-
+    
     private func getDateComponents(_ components: Set<Calendar.Component>, from date: Date) -> DateComponents {
         let calendar = Calendar.current
 
         return calendar.dateComponents(components, from: date)
     }
+    
+    func getShortTimeString(for schedule: Schedule?, isStartTime: Bool) -> String {
+        guard let schedule else { return String() }
 
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+
+        let time = isStartTime ? schedule.unwrappedStartTime : schedule.unwrappedEndTime
+
+        return "\(formatter.string(from: time))"
+    }
+}
+
+// MARK: - Subject Handling
+
+extension ScheduleViewModel {
+    func getSubject(fromSchedule schedule: Schedule) -> Subject? {
+        return subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID)
+    }
+    
+    func hasSubjects() -> Bool {
+        guard let subjects = subjectManager.fetchSubjects() else { return false }
+
+        return !subjects.isEmpty
+    }
+}
+
+// MARK: - Days Handling
+
+extension ScheduleViewModel {
+    private func getDaysOfWeek() -> [Date] {
+        let calendar = Calendar.current
+        guard let baseDate = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())),
+              let startOfWeek = calendar.date(byAdding: .day, value: UserDefaults.dayOfWeek, to: baseDate) else { return [] }
+
+        var daysOfWeek = (0 ..< 7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
+
+        if let today = calendar.dateComponents([.day], from: Date()).day,
+           let startOfWeekDay = calendar.dateComponents([.day], from: startOfWeek).day,
+           startOfWeekDay > today {
+            
+            daysOfWeek = daysOfWeek.map { date in
+                guard let day = calendar.dateComponents([.day], from: date).day,
+                      day > today,
+                      let mappedDate = calendar.date(byAdding: .day, value: -7, to: date) else { return date }
+
+                return mappedDate
+            }
+        }
+
+        return daysOfWeek
+    }
+    
+    func updateDaysOfWeek() {
+        daysOfWeek = getDaysOfWeek()
+    }
+    
+    func isToday(_ date: Date) -> Bool {
+        let calendar = Calendar.current
+
+        let currentDay = calendar.component(.weekday, from: date) - 1
+
+        let today = calendar.component(.weekday, from: Date()) - 1
+
+        return currentDay == today
+    }
+    
+    func getWeekday(from date: Date) -> Int {
+        return Calendar.current.component(.weekday, from: date) - 1
+    }
+    
+    func dayAbbreviation(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E"
+        return formatter.string(from: date).prefix(3).uppercased()
+    }
+
+    func dayFormatted(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd"
+        return formatter.string(from: date)
+    }
+}
+
+// MARK: - NavigationItem and EmptyView Auxiliar Methods
+
+extension ScheduleViewModel {
+    func getTitleString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM, "
+
+        let month = dateFormatter.string(from: Date()).capitalized
+
+        dateFormatter.dateFormat = "YYYY"
+
+        let year = dateFormatter.string(from: Date()).capitalized
+
+        return month + year
+    }
+    
     func getContentViewInfo() -> (isDaily: Bool, isEmpty: Bool) {
         var isDaily = false
         var isEmpty = false
