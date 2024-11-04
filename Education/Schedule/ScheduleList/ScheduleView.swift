@@ -68,7 +68,7 @@ class ScheduleView: UIView {
 
     let overlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = .clear
+        view.backgroundColor = .label.withAlphaComponent(0.1)
         view.alpha = 0
 
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -119,6 +119,14 @@ class ScheduleView: UIView {
 
         return button
     }()
+    
+    let deletionAlertView: AlertView = {
+        let view = AlertView()
+        view.isHidden = true
+        view.layer.zPosition = 2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     // MARK: - Initializer
 
@@ -137,6 +145,15 @@ class ScheduleView: UIView {
 
     func setNoSchedulesView(isDaily: Bool) {
         noSchedulesView.period = isDaily ? .day : .week
+    }
+    
+    func changeAlertVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+
+            self.deletionAlertView.isHidden = !isShowing
+            self.overlayView.alpha = isShowing ? 1 : 0
+        }
     }
 }
 
