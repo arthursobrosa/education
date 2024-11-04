@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NotificationCenter
 
 @objc 
 protocol FocusPickerDelegate: AnyObject {
@@ -19,6 +20,7 @@ extension FocusPickerViewController: FocusPickerDelegate {
         viewModel.setFocusSessionModel()
         viewModel.unblockApps()
         coordinator?.showTimer(focusSessionModel: viewModel.focusSessionModel)
+        liveActivity.liveActivityManaging.startActivity(endTime: Date().addingTimeInterval(Double(viewModel.focusSessionModel.totalSeconds)))
     }
 
     func dismiss() {
@@ -28,4 +30,5 @@ extension FocusPickerViewController: FocusPickerDelegate {
     func dismissAll() {
         coordinator?.dismissAll()
     }
+
 }

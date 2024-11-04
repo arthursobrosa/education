@@ -12,9 +12,9 @@ final class LiveActivityService: LiveActivityManaging {
     private var activity: Activity<TimerAttributes>?
 
     // Function to start the Live Activity
-    func startActivity() {
+    func startActivity(endTime: Date) {
         let attributes = TimerAttributes(timerName: "Timer")
-        let state = TimerAttributes.TimerStatus(endTime: Date().addingTimeInterval(60 * 5))
+        let state = TimerAttributes.TimerStatus(endTime: endTime) //Date().addingTimeInterval(60 * 5)
 
         do {
             activity = try Activity<TimerAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
@@ -25,8 +25,8 @@ final class LiveActivityService: LiveActivityManaging {
     }
 
     // Function to update the Live Activity
-    func updateActivity() {
-        let state = TimerAttributes.TimerStatus(endTime: Date().addingTimeInterval(60 * 10))
+    func updateActivity(endTime: Date) {
+        let state = TimerAttributes.TimerStatus(endTime: endTime)
 
         Task {
             await activity?.update(using: state)

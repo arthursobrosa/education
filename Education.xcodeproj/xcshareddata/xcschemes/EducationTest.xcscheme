@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1530"
+   LastUpgradeVersion = "1610"
    version = "2.2">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -55,15 +55,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "684BF8802C346E9A005E63BE"
-            BuildableName = "EducationTests.xctest"
-            BlueprintName = "EducationTests"
-            ReferencedContainer = "container:Education.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

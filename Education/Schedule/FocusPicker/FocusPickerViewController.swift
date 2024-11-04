@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import ActivityKit
 
 class FocusPickerViewController: UIViewController {
     weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
     let viewModel: FocusPickerViewModel
-
+    var liveActivity: LiveActivityViewModel = .init(liveActivityManaging: LiveActivityService())
+    
+    var activity: Activity<TimerAttributes>? = nil
+    
     private lazy var focusPickerView: FocusPickerView = {
         let view = FocusPickerView(timerCase: viewModel.focusSessionModel.timerCase)
         view.delegate = self

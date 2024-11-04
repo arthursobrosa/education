@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -105,11 +105,6 @@
 		686965CE2CB46F3D00D2985D /* ShieldConfiguration.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 686965C22CB46F3D00D2985D /* ShieldConfiguration.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		686965D32CB4A8A400D2985D /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686965D22CB4A8A400D2985D /* TabBarViewModel.swift */; };
 		686965D62CB5D6DB00D2985D /* ActivityManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686965D52CB5D6DB00D2985D /* ActivityManagerTests.swift */; };
-		686B46EE2CC2DE2600A5CB56 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686B46ED2CC2DE2600A5CB56 /* WidgetKit.framework */; };
-		686B46F02CC2DE2600A5CB56 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686B46EF2CC2DE2600A5CB56 /* SwiftUI.framework */; };
-		686B46F32CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686B46F22CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift */; };
-		686B46F92CC2DE2700A5CB56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 686B46F82CC2DE2700A5CB56 /* Assets.xcassets */; };
-		686B46FD2CC2DE2700A5CB56 /* WidgetConfigurationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 686B46EC2CC2DE2600A5CB56 /* WidgetConfigurationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6874A2602C3F727200CAC9E4 /* ScheduleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */; };
 		6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */; };
 		6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */; };
@@ -227,11 +222,14 @@
 		CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */; };
 		CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */; };
 		CE6A12522C63EEDC00549DCC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */; };
-		CEBFA82A2CC2DFB6005E1F24 /* TutorialLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */; };
+		CEAB1DFD2CD54679000C9A0D /* LiveActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB1DFC2CD54679000C9A0D /* LiveActivityViewModel.swift */; };
+		CEAB1E092CD56865000C9A0D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686B46ED2CC2DE2600A5CB56 /* WidgetKit.framework */; };
+		CEAB1E0A2CD56865000C9A0D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686B46EF2CC2DE2600A5CB56 /* SwiftUI.framework */; };
+		CEAB1E172CD56866000C9A0D /* LiveActivityExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CEAB1E082CD56865000C9A0D /* LiveActivityExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CEAB1E1D2CD56A1C000C9A0D /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB1E1C2CD56A1C000C9A0D /* TimerAttributes.swift */; };
+		CEAB1E1E2CD56A1C000C9A0D /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB1E1C2CD56A1C000C9A0D /* TimerAttributes.swift */; };
 		CEBFA83C2CC2F0D2005E1F24 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */; };
 		CEBFA83E2CC2F0D8005E1F24 /* LiveActivityManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */; };
-		CEBFA8402CC2F12D005E1F24 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83F2CC2F12D005E1F24 /* TimerAttributes.swift */; };
-		CEBFA8412CC2F12D005E1F24 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83F2CC2F12D005E1F24 /* TimerAttributes.swift */; };
 		CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */; };
 		CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB352C5BFD7E00297062 /* SelectionButton.swift */; };
 		CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */; };
@@ -253,12 +251,12 @@
 			remoteGlobalIDString = 686965C12CB46F3D00D2985D;
 			remoteInfo = ShieldConfiguration;
 		};
-		686B46FB2CC2DE2700A5CB56 /* PBXContainerItemProxy */ = {
+		CEAB1E152CD56866000C9A0D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 683B452D2C1B6F3A00663912 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 686B46EB2CC2DE2600A5CB56;
-			remoteInfo = WidgetConfigurationExtension;
+			remoteGlobalIDString = CEAB1E072CD56865000C9A0D;
+			remoteInfo = LiveActivityExtensionExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -270,7 +268,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				686965CE2CB46F3D00D2985D /* ShieldConfiguration.appex in Embed Foundation Extensions */,
-				686B46FD2CC2DE2700A5CB56 /* WidgetConfigurationExtension.appex in Embed Foundation Extensions */,
+				CEAB1E172CD56866000C9A0D /* LiveActivityExtensionExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 1;
@@ -383,12 +381,8 @@
 		686965CB2CB46F3D00D2985D /* ShieldConfiguration.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShieldConfiguration.entitlements; sourceTree = "<group>"; };
 		686965D22CB4A8A400D2985D /* TabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
 		686965D52CB5D6DB00D2985D /* ActivityManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManagerTests.swift; sourceTree = "<group>"; };
-		686B46EC2CC2DE2600A5CB56 /* WidgetConfigurationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetConfigurationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		686B46ED2CC2DE2600A5CB56 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		686B46EF2CC2DE2600A5CB56 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		686B46F22CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfigurationBundle.swift; sourceTree = "<group>"; };
-		686B46F82CC2DE2700A5CB56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		686B46FA2CC2DE2700A5CB56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6874A25F2C3F727200CAC9E4 /* ScheduleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCoordinator.swift; sourceTree = "<group>"; };
 		6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsViewController.swift; sourceTree = "<group>"; };
 		6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsView.swift; sourceTree = "<group>"; };
@@ -505,15 +499,31 @@
 		CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationViewController.swift; sourceTree = "<group>"; };
 		CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetailsModal.swift; sourceTree = "<group>"; };
 		CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialLiveActivity.swift; sourceTree = "<group>"; };
+		CEAB1DFC2CD54679000C9A0D /* LiveActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityViewModel.swift; sourceTree = "<group>"; };
+		CEAB1DFE2CD54C04000C9A0D /* WidgetConfigurationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetConfigurationExtension.entitlements; sourceTree = "<group>"; };
+		CEAB1E082CD56865000C9A0D /* LiveActivityExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LiveActivityExtensionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEAB1E1C2CD56A1C000C9A0D /* TimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAttributes.swift; sourceTree = "<group>"; };
 		CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityService.swift; sourceTree = "<group>"; };
 		CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManaging.swift; sourceTree = "<group>"; };
-		CEBFA83F2CC2F12D005E1F24 /* TimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAttributes.swift; sourceTree = "<group>"; };
 		CED3DB332C5BFA3900297062 /* FocusSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionView.swift; sourceTree = "<group>"; };
 		CED3DB352C5BFD7E00297062 /* SelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; };
 		CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSelectionViewController+Delegate.swift"; sourceTree = "<group>"; };
 		CED3DB392C5C17EC00297062 /* FocusSelectionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSelectionCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CEAB1E182CD56866000C9A0D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CEAB1E072CD56865000C9A0D /* LiveActivityExtensionExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CEAB1E0B2CD56865000C9A0D /* LiveActivityExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (CEAB1E182CD56866000C9A0D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = LiveActivityExtension; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		683B45322C1B6F3A00663912 /* Frameworks */ = {
@@ -539,12 +549,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		686B46E92CC2DE2600A5CB56 /* Frameworks */ = {
+		CEAB1E052CD56865000C9A0D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				686B46F02CC2DE2600A5CB56 /* SwiftUI.framework in Frameworks */,
-				686B46EE2CC2DE2600A5CB56 /* WidgetKit.framework in Frameworks */,
+				CEAB1E0A2CD56865000C9A0D /* SwiftUI.framework in Frameworks */,
+				CEAB1E092CD56865000C9A0D /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,11 +787,12 @@
 		683B452C2C1B6F3A00663912 = {
 			isa = PBXGroup;
 			children = (
+				CEAB1DFE2CD54C04000C9A0D /* WidgetConfigurationExtension.entitlements */,
 				68C8D9A92C4987FF0092E80D /* Localizable.strings */,
 				683B45372C1B6F3A00663912 /* Education */,
 				684BF8822C346E9A005E63BE /* EducationTests */,
 				686965C72CB46F3D00D2985D /* ShieldConfiguration */,
-				686B46F12CC2DE2600A5CB56 /* WidgetConfiguration */,
+				CEAB1E0B2CD56865000C9A0D /* LiveActivityExtension */,
 				CE3B7D392C45922A00EE5070 /* Frameworks */,
 				683B45362C1B6F3A00663912 /* Products */,
 			);
@@ -793,7 +804,7 @@
 				683B45352C1B6F3A00663912 /* Education.app */,
 				684BF8812C346E9A005E63BE /* EducationTests.xctest */,
 				686965C22CB46F3D00D2985D /* ShieldConfiguration.appex */,
-				686B46EC2CC2DE2600A5CB56 /* WidgetConfigurationExtension.appex */,
+				CEAB1E082CD56865000C9A0D /* LiveActivityExtensionExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -944,18 +955,6 @@
 			path = ActivityManager;
 			sourceTree = "<group>";
 		};
-		686B46F12CC2DE2600A5CB56 /* WidgetConfiguration */ = {
-			isa = PBXGroup;
-			children = (
-				CEBFA83F2CC2F12D005E1F24 /* TimerAttributes.swift */,
-				CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */,
-				686B46F22CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift */,
-				686B46F82CC2DE2700A5CB56 /* Assets.xcassets */,
-				686B46FA2CC2DE2700A5CB56 /* Info.plist */,
-			);
-			path = WidgetConfiguration;
-			sourceTree = "<group>";
-		};
 		6874A2632C3F78BD00CAC9E4 /* ScheduleList */ = {
 			isa = PBXGroup;
 			children = (
@@ -1067,9 +1066,11 @@
 		6893889A2C642C11007EE922 /* Activity */ = {
 			isa = PBXGroup;
 			children = (
+				CEAB1DFC2CD54679000C9A0D /* LiveActivityViewModel.swift */,
 				CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */,
 				CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */,
 				68E617A72C6D6F4E00488237 /* ActivityManager.swift */,
+				CEAB1E1C2CD56A1C000C9A0D /* TimerAttributes.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -1296,7 +1297,7 @@
 			);
 			dependencies = (
 				686965CD2CB46F3D00D2985D /* PBXTargetDependency */,
-				686B46FC2CC2DE2700A5CB56 /* PBXTargetDependency */,
+				CEAB1E162CD56866000C9A0D /* PBXTargetDependency */,
 			);
 			name = Education;
 			packageProductDependencies = (
@@ -1340,21 +1341,26 @@
 			productReference = 686965C22CB46F3D00D2985D /* ShieldConfiguration.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		686B46EB2CC2DE2600A5CB56 /* WidgetConfigurationExtension */ = {
+		CEAB1E072CD56865000C9A0D /* LiveActivityExtensionExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 686B47002CC2DE2700A5CB56 /* Build configuration list for PBXNativeTarget "WidgetConfigurationExtension" */;
+			buildConfigurationList = CEAB1E192CD56866000C9A0D /* Build configuration list for PBXNativeTarget "LiveActivityExtensionExtension" */;
 			buildPhases = (
-				686B46E82CC2DE2600A5CB56 /* Sources */,
-				686B46E92CC2DE2600A5CB56 /* Frameworks */,
-				686B46EA2CC2DE2600A5CB56 /* Resources */,
+				CEAB1E042CD56865000C9A0D /* Sources */,
+				CEAB1E052CD56865000C9A0D /* Frameworks */,
+				CEAB1E062CD56865000C9A0D /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = WidgetConfigurationExtension;
-			productName = WidgetConfigurationExtension;
-			productReference = 686B46EC2CC2DE2600A5CB56 /* WidgetConfigurationExtension.appex */;
+			fileSystemSynchronizedGroups = (
+				CEAB1E0B2CD56865000C9A0D /* LiveActivityExtension */,
+			);
+			name = LiveActivityExtensionExtension;
+			packageProductDependencies = (
+			);
+			productName = LiveActivityExtensionExtension;
+			productReference = CEAB1E082CD56865000C9A0D /* LiveActivityExtensionExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -1364,8 +1370,8 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					683B45342C1B6F3A00663912 = {
 						CreatedOnToolsVersion = 15.4;
@@ -1378,8 +1384,8 @@
 					686965C12CB46F3D00D2985D = {
 						CreatedOnToolsVersion = 15.4;
 					};
-					686B46EB2CC2DE2600A5CB56 = {
-						CreatedOnToolsVersion = 15.4;
+					CEAB1E072CD56865000C9A0D = {
+						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
@@ -1402,7 +1408,7 @@
 				683B45342C1B6F3A00663912 /* Education */,
 				684BF8802C346E9A005E63BE /* EducationTests */,
 				686965C12CB46F3D00D2985D /* ShieldConfiguration */,
-				686B46EB2CC2DE2600A5CB56 /* WidgetConfigurationExtension */,
+				CEAB1E072CD56865000C9A0D /* LiveActivityExtensionExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1441,11 +1447,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		686B46EA2CC2DE2600A5CB56 /* Resources */ = {
+		CEAB1E062CD56865000C9A0D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				686B46F92CC2DE2700A5CB56 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1582,6 +1587,7 @@
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
 				685265512C8B710A009D9678 /* ShowingThemeCreation.swift in Sources */,
 				68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */,
+				CEAB1E1E2CD56A1C000C9A0D /* TimerAttributes.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
 				CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */,
 				68FF04EA2CBE3DEE00E8C48C /* NotesCell.swift in Sources */,
@@ -1643,7 +1649,6 @@
 				31117EDE2CB70C3D00FF2701 /* TestPageViewController+TextViewDelegate.swift in Sources */,
 				CE1E018F2C6BEAD000811CB9 /* HourDetailsView.swift in Sources */,
 				68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */,
-				CEBFA8412CC2F12D005E1F24 /* TimerAttributes.swift in Sources */,
 				317C11392C3F018B00C5E7A5 /* SubjectTimeTableViewCell.swift in Sources */,
 				CE394D112C6E89A200A8B1F0 /* ScheduleDetailsModalController+Delegate.swift in Sources */,
 				68825BCD2C2F300000272451 /* FocusSessionManager.swift in Sources */,
@@ -1671,6 +1676,7 @@
 				68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */,
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
+				CEAB1DFD2CD54679000C9A0D /* LiveActivityViewModel.swift in Sources */,
 				688CF32C2C851C7B00DE97DD /* ActivityBarButton.swift in Sources */,
 				68FF04E22CBE244F00E8C48C /* FocusEndViewModel.swift in Sources */,
 				CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */,
@@ -1702,13 +1708,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		686B46E82CC2DE2600A5CB56 /* Sources */ = {
+		CEAB1E042CD56865000C9A0D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				686B46F32CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift in Sources */,
-				CEBFA82A2CC2DFB6005E1F24 /* TutorialLiveActivity.swift in Sources */,
-				CEBFA8402CC2F12D005E1F24 /* TimerAttributes.swift in Sources */,
+				CEAB1E1D2CD56A1C000C9A0D /* TimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1725,10 +1729,10 @@
 			target = 686965C12CB46F3D00D2985D /* ShieldConfiguration */;
 			targetProxy = 686965CC2CB46F3D00D2985D /* PBXContainerItemProxy */;
 		};
-		686B46FC2CC2DE2700A5CB56 /* PBXTargetDependency */ = {
+		CEAB1E162CD56866000C9A0D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 686B46EB2CC2DE2600A5CB56 /* WidgetConfigurationExtension */;
-			targetProxy = 686B46FB2CC2DE2700A5CB56 /* PBXContainerItemProxy */;
+			target = CEAB1E072CD56865000C9A0D /* LiveActivityExtensionExtension */;
+			targetProxy = CEAB1E152CD56866000C9A0D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1881,7 +1885,6 @@
 		683B454A2C1B6F3B00663912 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Education/Education.entitlements;
@@ -1901,7 +1904,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1922,7 +1925,6 @@
 		683B454B2C1B6F3B00663912 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Education/Education.entitlements;
@@ -1941,7 +1943,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1968,7 +1970,8 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
 				DEVELOPMENT_TEAM = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.EducationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1989,7 +1992,8 @@
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
 				DEVELOPMENT_TEAM = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				MARKETING_VERSION = "$(APP_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.EducationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2013,7 +2017,8 @@
 				INFOPLIST_FILE = ShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfiguration;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2040,7 +2045,8 @@
 				INFOPLIST_FILE = ShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfiguration;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2056,7 +2062,7 @@
 			};
 			name = Release;
 		};
-		686B46FE2CC2DE2700A5CB56 /* Debug */ = {
+		CEAB1E1A2CD56866000C9A0D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2065,19 +2071,19 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WidgetConfiguration/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = WidgetConfiguration;
+				INFOPLIST_FILE = LiveActivityExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LiveActivityExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.WidgetConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.LiveActivityExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2086,26 +2092,26 @@
 			};
 			name = Debug;
 		};
-		686B46FF2CC2DE2700A5CB56 /* Release */ = {
+		CEAB1E1B2CD56866000C9A0D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WidgetConfiguration/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = WidgetConfiguration;
+				INFOPLIST_FILE = LiveActivityExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LiveActivityExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.WidgetConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.LiveActivityExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2153,11 +2159,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		686B47002CC2DE2700A5CB56 /* Build configuration list for PBXNativeTarget "WidgetConfigurationExtension" */ = {
+		CEAB1E192CD56866000C9A0D /* Build configuration list for PBXNativeTarget "LiveActivityExtensionExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				686B46FE2CC2DE2700A5CB56 /* Debug */,
-				686B46FF2CC2DE2700A5CB56 /* Release */,
+				CEAB1E1A2CD56866000C9A0D /* Debug */,
+				CEAB1E1B2CD56866000C9A0D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
