@@ -69,7 +69,7 @@ extension ScheduleDetailsViewController {
 
         label.text = labelText
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 17)
-        label.textColor = UIColor(named: color ?? "system-text-50")
+        label.textColor = UIColor(named: color ?? "system-text-50")?.darker(by: 0.8)
         label.sizeToFit()
 
         return label
