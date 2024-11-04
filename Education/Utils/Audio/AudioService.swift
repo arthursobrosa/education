@@ -1,6 +1,6 @@
 //
 //  AudioService.swift
-//  AudioService
+//  Education
 //
 //  Created by Eduardo Dalencon on 30/07/24.
 //
@@ -8,37 +8,83 @@
 import AVFoundation
 import Foundation
 
-var audioPlayer: AVAudioPlayer?
+enum Sound: String, CaseIterable {
+    case alarm
+    
+    var url: URL? {
+        Bundle.main.url(forResource: rawValue, withExtension: "mp3")
+    }
+    
+    var numberOfLoops: Int {
+        0
+    }
+    
+    var volume: Float {
+        1.0
+    }
+    
+    var rate: Float {
+        1.0
+    }
+}
 
-class AudioService {
-    private var timer: Timer?
+enum SoundError: Error {
+    case URLNotFound
+    case invalidURL
+}
 
-    init() {}
+protocol AudioServiceProtocol: AnyObject {
+    var allPlayers: [AVAudioPlayer] { get set }
+    
+    func setSounds()
+    func getSound(_ soundCase: Sound) throws -> AVAudioPlayer
+    func playSound(_ soundCase: Sound)
+    func stopSound(_ soundCase: Sound)
+}
 
-    func playAudio(from url: URL) {
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.prepareToPlay()
-            audioPlayer?.play()
-
-        } catch {
-            print("Erro ao tocar áudio: \(error.localizedDescription)")
+class AudioService: AudioServiceProtocol {
+    var allPlayers: [AVAudioPlayer] = []
+    
+    init() {
+        setSounds()
+    }
+    
+    func setSounds() {
+        let allSoundCases = Sound.allCases
+        
+        for soundCase in allSoundCases {
+            do {
+                let audioPlayer = try getSound(soundCase)
+                allPlayers.append(audioPlayer)
+            } catch let error {
+                print(error)
+            }
         }
     }
-
-    func stopAudio() {
-        audioPlayer?.stop()
+    
+    func getSound(_ soundCase: Sound) throws -> AVAudioPlayer {
+        guard let soundURL = soundCase.url else {
+            throw SoundError.URLNotFound
+        }
+        
+        do {
+            return try AVAudioPlayer(contentsOf: soundURL)
+        } catch {
+            throw SoundError.invalidURL
+        }
     }
-
-    func pauseAudio() {
-        audioPlayer?.pause()
-    }
-
-    func resumeAudio() {
+    
+    func playSound(_ soundCase: Sound) {
+        let audioPlayer = allPlayers.first(where: { $0.url == soundCase.url })
+        audioPlayer?.numberOfLoops = soundCase.numberOfLoops
+        audioPlayer?.volume = soundCase.volume
+        audioPlayer?.enableRate = true
+        audioPlayer?.rate = soundCase.rate
         audioPlayer?.play()
     }
-
-    func setVolume(to volume: Float) {
-        audioPlayer?.volume = volume
+    
+    func stopSound(_ soundCase: Sound) {
+        let audioPlayer = allPlayers.first(where: { $0.url == soundCase.url })
+        audioPlayer?.stop()
     }
 }

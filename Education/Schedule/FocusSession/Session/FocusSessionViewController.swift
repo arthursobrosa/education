@@ -220,6 +220,8 @@ extension FocusSessionViewController {
     }
 
     private func showEndTimeAlert() {
+        viewModel.playAlarm()
+        
         let timerCase = viewModel.activityManager.timerCase
         var alertCase: FocusStatusAlertCase
 
@@ -252,22 +254,4 @@ extension FocusSessionViewController {
         let pomodoroString = viewModel.getPomodoroString()
         focusSessionView.updateTimerLabels(timerString: timerString, pomodoroString: pomodoroString)
     }
-
-    #warning("handle timer finished audio")
-//    private func handleTimerEnd() {
-//        focusSessionView.disablePauseResumeButton()
-//
-//        let isAlarmOn = viewModel.activityManager.isAlarmOn
-//        if isAlarmOn {
-//            let audioService = AudioService()
-//            if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
-//                audioService.playAudio(from: url)
-//            }
-//        }
-//
-//        focusSessionView.resetAnimations()
-//
-//        showEndTimeAlert()
-//        removeTapGestureRecognizer()
-//    }
 }

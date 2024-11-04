@@ -1,5 +1,5 @@
 //
-//  CustomTableView.swift
+//  BorderedTableView.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 11/09/24.
@@ -7,12 +7,13 @@
 
 import UIKit
 
-class CustomTableView: UITableView {
+class BorderedTableView: UITableView {
     init() {
-        super.init(frame: .zero, style: .insetGrouped)
+        super.init(frame: .zero, style: .plain)
 
-        register(CustomTableCell.self, forCellReuseIdentifier: CustomTableCell.identifier)
+        register(BorderedTableCell.self, forCellReuseIdentifier: BorderedTableCell.identifier)
 
+        separatorStyle = .none
         backgroundColor = .systemBackground
     }
 

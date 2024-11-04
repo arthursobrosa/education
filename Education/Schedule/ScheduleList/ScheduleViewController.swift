@@ -23,9 +23,9 @@ class ScheduleViewController: UIViewController {
 
         view.delegate = self
 
-        view.dailyScheduleView.collectionView.dataSource = self
-        view.dailyScheduleView.collectionView.delegate = self
-        view.dailyScheduleView.collectionView.register(ScheduleCell.self, forCellWithReuseIdentifier: ScheduleCell.identifier)
+        view.dailyScheduleView.tableView.dataSource = self
+        view.dailyScheduleView.tableView.delegate = self
+        view.dailyScheduleView.tableView.register(DailyScheduleCell.self, forCellReuseIdentifier: DailyScheduleCell.identifier)
 
         view.weeklyScheduleCollection.dataSource = self
         view.weeklyScheduleCollection.delegate = self
@@ -111,12 +111,19 @@ class ScheduleViewController: UIViewController {
         dismissButtons()
     }
 
-    func reloadCollections() {
+    private func reloadCollections() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
 
-            self.scheduleView.dailyScheduleView.collectionView.reloadData()
             self.scheduleView.weeklyScheduleCollection.reloadData()
+        }
+    }
+    
+    private func reloadTables() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+
+            self.scheduleView.dailyScheduleView.tableView.reloadData()
         }
     }
 
@@ -160,6 +167,7 @@ class ScheduleViewController: UIViewController {
     func loadSchedules() {
         viewModel.fetchSchedules()
         setContentView()
+        reloadTables()
         reloadCollections()
     }
 
@@ -219,7 +227,7 @@ extension ScheduleViewController {
             let hasSubjects = viewModel.hasSubjects()
 
             if hasSubjects {
-                scheduleView.changeNoSchedulesView(isDaily: isDaily)
+                scheduleView.setNoSchedulesView(isDaily: isDaily)
                 handleTip()
                 childSubview = scheduleView.noSchedulesView
             } else {
@@ -230,7 +238,7 @@ extension ScheduleViewController {
             addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.dailyScheduleView)
         } else {
             if isDaily {
-                addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: scheduleView.dailyScheduleView.collectionView)
+                addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: scheduleView.dailyScheduleView.tableView)
                 addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.dailyScheduleView)
             } else {
                 addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.weeklyScheduleCollection)

@@ -170,36 +170,38 @@ class ScheduleDetailsViewController: UIViewController {
 // MARK: - UITableViewDataSource and UITableViewDelegate
 
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in _: UITableView) -> Int {
-        return 4
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? BorderedTableCell else { return }
+        cell.configureCell(tableView: tableView, forRowAt: indexPath)
     }
-
-    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        4
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 3
+            3
+        case 1:
+            1
         case 2:
-            return 2
-        case 1, 3:
-            return 1
+            2
+        case 3:
+            1
         default:
-            break
+            0
         }
-
-        return Int()
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableCell.identifier, for: indexPath) as? CustomTableCell else {
-            fatalError("Could not dequeue cell")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BorderedTableCell.identifier, for: indexPath) as? BorderedTableCell else {
+            fatalError("Could not dequeue bordered table cell")
         }
 
         cell.textLabel?.text = createCellTitle(for: indexPath)
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         cell.accessoryView = createAccessoryView(for: indexPath)
-
-        cell.row = indexPath.row
-        cell.numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
 
         return cell
     }
@@ -226,27 +228,17 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         }
     }
 
-    func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return 50
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        50
     }
 
-    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
-    }
-
-    func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView()
         footerView.backgroundColor = UIColor.clear
         return footerView
     }
 
-    func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-        return 11
-    }
-
-    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        return 0
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        11
     }
 }

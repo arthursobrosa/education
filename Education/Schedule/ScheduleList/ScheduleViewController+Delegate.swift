@@ -28,11 +28,11 @@ protocol ScheduleDelegate: AnyObject {
 
     // MARK: - Play button
 
-    func playButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?)
+    func playButtonTapped(_ sender: ActivityButton)
 
     // MARK: - Schedule Cell
 
-    func getConfiguredScheduleCell(from cell: ScheduleCell, at indexPath: IndexPath, isDaily: Bool) -> UICollectionViewCell
+    func getConfiguredScheduleCell(from object: AnyObject, at indexPath: IndexPath, isDaily: Bool) -> AnyObject
     func getNumberOfItemsIn(_ index: Int) -> Int
     func didSelectWeeklySchedule(column: Int, row: Int)
 }
@@ -164,31 +164,36 @@ extension ScheduleViewController: ScheduleDelegate {
 
     // MARK: - Play Button
 
-    func playButtonTapped(at indexPath: IndexPath?, withColor color: UIColor?) {
-        guard let indexPath else { return }
+    func playButtonTapped(_ sender: ActivityButton) {
+        guard let focusConfig = sender.focusConfig,
+              let indexPath = focusConfig.indexPath else { return }
+        
+        let isDaily = focusConfig.isDaily
 
-        let row = indexPath.row
-
-        let schedule = viewModel.schedules[row]
+        let schedule = isDaily ? viewModel.schedules[indexPath.section] : viewModel.schedules[indexPath.row]
         let subject = viewModel.getSubject(fromSchedule: schedule)
 
-        let newFocusSessionModel = FocusSessionModel(scheduleID: schedule.unwrappedID, subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: color)
+        let newFocusSessionModel = FocusSessionModel(scheduleID: schedule.unwrappedID, subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: focusConfig.color)
 
         coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
 
     // MARK: - Schedule Cell
 
-    func getConfiguredScheduleCell(from cell: ScheduleCell, at indexPath: IndexPath, isDaily: Bool = true) -> UICollectionViewCell {
+    func getConfiguredScheduleCell(from object: AnyObject, at indexPath: IndexPath, isDaily: Bool) -> AnyObject {
+        guard let cell = object as? ScheduleCellProtocol else {
+            fatalError("Could not get schedule cell for configuration")
+        }
+        
         cell.delegate = self
 
-        let schedule = isDaily ? viewModel.schedules[indexPath.row] : viewModel.tasks[indexPath.section][indexPath.row]
+        let schedule = isDaily ? viewModel.schedules[indexPath.section] : viewModel.tasks[indexPath.section][indexPath.row]
         let subject = viewModel.getSubject(fromSchedule: schedule)
         let color = UIColor(named: subject?.unwrappedColor ?? "sealBackgroundColor")
         let timeLabelString = getTimeLabelString(for: indexPath, isDaily: isDaily)
         let eventCase = viewModel.getEventCase(for: schedule)
 
-        let cellConfig = ScheduleCell.CellConfig(
+        let cellConfig = CellConfig(
             subject: subject,
             indexPath: indexPath,
             isDaily: isDaily,
@@ -196,10 +201,37 @@ extension ScheduleViewController: ScheduleDelegate {
             eventCase: eventCase,
             color: color
         )
-
-        cell.config = cellConfig
+        
+        cell.configure(with: cellConfig)
 
         return cell
+    }
+    
+    private func getTimeLabelString(for indexPath: IndexPath, isDaily: Bool) -> NSAttributedString {
+        let schedule = isDaily ? viewModel.schedules[indexPath.section] : viewModel.tasks[indexPath.section][indexPath.row]
+        let subject = viewModel.getSubject(fromSchedule: schedule)
+        let colorName = subject?.unwrappedColor
+
+        let color = UIColor(named: colorName ?? "sealBackgroundColor")
+        let font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)
+        let startTimeColor: UIColor = (traitCollection.userInterfaceStyle == .light ? color?.darker(by: 0.8) : color) ?? .label
+        let endTimeColor: UIColor = (traitCollection.userInterfaceStyle == .light ? color : color?.darker(by: 0.8)) ?? .label
+
+        let attributedString = NSMutableAttributedString()
+        let startTimeString = NSAttributedString(string: viewModel.getShortTimeString(for: schedule, isStartTime: true), attributes: [.font: font, .foregroundColor: startTimeColor])
+        let endTimeString = NSAttributedString(string: viewModel.getShortTimeString(for: schedule, isStartTime: false), attributes: [.font: font, .foregroundColor: endTimeColor])
+
+        attributedString.append(startTimeString)
+        
+        if isDaily {
+            attributedString.append(NSAttributedString(string: " - ", attributes: [.font: font, .foregroundColor: endTimeColor]))
+        } else {
+            attributedString.append(NSAttributedString(string: "\n", attributes: [.font: font, .foregroundColor: endTimeColor]))
+        }
+        
+        attributedString.append(endTimeString)
+
+        return attributedString
     }
 
     func getNumberOfItemsIn(_ index: Int) -> Int {
