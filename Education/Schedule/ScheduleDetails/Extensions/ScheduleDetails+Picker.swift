@@ -59,7 +59,7 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
                 let subjectColorName = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
                 pickerLabel?.textColor = UIColor(named: subjectColorName)?.darker(by: 0.8)
             }
-        }else {
+        } else {
             if row == selectedRow {
                 pickerLabel?.textColor = .systemText50
             }
@@ -72,7 +72,7 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         switch pickerView.tag {
         case 0:
             viewModel.selectedDay = viewModel.days[row]
-            updateCellAccessory(for: viewModel.selectedDay, at: pickerView.tag, color: "system-text-30")
+            updateCellAccessory(for: viewModel.selectedDay, at: pickerView.tag, color: nil)
             updateDaySelectionIndicator(pickerView: pickerView, component: component)
         case 1:
             viewModel.selectedSubjectName = viewModel.subjectsNames[row]
