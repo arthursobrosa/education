@@ -18,6 +18,8 @@ enum AlertCase {
     case finishingEarlyCase
     case finishingTimerCase(subject: Subject?)
     case finishingPomodoroCase(pomodoroString: String, isAtWorkTime: Bool)
+    
+    case deletingSchedule(subject: Subject)
 
     var title: String {
         switch self {
@@ -29,6 +31,8 @@ enum AlertCase {
             String(localized: "finishTimerAlertTitle")
         case let .finishingPomodoroCase(pomodoroString, _):
             String(format: NSLocalizedString("finishPomodoroAlertTitle", comment: ""), pomodoroString)
+        case .deletingSchedule:
+            String(localized: "deleteScheduleAlertTitle")
         }
     }
 
@@ -42,21 +46,8 @@ enum AlertCase {
             getFinishTimerAlertBody()
         case .finishingPomodoroCase:
             getFinishPomodoroAlertBody()
-        }
-    }
-
-    var secondaryButtonTitle: String {
-        switch self {
-        case .restartingCase, .finishingEarlyCase:
-            String(localized: "cancel")
-        case .finishingTimerCase:
-            String(localized: "extendTime")
-        case let .finishingPomodoroCase(_, isAtWorkTime):
-            if isAtWorkTime {
-                String(localized: "extendFocus")
-            } else {
-                String(localized: "extendInterval")
-            }
+        case .deletingSchedule(let subject):
+            String(format: NSLocalizedString("deleteScheduleAlertBody", comment: ""), String(subject.unwrappedName.prefix(20)))
         }
     }
 
@@ -72,6 +63,38 @@ enum AlertCase {
             } else {
                 String(localized: "startFocus")
             }
+        case .deletingSchedule:
+            String(localized: "yes")
+        }
+    }
+    
+    var secondaryButtonTitle: String {
+        switch self {
+        case .restartingCase, .finishingEarlyCase:
+            String(localized: "cancel")
+        case .finishingTimerCase:
+            String(localized: "extendTime")
+        case let .finishingPomodoroCase(_, isAtWorkTime):
+            if isAtWorkTime {
+                String(localized: "extendFocus")
+            } else {
+                String(localized: "extendInterval")
+            }
+        case .deletingSchedule:
+            String(localized: "cancel")
+        }
+    }
+    
+    var primaryButtonAction: Selector {
+        switch self {
+        case .restartingCase:
+            #selector(FocusSessionDelegate.didRestart)
+        case .finishingEarlyCase, .finishingTimerCase:
+            #selector(FocusSessionDelegate.didFinish)
+        case .finishingPomodoroCase:
+            #selector(FocusSessionDelegate.didStartNextPomodoro)
+        case .deletingSchedule:
+            #selector(ScheduleDelegate.didDeleteSchedule)
         }
     }
 
@@ -81,17 +104,8 @@ enum AlertCase {
             #selector(FocusSessionDelegate.didCancel)
         case .finishingTimerCase, .finishingPomodoroCase:
             #selector(FocusSessionDelegate.didTapExtendButton)
-        }
-    }
-
-    var primaryButtonAction: Selector {
-        switch self {
-        case .restartingCase:
-            #selector(FocusSessionDelegate.didRestart)
-        case .finishingEarlyCase, .finishingTimerCase:
-            #selector(FocusSessionDelegate.didFinish)
-        case .finishingPomodoroCase:
-            #selector(FocusSessionDelegate.didStartNextPomodoro)
+        case .deletingSchedule:
+            #selector(ScheduleDelegate.didCancelDeletion)
         }
     }
 
@@ -101,6 +115,8 @@ enum AlertCase {
             .bottom
         case .finishingTimerCase, .finishingPomodoroCase:
             .mid
+        case .deletingSchedule:
+            .mid
         }
     }
 
@@ -108,7 +124,7 @@ enum AlertCase {
         guard case let .finishingTimerCase(subject) = self else { return String() }
 
         if let subject {
-            return String(format: NSLocalizedString("finishTimerAlertBody", comment: ""), subject.unwrappedName)
+            return String(format: NSLocalizedString("finishTimerAlertBody", comment: ""), String(subject.unwrappedName.prefix(20)))
         } else {
             return String(localized: "finishTimerAlertBody-noSubject")
         }
