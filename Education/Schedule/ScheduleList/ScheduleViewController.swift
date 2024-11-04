@@ -89,7 +89,7 @@ class ScheduleViewController: UIViewController {
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
         addButton.imageView?.contentMode = .scaleAspectFit
-        addButton.addTarget(self, action: #selector(addScheduleButtonTapped), for: .touchUpInside)
+        addButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         addButton.tintColor = UIColor(named: "system-text")
 
         let addItem = UIBarButtonItem(customView: addButton)
@@ -108,7 +108,9 @@ class ScheduleViewController: UIViewController {
 
     @objc 
     private func viewTapped(_: UITapGestureRecognizer) {
-        dismissButtons()
+        if scheduleView.deletionAlertView.isHidden == true {
+            dismissButtons()
+        }
     }
 
     private func reloadCollections() {
@@ -151,12 +153,14 @@ class ScheduleViewController: UIViewController {
     }
 
     @objc 
-    private func addScheduleButtonTapped() {
+    private func plusButtonTapped() {
         let newAlpha: CGFloat = scheduleView.overlayView.alpha == 0 ? 1 : 0
+        let newNavigationColor: UIColor = scheduleView.overlayView.alpha == 0 ? .label.withAlphaComponent(0.1) : .clear
 
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self else { return }
 
+            self.navigationController?.navigationBar.backgroundColor = newNavigationColor
             self.scheduleView.overlayView.alpha = newAlpha
             self.scheduleView.fourDotsView.alpha = newAlpha
             self.scheduleView.createAcitivityButton.alpha = newAlpha
@@ -173,9 +177,10 @@ class ScheduleViewController: UIViewController {
 
     func dismissButtons() {
         if scheduleView.overlayView.alpha == 1 {
-            UIView.animate(withDuration: 0.3) { [weak self] in
+            UIView.animate(withDuration: 0.5) { [weak self] in
                 guard let self else { return }
 
+                self.navigationController?.navigationBar.backgroundColor = .clear
                 self.scheduleView.overlayView.alpha = 0
                 self.scheduleView.fourDotsView.alpha = 0
                 self.scheduleView.createAcitivityButton.alpha = 0
