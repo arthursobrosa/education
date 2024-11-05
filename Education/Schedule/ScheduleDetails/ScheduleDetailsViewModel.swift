@@ -147,7 +147,7 @@ class ScheduleDetailsViewModel {
                 title: title,
                 body: bodyBefore,
                 date: selectedDate,
-                isAtExactTime: false,
+                minutesBefore: 5,
                 scheduleInfo: nil
             )
         }
@@ -162,7 +162,7 @@ class ScheduleDetailsViewModel {
                 title: title,
                 body: bodyInTime,
                 date: selectedDate,
-                isAtExactTime: true,
+                minutesBefore: 0,
                 scheduleInfo: scheduleInfo
             )
         }
