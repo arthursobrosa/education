@@ -23,7 +23,6 @@ extension SettingsViewController {
         let dayPicker = UIPickerView()
         dayPicker.delegate = self
         dayPicker.dataSource = self
-        dayPicker.tag = section
 
         popoverVC.view = dayPicker
 
@@ -89,13 +88,15 @@ extension SettingsViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
+// MARK: - PickerView Data Source and Delegate
+
 extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in _: UIPickerView) -> Int {
-        return 1
+        1
     }
 
     func pickerView(_: UIPickerView, numberOfRowsInComponent _: Int) -> Int {
-        return viewModel.days.count
+        viewModel.days.count
     }
 
     func pickerView(_: UIPickerView, viewForRow row: Int, forComponent _: Int, reusing view: UIView?) -> UIView {
@@ -119,8 +120,7 @@ extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             fatalError("Could not get cell")
         }
 
-        guard let stackView = cell.customAccessoryView.subviews.first as? UIStackView,
-              let dayOfWeekLabel = stackView.arrangedSubviews.first(where: { $0.tag == 0 }) as? UILabel else { return }
+        guard let dayOfWeekLabel = cell.customAccessoryView.subviews.first as? UILabel else { return }
 
         dayOfWeekLabel.text = viewModel.selectedDay
 
