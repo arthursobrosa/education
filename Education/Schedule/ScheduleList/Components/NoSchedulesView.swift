@@ -24,11 +24,11 @@ class NoSchedulesView: UIView {
         }
     }
 
-    var noSchedulesCase: NoSchedulesCase? {
+    var period: NoSchedulesCase? {
         didSet {
-            guard let noSchedulesCase else { return }
+            guard let period else { return }
 
-            messageLabel.text = "🍃\n\n\(noSchedulesCase.message)"
+            messageLabel.text = "🍃\n\n\(period.message)"
 
             setupUI()
         }

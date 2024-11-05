@@ -33,113 +33,138 @@ extension UIView {
         borderLayer.lineWidth = borderWidth
         borderLayer.frame = bounds
         borderLayer.name = "borderLayer"
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
+            borderLayer.strokeColor = borderColor.cgColor
+        }
 
         layer.addSublayer(borderLayer)
     }
 
-    func createCurve(on roundedCurveCase: RoundedCurveCase, radius: CGFloat = 0, borderWidth: CGFloat, borderColor: UIColor, rect: CGRect) {
+    func createCurve(on roundedCurveCase: RoundedCurveCase, radius: CGFloat = 0, borderWidth: CGFloat, borderColor: UIColor) {
         // Cria o path manualmente para desenhar as linhas que você precisa
-        let borderPathArc = UIBezierPath()
-        let borderPathLine = UIBezierPath()
-
-        var lineWidth = borderWidth
+        let arcPath = UIBezierPath()
+        let vLinePath = UIBezierPath()
+        let hLinePath = UIBezierPath()
 
         // Define os pontos para desenhar o path
-        let bottomLeft = CGPoint(x: rect.minX, y: rect.maxY)
-        let topLeft = CGPoint(x: rect.minX, y: rect.minY)
-        let topRight = CGPoint(x: rect.maxX, y: rect.minY)
-        let bottomRight = CGPoint(x: rect.maxX, y: rect.maxY)
+        let bottomLeft = CGPoint(x: bounds.minX, y: bounds.maxY)
+        let topLeft = CGPoint(x: bounds.minX, y: bounds.minY)
+        let topRight = CGPoint(x: bounds.maxX, y: bounds.minY)
+        let bottomRight = CGPoint(x: bounds.maxX, y: bounds.maxY)
 
         switch roundedCurveCase {
         case .top:
-            borderPathLine.move(to: bottomLeft)
+            // Linha esquerda
+            vLinePath.move(to: bottomLeft)
+            vLinePath.addLine(to: CGPoint(x: topLeft.x, y: topLeft.y + radius))
 
-            borderPathLine.addLine(to: CGPoint(x: topLeft.x, y: topLeft.y + radius))
+            // Arco no canto superior esquerdo
+            arcPath.move(to: CGPoint(x: topLeft.x, y: topLeft.y + radius))
+            arcPath.addArc(
+                withCenter: CGPoint(x: radius + 0.5, y: topLeft.y + radius + 0.5),
+                radius: radius,
+                startAngle: .pi,
+                endAngle: 3 * .pi / 2,
+                clockwise: true
+            )
 
-            borderPathArc.move(to: CGPoint(x: topLeft.x, y: topLeft.y + radius))
-            borderPathArc.addArc(withCenter: CGPoint(x: radius + 0.5, y: topLeft.y + radius + 0.5),
-                                 radius: radius,
-                                 startAngle: .pi,
-                                 endAngle: 3 * .pi / 2,
-                                 clockwise: true)
+            // Linha de cima
+            hLinePath.move(to: CGPoint(x: topLeft.x + radius, y: topLeft.y + 0.5))
+            hLinePath.addLine(to: CGPoint(x: topRight.x - radius, y: topRight.y + 0.5))
 
-            borderPathLine.move(to: CGPoint(x: topLeft.x + radius, y: topLeft.y))
+            // Arco no canto superior direito
+            arcPath.move(to: CGPoint(x: topRight.x - radius, y: topRight.y))
+            arcPath.addArc(
+                withCenter: CGPoint(x: topRight.x - radius - 0.5, y: topRight.y + radius + 0.5),
+                radius: radius,
+                startAngle: 3 * .pi / 2,
+                endAngle: 0,
+                clockwise: true
+            )
 
-            borderPathLine.addLine(to: CGPoint(x: topRight.x - radius, y: topRight.y))
-
-            borderPathArc.move(to: CGPoint(x: topRight.x - radius, y: topRight.y))
-            borderPathArc.addArc(withCenter: CGPoint(x: topRight.x - radius - 0.5, y: topRight.y + radius + 0.5),
-                                 radius: radius,
-                                 startAngle: 3 * .pi / 2,
-                                 endAngle: 0,
-                                 clockwise: true)
-
-            borderPathLine.move(to: CGPoint(x: topRight.x, y: topLeft.y + radius))
-
-            borderPathLine.addLine(to: bottomRight)
+            // Linha direita
+            vLinePath.move(to: CGPoint(x: topRight.x, y: topLeft.y + radius))
+            vLinePath.addLine(to: bottomRight)
 
         case .bottom:
             // Linha esquerda
-            borderPathLine.move(to: topLeft)
-            borderPathLine.addLine(to: CGPoint(x: bottomLeft.x, y: bottomLeft.y - radius - 0.5))
+            vLinePath.move(to: topLeft)
+            vLinePath.addLine(to: CGPoint(x: bottomLeft.x, y: bottomLeft.y - radius - 0.5))
+                
+            // Arco no canto inferior esquerdo
+            arcPath.move(to: CGPoint(x: bottomLeft.x, y: bottomLeft.y - radius))
+            arcPath.addArc(
+                withCenter: CGPoint(x: bottomLeft.x + radius + 0.5, y: bottomLeft.y - radius - 0.5),
+                radius: radius,
+                startAngle: .pi,
+                endAngle: .pi / 2,
+                clockwise: false
+            )
 
             // Linha de baixo
-            borderPathLine.move(to: CGPoint(x: bottomLeft.x + radius + 0.5, y: bottomLeft.y))
-            borderPathLine.addLine(to: CGPoint(x: bottomRight.x - radius - 0.5, y: bottomLeft.y))
+            hLinePath.move(to: CGPoint(x: bottomLeft.x + radius + 0.5, y: bottomLeft.y - 0.5))
+            hLinePath.addLine(to: CGPoint(x: bottomRight.x - radius - 0.5, y: bottomLeft.y - 0.5))
+                
+            // Arco no canto inferior direito
+            arcPath.move(to: CGPoint(x: bottomRight.x - radius, y: bottomRight.y))
+            arcPath.addArc(
+                withCenter: CGPoint(x: bottomRight.x - radius - 0.5, y: bottomRight.y - radius - 0.5),
+                radius: radius,
+                startAngle: .pi / 2,
+                endAngle: 0,
+                clockwise: false
+            )
 
             // Linha direita
-            borderPathLine.move(to: CGPoint(x: bottomRight.x, y: bottomRight.y - radius))
-            borderPathLine.addLine(to: topRight)
-
-            borderPathArc.move(to: CGPoint(x: bottomLeft.x, y: bottomLeft.y - radius))
-            borderPathArc.addArc(withCenter: CGPoint(x: bottomLeft.x + radius + 0.5, y: bottomLeft.y - radius - 0.5),
-                                 radius: radius,
-                                 startAngle: .pi,
-                                 endAngle: .pi / 2,
-                                 clockwise: false)
-
-            borderPathArc.move(to: CGPoint(x: bottomRight.x - radius, y: bottomRight.y))
-            borderPathArc.addArc(withCenter: CGPoint(x: bottomRight.x - radius - 0.5, y: bottomRight.y - radius - 0.5),
-                                 radius: radius,
-                                 startAngle: .pi / 2,
-                                 endAngle: 0,
-                                 clockwise: false)
+            vLinePath.move(to: CGPoint(x: bottomRight.x, y: bottomRight.y - radius))
+            vLinePath.addLine(to: topRight)
 
         case .laterals:
-            let xOffset = borderWidth * (0.6 / 2.5)
-            let correctedRect = CGRect(x: bounds.origin.x + xOffset, y: bounds.origin.y, width: bounds.width - xOffset * 2, height: bounds.height)
+            // Linha esquerda
+            vLinePath.move(to: CGPoint(x: bounds.minX, y: bounds.minY))
+            vLinePath.addLine(to: CGPoint(x: bounds.minX, y: bounds.maxY))
 
-            lineWidth = xOffset * 2
-
-            // Começa no canto superior esquerdo e desce a lateral esquerda
-            borderPathLine.move(to: CGPoint(x: correctedRect.minX, y: correctedRect.minY))
-            borderPathLine.addLine(to: CGPoint(x: correctedRect.minX, y: correctedRect.maxY))
-
-            // Move para o canto inferior direito e sobe a lateral direita
-            borderPathLine.move(to: CGPoint(x: correctedRect.maxX, y: correctedRect.minY))
-            borderPathLine.addLine(to: CGPoint(x: correctedRect.maxX, y: correctedRect.maxY))
+            // Linha direita
+            vLinePath.move(to: CGPoint(x: bounds.maxX, y: bounds.minY))
+            vLinePath.addLine(to: CGPoint(x: bounds.maxX, y: bounds.maxY))
         }
 
         // Cria a camada de borda e aplica o path
-        let borderLayer = CAShapeLayer()
-        borderLayer.path = borderPathArc.cgPath
-        borderLayer.strokeColor = borderColor.cgColor
-        borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.lineWidth = lineWidth / 2
-        borderLayer.frame = bounds
-        borderLayer.name = "borderLayer"
+        let vLineLayer = CAShapeLayer()
+        vLineLayer.path = vLinePath.cgPath
+        vLineLayer.strokeColor = borderColor.cgColor
+        vLineLayer.fillColor = UIColor.clear.cgColor
+        vLineLayer.lineWidth = borderWidth
+        vLineLayer.frame = bounds
+        vLineLayer.name = "vLineLayer"
 
-        let borderLayer2 = CAShapeLayer()
-        borderLayer2.path = borderPathLine.cgPath
-        borderLayer2.strokeColor = borderColor.cgColor
-        borderLayer2.fillColor = UIColor.clear.cgColor
-        borderLayer2.lineWidth = lineWidth
-        borderLayer2.frame = bounds
-        borderLayer2.name = "borderLayer2"
+        let hLineLayer = CAShapeLayer()
+        hLineLayer.path = hLinePath.cgPath
+        hLineLayer.strokeColor = borderColor.cgColor
+        hLineLayer.fillColor = UIColor.clear.cgColor
+        hLineLayer.lineWidth = borderWidth / 2
+        hLineLayer.frame = bounds
+        hLineLayer.name = "hLineLayer"
+
+        let arcLayer = CAShapeLayer()
+        arcLayer.path = arcPath.cgPath
+        arcLayer.strokeColor = borderColor.cgColor
+        arcLayer.fillColor = UIColor.clear.cgColor
+        arcLayer.lineWidth = borderWidth / 2
+        arcLayer.frame = bounds
+        arcLayer.name = "arcLayer"
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
+            vLineLayer.strokeColor = borderColor.cgColor
+            hLineLayer.strokeColor = borderColor.cgColor
+            arcLayer.strokeColor = borderColor.cgColor
+        }
 
         // Adiciona a camada de borda na view
-        layer.addSublayer(borderLayer)
-        layer.addSublayer(borderLayer2)
+        layer.addSublayer(vLineLayer)
+        layer.addSublayer(hLineLayer)
+        layer.addSublayer(arcLayer)
     }
 }
 

@@ -20,12 +20,11 @@ class TestPageView: UIView {
         return scrollView
     }()
 
-    let tableView: CustomTableView = {
-        let table = CustomTableView()
-
-        table.translatesAutoresizingMaskIntoConstraints = false
-
-        return table
+    let tableView: BorderedTableView = {
+        let tableView = BorderedTableView()
+        tableView.isScrollEnabled = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
 
     let textView: UITextView = {
@@ -174,12 +173,12 @@ extension TestPageView: ViewCodeProtocol {
 
         //textView.inputAccessoryView = createToolBar()
 
-        let padding = 20.0
+        let padding = 12.0
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             tableView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
 
             textView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: -60),

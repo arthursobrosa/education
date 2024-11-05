@@ -79,6 +79,8 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
 
     func didFinish() {
+        viewModel.stopAlarm()
+        
         viewModel.didTapFinish = true
 
         coordinator?.showFocusEnd(activityManager: viewModel.activityManager)
@@ -87,6 +89,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
 
     func didStartNextPomodoro() {
+        viewModel.stopAlarm()
         viewModel.activityManager.continuePomodoro()
     }
 
@@ -95,6 +98,8 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
 
     func didTapExtendButton() {
+        viewModel.stopAlarm()
+        
         var focusExtensionAlertCase: FocusExtensionAlertCase
         let timerCase = viewModel.activityManager.timerCase
 

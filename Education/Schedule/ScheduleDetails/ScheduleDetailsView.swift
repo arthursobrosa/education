@@ -14,12 +14,10 @@ class ScheduleDetailsView: UIView {
 
     // MARK: - UI Components
 
-    let tableView: CustomTableView = {
-        let table = CustomTableView()
-
-        table.translatesAutoresizingMaskIntoConstraints = false
-
-        return table
+    let tableView: BorderedTableView = {
+        let tableView = BorderedTableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
 
     private lazy var deleteButton: ButtonComponent = {
@@ -89,9 +87,9 @@ extension ScheduleDetailsView: ViewCodeProtocol {
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 60),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.6),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            tableView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10),
 
             deleteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),

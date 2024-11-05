@@ -139,6 +139,23 @@ class SettingsViewController: UIViewController {
     }
 }
 
+// MARK: - UI Setup
+
+extension SettingsViewController: ViewCodeProtocol {
+    func setupUI() {
+        view.addSubview(settingsTableView)
+
+        let padding = 12.0
+
+        NSLayoutConstraint.activate([
+            settingsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            settingsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+        ])
+    }
+}
+
 // MARK: - UITableViewDataSource and UITableViewDelegate
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -181,20 +198,5 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         default:
             return
         }
-    }
-}
-
-extension SettingsViewController: ViewCodeProtocol {
-    func setupUI() {
-        view.addSubview(settingsTableView)
-
-        let padding = 12.0
-
-        NSLayoutConstraint.activate([
-            settingsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            settingsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-        ])
     }
 }

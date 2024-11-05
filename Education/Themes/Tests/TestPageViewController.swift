@@ -141,6 +141,11 @@ class TestPageViewController: UIViewController {
 }
 
 extension TestPageViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? BorderedTableCell else { return }
+        cell.configureCell(tableView: tableView, forRowAt: indexPath)
+    }
+    
     func numberOfSections(in _: UITableView) -> Int {
         return 2
     }
@@ -157,7 +162,7 @@ extension TestPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableCell.identifier, for: indexPath) as? CustomTableCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BorderedTableCell.identifier, for: indexPath) as? BorderedTableCell else {
             fatalError("Could not dequeue cell")
         }
 
@@ -167,9 +172,6 @@ extension TestPageViewController: UITableViewDataSource, UITableViewDelegate {
 
         cell.accessoryView = getAccessoryView(for: indexPath)
 
-        cell.row = indexPath.row
-        cell.numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
-
         return cell
     }
 
@@ -177,23 +179,13 @@ extension TestPageViewController: UITableViewDataSource, UITableViewDelegate {
         return 50
     }
 
-    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
-    }
-
-    func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView()
         footerView.backgroundColor = UIColor.clear
         return footerView
     }
 
-    func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-        return 11
-    }
-
-    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        return 0
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        11
     }
 }
