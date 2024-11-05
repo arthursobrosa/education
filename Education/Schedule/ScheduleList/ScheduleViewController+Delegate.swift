@@ -11,6 +11,10 @@ import UIKit
 
 @objc 
 protocol ScheduleDelegate: AnyObject {
+    // MARK: - Navigation Bar
+    
+    func plusButtonTapped()
+    
     // MARK: - View Mode
 
     func setSegmentedControl(_ segmentedControl: UISegmentedControl)
@@ -41,6 +45,25 @@ protocol ScheduleDelegate: AnyObject {
 }
 
 extension ScheduleViewController: ScheduleDelegate {
+    // MARK: - Navigation Bar
+    
+    func plusButtonTapped() {
+        let isShowingButtons = scheduleView.createAcitivityButton.alpha == 1
+        
+        if isShowingButtons {
+            dismissButtons()
+        } else {
+            setTapGesture()
+            
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let self else { return }
+                
+                self.scheduleView.createAcitivityButton.alpha = 1
+                self.scheduleView.startActivityButton.alpha = 1
+            }
+        }
+    }
+    
     // MARK: - View Mode
 
     func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
@@ -260,12 +283,6 @@ extension ScheduleViewController: ScheduleDelegate {
         scheduleView.deletionAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
         scheduleView.deletionAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
         scheduleView.changeAlertVisibility(isShowing: true)
-        
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            guard let self else { return }
-
-            self.navigationController?.navigationBar.backgroundColor = .label.withAlphaComponent(0.1)
-        }
     }
     
     private func getAlertConfig(with alertCase: AlertCase) -> AlertView.AlertConfig {
@@ -280,22 +297,10 @@ extension ScheduleViewController: ScheduleDelegate {
     }
     
     func didCancelDeletion() {
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            guard let self else { return }
-
-            self.navigationController?.navigationBar.backgroundColor = .clear
-        }
-        
         scheduleView.changeAlertVisibility(isShowing: false)
     }
     
     func didDeleteSchedule() {
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            guard let self else { return }
-
-            self.navigationController?.navigationBar.backgroundColor = .clear
-        }
-        
         scheduleView.changeAlertVisibility(isShowing: false)
         viewModel.removeSchedule()
         loadSchedules()

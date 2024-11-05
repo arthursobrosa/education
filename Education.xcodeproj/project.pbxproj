@@ -49,7 +49,6 @@
 		31C102F62C6D1A9B009D2751 /* SubjectCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102F52C6D1A9B009D2751 /* SubjectCreationViewController.swift */; };
 		31C102FA2C6D30BC009D2751 /* ShowingSubjectCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */; };
 		31C102FC2C6D3168009D2751 /* SubjectCreationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */; };
-		31D098832C9A156F005AFA87 /* FourDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D098822C9A156F005AFA87 /* FourDotsView.swift */; };
 		31EB254B2C596883008F8893 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB254A2C596883008F8893 /* NotificationService.swift */; };
 		6804837E2C920559007FC564 /* CustomChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837D2C920559007FC564 /* CustomChart.swift */; };
 		680483802C922471007FC564 /* BorderedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804837F2C922471007FC564 /* BorderedTableView.swift */; };
@@ -195,6 +194,7 @@
 		68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
 		68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */; };
 		68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */; };
+		68D860192CD987320063CA76 /* NavigationBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D860182CD987320063CA76 /* NavigationBarComponent.swift */; };
 		68DE198A2C3DBAD800872751 /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE19892C3DBAD800872751 /* Popover.swift */; };
 		68E0BA882C9A29F600C34BFE /* ThemeCreationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E0BA872C9A29F600C34BFE /* ThemeCreationViewModel.swift */; };
 		68E10AA82C7FCBC9008AF82C /* Cocon-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */; };
@@ -321,7 +321,6 @@
 		31C102F52C6D1A9B009D2751 /* SubjectCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCreationViewController.swift; sourceTree = "<group>"; };
 		31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingSubjectCreation.swift; sourceTree = "<group>"; };
 		31C102FB2C6D3168009D2751 /* SubjectCreationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCreationCoordinator.swift; sourceTree = "<group>"; };
-		31D098822C9A156F005AFA87 /* FourDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourDotsView.swift; sourceTree = "<group>"; };
 		31EB254A2C596883008F8893 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		6804837D2C920559007FC564 /* CustomChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChart.swift; sourceTree = "<group>"; };
 		6804837F2C922471007FC564 /* BorderedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedTableView.swift; sourceTree = "<group>"; };
@@ -474,6 +473,7 @@
 		68D3138A2C6ADFEE00F63159 /* FocusSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionModel.swift; sourceTree = "<group>"; };
 		68D3138C2C6AE4E000F63159 /* ScheduleDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsCoordinator.swift; sourceTree = "<group>"; };
 		68D47D582C2DE227000E011C /* Education.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Education.entitlements; sourceTree = "<group>"; };
+		68D860182CD987320063CA76 /* NavigationBarComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarComponent.swift; sourceTree = "<group>"; };
 		68DE19892C3DBAD800872751 /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		68E0BA872C9A29F600C34BFE /* ThemeCreationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCreationViewModel.swift; sourceTree = "<group>"; };
 		68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cocon-Regular.ttf"; sourceTree = "<group>"; };
@@ -1015,7 +1015,7 @@
 				68C572402C8AC52B00B9D0A4 /* BorderedTableCell.swift */,
 				688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */,
 				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
-				31D098822C9A156F005AFA87 /* FourDotsView.swift */,
+				68D860182CD987320063CA76 /* NavigationBarComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1602,7 +1602,6 @@
 				68CA87D52C5D49F4006ED5FA /* FocusSelectionViewController.swift in Sources */,
 				CE323B3B2C73BC3E004143E0 /* ScheduleNotificationDelegate.swift in Sources */,
 				68A451412C61143B00209786 /* CustomDatePickerView.swift in Sources */,
-				31D098832C9A156F005AFA87 /* FourDotsView.swift in Sources */,
 				3018A1BD2CB5A49E00AB3978 /* ShowingTestDetails.swift in Sources */,
 				684282242C63B83300CEEF1C /* SettingsViewController.swift in Sources */,
 				CED3DB342C5BFA3900297062 /* FocusSelectionView.swift in Sources */,
@@ -1647,6 +1646,7 @@
 				688C25792C66715A00150F7F /* FocusImediateView.swift in Sources */,
 				317C11262C35BBBD00C5E7A5 /* TabBarController.swift in Sources */,
 				68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */,
+				68D860192CD987320063CA76 /* NavigationBarComponent.swift in Sources */,
 				68A80B672C97785B00CC6D48 /* NoThemesView.swift in Sources */,
 				68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */,
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
