@@ -511,8 +511,16 @@ extension ActivityManager: SessionManaging {
     }
 
     func saveFocusSesssion() {
-        totalTime = 0
+        focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID)
 
+        if let scheduleID,
+           let schedule = scheduleManager.fetchSchedule(from: scheduleID) {
+            schedule.completed = true
+            scheduleManager.updateSchedule(schedule)
+        }
+    }
+    
+    func computeTotalTime() {
         switch timerCase {
         case .stopwatch:
             totalTime = timerSeconds
@@ -520,14 +528,6 @@ extension ActivityManager: SessionManaging {
             computeTimerTotalTime()
         case .pomodoro:
             computePomodoroTotalTime()
-        }
-
-        focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID)
-
-        if let scheduleID,
-           let schedule = scheduleManager.fetchSchedule(from: scheduleID) {
-            schedule.completed = true
-            scheduleManager.updateSchedule(schedule)
         }
     }
 
