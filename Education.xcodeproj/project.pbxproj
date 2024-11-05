@@ -177,6 +177,7 @@
 		68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE02C66D31600805051 /* CustomPushTransition.swift */; };
 		68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE22C66D49800805051 /* CustomPopTransition.swift */; };
 		68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */; };
+		CE05C3F62CDA89830027DCB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE05C3F52CDA89830027DCB0 /* Assets.xcassets */; };
 		CE0BD2342C8234C100E9FBDF /* NotificationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BD2332C8234C100E9FBDF /* NotificationComponentView.swift */; };
 		CE0BD2362C862E1300E9FBDF /* FocusAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0BD2352C862E1300E9FBDF /* FocusAlertView.swift */; };
 		CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */; };
@@ -415,6 +416,7 @@
 		68EC5BE02C66D31600805051 /* CustomPushTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPushTransition.swift; sourceTree = "<group>"; };
 		68EC5BE22C66D49800805051 /* CustomPopTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
 		68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListCell.swift; sourceTree = "<group>"; };
+		CE05C3F52CDA89830027DCB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0BD2332C8234C100E9FBDF /* NotificationComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationComponentView.swift; sourceTree = "<group>"; };
 		CE0BD2352C862E1300E9FBDF /* FocusAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAlertView.swift; sourceTree = "<group>"; };
 		CE128FBA2C2C886B003C0D4A /* FocusSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSessionViewModel.swift; sourceTree = "<group>"; };
@@ -822,6 +824,7 @@
 			isa = PBXGroup;
 			children = (
 				686965C82CB46F3D00D2985D /* ShieldConfigurationExtension.swift */,
+				CE05C3F52CDA89830027DCB0 /* Assets.xcassets */,
 				686965CA2CB46F3D00D2985D /* Info.plist */,
 				686965CB2CB46F3D00D2985D /* ShieldConfiguration.entitlements */,
 			);
@@ -1239,6 +1242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE05C3F62CDA89830027DCB0 /* Assets.xcassets in Resources */,
 				CEAB1DD42CD2CC6B000C9A0D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

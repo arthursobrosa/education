@@ -18,12 +18,11 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
-            icon: UIImage(named: "AppIcon"),
+            icon: UIImage(named: "Icon"),
             title: ShieldConfiguration.Label(text: "Seus estudos estão lhe esperando", color: .label),
-            subtitle: ShieldConfiguration.Label(text: "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento” \n                                      - Albert Einstein", color: .secondaryLabel),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Voltar para o Planno", color: .white),
+            subtitle: ShieldConfiguration.Label(text: "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento” \n                                                - Albert Einstein", color: .secondaryLabel),
+            primaryButtonLabel: ShieldConfiguration.Label(text: "Voltar", color: .white),
             primaryButtonBackgroundColor: .black
-
         )
     }
     
@@ -32,12 +31,11 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
-            icon: UIImage(named: "AppIcon"),
+            icon: UIImage(named: "Icon"),
             title: ShieldConfiguration.Label(text: "Seus estudos estão lhe esperando", color: .label),
-            subtitle: ShieldConfiguration.Label(text: "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento”\n                                      - Albert Einstein", color: .secondaryLabel),
+            subtitle: ShieldConfiguration.Label(text: "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento” \n                                                - Albert Einstein", color: .secondaryLabel),
             primaryButtonLabel: ShieldConfiguration.Label(text: "Voltar", color: .white),
             primaryButtonBackgroundColor: .black
-
         )
     }
     
