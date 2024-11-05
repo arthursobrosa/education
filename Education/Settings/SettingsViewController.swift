@@ -9,30 +9,34 @@ import SwiftUI
 import UIKit
 
 class SettingsViewController: UIViewController {
+    // MARK: - Coordinator and ViewModel
+    
     weak var coordinator: SettingsCoordinator?
     let viewModel: SettingsViewModel
 
+    // MARK: - Properties
+    
     private let blockingManager: BlockingManager
 
-    lazy var settingsTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = .systemBackground
-
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
-
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-
-        return tableView
+    // MARK: - UI Properties
+    
+    lazy var settingsView: SettingsView = {
+        let view = SettingsView()
+        
+        view.tableView.dataSource = self
+        view.tableView.delegate = self
+        view.tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
+        
+        return view
     }()
 
     private lazy var swiftUIFamilyPickerView: FamilyActivityPickerView = .init(pickerDelegate: blockingManager)
 
+    // MARK: - Initializer
+    
     init(viewModel: SettingsViewModel, blockingManger: BlockingManager) {
         self.viewModel = viewModel
-        blockingManager = blockingManger
+        self.blockingManager = blockingManger
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -42,6 +46,12 @@ class SettingsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Lifecycle
+    
+    override func loadView() {
+        view = settingsView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -54,8 +64,6 @@ class SettingsViewController: UIViewController {
         }
 
         setNavigationItems()
-
-        setupUI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -64,18 +72,18 @@ class SettingsViewController: UIViewController {
         viewModel.requestNoficationsAuthorization()
     }
 
+    // MARK: - Methods
+    
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
 
-            self.settingsTableView.reloadData()
+            self.settingsView.tableView.reloadData()
         }
     }
 
     private func setNavigationItems() {
-        navigationItem.title = String(localized: "settingsTab")
-        let regularFont: UIFont = UIFont(name: Fonts.coconRegular, size: Fonts.titleSize) ?? UIFont.systemFont(ofSize: Fonts.titleSize, weight: .regular)
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: regularFont, .foregroundColor: UIColor(named: "system-text") ?? UIColor.red]
+        settingsView.setNavigationBar()
     }
 
     private func showFamilyActivityPicker() {
@@ -136,23 +144,6 @@ class SettingsViewController: UIViewController {
         }
 
         present(alert, animated: true)
-    }
-}
-
-// MARK: - UI Setup
-
-extension SettingsViewController: ViewCodeProtocol {
-    func setupUI() {
-        view.addSubview(settingsTableView)
-
-        let padding = 12.0
-
-        NSLayoutConstraint.activate([
-            settingsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            settingsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-        ])
     }
 }
 

@@ -206,6 +206,7 @@
 		68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE02C66D31600805051 /* CustomPushTransition.swift */; };
 		68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE22C66D49800805051 /* CustomPopTransition.swift */; };
 		68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */; };
+		68F6C5402CDAD0E2001146BB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F6C53F2CDAD0E2001146BB /* SettingsView.swift */; };
 		68FF04DE2CBE23FF00E8C48C /* FocusEndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04DD2CBE23FF00E8C48C /* FocusEndViewController.swift */; };
 		68FF04E02CBE242600E8C48C /* FocusEndCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04DF2CBE242600E8C48C /* FocusEndCoordinator.swift */; };
 		68FF04E22CBE244F00E8C48C /* FocusEndViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FF04E12CBE244F00E8C48C /* FocusEndViewModel.swift */; };
@@ -488,6 +489,7 @@
 		68EC5BE02C66D31600805051 /* CustomPushTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPushTransition.swift; sourceTree = "<group>"; };
 		68EC5BE22C66D49800805051 /* CustomPopTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
 		68EDBFA82C8BB87C00F69710 /* ThemeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeListCell.swift; sourceTree = "<group>"; };
+		68F6C53F2CDAD0E2001146BB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		68FF04DD2CBE23FF00E8C48C /* FocusEndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusEndViewController.swift; sourceTree = "<group>"; };
 		68FF04DF2CBE242600E8C48C /* FocusEndCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusEndCoordinator.swift; sourceTree = "<group>"; };
 		68FF04E12CBE244F00E8C48C /* FocusEndViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusEndViewModel.swift; sourceTree = "<group>"; };
@@ -867,6 +869,7 @@
 				684282212C63B80A00CEEF1C /* SettingsCoordinator.swift */,
 				CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */,
 				684282232C63B83300CEEF1C /* SettingsViewController.swift */,
+				68F6C53F2CDAD0E2001146BB /* SettingsView.swift */,
 				68B9EF952C878095000F03DE /* SettingsTableViewCell.swift */,
 				68B2CA9E2C810A9500DF8069 /* SettingsViewController+Extension.swift */,
 			);
@@ -1602,6 +1605,7 @@
 				6874A2602C3F727200CAC9E4 /* ScheduleCoordinator.swift in Sources */,
 				CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */,
 				CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */,
+				68F6C5402CDAD0E2001146BB /* SettingsView.swift in Sources */,
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
 				685265512C8B710A009D9678 /* ShowingThemeCreation.swift in Sources */,
 				68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */,
