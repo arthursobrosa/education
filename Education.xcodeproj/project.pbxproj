@@ -635,7 +635,7 @@
 				30F216A22C2C884400B7114F /* ThemeList */,
 				685265492C8B6FED009D9678 /* ThemeCreation */,
 				30F216B72C2DEF2200B7114F /* ThemePage */,
-				6833B2172C34567E009EA63D /* Tests */,
+				6833B2172C34567E009EA63D /* TestPage */,
 				3018A1BB2CB5A40B00AB3978 /* TestDetails */,
 			);
 			path = Themes;
@@ -706,7 +706,7 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		6833B2172C34567E009EA63D /* Tests */ = {
+		6833B2172C34567E009EA63D /* TestPage */ = {
 			isa = PBXGroup;
 			children = (
 				680483832C922A9C007FC564 /* TestPageCoordinator.swift */,
@@ -716,7 +716,7 @@
 				310B8A1A2C2F26BE005339E8 /* TestPageView.swift */,
 				688C2A432C93353A00E8EE81 /* Extensions */,
 			);
-			path = Tests;
+			path = TestPage;
 			sourceTree = "<group>";
 		};
 		6833B2182C34569D009EA63D /* Managers */ = {

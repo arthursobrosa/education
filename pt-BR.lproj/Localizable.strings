@@ -152,7 +152,7 @@
 "deleteTest" = "Apagar teste";
 "emptyTheme" = "Você ainda não tem nenhuma prova registrada aqui";
 "emptyTest" = "Você ainda não tem nenhum registro de teste";
-"dayLabel" = "Day";
+"dayLabel" = "Data";
 "questionLabel" = "Questões";
 "description" = "Notas sobre o teste/ questões";
 "deleteThemeTitle" = "Deletar Prova";

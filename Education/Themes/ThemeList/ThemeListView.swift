@@ -8,7 +8,16 @@
 import UIKit
 
 class ThemeListView: UIView {
+    // MARK: - Delegate to connect to VC
+    weak var delegate: ThemeListDelegate?
+    
     // MARK: - Properties
+    
+    private let navigationBar: NavigationBarComponent = {
+        let navigationBar = NavigationBarComponent()
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        return navigationBar
+    }()
 
     let contentView: UIView = {
         let view = UIView()
@@ -93,16 +102,25 @@ class ThemeListView: UIView {
             self.overlayView.alpha = isShowing ? 1 : 0
         }
     }
+    
+    func setNavigationBar() {
+        let titleText = String(localized: "themeTab")
+        let buttonImage = UIImage(systemName: "plus.circle.fill")
+        navigationBar.configure(titleText: titleText, rightButtonImage: buttonImage)
+        navigationBar.addRightButtonTarget(delegate, action: #selector(ThemeListDelegate.addThemeButtonTapped))
+    }
 }
 
 // MARK: - UI Setup
 
 extension ThemeListView: ViewCodeProtocol {
     func setupUI() {
+        addSubview(navigationBar)
+        navigationBar.layoutToSuperview()
         addSubview(contentView)
 
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
+            contentView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 24),
             contentView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
