@@ -133,7 +133,7 @@ extension ScheduleViewController: ScheduleDelegate {
 
         guard let dayOfWeek = dayView.dayOfWeek else { return }
 
-        dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
+        dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, isSelected: true, isToday: dayOfWeek.isToday)
         viewModel.selectedDate = viewModel.daysOfWeek[dayView.tag]
 
         loadSchedules()
@@ -152,9 +152,8 @@ extension ScheduleViewController: ScheduleDelegate {
             let dayView = DayView()
 
             let dayString = viewModel.dayAbbreviation(date)
-            let dateString = viewModel.dayFormatted(date)
             let isToday = viewModel.isToday(date)
-            dayView.dayOfWeek = DayOfWeek(day: dayString, date: dateString, isSelected: isToday, isToday: isToday)
+            dayView.dayOfWeek = DayOfWeek(day: dayString, isSelected: isToday, isToday: isToday)
 
             dayView.tag = index
             dayView.delegate = self

@@ -54,8 +54,8 @@
 "alarmAtTime" = "Alert at start time";
 "subject" = "Subject";
 "blockApps" = "Block Apps";
-"daily" = "Daily";
-"weekly" = "Weekly";
+"daily" = "Day";
+"weekly" = "Week";
 "noSubjectTitle" = "You cannot create an activity";
 "noSubjectMessage" = "You have to create a subject before setting an activity";
 "activityDeletionTitle" = "Activity Deletion";

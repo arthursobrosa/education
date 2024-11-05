@@ -54,8 +54,8 @@
 "alarmAtTime" = "Alerta ao iniciar";
 "subject" = "Disciplina";
 "blockApps" = "Bloquear Apps";
-"daily" = "Diário";
-"weekly" = "Semanal";
+"daily" = "Dia";
+"weekly" = "Semana";
 "noSubjectTitle" = "Você não pode criar uma atividade";
 "noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
 "activityDeletionTitle" = "Deleção de Atividade";

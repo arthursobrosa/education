@@ -46,9 +46,7 @@ class ScheduleView: UIView {
 
     let contentView: UIView = {
         let view = UIView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -58,17 +56,13 @@ class ScheduleView: UIView {
     var noSchedulesView: NoSchedulesView = {
         let view = NoSchedulesView()
         view.period = .day
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
     let noSubjectsView: NoSubjectsView = {
         let view = NoSubjectsView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -76,9 +70,7 @@ class ScheduleView: UIView {
         let view = UIView()
         view.backgroundColor = .label.withAlphaComponent(0.1)
         view.alpha = 0
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 

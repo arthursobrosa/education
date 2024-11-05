@@ -118,7 +118,7 @@ class ScheduleViewController: UIViewController {
 
         for dayView in dayViews {
             if let dayOfWeek = dayView.dayOfWeek {
-                dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: false, isToday: dayOfWeek.isToday)
+                dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, isSelected: false, isToday: dayOfWeek.isToday)
             }
         }
     }
@@ -129,7 +129,7 @@ class ScheduleViewController: UIViewController {
         for dayView in dayViews {
             if let dayOfWeek = dayView.dayOfWeek {
                 if dayOfWeek.isToday {
-                    dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
+                    dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, isSelected: true, isToday: dayOfWeek.isToday)
                     viewModel.selectedDate = viewModel.daysOfWeek[dayView.tag]
                 }
             }
