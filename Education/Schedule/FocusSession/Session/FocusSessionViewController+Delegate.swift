@@ -88,11 +88,9 @@ extension FocusSessionViewController: FocusSessionDelegate {
 
     func didFinish() {
         viewModel.stopAlarm()
-        
         viewModel.didTapFinish = true
-
+        viewModel.activityManager.computeTotalTime()
         coordinator?.showFocusEnd(activityManager: viewModel.activityManager)
-
         viewModel.unblockApps()
     }
 

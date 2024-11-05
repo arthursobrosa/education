@@ -47,7 +47,7 @@ class FocusEndViewModel {
     }
     
     private func setSelectedSubjectInfo() {
-        guard let subjects = subjectManager.fetchSubjects() else {
+        guard var subjects = subjectManager.fetchSubjects() else {
             selectedSubjectInfo = (name: String(localized: "none"), index: 0)
             return
         }
@@ -57,11 +57,13 @@ class FocusEndViewModel {
             return
         }
         
+        subjects.sort(by: { $0.unwrappedName < $1.unwrappedName })
+        
         guard let index = subjects.firstIndex(where: { $0.unwrappedName == activitySubject.unwrappedName }) else {
             return
         }
         
-        selectedSubjectInfo = (name: activitySubject.unwrappedName, index: Int(index))
+        selectedSubjectInfo = (name: activitySubject.unwrappedName, index: Int(index + 1))
     }
     
     func updateActivityManagerSubject() {
@@ -78,7 +80,7 @@ class FocusEndViewModel {
         }
         
         let sortedSubjects = subjects.sorted(by: { $0.unwrappedName < $1.unwrappedName })
-        activityManager.subject = sortedSubjects[index]
+        activityManager.subject = sortedSubjects[index - 1]
     }
 
     private func getDateString() {
@@ -94,14 +96,19 @@ class FocusEndViewModel {
 
     private func getHourString() {
         let startDate = activityManager.date
-        let endDate = Date.now
+        
+        let endDate = getEndDate(from: startDate, adding: TimeInterval(activityManager.totalTime))
 
         let startTime = getTimeOfTheDayString(from: startDate)
         let endTime = getTimeOfTheDayString(from: endDate)
 
-        let passedTime = getDifferenceBetween(startDate, and: endDate)
-
+        let passedTime = formatTime(from: activityManager.totalTime)
+        
         hoursString = startTime + " - " + endTime + " (\(passedTime))"
+    }
+    
+    private func getEndDate(from startDate: Date, adding interval: TimeInterval) -> Date {
+        return startDate.addingTimeInterval(interval)
     }
 
     private func getTimeOfTheDayString(from date: Date) -> String {
@@ -109,11 +116,6 @@ class FocusEndViewModel {
         dateFormatter.timeStyle = .short
 
         return dateFormatter.string(from: date)
-    }
-
-    private func getDifferenceBetween(_ date1: Date, and date2: Date) -> String {
-        let differenceInSeconds = date2.timeIntervalSince(date1)
-        return formatTime(from: Int(differenceInSeconds))
     }
 
     private func formatTime(from time: Int) -> String {
