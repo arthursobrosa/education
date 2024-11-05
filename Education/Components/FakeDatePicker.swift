@@ -28,7 +28,7 @@ class FakeDatePicker: UIDatePicker {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        label.textColor = .secondaryLabel
+        label.textColor = .systemText50
 
         label.translatesAutoresizingMaskIntoConstraints = false
 

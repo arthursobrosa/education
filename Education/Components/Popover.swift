@@ -24,7 +24,7 @@ class Popover: UIViewController {
         guard let presentationVC = popoverPresentationController else { return }
 
         presentationVC.sourceView = sourceView
-        presentationVC.permittedArrowDirections = permittedArrowDirections
+        presentationVC.permittedArrowDirections = []
         presentationVC.sourceRect = sourceRect
         presentationVC.delegate = delegate
     }
