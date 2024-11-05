@@ -14,11 +14,16 @@ class NotesCell: UITableViewCell {
 
     // MARK: - Properties
 
-    private let strokeView: UIView = {
+    private lazy var strokeView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
         view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
+        
+        view.layer.borderColor = UIColor.buttonNormal.cgColor
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
+            view.layer.borderColor = UIColor.buttonNormal.cgColor
+        }
+        
         view.layer.cornerRadius = 18
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -89,10 +94,10 @@ extension NotesCell: ViewCodeProtocol {
         let padding = 10.0
 
         NSLayoutConstraint.activate([
-            strokeView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            strokeView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -padding),
-            strokeView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            strokeView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            strokeView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
+            strokeView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 50 / 56),
+            strokeView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            strokeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
             textView.topAnchor.constraint(equalTo: strokeView.topAnchor, constant: padding),
             textView.bottomAnchor.constraint(equalTo: strokeView.bottomAnchor, constant: -padding),

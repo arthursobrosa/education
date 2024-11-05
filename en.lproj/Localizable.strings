@@ -65,6 +65,8 @@
 "onTimeTitle" = "On time";
 "onTimeMessage" = "It's time for your activity!";
 "startsIn" = "In %@min";
+"deleteScheduleAlertTitle" = "Remove Activity";
+"deleteScheduleAlertBody" = "Are you sure you want to remove \"%@\" Activity from your Study Plan?";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Would you like to link this activity to a subject?";
