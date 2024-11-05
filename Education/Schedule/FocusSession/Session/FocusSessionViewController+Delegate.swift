@@ -65,12 +65,20 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
 
     func didTapRestartButton() {
-        focusSessionView.statusAlertView.configure(with: .restartingCase, atSuperview: focusSessionView)
+        let alertCase: AlertCase = .restartingCase
+        let alertConfig = getAlertConfig(with: alertCase)
+        focusSessionView.statusAlertView.config = alertConfig
+        focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
         focusSessionView.changeAlertVisibility(isShowing: true)
     }
 
     func didTapFinishButton() {
-        focusSessionView.statusAlertView.configure(with: .finishingEarlyCase, atSuperview: focusSessionView)
+        let alertCase: AlertCase = .finishingEarlyCase
+        let alertConfig = getAlertConfig(with: alertCase)
+        focusSessionView.statusAlertView.config = alertConfig
+        focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
         focusSessionView.changeAlertVisibility(isShowing: true)
     }
 

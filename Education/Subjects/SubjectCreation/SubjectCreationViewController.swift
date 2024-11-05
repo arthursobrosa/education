@@ -18,6 +18,7 @@ class SubjectCreationViewController: UIViewController {
     lazy var subjectCreationView: SubjectCreationView = {
         let view = SubjectCreationView()
 
+        view.layer.cornerRadius = 16
         view.delegate = self
 
         view.tableView.dataSource = self
@@ -28,6 +29,8 @@ class SubjectCreationViewController: UIViewController {
         view.collectionView.delegate = self
         view.collectionView.dataSource = self
         view.collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: DefaultCell.identifier)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
 
         return view
     }()
@@ -45,6 +48,8 @@ class SubjectCreationViewController: UIViewController {
         }
 
         super.init(nibName: nil, bundle: nil)
+        
+        
 
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (_: SubjectCreationViewController, _: UITraitCollection?) in
             guard let self = self else { return }
@@ -59,14 +64,12 @@ class SubjectCreationViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    override func loadView() {
-        view = subjectCreationView
-    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setNavigationItems()
+        
+        setupUI()
 
         viewModel.selectedSubjectColor.bind { [weak self] _ in
             guard let self else { return }
@@ -77,6 +80,15 @@ class SubjectCreationViewController: UIViewController {
 
         if viewModel.currentEditingSubject == nil {
             subjectCreationView.hideDeleteButton()
+            self.subjectCreationView.titleLabel.text = String(localized: "newSubject")
+        } else {
+            self.subjectCreationView.titleLabel.text = String(localized: "editSubject")
+        }
+        
+        if traitCollection.userInterfaceStyle == .light {
+            view.backgroundColor = .label.withAlphaComponent(0.2)
+        } else {
+            view.backgroundColor = .label.withAlphaComponent(0.1)
         }
     }
 
@@ -103,22 +115,22 @@ class SubjectCreationViewController: UIViewController {
 
     // MARK: - Methods
 
-    private func setNavigationItems() {
-        navigationItem.title = viewModel.currentEditingSubject != nil ? String(localized: "editSubject") : String(localized: "newSubject")
-        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .semibold)
-        navigationController?.navigationBar.titleTextAttributes = [.font: semiboldFont, .foregroundColor: UIColor(named: "system-text") as Any]
 
-        let cancelButton = UIButton(configuration: .plain())
-        let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
-        let attributedCancelTitle = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: UIColor(named: "system-text-50") as Any])
-        cancelButton.setAttributedTitle(attributedCancelTitle, for: .normal)
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-
-        let cancelItem = UIBarButtonItem(customView: cancelButton)
-
-        navigationItem.leftBarButtonItem = cancelItem
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        view.addGestureRecognizer(tapGesture)
     }
 
+    @objc
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: view)
+
+        guard !subjectCreationView.frame.contains(tapLocation) else { return }
+
+        coordinator?.dismiss(animated: true)
+    }
+    
+    
     @objc
     func cancelButtonTapped() {
         coordinator?.dismiss(animated: true)

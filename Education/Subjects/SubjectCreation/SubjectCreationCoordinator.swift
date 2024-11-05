@@ -33,7 +33,11 @@ class SubjectCreationCoordinator: Coordinator, Dismissing {
             newNavigationController.transitioningDelegate = scheduleCoordinator
         }
 
-        newNavigationController.modalPresentationStyle = .pageSheet
+        newNavigationController.setNavigationBarHidden(true, animated: false)
+
+        newNavigationController.modalPresentationStyle = .overFullScreen
+        newNavigationController.modalTransitionStyle = .crossDissolve
+
         navigationController.present(newNavigationController, animated: true)
     }
 

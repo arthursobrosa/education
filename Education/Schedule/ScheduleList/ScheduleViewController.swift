@@ -57,9 +57,7 @@ class ScheduleViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
-
         setNavigationItems()
-        setTapGesture()
 
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
             self.loadSchedules()
@@ -83,31 +81,19 @@ class ScheduleViewController: UIViewController {
     }
 
     // MARK: - Methods
-
+    
     private func setNavigationItems() {
-        let addButton = UIButton()
-        addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
-        addButton.imageView?.contentMode = .scaleAspectFit
-        addButton.addTarget(self, action: #selector(addScheduleButtonTapped), for: .touchUpInside)
-        addButton.tintColor = UIColor(named: "system-text")
-
-        let addItem = UIBarButtonItem(customView: addButton)
-
-        navigationItem.rightBarButtonItems = [addItem]
-
-        navigationItem.title = viewModel.getTitleString()
-        let regularFont: UIFont = UIFont(name: Fonts.coconRegular, size: Fonts.titleSize) ?? UIFont.systemFont(ofSize: Fonts.titleSize, weight: .regular)
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: regularFont, .foregroundColor: UIColor(named: "system-text") as Any]
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        scheduleView.setNavigationBar()
     }
 
-    private func setTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
-        scheduleView.overlayView.addGestureRecognizer(tapGesture)
+    func setTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        view.addGestureRecognizer(tapGesture)
     }
 
     @objc 
-    private func viewTapped(_: UITapGestureRecognizer) {
+    private func viewTapped() {
         dismissButtons()
     }
 
@@ -150,20 +136,6 @@ class ScheduleViewController: UIViewController {
         }
     }
 
-    @objc 
-    private func addScheduleButtonTapped() {
-        let newAlpha: CGFloat = scheduleView.overlayView.alpha == 0 ? 1 : 0
-
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            guard let self else { return }
-
-            self.scheduleView.overlayView.alpha = newAlpha
-            self.scheduleView.fourDotsView.alpha = newAlpha
-            self.scheduleView.createAcitivityButton.alpha = newAlpha
-            self.scheduleView.startActivityButton.alpha = newAlpha
-        }
-    }
-
     func loadSchedules() {
         viewModel.fetchSchedules()
         setContentView()
@@ -172,15 +144,13 @@ class ScheduleViewController: UIViewController {
     }
 
     func dismissButtons() {
-        if scheduleView.overlayView.alpha == 1 {
-            UIView.animate(withDuration: 0.3) { [weak self] in
-                guard let self else { return }
+        view.gestureRecognizers = nil
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
 
-                self.scheduleView.overlayView.alpha = 0
-                self.scheduleView.fourDotsView.alpha = 0
-                self.scheduleView.createAcitivityButton.alpha = 0
-                self.scheduleView.startActivityButton.alpha = 0
-            }
+            self.scheduleView.createAcitivityButton.alpha = 0
+            self.scheduleView.startActivityButton.alpha = 0
         }
     }
 

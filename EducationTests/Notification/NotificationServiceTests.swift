@@ -110,7 +110,7 @@ class NotificationServiceTests: XCTestCase {
             title: title,
             body: body,
             date: date,
-            isAtExactTime: true,
+            minutesBefore: 0,
             scheduleInfo: scheduleInfo
         )
 
@@ -144,7 +144,7 @@ class NotificationServiceTests: XCTestCase {
             title: title,
             body: body,
             date: date,
-            isAtExactTime: false,
+            minutesBefore: 5,
             scheduleInfo: nil
         )
 
@@ -167,7 +167,7 @@ class NotificationServiceTests: XCTestCase {
             title: "Reminder",
             body: "Activity starting in 5 min",
             date: Date().addingTimeInterval(604_800),
-            isAtExactTime: false,
+            minutesBefore: 5,
             scheduleInfo: nil
         )
 
@@ -197,7 +197,7 @@ class NotificationServiceTests: XCTestCase {
             title: "Reminder",
             body: "Activity starting in 5 min",
             date: date,
-            isAtExactTime: false,
+            minutesBefore: 5,
             scheduleInfo: nil
         )
 

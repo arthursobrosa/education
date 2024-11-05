@@ -36,7 +36,6 @@ class ButtonComponent: UIButton {
         configuration.contentInsets = insets
         let attributedString = NSAttributedString(string: title, attributes: [.font: UIFont(name: fontStyle, size: fontSize) ?? .systemFont(ofSize: 17), .foregroundColor: textColor ?? .label])
         setAttributedTitle(attributedString, for: .normal)
-        backgroundColor = .label
         layer.cornerRadius = cornerRadius
         self.configuration = configuration
     }

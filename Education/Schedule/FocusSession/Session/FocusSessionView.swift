@@ -151,8 +151,8 @@ class FocusSessionView: UIView, TimerAnimation {
         return bttn
     }()
 
-    let statusAlertView: FocusStatusAlertView = {
-        let view = FocusStatusAlertView()
+    let statusAlertView: AlertView = {
+        let view = AlertView()
 
         view.isHidden = true
         view.layer.zPosition = 2

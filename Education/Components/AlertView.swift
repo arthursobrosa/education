@@ -1,22 +1,25 @@
 //
-//  FocusStatusAlertView.swift
+//  AlertView.swift
 //  Education
 //
-//  Created by Lucas Cunha on 02/09/24.
+//  Created by Arthur Sobrosa on 04/11/24.
 //
 
 import UIKit
 
-enum FocusStatusAlertCase {
+enum AlertPosition {
+    case top
+    case mid
+    case bottom
+}
+
+enum AlertCase {
     case restartingCase
     case finishingEarlyCase
     case finishingTimerCase(subject: Subject?)
     case finishingPomodoroCase(pomodoroString: String, isAtWorkTime: Bool)
-
-    enum AlertPosition {
-        case mid
-        case bottom
-    }
+    
+    case deletingSchedule(subject: Subject)
 
     var title: String {
         switch self {
@@ -28,6 +31,8 @@ enum FocusStatusAlertCase {
             String(localized: "finishTimerAlertTitle")
         case let .finishingPomodoroCase(pomodoroString, _):
             String(format: NSLocalizedString("finishPomodoroAlertTitle", comment: ""), pomodoroString)
+        case .deletingSchedule:
+            String(localized: "deleteScheduleAlertTitle")
         }
     }
 
@@ -41,21 +46,8 @@ enum FocusStatusAlertCase {
             getFinishTimerAlertBody()
         case .finishingPomodoroCase:
             getFinishPomodoroAlertBody()
-        }
-    }
-
-    var secondaryButtonTitle: String {
-        switch self {
-        case .restartingCase, .finishingEarlyCase:
-            String(localized: "cancel")
-        case .finishingTimerCase:
-            String(localized: "extendTime")
-        case let .finishingPomodoroCase(_, isAtWorkTime):
-            if isAtWorkTime {
-                String(localized: "extendFocus")
-            } else {
-                String(localized: "extendInterval")
-            }
+        case .deletingSchedule(let subject):
+            String(format: NSLocalizedString("deleteScheduleAlertBody", comment: ""), String(subject.unwrappedName.prefix(20)))
         }
     }
 
@@ -71,6 +63,38 @@ enum FocusStatusAlertCase {
             } else {
                 String(localized: "startFocus")
             }
+        case .deletingSchedule:
+            String(localized: "yes")
+        }
+    }
+    
+    var secondaryButtonTitle: String {
+        switch self {
+        case .restartingCase, .finishingEarlyCase:
+            String(localized: "cancel")
+        case .finishingTimerCase:
+            String(localized: "extendTime")
+        case let .finishingPomodoroCase(_, isAtWorkTime):
+            if isAtWorkTime {
+                String(localized: "extendFocus")
+            } else {
+                String(localized: "extendInterval")
+            }
+        case .deletingSchedule:
+            String(localized: "cancel")
+        }
+    }
+    
+    var primaryButtonAction: Selector {
+        switch self {
+        case .restartingCase:
+            #selector(FocusSessionDelegate.didRestart)
+        case .finishingEarlyCase, .finishingTimerCase:
+            #selector(FocusSessionDelegate.didFinish)
+        case .finishingPomodoroCase:
+            #selector(FocusSessionDelegate.didStartNextPomodoro)
+        case .deletingSchedule:
+            #selector(ScheduleDelegate.didDeleteSchedule)
         }
     }
 
@@ -80,17 +104,8 @@ enum FocusStatusAlertCase {
             #selector(FocusSessionDelegate.didCancel)
         case .finishingTimerCase, .finishingPomodoroCase:
             #selector(FocusSessionDelegate.didTapExtendButton)
-        }
-    }
-
-    var primaryButtonAction: Selector {
-        switch self {
-        case .restartingCase:
-            #selector(FocusSessionDelegate.didRestart)
-        case .finishingEarlyCase, .finishingTimerCase:
-            #selector(FocusSessionDelegate.didFinish)
-        case .finishingPomodoroCase:
-            #selector(FocusSessionDelegate.didStartNextPomodoro)
+        case .deletingSchedule:
+            #selector(ScheduleDelegate.didCancelDeletion)
         }
     }
 
@@ -100,6 +115,8 @@ enum FocusStatusAlertCase {
             .bottom
         case .finishingTimerCase, .finishingPomodoroCase:
             .mid
+        case .deletingSchedule:
+            .mid
         }
     }
 
@@ -107,7 +124,7 @@ enum FocusStatusAlertCase {
         guard case let .finishingTimerCase(subject) = self else { return String() }
 
         if let subject {
-            return String(format: NSLocalizedString("finishTimerAlertBody", comment: ""), subject.unwrappedName)
+            return String(format: NSLocalizedString("finishTimerAlertBody", comment: ""), String(subject.unwrappedName.prefix(20)))
         } else {
             return String(localized: "finishTimerAlertBody-noSubject")
         }
@@ -122,23 +139,39 @@ enum FocusStatusAlertCase {
     }
 }
 
-class FocusStatusAlertView: UIView {
-    // MARK: - Delegate
-
-    weak var delegate: (any FocusSessionDelegate)?
-
+class AlertView: UIView {
+    // MARK: - Properties
+    
+    struct AlertConfig {
+        var title: String
+        var body: String
+        var primaryButtonTitle: String
+        var secondaryButtonTitle: String
+        var superView: UIView
+        var position: AlertPosition
+    }
+    
+    var config: AlertConfig? {
+        didSet {
+            guard let config else { return }
+            
+            titleLabel.text = config.title
+            bodyLabel.text = config.body
+            setButtons()
+            layoutToSuperview(config.superView, position: config.position)
+        }
+    }
+    
     // MARK: UI Properties
 
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
         label.textColor = .label
-
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
-
+    
     private let bodyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 17)
@@ -146,15 +179,13 @@ class FocusStatusAlertView: UIView {
         label.textAlignment = .center
         label.numberOfLines = -1
         label.lineBreakMode = .byWordWrapping
-
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
-
+    
     private var secondaryButton: ButtonComponent?
     private var primaryButton: ButtonComponent?
-
+    
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -170,43 +201,46 @@ class FocusStatusAlertView: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Methods
-
-    func configure(with focusStatusCase: FocusStatusAlertCase, atSuperview superview: UIView) {
-        titleLabel.text = focusStatusCase.title
-        bodyLabel.text = focusStatusCase.body
-        setButtons(with: focusStatusCase)
-        layoutToSuperview(superview, with: focusStatusCase)
-    }
-
-    private func setButtons(with alertCase: FocusStatusAlertCase) {
-        setSecondaryButton(with: alertCase)
-        setPrimaryButton(with: alertCase)
+    
+    private func setButtons() {
+        setPrimaryButton()
+        setSecondaryButton()
         setupUI()
     }
-
-    private func setSecondaryButton(with alertCase: FocusStatusAlertCase) {
-        secondaryButton = ButtonComponent(title: alertCase.secondaryButtonTitle, textColor: .label, cornerRadius: 28)
+    
+    private func setPrimaryButton() {
+        guard let config else { return }
+        
+        primaryButton = ButtonComponent(title: config.primaryButtonTitle, cornerRadius: 28)
+        primaryButton?.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
+        primaryButton?.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    private func setSecondaryButton() {
+        guard let config else { return }
+        
+        secondaryButton = ButtonComponent(title: config.secondaryButtonTitle, textColor: .label, cornerRadius: 28)
         secondaryButton?.backgroundColor = .clear
         secondaryButton?.layer.borderColor = UIColor.label.cgColor
         secondaryButton?.layer.borderWidth = 1
         secondaryButton?.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
-        secondaryButton?.addTarget(delegate, action: alertCase.secondaryButtonAction, for: .touchUpInside)
         secondaryButton?.translatesAutoresizingMaskIntoConstraints = false
     }
-
-    private func setPrimaryButton(with alertCase: FocusStatusAlertCase) {
-        primaryButton = ButtonComponent(title: alertCase.primaryButtonTitle, cornerRadius: 28)
-        primaryButton?.addTarget(delegate, action: alertCase.primaryButtonAction, for: .touchUpInside)
-        primaryButton?.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
-        primaryButton?.translatesAutoresizingMaskIntoConstraints = false
+    
+    func setPrimaryButtonTarget(_ target: Any?, action: Selector) {
+        primaryButton?.addTarget(target, action: action, for: .touchUpInside)
+    }
+    
+    func setSecondaryButtonTarget(_ target: Any?, action: Selector) {
+        secondaryButton?.addTarget(target, action: action, for: .touchUpInside)
     }
 }
 
 // MARK: - UI Setup
 
-extension FocusStatusAlertView: ViewCodeProtocol {
+extension AlertView: ViewCodeProtocol {
     func setupUI() {
         for subview in subviews {
             subview.removeFromSuperview()
@@ -219,7 +253,7 @@ extension FocusStatusAlertView: ViewCodeProtocol {
         addSubview(bodyLabel)
         addSubview(secondaryButton)
         addSubview(primaryButton)
-
+        
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 18),
@@ -239,8 +273,8 @@ extension FocusStatusAlertView: ViewCodeProtocol {
             primaryButton.bottomAnchor.constraint(equalTo: secondaryButton.bottomAnchor),
         ])
     }
-
-    private func layoutToSuperview(_ superview: UIView, with alertCase: FocusStatusAlertCase) {
+    
+    private func layoutToSuperview(_ superview: UIView, position: AlertPosition) {
         removeFromSuperview()
 
         superview.addSubview(self)
@@ -251,7 +285,9 @@ extension FocusStatusAlertView: ViewCodeProtocol {
             heightAnchor.constraint(equalTo: widthAnchor, multiplier: 228 / 366),
         ])
 
-        switch alertCase.position {
+        switch position {
+        case .top:
+            topAnchor.constraint(equalTo: superview.topAnchor, constant: 25).isActive = true
         case .mid:
             centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
         case .bottom:
