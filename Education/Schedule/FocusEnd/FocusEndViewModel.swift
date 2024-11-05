@@ -37,12 +37,13 @@ class FocusEndViewModel {
     // MARK: - Methods
     
     func fetchSubjectNames() {
-        if let subjects = subjectManager.fetchSubjects() {
-            subjectNames = subjects.map({ $0.unwrappedName })
-            subjectNames.sort()
-        }
-        
         subjectNames.append(String(localized: "none"))
+        
+        if let unwrappedSubjects = subjectManager.fetchSubjects() {
+            var unwrappedNames = unwrappedSubjects.map({ $0.unwrappedName })
+            unwrappedNames.sort()
+            subjectNames.append(contentsOf: unwrappedNames)
+        }
     }
     
     private func setSelectedSubjectInfo() {
@@ -52,7 +53,7 @@ class FocusEndViewModel {
         }
         
         guard let activitySubject = activityManager.subject else {
-            selectedSubjectInfo = (name: String(localized: "none"), index: subjects.count - 1)
+            selectedSubjectInfo = (name: String(localized: "none"), index: 0)
             return
         }
         
@@ -71,7 +72,7 @@ class FocusEndViewModel {
         
         let index = selectedSubjectInfo.index
         
-        guard index != subjectNames.count - 1 else {
+        guard index > 0 else {
             activityManager.subject = nil
             return
         }
