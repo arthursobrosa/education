@@ -37,7 +37,7 @@ protocol NotificationServiceProtocol {
     func setDelegate(_ delegate: (any UNUserNotificationCenterDelegate)?)
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Void)
     func scheduleEndNotification(title: String, subjectName: String?, date: Date)
-    func scheduleWeeklyNotification(title: String, body: String, date: Date, isAtExactTime: Bool, scheduleInfo: ScheduleInfo?)
+    func scheduleWeeklyNotification(title: String, body: String, date: Date, minutesBefore: Int, scheduleInfo: ScheduleInfo?)
     func cancelAllNotifications()
     func cancelNotificationByName(name: String?)
     func cancelNotifications(forDate date: Date)
@@ -82,7 +82,7 @@ class NotificationService: NotificationServiceProtocol {
         }
     }
 
-    func scheduleWeeklyNotification(title: String, body: String, date: Date, isAtExactTime: Bool, scheduleInfo: ScheduleInfo?) {
+    func scheduleWeeklyNotification(title: String, body: String, date: Date, minutesBefore: Int, scheduleInfo: ScheduleInfo?) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
@@ -96,25 +96,20 @@ class NotificationService: NotificationServiceProtocol {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd-HH-mm"
         let dateString = dateFormatter.string(from: date)
+        
         var requestID = "\(dateString)"
+        var triggerDate: Date = date
 
-        var triggerDate: Date? = date
+        triggerDate = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: date) ?? date
+        requestID += "-\(minutesBefore)"
 
-        if !isAtExactTime {
-            triggerDate = Calendar.current.date(byAdding: .minute, value: -5, to: date)
-            requestID = "\(dateString)-5"
-        }
+        let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute], from: triggerDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)
 
-        if let triggerDate {
-            let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute], from: triggerDate)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)
-
-            let request = UNNotificationRequest(identifier: requestID, content: content, trigger: trigger)
-            
-            notificationCenter.add(request) { error in
-                if let error {
-                    print("Error scheduling notification: \(error.localizedDescription)")
-                }
+        let request = UNNotificationRequest(identifier: requestID, content: content, trigger: trigger)
+        notificationCenter.add(request) { error in
+            if let error {
+                print("Error scheduling notification: \(error.localizedDescription)")
             }
         }
     }
