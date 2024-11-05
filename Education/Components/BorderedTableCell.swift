@@ -8,7 +8,7 @@
 import UIKit
 
 class BorderedTableCell: UITableViewCell {
-    static let identifier = DefaultCell.identifier
+    static let identifier = "borderedCell"
 
     func configureCell(tableView: UITableView, forRowAt indexPath: IndexPath) {
         if responds(to: #selector(getter: UIView.tintColor)) {
@@ -87,7 +87,6 @@ class BorderedTableCell: UITableViewCell {
         NSLayoutConstraint.activate([
             accessoryView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -17),
             accessoryView.centerYAnchor.constraint(equalTo: centerYAnchor),
-
         ])
     }
 }
