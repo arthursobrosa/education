@@ -48,13 +48,6 @@ class SubjectCreationViewController: UIViewController {
         }
 
         super.init(nibName: nil, bundle: nil)
-        
-        
-
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (_: SubjectCreationViewController, _: UITraitCollection?) in
-            guard let self = self else { return }
-            self.updateViewColors()
-        }
     }
 
     @available(*, unavailable)
@@ -64,25 +57,23 @@ class SubjectCreationViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
+        setGestureRecognizer()
 
         viewModel.selectedSubjectColor.bind { [weak self] _ in
             guard let self else { return }
 
             self.reloadTable()
         }
-        updateViewColors()
 
         if viewModel.currentEditingSubject == nil {
             subjectCreationView.hideDeleteButton()
-            self.subjectCreationView.titleLabel.text = String(localized: "newSubject")
+            subjectCreationView.titleLabel.text = String(localized: "newSubject")
         } else {
-            self.subjectCreationView.titleLabel.text = String(localized: "editSubject")
+            subjectCreationView.titleLabel.text = String(localized: "editSubject")
         }
         
         if traitCollection.userInterfaceStyle == .light {
@@ -115,9 +106,9 @@ class SubjectCreationViewController: UIViewController {
 
     // MARK: - Methods
 
-
     private func setGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
 
@@ -129,7 +120,6 @@ class SubjectCreationViewController: UIViewController {
 
         coordinator?.dismiss(animated: true)
     }
-    
     
     @objc
     func cancelButtonTapped() {
@@ -149,11 +139,20 @@ class SubjectCreationViewController: UIViewController {
             self.subjectCreationView.tableView.reloadData()
         }
     }
+}
 
-    private func updateViewColors() {
-        if let color = UIColor(named: "button-normal", in: nil, compatibleWith: traitCollection) {
-            subjectCreationView.tableView.layer.borderColor = color.cgColor
-        }
+// MARK: - UI Setup
+
+extension SubjectCreationViewController: ViewCodeProtocol {
+    func setupUI() {
+        view.addSubview(subjectCreationView)
+
+        NSLayoutConstraint.activate([
+            subjectCreationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 366 / 390),
+            subjectCreationView.heightAnchor.constraint(equalTo: subjectCreationView.widthAnchor, multiplier: ((self.subjectName != nil) ? 350 : 280) / 366),
+            subjectCreationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            subjectCreationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
     }
 }
 
@@ -203,6 +202,8 @@ extension SubjectCreationViewController: UICollectionViewDelegate, UICollectionV
     }
 }
 
+// MARK: - Popover setup
+
 extension SubjectCreationViewController {
     func createColorPopover(forTableView tableView: UITableView, at indexPath: IndexPath) -> Popover? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
@@ -242,25 +243,27 @@ extension SubjectCreationViewController: UIPopoverPresentationControllerDelegate
     }
 }
 
+// MARK: - TableView Data Source and Delegate
+
 extension SubjectCreationViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in _: UITableView) -> Int {
         return 2
     }
 
     func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        return UIView() // Retorna uma UIView vazia para o header
+        return UIView()
     }
 
     func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
-        return UIView() // Retorna uma UIView vazia para o footer
+        return UIView()
     }
 
     func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        return 5 // Defina como 0.1 para remover o espaçamento entre as seções
+        return 5
     }
 
     func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-        return 5 // Defina como 0.1 para remover o espaçamento entre as seções
+        return 5
     }
 
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
@@ -268,18 +271,7 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-
-        case 1:
-            return 1
-
-        default:
-            break
-        }
-
-        return Int()
+        1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -298,7 +290,7 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
             cell.delegate = self
 
             return cell
-        default:
+        case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ColorPickerCell.identifier, for: indexPath) as? ColorPickerCell else {
                 fatalError("Could not dequeue cell")
             }
@@ -307,10 +299,13 @@ extension SubjectCreationViewController: UITableViewDataSource, UITableViewDeleg
             cell.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
             cell.roundCorners(corners: .allCorners, radius: 16, borderWidth: 1, borderColor: UIColor.buttonNormal)
             cell.layer.masksToBounds = true
-
+            cell.selectionStyle = .none
+                
             cell.color = viewModel.selectedSubjectColor.value
 
             return cell
+        default:
+            return UITableViewCell()
         }
     }
 
