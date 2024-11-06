@@ -11,6 +11,7 @@ class NavigationBarComponent: UIView {
     // MARK: - Properties
     
     private var isConfiguringWithLabel: Bool = false
+    private var hasBackButton: Bool = false
     
     // MARK: - UI Properties
     
@@ -29,10 +30,19 @@ class NavigationBarComponent: UIView {
         return imageView
     }()
     
-    private let button: UIButton = {
+    private let rightButton: UIButton = {
         let button = UIButton()
         button.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
         button.tintColor = UIColor(named: "system-text")
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let backButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
+        button.tintColor = UIColor(named: "system-text-40")
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -50,20 +60,28 @@ class NavigationBarComponent: UIView {
     
     // MARK: - Methods
     
-    func configure(titleText: String, buttonImage: UIImage?) {
+    func configure(titleText: String, rightButtonImage: UIImage? = nil, hasBackButton: Bool = false) {
         isConfiguringWithLabel = true
+        self.hasBackButton = hasBackButton
         titleLabel.text = titleText
-        button.setImage(buttonImage, for: .normal)
+        rightButton.setImage(rightButtonImage, for: .normal)
+        setupUI()
     }
     
-    func configure(titleImage: UIImage?, buttonImage: UIImage?) {
+    func configure(titleImage: UIImage?, rightButtonImage: UIImage? = nil, hasBackButton: Bool = false) {
         isConfiguringWithLabel = false
+        self.hasBackButton = hasBackButton
         titleImageView.image = titleImage
-        button.setImage(buttonImage, for: .normal)
+        rightButton.setImage(rightButtonImage, for: .normal)
+        setupUI()
     }
     
-    func addButtonTarget(_ target: Any?, action: Selector) {
-        button.addTarget(target, action: action, for: .touchUpInside)
+    func addRightButtonTarget(_ target: Any?, action: Selector) {
+        rightButton.addTarget(target, action: action, for: .touchUpInside)
+    }
+    
+    func addBackButtonTarget(_ target: Any?, action: Selector) {
+        backButton.addTarget(target, action: action, for: .touchUpInside)
     }
 }
 
@@ -75,20 +93,20 @@ extension NavigationBarComponent: ViewCodeProtocol {
             subview.removeFromSuperview()
         }
         
-        addSubview(button)
+        addSubview(rightButton)
         
         NSLayoutConstraint.activate([
-            button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 40 / 390),
-            button.heightAnchor.constraint(equalTo: button.widthAnchor),
-            button.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -17),
+            rightButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 40 / 390),
+            rightButton.heightAnchor.constraint(equalTo: rightButton.widthAnchor),
+            rightButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            rightButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -17),
         ])
         
         if isConfiguringWithLabel {
             addSubview(titleLabel)
             
             NSLayoutConstraint.activate([
-                titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 42),
+                titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 30),
                 titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23),
                 titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
             ])
@@ -96,10 +114,21 @@ extension NavigationBarComponent: ViewCodeProtocol {
             addSubview(titleImageView)
             
             NSLayoutConstraint.activate([
+                titleImageView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
                 titleImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 102 / 390),
                 titleImageView.heightAnchor.constraint(equalTo: titleImageView.widthAnchor, multiplier: 37 / 102),
                 titleImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23),
-                titleImageView.topAnchor.constraint(equalTo: topAnchor, constant: 29),
+            ])
+        }
+        
+        if hasBackButton {
+            addSubview(backButton)
+            
+            NSLayoutConstraint.activate([
+                backButton.topAnchor.constraint(equalTo: topAnchor),
+                backButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 27 / 390),
+                backButton.heightAnchor.constraint(equalTo: backButton.widthAnchor),
+                backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 11),
             ])
         }
     }
@@ -112,7 +141,5 @@ extension NavigationBarComponent: ViewCodeProtocol {
             heightAnchor.constraint(equalTo: widthAnchor, multiplier: 66 / 390),
             topAnchor.constraint(equalTo: superview.topAnchor, constant: 58),
         ])
-        
-        setupUI()
     }
 }

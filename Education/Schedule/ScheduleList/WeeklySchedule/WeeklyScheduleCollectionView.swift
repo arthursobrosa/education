@@ -15,8 +15,6 @@ class WeeklyScheduleCollectionView: UICollectionView {
         super.init(frame: frame, collectionViewLayout: layout)
 
         showsHorizontalScrollIndicator = false
-
-        tag = 1
     }
 
     @available(*, unavailable)

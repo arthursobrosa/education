@@ -15,22 +15,10 @@ class ThemePageViewController: UIViewController {
     let viewModel: ThemePageViewModel
 
     // MARK: - Properties
-
-    private var contentView: UIView = {
-        let view = UIView()
-
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        return view
-    }()
-
+    
     private lazy var themePageView: ThemePageView = {
         let themeView = ThemePageView()
-
         themeView.delegate = self
-
-        themeView.translatesAutoresizingMaskIntoConstraints = false
-
         return themeView
     }()
 
@@ -48,14 +36,15 @@ class ThemePageViewController: UIViewController {
     }
 
     // MARK: - Lifecycle
+    
+    override func loadView() {
+        view = themePageView
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .systemBackground
-
         setNavigationItems()
-        setupUI()
 
         viewModel.tests.bind { [weak self] tests in
             guard let self else { return }
@@ -88,28 +77,8 @@ class ThemePageViewController: UIViewController {
     // MARK: - Methods
 
     private func setNavigationItems() {
-        navigationItem.title = viewModel.theme.unwrappedName
-
-        let addButton = UIButton()
-        addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
-        addButton.imageView?.contentMode = .scaleAspectFit
-        addButton.addTarget(self, action: #selector(addTestButtonTapped), for: .touchUpInside)
-        addButton.tintColor = .systemText
-
-        let addItem = UIBarButtonItem(customView: addButton)
-
-        navigationItem.rightBarButtonItems = [addItem]
-
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBackButton))
-        backButton.tintColor = .systemText
-
-        navigationItem.leftBarButtonItems = [backButton]
-    }
-
-    @objc 
-    private func didTapBackButton() {
-        coordinator?.dismiss(animated: true)
+        let navigationTitle = viewModel.theme.unwrappedName
+        themePageView.setNavigationBar(with: navigationTitle)
     }
 
     func setChart() {
@@ -129,47 +98,30 @@ class ThemePageViewController: UIViewController {
 
 // MARK: - UI Setup
 
-extension ThemePageViewController: ViewCodeProtocol {
-    func setupUI() {
-        view.addSubview(contentView)
-
-        let padding = 20.0
-
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-        ])
-    }
-
+extension ThemePageViewController {
     private func setContentView(isEmpty: Bool) {
-        for subview in contentView.subviews {
+        for subview in themePageView.contentView.subviews {
             subview.removeFromSuperview()
         }
-
-        for subview in themePageView.subviews {
-            subview.removeFromSuperview()
-        }
-
-        if !isEmpty {
+        
+        if isEmpty {
+            addContentSubview(parentSubview: themePageView.contentView, childSubview: themePageView.emptyView)
+        } else {
             setTable()
             setChart()
         }
-
-        addContentSubview(isEmpty ? themePageView.emptyView : themePageView)
     }
 
-    private func addContentSubview(_ subview: UIView) {
-        contentView.addSubview(subview)
+    private func addContentSubview(parentSubview: UIView, childSubview: UIView) {
+        parentSubview.addSubview(childSubview)
 
-        subview.translatesAutoresizingMaskIntoConstraints = false
+        childSubview.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            subview.topAnchor.constraint(equalTo: contentView.topAnchor),
-            subview.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            subview.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            subview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            childSubview.topAnchor.constraint(equalTo: parentSubview.topAnchor),
+            childSubview.leadingAnchor.constraint(equalTo: parentSubview.leadingAnchor),
+            childSubview.trailingAnchor.constraint(equalTo: parentSubview.trailingAnchor),
+            childSubview.bottomAnchor.constraint(equalTo: parentSubview.bottomAnchor),
         ])
     }
 }

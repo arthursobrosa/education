@@ -16,19 +16,14 @@ class DailyScheduleView: UIView {
         stack.distribution = .fillEqually
         stack.alignment = .center
         stack.spacing = 19
-
         stack.backgroundColor = .systemBackground
-
         stack.translatesAutoresizingMaskIntoConstraints = false
-
         return stack
     }()
 
     let contentView: UIView = {
         let view = UIView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
     
@@ -43,7 +38,6 @@ class DailyScheduleView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         setupUI()
     }
 
@@ -66,9 +60,9 @@ extension DailyScheduleView: ViewCodeProtocol {
             daysStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             daysStack.heightAnchor.constraint(equalTo: daysStack.widthAnchor, multiplier: 58 / 359),
 
+            contentView.topAnchor.constraint(equalTo: daysStack.bottomAnchor, constant: 18),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            contentView.topAnchor.constraint(equalTo: daysStack.bottomAnchor, constant: 18),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }

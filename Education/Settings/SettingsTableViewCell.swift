@@ -14,19 +14,14 @@ class SettingsTableViewCell: UITableViewCell {
         let view = UIView()
         view.layer.cornerRadius = 18
         view.layer.borderWidth = 1.5
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
     private let cardImageView: UIImageView = {
         let imageView = UIImageView()
-
         imageView.tintColor = .systemText80
-
         imageView.translatesAutoresizingMaskIntoConstraints = false
-
         return imageView
     }()
 
@@ -35,15 +30,12 @@ class SettingsTableViewCell: UITableViewCell {
         label.tintColor = .systemText80
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
 
     let customAccessoryView: UIView = {
         let view = UIView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 

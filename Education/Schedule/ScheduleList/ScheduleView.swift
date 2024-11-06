@@ -46,9 +46,7 @@ class ScheduleView: UIView {
 
     let contentView: UIView = {
         let view = UIView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -58,17 +56,13 @@ class ScheduleView: UIView {
     var noSchedulesView: NoSchedulesView = {
         let view = NoSchedulesView()
         view.period = .day
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
     let noSubjectsView: NoSubjectsView = {
         let view = NoSubjectsView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -76,9 +70,7 @@ class ScheduleView: UIView {
         let view = UIView()
         view.backgroundColor = .label.withAlphaComponent(0.1)
         view.alpha = 0
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -178,8 +170,8 @@ class ScheduleView: UIView {
     func setNavigationBar() {
         let titleImage = UIImage(named: "planno")
         let buttonImage = UIImage(systemName: "plus.circle.fill")
-        navigationBar.configure(titleImage: titleImage, buttonImage: buttonImage)
-        navigationBar.addButtonTarget(delegate, action: #selector(ScheduleDelegate.plusButtonTapped))
+        navigationBar.configure(titleImage: titleImage, rightButtonImage: buttonImage)
+        navigationBar.addRightButtonTarget(delegate, action: #selector(ScheduleDelegate.plusButtonTapped))
     }
 }
 
@@ -192,14 +184,12 @@ extension ScheduleView: ViewCodeProtocol {
         addSubview(scheduleModeSelector)
         addSubview(contentView)
 
-        let padding = 10.0
-
         NSLayoutConstraint.activate([
-            scheduleModeSelector.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: padding),
-            scheduleModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            scheduleModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            scheduleModeSelector.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 24),
+            scheduleModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            scheduleModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
-            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: padding),
+            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: 10),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -218,11 +208,11 @@ extension ScheduleView: ViewCodeProtocol {
         addSubview(startActivityButton)
 
         NSLayoutConstraint.activate([
-            createAcitivityButton.topAnchor.constraint(equalTo: topAnchor, constant: 107),
-            createAcitivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(padding * 2)),
+            createAcitivityButton.topAnchor.constraint(equalTo: navigationBar.topAnchor, constant: 49),
+            createAcitivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -17),
 
-            startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: padding),
-            startActivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(padding * 2)),
+            startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: 9),
+            startActivityButton.trailingAnchor.constraint(equalTo: createAcitivityButton.trailingAnchor),
         ])
     }
 }
