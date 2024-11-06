@@ -31,7 +31,7 @@ class FocusEndViewModel {
         setSelectedSubjectInfo()
         getDateString()
         getHourString()
-        getTimerModeString()
+        timerModeString = activityManager.timerCase.text
     }
 
     // MARK: - Methods
@@ -131,20 +131,5 @@ class FocusEndViewModel {
         } else {
             return "\(time)min"
         }
-    }
-
-    private func getTimerModeString() {
-        var text: String
-        
-        switch activityManager.timerCase {
-        case .timer:
-            text = String(localized: "timerSelectionBold")
-        case .pomodoro:
-            text = String(localized: "pomodoroSelectionTitle")
-        case .stopwatch:
-            text = String(localized: "stopwatchSelectionBold")
-        }
-        
-        timerModeString = text
     }
 }

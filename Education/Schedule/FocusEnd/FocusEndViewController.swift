@@ -163,7 +163,7 @@ extension FocusEndViewController: UITableViewDataSource, UITableViewDelegate {
         case 1:
             text = viewModel.dateString
         case 2:
-                text = viewModel.hoursString
+            text = viewModel.hoursString
         case 3:
             text = viewModel.timerModeString
         default:

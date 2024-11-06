@@ -148,7 +148,6 @@ extension SubjectCreationView: ViewCodeProtocol {
         addSubview(saveButton)
 
         NSLayoutConstraint.activate([
-            
             closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             closeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             

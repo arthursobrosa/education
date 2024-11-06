@@ -9,14 +9,27 @@ import Foundation
 
 extension FocusSession {
     var unwrappedID: String {
-        return id ?? String()
+        id ?? String()
     }
 
     var unwrappedTotalTime: Int {
-        return Int(totalTime)
+        Int(totalTime)
     }
 
     var unwrappedSubjectID: String {
-        return subjectID ?? String()
+        subjectID ?? String()
+    }
+    
+    var unwrappedTimerCase: TimerCase {
+        switch timerCase {
+        case 0:
+            .timer
+        case 1:
+            .pomodoro(workTime: 0, restTime: 0, numberOfLoops: 0)
+        case 2:
+            .stopwatch
+        default:
+            .stopwatch
+        }
     }
 }
