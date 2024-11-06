@@ -26,6 +26,17 @@ enum TimerCase: Equatable {
             return false
         }
     }
+    
+    var text: String {
+        switch self {
+        case .timer:
+            String(localized: "timerSelectionBold")
+        case .pomodoro:
+            String(localized: "pomodoroSelectionTitle")
+        case .stopwatch:
+            String(localized: "stopwatchSelectionBold")
+        }
+    }
 }
 
 protocol TimerProtocol {
@@ -511,7 +522,18 @@ extension ActivityManager: SessionManaging {
     }
 
     func saveFocusSesssion() {
-        focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID)
+        var timerCaseValue: Int
+        
+        switch timerCase {
+            case .timer:
+                timerCaseValue = 0
+            case .pomodoro:
+                timerCaseValue = 1
+            case .stopwatch:
+                timerCaseValue = 2
+        }
+        
+        focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID, timerCase: timerCaseValue)
 
         if let scheduleID,
            let schedule = scheduleManager.fetchSchedule(from: scheduleID) {
