@@ -11,14 +11,12 @@ extension SettingsViewController {
     func createDayPopover(forTableView tableView: UITableView, at indexPath: IndexPath) -> Popover? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
 
-        let section = indexPath.section
-
         let popoverVC = Popover(contentSize: CGSize(width: 200, height: 150))
         let sourceRect = CGRect(x: cell.bounds.maxX,
-                                y: cell.bounds.midY,
+                                y: cell.bounds.midY + 110,
                                 width: 0,
                                 height: 0)
-        popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: .up, sourceRect: sourceRect, delegate: self)
+        popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: [], sourceRect: sourceRect, delegate: self)
 
         let dayPicker = UIPickerView()
         dayPicker.delegate = self
@@ -97,6 +95,10 @@ extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 
     func pickerView(_: UIPickerView, numberOfRowsInComponent _: Int) -> Int {
         viewModel.days.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        34
     }
 
     func pickerView(_: UIPickerView, viewForRow row: Int, forComponent _: Int, reusing view: UIView?) -> UIView {
