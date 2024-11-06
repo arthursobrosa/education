@@ -8,6 +8,8 @@
 import UIKit
 
 class SubjectCreationView: UIView {
+    // MARK: - Delegate to connect with VC
+    
     weak var delegate: SubjectCreationDelegate?
 
     // MARK: - UI Components
@@ -30,7 +32,7 @@ class SubjectCreationView: UIView {
         btn.imageView?.tintColor = UIColor(named: "system-text-40")
         btn.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
 
-        btn.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+        btn.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapCloseButton), for: .touchUpInside)
 
         btn.translatesAutoresizingMaskIntoConstraints = false
 
@@ -40,14 +42,11 @@ class SubjectCreationView: UIView {
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.backgroundColor = .systemBackground
-
         table.translatesAutoresizingMaskIntoConstraints = false
-
         return table
     }()
 
     private lazy var deleteButton: ButtonComponent = {
-            
         let attributedText = NSMutableAttributedString()
 
         // Adicionar o ícone de lixo antes do texto
@@ -71,7 +70,7 @@ class SubjectCreationView: UIView {
         bttn.layer.borderColor = UIColor(named: "focus-color-red")?.cgColor
         bttn.layer.borderWidth = 1
 
-        bttn.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
+        bttn.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapDeleteButton), for: .touchUpInside)
         bttn.translatesAutoresizingMaskIntoConstraints = false
 
         return bttn
@@ -79,7 +78,7 @@ class SubjectCreationView: UIView {
 
     lazy var saveButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 27)
-        button.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapSaveButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(named: "button-off")
         return button
@@ -116,21 +115,6 @@ class SubjectCreationView: UIView {
     }
 
     // MARK: - Methods
-
-    @objc 
-    private func didTapDeleteButton() {
-        delegate?.didTapDeleteButton()
-    }
-
-    @objc 
-    private func didTapSaveButton() {
-        delegate?.didTapSaveButton()
-    }
-    
-    @objc
-    private func didTapCloseButton() {
-        delegate?.didTapCloseButton()
-    }
 
     func hideDeleteButton() {
         deleteButton.isHidden = true
