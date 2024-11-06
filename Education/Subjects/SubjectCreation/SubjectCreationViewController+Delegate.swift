@@ -5,9 +5,9 @@
 //  Created by Arthur Sobrosa on 22/08/24.
 //
 
-import Foundation
 import UIKit
 
+@objc
 protocol SubjectCreationDelegate: AnyObject {
     func textFieldDidChange(newText: String)
     func didTapSaveButton()
@@ -59,20 +59,5 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
         if let subject = viewModel.currentEditingSubject {
             showDeleteAlert(for: subject)
         }
-    }
-}
-
-extension SubjectCreationViewController: ViewCodeProtocol {
-    func setupUI() {
-        view.addSubview(subjectCreationView)
-
-        NSLayoutConstraint.activate([
-            subjectCreationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 366 / 390),
-            subjectCreationView.heightAnchor.constraint(equalTo: subjectCreationView.widthAnchor, multiplier: ((self.subjectName != nil) ? 350 : 280) / 366),
-            subjectCreationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            subjectCreationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-
-        
     }
 }
