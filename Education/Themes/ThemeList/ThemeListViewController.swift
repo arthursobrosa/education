@@ -22,6 +22,7 @@ class ThemeListViewController: UIViewController {
 
     lazy var themeListView: ThemeListView = {
         let view = ThemeListView()
+        view.delegate = self
 
         view.tableView.delegate = self
         view.tableView.dataSource = self
@@ -74,20 +75,8 @@ class ThemeListViewController: UIViewController {
     // MARK: - Methods
 
     private func setNavigationItems() {
-        let addButton = UIButton()
-        addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
-        addButton.imageView?.contentMode = .scaleAspectFit
-        addButton.addTarget(self, action: #selector(addThemeButtonTapped), for: .touchUpInside)
-        addButton.tintColor = .systemText
-
-        let addItem = UIBarButtonItem(customView: addButton)
-
-        navigationItem.rightBarButtonItems = [addItem]
-
-        navigationItem.title = String(localized: "themeTab")
-        let regularFont: UIFont = UIFont(name: Fonts.coconRegular, size: Fonts.titleSize) ?? UIFont.systemFont(ofSize: Fonts.titleSize, weight: .regular)
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: regularFont, .foregroundColor: UIColor(named: "system-text") ?? UIColor.red]
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        themeListView.setNavigationBar()
     }
 
     private func handleTip() {

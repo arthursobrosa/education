@@ -13,16 +13,17 @@ extension FocusEndViewController {
 
         let section = indexPath.section
 
-        let popoverVC = Popover(contentSize: CGSize(width: 159, height: 180))
+        let size = CGSize(width: cell.bounds.width, height: cell.bounds.width * (180 / 345))
+        let popoverVC = Popover(contentSize: size)
         let sourceRect = CGRect(
-            x: cell.bounds.maxX,
-            y: cell.bounds.maxY + cell.bounds.height,
+            x: cell.bounds.midX,
+            y: cell.bounds.maxY + size.height / 2 + 16,
             width: 0,
             height: 0
         )
 
         popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: [], sourceRect: sourceRect, delegate: self)
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 159, height: 180))
+        let containerView = UIView(frame: CGRect(origin: .zero, size: size))
         
         let picker = UIPickerView()
         picker.delegate = self
@@ -40,12 +41,8 @@ extension FocusEndViewController {
         
         popoverVC.view = containerView
 
-        let items = viewModel.subjectNames
-        let selectedItem = viewModel.selectedSubjectInfo.name
-
-        if let selectedIndex = items.firstIndex(where: { $0 == selectedItem }) {
-            picker.selectRow(selectedIndex, inComponent: 0, animated: true)
-        }
+        let selectedIndex = viewModel.selectedSubjectInfo.index
+        picker.selectRow(selectedIndex, inComponent: 0, animated: true)
 
         return popoverVC
     }

@@ -23,9 +23,8 @@ extension ScheduleViewController: UICollectionViewDataSource, UICollectionViewDe
         let dayView = DayView()
 
         let dayString = viewModel.dayAbbreviation(date)
-        let dateString = viewModel.dayFormatted(date)
         let isToday = viewModel.isToday(date)
-        dayView.dayOfWeek = DayOfWeek(day: dayString, date: dateString, isSelected: isToday, isToday: isToday)
+        dayView.dayOfWeek = DayOfWeek(day: dayString, isSelected: isToday, isToday: isToday)
 
         dayView.tag = row
         dayView.delegate = self

@@ -18,6 +18,18 @@ class ThemePageView: UIView {
     }
 
     // MARK: - UI Components
+    
+    private let navigationBar: NavigationBarComponent = {
+        let navigationBar = NavigationBarComponent()
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        return navigationBar
+    }()
+    
+    let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     let segmentedControl: CustomSegmentedControl = {
         let control = CustomSegmentedControl()
@@ -44,7 +56,7 @@ class ThemePageView: UIView {
 
     var customChart: CustomChart? {
         didSet {
-            setupUI()
+            setupContentView()
         }
     }
 
@@ -89,11 +101,21 @@ class ThemePageView: UIView {
         super.init(frame: frame)
 
         backgroundColor = .systemBackground
+        setupUI()
     }
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
+    func setNavigationBar(with title: String) {
+        let buttonImage = UIImage(systemName: "plus.circle.fill")
+        navigationBar.configure(titleText: title, rightButtonImage: buttonImage, hasBackButton: true)
+        navigationBar.addRightButtonTarget(delegate, action: #selector(ThemePageDelegate.addTestButtonTapped))
+        navigationBar.addBackButtonTarget(delegate, action: #selector(ThemePageDelegate.didTapBackButton))
     }
 }
 
@@ -101,35 +123,48 @@ class ThemePageView: UIView {
 
 extension ThemePageView: ViewCodeProtocol {
     func setupUI() {
+        addSubview(navigationBar)
+        navigationBar.layoutToSuperview()
+        addSubview(contentView)
+        
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 13),
+            contentView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        ])
+    }
+    
+    func setupContentView() {
         guard let customChart,
               let tableView else { return }
 
         customChart.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
-        addSubview(segmentedControl)
-        addSubview(customChart)
-        addSubview(tableView)
-        addSubview(stackView)
+        contentView.addSubview(segmentedControl)
+        contentView.addSubview(customChart)
+        contentView.addSubview(tableView)
+        contentView.addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            segmentedControl.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            segmentedControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            segmentedControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            segmentedControl.topAnchor.constraint(equalTo: contentView.topAnchor),
+            segmentedControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            segmentedControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
-            customChart.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 40),
-            customChart.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            customChart.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
-            customChart.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 260 / 844),
+            customChart.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 18),
+            customChart.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            customChart.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
+            customChart.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 160 / 844),
 
-            stackView.topAnchor.constraint(equalTo: customChart.bottomAnchor, constant: 50),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
+            stackView.topAnchor.constraint(equalTo: customChart.bottomAnchor, constant: 40),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 28),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -28),
 
             tableView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 5),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            tableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 }

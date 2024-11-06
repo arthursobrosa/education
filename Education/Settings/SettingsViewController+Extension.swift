@@ -23,7 +23,6 @@ extension SettingsViewController {
         let dayPicker = UIPickerView()
         dayPicker.delegate = self
         dayPicker.dataSource = self
-        dayPicker.tag = section
 
         popoverVC.view = dayPicker
 
@@ -68,23 +67,11 @@ extension SettingsViewController {
 
             return chevronImageView
         case 2:
-//                let stackView = UIStackView()
-//                stackView.axis = .horizontal
-//                stackView.spacing = 5
-//
             let dayLabel = UILabel()
             dayLabel.text = viewModel.selectedDay
             dayLabel.tag = 0
             dayLabel.textColor = .systemText50
             dayLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
-//
-//                let chevronImageView = UIImageView()
-//                chevronImageView.image = UIImage(systemName: "chevron.right")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 14))
-//                chevronImageView.tintColor = .secondaryLabel
-//                chevronImageView.contentMode = .scaleAspectFit
-//
-//                stackView.addArrangedSubview(dayLabel)
-//                stackView.addArrangedSubview(chevronImageView)
 
             return dayLabel
         default:
@@ -101,13 +88,15 @@ extension SettingsViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
+// MARK: - PickerView Data Source and Delegate
+
 extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in _: UIPickerView) -> Int {
-        return 1
+        1
     }
 
     func pickerView(_: UIPickerView, numberOfRowsInComponent _: Int) -> Int {
-        return viewModel.days.count
+        viewModel.days.count
     }
 
     func pickerView(_: UIPickerView, viewForRow row: Int, forComponent _: Int, reusing view: UIView?) -> UIView {
@@ -127,12 +116,11 @@ extension SettingsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func pickerView(_: UIPickerView, didSelectRow row: Int, inComponent _: Int) {
         viewModel.selectedDay = viewModel.days[row]
 
-        guard let cell = settingsTableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? SettingsTableViewCell else {
+        guard let cell = settingsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? SettingsTableViewCell else {
             fatalError("Could not get cell")
         }
 
-        guard let stackView = cell.customAccessoryView.subviews.first as? UIStackView,
-              let dayOfWeekLabel = stackView.arrangedSubviews.first(where: { $0.tag == 0 }) as? UILabel else { return }
+        guard let dayOfWeekLabel = cell.customAccessoryView.subviews.first as? UILabel else { return }
 
         dayOfWeekLabel.text = viewModel.selectedDay
 
