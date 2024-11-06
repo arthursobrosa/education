@@ -65,8 +65,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
         let deleteButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
             guard let self else { return }
 
-            self.viewModel.removeSchedule(at: indexPath.section)
-            self.loadSchedules()
+            self.didTapDeleteButton(at: indexPath.section)
         }
 
         deleteButton.backgroundColor = .systemBackground

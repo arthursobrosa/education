@@ -15,9 +15,10 @@ protocol FocusEndDelegate: AnyObject {
 
 extension FocusEndViewController: FocusEndDelegate {
     func didTapSaveButton() {
+        coordinator?.dismiss(animated: true)
+        viewModel.updateActivityManagerSubject()
         viewModel.activityManager.saveFocusSesssion()
         viewModel.activityManager.resetTimer()
-        coordinator?.dismiss(animated: true)
     }
 
     func didTapDiscardButton() {

@@ -17,6 +17,12 @@ class ScheduleView: UIView {
     }
 
     // MARK: - UI Components
+    
+    private let navigationBar: NavigationBarComponent = {
+        let navigationBar = NavigationBarComponent()
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        return navigationBar
+    }()
 
     let scheduleModeSelector: CustomSegmentedControl = {
         let segmentedControl = CustomSegmentedControl()
@@ -40,9 +46,7 @@ class ScheduleView: UIView {
 
     let contentView: UIView = {
         let view = UIView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -52,32 +56,19 @@ class ScheduleView: UIView {
     var noSchedulesView: NoSchedulesView = {
         let view = NoSchedulesView()
         view.period = .day
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
     let noSubjectsView: NoSubjectsView = {
         let view = NoSubjectsView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
-    let overlayView: UIView = {
+    private let overlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = .clear
-        view.alpha = 0
-
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        return view
-    }()
-
-    let fourDotsView: FourDotsView = {
-        let view = FourDotsView()
+        view.backgroundColor = .label.withAlphaComponent(0.1)
         view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -91,7 +82,7 @@ class ScheduleView: UIView {
             fontSize: 17,
             cornerRadius: 25
         )
-        button.tintColor = .label
+        button.tintColor = UIColor(named: "system-text")
         button.layer.masksToBounds = true
         button.alpha = 0
 
@@ -109,7 +100,7 @@ class ScheduleView: UIView {
             fontSize: 17,
             cornerRadius: 25
         )
-        button.tintColor = .label
+        button.tintColor = UIColor(named: "system-text")
         button.layer.masksToBounds = true
         button.alpha = 0
 
@@ -118,6 +109,14 @@ class ScheduleView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
 
         return button
+    }()
+    
+    let deletionAlertView: AlertView = {
+        let view = AlertView()
+        view.isHidden = true
+        view.layer.zPosition = 2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     // MARK: - Initializer
@@ -138,23 +137,59 @@ class ScheduleView: UIView {
     func setNoSchedulesView(isDaily: Bool) {
         noSchedulesView.period = isDaily ? .day : .week
     }
+    
+    func changeAlertVisibility(isShowing: Bool) {
+        if isShowing {
+            setOverlayTapGesture()
+        } else {
+            overlayView.gestureRecognizers = nil
+        }
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+
+            self.deletionAlertView.isHidden = !isShowing
+            self.overlayView.alpha = isShowing ? 1 : 0
+        }
+    }
+    
+    private func setOverlayTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(overlayViewTapped(_:)))
+        overlayView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func overlayViewTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: overlayView)
+        
+        guard !deletionAlertView.frame.contains(tapLocation) else { return }
+        
+        changeAlertVisibility(isShowing: false)
+    }
+    
+    func setNavigationBar() {
+        let titleImage = UIImage(named: "planno")
+        let buttonImage = UIImage(systemName: "plus.circle.fill")
+        navigationBar.configure(titleImage: titleImage, rightButtonImage: buttonImage)
+        navigationBar.addRightButtonTarget(delegate, action: #selector(ScheduleDelegate.plusButtonTapped))
+    }
 }
 
 // MARK: - UI Setup
 
 extension ScheduleView: ViewCodeProtocol {
     func setupUI() {
+        addSubview(navigationBar)
+        navigationBar.layoutToSuperview()
         addSubview(scheduleModeSelector)
         addSubview(contentView)
 
-        let padding = 10.0
-
         NSLayoutConstraint.activate([
-            scheduleModeSelector.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
-            scheduleModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            scheduleModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            scheduleModeSelector.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 24),
+            scheduleModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            scheduleModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
-            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: padding),
+            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: 10),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -163,27 +198,21 @@ extension ScheduleView: ViewCodeProtocol {
         addSubview(overlayView)
 
         NSLayoutConstraint.activate([
-            overlayView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            overlayView.topAnchor.constraint(equalTo: topAnchor),
             overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
             overlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
             overlayView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
 
-        overlayView.addSubview(fourDotsView)
-        overlayView.addSubview(createAcitivityButton)
-        overlayView.addSubview(startActivityButton)
+        addSubview(createAcitivityButton)
+        addSubview(startActivityButton)
 
         NSLayoutConstraint.activate([
-            fourDotsView.topAnchor.constraint(equalTo: overlayView.topAnchor, constant: -50),
-            fourDotsView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
-            fourDotsView.widthAnchor.constraint(equalToConstant: 50),
-            fourDotsView.heightAnchor.constraint(equalToConstant: 50),
+            createAcitivityButton.topAnchor.constraint(equalTo: navigationBar.topAnchor, constant: 49),
+            createAcitivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -17),
 
-            createAcitivityButton.topAnchor.constraint(equalTo: fourDotsView.bottomAnchor, constant: padding),
-            createAcitivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(padding * 2)),
-
-            startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: padding),
-            startActivityButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(padding * 2)),
+            startActivityButton.topAnchor.constraint(equalTo: createAcitivityButton.bottomAnchor, constant: 9),
+            startActivityButton.trailingAnchor.constraint(equalTo: createAcitivityButton.trailingAnchor),
         ])
     }
 }

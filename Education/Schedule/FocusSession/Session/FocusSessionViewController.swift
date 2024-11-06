@@ -247,7 +247,7 @@ extension FocusSessionViewController {
         viewModel.playAlarm()
         
         let timerCase = viewModel.activityManager.timerCase
-        var alertCase: FocusStatusAlertCase
+        var alertCase: AlertCase
 
         switch timerCase {
         case .timer:
@@ -267,9 +267,23 @@ extension FocusSessionViewController {
         case .stopwatch:
             return
         }
-
-        focusSessionView.statusAlertView.configure(with: alertCase, atSuperview: focusSessionView)
+        
+        let alertConfig = getAlertConfig(with: alertCase)
+        focusSessionView.statusAlertView.config = alertConfig
+        focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
         focusSessionView.changeAlertVisibility(isShowing: true)
+    }
+    
+    func getAlertConfig(with alertCase: AlertCase) -> AlertView.AlertConfig {
+        AlertView.AlertConfig(
+            title: alertCase.title,
+            body: alertCase.body,
+            primaryButtonTitle: alertCase.primaryButtonTitle,
+            secondaryButtonTitle: alertCase.secondaryButtonTitle,
+            superView: focusSessionView,
+            position: alertCase.position
+        )
     }
 
     func updateViewLabels() {

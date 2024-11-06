@@ -34,6 +34,7 @@ class ScheduleViewModel {
     var tasks: [[Schedule]] = [[], [], [], [], [], [], []]
     var scheduleModes: [ScheduleMode] = ScheduleMode.allCases
     var selectedScheduleMode: ScheduleMode = .daily
+    var scheduleToBeDeletedIndex: Int = 0
 
     var selectedDate: Date = .init() {
         didSet {
@@ -98,8 +99,8 @@ extension ScheduleViewModel {
         }
     }
     
-    func removeSchedule(at index: Int) {
-        let schedule = schedules[index]
+    func removeSchedule() {
+        let schedule = schedules[scheduleToBeDeletedIndex]
         scheduleManager.deleteSchedule(schedule)
     }
 
@@ -237,12 +238,6 @@ extension ScheduleViewModel {
         let formatter = DateFormatter()
         formatter.dateFormat = "E"
         return formatter.string(from: date).prefix(3).uppercased()
-    }
-
-    func dayFormatted(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd"
-        return formatter.string(from: date)
     }
 }
 

@@ -11,6 +11,31 @@ class SubjectCreationView: UIView {
     weak var delegate: SubjectCreationDelegate?
 
     // MARK: - UI Components
+    
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        label.textColor = UIColor(named: "systemText")
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy var closeButton: UIButton = {
+        let btn = UIButton()
+
+        let img = UIImage(systemName: "xmark")
+        btn.setImage(img, for: .normal)
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageView?.tintColor = UIColor(named: "system-text-40")
+        btn.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
+
+        btn.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+
+        btn.translatesAutoresizingMaskIntoConstraints = false
+
+        return btn
+    }()
 
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
@@ -22,13 +47,31 @@ class SubjectCreationView: UIView {
     }()
 
     private lazy var deleteButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "deleteSubjectTitle"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 27)
+            
+        let attributedText = NSMutableAttributedString()
+
+        // Adicionar o ícone de lixo antes do texto
+        let symbolAttachment = NSTextAttachment()
+        let symbolImage = UIImage(systemName: "trash")?.withRenderingMode(.alwaysTemplate)
+        symbolAttachment.image = symbolImage
+        symbolAttachment.bounds = CGRect(x: 0, y: -4, width: 20, height: 20)
+        
+        let symbolAttributedString = NSAttributedString(attachment: symbolAttachment)
+        attributedText.append(symbolAttributedString)
+        
+        // Espaçamento entre o ícone e o texto
+        attributedText.append(NSAttributedString(string: "   "))
+        
+        // Adicionar o texto após o ícone
+        attributedText.append(NSAttributedString(string: String(localized: "deleteSubjectTitle")))
+
+        let bttn = ButtonComponent(attrString: attributedText, textColor: UIColor(named: "focus-color-red"), cornerRadius: 26)
+        
         bttn.backgroundColor = .clear
         bttn.layer.borderColor = UIColor(named: "focus-color-red")?.cgColor
         bttn.layer.borderWidth = 1
 
         bttn.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
-
         bttn.translatesAutoresizingMaskIntoConstraints = false
 
         return bttn
@@ -83,6 +126,11 @@ class SubjectCreationView: UIView {
     private func didTapSaveButton() {
         delegate?.didTapSaveButton()
     }
+    
+    @objc
+    private func didTapCloseButton() {
+        delegate?.didTapCloseButton()
+    }
 
     func hideDeleteButton() {
         deleteButton.isHidden = true
@@ -93,25 +141,33 @@ class SubjectCreationView: UIView {
 
 extension SubjectCreationView: ViewCodeProtocol {
     func setupUI() {
+        addSubview(closeButton)
+        addSubview(titleLabel)
         addSubview(tableView)
         addSubview(deleteButton)
         addSubview(saveButton)
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -4),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 4),
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            closeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -0),
             tableView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -16),
 
-            deleteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
+            deleteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 55 / 334),
             deleteButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -11),
 
             saveButton.leadingAnchor.constraint(equalTo: deleteButton.leadingAnchor),
             saveButton.trailingAnchor.constraint(equalTo: deleteButton.trailingAnchor),
             saveButton.heightAnchor.constraint(equalTo: deleteButton.heightAnchor),
-            saveButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40),
+            saveButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
         ])
     }
 }

@@ -8,27 +8,82 @@
 import Foundation
 
 class FocusEndViewModel {
-    // MARK: - Service to manage timer and session
+    // MARK: - Activity and SubjectManager
 
     let activityManager: ActivityManager
+    private let subjectManager: SubjectManager
+    
+    // MARK: - Properties
+    
+    var subjectNames: [String] = []
+    var selectedSubjectInfo: (name: String, index: Int) = (String(), 0)
+    
+    var dateString: String = String()
+    var hoursString: String = String()
+    var timerModeString: String = String()
 
     // MARK: - Initializer
 
-    init(activityManager: ActivityManager) {
+    init(activityManager: ActivityManager, subjectManager: SubjectManager = SubjectManager()) {
         self.activityManager = activityManager
+        self.subjectManager = subjectManager
+        
+        setSelectedSubjectInfo()
+        getDateString()
+        getHourString()
+        timerModeString = activityManager.timerCase.text
     }
 
     // MARK: - Methods
-
-    func getSubjectString() -> String {
-        if let subject = activityManager.subject {
-            return subject.unwrappedName
+    
+    func fetchSubjectNames() {
+        subjectNames.append(String(localized: "none"))
+        
+        if let unwrappedSubjects = subjectManager.fetchSubjects() {
+            var unwrappedNames = unwrappedSubjects.map({ $0.unwrappedName })
+            unwrappedNames.sort()
+            subjectNames.append(contentsOf: unwrappedNames)
         }
-
-        return String(localized: "none")
+    }
+    
+    private func setSelectedSubjectInfo() {
+        guard var subjects = subjectManager.fetchSubjects() else {
+            selectedSubjectInfo = (name: String(localized: "none"), index: 0)
+            return
+        }
+        
+        guard let activitySubject = activityManager.subject else {
+            selectedSubjectInfo = (name: String(localized: "none"), index: 0)
+            return
+        }
+        
+        subjects.sort(by: { $0.unwrappedName < $1.unwrappedName })
+        
+        guard let index = subjects.firstIndex(where: { $0.unwrappedName == activitySubject.unwrappedName }) else {
+            return
+        }
+        
+        selectedSubjectInfo = (name: activitySubject.unwrappedName, index: Int(index + 1))
+    }
+    
+    func updateActivityManagerSubject() {
+        guard let subjects = subjectManager.fetchSubjects() else {
+            activityManager.subject = nil
+            return
+        }
+        
+        let index = selectedSubjectInfo.index
+        
+        guard index > 0 else {
+            activityManager.subject = nil
+            return
+        }
+        
+        let sortedSubjects = subjects.sorted(by: { $0.unwrappedName < $1.unwrappedName })
+        activityManager.subject = sortedSubjects[index - 1]
     }
 
-    func getDateString() -> String {
+    private func getDateString() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
         dateFormatter.timeStyle = .none
@@ -36,19 +91,24 @@ class FocusEndViewModel {
         let formattedDate = dateFormatter.string(from: activityManager.date)
         let capitalizedDate = formattedDate.prefix(1).uppercased() + formattedDate.dropFirst()
 
-        return capitalizedDate
+        dateString = capitalizedDate
     }
 
-    func getHourString() -> String {
+    private func getHourString() {
         let startDate = activityManager.date
-        let endDate = Date.now
+        
+        let endDate = getEndDate(from: startDate, adding: TimeInterval(activityManager.totalTime))
 
         let startTime = getTimeOfTheDayString(from: startDate)
         let endTime = getTimeOfTheDayString(from: endDate)
 
-        let passedTime = getDifferenceBetween(startDate, and: endDate)
-
-        return startTime + " - " + endTime + " (\(passedTime))"
+        let passedTime = formatTime(from: activityManager.totalTime)
+        
+        hoursString = startTime + " - " + endTime + " (\(passedTime))"
+    }
+    
+    private func getEndDate(from startDate: Date, adding interval: TimeInterval) -> Date {
+        return startDate.addingTimeInterval(interval)
     }
 
     private func getTimeOfTheDayString(from date: Date) -> String {
@@ -56,11 +116,6 @@ class FocusEndViewModel {
         dateFormatter.timeStyle = .short
 
         return dateFormatter.string(from: date)
-    }
-
-    private func getDifferenceBetween(_ date1: Date, and date2: Date) -> String {
-        let differenceInSeconds = date2.timeIntervalSince(date1)
-        return formatTime(from: Int(differenceInSeconds))
     }
 
     private func formatTime(from time: Int) -> String {
@@ -75,17 +130,6 @@ class FocusEndViewModel {
             return "\(time)s"
         } else {
             return "\(time)min"
-        }
-    }
-
-    func getTimerString() -> String {
-        switch activityManager.timerCase {
-        case .timer:
-            String(localized: "timerSelectionBold")
-        case .pomodoro:
-            String(localized: "pomodoroSelectionTitle")
-        case .stopwatch:
-            String(localized: "stopwatchSelectionBold")
         }
     }
 }

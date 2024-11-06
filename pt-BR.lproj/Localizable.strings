@@ -54,8 +54,8 @@
 "alarmAtTime" = "Alerta ao iniciar";
 "subject" = "Disciplina";
 "blockApps" = "Bloquear Apps";
-"daily" = "Diário";
-"weekly" = "Semanal";
+"daily" = "Dia";
+"weekly" = "Semana";
 "noSubjectTitle" = "Você não pode criar uma atividade";
 "noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
 "activityDeletionTitle" = "Deleção de Atividade";
@@ -65,6 +65,8 @@
 "onTimeTitle" = "Na hora";
 "onTimeMessage" = "Está na hora da sua atividade!";
 "startsIn" = "Em %@min";
+"deleteScheduleAlertTitle" = "Apagar Atividade";
+"deleteScheduleAlertBody" = "Tem certeza que deseja apagar a Atividade \"%@\" do seu Plano de Estudos?";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
@@ -150,7 +152,7 @@
 "deleteTest" = "Apagar teste";
 "emptyTheme" = "Você ainda não tem nenhuma prova registrada aqui";
 "emptyTest" = "Você ainda não tem nenhum registro de teste";
-"dayLabel" = "Day";
+"dayLabel" = "Data";
 "questionLabel" = "Questões";
 "description" = "Notas sobre o teste/ questões";
 "deleteThemeTitle" = "Deletar Prova";

@@ -11,6 +11,10 @@ import UIKit
 
 @objc 
 protocol ScheduleDelegate: AnyObject {
+    // MARK: - Navigation Bar
+    
+    func plusButtonTapped()
+    
     // MARK: - View Mode
 
     func setSegmentedControl(_ segmentedControl: UISegmentedControl)
@@ -35,9 +39,31 @@ protocol ScheduleDelegate: AnyObject {
     func getConfiguredScheduleCell(from object: AnyObject, at indexPath: IndexPath, isDaily: Bool) -> AnyObject
     func getNumberOfItemsIn(_ index: Int) -> Int
     func didSelectWeeklySchedule(column: Int, row: Int)
+    func didTapDeleteButton(at index: Int)
+    func didCancelDeletion()
+    func didDeleteSchedule()
 }
 
 extension ScheduleViewController: ScheduleDelegate {
+    // MARK: - Navigation Bar
+    
+    func plusButtonTapped() {
+        let isShowingButtons = scheduleView.createAcitivityButton.alpha == 1
+        
+        if isShowingButtons {
+            dismissButtons()
+        } else {
+            setTapGesture()
+            
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let self else { return }
+                
+                self.scheduleView.createAcitivityButton.alpha = 1
+                self.scheduleView.startActivityButton.alpha = 1
+            }
+        }
+    }
+    
     // MARK: - View Mode
 
     func setSegmentedControl(_ segmentedControl: UISegmentedControl) {
@@ -107,7 +133,7 @@ extension ScheduleViewController: ScheduleDelegate {
 
         guard let dayOfWeek = dayView.dayOfWeek else { return }
 
-        dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, date: dayOfWeek.date, isSelected: true, isToday: dayOfWeek.isToday)
+        dayView.dayOfWeek = DayOfWeek(day: dayOfWeek.day, isSelected: true, isToday: dayOfWeek.isToday)
         viewModel.selectedDate = viewModel.daysOfWeek[dayView.tag]
 
         loadSchedules()
@@ -126,9 +152,8 @@ extension ScheduleViewController: ScheduleDelegate {
             let dayView = DayView()
 
             let dayString = viewModel.dayAbbreviation(date)
-            let dateString = viewModel.dayFormatted(date)
             let isToday = viewModel.isToday(date)
-            dayView.dayOfWeek = DayOfWeek(day: dayString, date: dateString, isSelected: isToday, isToday: isToday)
+            dayView.dayOfWeek = DayOfWeek(day: dayString, isSelected: isToday, isToday: isToday)
 
             dayView.tag = index
             dayView.delegate = self
@@ -244,5 +269,39 @@ extension ScheduleViewController: ScheduleDelegate {
 
             coordinator?.showScheduleDetailsModal(schedule: task)
         }
+    }
+    
+    func didTapDeleteButton(at index: Int) {
+        viewModel.scheduleToBeDeletedIndex = index
+        
+        guard let subject = viewModel.getSubject(fromSchedule: viewModel.schedules[index]) else { return }
+        
+        let alertCase: AlertCase = .deletingSchedule(subject: subject)
+        let alertConfig = getAlertConfig(with: alertCase)
+        scheduleView.deletionAlertView.config = alertConfig
+        scheduleView.deletionAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        scheduleView.deletionAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
+        scheduleView.changeAlertVisibility(isShowing: true)
+    }
+    
+    private func getAlertConfig(with alertCase: AlertCase) -> AlertView.AlertConfig {
+        AlertView.AlertConfig(
+            title: alertCase.title,
+            body: alertCase.body,
+            primaryButtonTitle: alertCase.primaryButtonTitle,
+            secondaryButtonTitle: alertCase.secondaryButtonTitle,
+            superView: scheduleView,
+            position: alertCase.position
+        )
+    }
+    
+    func didCancelDeletion() {
+        scheduleView.changeAlertVisibility(isShowing: false)
+    }
+    
+    func didDeleteSchedule() {
+        scheduleView.changeAlertVisibility(isShowing: false)
+        viewModel.removeSchedule()
+        loadSchedules()
     }
 }

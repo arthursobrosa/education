@@ -147,7 +147,7 @@ class ScheduleDetailsViewModel {
                 title: title,
                 body: bodyBefore,
                 date: selectedDate,
-                isAtExactTime: false,
+                minutesBefore: 5,
                 scheduleInfo: nil
             )
         }
@@ -162,7 +162,7 @@ class ScheduleDetailsViewModel {
                 title: title,
                 body: bodyInTime,
                 date: selectedDate,
-                isAtExactTime: true,
+                minutesBefore: 0,
                 scheduleInfo: scheduleInfo
             )
         }
@@ -303,5 +303,20 @@ class ScheduleDetailsViewModel {
         let subject = subjectManager.fetchSubject(withName: name)
         let subjectColor = subject?.unwrappedColor ?? "redPicker"
         return subjectColor
+    }
+    
+    func updateDate(withHour hour: Int, minute: Int, currentDate: Date) -> Date {
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.current
+        var components = calendar.dateComponents([.year, .month, .day], from: currentDate)
+        components.hour = hour
+        components.minute = minute
+        return calendar.date(from: components) ?? currentDate
+    }
+
+    func getTimeString(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.string(from: date)
     }
 }
