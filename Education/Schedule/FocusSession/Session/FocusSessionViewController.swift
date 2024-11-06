@@ -76,7 +76,6 @@ class FocusSessionViewController: UIViewController {
                 foo()
             }
         
-//        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(foo), userInfo: nil, repeats: true)
     }
     
     
