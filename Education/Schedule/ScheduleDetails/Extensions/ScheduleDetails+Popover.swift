@@ -103,7 +103,8 @@ extension ScheduleDetailsViewController {
     }
     
     @objc func createNewButtonTapped() {
-        print("Create New button tapped")
+        let viewModel = StudyTimeViewModel()
+        coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 }
 

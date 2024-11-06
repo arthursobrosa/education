@@ -32,6 +32,10 @@ class SubjectCreationCoordinator: Coordinator, Dismissing {
         if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
             newNavigationController.transitioningDelegate = scheduleCoordinator
         }
+        
+        if let scheduleDetailsCoordinator = parentCoordinator as? ScheduleDetailsCoordinator {
+            newNavigationController.transitioningDelegate = scheduleDetailsCoordinator
+        }
 
         newNavigationController.setNavigationBarHidden(true, animated: false)
 
