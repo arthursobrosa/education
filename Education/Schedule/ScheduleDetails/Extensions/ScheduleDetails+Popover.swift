@@ -16,11 +16,11 @@ extension ScheduleDetailsViewController {
         let section = indexPath.section
 
         let popoverVC = Popover(contentSize: CGSize(width: 159, height: 180))
-        let sourceRect = CGRect(x: cell.bounds.maxX - 28,
-                                y: cell.bounds.midY,
+        let sourceRect = CGRect(x: cell.bounds.maxX,
+                                y: cell.bounds.midY + 120,
                                 width: 0,
                                 height: 0)
-        popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: .up, sourceRect: sourceRect, delegate: self)
+        popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: [], sourceRect: sourceRect, delegate: self)
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 159, height: 180))
         
         let dayPicker = UIPickerView()
@@ -55,11 +55,11 @@ extension ScheduleDetailsViewController {
         let section = indexPath.section
 
         let popoverVC = Popover(contentSize: CGSize(width: 159, height: 180))
-        let sourceRect = CGRect(x: cell.bounds.maxX - 28,
-                                y: cell.bounds.midY,
+        let sourceRect = CGRect(x: cell.bounds.maxX,
+                                y: cell.bounds.midY + 120,
                                 width: 0,
                                 height: 0)
-        popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: .up, sourceRect: sourceRect, delegate: self)
+        popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: [], sourceRect: sourceRect, delegate: self)
 
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 159, height: 180))
         
@@ -103,7 +103,8 @@ extension ScheduleDetailsViewController {
     }
     
     @objc func createNewButtonTapped() {
-        print("Create New button tapped")
+        let viewModel = StudyTimeViewModel()
+        coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 }
 
