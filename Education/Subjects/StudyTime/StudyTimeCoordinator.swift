@@ -7,7 +7,9 @@
 
 import UIKit
 
-class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, ShowingOtherSubject {
+class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, ShowingOtherSubject, ShowingSubjectDetails {
+    
+    
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
@@ -34,6 +36,14 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
 
     func showOtherSubject(viewModel: StudyTimeViewModel) {
         let child = OtherSubjectCoordinator(navigationController: navigationController, viewModel: viewModel)
+        child.parentCoordinator = self
+        childCoordinators.append(child)
+        child.start()
+    }
+    
+    func showSubjectDetails(subject: Subject) {
+        let viewModel = SubjectDetailsViewModel(subject: subject)
+        let child = SubjectDetailsCoordinator(navigationController: navigationController, viewModel: viewModel)
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()
