@@ -23,7 +23,6 @@
 		30D5E24A2C8783530083F353 /* ShowingOtherSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */; };
 		30D846E62C82373600E98130 /* CreateActivityTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D846E52C82373600E98130 /* CreateActivityTip.swift */; };
 		30D846E82C82381100E98130 /* CreateTestTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D846E72C82381100E98130 /* CreateTestTip.swift */; };
-		30D846EC2C8261D700E98130 /* NoSubjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D846EB2C8261D700E98130 /* NoSubjectsView.swift */; };
 		30EE4DBC2C59722400BB64D8 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EE4DBB2C59722400BB64D8 /* AudioService.swift */; };
 		30EE4DBF2C59728E00BB64D8 /* alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30EE4DBE2C59728E00BB64D8 /* alarm.mp3 */; };
 		30F0C0912CC04BBE00FCE2D1 /* DarkmodeOnTrial-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 30F0C0902CC04BBE00FCE2D1 /* DarkmodeOnTrial-Italic.ttf */; };
@@ -301,7 +300,6 @@
 		30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingOtherSubject.swift; sourceTree = "<group>"; };
 		30D846E52C82373600E98130 /* CreateActivityTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateActivityTip.swift; sourceTree = "<group>"; };
 		30D846E72C82381100E98130 /* CreateTestTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTestTip.swift; sourceTree = "<group>"; };
-		30D846EB2C8261D700E98130 /* NoSubjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSubjectsView.swift; sourceTree = "<group>"; };
 		30EE4DBB2C59722400BB64D8 /* AudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioService.swift; sourceTree = "<group>"; };
 		30EE4DBE2C59728E00BB64D8 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm.mp3; sourceTree = "<group>"; };
 		30F0C0902CC04BBE00FCE2D1 /* DarkmodeOnTrial-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Italic.ttf"; sourceTree = "<group>"; };
@@ -856,7 +854,6 @@
 		683D25592C8955E300716444 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				30D846EB2C8261D700E98130 /* NoSubjectsView.swift */,
 				68A80B632C976FEF00CC6D48 /* NoSchedulesView.swift */,
 				68C2D0022C47255700E2347A /* DayView.swift */,
 			);
@@ -1571,7 +1568,6 @@
 				68C572412C8AC52B00B9D0A4 /* BorderedTableCell.swift in Sources */,
 				686CA4BF2CD6BFA500863790 /* ScheduleVC+TableView.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
-				30D846EC2C8261D700E98130 /* NoSubjectsView.swift in Sources */,
 				CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */,
 				684EDF972C2C871700A3F392 /* Coordinator.swift in Sources */,
 				CE6A12522C63EEDC00549DCC /* SettingsViewModel.swift in Sources */,
