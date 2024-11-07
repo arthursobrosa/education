@@ -9,20 +9,24 @@ import Foundation
 
 class SubjectDetailsViewModel {
     private let focusSessionManager: FocusSessionManager
+    let subjectManager: SubjectManager
+    let studyTimeViewModel: StudyTimeViewModel
 
-    let subject: Subject
+    var subject: Subject?
     var sessionsByMonth: [String: [FocusSession]] = [:]
 
-    init(subject: Subject) {
+    init(subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
         self.subject = subject
+        self.studyTimeViewModel = studyTimeViewModel
        
         focusSessionManager = FocusSessionManager()
+        subjectManager = SubjectManager()
     }
     
     func fetchFocusSessions() {
         var sessionsByMonth: [String: [FocusSession]] = [:]
 
-        if let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: self.subject.unwrappedID) {
+        if let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: self.subject?.unwrappedID) {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM/yyyy"
             
@@ -44,6 +48,14 @@ class SubjectDetailsViewModel {
         print(sessionsByMonth)
         
         self.sessionsByMonth = sessionsByMonth
+    }
+    
+    func deleteOtherSessions() {
+        if let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: nil) {
+            for focusSession in focusSessions {
+                focusSessionManager.deleteFocusSession(focusSession)
+            }
+        }
     }
 
 
