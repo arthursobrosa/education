@@ -58,7 +58,7 @@ class SubjectDetailsViewController: UIViewController{
 
     private func setupNavigationItems() {
         
-        navigationItem.title = (self.viewModel.subject != nil) ?  self.viewModel.subject?.unwrappedName : "Outro"
+        navigationItem.title = (self.viewModel.subject != nil) ?  self.viewModel.subject?.unwrappedName : String(localized: "other")
         
         let editButton = UIButton()
         editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
@@ -107,6 +107,12 @@ class SubjectDetailsViewController: UIViewController{
         
         // Garante que a primeira letra do mês seja maiúscula
         return formattedDate.prefix(1).uppercased() + formattedDate.dropFirst()
+    }
+    
+    func reloadTableAndSubject(){
+        self.viewModel.subject =  self.viewModel.subjectManager.fetchSubject(withID: self.viewModel.subject?.unwrappedID)
+        self.subjectDetailsView.tableView.reloadData()
+        navigationItem.title = (self.viewModel.subject != nil) ?  self.viewModel.subject?.unwrappedName : String(localized: "other")
     }
     
     @objc

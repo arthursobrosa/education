@@ -9,9 +9,10 @@ import Foundation
 
 class SubjectDetailsViewModel {
     private let focusSessionManager: FocusSessionManager
+    let subjectManager: SubjectManager
     let studyTimeViewModel: StudyTimeViewModel
 
-    let subject: Subject?
+    var subject: Subject?
     var sessionsByMonth: [String: [FocusSession]] = [:]
 
     init(subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
@@ -19,6 +20,7 @@ class SubjectDetailsViewModel {
         self.studyTimeViewModel = studyTimeViewModel
        
         focusSessionManager = FocusSessionManager()
+        subjectManager = SubjectManager()
     }
     
     func fetchFocusSessions() {
