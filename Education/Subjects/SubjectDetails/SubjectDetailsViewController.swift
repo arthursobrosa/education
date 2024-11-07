@@ -51,15 +51,14 @@ class SubjectDetailsViewController: UIViewController{
         super.viewDidLoad()
 
         setupNavigationItems()
-        self.viewModel.fetchFocusSessions()
+        viewModel.fetchFocusSessions()
+        setContentView()
     }
 
     // MARK: - Methods
 
     private func setupNavigationItems() {
-        
-        navigationItem.title = self.viewModel.subject.unwrappedName
-        
+        navigationItem.title = viewModel.subject.unwrappedName
     }
     
     func formatMonthYear(monthYear: String) -> String? {
@@ -83,6 +82,30 @@ class SubjectDetailsViewController: UIViewController{
         
         // Garante que a primeira letra do mês seja maiúscula
         return formattedDate.prefix(1).uppercased() + formattedDate.dropFirst()
+    }
+    
+    func setContentView() {
+        let isEmpty = viewModel.areSessionsEmpty()
+        
+        if isEmpty {
+            addContentSubview(childSubview: subjectDetailsView.emptyView)
+        } else {
+            addContentSubview(childSubview: subjectDetailsView.tableView)
+        }
+    }
+    
+    private func addContentSubview(childSubview: UIView) {
+        let parentSubview = subjectDetailsView.contentView
+        parentSubview.addSubview(childSubview)
+
+        childSubview.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            childSubview.topAnchor.constraint(equalTo: parentSubview.topAnchor),
+            childSubview.leadingAnchor.constraint(equalTo: parentSubview.leadingAnchor),
+            childSubview.trailingAnchor.constraint(equalTo: parentSubview.trailingAnchor),
+            childSubview.bottomAnchor.constraint(equalTo: parentSubview.bottomAnchor),
+        ])
     }
 }
 

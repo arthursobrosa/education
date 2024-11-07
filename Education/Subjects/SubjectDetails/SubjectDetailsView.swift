@@ -7,8 +7,16 @@
 
 import UIKit
 
+
 class SubjectDetailsView: UIView {
     weak var delegate: SubjectDetailsDelegate?
+    
+    let contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -19,6 +27,12 @@ class SubjectDetailsView: UIView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         return tableView
+    }()
+    
+    let emptyView: EmptySubjectDetailsView = {
+        let emptyView = EmptySubjectDetailsView()
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        return emptyView
     }()
 
     // MARK: - Initialization
@@ -37,16 +51,13 @@ class SubjectDetailsView: UIView {
     // MARK: - UI Setup
 
     private func setupUI() {
-        
-        addSubview(tableView)
-        
+        addSubview(contentView)
+
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 0),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            contentView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 0),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
         ])
-        
-        
     }
 }
