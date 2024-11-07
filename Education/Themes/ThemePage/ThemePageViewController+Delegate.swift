@@ -11,6 +11,7 @@ import UIKit
 protocol ThemePageDelegate: AnyObject {
     func setSegmentedControl(_ segmentedControl: UISegmentedControl)
     func addTestButtonTapped()
+    func didTapBackButton()
     func getSelectedTestDateString(for row: Int) -> String
 }
 
@@ -37,6 +38,10 @@ extension ThemePageViewController: ThemePageDelegate {
 
     func addTestButtonTapped() {
         coordinator?.showTestPage(theme: viewModel.theme, test: nil)
+    }
+    
+    func didTapBackButton() {
+        coordinator?.dismiss(animated: true)
     }
 
     func getSelectedTestDateString(for row: Int) -> String {

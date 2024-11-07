@@ -9,7 +9,6 @@ import UIKit
 
 struct DayOfWeek {
     let day: String
-    let date: String
     let isSelected: Bool
     let isToday: Bool
 }
@@ -25,8 +24,7 @@ class DayView: UIView {
         didSet {
             guard let dayOfWeek else { return }
 
-            dayLabel.text = dayOfWeek.day.lowercased()
-            dateLabel.text = dayOfWeek.date
+            dateLabel.text = dayOfWeek.day.prefix(1).uppercased()
 
             handleDayColors()
         }
@@ -34,23 +32,11 @@ class DayView: UIView {
 
     // MARK: - UI Components
 
-    private let dayLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 13)
-
-        label.translatesAutoresizingMaskIntoConstraints = false
-
-        return label
-    }()
-
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
-
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
 
@@ -58,9 +44,7 @@ class DayView: UIView {
         let view = UIView()
         view.layer.cornerRadius = 18
         view.layer.masksToBounds = true
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -69,9 +53,12 @@ class DayView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        setTapGesture()
         setupUI()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dayViewTapped))
-        addGestureRecognizer(tapGesture)
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.handleDayColors()
+        }
     }
 
     @available(*, unavailable)
@@ -91,48 +78,36 @@ class DayView: UIView {
     private func dayViewTapped() {
         delegate?.dayTapped(self)
     }
+    
+    private func setTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dayViewTapped))
+        addGestureRecognizer(tapGesture)
+    }
 }
 
 // MARK: UI Setup
 
 extension DayView: ViewCodeProtocol {
     func setupUI() {
-        addSubview(dayLabel)
         circleView.addSubview(dateLabel)
         addSubview(circleView)
 
-        let padding = 4.0
-
         NSLayoutConstraint.activate([
-            dayLabel.topAnchor.constraint(equalTo: topAnchor, constant: padding),
-            dayLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            dayLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-            circleView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: padding),
-            circleView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            circleView.bottomAnchor.constraint(equalTo: bottomAnchor),
             circleView.widthAnchor.constraint(equalTo: widthAnchor),
             circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
+            circleView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            circleView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
             dateLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
             dateLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
         ])
-
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-            self.handleDayColors()
-        }
     }
 
-    func handleDayColors() {
+    private func handleDayColors() {
         guard let dayOfWeek else { return }
 
         let isSelected = dayOfWeek.isSelected
         let isToday = dayOfWeek.isToday
-
-        let dayLabelFontName = (isSelected || isToday) ? Fonts.darkModeOnRegular : Fonts.darkModeOnMedium
-
-        dayLabel.font = UIFont(name: dayLabelFontName, size: 13)
-        dayLabel.textColor = (isSelected || isToday) ? UIColor(named: "system-text") : UIColor(named: "system-text-50")
 
         let dateLabelFontName = isSelected ? Fonts.darkModeOnSemiBold : Fonts.darkModeOnMedium
 

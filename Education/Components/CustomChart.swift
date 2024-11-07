@@ -18,29 +18,21 @@ class CustomChart: UIView {
 
     private let percentageIndexesStack: UIView = {
         let stack = UIView()
-
         stack.translatesAutoresizingMaskIntoConstraints = false
-
         return stack
     }()
 
     private let percentagesContainerView: UIView = {
         let view = UIView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
     private var dateLabel: UILabel = {
         let label = UILabel()
-
-        label.text = "17/05/2024"
-        label.font = .preferredFont(forTextStyle: .caption1)
-        label.textColor = .label
-
+        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 12)
+        label.textColor = .bluePicker
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
 
@@ -53,9 +45,7 @@ class CustomChart: UIView {
 
         collection.dataSource = self
         collection.delegate = self
-
         collection.register(PercentageCell.self, forCellWithReuseIdentifier: PercentageCell.identifier)
-
         collection.translatesAutoresizingMaskIntoConstraints = false
 
         return collection
@@ -63,19 +53,14 @@ class CustomChart: UIView {
 
     private let dayIndicatorStack: UIView = {
         let stack = UIView()
-
         stack.translatesAutoresizingMaskIntoConstraints = false
-
         return stack
     }()
 
     private let dividerView: UIView = {
         let view = UIView()
-
         view.backgroundColor = .label.withAlphaComponent(0.15)
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -85,7 +70,6 @@ class CustomChart: UIView {
         super.init(frame: frame)
 
         setupUI()
-
         setPercentageIndexesStack()
     }
 
@@ -195,13 +179,17 @@ extension CustomChart: ViewCodeProtocol {
     }
 
     private func layoutDateLabel(at xPosition: CGFloat) {
-        dateLabel.removeFromSuperview()
+        removeDateLabel()
         addSubview(dateLabel)
 
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            dateLabel.topAnchor.constraint(equalTo: topAnchor),
             dateLabel.centerXAnchor.constraint(equalTo: leadingAnchor, constant: xPosition + 36),
         ])
+    }
+    
+    private func removeDateLabel() {
+        dateLabel.removeFromSuperview()
     }
 }
 
@@ -214,9 +202,19 @@ extension CustomChart: UICollectionViewDataSource, UICollectionViewDelegate, UIC
         guard let cell = collectionView.cellForItem(at: indexPath) as? PercentageCell else {
             fatalError("Could not dequeue cell")
         }
-        cell.isSelected = true
+        
+        guard !cell.isEmpty else { return }
+        
+        guard !cell.isShowingDateLabel else {
+            cell.isShowingDateLabel = false
+            removeDateLabel()
+            return
+        }
+        
         layoutDateLabel(at: cell.center.x)
         dateLabel.text = delegate?.getSelectedTestDateString(for: indexPath.row)
+        
+        cell.isShowingDateLabel = true
     }
 
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
@@ -332,13 +330,7 @@ class PercentageCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            guard !isEmpty else { return }
-
-            let lighterBy = 0.6
-
-            let alpha: CGFloat = traitCollection.userInterfaceStyle == .dark ? 0.15 : 0.06
-            percentageBackgroundView.backgroundColor = isSelected ? .label.withAlphaComponent(alpha * lighterBy) : .label.withAlphaComponent(alpha)
-            percentageView.backgroundColor = isSelected ? .bluePicker.withAlphaComponent(1 * lighterBy) : .bluePicker
+            changeColors(isFocused: isSelected)
         }
     }
 
@@ -347,6 +339,12 @@ class PercentageCell: UICollectionViewCell {
             let alpha: CGFloat = traitCollection.userInterfaceStyle == .dark ? 0.15 : 0.06
             percentageBackgroundView.backgroundColor = isEmpty ? .clear : .label.withAlphaComponent(alpha)
             percentageView.backgroundColor = isEmpty ? .clear : UIColor(named: "bluePicker")
+        }
+    }
+    
+    var isShowingDateLabel: Bool = false {
+        didSet {
+            changeColors(isFocused: isShowingDateLabel)
         }
     }
 
@@ -382,6 +380,16 @@ class PercentageCell: UICollectionViewCell {
 
         percentage = nil
         isEmpty = false
+    }
+    
+    private func changeColors(isFocused: Bool) {
+        guard !isEmpty else { return }
+
+        let lighterBy = 0.6
+
+        let alpha: CGFloat = traitCollection.userInterfaceStyle == .dark ? 0.15 : 0.06
+        percentageBackgroundView.backgroundColor = isFocused ? .label.withAlphaComponent(alpha * lighterBy) : .label.withAlphaComponent(alpha)
+        percentageView.backgroundColor = isFocused ? .bluePicker.withAlphaComponent(1 * lighterBy) : .bluePicker
     }
 }
 

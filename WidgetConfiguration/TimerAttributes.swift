@@ -16,4 +16,5 @@ struct TimerAttributes: ActivityAttributes {
     }
 
     var timerName: String
+    var timerStart: Date = .now
 }

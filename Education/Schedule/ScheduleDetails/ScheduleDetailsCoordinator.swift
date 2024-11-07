@@ -7,7 +7,8 @@
 
 import UIKit
 
-class ScheduleDetailsCoordinator: Coordinator, Dismissing {
+class ScheduleDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubjectCreation {
+    
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -37,8 +38,38 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
         newNavigationController.modalPresentationStyle = .pageSheet
         navigationController.present(newNavigationController, animated: true)
     }
+    
+    func showSubjectCreation(viewModel: StudyTimeViewModel) {
+        let child = SubjectCreationCoordinator(navigationController: navigationController, viewModel: viewModel)
+        child.parentCoordinator = self
+        childCoordinators.append(child)
+        child.start()
+    }
 
     func dismiss(animated: Bool) {
         navigationController.dismiss(animated: animated)
+    }
+    
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
+        }
+    }
+}
+
+extension ScheduleDetailsCoordinator: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        guard let nav = dismissed as? UINavigationController else { return nil }
+        
+        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
+            childDidFinish(subjectCreationVC.coordinator as? Coordinator)
+
+            if let scheduleDetailsVC = navigationController.viewControllers.first as? ScheduleDetailsViewController {
+                scheduleDetailsVC.reloadTable()
+            }
+        }
+
+        return nil
     }
 }

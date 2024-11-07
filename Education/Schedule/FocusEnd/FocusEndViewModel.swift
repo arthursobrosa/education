@@ -31,36 +31,39 @@ class FocusEndViewModel {
         setSelectedSubjectInfo()
         getDateString()
         getHourString()
-        getTimerModeString()
+        timerModeString = activityManager.timerCase.text
     }
 
     // MARK: - Methods
     
     func fetchSubjectNames() {
-        if let subjects = subjectManager.fetchSubjects() {
-            subjectNames = subjects.map({ $0.unwrappedName })
-            subjectNames.sort()
-        }
-        
         subjectNames.append(String(localized: "none"))
+        
+        if let unwrappedSubjects = subjectManager.fetchSubjects() {
+            var unwrappedNames = unwrappedSubjects.map({ $0.unwrappedName })
+            unwrappedNames.sort()
+            subjectNames.append(contentsOf: unwrappedNames)
+        }
     }
     
     private func setSelectedSubjectInfo() {
-        guard let subjects = subjectManager.fetchSubjects() else {
+        guard var subjects = subjectManager.fetchSubjects() else {
             selectedSubjectInfo = (name: String(localized: "none"), index: 0)
             return
         }
         
         guard let activitySubject = activityManager.subject else {
-            selectedSubjectInfo = (name: String(localized: "none"), index: subjects.count - 1)
+            selectedSubjectInfo = (name: String(localized: "none"), index: 0)
             return
         }
+        
+        subjects.sort(by: { $0.unwrappedName < $1.unwrappedName })
         
         guard let index = subjects.firstIndex(where: { $0.unwrappedName == activitySubject.unwrappedName }) else {
             return
         }
         
-        selectedSubjectInfo = (name: activitySubject.unwrappedName, index: Int(index))
+        selectedSubjectInfo = (name: activitySubject.unwrappedName, index: Int(index + 1))
     }
     
     func updateActivityManagerSubject() {
@@ -71,13 +74,13 @@ class FocusEndViewModel {
         
         let index = selectedSubjectInfo.index
         
-        guard index != subjectNames.count - 1 else {
+        guard index > 0 else {
             activityManager.subject = nil
             return
         }
         
         let sortedSubjects = subjects.sorted(by: { $0.unwrappedName < $1.unwrappedName })
-        activityManager.subject = sortedSubjects[index]
+        activityManager.subject = sortedSubjects[index - 1]
     }
 
     private func getDateString() {
@@ -93,14 +96,19 @@ class FocusEndViewModel {
 
     private func getHourString() {
         let startDate = activityManager.date
-        let endDate = Date.now
+        
+        let endDate = getEndDate(from: startDate, adding: TimeInterval(activityManager.totalTime))
 
         let startTime = getTimeOfTheDayString(from: startDate)
         let endTime = getTimeOfTheDayString(from: endDate)
 
-        let passedTime = getDifferenceBetween(startDate, and: endDate)
-
+        let passedTime = formatTime(from: activityManager.totalTime)
+        
         hoursString = startTime + " - " + endTime + " (\(passedTime))"
+    }
+    
+    private func getEndDate(from startDate: Date, adding interval: TimeInterval) -> Date {
+        return startDate.addingTimeInterval(interval)
     }
 
     private func getTimeOfTheDayString(from date: Date) -> String {
@@ -108,11 +116,6 @@ class FocusEndViewModel {
         dateFormatter.timeStyle = .short
 
         return dateFormatter.string(from: date)
-    }
-
-    private func getDifferenceBetween(_ date1: Date, and date2: Date) -> String {
-        let differenceInSeconds = date2.timeIntervalSince(date1)
-        return formatTime(from: Int(differenceInSeconds))
     }
 
     private func formatTime(from time: Int) -> String {
@@ -128,20 +131,5 @@ class FocusEndViewModel {
         } else {
             return "\(time)min"
         }
-    }
-
-    private func getTimerModeString() {
-        var text: String
-        
-        switch activityManager.timerCase {
-        case .timer:
-            text = String(localized: "timerSelectionBold")
-        case .pomodoro:
-            text = String(localized: "pomodoroSelectionTitle")
-        case .stopwatch:
-            text = String(localized: "stopwatchSelectionBold")
-        }
-        
-        timerModeString = text
     }
 }

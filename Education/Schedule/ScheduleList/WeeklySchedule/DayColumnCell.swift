@@ -17,13 +17,17 @@ class DayColumnCell: UICollectionViewCell {
         }
     }
 
+    // MARK: - Properties
+    
+    var column: Int?
+    
+    // MARK: - UI Properties
+    
     var dayView: DayView? {
         didSet {
             setupUI()
         }
     }
-
-    var column: Int?
 
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -43,22 +47,13 @@ class DayColumnCell: UICollectionViewCell {
 
     private let sectionDividerView: UIView = {
         let view = UIView()
-
         view.backgroundColor = .systemGray5
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
-
-    func reloadCollection() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-
-            self.collection.reloadData()
-        }
-    }
-
+    
+    // MARK: - Lifecycle
+    
     override func prepareForReuse() {
         super.prepareForReuse()
 
@@ -66,7 +61,19 @@ class DayColumnCell: UICollectionViewCell {
             subview.removeFromSuperview()
         }
     }
+
+    // MARK: - Methods
+    
+    func reloadCollection() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+
+            self.collection.reloadData()
+        }
+    }
 }
+
+// MARK: - UI Setup
 
 extension DayColumnCell: ViewCodeProtocol {
     func setupUI() {
@@ -101,6 +108,8 @@ extension DayColumnCell: ViewCodeProtocol {
         }
     }
 }
+
+// MARK: - CollectionView Data Source and Delegate
 
 extension DayColumnCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {

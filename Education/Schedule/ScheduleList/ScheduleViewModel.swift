@@ -239,12 +239,6 @@ extension ScheduleViewModel {
         formatter.dateFormat = "E"
         return formatter.string(from: date).prefix(3).uppercased()
     }
-
-    func dayFormatted(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd"
-        return formatter.string(from: date)
-    }
 }
 
 // MARK: - NavigationItem and EmptyView Auxiliar Methods

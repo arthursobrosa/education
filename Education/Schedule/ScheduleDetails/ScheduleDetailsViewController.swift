@@ -10,7 +10,7 @@ import UIKit
 class ScheduleDetailsViewController: UIViewController {
     // MARK: - Coordinator & ViewModel
 
-    weak var coordinator: Dismissing?
+    weak var coordinator: (ShowingSubjectCreation & Dismissing)?
     let viewModel: ScheduleDetailsViewModel
 
     // MARK: - Properties
@@ -164,6 +164,14 @@ class ScheduleDetailsViewController: UIViewController {
         alertController.addAction(okAction)
 
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.scheduleDetailsView.tableView.reloadData()
+        }
     }
 }
 
