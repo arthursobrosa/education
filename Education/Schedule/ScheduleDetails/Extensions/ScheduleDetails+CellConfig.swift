@@ -11,9 +11,11 @@ extension ScheduleDetailsViewController {
     func createCellTitle(for indexPath: IndexPath) -> String {
         let section = indexPath.section
         let row = indexPath.row
-
+        
         switch section {
         case 0:
+            return String(localized: "subject")
+        case 1:
             switch row {
             case 0:
                 return String(localized: "dayOfWeek")
@@ -24,8 +26,6 @@ extension ScheduleDetailsViewController {
             default:
                 return String()
             }
-        case 1:
-            return String(localized: "subject")
         case 2:
             return row == 0 ? String(localized: "alarmAtTime") : String(localized: "alarm5Min")
         case 3:
@@ -105,6 +105,9 @@ extension ScheduleDetailsViewController {
 
         switch section {
         case 0:
+            let label = createLabel(text: viewModel.selectedSubjectName, color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName))
+            return label
+        case 1:
             if row == 0 {
                 let label = createLabel(text: viewModel.selectedDay, color: nil)
 
@@ -120,10 +123,6 @@ extension ScheduleDetailsViewController {
             datePicker.tag = row
 
             return datePicker
-        case 1:
-            let label = createLabel(text: viewModel.selectedSubjectName, color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName))
-
-            return label
         case 2:
             let isOn = row == 0 ? viewModel.alarmInTime : viewModel.alarmBefore
             let toggle = createToggle(withTag: row, isOn: isOn)

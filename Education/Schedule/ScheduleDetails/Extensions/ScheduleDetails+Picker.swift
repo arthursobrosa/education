@@ -21,9 +21,9 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent _: Int) -> Int {
         switch pickerView.tag {
         case 0:
-            return viewModel.days.count
-        case 1:
             return viewModel.subjectsNames.count
+        case 1:
+            return viewModel.days.count
         default:
             break
         }
@@ -43,18 +43,19 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
 
         switch pickerView.tag {
         case 0:
-            pickerLabel?.text = viewModel.days[row]
-            updateDaySelectionIndicator(pickerView: pickerView, component: component)
-        case 1:
             pickerView.subviews.last?.backgroundColor = .clear
             pickerLabel?.text = viewModel.subjectsNames[row]
             updateSubjectSelectionIndicator(pickerView: pickerView, component: component)
+        case 1:
+            pickerLabel?.text = viewModel.days[row]
+            updateDaySelectionIndicator(pickerView: pickerView, component: component)
         default:
             break
         }
         
         let selectedRow = pickerView.selectedRow(inComponent: component)
-        if pickerView.tag == 1 {
+        
+        if pickerView.tag == 0 {
             if row == selectedRow {
                 let subjectColorName = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
                 pickerLabel?.textColor = UIColor(named: subjectColorName)?.darker(by: 0.8)
@@ -64,6 +65,7 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
                 pickerLabel?.textColor = .systemText50
             }
         }
+        
         return pickerLabel ?? UIView()
     }
     
@@ -71,10 +73,6 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         pickerView.subviews.last?.backgroundColor = .clear
         switch pickerView.tag {
         case 0:
-            viewModel.selectedDay = viewModel.days[row]
-            updateCellAccessory(for: viewModel.selectedDay, at: pickerView.tag, color: nil)
-            updateDaySelectionIndicator(pickerView: pickerView, component: component)
-        case 1:
             viewModel.selectedSubjectName = viewModel.subjectsNames[row]
                 
             updateCellAccessory(
@@ -84,6 +82,10 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
             )
                 
             updateSubjectSelectionIndicator(pickerView: pickerView, component: component)
+        case 1:
+            viewModel.selectedDay = viewModel.days[row]
+            updateCellAccessory(for: viewModel.selectedDay, at: pickerView.tag, color: nil)
+            updateDaySelectionIndicator(pickerView: pickerView, component: component)
         default:
             break
         }

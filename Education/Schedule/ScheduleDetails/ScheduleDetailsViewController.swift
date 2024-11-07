@@ -196,9 +196,9 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            3
-        case 1:
             1
+        case 1:
+            3
         case 2:
             2
         case 3:
@@ -226,16 +226,16 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
 
         switch section {
         case 0:
+            if let popover = createSubjectPopover(forTableView: tableView, at: indexPath) {
+                isPopoverOpen.toggle()
+                present(popover, animated: true)
+            }
+        case 1:
             if row == 0 {
                 if let popover = createDayPopover(forTableView: tableView, at: indexPath) {
                     isPopoverOpen.toggle()
                     present(popover, animated: true)
                 }
-            }
-        case 1:
-            if let popover = createSubjectPopover(forTableView: tableView, at: indexPath) {
-                isPopoverOpen.toggle()
-                present(popover, animated: true)
             }
         default:
             break
