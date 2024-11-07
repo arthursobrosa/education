@@ -90,7 +90,7 @@ extension FocusSubjectDetailsView: ViewCodeProtocol {
             titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 23),
 
-            tableView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 170 / 844),
+            tableView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 164 / 344),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
             tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
