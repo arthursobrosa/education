@@ -7,7 +7,13 @@
 
 import UIKit
 
-class SubjectDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingFocusSubjectDetails {
+class SubjectDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingFocusSubjectDetails, ShowingSubjectCreation  {
+    func showSubjectCreation(viewModel: StudyTimeViewModel) {
+        let child = SubjectCreationCoordinator(navigationController: navigationController, viewModel: viewModel)
+        child.parentCoordinator = self
+        childCoordinators.append(child)
+        child.start()
+    }
     
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
@@ -55,9 +61,17 @@ extension SubjectDetailsCoordinator: UIViewControllerTransitioningDelegate {
         if let focusSubjectDetailsVC = nav.viewControllers.first as? FocusSubjectDetailsViewController {
             childDidFinish(focusSubjectDetailsVC.coordinator as? Coordinator)
             
-            if let subjectDetailVC = navigationController.viewControllers.first as? SubjectDetailsViewController {
-                subjectDetailVC.reloadInputViews()
+            if let subjectDetailVC = navigationController.viewControllers.last as? SubjectDetailsViewController {
+                subjectDetailVC.reloadTableAndSubject()
             }
+        }
+        
+        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
+            childDidFinish(subjectCreationVC.coordinator as? Coordinator)
+            if let subjectDetailVC = navigationController.viewControllers.last as? SubjectDetailsViewController {
+                subjectDetailVC.reloadTableAndSubject()
+            }
+            
         }
         
         return nil

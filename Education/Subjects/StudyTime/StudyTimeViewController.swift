@@ -170,6 +170,8 @@ class StudyTimeViewController: UIViewController {
 
     @objc 
     func listButtonTapped() {
+        viewModel.currentEditingSubject = nil
+        viewModel.selectedSubjectColor.value = viewModel.selectAvailableColor()
         coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 }
@@ -254,11 +256,13 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
               let subject = cell.subject
         else {
-            coordinator?.showOtherSubject(viewModel: viewModel)
+            coordinator?.showSubjectDetails(subject: nil, studytimeViewModel: self.viewModel)
             return
         }
         
-        coordinator?.showSubjectDetails(subject: subject)
+        viewModel.currentEditingSubject = subject
+        viewModel.selectedSubjectColor.value = subject.unwrappedColor
+        coordinator?.showSubjectDetails(subject: subject, studytimeViewModel: self.viewModel)
 
     }
     

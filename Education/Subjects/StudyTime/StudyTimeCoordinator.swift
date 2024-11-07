@@ -41,8 +41,8 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
         child.start()
     }
     
-    func showSubjectDetails(subject: Subject) {
-        let viewModel = SubjectDetailsViewModel(subject: subject)
+    func showSubjectDetails(subject: Subject?, studytimeViewModel studyTimeViewModel: StudyTimeViewModel) {
+        let viewModel = SubjectDetailsViewModel(subject: subject, studyTimeViewModel: studyTimeViewModel)
         let child = SubjectDetailsCoordinator(navigationController: navigationController, viewModel: viewModel)
         child.parentCoordinator = self
         childCoordinators.append(child)
