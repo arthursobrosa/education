@@ -133,21 +133,26 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
         dismissSubjectCreationView()
     }
     
-    #warning("missing alert when there is already a subject with this name")
     private func saveNewSubject() {
         guard let newSubjectName = scheduleDetailsView.newSubjectName else { return }
         let cleanName = spaceRemover(string: newSubjectName)
-
-//        let existingSubjects = viewModel.subjects.value
-//        
-//        if existingSubjects.contains(where: { $0.name?.lowercased() == cleanName.lowercased() }) {
-//            showAlert(message: String(localized: "subjectCreationUsedName"))
-//            return
-//        }
+        
+        if let existingSubjects = viewModel.getSubjects(),
+           existingSubjects.contains(where: { $0.name?.lowercased() == cleanName.lowercased() }) {
+            
+            showAlert(message: String(localized: "subjectCreationUsedName"))
+            return
+        }
 
         viewModel.createSubject(name: cleanName)
-        viewModel.fetchSubjects()
+        viewModel.setSubjectNames()
         dismissSubjectCreationView()
+    }
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: String(localized: "subjectCreationTitle"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
     func didTapDeleteButton() {}

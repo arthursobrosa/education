@@ -102,7 +102,7 @@ class ScheduleDetailsViewModel {
 
     // MARK: - Methods
 
-    func fetchSubjects() {
+    func setSubjectNames() {
         if let subjects = subjectManager.fetchSubjects() {
             subjectsNames = subjects.map { $0.unwrappedName }
         }
@@ -110,7 +110,7 @@ class ScheduleDetailsViewModel {
 
     func addSubject(name: String) {
         subjectManager.createSubject(name: name, color: "FocusSelectionColor")
-        fetchSubjects()
+        setSubjectNames()
         selectedSubjectName = name
     }
 
@@ -344,5 +344,9 @@ class ScheduleDetailsViewModel {
     
     func createSubject(name: String) {
         subjectManager.createSubject(name: name, color: selectedSubjectColor.value)
+    }
+    
+    func getSubjects() -> [Subject]? {
+        subjectManager.fetchSubjects() ?? nil
     }
 }
