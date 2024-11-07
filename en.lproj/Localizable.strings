@@ -65,6 +65,7 @@
 "startsIn" = "In %@min";
 "deleteScheduleAlertTitle" = "Remove Activity";
 "deleteScheduleAlertBody" = "Are you sure you want to remove \"%@\" Activity from your Study Plan?";
+"createNewSubject" = "Create New";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Would you like to link this activity to a subject?";

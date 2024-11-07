@@ -70,7 +70,7 @@ extension ScheduleDetailsViewController {
         subjectPicker.translatesAutoresizingMaskIntoConstraints = false
         
         let createNewButton = UIButton(type: .system)
-        createNewButton.setTitle("Criar Nova", for: .normal)
+        createNewButton.setTitle(String(localized: "createNewSubject"), for: .normal)
         createNewButton.tintColor = .bluePicker
         createNewButton.titleLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 17)
         createNewButton.addTarget(self, action: #selector(createNewButtonTapped), for: .touchUpInside)

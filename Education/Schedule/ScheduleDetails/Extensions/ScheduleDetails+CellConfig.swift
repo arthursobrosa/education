@@ -61,10 +61,15 @@ extension ScheduleDetailsViewController {
         let label = UILabel()
 
         var labelText = text
-        let maxLenght = 22
+        
+        if text.isEmpty {
+            labelText = String(localized: "createNewSubject")
+        }
+        
+        let maxLength = 22
 
-        if text.count > maxLenght {
-            labelText = String(text.prefix(maxLenght)) + "..."
+        if text.count > maxLength {
+            labelText = String(text.prefix(maxLength)) + "..."
         }
 
         label.text = labelText
@@ -105,7 +110,8 @@ extension ScheduleDetailsViewController {
 
         switch section {
         case 0:
-            let label = createLabel(text: viewModel.selectedSubjectName, color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName))
+            let color = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
+            let label = createLabel(text: viewModel.selectedSubjectName, color: color)
             return label
         case 1:
             if row == 0 {

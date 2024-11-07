@@ -143,9 +143,22 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
             showAlert(message: String(localized: "subjectCreationUsedName"))
             return
         }
-
+        
         viewModel.createSubject(name: cleanName)
         viewModel.setSubjectNames()
+        
+        if viewModel.selectedSubjectName.isEmpty,
+           let firstSubjectName = viewModel.subjectsNames.first {
+            
+            viewModel.selectedSubjectName = firstSubjectName
+            
+            updateCellAccessory(
+                for: viewModel.selectedSubjectName,
+                at: 0,
+                color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
+            )
+        }
+        
         dismissSubjectCreationView()
     }
     
@@ -158,12 +171,17 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
     func didTapDeleteButton() {}
     
     func didTapCloseButton() {
+        if viewModel.selectedSubjectName.isEmpty {
+            scheduleDetailsView.changeSubjectCreationView(isShowing: false)
+            return
+        }
+        
         dismissSubjectCreationView()
     }
     
     private func showSubjectsPopover() {
         let tableView = scheduleDetailsView.tableView
-        let indexPath = IndexPath(row: 0, section: 1)
+        let indexPath = IndexPath(row: 0, section: 0)
         
         if let popover = createSubjectPopover(forTableView: tableView, at: indexPath) {
             isPopoverOpen.toggle()

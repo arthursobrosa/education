@@ -307,7 +307,7 @@ class ScheduleDetailsViewModel {
     
     func getColorBySubjectName(name: String) -> String {
         let subject = subjectManager.fetchSubject(withName: name)
-        let subjectColor = subject?.unwrappedColor ?? "redPicker"
+        let subjectColor = subject?.unwrappedColor ?? "bluePicker"
         return subjectColor
     }
     

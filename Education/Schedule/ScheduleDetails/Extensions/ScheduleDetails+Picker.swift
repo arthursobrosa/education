@@ -93,7 +93,7 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         pickerView.reloadComponent(component)
     }
     
-    private func updateSubjectSelectionIndicator(pickerView: UIPickerView, component: Int) {
+    func updateSubjectSelectionIndicator(pickerView: UIPickerView, component: Int) {
         pickerView.subviews.filter { $0.tag == 99 }.forEach { $0.removeFromSuperview() }
         pickerView.subviews.last?.backgroundColor = .clear
 
@@ -131,7 +131,7 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         pickerView.insertSubview(overlayView, at: 0)
     }
     
-    private func updateCellAccessory(for text: String, at section: Int, color: String?) {
+    func updateCellAccessory(for text: String, at section: Int, color: String?) {
         let cell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 0, section: section))
         let label = createLabel(text: text, color: color)
         cell?.accessoryView = label

@@ -226,6 +226,11 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
 
         switch section {
         case 0:
+            if viewModel.selectedSubjectName.isEmpty {
+                scheduleDetailsView.changeSubjectCreationView(isShowing: true)
+                return
+            }
+                
             if let popover = createSubjectPopover(forTableView: tableView, at: indexPath) {
                 isPopoverOpen.toggle()
                 present(popover, animated: true)
