@@ -12,7 +12,7 @@ import UIKit
 class StudyTimeViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
 
-    weak var coordinator: (ShowingSubjectCreation & ShowingOtherSubject)?
+    weak var coordinator: (ShowingSubjectCreation & ShowingOtherSubject & ShowingSubjectDetails)?
     let viewModel: StudyTimeViewModel
 
     var createSubjectTip = CreateSubjectTip()
@@ -130,6 +130,43 @@ class StudyTimeViewController: UIViewController {
             self.studyTimeView.tableView.reloadData()
         }
     }
+    
+    func showDeleteAlert(for subject: Subject) {
+        let title = String(localized: "deleteSubjectTitle")
+
+        let message = String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subject.unwrappedName)
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let confirmTitle = String(localized: "confirm")
+        let cancelTitle = String(localized: "cancel")
+
+        let deleteAction = UIAlertAction(title: confirmTitle, style: .destructive) { _ in
+            self.viewModel.removeSubject(subject: subject)
+            self.reloadTable()
+        }
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
+
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showDeleteOtherAlert() {
+        let alert = UIAlertController(title: String(localized: "deleteOther"), message: String(localized: "deleteOtherBodyText"), preferredStyle: .alert)
+
+        let deleteAction = UIAlertAction(title: String(localized: "confirm"), style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.removeSubject(subject: nil)
+            self.reloadTable()
+        }
+        let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
+
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true, completion: nil)
+    }
 
     @objc 
     func listButtonTapped() {
@@ -220,10 +257,67 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
             coordinator?.showOtherSubject(viewModel: viewModel)
             return
         }
+        
+        coordinator?.showSubjectDetails(subject: subject)
 
-        viewModel.currentEditingSubject = subject
-        viewModel.selectedSubjectColor.value = subject.unwrappedColor
-        coordinator?.showSubjectCreation(viewModel: viewModel)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section != 0 else { return nil}
+//        let schedule = viewModel.schedules[indexPath.section]
+
+        let editButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
+            guard let self else { return }
+            print("editou")
+
+                guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
+                      let subject = cell.subject
+                else {
+                    coordinator?.showOtherSubject(viewModel: viewModel)
+                    return
+                }
+
+                viewModel.currentEditingSubject = subject
+                viewModel.selectedSubjectColor.value = subject.unwrappedColor
+                coordinator?.showSubjectCreation(viewModel: viewModel)
+        }
+
+        editButton.backgroundColor = .systemBackground
+        let editImage = UIImage(systemName: "square.and.pencil")?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor(named: "system-text") ?? .red)
+        editButton.image = editImage
+
+        let deleteButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
+            guard let self else { return }
+            print("deletou")
+        
+            
+            guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
+                  let subject = cell.subject
+            else {
+                showDeleteOtherAlert()
+                return
+            }
+            
+            showDeleteAlert(for: subject)
+
+            
+        }
+
+        deleteButton.backgroundColor = .systemBackground
+        let deleteImage = UIImage(systemName: "trash")?.withRenderingMode(.alwaysOriginal).withTintColor(.red)
+        deleteButton.image = deleteImage
+        
+        let row = indexPath.row
+        let isFixedElement = row == viewModel.subjects.value.count
+        let subject: Subject? = isFixedElement ? nil : viewModel.subjects.value[indexPath.row]
+        
+        if ((subject) != nil){
+            return UISwipeActionsConfiguration(actions: [deleteButton, editButton])
+        } else{
+            return UISwipeActionsConfiguration(actions: [deleteButton])
+        }
+
+        
     }
 
     func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
