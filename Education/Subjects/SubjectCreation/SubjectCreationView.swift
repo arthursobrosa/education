@@ -41,6 +41,7 @@ class SubjectCreationView: UIView {
 
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
+        table.isScrollEnabled = false
         table.backgroundColor = .systemBackground
         table.translatesAutoresizingMaskIntoConstraints = false
         return table

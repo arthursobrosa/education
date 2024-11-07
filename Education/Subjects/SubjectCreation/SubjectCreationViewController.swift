@@ -43,7 +43,7 @@ class SubjectCreationViewController: UIViewController {
     init(viewModel: StudyTimeViewModel) {
         self.viewModel = viewModel
 
-        if let currentEditingSubject = self.viewModel.currentEditingSubject {
+        if let currentEditingSubject = viewModel.currentEditingSubject {
             subjectName = currentEditingSubject.unwrappedName
         }
 
@@ -92,10 +92,13 @@ class SubjectCreationViewController: UIViewController {
         let confirmTitle = String(localized: "confirm")
         let cancelTitle = String(localized: "cancel")
 
-        let deleteAction = UIAlertAction(title: confirmTitle, style: .destructive) { _ in
+        let deleteAction = UIAlertAction(title: confirmTitle, style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            
             self.viewModel.removeSubject(subject: subject)
             self.coordinator?.dismiss(animated: true)
         }
+        
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
 
         alert.addAction(deleteAction)
@@ -149,7 +152,7 @@ extension SubjectCreationViewController: ViewCodeProtocol {
 
         NSLayoutConstraint.activate([
             subjectCreationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 366 / 390),
-            subjectCreationView.heightAnchor.constraint(equalTo: subjectCreationView.widthAnchor, multiplier: ((self.subjectName != nil) ? 350 : 280) / 366),
+            subjectCreationView.heightAnchor.constraint(equalTo: subjectCreationView.widthAnchor, multiplier: ((subjectName != nil) ? 350 : 280) / 366),
             subjectCreationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             subjectCreationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
@@ -168,7 +171,7 @@ extension SubjectCreationViewController: UICollectionViewDelegate, UICollectionV
         cell.backgroundColor = UIColor(named: viewModel.subjectColors[indexPath.item])
         cell.layer.cornerRadius = 25
 
-        if let index = viewModel.subjectColors.firstIndex(where: { $0 == self.viewModel.selectedSubjectColor.value }) {
+        if let index = viewModel.subjectColors.firstIndex(where: { $0 == viewModel.selectedSubjectColor.value }) {
             selectedIndexPath = IndexPath(row: index, section: 0)
         }
 
@@ -194,7 +197,7 @@ extension SubjectCreationViewController: UICollectionViewDelegate, UICollectionV
 
         viewModel.selectedSubjectColor.value = viewModel.subjectColors[indexPath.item]
 
-        if let index = viewModel.subjectColors.firstIndex(where: { $0 == self.viewModel.selectedSubjectColor.value }) {
+        if let index = viewModel.subjectColors.firstIndex(where: { $0 == viewModel.selectedSubjectColor.value }) {
             selectedIndexPath = IndexPath(row: index, section: 0)
         }
 
@@ -247,27 +250,27 @@ extension SubjectCreationViewController: UIPopoverPresentationControllerDelegate
 
 extension SubjectCreationViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in _: UITableView) -> Int {
-        return 2
+        2
     }
 
     func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        return UIView()
+        UIView()
     }
 
     func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
-        return UIView()
+        UIView()
     }
 
     func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        return 5
+        5
     }
 
     func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-        return 5
+        5
     }
 
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return 50
+        50
     }
 
     func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {

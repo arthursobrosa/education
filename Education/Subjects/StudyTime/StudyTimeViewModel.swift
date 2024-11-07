@@ -80,7 +80,7 @@ class StudyTimeViewModel: ObservableObject {
 
     let subjectColors = ["bluePicker", "blueSkyPicker", "olivePicker", "orangePicker", "pinkPicker", "redPicker", "turquoisePicker", "violetPicker", "yellowPicker"]
 
-    lazy var selectedSubjectColor: Box<String> = Box(self.subjectColors[0])
+    lazy var selectedSubjectColor: Box<String> = Box(subjectColors[0])
     var currentEditingSubject: Subject?
 
     // MARK: - Initializer
