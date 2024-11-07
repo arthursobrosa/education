@@ -167,11 +167,6 @@ extension ScheduleViewController: ScheduleDelegate {
     func createActivityButtonTapped() {
         dismissButtons()
 
-        guard viewModel.hasSubjects() else {
-            showNoSubjectAlert()
-            return
-        }
-
         let selectedDay = viewModel.selectedScheduleMode == .daily ? viewModel.selectedWeekday : Calendar.current.component(.weekday, from: Date()) - 1
 
         coordinator?.showScheduleDetails(schedule: nil, selectedDay: selectedDay)

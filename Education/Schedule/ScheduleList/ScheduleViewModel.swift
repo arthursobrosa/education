@@ -182,12 +182,6 @@ extension ScheduleViewModel {
     func getSubject(fromSchedule schedule: Schedule) -> Subject? {
         return subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID)
     }
-    
-    func hasSubjects() -> Bool {
-        guard let subjects = subjectManager.fetchSubjects() else { return false }
-
-        return !subjects.isEmpty
-    }
 }
 
 // MARK: - Days Handling

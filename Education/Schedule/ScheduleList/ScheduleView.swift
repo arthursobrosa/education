@@ -53,15 +53,10 @@ class ScheduleView: UIView {
     let dailyScheduleView = DailyScheduleView()
     let weeklyScheduleCollection = WeeklyScheduleCollectionView()
 
-    var noSchedulesView: NoSchedulesView = {
+    lazy var noSchedulesView: NoSchedulesView = {
         let view = NoSchedulesView()
         view.period = .day
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    let noSubjectsView: NoSubjectsView = {
-        let view = NoSubjectsView()
+        view.delegate = delegate
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

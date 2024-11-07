@@ -45,8 +45,6 @@
 "invalidDateAlertTitle" = "Invalid Date";
 "invalidDateAlertMessage1" = "There is an existing activity at %@ with conflicting dates";
 "invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date.";
-"noSubjectAlertTitle" = "Invalid Activity";
-"noSubjectAlertMessage" = "You cannot create an activity before assigning it to a subject";
 "dayOfWeek" = "Day of the week";
 "startDate" = "Starts";
 "endDate"= "Ends";
@@ -60,8 +58,8 @@
 "noSubjectMessage" = "You have to create a subject before setting an activity";
 "activityDeletionTitle" = "Activity Deletion";
 "activityDeletionMessage" = "Are you sure you want to delete this schedule?";
-"emptyDaySchedule" = "You still have no activities scheduled for this day";
-"emptyWeekSchedule" = "You still have no activities scheduled for this week";
+"emptyDaySchedule" = "You have no activities scheduled for this day";
+"emptyWeekSchedule" = "You have no activities scheduled for this week";
 "onTimeTitle" = "On time";
 "onTimeMessage" = "It's time for your activity!";
 "startsIn" = "In %@min";

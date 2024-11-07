@@ -56,8 +56,6 @@
 "blockApps" = "Bloquear Apps";
 "daily" = "Dia";
 "weekly" = "Semana";
-"noSubjectTitle" = "Você não pode criar uma atividade";
-"noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
 "activityDeletionTitle" = "Deleção de Atividade";
 "activityDeletionMessage" = "Você tem certeza que deseja excluir essa atividade?";
 "emptyDaySchedule" = "Você ainda não tem atividades programadas para este dia";
