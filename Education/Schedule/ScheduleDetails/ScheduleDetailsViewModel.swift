@@ -41,6 +41,10 @@ class ScheduleDetailsViewModel {
 
     private var scheduleID: String?
     var schedule: Schedule?
+    
+    let subjectColors = ["bluePicker", "blueSkyPicker", "olivePicker", "orangePicker", "pinkPicker", "redPicker", "turquoisePicker", "violetPicker", "yellowPicker"]
+    
+    lazy var selectedSubjectColor: Box<String> = Box(subjectColors[0])
 
     // MARK: - Initializer
 
@@ -92,6 +96,8 @@ class ScheduleDetailsViewModel {
         self.selectedEndTime = selectedEndTime
         scheduleID = schedule?.unwrappedID
         blocksApps = schedule?.blocksApps ?? false
+        
+        selectedSubjectColor = Box(selectAvailableColor())
     }
 
     // MARK: - Methods
@@ -318,5 +324,25 @@ class ScheduleDetailsViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         return dateFormatter.string(from: date)
+    }
+    
+    func selectAvailableColor() -> String {
+        // Obter os subjects existentes
+        let existingSubjects = subjectManager.fetchSubjects() ?? []
+
+        // Extrair as cores dos subjects já existentes
+        let usedColors = Set(existingSubjects.map { $0.unwrappedColor })
+
+        // Verificar qual cor ainda não foi usada
+        for color in subjectColors where !usedColors.contains(color) {
+            return color
+        }
+
+        // Se todas já foram usadas, retornar a primeira cor
+        return subjectColors.first ?? "bluePicker"
+    }
+    
+    func createSubject(name: String) {
+        subjectManager.createSubject(name: name, color: selectedSubjectColor.value)
     }
 }

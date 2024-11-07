@@ -20,8 +20,10 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
         subjectName = newText
         if newText.isEmpty {
             subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-off")
+            subjectCreationView.saveButton.isUserInteractionEnabled = false
         } else {
             subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
+            subjectCreationView.saveButton.isUserInteractionEnabled = true
         }
     }
 
@@ -31,10 +33,8 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
     }
 
     func didTapSaveButton() {
-        guard let name = subjectName, !name.isEmpty else {
-            showAlert(message: String(localized: "subjectCreationNoName"))
-            return
-        }
+        guard let name = subjectName else { return }
+        
         let cleanName = spaceRemover(string: name)
         if viewModel.currentEditingSubject != nil {
             viewModel.updateSubject(name: cleanName, color: viewModel.selectedSubjectColor.value)
@@ -45,7 +45,7 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
                 return
             }
 
-            viewModel.createSubject(name: cleanName, color: viewModel.selectedSubjectColor.value)
+            viewModel.createSubject(name: cleanName)
         }
 
         coordinator?.dismiss(animated: true)

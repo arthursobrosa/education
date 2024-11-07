@@ -127,7 +127,6 @@
 "deleteSubjectTitle" = "Excluir Matéria";
 "deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades dentro do cronograma também serão excluídos.";
 "subjectCreationTitle" = "Matéria Inválida";
-"subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";
 "newSubject" = "Nova Matéria";

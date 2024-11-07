@@ -34,9 +34,7 @@ class InputTextTableViewCell: UITableViewCell {
         ]
 
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-
         textField.delegate = self
-
         textField.translatesAutoresizingMaskIntoConstraints = false
 
         return textField

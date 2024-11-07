@@ -127,7 +127,6 @@
 "deleteSubjectTitle" = "Delete Subject";
 "deleteSubjectMessage" = "Are you sure you want to delete %@? Your study time and schedule activities will also be deleted.";
 "subjectCreationTitle" = "Invalid Subject";
-"subjectCreationNoName" = "Please, insert a name for your subject.";
 "subjectCreationUsedName" = "There is an existing subject with this name.";
 "color" = "Color";
 "newSubject" = "New Subject";

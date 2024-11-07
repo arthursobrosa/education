@@ -10,28 +10,20 @@ import UIKit
 class ScheduleDetailsViewController: UIViewController {
     // MARK: - Coordinator & ViewModel
 
-    weak var coordinator: (ShowingSubjectCreation & Dismissing)?
+    weak var coordinator: Dismissing?
     let viewModel: ScheduleDetailsViewModel
-
+    
     // MARK: - Properties
-
-    lazy var scheduleDetailsView: ScheduleDetailsView = {
-        let view = ScheduleDetailsView()
-
-        view.delegate = self
-
-        view.tableView.delegate = self
-        view.tableView.dataSource = self
-
-        return view
-    }()
-
+    
     var isPopoverOpen: Bool = false {
         didSet {
             guard let startTimeCell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
                   let endTimeCell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
                   let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
-                  let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else { return }
+                  let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else {
+                
+                return
+            }
 
             let isEnabled = !isPopoverOpen
 
@@ -39,6 +31,21 @@ class ScheduleDetailsViewController: UIViewController {
             endDatePicker.isEnabled = isEnabled
         }
     }
+
+    // MARK: - UI Properties
+
+    lazy var scheduleDetailsView: ScheduleDetailsView = {
+        let view = ScheduleDetailsView()
+
+        view.delegate = self
+        view.subjectDelegate = self
+        view.popoverDelegate = self
+
+        view.tableView.delegate = self
+        view.tableView.dataSource = self
+
+        return view
+    }()
 
     // MARK: - Initializer
 
@@ -66,6 +73,12 @@ class ScheduleDetailsViewController: UIViewController {
 
         if viewModel.schedule == nil {
             scheduleDetailsView.hideDeleteButton()
+        }
+        
+        viewModel.selectedSubjectColor.bind { [weak self] _ in
+            guard let self else { return }
+
+            self.scheduleDetailsView.reloadSubjectTable()
         }
     }
 
@@ -141,6 +154,7 @@ class ScheduleDetailsViewController: UIViewController {
 
     func showInvalidDatesAlert(forExistingSchedule: Bool) {
         var message: String
+        
         if forExistingSchedule {
             message = String(format: NSLocalizedString("invalidDateAlertMessage1", comment: ""), viewModel.selectedDay.lowercased())
         } else {
@@ -164,14 +178,6 @@ class ScheduleDetailsViewController: UIViewController {
         alertController.addAction(okAction)
 
         present(alertController, animated: true, completion: nil)
-    }
-    
-    func reloadTable() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            
-            self.scheduleDetailsView.tableView.reloadData()
-        }
     }
 }
 

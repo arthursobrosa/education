@@ -194,8 +194,8 @@ class StudyTimeViewModel: ObservableObject {
         return subject?.unwrappedName ?? String(localized: "other")
     }
 
-    func createSubject(name: String, color: String) {
-        subjectManager.createSubject(name: name, color: color)
+    func createSubject(name: String) {
+        subjectManager.createSubject(name: name, color: selectedSubjectColor.value)
     }
 
     func updateSubject(name: String, color: String) {

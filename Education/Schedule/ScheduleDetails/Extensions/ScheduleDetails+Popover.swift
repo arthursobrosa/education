@@ -63,11 +63,11 @@ extension ScheduleDetailsViewController {
 
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 159, height: 180))
         
-        let dayPicker = UIPickerView()
-        dayPicker.delegate = self
-        dayPicker.dataSource = self
-        dayPicker.tag = section
-        dayPicker.translatesAutoresizingMaskIntoConstraints = false
+        let subjectPicker = UIPickerView()
+        subjectPicker.delegate = self
+        subjectPicker.dataSource = self
+        subjectPicker.tag = section
+        subjectPicker.translatesAutoresizingMaskIntoConstraints = false
         
         let createNewButton = UIButton(type: .system)
         createNewButton.setTitle("Criar Nova", for: .normal)
@@ -76,18 +76,18 @@ extension ScheduleDetailsViewController {
         createNewButton.addTarget(self, action: #selector(createNewButtonTapped), for: .touchUpInside)
         createNewButton.translatesAutoresizingMaskIntoConstraints = false
         
-        containerView.addSubview(dayPicker)
+        containerView.addSubview(subjectPicker)
         containerView.addSubview(createNewButton)
         
         NSLayoutConstraint.activate([
-            dayPicker.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
-            dayPicker.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 4),
-            dayPicker.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -4),
-            dayPicker.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 138 / 180),
+            subjectPicker.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
+            subjectPicker.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 4),
+            subjectPicker.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -4),
+            subjectPicker.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 138 / 180),
             
             createNewButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             createNewButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -11),
-            createNewButton.heightAnchor.constraint(equalToConstant: 22)
+            createNewButton.heightAnchor.constraint(equalToConstant: 22),
         ])
         
         popoverVC.view = containerView
@@ -96,15 +96,16 @@ extension ScheduleDetailsViewController {
         let selectedItem = viewModel.selectedSubjectName
 
         if let selectedIndex = items.firstIndex(where: { $0 == selectedItem }) {
-            dayPicker.selectRow(selectedIndex, inComponent: 0, animated: true)
+            subjectPicker.selectRow(selectedIndex, inComponent: 0, animated: true)
         }
 
         return popoverVC
     }
     
-    @objc func createNewButtonTapped() {
-        let viewModel = StudyTimeViewModel()
-        coordinator?.showSubjectCreation(viewModel: viewModel)
+    @objc 
+    func createNewButtonTapped() {
+        dismiss(animated: true)
+        scheduleDetailsView.changeSubjectCreationView(isShowing: true)
     }
 }
 
@@ -116,6 +117,11 @@ extension ScheduleDetailsViewController: UIPopoverPresentationControllerDelegate
     }
 
     func presentationControllerDidDismiss(_: UIPresentationController) {
+        if scheduleDetailsView.isShowingColorPopover {
+            scheduleDetailsView.isShowingColorPopover = false
+            return
+        }
+        
         isPopoverOpen.toggle()
     }
 }

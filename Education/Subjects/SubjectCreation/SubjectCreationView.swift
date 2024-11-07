@@ -79,6 +79,7 @@ class SubjectCreationView: UIView {
 
     lazy var saveButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 27)
+        button.isUserInteractionEnabled = false
         button.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapSaveButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(named: "button-off")
