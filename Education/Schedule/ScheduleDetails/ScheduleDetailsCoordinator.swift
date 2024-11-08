@@ -34,6 +34,8 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
         if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
             newNavigationController.transitioningDelegate = scheduleCoordinator
         }
+        
+        newNavigationController.setNavigationBarHidden(true, animated: false)
 
         newNavigationController.modalPresentationStyle = .pageSheet
         navigationController.present(newNavigationController, animated: true)

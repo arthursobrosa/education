@@ -9,6 +9,7 @@ import UIKit
 
 @objc
 protocol ScheduleDetailsDelegate: AnyObject {
+    func cancelButtonTapped()
     func deleteSchedule()
     func saveSchedule()
     func getSubjectColors() -> [String]
@@ -19,6 +20,10 @@ protocol ScheduleDetailsDelegate: AnyObject {
 }
 
 extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
+    func cancelButtonTapped() {
+        coordinator?.dismiss(animated: true)
+    }
+    
     func deleteSchedule() {
         let alertController = UIAlertController(title: String(localized: "activityDeletionTitle"), message: String(localized: "activityDeletionMessage"), preferredStyle: .alert)
 

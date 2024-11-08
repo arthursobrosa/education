@@ -21,6 +21,24 @@ class ScheduleDetailsView: UIView {
     var newSubjectName: String?
 
     // MARK: - UI Components
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        let title = String(localized: "cancel")
+        let font: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? .systemFont(ofSize: 14, weight: .regular)
+        let attributedString = NSAttributedString(string: title, attributes: [.font: font, .foregroundColor: UIColor.secondaryLabel])
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.addTarget(delegate, action: #selector(ScheduleDetailsDelegate.cancelButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     let tableView: BorderedTableView = {
         let tableView = BorderedTableView()
@@ -98,6 +116,10 @@ class ScheduleDetailsView: UIView {
     }
 
     // MARK: - Methods
+    
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
 
     func hideDeleteButton() {
         deleteButton.isHidden = true
@@ -159,12 +181,20 @@ extension ScheduleDetailsView: ViewCodeProtocol {
             subview.removeFromSuperview()
         }
         
+        addSubview(titleLabel)
+        addSubview(cancelButton)
         addSubview(tableView)
         addSubview(deleteButton)
         addSubview(saveButton)
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 28),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            cancelButton.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            cancelButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             tableView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10),

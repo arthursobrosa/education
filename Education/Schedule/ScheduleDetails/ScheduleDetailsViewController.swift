@@ -85,19 +85,8 @@ class ScheduleDetailsViewController: UIViewController {
     // MARK: - Methods
 
     private func setNavigationItems() {
-        navigationItem.title = viewModel.getTitleName()
-
-        navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
-
-        let cancelButton = UIButton(configuration: .plain())
-        let regularFont = UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
-        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: UIColor.secondaryLabel])
-        cancelButton.setAttributedTitle(cancelAttributedString, for: .normal)
-        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
-
-        let cancelItem = UIBarButtonItem(customView: cancelButton)
-
-        navigationItem.leftBarButtonItems = [cancelItem]
+        let title = viewModel.getTitleName()
+        scheduleDetailsView.setTitle(title)
     }
     
     private func reloadTable() {
