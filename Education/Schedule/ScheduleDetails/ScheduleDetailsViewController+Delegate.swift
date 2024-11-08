@@ -17,6 +17,7 @@ protocol ScheduleDetailsDelegate: AnyObject {
     func setSelectedSubjectColor(_ color: String)
     func showColorPopover()
     func dismissColorPopover()
+    func dayOfWeekLabelTapped(_ sender: UITapGestureRecognizer)
     func datePickerEditionBegan(_ sender: FakeDatePicker)
     func datePickerEditionEnded(_ sender: FakeDatePicker)
 }
@@ -52,13 +53,8 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
             return
         }
 
-        if viewModel.selectedStartTime >= viewModel.selectedEndTime {
-            showInvalidDatesAlert(forExistingSchedule: false)
-            return
-        }
-
         if !viewModel.isNewScheduleAvailable() {
-            showInvalidDatesAlert(forExistingSchedule: true)
+            showInvalidDatesAlert()
             return
         }
 
@@ -122,6 +118,155 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
     
     func dismissColorPopover() {
         dismiss(animated: true)
+    }
+    
+    func dayOfWeekLabelTapped(_ sender: UITapGestureRecognizer) {
+        guard let dateLabel = sender.view as? UILabel else { return }
+        
+        let tableView = scheduleDetailsView.tableView
+        let indexPath = IndexPath(row: 0, section: dateLabel.tag)
+        
+        if let popover = createDayPopover(forTableView: tableView, at: indexPath) {
+            isPopoverOpen.toggle()
+            present(popover, animated: true)
+        }
+    }
+    
+    @objc
+    func datePickerEditionBegan(_ sender: FakeDatePicker) {
+        guard let datePickers = getDatePickers(forDatePickerTag: sender.tag) else { return }
+        
+        let startDatePicker = datePickers.start
+        let endDatePicker = datePickers.end
+
+        endDatePicker.minimumDate = getMinimumDate(forDatePickerTag: sender.tag)
+
+        startDatePicker.isEnabled = !sender.tag.isMultiple(of: 2)
+        endDatePicker.isEnabled = sender.tag.isMultiple(of: 2)
+    }
+
+    @objc
+    func datePickerEditionEnded(_ sender: FakeDatePicker) {
+        updateStartAndEndTime(tag: sender.tag, date: sender.date)
+        
+        guard let datePickers = getDatePickers(forDatePickerTag: sender.tag) else { return }
+        
+        let startDatePicker = datePickers.start
+        let endDatePicker = datePickers.end
+
+        startDatePicker.isEnabled = true
+        endDatePicker.isEnabled = true
+        
+        guard let startTime = getSelectedTime(forDatePickerTag: sender.tag, isStartTime: true),
+              let endtime = getSelectedTime(forDatePickerTag: sender.tag, isStartTime: false) else {
+            
+            return
+        }
+
+        startDatePicker.date = startTime
+        endDatePicker.date = endtime
+    }
+    
+    // Auxiliar
+    private func getDatePickerSection(forDatePickerTag tag: Int) -> Int {
+        let numberOfDaySections = numberOfSections(in: scheduleDetailsView.tableView) - 3
+        
+        var pairsArray: [[Int]] = []
+        
+        for pairIndex in 0..<numberOfDaySections {
+            let baseIndex = pairIndex * 2
+            let pair: [Int] = [baseIndex + 1, baseIndex + 2]
+            pairsArray.append(pair)
+        }
+        
+        for (index, pair) in pairsArray.enumerated() where pair.contains(tag) {
+            return index
+        }
+        
+        return 0
+    }
+    
+    private func updateStartAndEndTime(tag: Int, date: Date) {
+        let isUpdating = viewModel.isUpdatingSchedule()
+        
+        if isUpdating {
+            switch tag {
+            case 1:
+                viewModel.selectedStartTime = date
+
+                if viewModel.selectedEndTime <= viewModel.selectedStartTime {
+                    viewModel.selectedEndTime = viewModel.selectedStartTime.addingTimeInterval(60)
+                }
+            case 2:
+                viewModel.selectedEndTime = date
+
+                if viewModel.selectedStartTime >= viewModel.selectedEndTime {
+                    viewModel.selectedStartTime = viewModel.selectedEndTime.addingTimeInterval(-60)
+                }
+            default:
+                break
+            }
+        } else {
+            let section = getDatePickerSection(forDatePickerTag: tag)
+            
+            let startTime = viewModel.selectedDays[section].startTime
+            let endTime = viewModel.selectedDays[section].endTime
+            
+            if !tag.isMultiple(of: 2) {
+                viewModel.selectedDays[section].startTime = date
+                let newStartTime = viewModel.selectedDays[section].startTime
+                
+                if endTime <= newStartTime {
+                    viewModel.selectedDays[section].endTime = date.addingTimeInterval(60)
+                }
+            } else {
+                viewModel.selectedDays[section].endTime = date
+                let newEndTime = viewModel.selectedDays[section].endTime
+                
+                if startTime >= newEndTime {
+                    viewModel.selectedDays[section].startTime = date.addingTimeInterval(-60)
+                }
+            }
+        }
+    }
+    
+    private func getDatePickers(forDatePickerTag tag: Int) -> (start: FakeDatePicker, end: FakeDatePicker)? {
+        let isUpdating = viewModel.isUpdatingSchedule()
+        var indexPath = IndexPath(row: 0, section: 1)
+        
+        if !isUpdating {
+            let section = getDatePickerSection(forDatePickerTag: tag) + 1
+            indexPath = IndexPath(row: 0, section: section)
+        }
+        
+        guard let dateCell = scheduleDetailsView.tableView.cellForRow(at: indexPath) as? DateCell else {
+            
+            return nil
+        }
+        
+        return (dateCell.startDatePicker, dateCell.endDatePicker)
+    }
+    
+    private func getSelectedTime(forDatePickerTag tag: Int, isStartTime: Bool) -> Date? {
+        let isUpdating = viewModel.isUpdatingSchedule()
+        var startTime = Date()
+        var endTime = Date()
+        
+        if isUpdating {
+            startTime = viewModel.selectedStartTime
+            endTime = viewModel.selectedEndTime
+        } else {
+            let section = getDatePickerSection(forDatePickerTag: tag)
+            startTime = viewModel.selectedDays[section].startTime
+            endTime = viewModel.selectedDays[section].endTime
+        }
+        
+        return isStartTime ? startTime : endTime
+    }
+    
+    private func getMinimumDate(forDatePickerTag tag: Int) -> Date? {
+        let startTime = getSelectedTime(forDatePickerTag: tag, isStartTime: true)
+        return startTime?.addingTimeInterval(60)
     }
 }
 
@@ -202,147 +347,5 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
         scheduleDetailsView.newSubjectName = nil
         scheduleDetailsView.changeSaveButtonState(isEnabled: false)
         scheduleDetailsView.reloadSubjectTable()
-    }
-    
-    @objc
-    func datePickerEditionBegan(_ sender: FakeDatePicker) {
-        guard let datePickers = getDatePickers(forDatePickerTag: sender.tag) else { return }
-        
-        let startDatePicker = datePickers.start
-        let endDatePicker = datePickers.end
-
-        endDatePicker.minimumDate = getMinimumDate(forDatePickerTag: sender.tag)
-
-        startDatePicker.isEnabled = !sender.tag.isMultiple(of: 2)
-        endDatePicker.isEnabled = sender.tag.isMultiple(of: 2)
-    }
-
-    @objc
-    func datePickerEditionEnded(_ sender: FakeDatePicker) {
-        updateStartAndEndTime(tag: sender.tag, date: sender.date)
-        
-        guard let datePickers = getDatePickers(forDatePickerTag: sender.tag) else { return }
-        
-        let startDatePicker = datePickers.start
-        let endDatePicker = datePickers.end
-
-        startDatePicker.isEnabled = true
-        endDatePicker.isEnabled = true
-        
-        guard let startTime = getSelectedTime(forDatePickerTag: sender.tag, isStartTime: true),
-              let endtime = getSelectedTime(forDatePickerTag: sender.tag, isStartTime: false) else {
-            
-            return
-        }
-
-        startDatePicker.date = startTime
-        endDatePicker.date = endtime
-    }
-    
-    // Auxiliar
-    private func getSelectedDayIndex(forDatePickerTag tag: Int) -> Int {
-        let numberOfDaySections = numberOfSections(in: scheduleDetailsView.tableView) - 3
-        
-        var pairsArray: [[Int]] = []
-        
-        for pairIndex in 0..<numberOfDaySections {
-            let baseIndex = pairIndex * 2
-            let pair: [Int] = [baseIndex + 1, baseIndex + 2]
-            pairsArray.append(pair)
-        }
-        
-        for (index, pair) in pairsArray.enumerated() where pair.contains(tag) {
-            return index
-        }
-        
-        return 0
-    }
-    
-    private func updateStartAndEndTime(tag: Int, date: Date) {
-        let isUpdating = viewModel.isUpdatingSchedule()
-        
-        if isUpdating {
-            switch tag {
-            case 1:
-                viewModel.selectedStartTime = date
-
-                if viewModel.selectedEndTime <= viewModel.selectedStartTime {
-                    viewModel.selectedEndTime = viewModel.selectedStartTime.addingTimeInterval(60)
-                }
-            case 2:
-                viewModel.selectedEndTime = date
-
-                if viewModel.selectedStartTime >= viewModel.selectedEndTime {
-                    viewModel.selectedStartTime = viewModel.selectedEndTime.addingTimeInterval(-60)
-                }
-            default:
-                break
-            }
-        } else {
-            let selectedDayIndex = getSelectedDayIndex(forDatePickerTag: tag)
-            
-            let startTime = viewModel.selectedDays[selectedDayIndex].startTime
-            let endTime = viewModel.selectedDays[selectedDayIndex].endTime
-            
-            if !tag.isMultiple(of: 2) {
-                viewModel.selectedDays[selectedDayIndex].startTime = date
-                let newStartTime = viewModel.selectedDays[selectedDayIndex].startTime
-                
-                if endTime <= newStartTime {
-                    viewModel.selectedDays[selectedDayIndex].endTime = date.addingTimeInterval(60)
-                }
-            } else {
-                viewModel.selectedDays[selectedDayIndex].endTime = date
-                let newEndTime = viewModel.selectedDays[selectedDayIndex].endTime
-                
-                if startTime >= newEndTime {
-                    viewModel.selectedDays[selectedDayIndex].startTime = date.addingTimeInterval(-60)
-                }
-            }
-        }
-    }
-    
-    private func getDatePickers(forDatePickerTag tag: Int) -> (start: FakeDatePicker, end: FakeDatePicker)? {
-        let isUpdating = viewModel.isUpdatingSchedule()
-        var startTimeIndexPath = IndexPath(row: 0, section: 1)
-        var endTimeIndexPath = IndexPath(row: 0, section: 1)
-        
-        if !isUpdating {
-            let section = getSelectedDayIndex(forDatePickerTag: tag) + 1
-            startTimeIndexPath = IndexPath(row: 0, section: section)
-            endTimeIndexPath = IndexPath(row: 0, section: section)
-        }
-        
-        guard let startTimeCell = scheduleDetailsView.tableView.cellForRow(at: startTimeIndexPath),
-              let endTimeCell = scheduleDetailsView.tableView.cellForRow(at: endTimeIndexPath),
-              let startDatePicker = startTimeCell.accessoryView as? FakeDatePicker,
-              let endDatePicker = endTimeCell.accessoryView as? FakeDatePicker else {
-            
-            return nil
-        }
-        
-        return (startDatePicker, endDatePicker)
-    }
-    
-    private func getSelectedTime(forDatePickerTag tag: Int, isStartTime: Bool) -> Date? {
-        let isUpdating = viewModel.isUpdatingSchedule()
-        var startTime = Date()
-        var endTime = Date()
-        
-        if isUpdating {
-            startTime = viewModel.selectedStartTime
-            endTime = viewModel.selectedEndTime
-        } else {
-            let selectedDayIndex = getSelectedDayIndex(forDatePickerTag: tag)
-            startTime = viewModel.selectedDays[selectedDayIndex].startTime
-            endTime = viewModel.selectedDays[selectedDayIndex].endTime
-        }
-        
-        return isStartTime ? startTime : endTime
-    }
-    
-    private func getMinimumDate(forDatePickerTag tag: Int) -> Date? {
-        let startTime = getSelectedTime(forDatePickerTag: tag, isStartTime: true)
-        return startTime?.addingTimeInterval(60)
     }
 }

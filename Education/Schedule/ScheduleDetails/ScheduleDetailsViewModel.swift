@@ -328,6 +328,10 @@ extension ScheduleDetailsViewModel {
         }
     }
     
+    func deleteLastDaySection() {
+        selectedDays.removeLast()
+    }
+    
     func filteredDayNames(for dayIndex: Int) -> [String] {
         if selectedDays.count == 1 {
             return days

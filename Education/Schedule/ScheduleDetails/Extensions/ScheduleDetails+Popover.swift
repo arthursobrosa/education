@@ -17,7 +17,7 @@ extension ScheduleDetailsViewController {
 
         let popoverVC = Popover(contentSize: CGSize(width: 159, height: 180))
         let sourceRect = CGRect(x: cell.bounds.maxX,
-                                y: cell.bounds.midY + 120,
+                                y: cell.bounds.maxY - 10,
                                 width: 0,
                                 height: 0)
         popoverVC.setPresentationVC(sourceView: cell, permittedArrowDirections: [], sourceRect: sourceRect, delegate: self)

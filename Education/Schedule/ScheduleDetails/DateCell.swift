@@ -29,9 +29,20 @@ class DateCell: UITableViewCell {
     static let identifier = "dateCell"
     
     // MARK: - Delegate to connect with VC
-    weak var delegate: ScheduleDetailsDelegate?
+    weak var delegate: ScheduleDetailsDelegate? {
+        didSet {
+            addDayOfWeekTapGesture()
+        }
+    }
     
     // MARK: - Properties
+    
+    var section: Int? {
+        didSet {
+            guard let section else { return }
+            dayOfWeekLabel.tag = section
+        }
+    }
     
     var dayOfWeekTitle: String? {
         didSet {
@@ -109,6 +120,12 @@ class DateCell: UITableViewCell {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         return datePicker
     }
+    
+    func addDayOfWeekTapGesture() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: delegate, action: #selector(ScheduleDetailsDelegate.dayOfWeekLabelTapped(_:)))
+        dayOfWeekLabel.addGestureRecognizer(tapGestureRecognizer)
+        dayOfWeekLabel.isUserInteractionEnabled = true
+    }
 }
 
 // MARK: - UI Setup
@@ -127,10 +144,14 @@ extension DateCell: ViewCodeProtocol {
         
         contentView.addSubview(dayOfWeekTitleLabel)
         contentView.addSubview(dayOfWeekLabel)
+        
         contentView.addSubview(separators[0])
+        
         contentView.addSubview(startDateLabel)
         contentView.addSubview(startDatePicker)
+        
         contentView.addSubview(separators[1])
+        
         contentView.addSubview(endDateLabel)
         contentView.addSubview(endDatePicker)
         

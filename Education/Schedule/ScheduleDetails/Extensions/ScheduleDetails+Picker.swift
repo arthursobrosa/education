@@ -144,8 +144,8 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
     }
     
     func updateCellAccessory(for text: String, at section: Int, color: String?) {
-        let cell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 0, section: section))
-        let label = createLabel(text: text, color: color)
-        cell?.accessoryView = label
+        guard let cell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? DateCell else { return }
+
+        cell.dayOfWeekTitle = text
     }
 }

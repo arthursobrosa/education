@@ -17,18 +17,19 @@ class ScheduleDetailsViewController: UIViewController {
     
     var isPopoverOpen: Bool = false {
         didSet {
-            guard let startTimeCell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
-                  let endTimeCell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
-                  let startDatePicker = startTimeCell.accessoryView as? UIDatePicker,
-                  let endDatePicker = endTimeCell.accessoryView as? UIDatePicker else {
-                
-                return
-            }
-
+            let numberOfSections = scheduleDetailsView.tableView.numberOfSections
+            let numberOfDaySections = numberOfSections - 3
+            
             let isEnabled = !isPopoverOpen
-
-            startDatePicker.isEnabled = isEnabled
-            endDatePicker.isEnabled = isEnabled
+            
+            for section in 1...numberOfDaySections {
+                let indexPath = IndexPath(row: 0, section: section)
+                
+                if let dateCell = scheduleDetailsView.tableView.cellForRow(at: indexPath) as? DateCell {
+                    dateCell.startDatePicker.isEnabled = isEnabled
+                    dateCell.endDatePicker.isEnabled = isEnabled
+                }
+            }
         }
     }
 
@@ -103,14 +104,8 @@ class ScheduleDetailsViewController: UIViewController {
         coordinator?.dismiss(animated: true)
     }
 
-    func showInvalidDatesAlert(forExistingSchedule: Bool) {
-        var message: String
-        
-        if forExistingSchedule {
-            message = String(localized: "invalidDateAlertMessage1")
-        } else {
-            message = String(localized: "invalidDateAlertMessage2")
-        }
+    func showInvalidDatesAlert() {
+        let message = String(localized: "invalidDateAlertMessage")
 
         let alertController = UIAlertController(title: String(localized: "invalidDateAlertTitle"), message: message, preferredStyle: .alert)
 
@@ -137,13 +132,19 @@ class ScheduleDetailsViewController: UIViewController {
         reloadTable()
         scheduleDetailsView.setupUI()
     }
+    
+    @objc
+    private func dayMinustButtonTapped() {
+        viewModel.deleteLastDaySection()
+        reloadTable()
+        scheduleDetailsView.setupUI()
+    }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
 
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let isUpdating = viewModel.isUpdatingSchedule()
         let numberOfSections = tableView.numberOfSections
         
         let section = indexPath.section
@@ -164,7 +165,6 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let isUpdating = viewModel.isUpdatingSchedule()
         let numberOfSections = tableView.numberOfSections
         
         // Subject section
@@ -187,10 +187,8 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let isUpdating = viewModel.isUpdatingSchedule()
         let numberOfSections = tableView.numberOfSections
         let section = indexPath.section
-        let row = indexPath.row
         
         if section == 0 || section == numberOfSections - 1 || section == numberOfSections - 2 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: BorderedTableCell.identifier, for: indexPath) as? BorderedTableCell else {
@@ -207,6 +205,9 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                 fatalError("Could not dequeue date cell")
             }
             
+            cell.delegate = self
+            cell.selectionStyle = .none
+            cell.section = section
             cell.dayOfWeekTitle = viewModel.getDayOfWeekText(forSection: section)
             
             if let selectedDate = viewModel.getSelectedDate(forSection: section) {
@@ -224,9 +225,7 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let numberOfSections = tableView.numberOfSections
         let section = indexPath.section
-        let row = indexPath.row
         
         // Subjects section
         if section == 0 {
@@ -238,13 +237,6 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
             if let popover = createSubjectPopover(forTableView: tableView, at: indexPath) {
                 isPopoverOpen.toggle()
                 present(popover, animated: true)
-            }
-        } else if section != numberOfSections - 1 && section != numberOfSections - 2 { // Day section
-            if row == 0 {
-                if let popover = createDayPopover(forTableView: tableView, at: indexPath) {
-                    isPopoverOpen.toggle()
-                    present(popover, animated: true)
-                }
             }
         }
     }
@@ -263,45 +255,46 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let isUpdating = viewModel.isUpdatingSchedule()
         let numberOfSections = tableView.numberOfSections
+        let numberOfDaySections = tableView.numberOfSections - 3
         
         // Last day section
         if !isUpdating && section == numberOfSections - 3 {
             let footerView = UIView()
             
-            let circleView = UIView()
-            circleView.layer.cornerRadius = 12
-            circleView.layer.borderWidth = 1
-            circleView.layer.borderColor = UIColor.buttonNormal.cgColor
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dayPlusButtonTapped))
-            circleView.addGestureRecognizer(tapGesture)
-            
-            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
-                circleView.layer.borderColor = UIColor.buttonNormal.cgColor
-            }
-            
-            circleView.translatesAutoresizingMaskIntoConstraints = false
-            
-            let plusImageView = UIImageView()
-            let plusImage = UIImage(systemName: "plus")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 15))
-            plusImageView.contentMode = .scaleAspectFit
-            plusImageView.tintColor = UIColor.systemText80
-            plusImageView.image = plusImage
-            plusImageView.translatesAutoresizingMaskIntoConstraints = false
-            
-            footerView.addSubview(circleView)
-            circleView.addSubview(plusImageView)
-            
-            NSLayoutConstraint.activate([
-                circleView.widthAnchor.constraint(equalToConstant: tableView.bounds.width * (23 / 366)),
-                circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
-                circleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
-                circleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            if numberOfDaySections == 1 {
+                let plusCircleView = getCircleView(isPlus: true, atTableView: tableView)
                 
-                plusImageView.widthAnchor.constraint(equalTo: circleView.widthAnchor, multiplier: 15 / 23),
-                plusImageView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
-                plusImageView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            ])
-            
+                footerView.addSubview(plusCircleView)
+                
+                NSLayoutConstraint.activate([
+                    plusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
+                    plusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+                ])
+            } else if numberOfDaySections == 7 {
+                let minusCircleView = getCircleView(isPlus: false, atTableView: tableView)
+                
+                footerView.addSubview(minusCircleView)
+                
+                NSLayoutConstraint.activate([
+                    minusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
+                    minusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+                ])
+            } else {
+                let plusCircleView = getCircleView(isPlus: true, atTableView: tableView)
+                let minusCircleView = getCircleView(isPlus: false, atTableView: tableView)
+                
+                footerView.addSubview(plusCircleView)
+                footerView.addSubview(minusCircleView)
+                
+                NSLayoutConstraint.activate([
+                    plusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
+                    plusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor, constant: -16),
+                    
+                    minusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
+                    minusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor, constant: 16),
+                ])
+            }
+
             return footerView
         }
         
@@ -309,6 +302,55 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         let footerView = UIView()
         footerView.backgroundColor = UIColor.clear
         return footerView
+    }
+    
+    private func getCircleView(isPlus: Bool, atTableView tableView: UITableView) -> UIView {
+        let circleView = UIView()
+        circleView.layer.cornerRadius = 12
+        circleView.layer.borderWidth = 1
+        circleView.layer.borderColor = UIColor.buttonNormal.cgColor
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
+            circleView.layer.borderColor = UIColor.buttonNormal.cgColor
+        }
+        
+        circleView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let imageView = UIImageView()
+
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = UIColor.systemText80
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        var imageName: String
+        var selector: Selector
+        
+        if isPlus {
+            imageName = "plus"
+            selector = #selector(dayPlusButtonTapped)
+        } else {
+            imageName = "minus"
+            selector = #selector(dayMinustButtonTapped)
+        }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: selector)
+        circleView.addGestureRecognizer(tapGesture)
+        
+        let image = UIImage(systemName: imageName)?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 15))
+        imageView.image = image
+        
+        circleView.addSubview(imageView)
+        
+        NSLayoutConstraint.activate([
+            circleView.widthAnchor.constraint(equalToConstant: tableView.bounds.width * (23 / 366)),
+            circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
+            
+            imageView.widthAnchor.constraint(equalTo: circleView.widthAnchor, multiplier: 15 / 23),
+            imageView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
+            imageView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
+        ])
+        
+        return circleView
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
