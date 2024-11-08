@@ -43,7 +43,7 @@
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";
 "invalidDateAlertTitle" = "Invalid Date";
-"invalidDateAlertMessage1" = "There is an existing activity at %@ with conflicting dates";
+"invalidDateAlertMessage1" = "There is an existing activity with conflicting dates";
 "invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date.";
 "dayOfWeek" = "Day of the week";
 "startDate" = "Starts";

@@ -128,15 +128,12 @@ extension ScheduleCoordinator: UIViewControllerTransitioningDelegate {
             guard let scheduleVC = navigationController.viewControllers.first as? ScheduleViewController else { return nil }
 
             let dayViews = scheduleVC.scheduleView.dailyScheduleView.daysStack.arrangedSubviews.compactMap { $0 as? DayView }
-
             let weekdays = scheduleVC.viewModel.daysOfWeek.compactMap { scheduleVC.viewModel.getWeekday(from: $0) }
-
-            if let selectedWeekdayIndex = scheduleDetailsVC.viewModel.days.firstIndex(where: { $0 == scheduleDetailsVC.viewModel.selectedDay }),
-               let weekdayIndex = weekdays.firstIndex(where: { $0 == Int(selectedWeekdayIndex) }) {
-                let selectedDayView = dayViews[weekdayIndex]
+            
+            if let selectedDayView = scheduleDetailsVC.viewModel.getSelectedDayView(dayViews: dayViews, weekdays: weekdays) {
                 scheduleVC.dayTapped(selectedDayView)
             }
-
+            
             scheduleVC.loadSchedules()
         }
 

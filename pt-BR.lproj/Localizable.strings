@@ -43,7 +43,7 @@
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
 "invalidDateAlertTitle" = "Data inválida";
-"invalidDateAlertMessage1" = "Existe uma atividade para %@ com datas conflitantes";
+"invalidDateAlertMessage1" = "Existe uma atividade com datas conflitantes";
 "invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
 "noSubjectAlertTitle" = "Atividade Inválida";
 "noSubjectAlertMessage" = "Você não pode criar uma atividade antes de atribuí-lo a uma matéria";

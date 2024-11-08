@@ -40,14 +40,6 @@ class DayView: UIView {
         return label
     }()
 
-    let circleView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 18
-        view.layer.masksToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -65,11 +57,13 @@ class DayView: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    // MARK: - Lifecycle
+    
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        circleView.layer.cornerRadius = circleView.bounds.width / 2
+        layer.cornerRadius = bounds.width / 2
     }
 
     // MARK: - Methods
@@ -89,17 +83,11 @@ class DayView: UIView {
 
 extension DayView: ViewCodeProtocol {
     func setupUI() {
-        circleView.addSubview(dateLabel)
-        addSubview(circleView)
+        addSubview(dateLabel)
 
         NSLayoutConstraint.activate([
-            circleView.widthAnchor.constraint(equalTo: widthAnchor),
-            circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
-            circleView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            circleView.centerYAnchor.constraint(equalTo: centerYAnchor),
-
-            dateLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            dateLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
+            dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
 
@@ -116,10 +104,10 @@ extension DayView: ViewCodeProtocol {
 
         if let systemTextColor = UIColor(named: "system-text")?.cgColor,
            let systemText50Color = UIColor(named: "system-text-50")?.cgColor {
-            circleView.layer.borderColor = isToday ? systemTextColor : systemText50Color
+            layer.borderColor = isToday ? systemTextColor : systemText50Color
         }
 
-        circleView.layer.borderWidth = isSelected ? 0 : 1
-        circleView.backgroundColor = isSelected ? UIColor(named: "system-text") : .clear
+        layer.borderWidth = isSelected ? 0 : 1
+        backgroundColor = isSelected ? UIColor(named: "system-text") : .clear
     }
 }

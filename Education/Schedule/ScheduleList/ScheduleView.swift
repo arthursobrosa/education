@@ -184,7 +184,7 @@ extension ScheduleView: ViewCodeProtocol {
             scheduleModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             scheduleModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
-            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: 10),
+            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: 16),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),

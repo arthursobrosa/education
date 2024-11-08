@@ -38,11 +38,8 @@ extension ScheduleDetailsViewController {
         ])
         
         popoverVC.view = containerView
-
-        let items = viewModel.days
-        let selectedItem = viewModel.selectedDay
-
-        if let selectedIndex = items.firstIndex(where: { $0 == selectedItem }) {
+        
+        if let selectedIndex = viewModel.getSelectedDayIndex(forSection: section) {
             dayPicker.selectRow(selectedIndex, inComponent: 0, animated: true)
         }
 

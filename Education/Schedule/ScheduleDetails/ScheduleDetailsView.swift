@@ -24,6 +24,7 @@ class ScheduleDetailsView: UIView {
 
     let tableView: BorderedTableView = {
         let tableView = BorderedTableView()
+        tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -154,27 +155,29 @@ class ScheduleDetailsView: UIView {
 
 extension ScheduleDetailsView: ViewCodeProtocol {
     func setupUI() {
+        subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
         addSubview(tableView)
         addSubview(deleteButton)
         addSubview(saveButton)
 
-        let padding = 28.0
-
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 60),
+            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 28),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             tableView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10),
 
-            deleteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            deleteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
+            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
             deleteButton.heightAnchor.constraint(equalTo: deleteButton.widthAnchor, multiplier: 55 / 334),
             deleteButton.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -12),
 
             saveButton.leadingAnchor.constraint(equalTo: deleteButton.leadingAnchor),
             saveButton.trailingAnchor.constraint(equalTo: deleteButton.trailingAnchor),
             saveButton.heightAnchor.constraint(equalTo: deleteButton.heightAnchor),
-            saveButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+            saveButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -35),
         ])
         
         addSubview(overlayView)

@@ -9,12 +9,13 @@ import UIKit
 
 class BorderedTableCell: UITableViewCell {
     static let identifier = "borderedCell"
+    
+    var isConfigured: Bool = false
 
     func configureCell(tableView: UITableView, forRowAt indexPath: IndexPath) {
+        guard !isConfigured else { return }
+        
         if responds(to: #selector(getter: UIView.tintColor)) {
-            /// store cell's bounds
-            let bounds = bounds
-            
             /// cell initial config
             let cornerRadius: CGFloat = bounds.width * (15 / 353)
             let borderWidth: CGFloat = 1.5

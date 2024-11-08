@@ -8,28 +8,33 @@
 import UIKit
 
 extension ScheduleDetailsViewController {
-    func createCellTitle(for indexPath: IndexPath) -> String {
+    func createCellTitle(for indexPath: IndexPath, numberOfSections: Int) -> String {
         let section = indexPath.section
         let row = indexPath.row
         
-        switch section {
-        case 0:
+        // Subject section
+        if section == 0 {
             return String(localized: "subject")
-        case 1:
-            switch row {
-            case 0:
-                return String(localized: "dayOfWeek")
-            case 1:
-                return String(localized: "startDate")
-            case 2:
-                return String(localized: "endDate")
-            default:
-                return String()
-            }
-        case 2:
+        }
+        
+        // Alarm section
+        if section == numberOfSections - 2 {
             return row == 0 ? String(localized: "alarmAtTime") : String(localized: "alarm5Min")
-        case 3:
+        }
+        
+        // App Blocking section
+        if section == numberOfSections - 1 {
             return String(localized: "blockApps")
+        }
+        
+        // Day section
+        switch row {
+        case 0:
+            return String(localized: "dayOfWeek")
+        case 1:
+            return String(localized: "startDate")
+        case 2:
+            return String(localized: "endDate")
         default:
             return String()
         }
@@ -104,22 +109,39 @@ extension ScheduleDetailsViewController {
         return containerView
     }
 
-    func createAccessoryView(for indexPath: IndexPath) -> UIView? {
+    func createAccessoryView(for indexPath: IndexPath, numberOfSections: Int) -> UIView? {
         let section = indexPath.section
         let row = indexPath.row
-
-        switch section {
-        case 0:
+        
+        // Subject section
+        if section == 0 {
             let color = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
             let label = createLabel(text: viewModel.selectedSubjectName, color: color)
             return label
-        case 1:
+        }
+        
+        // Alarm section
+        if section == numberOfSections - 2 {
+            let isOn = row == 0 ? viewModel.alarmInTime : viewModel.alarmBefore
+            let toggle = createToggle(withTag: row, isOn: isOn)
+            return toggle
+        }
+        
+        // App Blocking section
+        if section == numberOfSections - 1 {
+            let toggle = createToggle(withTag: 2, isOn: viewModel.blocksApps)
+            return toggle
+        }
+        
+        // Day section
+        let isUpdating = numberOfSections == 4
+        
+        if isUpdating {
             if row == 0 {
-                let label = createLabel(text: viewModel.selectedDay, color: nil)
-
+                let label = createLabel(text: viewModel.editingScheduleDay, color: nil)
                 return label
             }
-
+            
             let datePicker = FakeDatePicker()
             datePicker.datePickerMode = .time
             datePicker.date = row == 1 ? viewModel.selectedStartTime : viewModel.selectedEndTime
@@ -129,17 +151,26 @@ extension ScheduleDetailsViewController {
             datePicker.tag = row
 
             return datePicker
-        case 2:
-            let isOn = row == 0 ? viewModel.alarmInTime : viewModel.alarmBefore
-            let toggle = createToggle(withTag: row, isOn: isOn)
-
-            return toggle
-        case 3:
-            let toggle = createToggle(withTag: 2, isOn: viewModel.blocksApps)
-
-            return toggle
-        default:
-            return nil
         }
+        
+        let index = section - 1
+        
+        if row == 0 {
+            let label = createLabel(text: viewModel.selectedDays[index].name, color: nil)
+            return label
+        }
+        
+        let selectedStartTime = viewModel.selectedDays[index].startTime
+        let selectedEndTime = viewModel.selectedDays[index].endTime
+        
+        let datePicker = FakeDatePicker()
+        datePicker.datePickerMode = .time
+        datePicker.date = row == 1 ? selectedStartTime : selectedEndTime
+        datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
+        datePicker.addTarget(self, action: #selector(datePickerEditionBegan(_:)), for: .editingDidBegin)
+        datePicker.addTarget(self, action: #selector(datePickerEditionEnded(_:)), for: .editingDidEnd)
+        datePicker.tag = (index * 2) + row
+
+        return datePicker
     }
 }

@@ -39,7 +39,6 @@ class FakeDatePicker: UIDatePicker {
         super.init(frame: frame)
 
         addTarget(self, action: #selector(datePickerDidChange), for: .valueChanged)
-
         setupUI()
     }
 
@@ -75,6 +74,9 @@ class FakeDatePicker: UIDatePicker {
 
 extension FakeDatePicker: ViewCodeProtocol {
     func setupUI() {
+        dateContainerView.removeFromSuperview()
+        dateLabel.removeFromSuperview()
+        
         addSubview(dateContainerView)
         addSubview(dateLabel)
 
