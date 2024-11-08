@@ -145,7 +145,6 @@ extension ScheduleDetailsViewController {
             let datePicker = FakeDatePicker()
             datePicker.datePickerMode = .time
             datePicker.date = row == 1 ? viewModel.selectedStartTime : viewModel.selectedEndTime
-            datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
             datePicker.addTarget(self, action: #selector(datePickerEditionBegan(_:)), for: .editingDidBegin)
             datePicker.addTarget(self, action: #selector(datePickerEditionEnded), for: .editingDidEnd)
             datePicker.tag = row
@@ -166,7 +165,6 @@ extension ScheduleDetailsViewController {
         let datePicker = FakeDatePicker()
         datePicker.datePickerMode = .time
         datePicker.date = row == 1 ? selectedStartTime : selectedEndTime
-        datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
         datePicker.addTarget(self, action: #selector(datePickerEditionBegan(_:)), for: .editingDidBegin)
         datePicker.addTarget(self, action: #selector(datePickerEditionEnded(_:)), for: .editingDidEnd)
         datePicker.tag = (index * 2) + row

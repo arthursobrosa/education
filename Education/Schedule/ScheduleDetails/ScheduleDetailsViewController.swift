@@ -130,21 +130,20 @@ class ScheduleDetailsViewController: UIViewController {
         
         return 0
     }
-
-    @objc 
-    func datePickerChanged(_ sender: UIDatePicker) {
+    
+    private func updateStartAndEndTime(tag: Int, date: Date) {
         let isUpdating = viewModel.isUpdatingSchedule()
         
         if isUpdating {
-            switch sender.tag {
+            switch tag {
             case 1:
-                viewModel.selectedStartTime = sender.date
+                viewModel.selectedStartTime = date
 
                 if viewModel.selectedEndTime <= viewModel.selectedStartTime {
                     viewModel.selectedEndTime = viewModel.selectedStartTime.addingTimeInterval(60)
                 }
             case 2:
-                viewModel.selectedEndTime = sender.date
+                viewModel.selectedEndTime = date
 
                 if viewModel.selectedStartTime >= viewModel.selectedEndTime {
                     viewModel.selectedStartTime = viewModel.selectedEndTime.addingTimeInterval(-60)
@@ -153,30 +152,30 @@ class ScheduleDetailsViewController: UIViewController {
                 break
             }
         } else {
-            let selectedDayIndex = getSelectedDayIndex(forDatePickerTag: sender.tag)
+            let selectedDayIndex = getSelectedDayIndex(forDatePickerTag: tag)
             
             let startTime = viewModel.selectedDays[selectedDayIndex].startTime
             let endTime = viewModel.selectedDays[selectedDayIndex].endTime
             
-            if !sender.tag.isMultiple(of: 2) {
-                viewModel.selectedDays[selectedDayIndex].startTime = sender.date
+            if !tag.isMultiple(of: 2) {
+                viewModel.selectedDays[selectedDayIndex].startTime = date
                 let newStartTime = viewModel.selectedDays[selectedDayIndex].startTime
                 
                 if endTime <= newStartTime {
-                    viewModel.selectedDays[selectedDayIndex].endTime = sender.date.addingTimeInterval(60)
+                    viewModel.selectedDays[selectedDayIndex].endTime = date.addingTimeInterval(60)
                 }
             } else {
-                viewModel.selectedDays[selectedDayIndex].endTime = sender.date
+                viewModel.selectedDays[selectedDayIndex].endTime = date
                 let newEndTime = viewModel.selectedDays[selectedDayIndex].endTime
                 
                 if startTime >= newEndTime {
-                    viewModel.selectedDays[selectedDayIndex].startTime = sender.date.addingTimeInterval(-60)
+                    viewModel.selectedDays[selectedDayIndex].startTime = date.addingTimeInterval(-60)
                 }
             }
         }
     }
     
-    private func getDatePickers(forDatePickerTag tag: Int) -> (start: UIDatePicker, end: UIDatePicker)? {
+    private func getDatePickers(forDatePickerTag tag: Int) -> (start: FakeDatePicker, end: FakeDatePicker)? {
         let isUpdating = viewModel.isUpdatingSchedule()
         var startTimeIndexPath = IndexPath(row: 1, section: 1)
         var endTimeIndexPath = IndexPath(row: 2, section: 1)
@@ -221,7 +220,7 @@ class ScheduleDetailsViewController: UIViewController {
     }
 
     @objc 
-    func datePickerEditionBegan(_ sender: UIDatePicker) {
+    func datePickerEditionBegan(_ sender: FakeDatePicker) {
         guard let datePickers = getDatePickers(forDatePickerTag: sender.tag) else { return }
         
         let startDatePicker = datePickers.start
@@ -234,7 +233,9 @@ class ScheduleDetailsViewController: UIViewController {
     }
 
     @objc 
-    func datePickerEditionEnded(_ sender: UIDatePicker) {
+    func datePickerEditionEnded(_ sender: FakeDatePicker) {
+        updateStartAndEndTime(tag: sender.tag, date: sender.date)
+        
         guard let datePickers = getDatePickers(forDatePickerTag: sender.tag) else { return }
         
         let startDatePicker = datePickers.start
