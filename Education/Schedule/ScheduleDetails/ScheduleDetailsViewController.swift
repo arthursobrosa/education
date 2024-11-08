@@ -43,6 +43,7 @@ class ScheduleDetailsViewController: UIViewController {
 
         view.tableView.delegate = self
         view.tableView.dataSource = self
+        view.tableView.register(DateCell.self, forCellReuseIdentifier: DateCell.identifier)
 
         return view
     }()
@@ -101,147 +102,6 @@ class ScheduleDetailsViewController: UIViewController {
     private func didTapCancelButton() {
         coordinator?.dismiss(animated: true)
     }
-    
-    private func getSelectedDayIndex(forDatePickerTag tag: Int) -> Int {
-        let numberOfDaySections = numberOfSections(in: scheduleDetailsView.tableView) - 3
-        
-        var pairsArray: [[Int]] = []
-        
-        for pairIndex in 0..<numberOfDaySections {
-            let baseIndex = pairIndex * 2
-            let pair: [Int] = [baseIndex + 1, baseIndex + 2]
-            pairsArray.append(pair)
-        }
-        
-        for (index, pair) in pairsArray.enumerated() where pair.contains(tag) {
-            return index
-        }
-        
-        return 0
-    }
-    
-    private func updateStartAndEndTime(tag: Int, date: Date) {
-        let isUpdating = viewModel.isUpdatingSchedule()
-        
-        if isUpdating {
-            switch tag {
-            case 1:
-                viewModel.selectedStartTime = date
-
-                if viewModel.selectedEndTime <= viewModel.selectedStartTime {
-                    viewModel.selectedEndTime = viewModel.selectedStartTime.addingTimeInterval(60)
-                }
-            case 2:
-                viewModel.selectedEndTime = date
-
-                if viewModel.selectedStartTime >= viewModel.selectedEndTime {
-                    viewModel.selectedStartTime = viewModel.selectedEndTime.addingTimeInterval(-60)
-                }
-            default:
-                break
-            }
-        } else {
-            let selectedDayIndex = getSelectedDayIndex(forDatePickerTag: tag)
-            
-            let startTime = viewModel.selectedDays[selectedDayIndex].startTime
-            let endTime = viewModel.selectedDays[selectedDayIndex].endTime
-            
-            if !tag.isMultiple(of: 2) {
-                viewModel.selectedDays[selectedDayIndex].startTime = date
-                let newStartTime = viewModel.selectedDays[selectedDayIndex].startTime
-                
-                if endTime <= newStartTime {
-                    viewModel.selectedDays[selectedDayIndex].endTime = date.addingTimeInterval(60)
-                }
-            } else {
-                viewModel.selectedDays[selectedDayIndex].endTime = date
-                let newEndTime = viewModel.selectedDays[selectedDayIndex].endTime
-                
-                if startTime >= newEndTime {
-                    viewModel.selectedDays[selectedDayIndex].startTime = date.addingTimeInterval(-60)
-                }
-            }
-        }
-    }
-    
-    private func getDatePickers(forDatePickerTag tag: Int) -> (start: FakeDatePicker, end: FakeDatePicker)? {
-        let isUpdating = viewModel.isUpdatingSchedule()
-        var startTimeIndexPath = IndexPath(row: 1, section: 1)
-        var endTimeIndexPath = IndexPath(row: 2, section: 1)
-        
-        if !isUpdating {
-            let section = getSelectedDayIndex(forDatePickerTag: tag) + 1
-            startTimeIndexPath = IndexPath(row: 1, section: section)
-            endTimeIndexPath = IndexPath(row: 2, section: section)
-        }
-        
-        guard let startTimeCell = scheduleDetailsView.tableView.cellForRow(at: startTimeIndexPath),
-              let endTimeCell = scheduleDetailsView.tableView.cellForRow(at: endTimeIndexPath),
-              let startDatePicker = startTimeCell.accessoryView as? FakeDatePicker,
-              let endDatePicker = endTimeCell.accessoryView as? FakeDatePicker else {
-            
-            return nil
-        }
-        
-        return (startDatePicker, endDatePicker)
-    }
-    
-    private func getSelectedTime(forDatePickerTag tag: Int, isStartTime: Bool) -> Date? {
-        let isUpdating = viewModel.isUpdatingSchedule()
-        var startTime = Date()
-        var endTime = Date()
-        
-        if isUpdating {
-            startTime = viewModel.selectedStartTime
-            endTime = viewModel.selectedEndTime
-        } else {
-            let selectedDayIndex = getSelectedDayIndex(forDatePickerTag: tag)
-            startTime = viewModel.selectedDays[selectedDayIndex].startTime
-            endTime = viewModel.selectedDays[selectedDayIndex].endTime
-        }
-        
-        return isStartTime ? startTime : endTime
-    }
-    
-    private func getMinimumDate(forDatePickerTag tag: Int) -> Date? {
-        let startTime = getSelectedTime(forDatePickerTag: tag, isStartTime: true)
-        return startTime?.addingTimeInterval(60)
-    }
-
-    @objc 
-    func datePickerEditionBegan(_ sender: FakeDatePicker) {
-        guard let datePickers = getDatePickers(forDatePickerTag: sender.tag) else { return }
-        
-        let startDatePicker = datePickers.start
-        let endDatePicker = datePickers.end
-
-        endDatePicker.minimumDate = getMinimumDate(forDatePickerTag: sender.tag)
-
-        startDatePicker.isEnabled = !sender.tag.isMultiple(of: 2)
-        endDatePicker.isEnabled = sender.tag.isMultiple(of: 2)
-    }
-
-    @objc 
-    func datePickerEditionEnded(_ sender: FakeDatePicker) {
-        updateStartAndEndTime(tag: sender.tag, date: sender.date)
-        
-        guard let datePickers = getDatePickers(forDatePickerTag: sender.tag) else { return }
-        
-        let startDatePicker = datePickers.start
-        let endDatePicker = datePickers.end
-
-        startDatePicker.isEnabled = true
-        endDatePicker.isEnabled = true
-        
-        guard let startTime = getSelectedTime(forDatePickerTag: sender.tag, isStartTime: true),
-              let endtime = getSelectedTime(forDatePickerTag: sender.tag, isStartTime: false) else {
-            
-            return
-        }
-
-        startDatePicker.date = startTime
-        endDatePicker.date = endtime
-    }
 
     func showInvalidDatesAlert(forExistingSchedule: Bool) {
         var message: String
@@ -283,6 +143,12 @@ class ScheduleDetailsViewController: UIViewController {
 
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isUpdating = viewModel.isUpdatingSchedule()
+        let numberOfSections = tableView.numberOfSections
+        
+        let section = indexPath.section
+        guard section == 0 || section == numberOfSections - 1 || section == numberOfSections - 2 else { return }
+        
         guard let cell = cell as? BorderedTableCell else { return }
         cell.configureCell(tableView: tableView, forRowAt: indexPath)
     }
@@ -299,13 +165,7 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let isUpdating = viewModel.isUpdatingSchedule()
-        var numberOfSections = 0
-        
-        if isUpdating {
-            numberOfSections = 4
-        } else {
-            numberOfSections = 3 + viewModel.selectedDays.count
-        }
+        let numberOfSections = tableView.numberOfSections
         
         // Subject section
         if section == 0 {
@@ -323,42 +183,50 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         }
         
         // Day section
-        return 3
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BorderedTableCell.identifier, for: indexPath) as? BorderedTableCell else {
-            fatalError("Could not dequeue bordered table cell")
-        }
-        
         let isUpdating = viewModel.isUpdatingSchedule()
-        var numberOfSections = 0
-        
-        if isUpdating {
-            numberOfSections = 4
-        } else {
-            numberOfSections = 3 + viewModel.selectedDays.count
-        }
-
-        cell.textLabel?.text = createCellTitle(for: indexPath, numberOfSections: numberOfSections)
-        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
-        cell.accessoryView = createAccessoryView(for: indexPath, numberOfSections: numberOfSections)
-
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let numberOfSections = tableView.numberOfSections
         let section = indexPath.section
         let row = indexPath.row
         
-        let isUpdating = viewModel.isUpdatingSchedule()
-        var numberOfSections = 0
-        
-        if isUpdating {
-            numberOfSections = 4
+        if section == 0 || section == numberOfSections - 1 || section == numberOfSections - 2 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: BorderedTableCell.identifier, for: indexPath) as? BorderedTableCell else {
+                fatalError("Could not dequeue bordered table cell")
+            }
+
+            cell.textLabel?.text = createCellTitle(for: indexPath, numberOfSections: numberOfSections)
+            cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
+            cell.accessoryView = createAccessoryView(for: indexPath, numberOfSections: numberOfSections)
+
+            return cell
         } else {
-            numberOfSections = 3 + viewModel.selectedDays.count
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DateCell.identifier, for: indexPath) as? DateCell else {
+                fatalError("Could not dequeue date cell")
+            }
+            
+            cell.dayOfWeekTitle = viewModel.getDayOfWeekText(forSection: section)
+            
+            if let selectedDate = viewModel.getSelectedDate(forSection: section) {
+                let datePickerTag = viewModel.getDatePickerTag(forRowAt: indexPath)
+                
+                cell.startDatePicker.date = selectedDate.startTime
+                cell.startDatePicker.tag = datePickerTag
+                
+                cell.endDatePicker.date = selectedDate.endTime
+                cell.endDatePicker.tag = datePickerTag + 1
+            }
+            
+            return cell
         }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let numberOfSections = tableView.numberOfSections
+        let section = indexPath.section
+        let row = indexPath.row
         
         // Subjects section
         if section == 0 {
@@ -382,18 +250,19 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50
+        let section = indexPath.section
+        let numberOfSections = tableView.numberOfSections
+        
+        if section == 0 || section == numberOfSections - 1 || section == numberOfSections - 2 {
+            return 50
+        }
+        
+        return 150
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let isUpdating = viewModel.isUpdatingSchedule()
-        var numberOfSections = 0
-        
-        if isUpdating {
-            numberOfSections = 4
-        } else {
-            numberOfSections = 3 + viewModel.selectedDays.count
-        }
+        let numberOfSections = tableView.numberOfSections
         
         // Last day section
         if !isUpdating && section == numberOfSections - 3 {
@@ -444,13 +313,7 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let isUpdating = viewModel.isUpdatingSchedule()
-        var numberOfSections = 0
-        
-        if isUpdating {
-            numberOfSections = 4
-        } else {
-            numberOfSections = 3 + viewModel.selectedDays.count
-        }
+        let numberOfSections = tableView.numberOfSections
         
         if !isUpdating && section == numberOfSections - 3 {
             return 42

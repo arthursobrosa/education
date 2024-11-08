@@ -134,7 +134,7 @@ extension ScheduleDetailsViewController {
         }
         
         // Day section
-        let isUpdating = numberOfSections == 4
+        let isUpdating = viewModel.isUpdatingSchedule()
         
         if isUpdating {
             if row == 0 {

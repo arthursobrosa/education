@@ -201,6 +201,7 @@
 		68E0BA882C9A29F600C34BFE /* ThemeCreationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E0BA872C9A29F600C34BFE /* ThemeCreationViewModel.swift */; };
 		68E10AA82C7FCBC9008AF82C /* Cocon-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */; };
 		68E10AAA2C7FCE39008AF82C /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E10AA92C7FCE39008AF82C /* Fonts.swift */; };
+		68E1BF882CDE885400249046 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E1BF872CDE885400249046 /* DateCell.swift */; };
 		68E617A82C6D6F4E00488237 /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E617A72C6D6F4E00488237 /* ActivityManager.swift */; };
 		68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE02C66D31600805051 /* CustomPushTransition.swift */; };
 		68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC5BE22C66D49800805051 /* CustomPopTransition.swift */; };
@@ -483,6 +484,7 @@
 		68E0BA872C9A29F600C34BFE /* ThemeCreationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCreationViewModel.swift; sourceTree = "<group>"; };
 		68E10AA72C7FCBC9008AF82C /* Cocon-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cocon-Regular.ttf"; sourceTree = "<group>"; };
 		68E10AA92C7FCE39008AF82C /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		68E1BF872CDE885400249046 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		68E617A72C6D6F4E00488237 /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
 		68EC5BE02C66D31600805051 /* CustomPushTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPushTransition.swift; sourceTree = "<group>"; };
 		68EC5BE22C66D49800805051 /* CustomPopTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopTransition.swift; sourceTree = "<group>"; };
@@ -996,6 +998,7 @@
 				6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */,
 				68C2D0042C473A4800E2347A /* ScheduleDetailsViewController+Delegate.swift */,
 				6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */,
+				68E1BF872CDE885400249046 /* DateCell.swift */,
 				68C2D0082C473F5800E2347A /* Extensions */,
 			);
 			path = ScheduleDetails;
@@ -1548,6 +1551,7 @@
 				688C2A422C93212000E8EE81 /* TestPageViewController+CellConfig.swift in Sources */,
 				68A816862C772140001D5F1E /* SubjectCreationViewController+Delegate.swift in Sources */,
 				689388922C642133007EE922 /* UIView+Extension.swift in Sources */,
+				68E1BF882CDE885400249046 /* DateCell.swift in Sources */,
 				30D5E2422C8782D30083F353 /* OtherSubjectCoordinator.swift in Sources */,
 				3018A1C02CB5A4E500AB3978 /* TestDetailsCoordinator.swift in Sources */,
 				683812EE2C481A740062067A /* SplashCoordinator.swift in Sources */,

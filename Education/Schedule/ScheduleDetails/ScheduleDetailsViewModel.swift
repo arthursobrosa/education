@@ -364,6 +364,43 @@ extension ScheduleDetailsViewModel {
         
         return Int(selectedIndex)
     }
+    
+    func getSelectedDate(forSection section: Int) -> (startTime: Date, endTime: Date)? {
+        let isUpdating = isUpdatingSchedule()
+        
+        if isUpdating {
+            return (selectedStartTime, selectedEndTime)
+        }
+        
+        let index = section - 1
+        let startTime = selectedDays[index].startTime
+        let endTime = selectedDays[index].endTime
+        
+        return (startTime, endTime)
+    }
+    
+    func getDayOfWeekText(forSection section: Int) -> String {
+        let isUpdating = isUpdatingSchedule()
+        
+        if isUpdating {
+            return editingScheduleDay
+        }
+        
+        let index = section - 1
+        return selectedDays[index].name
+    }
+    
+    func getDatePickerTag(forRowAt indexPath: IndexPath) -> Int {
+        let isUpdating = isUpdatingSchedule()
+        let section = indexPath.section
+        
+        if isUpdating {
+            return 1
+        }
+        
+        let index = section - 1
+        return index * 2 + 1
+    }
 }
 
 // MARK: - Handling Subjects
