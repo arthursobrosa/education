@@ -12,6 +12,10 @@ class FocusSessionViewModel {
     // MARK: - Service to manage timer and session
 
     let activityManager: ActivityManager
+    
+    // MARK: - Service to use live activity
+    
+    let liveActivity: LiveActivityService = LiveActivityService.shared
 
     // MARK: - Service to block apps
 
@@ -204,6 +208,7 @@ extension FocusSessionViewModel {
     }
 
     func pauseResumeButtonTapped() {
+        liveActivity.endActivity()
         activityManager.isPaused.toggle()
 
         guard activityManager.isAtWorkTime else { return }

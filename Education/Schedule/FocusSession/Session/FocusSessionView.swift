@@ -281,7 +281,7 @@ extension FocusSessionView {
 
     func updateTimerLabels(timerString: String, pomodoroString: String) {
         timerLabel.text = timerString
-
+        
         guard !pomodoroLabel.isHidden else { return }
 
         pomodoroLabel.text = pomodoroString
