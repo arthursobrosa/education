@@ -9,7 +9,11 @@ import Foundation
 import UIKit
 
 class FocusSessionCell: UITableViewCell {
+    // MARK: - ID
     static let identifier = "focusSessionCell"
+    
+    // MARK: - UI Properties
+    
     let dateLabel = UILabel()
     let totalTimeLabel = UILabel()
     
@@ -37,9 +41,10 @@ class FocusSessionCell: UITableViewCell {
         return label
     }()
     
+    // MARK: - Initializer
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         setupUI()
     }
     
@@ -47,19 +52,21 @@ class FocusSessionCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Methods
+    
     func configure(with session: FocusSession, color: String) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM"
         subjectName.text = dateFormatter.string(from: session.date ?? Date())
         subjectName.textColor = UIColor(named: color)
         
-        totalHours.text = formatTime(from: Int(session.totalTime ?? 0))
+        totalHours.text = formatTime(from: Int(session.totalTime))
         totalHours.textColor = UIColor(named: color)?.darker(by: 0.8)
         
         containerView.layer.borderColor = UIColor(named: color)?.cgColor
     }
     
-     func formatTime(from time: Int) -> String {
+     private func formatTime(from time: Int) -> String {
         let hours = time / 3600
         let minutes = (time / 60) % 60
 
@@ -74,6 +81,8 @@ class FocusSessionCell: UITableViewCell {
         }
     }
 }
+
+// MARK: - UI Setup
 
 extension FocusSessionCell: ViewCodeProtocol {
     func setupUI() {
@@ -100,4 +109,3 @@ extension FocusSessionCell: ViewCodeProtocol {
         ])
     }
 }
-

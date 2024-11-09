@@ -29,7 +29,7 @@ class TestDetailsViewModel {
         return dateFormatter.string(from: date)
     }
 
-    func getDateFullString(from test: Test) -> String {
+    func getDateFullString() -> String {
         let dayOfTheWeekString = getDayOfTheWeekString(from: test.unwrappedDate)
         
         let dateFormatter = DateFormatter()

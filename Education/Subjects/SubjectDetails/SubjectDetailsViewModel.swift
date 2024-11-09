@@ -8,20 +8,27 @@
 import Foundation
 
 class SubjectDetailsViewModel {
+    // MARK: - FocusSession Manager
+    
     private let focusSessionManager: FocusSessionManager
-    let subjectManager: SubjectManager
+    
+    // MARK: - Properties
+    
     let studyTimeViewModel: StudyTimeViewModel
 
     var subject: Subject?
     var sessionsByMonth: [String: [FocusSession]] = [:]
 
-    init(subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
+    // MARK: - Initializer
+    
+    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
+        self.focusSessionManager = focusSessionManager
+
         self.subject = subject
         self.studyTimeViewModel = studyTimeViewModel
-       
-        focusSessionManager = FocusSessionManager()
-        subjectManager = SubjectManager()
     }
+    
+    // MARK: - Methods
     
     func fetchFocusSessions() {
         var sessionsByMonth: [String: [FocusSession]] = [:]
@@ -42,11 +49,7 @@ class SubjectDetailsViewModel {
                 sessionsByMonth[month] = sessions.sorted(by: { $0.date ?? Date() > $1.date ?? Date() })
             }
         }
-        
-        
-        
-        print(sessionsByMonth)
-        
+
         self.sessionsByMonth = sessionsByMonth
     }
     
@@ -57,6 +60,20 @@ class SubjectDetailsViewModel {
             }
         }
     }
+    
+    func formattedMonthYear(_ monthYear: String) -> String? {
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/yyyy"
+        
+        guard let date = dateFormatter.date(from: monthYear) else {
+            return nil
+        }
+        
+        dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMMMyyyy")
 
-
+        let formattedDate = dateFormatter.string(from: date)
+        return formattedDate.prefix(1).uppercased() + formattedDate.dropFirst()
+    }
 }

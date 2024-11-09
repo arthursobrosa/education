@@ -8,8 +8,6 @@
 import UIKit
 
 class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, ShowingOtherSubject, ShowingSubjectDetails {
-    
-    
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
@@ -41,9 +39,8 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
         child.start()
     }
     
-    func showSubjectDetails(subject: Subject?, studytimeViewModel studyTimeViewModel: StudyTimeViewModel) {
-        let viewModel = SubjectDetailsViewModel(subject: subject, studyTimeViewModel: studyTimeViewModel)
-        let child = SubjectDetailsCoordinator(navigationController: navigationController, viewModel: viewModel)
+    func showSubjectDetails(subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
+        let child = SubjectDetailsCoordinator(navigationController: navigationController, subject: subject, studyTimeViewModel: studyTimeViewModel)
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()

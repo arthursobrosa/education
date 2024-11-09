@@ -525,12 +525,12 @@ extension ActivityManager: SessionManaging {
         var timerCaseValue: Int
         
         switch timerCase {
-            case .timer:
-                timerCaseValue = 0
-            case .pomodoro:
-                timerCaseValue = 1
-            case .stopwatch:
-                timerCaseValue = 2
+        case .timer:
+            timerCaseValue = 0
+        case .pomodoro:
+            timerCaseValue = 1
+        case .stopwatch:
+            timerCaseValue = 2
         }
         
         focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID, timerCase: timerCaseValue)

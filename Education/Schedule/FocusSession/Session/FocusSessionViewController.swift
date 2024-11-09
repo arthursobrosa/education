@@ -78,8 +78,6 @@ class FocusSessionViewController: UIViewController {
         
     }
     
-    
-    
     private func foo() {
         liveActivity.endActivity()
     }

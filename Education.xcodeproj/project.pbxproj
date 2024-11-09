@@ -581,9 +581,9 @@
 			isa = PBXGroup;
 			children = (
 				3017F0C92CDAA4E5005036A6 /* SubjectDetailsCoordinator.swift */,
+				3017F0D12CDAA92B005036A6 /* SubjectDetailsViewModel.swift */,
 				3017F0CB2CDAA509005036A6 /* SubjectDetailsViewController.swift */,
 				3017F0CD2CDAA52A005036A6 /* SubjectDetailsView.swift */,
-				3017F0D12CDAA92B005036A6 /* SubjectDetailsViewModel.swift */,
 				301654C22CDC0709002BBD05 /* FocusSessionCell.swift */,
 			);
 			path = SubjectDetails;
@@ -696,10 +696,10 @@
 		317C112F2C3EF70500C5E7A5 /* Subjects */ = {
 			isa = PBXGroup;
 			children = (
-				3017F0C82CDAA4B9005036A6 /* SubjectDetails */,
-				30D5E2402C87827F0083F353 /* OtherSubject */,
 				68A816822C771216001D5F1E /* StudyTime */,
 				31C102F22C6D19D2009D2751 /* SubjectCreation */,
+				3017F0C82CDAA4B9005036A6 /* SubjectDetails */,
+				30D5E2402C87827F0083F353 /* OtherSubject */,
 			);
 			path = Subjects;
 			sourceTree = "<group>";
@@ -1163,6 +1163,7 @@
 				68FF04E72CBE261100E8C48C /* ShowingFocusEnd.swift */,
 				CE323B422C73C1AC004143E0 /* ShowingScheduleNotification.swift */,
 				31C102F92C6D30BC009D2751 /* ShowingSubjectCreation.swift */,
+				3017F0CF2CDAA7C8005036A6 /* ShowingSubjectDetails.swift */,
 				30D5E2492C8783530083F353 /* ShowingOtherSubject.swift */,
 				68825BD62C2F469D00272451 /* ShowingThemePage.swift */,
 				685265502C8B710A009D9678 /* ShowingThemeCreation.swift */,
@@ -1170,7 +1171,6 @@
 				3018A1BC2CB5A49E00AB3978 /* ShowingTestDetails.swift */,
 				68BBC96C2C35E13D00D82350 /* Dismissing.swift */,
 				6823766A2C63E86E00255143 /* DismissingAll.swift */,
-				3017F0CF2CDAA7C8005036A6 /* ShowingSubjectDetails.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";

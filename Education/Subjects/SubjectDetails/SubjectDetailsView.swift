@@ -8,7 +8,7 @@
 import UIKit
 
 class SubjectDetailsView: UIView {
-    weak var delegate: SubjectDetailsDelegate?
+    // MARK: - Properties
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -17,11 +17,10 @@ class SubjectDetailsView: UIView {
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.sectionHeaderTopPadding = 0
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
         return tableView
     }()
 
-    // MARK: - Initialization
+    // MARK: - Initializer
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,20 +32,19 @@ class SubjectDetailsView: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
 
-    // MARK: - UI Setup
+// MARK: - UI Setup
 
-    private func setupUI() {
-        
+extension SubjectDetailsView: ViewCodeProtocol {
+    func setupUI() {
         addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 0),
+            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
-        
-        
     }
 }

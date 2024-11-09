@@ -54,7 +54,7 @@ class TestDetailsViewController: UIViewController {
     // MARK: - Methods
 
     private func setNavigationItems() {
-        navigationItem.title = viewModel.getDateFullString(from: viewModel.test)
+        navigationItem.title = viewModel.getDateFullString()
 
         navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
         navigationController?.navigationBar.tintColor = .systemText

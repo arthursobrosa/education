@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ShowingSubjectDetails: AnyObject {
-    func showSubjectDetails(subject: Subject?, studytimeViewModel: StudyTimeViewModel)
+    func showSubjectDetails(subject: Subject?, studyTimeViewModel: StudyTimeViewModel)
 }
