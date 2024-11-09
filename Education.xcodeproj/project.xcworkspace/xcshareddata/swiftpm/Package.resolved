@@ -1,5 +1,5 @@
 {
-  "originHash" : "74350aa352c5d591ca8d4f79af1d4ddfebb8db922d44b4aaadfe4515f1da67a9",
+  "originHash" : "d0ca5661f566714725b4abdec985fec4caf2ee7338239ab36507e8d9bc3fdfe7",
   "pins" : [
     {
       "identity" : "iqkeyboardcore",
@@ -26,6 +26,24 @@
       "state" : {
         "revision" : "25c6a83380042141d9a2f80cdb2832595a7bf6bc",
         "version" : "1.0.5"
+      }
+    },
+    {
+      "identity" : "iqkeyboardtoolbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hackiftekhar/IQKeyboardToolbar.git",
+      "state" : {
+        "revision" : "78ccb63857a03334ecfcba566f8f504015965ee3",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "iqkeyboardtoolbarmanager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hackiftekhar/IQKeyboardToolbarManager",
+      "state" : {
+        "revision" : "298c128c8f58776bb72de7b0259c9a5b9b157d61",
+        "version" : "1.1.2"
       }
     },
     {
