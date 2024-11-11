@@ -36,6 +36,6 @@ class SubjectDetailsCoordinator: Coordinator, Dismissing, ShowingSubjectCreation
     }
 
     func dismiss(animated: Bool) {
-        navigationController.dismiss(animated: animated)
+        navigationController.popViewController(animated: true)
     }
 }

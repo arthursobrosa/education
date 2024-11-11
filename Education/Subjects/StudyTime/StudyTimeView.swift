@@ -18,6 +18,12 @@ class StudyTimeView: UIView {
     }
 
     // MARK: - UI Components
+    
+    private let navigationBar: NavigationBarComponent = {
+        let navigationBar = NavigationBarComponent()
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        return navigationBar
+    }()
 
     let viewModeControl: CustomSegmentedControl = {
         let segmentedControl = CustomSegmentedControl()
@@ -87,21 +93,28 @@ class StudyTimeView: UIView {
             viewModeControl.backgroundColor = .black.withAlphaComponent(40)
         }
     }
+    
+    func setNavigationBar() {
+        let title = String(localized: "subjectTab")
+        let buttonImage = UIImage(systemName: "plus.circle.fill")
+        navigationBar.configure(titleText: title, rightButtonImage: buttonImage)
+        navigationBar.addRightButtonTarget(delegate, action: #selector(StudyTimeDelegate.plusButtonTapped))
+    }
 }
 
 // MARK: - UI Setup
 
 extension StudyTimeView: ViewCodeProtocol {
     func setupUI() {
+        addSubview(navigationBar)
+        navigationBar.layoutToSuperview()
         addSubview(viewModeControl)
         addSubview(tableView)
 
-        let padding = 10.0
-
         NSLayoutConstraint.activate([
-            viewModeControl.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
-            viewModeControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            viewModeControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            viewModeControl.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 24),
+            viewModeControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            viewModeControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
             tableView.topAnchor.constraint(equalTo: viewModeControl.bottomAnchor, constant: 2),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),

@@ -91,20 +91,7 @@ class StudyTimeViewController: UIViewController {
     // MARK: - Methods
     
     private func setNavigationItems() {
-        navigationItem.title = String(localized: "subjectTab")
-        let regularFont: UIFont = UIFont(name: Fonts.coconRegular, size: Fonts.titleSize) ?? UIFont.systemFont(ofSize: Fonts.titleSize, weight: .regular)
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: regularFont, .foregroundColor: UIColor(named: "system-text") as Any]
-        
-        let addButton = UIButton()
-        addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        addButton.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
-        addButton.imageView?.contentMode = .scaleAspectFit
-        addButton.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
-        addButton.tintColor = UIColor(named: "system-text")
-        
-        let addItem = UIBarButtonItem(customView: addButton)
-        
-        navigationItem.rightBarButtonItems = [addItem]
+        studyTimeView.setNavigationBar()
     }
     
     private func handleTip() {
@@ -166,13 +153,6 @@ class StudyTimeViewController: UIViewController {
         alert.addAction(cancelAction)
         
         present(alert, animated: true, completion: nil)
-    }
-    
-    @objc
-    func listButtonTapped() {
-        viewModel.currentEditingSubject = nil
-        viewModel.selectedSubjectColor.value = viewModel.selectAvailableColor()
-        coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 }
 

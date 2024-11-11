@@ -16,7 +16,7 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
     }
 
     func start() {
-        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.setNavigationBarHidden(true, animated: false)
 
         let viewModel = StudyTimeViewModel()
         let viewController = StudyTimeViewController(viewModel: viewModel)

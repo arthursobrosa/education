@@ -103,6 +103,7 @@
 		685265552C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265542C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift */; };
 		6852F3ED2C8AA175002450A3 /* PickerCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6852F3EC2C8AA175002450A3 /* PickerCase.swift */; };
 		685371CD2CE2963E00667E43 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C8D9A92C4987FF0092E80D /* Localizable.strings */; };
+		685CB1932CE2ADBA00F7459D /* SubjectDetailsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CB1922CE2ADBA00F7459D /* SubjectDetailsDelegate.swift */; };
 		685CBFDA2C61597600EC8E09 /* CustomDateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CBFD92C61597600EC8E09 /* CustomDateButton.swift */; };
 		685CBFDC2C615CE300EC8E09 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CBFDB2C615CE300EC8E09 /* DateView.swift */; };
 		686965C42CB46F3D00D2985D /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686965C32CB46F3D00D2985D /* ManagedSettings.framework */; };
@@ -394,6 +395,7 @@
 		685265522C8B72A5009D9678 /* ThemeCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeCreationView.swift; sourceTree = "<group>"; };
 		685265542C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemeCreationViewController+Delegate.swift"; sourceTree = "<group>"; };
 		6852F3EC2C8AA175002450A3 /* PickerCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerCase.swift; sourceTree = "<group>"; };
+		685CB1922CE2ADBA00F7459D /* SubjectDetailsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectDetailsDelegate.swift; sourceTree = "<group>"; };
 		685CBFD92C61597600EC8E09 /* CustomDateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDateButton.swift; sourceTree = "<group>"; };
 		685CBFDB2C615CE300EC8E09 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
 		686965C22CB46F3D00D2985D /* ShieldConfiguration.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldConfiguration.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -589,6 +591,7 @@
 				3017F0C92CDAA4E5005036A6 /* SubjectDetailsCoordinator.swift */,
 				3017F0D12CDAA92B005036A6 /* SubjectDetailsViewModel.swift */,
 				3017F0CB2CDAA509005036A6 /* SubjectDetailsViewController.swift */,
+				685CB1922CE2ADBA00F7459D /* SubjectDetailsDelegate.swift */,
 				3017F0CD2CDAA52A005036A6 /* SubjectDetailsView.swift */,
 				CEA19E532CDD39D3004E3D12 /* EmptySubjectDetailsView.swift */,
 				301654C22CDC0709002BBD05 /* FocusSessionCell.swift */,
@@ -1742,6 +1745,7 @@
 				683B453B2C1B6F3A00663912 /* SceneDelegate.swift in Sources */,
 				68C2D00E2C47400A00E2347A /* ScheduleDetails+CellConfig.swift in Sources */,
 				68825BD52C2F37F100272451 /* ThemeListCoordinator.swift in Sources */,
+				685CB1932CE2ADBA00F7459D /* SubjectDetailsDelegate.swift in Sources */,
 				310B8A1B2C2F26BE005339E8 /* TestPageView.swift in Sources */,
 				688CF32C2C851C7B00DE97DD /* ActivityBarButton.swift in Sources */,
 				68FF04E22CBE244F00E8C48C /* FocusEndViewModel.swift in Sources */,

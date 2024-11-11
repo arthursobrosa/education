@@ -59,30 +59,7 @@ class SubjectDetailsViewController: UIViewController {
     // MARK: - Methods
     
     private func setNavigationItems() {
-        navigationItem.title = (viewModel.subject != nil) ? viewModel.subject?.unwrappedName : String(localized: "other")
-        
-        let editButton = UIButton()
-        editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-        editButton.setPreferredSymbolConfiguration(.init(pointSize: 22), forImageIn: .normal)
-        editButton.imageView?.contentMode = .scaleAspectFit
-        editButton.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
-        editButton.tintColor = UIColor(named: "system-text")
-        
-        let deleteButton = UIButton()
-        deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
-        deleteButton.setPreferredSymbolConfiguration(.init(pointSize: 22), forImageIn: .normal)
-        deleteButton.imageView?.contentMode = .scaleAspectFit
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        deleteButton.tintColor = UIColor(named: "system-text")
-        
-        let addItem = UIBarButtonItem(customView: editButton)
-        let deleteItem = UIBarButtonItem(customView: deleteButton)
-        
-        if viewModel.subject != nil {
-            navigationItem.rightBarButtonItems = [addItem]
-        } else {
-            navigationItem.rightBarButtonItems = [deleteItem]
-        }
+        subjectDetailsView.setNavigationBar(subject: viewModel.subject)
     }
     
     func setContentView() {
@@ -109,17 +86,7 @@ class SubjectDetailsViewController: UIViewController {
         ])
     }
     
-    @objc
-    private func listButtonTapped() {
-        coordinator?.showSubjectCreation(viewModel: viewModel.studyTimeViewModel)
-    }
-    
-    @objc
-    private func deleteButtonTapped() {
-        showDeleteOtherAlert()
-    }
-    
-    private func showDeleteOtherAlert() {
+    func showDeleteOtherAlert() {
         let alert = UIAlertController(title: String(localized: "deleteOther"), message: String(localized: "deleteOtherBodyText"), preferredStyle: .alert)
         
         let deleteAction = UIAlertAction(title: String(localized: "confirm"), style: .destructive) { [weak self] _ in
