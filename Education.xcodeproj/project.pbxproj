@@ -241,6 +241,8 @@
 		CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */; };
 		CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */; };
 		CE6A12522C63EEDC00549DCC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */; };
+		CEA19E522CDC0625004E3D12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
+		CEA19E542CDD39D3004E3D12 /* EmptySubjectDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19E532CDD39D3004E3D12 /* EmptySubjectDetailsView.swift */; };
 		CEBFA82A2CC2DFB6005E1F24 /* TutorialLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */; };
 		CEBFA83C2CC2F0D2005E1F24 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */; };
 		CEBFA83E2CC2F0D8005E1F24 /* LiveActivityManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */; };
@@ -531,6 +533,7 @@
 		CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationViewController.swift; sourceTree = "<group>"; };
 		CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingScheduleDetailsModal.swift; sourceTree = "<group>"; };
 		CE6A12512C63EEDC00549DCC /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		CEA19E532CDD39D3004E3D12 /* EmptySubjectDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySubjectDetailsView.swift; sourceTree = "<group>"; };
 		CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialLiveActivity.swift; sourceTree = "<group>"; };
 		CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityService.swift; sourceTree = "<group>"; };
 		CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManaging.swift; sourceTree = "<group>"; };
@@ -586,6 +589,7 @@
 				3017F0D12CDAA92B005036A6 /* SubjectDetailsViewModel.swift */,
 				3017F0CB2CDAA509005036A6 /* SubjectDetailsViewController.swift */,
 				3017F0CD2CDAA52A005036A6 /* SubjectDetailsView.swift */,
+				CEA19E532CDD39D3004E3D12 /* EmptySubjectDetailsView.swift */,
 				301654C22CDC0709002BBD05 /* FocusSessionCell.swift */,
 			);
 			path = SubjectDetails;
@@ -1490,6 +1494,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEA19E522CDC0625004E3D12 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1593,6 +1598,7 @@
 				688C257D2C6674F000150F7F /* FocusSubjectTableViewCell.swift in Sources */,
 				68DE198A2C3DBAD800872751 /* Popover.swift in Sources */,
 				689388992C642B23007EE922 /* TabBarController+Delegate.swift in Sources */,
+				CEA19E542CDD39D3004E3D12 /* EmptySubjectDetailsView.swift in Sources */,
 				685CBFDC2C615CE300EC8E09 /* DateView.swift in Sources */,
 				683D25562C894DAF00716444 /* ScheduleVC+Collection.swift in Sources */,
 				CE394D0F2C6E85FC00A8B1F0 /* ScheduleDetailsModalCoordinator.swift in Sources */,

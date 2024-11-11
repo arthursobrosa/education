@@ -7,8 +7,16 @@
 
 import UIKit
 
+
 class SubjectDetailsView: UIView {
     // MARK: - Properties
+    
+    let contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -18,6 +26,12 @@ class SubjectDetailsView: UIView {
         tableView.sectionHeaderTopPadding = 0
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
+    }()
+    
+    let emptyView: EmptySubjectDetailsView = {
+        let emptyView = EmptySubjectDetailsView()
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        return emptyView
     }()
 
     // MARK: - Initializer

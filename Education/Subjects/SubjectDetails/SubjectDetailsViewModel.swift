@@ -53,6 +53,14 @@ class SubjectDetailsViewModel {
         self.sessionsByMonth = sessionsByMonth
     }
     
+    func areSessionsEmpty() -> Bool {
+        guard let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: subject?.unwrappedID) else {
+            return true
+        }
+        
+        return focusSessions.isEmpty
+    }
+    
     func deleteOtherSessions() {
         if let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: nil) {
             for focusSession in focusSessions {

@@ -130,6 +130,7 @@
 "newSubject" = "New Subject";
 "editSubject" = "Edit Subject";
 "subjectName" = "Subject's Name";
+"emptySubjectDetails" = "You do not have records of studies carried out for this subject.";
 
 // MARK: - Themes
 "themeAlertTitle" = "Add Exam";

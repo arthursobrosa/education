@@ -48,6 +48,7 @@ class SubjectDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         setNavigationItems()
+        setContentView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,6 +83,30 @@ class SubjectDetailsViewController: UIViewController {
         } else {
             navigationItem.rightBarButtonItems = [deleteItem]
         }
+    }
+    
+    func setContentView() {
+        let isEmpty = viewModel.areSessionsEmpty()
+        
+        if isEmpty {
+            addContentSubview(childSubview: subjectDetailsView.emptyView)
+        } else {
+            addContentSubview(childSubview: subjectDetailsView.tableView)
+        }
+    }
+    
+    private func addContentSubview(childSubview: UIView) {
+        let parentSubview = subjectDetailsView.contentView
+        parentSubview.addSubview(childSubview)
+
+        childSubview.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            childSubview.topAnchor.constraint(equalTo: parentSubview.topAnchor),
+            childSubview.leadingAnchor.constraint(equalTo: parentSubview.leadingAnchor),
+            childSubview.trailingAnchor.constraint(equalTo: parentSubview.trailingAnchor),
+            childSubview.bottomAnchor.constraint(equalTo: parentSubview.bottomAnchor),
+        ])
     }
     
     @objc

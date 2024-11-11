@@ -15,7 +15,7 @@ struct TutorialLiveActivityEntryView: View {
     var body: some View {
         VStack {
             Text(context.attributes.timerName)
-                .font(.headline)
+                .font(.footnote)
             Text(context.state.endTime, style: .timer)
         }
         .padding(.horizontal)
