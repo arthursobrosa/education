@@ -19,9 +19,12 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
             icon: UIImage(named: "books"),
-            title: ShieldConfiguration.Label(text: "Seus estudos estão lhe esperando", color: .label),
-            subtitle: ShieldConfiguration.Label(text: "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento” \n                                                - Albert Einstein", color: .secondaryLabel),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Voltar", color: .white),
+            title: ShieldConfiguration.Label(text: String(localized: "shieldTitle"), color: .label),
+            subtitle: ShieldConfiguration.Label(
+                text: String(localized: "shieldSubtitle"),
+                color: .secondaryLabel
+            ),
+            primaryButtonLabel: ShieldConfiguration.Label(text: String(localized: "back"), color: .white),
             primaryButtonBackgroundColor: .black
         )
     }
@@ -32,9 +35,12 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
             icon: UIImage(named: "books"),
-            title: ShieldConfiguration.Label(text: "Seus estudos estão lhe esperando", color: .label),
-            subtitle: ShieldConfiguration.Label(text: "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento” \n                                                - Albert Einstein", color: .secondaryLabel),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Voltar", color: .white),
+            title: ShieldConfiguration.Label(text: String(localized: "shieldTitle"), color: .label),
+            subtitle: ShieldConfiguration.Label(
+                text: String(localized: "shieldSubtitle"),
+                color: .secondaryLabel
+            ),
+            primaryButtonLabel: ShieldConfiguration.Label(text: String(localized: "back"), color: .white),
             primaryButtonBackgroundColor: .black
         )
     }

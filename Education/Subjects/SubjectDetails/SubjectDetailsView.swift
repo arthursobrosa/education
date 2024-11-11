@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class SubjectDetailsView: UIView {
     // MARK: - Properties
     
@@ -52,13 +51,13 @@ class SubjectDetailsView: UIView {
 
 extension SubjectDetailsView: ViewCodeProtocol {
     func setupUI() {
-        addSubview(tableView)
+        addSubview(contentView)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            contentView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 }

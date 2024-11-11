@@ -211,3 +211,8 @@
 "noNetworkMessage" = "You are not connected to the internet. Would you like to continue disconnected? All alterations will not be saved to your iCloud account.";
 "accountNotAvailableTitle" = "No iCloud account";
 "accountNotAvailableMessage" = "You are not logged to iCloud. Would you like to continue disconnected? All alterations will not be saved to your iCloud account.";
+
+// MARK: - Shield Configuration
+"shieldTitle" = "Your studies are waiting for you";
+"shieldSubtitle" = "“Knowledge is the only power no one can take away from you”";
+"back" = "Back";

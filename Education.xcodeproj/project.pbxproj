@@ -102,6 +102,7 @@
 		685265532C8B72A5009D9678 /* ThemeCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265522C8B72A5009D9678 /* ThemeCreationView.swift */; };
 		685265552C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685265542C8B72AB009D9678 /* ThemeCreationViewController+Delegate.swift */; };
 		6852F3ED2C8AA175002450A3 /* PickerCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6852F3EC2C8AA175002450A3 /* PickerCase.swift */; };
+		685371CD2CE2963E00667E43 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C8D9A92C4987FF0092E80D /* Localizable.strings */; };
 		685CBFDA2C61597600EC8E09 /* CustomDateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CBFD92C61597600EC8E09 /* CustomDateButton.swift */; };
 		685CBFDC2C615CE300EC8E09 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685CBFDB2C615CE300EC8E09 /* DateView.swift */; };
 		686965C42CB46F3D00D2985D /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686965C32CB46F3D00D2985D /* ManagedSettings.framework */; };
@@ -1495,6 +1496,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEA19E522CDC0625004E3D12 /* Assets.xcassets in Resources */,
+				685371CD2CE2963E00667E43 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

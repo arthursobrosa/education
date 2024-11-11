@@ -212,3 +212,8 @@
 "noNetworkMessage" = "Você não está conectado à internet. Gostaria de prosseguir desconectado? Todas as alterações não serão salvas em sua conta do iCloud.";
 "accountNotAvailableTitle" = "Conta iCloud indisponível";
 "accountNotAvailableMessage" = "Você não está logado no iCloud. Gostaria de prosseguir desconectado? Todas as alterações não serão salvas em sua conta do iCloud.";
+
+// MARK: - Shield Configuration
+"shieldTitle" = "Seus estudos estão lhe esperando";
+"shieldSubtitle" = "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento”";
+"back" = "Voltar";
