@@ -133,6 +133,7 @@
 "newSubject" = "Nova Matéria";
 "editSubject" = "Editar Matéria";
 "subjectName" = "Nome da Matéria";
+"emptySubjectDetails" = "Você não possui registros de estudos realizados para esta matéria.";
 
 // MARK: - Themes
 "themeAlertTitle" = "Adicionar prova";

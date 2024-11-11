@@ -18,12 +18,11 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
-            icon: nil,
-            title: ShieldConfiguration.Label(text: "Shielded", color: .label),
-            subtitle: ShieldConfiguration.Label(text: "This app is shielded", color: .secondaryLabel),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Close", color: .label),
-            primaryButtonBackgroundColor: .cyan,
-            secondaryButtonLabel: ShieldConfiguration.Label(text: "Defer", color: .label)
+            icon: UIImage(named: "books"),
+            title: ShieldConfiguration.Label(text: "Seus estudos estão lhe esperando", color: .label),
+            subtitle: ShieldConfiguration.Label(text: "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento” \n                                                - Albert Einstein", color: .secondaryLabel),
+            primaryButtonLabel: ShieldConfiguration.Label(text: "Voltar", color: .white),
+            primaryButtonBackgroundColor: .black
         )
     }
 
@@ -32,12 +31,11 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
-            icon: nil,
-            title: ShieldConfiguration.Label(text: "Shielded", color: .label),
-            subtitle: ShieldConfiguration.Label(text: "This app is shielded", color: .secondaryLabel),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Close", color: .label),
-            primaryButtonBackgroundColor: .cyan,
-            secondaryButtonLabel: ShieldConfiguration.Label(text: "Defer", color: .label)
+            icon: UIImage(named: "books"),
+            title: ShieldConfiguration.Label(text: "Seus estudos estão lhe esperando", color: .label),
+            subtitle: ShieldConfiguration.Label(text: "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento” \n                                                - Albert Einstein", color: .secondaryLabel),
+            primaryButtonLabel: ShieldConfiguration.Label(text: "Voltar", color: .white),
+            primaryButtonBackgroundColor: .black
         )
     }
 

@@ -51,7 +51,8 @@ class SubjectDetailsViewController: UIViewController{
         super.viewDidLoad()
 
         setupNavigationItems()
-        self.viewModel.fetchFocusSessions()
+        viewModel.fetchFocusSessions()
+        setContentView()
     }
 
     // MARK: - Methods
@@ -109,10 +110,28 @@ class SubjectDetailsViewController: UIViewController{
         return formattedDate.prefix(1).uppercased() + formattedDate.dropFirst()
     }
     
-    func reloadTableAndSubject(){
-        self.viewModel.subject =  self.viewModel.subjectManager.fetchSubject(withID: self.viewModel.subject?.unwrappedID)
-        self.subjectDetailsView.tableView.reloadData()
-        navigationItem.title = (self.viewModel.subject != nil) ?  self.viewModel.subject?.unwrappedName : String(localized: "other")
+    func setContentView() {
+        let isEmpty = viewModel.areSessionsEmpty()
+        
+        if isEmpty {
+            addContentSubview(childSubview: subjectDetailsView.emptyView)
+        } else {
+            addContentSubview(childSubview: subjectDetailsView.tableView)
+        }
+    }
+    
+    private func addContentSubview(childSubview: UIView) {
+        let parentSubview = subjectDetailsView.contentView
+        parentSubview.addSubview(childSubview)
+
+        childSubview.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            childSubview.topAnchor.constraint(equalTo: parentSubview.topAnchor),
+            childSubview.leadingAnchor.constraint(equalTo: parentSubview.leadingAnchor),
+            childSubview.trailingAnchor.constraint(equalTo: parentSubview.trailingAnchor),
+            childSubview.bottomAnchor.constraint(equalTo: parentSubview.bottomAnchor),
+        ])
     }
     
     @objc
