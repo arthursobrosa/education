@@ -199,6 +199,7 @@ extension FocusSessionViewModel {
     }
 
     func pauseResumeButtonTapped() {
+        liveActivity.endActivity(timerCase: activityManager.timerCase)
         activityManager.isPaused.toggle()
 
         guard activityManager.isAtWorkTime else { return }

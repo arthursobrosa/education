@@ -20,7 +20,7 @@ extension FocusPickerViewController: FocusPickerDelegate {
         viewModel.setFocusSessionModel()
         viewModel.unblockApps()
         coordinator?.showTimer(focusSessionModel: viewModel.focusSessionModel)
-        liveActivity.liveActivityManaging.startActivity(endTime: Date().addingTimeInterval(Double(viewModel.focusSessionModel.totalSeconds)))
+        liveActivity.startActivity(endTime: viewModel.focusSessionModel.totalSeconds, title: viewModel.focusSessionModel.subject?.unwrappedName, timerCase: viewModel.focusSessionModel.timerCase)
     }
 
     func dismiss() {

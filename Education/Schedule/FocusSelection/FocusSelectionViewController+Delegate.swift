@@ -36,6 +36,7 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
         switch viewModel.focusSessionModel.timerCase {
         case .stopwatch:
             coordinator?.showTimer(focusSessionModel: viewModel.focusSessionModel)
+            LiveActivityService.shared.startActivity(endTime: viewModel.focusSessionModel.totalSeconds, title: viewModel.focusSessionModel.subject?.unwrappedName, timerCase: viewModel.focusSessionModel.timerCase)
         case .timer:
             coordinator?.showFocusPicker(focusSessionModel: viewModel.focusSessionModel)
         case .pomodoro:
