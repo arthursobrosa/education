@@ -10,14 +10,21 @@ import Foundation
 
 final class LiveActivityService: LiveActivityManaging {
     private var activity: Activity<TimerAttributes>?
-    
     static let shared = LiveActivityService()
+    
+    private init() {}
 
     // Function to start the Live Activity
-    func startActivity(endTime: Date, title: String) {
-        let attributes = TimerAttributes(timerName: title)
-        let state = TimerAttributes.TimerStatus(endTime: endTime)
-
+    func startActivity(endTime: Int, title: String?, timerCase: TimerCase) {
+        let attributes = TimerAttributes(timerName: title ?? "Free Focus")
+        let state: TimerAttributes.TimerStatus
+        
+        if timerCase == .stopwatch {
+            state = TimerAttributes.TimerStatus(endTime: Date())
+        } else {
+            state = TimerAttributes.TimerStatus(endTime: Date().addingTimeInterval(TimeInterval(endTime)))
+        }
+        
         do {
             activity = try Activity<TimerAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
             print("Live Activity started successfully!")
@@ -36,11 +43,13 @@ final class LiveActivityService: LiveActivityManaging {
     }
 
     // Function to end the Live Activity
-    func endActivity() {
+    func endActivity(timerCase: TimerCase) {
         let state = TimerAttributes.TimerStatus(endTime: .now)
 
-        Task {
-            await activity?.end(using: state, dismissalPolicy: .immediate)
+        if timerCase != .stopwatch {
+            Task {
+                await activity?.end(using: state, dismissalPolicy: .immediate)
+            }
         }
     }
 }

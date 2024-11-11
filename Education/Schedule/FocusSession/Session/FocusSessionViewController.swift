@@ -81,7 +81,7 @@ class FocusSessionViewController: UIViewController {
     
     
     private func foo() {
-        liveActivity.endActivity()
+        liveActivity.endActivity(timerCase: viewModel.activityManager.timerCase)
     }
 
     override func viewWillAppear(_ animated: Bool) {

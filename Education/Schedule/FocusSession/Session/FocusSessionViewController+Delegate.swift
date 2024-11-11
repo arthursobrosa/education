@@ -87,7 +87,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
 
     func didFinish() {
-        liveActivity.endActivity()
+        liveActivity.endActivity(timerCase: viewModel.activityManager.timerCase)
         
         viewModel.stopAlarm()
         viewModel.didTapFinish = true
@@ -106,7 +106,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
 
     func didTapExtendButton() {
-        liveActivity.endActivity()
+        liveActivity.endActivity(timerCase: viewModel.activityManager.timerCase)
         viewModel.stopAlarm()
         
         var focusExtensionAlertCase: FocusExtensionAlertCase
