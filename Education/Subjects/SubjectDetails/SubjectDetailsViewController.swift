@@ -13,7 +13,7 @@ class SubjectDetailsViewController: UIViewController{
     
     // MARK: - Coordinator and ViewModel
 
-    weak var coordinator: Dismissing?
+    weak var coordinator: (Dismissing & ShowingSubjectCreation)?
     let viewModel: SubjectDetailsViewModel
 
     // MARK: - Properties
@@ -58,7 +58,33 @@ class SubjectDetailsViewController: UIViewController{
     // MARK: - Methods
 
     private func setupNavigationItems() {
-        navigationItem.title = viewModel.subject.unwrappedName
+        
+        navigationItem.title = (self.viewModel.subject != nil) ?  self.viewModel.subject?.unwrappedName : String(localized: "other")
+        
+        let editButton = UIButton()
+        editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+        editButton.setPreferredSymbolConfiguration(.init(pointSize: 22), forImageIn: .normal)
+        editButton.imageView?.contentMode = .scaleAspectFit
+        editButton.addTarget(self, action: #selector(listButtonTapped), for: .touchUpInside)
+        editButton.tintColor = UIColor(named: "system-text")
+        
+        let deleteButton = UIButton()
+        deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        deleteButton.setPreferredSymbolConfiguration(.init(pointSize: 22), forImageIn: .normal)
+        deleteButton.imageView?.contentMode = .scaleAspectFit
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        deleteButton.tintColor = UIColor(named: "system-text")
+
+        let addItem = UIBarButtonItem(customView: editButton)
+        let deleteItem = UIBarButtonItem(customView: deleteButton)
+
+        if(self.viewModel.subject != nil){
+            navigationItem.rightBarButtonItems = [addItem]
+        } else {
+            navigationItem.rightBarButtonItems = [deleteItem]
+        }
+        
+        
     }
     
     func formatMonthYear(monthYear: String) -> String? {
@@ -107,6 +133,33 @@ class SubjectDetailsViewController: UIViewController{
             childSubview.bottomAnchor.constraint(equalTo: parentSubview.bottomAnchor),
         ])
     }
+    
+    @objc
+    func listButtonTapped() {
+        coordinator?.showSubjectCreation(viewModel: viewModel.studyTimeViewModel)
+    }
+    
+    @objc
+    func deleteButtonTapped() {
+        showDeleteOtherAlert()
+    }
+    
+    func showDeleteOtherAlert() {
+        let alert = UIAlertController(title: String(localized: "deleteOther"), message: String(localized: "deleteOtherBodyText"), preferredStyle: .alert)
+
+        let deleteAction = UIAlertAction(title: String(localized: "confirm"), style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.deleteOtherSessions()
+            self.viewModel.fetchFocusSessions()
+            self.subjectDetailsView.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
+
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 protocol SubjectDetailsDelegate: AnyObject {
@@ -142,7 +195,7 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
         let months = Array(self.viewModel.sessionsByMonth.keys).sorted(by: >)
         let monthKey = months[indexPath.section]
         if let session = self.viewModel.sessionsByMonth[monthKey]?[indexPath.row] {
-            cell.configure(with: session, color: self.viewModel.subject.unwrappedColor)
+            cell.configure(with: session, color: self.viewModel.subject?.unwrappedColor ?? "button-normal")
         }
         
         return cell

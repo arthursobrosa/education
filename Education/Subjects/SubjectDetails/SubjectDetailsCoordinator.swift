@@ -7,7 +7,14 @@
 
 import UIKit
 
-class SubjectDetailsCoordinator: Coordinator, Dismissing {
+class SubjectDetailsCoordinator: Coordinator, Dismissing, ShowingSubjectCreation {
+    func showSubjectCreation(viewModel: StudyTimeViewModel) {
+        let child = SubjectCreationCoordinator(navigationController: navigationController, viewModel: viewModel)
+        child.parentCoordinator = self
+        childCoordinators.append(child)
+        child.start()
+    }
+    
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
 
