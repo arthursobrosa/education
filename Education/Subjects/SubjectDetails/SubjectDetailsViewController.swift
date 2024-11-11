@@ -95,6 +95,7 @@ class SubjectDetailsViewController: UIViewController {
             self.viewModel.deleteOtherSessions()
             self.viewModel.fetchFocusSessions()
             self.subjectDetailsView.tableView.reloadData()
+            self.setContentView()
         }
         
         let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
@@ -129,6 +130,8 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FocusSessionCell.identifier, for: indexPath) as? FocusSessionCell else {
             fatalError("could not dequeu focus session cell")
         }
+        
+        cell.selectionStyle = .none
         
         let months = Array(viewModel.sessionsByMonth.keys).sorted(by: >)
         let monthKey = months[indexPath.section]

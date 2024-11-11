@@ -12,7 +12,7 @@ import UIKit
 class StudyTimeViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
     
-    weak var coordinator: (ShowingSubjectCreation & ShowingOtherSubject & ShowingSubjectDetails)?
+    weak var coordinator: (ShowingSubjectCreation & ShowingSubjectDetails)?
     let viewModel: StudyTimeViewModel
     
     var createSubjectTip = CreateSubjectTip()
@@ -147,6 +147,7 @@ class StudyTimeViewController: UIViewController {
             self.viewModel.removeSubject(subject: nil)
             self.reloadTable()
         }
+        
         let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
         
         alert.addAction(deleteAction)
@@ -248,19 +249,16 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard indexPath.section != 0 else { return nil }
         
+        guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell else { return nil }
+        
         let editButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
             guard let self else { return }
             
-            guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
-                  let subject = cell.subject else {
-                
-                self.coordinator?.showOtherSubject(viewModel: self.viewModel)
-                return
+            if let subject = cell.subject {
+                self.viewModel.currentEditingSubject = subject
+                self.viewModel.selectedSubjectColor.value = subject.unwrappedColor
+                self.coordinator?.showSubjectCreation(viewModel: self.viewModel)
             }
-            
-            self.viewModel.currentEditingSubject = subject
-            self.viewModel.selectedSubjectColor.value = subject.unwrappedColor
-            self.coordinator?.showSubjectCreation(viewModel: self.viewModel)
         }
         
         editButton.backgroundColor = .systemBackground
@@ -270,14 +268,11 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         let deleteButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
             guard let self else { return }
             
-            guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
-                  let subject = cell.subject else {
-                
+            if let subject = cell.subject {
+                self.showDeleteAlert(for: subject)
+            } else {
                 self.showDeleteOtherAlert()
-                return
             }
-            
-            self.showDeleteAlert(for: subject)
         }
         
         deleteButton.backgroundColor = .systemBackground

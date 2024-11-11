@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, ShowingOtherSubject, ShowingSubjectDetails {
+class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, ShowingSubjectDetails {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
@@ -27,13 +27,6 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
 
     func showSubjectCreation(viewModel: StudyTimeViewModel) {
         let child = SubjectCreationCoordinator(navigationController: navigationController, viewModel: viewModel)
-        child.parentCoordinator = self
-        childCoordinators.append(child)
-        child.start()
-    }
-
-    func showOtherSubject(viewModel: StudyTimeViewModel) {
-        let child = OtherSubjectCoordinator(navigationController: navigationController, viewModel: viewModel)
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()
@@ -69,17 +62,6 @@ extension StudyTimeCoordinator: UIViewControllerTransitioningDelegate {
             }
 
             subjectCreationVC.viewModel.selectedSubjectColor.value = subjectCreationVC.viewModel.selectAvailableColor()
-
-            if let studyTimeVC = navigationController.viewControllers.first as? StudyTimeViewController {
-                studyTimeVC.reloadTable()
-            }
-        }
-
-        if let otherSubjectVC = nav.viewControllers.first as? OtherSubjectViewController {
-            childDidFinish(otherSubjectVC.coordinator as? Coordinator)
-
-            otherSubjectVC.viewModel.fetchSubjects()
-            otherSubjectVC.viewModel.fetchFocusSessions()
 
             if let studyTimeVC = navigationController.viewControllers.first as? StudyTimeViewController {
                 studyTimeVC.reloadTable()
