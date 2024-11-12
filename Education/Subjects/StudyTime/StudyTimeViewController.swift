@@ -237,7 +237,7 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.cellForRow(at: indexPath) as? SubjectTimeTableViewCell,
               let subject = cell.subject else {
             
-            coordinator?.showSubjectDetails(subject: nil, studyTimeViewModel: self.viewModel)
+            coordinator?.showSubjectDetails(subject: nil, studyTimeViewModel: viewModel)
             return
         }
         

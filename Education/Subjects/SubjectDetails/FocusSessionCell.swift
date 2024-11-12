@@ -21,6 +21,24 @@ class FocusSessionCell: UITableViewCell {
         }
     }
     
+    var colorName: String? {
+        didSet {
+            guard let colorName else { return }
+            
+            containerView.layer.borderColor = UIColor(named: colorName)?.cgColor
+            subjectName.textColor = UIColor(named: colorName)
+            commentImageView.tintColor = UIColor(named: colorName)
+            totalHours.textColor = UIColor(named: colorName)?.darker(by: 0.8)
+            
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+                self.containerView.layer.borderColor = UIColor(named: colorName)?.cgColor
+                self.subjectName.textColor = UIColor(named: colorName)
+                self.commentImageView.tintColor = UIColor(named: colorName)
+                self.totalHours.textColor = UIColor(named: colorName)?.darker(by: 0.8)
+            }
+        }
+    }
+    
     // MARK: - UI Properties
     
     let dateLabel = UILabel()
@@ -72,18 +90,11 @@ class FocusSessionCell: UITableViewCell {
     
     // MARK: - Methods
     
-    func configure(with session: FocusSession, color: String) {
-        containerView.layer.borderColor = UIColor(named: color)?.cgColor
-        
+    func configure(with session: FocusSession) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM"
         subjectName.text = dateFormatter.string(from: session.date ?? Date())
-        subjectName.textColor = UIColor(named: color)
-        
-        commentImageView.tintColor = UIColor(named: color)
-        
         totalHours.text = formatTime(from: Int(session.totalTime))
-        totalHours.textColor = UIColor(named: color)?.darker(by: 0.8)
     }
     
      private func formatTime(from time: Int) -> String {

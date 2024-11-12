@@ -191,9 +191,9 @@
 "endBlockAlertBody" = "Your apps are unblocked now";
 
 // MARK: - TestDetails
-"questionsLable" = "Questions";
-"dateLable" = "Date";
-"notesLable" = "Notes";
+"questionsLabel" = "Questions";
+"dateLabel" = "Date";
+"notesLabel" = "Notes";
 
 // MARK: - Sync Monitor
 "noNetworkTitle" = "No network available";

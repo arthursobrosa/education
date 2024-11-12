@@ -145,7 +145,8 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
         let months = Array(viewModel.sessionsByMonth.keys).sorted(by: >)
         let monthKey = months[indexPath.section]
         if let session = viewModel.sessionsByMonth[monthKey]?[indexPath.row] {
-            cell.configure(with: session, color: viewModel.subject?.unwrappedColor ?? "button-normal")
+            cell.configure(with: session)
+            cell.colorName = viewModel.subject?.unwrappedColor ?? "button-normal"
             cell.hasNotes = session.hasNotes()
         }
         

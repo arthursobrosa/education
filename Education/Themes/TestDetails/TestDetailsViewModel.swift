@@ -8,17 +8,25 @@
 import Foundation
 
 class TestDetailsViewModel {
+    // MARK: - Test Manager
+    
     private let testManager: TestManager
 
+    // MARK: - Properties
+    
     let theme: Theme
     var test: Test
 
+    // MARK: - Initializer
+    
     init(theme: Theme, test: Test) {
         self.theme = theme
         self.test = test
         testManager = TestManager()
     }
 
+    // MARK: - Methods
+    
     func getDateString(from test: Test) -> String {
         let date = test.unwrappedDate
 
@@ -52,5 +60,27 @@ class TestDetailsViewModel {
 
         guard let updatedTest else { return }
         test = updatedTest
+    }
+    
+    func getTestDetailsConfig() -> TestDetailsView.Config {
+        let titleText = getDateFullString()
+        let notesText = test.unwrappedComment
+        let questionsText = "\(test.rightQuestions)/\(test.totalQuestions)"
+        let themeTitleText = theme.unwrappedName
+        let progress = CGFloat(test.rightQuestions) / CGFloat(test.totalQuestions)
+        let dateText = getDateString(from: test)
+        let percentageText = "\(Int(CGFloat(test.rightQuestions) / CGFloat(test.totalQuestions) * 100))%"
+        
+        let config = TestDetailsView.Config(
+            titleText: titleText,
+            notesText: notesText,
+            questionsText: questionsText,
+            themeTitleText: themeTitleText,
+            progress: progress,
+            dateText: dateText,
+            percentageText: percentageText
+        )
+        
+        return config
     }
 }

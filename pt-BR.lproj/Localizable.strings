@@ -192,9 +192,9 @@
 "endBlockAlertBody" = "Seus apps estão desbloqueados agora";
 
 // MARK: - TestDetails
-"questionsLable" = "Questões";
-"dateLable" = "Data";
-"notesLable" = "Notas";
+"questionsLabel" = "Questões";
+"dateLabel" = "Data";
+"notesLabel" = "Notas";
 
 // MARK: - Sync Monitor
 "noNetworkTitle" = "Conexão de internet indisponível";
