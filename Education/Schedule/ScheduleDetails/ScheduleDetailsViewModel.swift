@@ -36,11 +36,18 @@ class ScheduleDetailsViewModel {
     
     var selectedDays: [SelectedDay]
 
-    var selectedStartTime: Date
-    var selectedEndTime: Date
-
-    var alarmBefore: Bool
-    var alarmInTime: Bool
+    var editingScheduleStartTime: Date
+    var editingScheduleEndTime: Date
+    
+    var alarmNames: [String] = [
+        String(localized: "noneAlarm"),
+        String(format: NSLocalizedString("timeBefore", comment: ""), "1h"),
+        String(format: NSLocalizedString("timeBefore", comment: ""), "30 min"),
+        String(format: NSLocalizedString("timeBefore", comment: ""), "15 min"),
+        String(format: NSLocalizedString("timeBefore", comment: ""), "5 min"),
+        String(localized: "onTime"),
+    ]
+    var selectedAlarms: [Int]
 
     var blocksApps: Bool
     
@@ -87,6 +94,7 @@ class ScheduleDetailsViewModel {
         var selectedDayIndex: Int = selectedDay ?? 0
 
         subjectsNames = [String]()
+        selectedAlarms = [0]
 
         if let subjects = self.subjectManager.fetchSubjects() {
             subjectsNames = subjects.map { $0.unwrappedName }
@@ -95,9 +103,6 @@ class ScheduleDetailsViewModel {
             }
         }
 
-        alarmBefore = false
-        alarmInTime = false
-
         if let schedule {
             if let subject = self.subjectManager.fetchSubject(withID: schedule.unwrappedSubjectID) {
                 selectedSubjectName = subject.unwrappedName
@@ -105,23 +110,22 @@ class ScheduleDetailsViewModel {
 
             selectedStartTime = schedule.unwrappedStartTime
             selectedEndTime = schedule.unwrappedEndTime
-            alarmBefore = schedule.earlyAlarm
-            alarmInTime = schedule.imediateAlarm
             selectedDayIndex = schedule.unwrappedDay
+            selectedAlarms = schedule.unwrappedAlarms
         }
 
-        self.editingScheduleDay = days[selectedDayIndex]
+        editingScheduleDay = days[selectedDayIndex]
         
         let selectedDay = SelectedDay(
             name: days[selectedDayIndex],
             startTime: selectedStartTime,
             endTime: selectedEndTime
         )
-        self.selectedDays = [selectedDay]
+        selectedDays = [selectedDay]
         
         self.selectedSubjectName = selectedSubjectName
-        self.selectedStartTime = selectedStartTime
-        self.selectedEndTime = selectedEndTime
+        self.editingScheduleStartTime = selectedStartTime
+        self.editingScheduleEndTime = selectedEndTime
         scheduleID = schedule?.unwrappedID
         blocksApps = schedule?.blocksApps ?? false
         
@@ -150,10 +154,9 @@ extension ScheduleDetailsViewModel {
 
     private func createNewSchedules() {
         for selectedDay in selectedDays {
+            handleAlarm(startTime: selectedDay.startTime, endTime: selectedDay.endTime)
             createNewSchedule(withDay: selectedDay)
         }
-        
-        handleAlarms()
     }
     
     private func createNewSchedule(withDay selectedDay: SelectedDay) {
@@ -169,8 +172,7 @@ extension ScheduleDetailsViewModel {
             startTime: selectedDay.startTime,
             endTime: selectedDay.endTime,
             blocksApps: blocksApps,
-            earlyAlarm: alarmBefore,
-            imediateAlarm: alarmInTime
+            alarms: selectedAlarms
         )
     }
     
@@ -188,16 +190,16 @@ extension ScheduleDetailsViewModel {
            let startTime = schedule.startTime {
             
             schedule.dayOfTheWeek = Int16(dayOfTheWeek)
-            notificationService?.cancelNotifications(forDate: startTime)
+            cancelNotifications()
         }
         
-        schedule.startTime = selectedStartTime
-        schedule.endTime = selectedEndTime
+        schedule.startTime = editingScheduleStartTime
+        schedule.endTime = editingScheduleEndTime
         schedule.blocksApps = blocksApps
-        schedule.earlyAlarm = alarmBefore
-        schedule.imediateAlarm = alarmInTime
+        let scheduleAlarms = selectedAlarms.reduce(0) { $0 * 10 + $1 }
+        schedule.alarms = Int16(scheduleAlarms)
 
-        handleAlarms()
+        handleAlarm(startTime: editingScheduleStartTime, endTime: editingScheduleEndTime)
         
         scheduleManager.updateSchedule(schedule)
     }
@@ -248,9 +250,30 @@ extension ScheduleDetailsViewModel {
     }
 
     private func isTimeSlotAvailable(existingSchedules: [Schedule]) -> Bool {
-        guard let newStartTime = formatDate(selectedStartTime),
-              let newEndTime = formatDate(selectedEndTime) else { return false }
-
+        let isUpdating = isUpdatingSchedule()
+        
+        if isUpdating {
+            guard let newStartTime = formatDate(editingScheduleStartTime),
+                  let newEndTime = formatDate(editingScheduleEndTime) else { return false }
+            
+            return compareStartAndEndTime(ofSchedules: existingSchedules, newStartTime: newStartTime, newEndTime: newEndTime)
+        } else {
+            for selectedDay in selectedDays {
+                guard let newStartTime = formatDate(selectedDay.startTime),
+                      let newEndTime = formatDate(selectedDay.endTime) else { return false }
+                
+                let comparison = compareStartAndEndTime(ofSchedules: existingSchedules, newStartTime: newStartTime, newEndTime: newEndTime)
+                
+                if !comparison {
+                    return false
+                }
+            }
+            
+            return true
+        }
+    }
+    
+    private func compareStartAndEndTime(ofSchedules existingSchedules: [Schedule], newStartTime: Date, newEndTime: Date) -> Bool {
         for schedule in existingSchedules {
             if let existingStartTime = formatDate(schedule.unwrappedStartTime),
                let existingEndTime = formatDate(schedule.unwrappedEndTime),
@@ -262,7 +285,7 @@ extension ScheduleDetailsViewModel {
 
             break
         }
-
+        
         return true
     }
     
@@ -292,8 +315,30 @@ extension ScheduleDetailsViewModel {
         
         return selectedDayView
     }
+}
+
+// MARK: - TableView Sections
+
+extension ScheduleDetailsViewModel {
+    func numberOfSections() -> Int {
+        2 + numberOfDaySections() + numberOfAlarmSections()
+    }
+}
+
+// MARK: - Day Sections
+
+extension ScheduleDetailsViewModel {
+    func numberOfDaySections() -> Int {
+        let isUpdating = isUpdatingSchedule()
+        
+        if isUpdating {
+            return 1
+        } else {
+            return selectedDays.count
+        }
+    }
     
-    func getUpdatedDaysInfo() -> (remainingDays: [String], lastDayIndex: Int) {
+    private func getUpdatedDaysInfo() -> (remainingDays: [String], lastDayIndex: Int) {
         var remainingDays = days
         var lastDayIndex = Int()
         
@@ -373,7 +418,7 @@ extension ScheduleDetailsViewModel {
         let isUpdating = isUpdatingSchedule()
         
         if isUpdating {
-            return (selectedStartTime, selectedEndTime)
+            return (editingScheduleStartTime, editingScheduleEndTime)
         }
         
         let index = section - 1
@@ -407,12 +452,106 @@ extension ScheduleDetailsViewModel {
     }
 }
 
+// MARK: - Alarm Sections
+
+extension ScheduleDetailsViewModel {
+    func numberOfAlarmSections() -> Int {
+        selectedAlarms.count
+    }
+    
+    func getAlarmText(forIndex index: Int) -> String {
+        let selectedAlarm = selectedAlarms[index]
+        return alarmNames[selectedAlarm]
+    }
+    
+    func filteredAlarmNames(for alarmIndex: Int) -> [String] {
+        if selectedAlarms.count == 1 {
+            return alarmNames
+        } else {
+            var filteredAlarmNames = alarmNames
+            
+            if let noneIndex = filteredAlarmNames.firstIndex(where: { $0 == alarmNames[0] }) {
+                filteredAlarmNames.remove(at: noneIndex)
+            }
+            
+            let selectedAlarmNames = selectedAlarms.map { alarmNames[$0] }
+            
+            for (index, selectedAlarmName) in selectedAlarmNames.enumerated() where index != alarmIndex {
+                if let removedIndex = filteredAlarmNames.firstIndex(where: { $0 == selectedAlarmName }) {
+                    filteredAlarmNames.remove(at: removedIndex)
+                }
+            }
+            
+            return filteredAlarmNames
+        }
+    }
+    
+    func getSelectedAlarmIndex(forSection section: Int) -> Int? {
+        let numberOfDaySections = numberOfDaySections()
+        let index = section - 1 - numberOfDaySections
+        let items = filteredAlarmNames(for: index)
+        let selectedAlarm = selectedAlarms[index]
+        let selectedItem = alarmNames[selectedAlarm]
+        
+        guard let selectedIndex = items.firstIndex(where: { $0 == selectedItem }) else {
+            return nil
+        }
+        
+        return Int(selectedIndex)
+    }
+    
+    private func getUpdatedAlarmsInfo() -> (remainingAlarmNames: [String], lastAlarmIndex: Int) {
+        var remainingAlarmNames = alarmNames
+        let numberOfAlarmSections = numberOfAlarmSections()
+        
+        if numberOfAlarmSections > 1 {
+            if let noneIndex = remainingAlarmNames.firstIndex(where: { $0 == alarmNames[0] }) {
+                remainingAlarmNames.remove(at: noneIndex)
+            }
+        }
+        
+        var lastAlarmIndex = Int()
+        let selectedAlarmNames = selectedAlarms.map { alarmNames[$0] }
+        
+        for selectedAlarmName in selectedAlarmNames {
+            if let index = remainingAlarmNames.firstIndex(where: { $0 == selectedAlarmName }) {
+                remainingAlarmNames.remove(at: index)
+                lastAlarmIndex = index
+            }
+        }
+        
+        return (remainingAlarmNames, lastAlarmIndex)
+    }
+    
+    func createNewAlarmSection() {
+        let updatedInfo = getUpdatedAlarmsInfo()
+        let remainingAlarmNames = updatedInfo.remainingAlarmNames
+        
+        if !remainingAlarmNames.isEmpty {
+            let alarmIndex = updatedInfo.lastAlarmIndex % remainingAlarmNames.count
+            let newAlarmName = remainingAlarmNames[alarmIndex]
+            
+            if let index = alarmNames.firstIndex(where: { $0 == newAlarmName }) {
+                selectedAlarms.append(Int(index))
+            }
+        }
+    }
+}
+
 // MARK: - Handling Subjects
 
 extension ScheduleDetailsViewModel {
     func setSubjectNames() {
         if let subjects = subjectManager.fetchSubjects() {
             subjectsNames = subjects.map { $0.unwrappedName }
+        }
+    }
+    
+    func getSubjectName() -> String {
+        if selectedSubjectName.isEmpty {
+            String(localized: "createNewSubject")
+        } else {
+            selectedSubjectName
         }
     }
 
@@ -446,6 +585,10 @@ extension ScheduleDetailsViewModel {
     func getSubjects() -> [Subject]? {
         subjectManager.fetchSubjects()
     }
+    
+    func deleteLastAlarmSection() {
+        selectedAlarms.removeLast()
+    }
 }
 
 // MARK: - Notifications Handling
@@ -471,33 +614,21 @@ extension ScheduleDetailsViewModel {
 // MARK: - Alarms
 
 extension ScheduleDetailsViewModel {
-    private func handleAlarms() {
-        let selectedDate = selectedStartTime
+    private func handleAlarm(startTime: Date, endTime: Date) {
+        let selectedDate = startTime
         let title = String(localized: "reminder")
         let bodyBefore = String(format: NSLocalizedString("comingEvent", comment: ""), String(selectedSubjectName))
         let bodyInTime = String(format: NSLocalizedString("immediateEvent", comment: ""), String(selectedSubjectName))
-
-        if alarmBefore {
+        
+        let scheduleInfo = ScheduleInfo(
+            subjectName: selectedSubjectName,
+            dates: (startTime, endTime)
+        )
+        
+        for selectedAlarm in selectedAlarms {
             notificationService?.scheduleWeeklyNotification(
                 title: title,
-                body: bodyBefore,
-                date: selectedDate,
-                minutesBefore: 5,
-                scheduleInfo: nil
-            )
-        }
-
-        if alarmInTime {
-            let scheduleInfo = ScheduleInfo(
-                subjectName: selectedSubjectName,
-                dates: (selectedStartTime, selectedEndTime)
-            )
-
-            notificationService?.scheduleWeeklyNotification(
-                title: title,
-                body: bodyInTime,
-                date: selectedDate,
-                minutesBefore: 0,
+                alarm: selectedAlarm,
                 scheduleInfo: scheduleInfo
             )
         }

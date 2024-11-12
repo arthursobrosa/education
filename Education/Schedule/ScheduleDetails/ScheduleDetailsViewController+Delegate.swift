@@ -192,16 +192,16 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
         if isUpdating {
             switch tag {
             case 1:
-                viewModel.selectedStartTime = date
+                viewModel.editingScheduleStartTime = date
 
-                if viewModel.selectedEndTime <= viewModel.selectedStartTime {
-                    viewModel.selectedEndTime = viewModel.selectedStartTime.addingTimeInterval(60)
+                if viewModel.editingScheduleEndTime <= viewModel.editingScheduleStartTime {
+                    viewModel.editingScheduleEndTime = viewModel.editingScheduleStartTime.addingTimeInterval(60)
                 }
             case 2:
-                viewModel.selectedEndTime = date
+                viewModel.editingScheduleEndTime = date
 
-                if viewModel.selectedStartTime >= viewModel.selectedEndTime {
-                    viewModel.selectedStartTime = viewModel.selectedEndTime.addingTimeInterval(-60)
+                if viewModel.editingScheduleStartTime >= viewModel.editingScheduleEndTime {
+                    viewModel.editingScheduleStartTime = viewModel.editingScheduleEndTime.addingTimeInterval(-60)
                 }
             default:
                 break
@@ -253,8 +253,8 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
         var endTime = Date()
         
         if isUpdating {
-            startTime = viewModel.selectedStartTime
-            endTime = viewModel.selectedEndTime
+            startTime = viewModel.editingScheduleStartTime
+            endTime = viewModel.editingScheduleEndTime
         } else {
             let section = getDatePickerSection(forDatePickerTag: tag)
             startTime = viewModel.selectedDays[section].startTime
@@ -307,7 +307,8 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
             updateCellAccessory(
                 for: viewModel.selectedSubjectName,
                 at: 0,
-                color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
+                color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName),
+                isDaySection: true
             )
         }
         

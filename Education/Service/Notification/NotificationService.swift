@@ -37,7 +37,7 @@ protocol NotificationServiceProtocol {
     func setDelegate(_ delegate: (any UNUserNotificationCenterDelegate)?)
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Void)
     func scheduleEndNotification(title: String, subjectName: String?, date: Date)
-    func scheduleWeeklyNotification(title: String, body: String, date: Date, minutesBefore: Int, scheduleInfo: ScheduleInfo?)
+    func scheduleWeeklyNotification(title: String, alarm: Int, scheduleInfo: ScheduleInfo)
     func cancelAllNotifications()
     func cancelNotificationByName(name: String?)
     func cancelNotifications(forDate date: Date)
@@ -82,17 +82,42 @@ class NotificationService: NotificationServiceProtocol {
         }
     }
 
-    func scheduleWeeklyNotification(title: String, body: String, date: Date, minutesBefore: Int, scheduleInfo: ScheduleInfo?) {
+    func scheduleWeeklyNotification(title: String, alarm: Int, scheduleInfo: ScheduleInfo) {
         let content = UNMutableNotificationContent()
         content.title = title
-        content.body = body
         content.sound = .default
-
-        if let scheduleInfo {
-            let userInfo = scheduleInfo.getUserInfo()
-            content.userInfo = userInfo
+        
+        var minutesBefore = 0
+        
+        switch alarm {
+        case 1:
+            minutesBefore = 60
+        case 2:
+            minutesBefore = 30
+        case 3:
+            minutesBefore = 15
+        case 4:
+            minutesBefore = 5
+        default:
+            minutesBefore = 0
         }
-
+        
+        var subjectName = String()
+        var body = String()
+        
+        subjectName = scheduleInfo.subjectName
+        let userInfo = scheduleInfo.getUserInfo()
+        
+        if minutesBefore == 0 {
+            body = String(format: NSLocalizedString("immediateEvent", comment: ""), subjectName)
+            content.userInfo = userInfo
+        } else {
+            body = String(format: NSLocalizedString("comingEvent", comment: ""), subjectName)
+        }
+        
+        content.body = body
+        
+        let date = scheduleInfo.dates.startTime
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd-HH-mm"
         let dateString = dateFormatter.string(from: date)
@@ -138,8 +163,7 @@ class NotificationService: NotificationServiceProtocol {
             guard let self else { return }
 
             let requestIDs = requests.filter { $0.identifier.hasPrefix(dateString) }.map { $0.identifier }
-
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: requestIDs)
+            self.notificationCenter.removePendingNotificationRequests(withIdentifiers: requestIDs)
         }
     }
 

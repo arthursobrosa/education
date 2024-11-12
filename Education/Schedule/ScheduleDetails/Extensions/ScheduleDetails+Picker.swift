@@ -19,10 +19,17 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent _: Int) -> Int {
+        let numberOfSections = viewModel.numberOfSections()
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
+        
         // Subjects section
         if pickerView.tag == 0 {
             return viewModel.subjectsNames.count
-        } else { // day section
+        } else if pickerView.tag >= (numberOfSections - 1) - numberOfAlarmSections { // Alarm section
+            let numberOfDaySections = viewModel.numberOfDaySections()
+            let index = pickerView.tag - 1 - numberOfDaySections
+            return viewModel.filteredAlarmNames(for: index).count
+        } else { // Day section
             let index = pickerView.tag - 1
             return viewModel.filteredDayNames(for: index).count
         }
@@ -30,6 +37,8 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
 
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var pickerLabel = view as? UILabel
+        let numberOfSections = viewModel.numberOfSections()
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
 
         if pickerLabel == nil {
             pickerLabel = UILabel()
@@ -44,25 +53,36 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         if pickerView.tag == 0 {
             pickerView.subviews.last?.backgroundColor = .clear
             pickerLabel?.text = viewModel.subjectsNames[row]
-            updateSubjectSelectionIndicator(pickerView: pickerView, component: component)
+            updateSelectionIndicator(pickerView: pickerView, component: component, isSubject: true)
             
             if row == selectedRow {
                 let subjectColorName = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
                 pickerLabel?.textColor = UIColor(named: subjectColorName)?.darker(by: 0.8)
             }
-        } else { // Day section
-            let isUpdating = viewModel.isUpdatingSchedule()
+        } else if pickerView.tag >= (numberOfSections - 1) - numberOfAlarmSections { // Alarm section
             var pickerLabelText = String()
             
-            if isUpdating {
-                pickerLabelText = viewModel.days[row]
-            } else {
-                let filteredDayNames = viewModel.filteredDayNames(for: pickerView.tag - 1)
-                pickerLabelText = filteredDayNames[row]
-            }
+            let numberOfDaySections = viewModel.numberOfDaySections()
+            let index = pickerView.tag - 1 - numberOfDaySections
+            let filteredAlarmNames = viewModel.filteredAlarmNames(for: index)
+            
+            pickerLabelText = filteredAlarmNames[row]
             
             pickerLabel?.text = pickerLabelText
-            updateDaySelectionIndicator(pickerView: pickerView, component: component)
+            updateSelectionIndicator(pickerView: pickerView, component: component, isSubject: false)
+            
+            if row == selectedRow {
+                pickerLabel?.textColor = .systemText50
+            }
+        } else { // Day section
+            var pickerLabelText = String()
+            
+            let index = pickerView.tag - 1
+            let filteredDayNames = viewModel.filteredDayNames(for: index)
+            pickerLabelText = filteredDayNames[row]
+            
+            pickerLabel?.text = pickerLabelText
+            updateSelectionIndicator(pickerView: pickerView, component: component, isSubject: false)
             
             if row == selectedRow {
                 pickerLabel?.textColor = .systemText50
@@ -74,6 +94,8 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         pickerView.subviews.last?.backgroundColor = .clear
+        let numberOfSections = viewModel.numberOfSections()
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         
         // Subjects section
         if pickerView.tag == 0 {
@@ -82,36 +104,77 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
             updateCellAccessory(
                 for: viewModel.selectedSubjectName,
                 at: pickerView.tag,
-                color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
+                color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName),
+                isDaySection: false
             )
-                
-            updateSubjectSelectionIndicator(pickerView: pickerView, component: component)
+               
+            updateSelectionIndicator(pickerView: pickerView, component: component, isSubject: true)
+        } else if pickerView.tag >= (numberOfSections - 1) - numberOfAlarmSections { // Alarm section
+            let numberOfDaySections = viewModel.numberOfDaySections()
+            let index = pickerView.tag - 1 - numberOfDaySections
+            let filteredAlarmNames = viewModel.filteredAlarmNames(for: index)
+            let selectedAlarmName = filteredAlarmNames[row]
+            
+            guard let alarmIndex = viewModel.alarmNames.firstIndex(where: { $0 == selectedAlarmName }) else { return }
+            
+            let lastIndex = viewModel.selectedAlarms[index]
+            viewModel.selectedAlarms[index] = alarmIndex
+            let newIndex = viewModel.selectedAlarms[index]
+            
+            updateCellAccessory(
+                for: selectedAlarmName,
+                at: pickerView.tag,
+                color: nil,
+                isDaySection: false
+            )
+            
+            if lastIndex == 0 || newIndex == 0 {
+                reloadTable()
+            }
+            
+            updateSelectionIndicator(pickerView: pickerView, component: component, isSubject: false)
         } else { // Day section
             let isUpdating = viewModel.isUpdatingSchedule()
             
             if isUpdating {
                 viewModel.editingScheduleDay = viewModel.days[row]
-                updateCellAccessory(for: viewModel.editingScheduleDay, at: pickerView.tag, color: nil)
+                
+                updateCellAccessory(
+                    for: viewModel.editingScheduleDay,
+                    at: pickerView.tag,
+                    color: nil,
+                    isDaySection: true
+                )
             } else {
                 let index = pickerView.tag - 1
                 let filteredDayNames = viewModel.filteredDayNames(for: index)
                 viewModel.selectedDays[index].name = filteredDayNames[row]
-                updateCellAccessory(for: viewModel.selectedDays[index].name, at: pickerView.tag, color: nil)
+                
+                updateCellAccessory(
+                    for: viewModel.selectedDays[index].name,
+                    at: pickerView.tag,
+                    color: nil,
+                    isDaySection: true
+                )
             }
             
-            updateDaySelectionIndicator(pickerView: pickerView, component: component)
+            updateSelectionIndicator(pickerView: pickerView, component: component, isSubject: false)
         }
         
         pickerView.reloadComponent(component)
     }
     
-    func updateSubjectSelectionIndicator(pickerView: UIPickerView, component: Int) {
+    func updateSelectionIndicator(pickerView: UIPickerView, component: Int, isSubject: Bool) {
         pickerView.subviews.filter { $0.tag == 99 }.forEach { $0.removeFromSuperview() }
         pickerView.subviews.last?.backgroundColor = .clear
-
-        let subjectColorName = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
-        guard let baseColor = UIColor(named: subjectColorName) else { return }
-        let color = baseColor.withAlphaComponent(0.2)
+        
+        var color: UIColor? = .TOGGLE_BG
+        
+        if isSubject {
+            let subjectColorName = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
+            guard let baseColor = UIColor(named: subjectColorName) else { return }
+            color = baseColor.withAlphaComponent(0.2)
+        }
         
         let rowHeight = pickerView.rowSize(forComponent: component).height
         let selectionIndicatorY = (pickerView.bounds.height - rowHeight) / 2
@@ -126,26 +189,20 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         pickerView.insertSubview(overlayView, at: 0)
     }
     
-    private func updateDaySelectionIndicator(pickerView: UIPickerView, component: Int) {
-        pickerView.subviews.filter { $0.tag == 99 }.forEach { $0.removeFromSuperview() }
-        pickerView.subviews.last?.backgroundColor = .clear
+    func updateCellAccessory(for text: String, at section: Int, color: String?, isDaySection: Bool) {
+        let indexPath = IndexPath(row: 0, section: section)
         
-        let rowHeight = pickerView.rowSize(forComponent: component).height
-        let selectionIndicatorY = (pickerView.bounds.height - rowHeight) / 2
-        let frame = CGRect(x: 0, y: selectionIndicatorY, width: pickerView.bounds.width, height: rowHeight)
-        
-        let overlayView = UIView(frame: frame)
-        overlayView.backgroundColor = .TOGGLE_BG
-        overlayView.roundCorners(corners: .allCorners, radius: 10, borderWidth: 0, borderColor: .clear)
-        overlayView.isUserInteractionEnabled = false
-        overlayView.tag = 99
-        
-        pickerView.insertSubview(overlayView, at: 0)
-    }
-    
-    func updateCellAccessory(for text: String, at section: Int, color: String?) {
-        guard let cell = scheduleDetailsView.tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? DateCell else { return }
+        if isDaySection {
+            guard let cell = scheduleDetailsView.tableView.cellForRow(at: indexPath) as? DateCell else { return }
 
-        cell.dayOfWeekTitle = text
+            cell.dayOfWeekTitle = text
+            return
+        }
+        
+        guard let cell = scheduleDetailsView.tableView.cellForRow(at: indexPath) as? BorderedTableCell else { return }
+        
+        let numberOfSections = viewModel.numberOfSections()
+        let accessoryView = createAccessoryView(for: indexPath, numberOfSections: numberOfSections)
+        cell.accessoryView = accessoryView
     }
 }

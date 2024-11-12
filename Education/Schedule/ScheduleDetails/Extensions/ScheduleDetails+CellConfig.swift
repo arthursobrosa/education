@@ -11,15 +11,11 @@ extension ScheduleDetailsViewController {
     func createCellTitle(for indexPath: IndexPath, numberOfSections: Int) -> String {
         let section = indexPath.section
         let row = indexPath.row
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         
         // Subject section
         if section == 0 {
             return String(localized: "subject")
-        }
-        
-        // Alarm section
-        if section == numberOfSections - 2 {
-            return row == 0 ? String(localized: "alarmAtTime") : String(localized: "alarm5Min")
         }
         
         // App Blocking section
@@ -27,50 +23,39 @@ extension ScheduleDetailsViewController {
             return String(localized: "blockApps")
         }
         
-        // Day section
-        switch row {
-        case 0:
-            return String(localized: "dayOfWeek")
-        case 1:
-            return String(localized: "startDate")
-        case 2:
-            return String(localized: "endDate")
-        default:
-            return String()
+        // Alarm section
+        if section >= (numberOfSections - 1) - numberOfAlarmSections {
+            return String(localized: "scheduleAlarm")
         }
+        
+        return String()
     }
 
     @objc 
     private func switchToggled(_ sender: UISwitch) {
-        switch sender.tag {
-        case 0:
-            viewModel.alarmInTime = sender.isOn
-
-            guard viewModel.alarmInTime else { return }
-
-            viewModel.requestNotificationsAuthorization()
-        case 1:
-            viewModel.alarmBefore = sender.isOn
-
-            guard viewModel.alarmBefore else { return }
-
-            viewModel.requestNotificationsAuthorization()
-        case 2:
-            viewModel.blocksApps = sender.isOn
-        default:
-            break
-        }
+//        switch sender.tag {
+//        case 0:
+//            viewModel.alarmInTime = sender.isOn
+//
+//            guard viewModel.alarmInTime else { return }
+//
+//            viewModel.requestNotificationsAuthorization()
+//        case 1:
+//            viewModel.alarmBefore = sender.isOn
+//
+//            guard viewModel.alarmBefore else { return }
+//
+//            viewModel.requestNotificationsAuthorization()
+//        case 2:
+//            viewModel.blocksApps = sender.isOn
+//        default:
+//            break
+//        }
     }
 
     func createLabel(text: String, color: String?) -> UILabel {
         let label = UILabel()
-
         var labelText = text
-        
-        if text.isEmpty {
-            labelText = String(localized: "createNewSubject")
-        }
-        
         let maxLength = 22
 
         if text.count > maxLength {
@@ -111,20 +96,15 @@ extension ScheduleDetailsViewController {
 
     func createAccessoryView(for indexPath: IndexPath, numberOfSections: Int) -> UIView? {
         let section = indexPath.section
-        let row = indexPath.row
+        let numberOfDaySections = viewModel.numberOfDaySections()
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         
         // Subject section
         if section == 0 {
             let color = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
-            let label = createLabel(text: viewModel.selectedSubjectName, color: color)
+            let subjectName = viewModel.getSubjectName()
+            let label = createLabel(text: subjectName, color: color)
             return label
-        }
-        
-        // Alarm section
-        if section == numberOfSections - 2 {
-            let isOn = row == 0 ? viewModel.alarmInTime : viewModel.alarmBefore
-            let toggle = createToggle(withTag: row, isOn: isOn)
-            return toggle
         }
         
         // App Blocking section
@@ -133,42 +113,21 @@ extension ScheduleDetailsViewController {
             return toggle
         }
         
-        // Day section
-        let isUpdating = viewModel.isUpdatingSchedule()
-        
-        if isUpdating {
-            if row == 0 {
-                let label = createLabel(text: viewModel.editingScheduleDay, color: nil)
-                return label
-            }
-            
-            let datePicker = FakeDatePicker()
-            datePicker.datePickerMode = .time
-            datePicker.date = row == 1 ? viewModel.selectedStartTime : viewModel.selectedEndTime
-            datePicker.addTarget(self, action: #selector(datePickerEditionBegan(_:)), for: .editingDidBegin)
-            datePicker.addTarget(self, action: #selector(datePickerEditionEnded), for: .editingDidEnd)
-            datePicker.tag = row
-
-            return datePicker
-        }
-        
-        let index = section - 1
-        
-        if row == 0 {
-            let label = createLabel(text: viewModel.selectedDays[index].name, color: nil)
+        // Alarms section
+        if section >= (numberOfSections - 1) - numberOfAlarmSections {
+            let index = section - 1 - numberOfDaySections
+            let text = viewModel.getAlarmText(forIndex: index)
+            let label = createLabel(text: text, color: nil)
             return label
         }
         
-        let selectedStartTime = viewModel.selectedDays[index].startTime
-        let selectedEndTime = viewModel.selectedDays[index].endTime
+        return UIView()
         
-        let datePicker = FakeDatePicker()
-        datePicker.datePickerMode = .time
-        datePicker.date = row == 1 ? selectedStartTime : selectedEndTime
-        datePicker.addTarget(self, action: #selector(datePickerEditionBegan(_:)), for: .editingDidBegin)
-        datePicker.addTarget(self, action: #selector(datePickerEditionEnded(_:)), for: .editingDidEnd)
-        datePicker.tag = (index * 2) + row
-
-        return datePicker
+//        // Alarm section
+//        if section == numberOfSections - 2 {
+//            let isOn = row == 0 ? viewModel.alarmInTime : viewModel.alarmBefore
+//            let toggle = createToggle(withTag: row, isOn: isOn)
+//            return toggle
+//        }
     }
 }

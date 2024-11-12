@@ -91,7 +91,7 @@ class ScheduleDetailsViewController: UIViewController {
         scheduleDetailsView.setTitle(title)
     }
     
-    private func reloadTable() {
+    func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
@@ -134,8 +134,22 @@ class ScheduleDetailsViewController: UIViewController {
     }
     
     @objc
-    private func dayMinustButtonTapped() {
+    private func dayMinusButtonTapped() {
         viewModel.deleteLastDaySection()
+        reloadTable()
+        scheduleDetailsView.setupUI()
+    }
+    
+    @objc
+    private func alarmPlusButtonTapped() {
+        viewModel.createNewAlarmSection()
+        reloadTable()
+        scheduleDetailsView.setupUI()
+    }
+    
+    @objc
+    private func alarmMinusButtonTapped() {
+        viewModel.deleteLastAlarmSection()
         reloadTable()
         scheduleDetailsView.setupUI()
     }
@@ -146,39 +160,35 @@ class ScheduleDetailsViewController: UIViewController {
 extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let numberOfSections = tableView.numberOfSections
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         
         let section = indexPath.section
-        guard section == 0 || section == numberOfSections - 1 || section == numberOfSections - 2 else { return }
+        guard section == 0 || section == numberOfSections - 1 || section >= (numberOfSections - 1) - numberOfAlarmSections else { return }
         
         guard let cell = cell as? BorderedTableCell else { return }
         cell.configureCell(tableView: tableView, forRowAt: indexPath)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        let isUpdating = viewModel.isUpdatingSchedule()
-            
-        if isUpdating {
-            return 4
-        } else {
-            return 3 + viewModel.selectedDays.count
-        }
+        viewModel.numberOfSections()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let numberOfSections = tableView.numberOfSections
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         
         // Subject section
         if section == 0 {
             return 1
         }
         
-        // Alarm section
-        if section == numberOfSections - 2 {
-            return 2
-        }
-        
         // App Blocking section
         if section == numberOfSections - 1 {
+            return 1
+        }
+        
+        // Alarm section
+        if section >= (numberOfSections - 1) - numberOfAlarmSections {
             return 1
         }
         
@@ -188,9 +198,10 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let numberOfSections = tableView.numberOfSections
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         let section = indexPath.section
         
-        if section == 0 || section == numberOfSections - 1 || section == numberOfSections - 2 {
+        if section == 0 || section == numberOfSections - 1 || section >= (numberOfSections - 1) - numberOfAlarmSections {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: BorderedTableCell.identifier, for: indexPath) as? BorderedTableCell else {
                 fatalError("Could not dequeue bordered table cell")
             }
@@ -226,6 +237,8 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
+        let numberOfSections = tableView.numberOfSections
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         
         // Subjects section
         if section == 0 {
@@ -238,31 +251,39 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                 isPopoverOpen.toggle()
                 present(popover, animated: true)
             }
+        } else if section >= (numberOfSections - 1) - numberOfAlarmSections { // Alarm section
+            if let popover = createAlarmPopover(forTableView: tableView, at: indexPath) {
+                isPopoverOpen.toggle()
+                present(popover, animated: true)
+            }
         }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = indexPath.section
-        let numberOfSections = tableView.numberOfSections
+        let numberOfDaySections = viewModel.numberOfDaySections()
         
-        if section == 0 || section == numberOfSections - 1 || section == numberOfSections - 2 {
+        if section > 0 && section <= numberOfDaySections {
+            return 150
+        } else {
             return 50
         }
-        
-        return 150
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let isUpdating = viewModel.isUpdatingSchedule()
         let numberOfSections = tableView.numberOfSections
-        let numberOfDaySections = tableView.numberOfSections - 3
+        let numberOfDaySections = viewModel.numberOfDaySections()
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
+        let isLastDaySection = section == (numberOfSections - 1) - numberOfAlarmSections - 1
+        let isLastAlarmSection = section == (numberOfSections - 1) - 1
         
-        // Last day section
-        if !isUpdating && section == numberOfSections - 3 {
-            let footerView = UIView()
-            
+        let footerView = UIView()
+        
+        // Day section
+        if !isUpdating && isLastDaySection {
             if numberOfDaySections == 1 {
-                let plusCircleView = getCircleView(isPlus: true, atTableView: tableView)
+                let plusCircleView = getCircleView(isPlus: true, atTableView: tableView, isDaySection: true)
                 
                 footerView.addSubview(plusCircleView)
                 
@@ -270,8 +291,8 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                     plusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
                     plusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
                 ])
-            } else if numberOfDaySections == 7 {
-                let minusCircleView = getCircleView(isPlus: false, atTableView: tableView)
+            } else if numberOfDaySections == viewModel.days.count {
+                let minusCircleView = getCircleView(isPlus: false, atTableView: tableView, isDaySection: true)
                 
                 footerView.addSubview(minusCircleView)
                 
@@ -280,8 +301,8 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                     minusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
                 ])
             } else {
-                let plusCircleView = getCircleView(isPlus: true, atTableView: tableView)
-                let minusCircleView = getCircleView(isPlus: false, atTableView: tableView)
+                let plusCircleView = getCircleView(isPlus: true, atTableView: tableView, isDaySection: true)
+                let minusCircleView = getCircleView(isPlus: false, atTableView: tableView, isDaySection: true)
                 
                 footerView.addSubview(plusCircleView)
                 footerView.addSubview(minusCircleView)
@@ -294,17 +315,59 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
                     minusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor, constant: 16),
                 ])
             }
-
+            
             return footerView
+        } else if isLastAlarmSection { // Alarm section
+            guard let selectedIndex = viewModel.getSelectedAlarmIndex(forSection: section) else { return nil }
+            
+            let filteredAlarmNames = viewModel.filteredAlarmNames(for: section - 1 - numberOfDaySections)
+            let selectedAlarmName = filteredAlarmNames[selectedIndex]
+            
+            if selectedAlarmName != viewModel.alarmNames[0] {
+                if numberOfAlarmSections == 1 {
+                    let plusCircleView = getCircleView(isPlus: true, atTableView: tableView, isDaySection: false)
+                    
+                    footerView.addSubview(plusCircleView)
+                    
+                    NSLayoutConstraint.activate([
+                        plusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
+                        plusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+                    ])
+                } else if numberOfAlarmSections == viewModel.alarmNames.count - 1 {
+                    let minusCircleView = getCircleView(isPlus: false, atTableView: tableView, isDaySection: false)
+                    
+                    footerView.addSubview(minusCircleView)
+                    
+                    NSLayoutConstraint.activate([
+                        minusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
+                        minusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+                    ])
+                } else {
+                    let plusCircleView = getCircleView(isPlus: true, atTableView: tableView, isDaySection: false)
+                    let minusCircleView = getCircleView(isPlus: false, atTableView: tableView, isDaySection: false)
+                    
+                    footerView.addSubview(plusCircleView)
+                    footerView.addSubview(minusCircleView)
+                    
+                    NSLayoutConstraint.activate([
+                        plusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
+                        plusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor, constant: -16),
+                        
+                        minusCircleView.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 4),
+                        minusCircleView.centerXAnchor.constraint(equalTo: footerView.centerXAnchor, constant: 16),
+                    ])
+                }
+                
+                return footerView
+            }
         }
         
         // All other sections
-        let footerView = UIView()
         footerView.backgroundColor = UIColor.clear
         return footerView
     }
     
-    private func getCircleView(isPlus: Bool, atTableView tableView: UITableView) -> UIView {
+    private func getCircleView(isPlus: Bool, atTableView tableView: UITableView, isDaySection: Bool) -> UIView {
         let circleView = UIView()
         circleView.layer.cornerRadius = 12
         circleView.layer.borderWidth = 1
@@ -327,10 +390,10 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
         
         if isPlus {
             imageName = "plus"
-            selector = #selector(dayPlusButtonTapped)
+            selector = isDaySection ? #selector(dayPlusButtonTapped) : #selector(alarmPlusButtonTapped)
         } else {
             imageName = "minus"
-            selector = #selector(dayMinustButtonTapped)
+            selector = isDaySection ? #selector(dayMinusButtonTapped) : #selector(alarmMinusButtonTapped)
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: selector)
@@ -354,13 +417,33 @@ extension ScheduleDetailsViewController: UITableViewDataSource, UITableViewDeleg
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let greateFooterHeight: Double = 42
+        let regularFooterHeight: Double = 15
+        
         let isUpdating = viewModel.isUpdatingSchedule()
         let numberOfSections = tableView.numberOfSections
+        let numberOfDaySections = viewModel.numberOfDaySections()
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
+        let isLastDaySection = section == (numberOfSections - 1) - numberOfAlarmSections - 1
+        let isLastAlarmSection = section == (numberOfSections - 1) - 1
         
-        if !isUpdating && section == numberOfSections - 3 {
-            return 42
-        } else {
-            return 15
+        // Day section
+        if !isUpdating && isLastDaySection {
+            return greateFooterHeight
         }
+        
+        // Alarm section
+        if isLastAlarmSection {
+            guard let selectedIndex = viewModel.getSelectedAlarmIndex(forSection: section) else { return regularFooterHeight }
+            
+            let filteredAlarmNames = viewModel.filteredAlarmNames(for: section - 1 - numberOfDaySections)
+            let selectedAlarmName = filteredAlarmNames[selectedIndex]
+            
+            if selectedAlarmName != viewModel.alarmNames[0] {
+                return greateFooterHeight
+            }
+        }
+        
+        return regularFooterHeight
     }
 }

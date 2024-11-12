@@ -47,8 +47,7 @@
 "dayOfWeek" = "Day of the week";
 "startDate" = "Starts";
 "endDate"= "Ends";
-"alarm5Min" = "Alert 5 min. before start time";
-"alarmAtTime" = "Alert at start time";
+"scheduleAlarm" = "Alarm";
 "subject" = "Subject";
 "blockApps" = "Block Apps";
 "daily" = "Day";
@@ -65,6 +64,9 @@
 "deleteScheduleAlertTitle" = "Remove Activity";
 "deleteScheduleAlertBody" = "Are you sure you want to remove \"%@\" Activity from your Study Plan?";
 "createNewSubject" = "Create New";
+"noneAlarm" = "None";
+"timeBefore" = "%@ before";
+"onTime" = "On time";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Would you like to link this activity to a subject?";
@@ -74,7 +76,7 @@
 "pomodoroSelectionTitle" = "Pomodoro";
 "stopwatchSelectionTitle" = "Free \n (stop when you want)";
 "stopwatchSelectionBold" = "Free";
-"alarm" = "Alarm when finished";
+"focusAlarm" = "Alarm when finished";
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
 "subjectActivity" = "Activity";

@@ -193,7 +193,13 @@ extension ScheduleViewController: ScheduleDelegate {
         let schedule = isDaily ? viewModel.schedules[indexPath.section] : viewModel.schedules[indexPath.row]
         let subject = viewModel.getSubject(fromSchedule: schedule)
 
-        let newFocusSessionModel = FocusSessionModel(scheduleID: schedule.unwrappedID, subject: subject, blocksApps: schedule.blocksApps, isAlarmOn: schedule.imediateAlarm, color: focusConfig.color)
+        let newFocusSessionModel = FocusSessionModel(
+            scheduleID: schedule.unwrappedID,
+            subject: subject,
+            blocksApps: schedule.blocksApps,
+            isAlarmOn: schedule.isAlarmOn(),
+            color: focusConfig.color
+        )
 
         coordinator?.showFocusSelection(focusSessionModel: newFocusSessionModel)
     }
