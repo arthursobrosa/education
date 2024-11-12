@@ -15,10 +15,8 @@ class FocusSessionCell: UITableViewCell {
     
     // MARK: - Properties
     
-    var hasNotes: Bool? {
+    var hasNotes: Bool = false {
         didSet {
-            guard let hasNotes else { return }
-            
             commentImageView.isHidden = !hasNotes
         }
     }

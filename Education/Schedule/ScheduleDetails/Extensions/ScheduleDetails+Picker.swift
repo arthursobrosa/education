@@ -97,6 +97,9 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
         let numberOfSections = viewModel.numberOfSections()
         let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         
+        dismiss(animated: true)
+        isPopoverOpen = false
+        
         // Subjects section
         if pickerView.tag == 0 {
             viewModel.selectedSubjectName = viewModel.subjectsNames[row]
