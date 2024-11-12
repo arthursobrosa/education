@@ -3,7 +3,7 @@
 ### Rules
 
 <p>
-  <img src="./README-images/" width="500" alt="Architecture image">
+  <img src="./README-images/architecture.png" width="500" alt="Architecture image">
 </p>
 
 #### - ViewModel does bussiness logics only and is connected to ViewController via a binding Box;
