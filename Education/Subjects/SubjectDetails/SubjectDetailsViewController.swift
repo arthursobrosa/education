@@ -139,12 +139,14 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
             fatalError("could not dequeu focus session cell")
         }
         
+        cell.backgroundColor = .clear
         cell.selectionStyle = .none
         
         let months = Array(viewModel.sessionsByMonth.keys).sorted(by: >)
         let monthKey = months[indexPath.section]
         if let session = viewModel.sessionsByMonth[monthKey]?[indexPath.row] {
             cell.configure(with: session, color: viewModel.subject?.unwrappedColor ?? "button-normal")
+            cell.hasNotes = session.hasNotes()
         }
         
         return cell

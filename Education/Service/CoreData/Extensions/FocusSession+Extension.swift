@@ -36,4 +36,8 @@ extension FocusSession {
     var unwrappedNotes: String {
         notes ?? String()
     }
+    
+    func hasNotes() -> Bool {
+        !unwrappedNotes.isEmpty
+    }
 }

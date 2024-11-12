@@ -18,7 +18,7 @@ extension FocusEndViewController: FocusEndDelegate {
     func didTapSaveButton() {
         coordinator?.dismiss(animated: true)
         viewModel.updateActivityManagerSubject()
-        viewModel.activityManager.saveFocusSesssion()
+        viewModel.activityManager.saveFocusSesssion(withNotes: viewModel.notes)
         viewModel.activityManager.resetTimer()
     }
 
