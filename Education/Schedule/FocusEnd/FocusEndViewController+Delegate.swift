@@ -11,6 +11,7 @@ import Foundation
 protocol FocusEndDelegate: AnyObject {
     func didTapSaveButton()
     func didTapDiscardButton()
+    func updateNotes(with text: String)
 }
 
 extension FocusEndViewController: FocusEndDelegate {
@@ -24,5 +25,9 @@ extension FocusEndViewController: FocusEndDelegate {
     func didTapDiscardButton() {
         viewModel.activityManager.resetTimer()
         coordinator?.dismiss(animated: true)
+    }
+    
+    func updateNotes(with text: String) {
+        viewModel.notes = text
     }
 }

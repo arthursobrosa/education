@@ -32,4 +32,8 @@ extension FocusSession {
             .stopwatch
         }
     }
+    
+    var unwrappedNotes: String {
+        notes ?? String()
+    }
 }

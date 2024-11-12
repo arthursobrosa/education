@@ -11,7 +11,6 @@ import UIKit
 extension ScheduleDetailsViewController {
     func createCellTitle(for indexPath: IndexPath, numberOfSections: Int) -> String {
         let section = indexPath.section
-        let row = indexPath.row
         let numberOfAlarmSections = viewModel.numberOfAlarmSections()
         
         // Subject section
