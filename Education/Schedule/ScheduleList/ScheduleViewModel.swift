@@ -110,8 +110,10 @@ extension ScheduleViewModel {
         for schedule in orderedWeekSchedules {
             schedulesByDay[Int(schedule.dayOfTheWeek)].append(schedule)
         }
+        
+        let firstWeekday = Calendar.current.firstWeekday
 
-        schedulesByDay = Array(schedulesByDay[UserDefaults.dayOfWeek ..< schedulesByDay.count]) + Array(schedulesByDay[0 ..< UserDefaults.dayOfWeek])
+        schedulesByDay = Array(schedulesByDay[firstWeekday ..< schedulesByDay.count]) + Array(schedulesByDay[0 ..< firstWeekday])
 
         return schedulesByDay
     }
@@ -189,8 +191,9 @@ extension ScheduleViewModel {
 extension ScheduleViewModel {
     private func getDaysOfWeek() -> [Date] {
         let calendar = Calendar.current
+        let firstWeekday = calendar.firstWeekday
         guard let baseDate = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())),
-              let startOfWeek = calendar.date(byAdding: .day, value: UserDefaults.dayOfWeek, to: baseDate) else { return [] }
+              let startOfWeek = calendar.date(byAdding: .day, value: firstWeekday, to: baseDate) else { return [] }
 
         var daysOfWeek = (0 ..< 7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
 

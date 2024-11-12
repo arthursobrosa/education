@@ -13,13 +13,15 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
+    private let blockingManager: BlockingManager
     private let notificationService: NotificationServiceProtocol?
 
     private let schedule: Schedule?
     private let selectedDay: Int?
 
-    init(navigationController: UINavigationController, notificationService: NotificationServiceProtocol?, schedule: Schedule?, selectedDay: Int?) {
+    init(navigationController: UINavigationController, blockingManager: BlockingManager, notificationService: NotificationServiceProtocol?, schedule: Schedule?, selectedDay: Int?) {
         self.navigationController = navigationController
+        self.blockingManager = blockingManager
         self.notificationService = notificationService
         self.schedule = schedule
         self.selectedDay = selectedDay
@@ -27,7 +29,7 @@ class ScheduleDetailsCoordinator: Coordinator, Dismissing {
 
     func start() {
         let viewModel = ScheduleDetailsViewModel(notificationService: notificationService, schedule: schedule, selectedDay: selectedDay)
-        let viewController = ScheduleDetailsViewController(viewModel: viewModel)
+        let viewController = ScheduleDetailsViewController(viewModel: viewModel, blockingManager: blockingManager)
         viewController.coordinator = self
 
         let newNavigationController = UINavigationController(rootViewController: viewController)

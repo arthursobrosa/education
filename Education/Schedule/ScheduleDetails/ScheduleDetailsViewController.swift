@@ -15,6 +15,10 @@ class ScheduleDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let blockingManager: BlockingManager
+    
+    lazy var swiftUIFamilyPickerView: FamilyActivityPickerView = .init(pickerDelegate: blockingManager)
+    
     var isPopoverOpen: Bool = false {
         didSet {
             let numberOfSections = scheduleDetailsView.tableView.numberOfSections
@@ -51,8 +55,9 @@ class ScheduleDetailsViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(viewModel: ScheduleDetailsViewModel) {
+    init(viewModel: ScheduleDetailsViewModel, blockingManager: BlockingManager) {
         self.viewModel = viewModel
+        self.blockingManager = blockingManager
 
         super.init(nibName: nil, bundle: nil)
     }

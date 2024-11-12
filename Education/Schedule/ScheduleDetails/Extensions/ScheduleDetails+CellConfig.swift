@@ -5,6 +5,7 @@
 //  Created by Arthur Sobrosa on 16/07/24.
 //
 
+import SwiftUI
 import UIKit
 
 extension ScheduleDetailsViewController {
@@ -33,24 +34,11 @@ extension ScheduleDetailsViewController {
 
     @objc 
     private func switchToggled(_ sender: UISwitch) {
-//        switch sender.tag {
-//        case 0:
-//            viewModel.alarmInTime = sender.isOn
-//
-//            guard viewModel.alarmInTime else { return }
-//
-//            viewModel.requestNotificationsAuthorization()
-//        case 1:
-//            viewModel.alarmBefore = sender.isOn
-//
-//            guard viewModel.alarmBefore else { return }
-//
-//            viewModel.requestNotificationsAuthorization()
-//        case 2:
-//            viewModel.blocksApps = sender.isOn
-//        default:
-//            break
-//        }
+        viewModel.blocksApps = sender.isOn
+        
+        if sender.isOn {
+            showFamilyActivityPicker()
+        }
     }
 
     func createLabel(text: String, color: String?) -> UILabel {
@@ -76,10 +64,9 @@ extension ScheduleDetailsViewController {
         return label
     }
 
-    private func createToggle(withTag tag: Int, isOn: Bool) -> UIView {
+    private func createToggle(isOn: Bool) -> UIView {
         let toggle = UISwitch()
         toggle.isOn = isOn
-        toggle.tag = tag
         toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .touchUpInside)
         toggle.onTintColor = UIColor(named: "bluePicker")
         toggle.translatesAutoresizingMaskIntoConstraints = false
@@ -92,6 +79,28 @@ extension ScheduleDetailsViewController {
         ])
 
         return containerView
+    }
+    
+    private func showFamilyActivityPicker() {
+        // Create the hosting controller with the SwiftUI view
+        let hostingController = UIHostingController(rootView: swiftUIFamilyPickerView)
+
+        let swiftuiView = hostingController.view
+        swiftuiView?.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add the hosting controller as a child view controller
+        addChild(hostingController)
+        hostingController.view.frame = view.bounds
+        view.addSubview(hostingController.view)
+        
+        guard let swiftuiView else { return }
+
+        NSLayoutConstraint.activate([
+            swiftuiView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            swiftuiView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+
+        hostingController.didMove(toParent: self)
     }
 
     func createAccessoryView(for indexPath: IndexPath, numberOfSections: Int) -> UIView? {
@@ -109,7 +118,7 @@ extension ScheduleDetailsViewController {
         
         // App Blocking section
         if section == numberOfSections - 1 {
-            let toggle = createToggle(withTag: 2, isOn: viewModel.blocksApps)
+            let toggle = createToggle(isOn: viewModel.blocksApps)
             return toggle
         }
         
@@ -122,12 +131,5 @@ extension ScheduleDetailsViewController {
         }
         
         return UIView()
-        
-//        // Alarm section
-//        if section == numberOfSections - 2 {
-//            let isOn = row == 0 ? viewModel.alarmInTime : viewModel.alarmBefore
-//            let toggle = createToggle(withTag: row, isOn: isOn)
-//            return toggle
-//        }
     }
 }

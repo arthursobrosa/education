@@ -133,6 +133,8 @@ extension ScheduleDetailsViewController: UIPickerViewDataSource, UIPickerViewDel
             }
             
             updateSelectionIndicator(pickerView: pickerView, component: component, isSubject: false)
+            
+            viewModel.requestNotificationsAuthorization()
         } else { // Day section
             let isUpdating = viewModel.isUpdatingSchedule()
             

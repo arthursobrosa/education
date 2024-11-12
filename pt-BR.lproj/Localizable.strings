@@ -17,7 +17,6 @@
 "scheduleTab" = "Estudos";
 "subjectTab" = "Matérias";
 "themeTab" = "Provas";
-"settingsTab" = "Ajustes";
 
 // MARK: - Schedule
 "schedule" = "Cronograma";
@@ -157,18 +156,6 @@
 "description" = "Notas sobre o teste/ questões";
 "deleteThemeTitle" = "Deletar Prova";
 "deleteThemeBody" = "Você tem certeza que deseja deletar essa prova? Todo o histórico de testes e resultados serão perdidos";
-
-// MARK: - Settings
-"deactivateTitle" = "Desative no seu celular!";
-"deactivateMessage" = "Não é possível desabilitar notificações no app Planno. Para isso, acesse as Configurações do seu celular.";
-"activationTitle" = "Acompanhe os seus estudos!";
-"activationMessage" = "Vamos enviar o status das suas atividades e alertar quando estiver na hora de estudar uma matéria. Sem propagandas adicionadas.";
-"activateNow" = "Ativar agora";
-"activateLater" = "Ativar depois";
-"okAction" = "Ok, entendi";
-"notificationsAndAlerts" = "Notificações e Alertas";
-"blockApps" = "Bloqueio de Aplicativos";
-"firstWeekDay" = "Primeiro dia da semana";
 
 // MARK: - Modal
 "startButton" = "Iniciar Atividade";

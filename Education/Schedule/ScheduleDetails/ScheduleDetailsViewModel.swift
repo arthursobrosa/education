@@ -186,9 +186,7 @@ extension ScheduleDetailsViewModel {
         
         schedule.subjectID = subject.unwrappedID
         
-        if let dayOfTheWeek = days.firstIndex(where: { $0 == editingScheduleDay }),
-           let startTime = schedule.startTime {
-            
+        if let dayOfTheWeek = days.firstIndex(where: { $0 == editingScheduleDay }) {
             schedule.dayOfTheWeek = Int16(dayOfTheWeek)
             cancelNotifications()
         }
@@ -615,10 +613,7 @@ extension ScheduleDetailsViewModel {
 
 extension ScheduleDetailsViewModel {
     private func handleAlarm(startTime: Date, endTime: Date) {
-        let selectedDate = startTime
         let title = String(localized: "reminder")
-        let bodyBefore = String(format: NSLocalizedString("comingEvent", comment: ""), String(selectedSubjectName))
-        let bodyInTime = String(format: NSLocalizedString("immediateEvent", comment: ""), String(selectedSubjectName))
         
         let scheduleInfo = ScheduleInfo(
             subjectName: selectedSubjectName,

@@ -42,7 +42,14 @@ class ScheduleCoordinator: NSObject,
     }
 
     func showScheduleDetails(schedule: Schedule?, selectedDay: Int?) {
-        let child = ScheduleDetailsCoordinator(navigationController: navigationController, notificationService: notificationService, schedule: schedule, selectedDay: selectedDay)
+        let child = ScheduleDetailsCoordinator(
+            navigationController: navigationController,
+            blockingManager: blockingManager,
+            notificationService: notificationService,
+            schedule: schedule,
+            selectedDay: selectedDay
+        )
+        
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()

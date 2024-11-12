@@ -17,7 +17,6 @@
 "scheduleTab" = "Studies";
 "subjectTab" = "Subjects";
 "themeTab" = "Exams";
-"settingsTab" = "Settings";
 
 // MARK: - Schedule
 "schedule" = "Schedule";
@@ -157,18 +156,6 @@
 "description" = "Notas sobre o teste/ questões";
 "deleteThemeTitle" = "Delete Theme";
 "deleteThemeBody" = "Are you sure you want to delete this theme? All its tests history and results will be discarded";
-
-// MARK: - Settings
-"deactivateTitle" = "Deactivate on your phone!";
-"deactivateMessage" = "It's not possible to disable notifications in the Planno app. To do so, access your phone's Settings.";
-"activationTitle" = "Keep track of your studies!";
-"activationMessage" = "We'll send you the status of your activities and alert you when it's time to study for a subject. No ads included.";
-"activateNow" = "Activate now";
-"activateLater" = "Activate later";
-"okAction" = "Ok, got it";
-"notificationsAndAlerts" = "Notifications and Alerts";
-"blockApps" = "Block Apps";
-"firstWeekDay" = "First day of the week";
 
 // MARK: - Modal
 "startButton" = "Start Activity";
