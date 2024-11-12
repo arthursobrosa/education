@@ -6,7 +6,7 @@ class TestDetailsViewController: UIViewController {
     weak var coordinator: (Dismissing & ShowingTestPage)?
     let viewModel: TestDetailsViewModel
 
-    // MARK: - Properties
+    // MARK: - UI Properties
 
     private lazy var testDetailsView: TestDetailsView = {
         let view = TestDetailsView()
@@ -35,54 +35,12 @@ class TestDetailsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setNavigationItems()
         updateInterface()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
-        navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     // MARK: - Methods
-
-    private func setNavigationItems() {
-        navigationItem.title = viewModel.getDateFullString(from: viewModel.test)
-
-        navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
-        navigationController?.navigationBar.tintColor = .systemText
-
-        let editButton = UIButton(configuration: .plain())
-        editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-        editButton.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
-        editButton.imageView?.contentMode = .scaleAspectFit
-        editButton.tintColor = .systemText
-
-        editButton.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
-
-        let editItem = UIBarButtonItem(customView: editButton)
-
-        navigationItem.rightBarButtonItems = [editItem]
-    }
     
     func updateInterface() {
-        testDetailsView.notesContent.text = viewModel.test.unwrappedComment
-        testDetailsView.questionsLabel.text = "\(viewModel.test.rightQuestions)/\(viewModel.test.totalQuestions)"
-        testDetailsView.titleLabel.text = viewModel.theme.unwrappedName
-        testDetailsView.circularProgressView.progress = CGFloat(viewModel.test.rightQuestions) / CGFloat(viewModel.test.totalQuestions)
-        testDetailsView.dateLabel.text = viewModel.getDateString(from: viewModel.test)
-        testDetailsView.percentageLabel.text = "\(Int(CGFloat(viewModel.test.rightQuestions) / CGFloat(viewModel.test.totalQuestions) * 100))%"
-    }
-
-    @objc 
-    private func didTapEditButton() {
-        coordinator?.showTestPage(theme: viewModel.theme, test: viewModel.test)
+        testDetailsView.config = viewModel.getTestDetailsConfig()
     }
 }

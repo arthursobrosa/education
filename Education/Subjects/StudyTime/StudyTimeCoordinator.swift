@@ -7,9 +7,7 @@
 
 import UIKit
 
-class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, ShowingOtherSubject, ShowingSubjectDetails {
-    
-    
+class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, ShowingSubjectDetails {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
@@ -18,7 +16,7 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
     }
 
     func start() {
-        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.setNavigationBarHidden(true, animated: false)
 
         let viewModel = StudyTimeViewModel()
         let viewController = StudyTimeViewController(viewModel: viewModel)
@@ -33,17 +31,9 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
         childCoordinators.append(child)
         child.start()
     }
-
-    func showOtherSubject(viewModel: StudyTimeViewModel) {
-        let child = OtherSubjectCoordinator(navigationController: navigationController, viewModel: viewModel)
-        child.parentCoordinator = self
-        childCoordinators.append(child)
-        child.start()
-    }
     
-    func showSubjectDetails(subject: Subject?, studytimeViewModel studyTimeViewModel: StudyTimeViewModel) {
-        let viewModel = SubjectDetailsViewModel(subject: subject, studyTimeViewModel: studyTimeViewModel)
-        let child = SubjectDetailsCoordinator(navigationController: navigationController, viewModel: viewModel)
+    func showSubjectDetails(subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
+        let child = SubjectDetailsCoordinator(navigationController: navigationController, subject: subject, studyTimeViewModel: studyTimeViewModel)
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()
@@ -72,17 +62,6 @@ extension StudyTimeCoordinator: UIViewControllerTransitioningDelegate {
             }
 
             subjectCreationVC.viewModel.selectedSubjectColor.value = subjectCreationVC.viewModel.selectAvailableColor()
-
-            if let studyTimeVC = navigationController.viewControllers.first as? StudyTimeViewController {
-                studyTimeVC.reloadTable()
-            }
-        }
-
-        if let otherSubjectVC = nav.viewControllers.first as? OtherSubjectViewController {
-            childDidFinish(otherSubjectVC.coordinator as? Coordinator)
-
-            otherSubjectVC.viewModel.fetchSubjects()
-            otherSubjectVC.viewModel.fetchFocusSessions()
 
             if let studyTimeVC = navigationController.viewControllers.first as? StudyTimeViewController {
                 studyTimeVC.reloadTable()

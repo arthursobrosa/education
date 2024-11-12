@@ -80,7 +80,7 @@ class StudyTimeViewModel: ObservableObject {
 
     let subjectColors = ["bluePicker", "blueSkyPicker", "olivePicker", "orangePicker", "pinkPicker", "redPicker", "turquoisePicker", "violetPicker", "yellowPicker"]
 
-    lazy var selectedSubjectColor: Box<String> = Box(self.subjectColors[0])
+    lazy var selectedSubjectColor: Box<String> = Box(subjectColors[0])
     var currentEditingSubject: Subject?
 
     // MARK: - Initializer
@@ -194,8 +194,8 @@ class StudyTimeViewModel: ObservableObject {
         return subject?.unwrappedName ?? String(localized: "other")
     }
 
-    func createSubject(name: String, color: String) {
-        subjectManager.createSubject(name: name, color: color)
+    func createSubject(name: String) {
+        subjectManager.createSubject(name: name, color: selectedSubjectColor.value)
     }
 
     func updateSubject(name: String, color: String) {

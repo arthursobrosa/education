@@ -68,17 +68,14 @@ class FocusSessionViewController: UIViewController {
         setGestureRecognizer()
         viewModel.blockApps()
         
-        timerSubscription = Timer.publish(every: TimeInterval(viewModel.activityManager.totalSeconds), on: .main, in: .common)
+        timerSubscription = Timer.publish(every: TimeInterval(viewModel.activityManager.totalSeconds / 10), on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
                 guard let self else { return }
-                
                 foo()
             }
         
     }
-    
-    
     
     private func foo() {
         liveActivity.endActivity()

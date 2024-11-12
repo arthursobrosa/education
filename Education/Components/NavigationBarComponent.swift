@@ -10,8 +10,52 @@ import UIKit
 class NavigationBarComponent: UIView {
     // MARK: - Properties
     
+    enum RightButtonSize {
+        case big
+        case small
+        
+        var pointSize: Double {
+            switch self {
+            case .big:
+                40
+            case .small:
+                27
+            }
+        }
+    }
+    
+    struct RightButtonConfig {
+        private let rightButtonSize: RightButtonSize
+        private let isDestructive: Bool
+        
+        var color: UIColor? {
+            if isDestructive {
+                .focusColorRed
+            } else {
+                .systemText
+            }
+        }
+        
+        var size: Double {
+            rightButtonSize.pointSize
+        }
+        
+        init(rightButtonSize: RightButtonSize, isDestructive: Bool) {
+            self.rightButtonSize = rightButtonSize
+            self.isDestructive = isDestructive
+        }
+    }
+    
     private var isConfiguringWithLabel: Bool = false
     private var hasBackButton: Bool = false
+    private var rightButtonConfig: RightButtonConfig? {
+        didSet {
+            guard let rightButtonConfig else { return }
+            
+            rightButton.setPreferredSymbolConfiguration(.init(pointSize: rightButtonConfig.size), forImageIn: .normal)
+            rightButton.tintColor = rightButtonConfig.color
+        }
+    }
     
     // MARK: - UI Properties
     
@@ -32,8 +76,7 @@ class NavigationBarComponent: UIView {
     
     private let rightButton: UIButton = {
         let button = UIButton()
-        button.setPreferredSymbolConfiguration(.init(pointSize: 40), forImageIn: .normal)
-        button.tintColor = UIColor(named: "system-text")
+        button.imageView?.contentMode = .scaleAspectFit
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -60,18 +103,30 @@ class NavigationBarComponent: UIView {
     
     // MARK: - Methods
     
-    func configure(titleText: String, rightButtonImage: UIImage? = nil, hasBackButton: Bool = false) {
+    func configure(
+        titleText: String,
+        rightButtonImage: UIImage? = nil,
+        rightButtonConfig: RightButtonConfig = .init(rightButtonSize: .big, isDestructive: false),
+        hasBackButton: Bool = false) {
+            
         isConfiguringWithLabel = true
         self.hasBackButton = hasBackButton
         titleLabel.text = titleText
+        self.rightButtonConfig = rightButtonConfig
         rightButton.setImage(rightButtonImage, for: .normal)
         setupUI()
     }
     
-    func configure(titleImage: UIImage?, rightButtonImage: UIImage? = nil, hasBackButton: Bool = false) {
+    func configure(
+        titleImage: UIImage?, 
+        rightButtonImage: UIImage? = nil,
+        rightButtonConfig: RightButtonConfig = .init(rightButtonSize: .big, isDestructive: false),
+        hasBackButton: Bool = false) {
+            
         isConfiguringWithLabel = false
         self.hasBackButton = hasBackButton
         titleImageView.image = titleImage
+        self.rightButtonConfig = rightButtonConfig
         rightButton.setImage(rightButtonImage, for: .normal)
         setupUI()
     }
@@ -93,10 +148,16 @@ extension NavigationBarComponent: ViewCodeProtocol {
             subview.removeFromSuperview()
         }
         
+        var rightButtonWidth: Double = 0
+        
+        if let rightButtonConfig {
+            rightButtonWidth = rightButtonConfig.size
+        }
+        
         addSubview(rightButton)
         
         NSLayoutConstraint.activate([
-            rightButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 40 / 390),
+            rightButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: rightButtonWidth / 390),
             rightButton.heightAnchor.constraint(equalTo: rightButton.widthAnchor),
             rightButton.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             rightButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -17),

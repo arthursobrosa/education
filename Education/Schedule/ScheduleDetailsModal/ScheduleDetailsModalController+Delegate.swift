@@ -23,7 +23,7 @@ extension ScheduleDetailsModalViewController: ScheduleDetailsModalDelegate {
             scheduleID: scheduleID,
             subject: viewModel.subject,
             blocksApps: viewModel.schedule.blocksApps,
-            isAlarmOn: viewModel.schedule.imediateAlarm,
+            isAlarmOn: viewModel.schedule.isAlarmOn(),
             color: color
         )
 

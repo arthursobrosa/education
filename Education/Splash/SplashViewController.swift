@@ -7,7 +7,6 @@
 
 import UIKit
 
-#warning("Dark mode images seem to be of low quality")
 class SplashViewController: UIViewController {
     // MARK: - Coordinator
 
@@ -18,11 +17,7 @@ class SplashViewController: UIViewController {
 
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        if UITraitCollection.current.userInterfaceStyle == .light {
-            imageView.image = UIImage(named: "books")
-        } else {
-            imageView.image = UIImage(named: "books-dark")
-        }
+        imageView.image = UIImage(named: "books")
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -30,12 +25,7 @@ class SplashViewController: UIViewController {
 
     private let plaImageView: UIImageView = {
         let imageView = UIImageView()
-        if UITraitCollection.current.userInterfaceStyle == .light {
-            imageView.image = UIImage(named: "pla")
-        } else {
-            imageView.image = UIImage(named: "pla-dark")
-        }
-
+        imageView.image = UIImage(named: "pla")
         imageView.contentMode = .scaleAspectFit
         imageView.alpha = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,11 +34,7 @@ class SplashViewController: UIViewController {
 
     private let nnoImageView: UIImageView = {
         let imageView = UIImageView()
-        if UITraitCollection.current.userInterfaceStyle == .light {
-            imageView.image = UIImage(named: "nno")
-        } else {
-            imageView.image = UIImage(named: "nno-dark")
-        }
+        imageView.image = UIImage(named: "nno")
         imageView.contentMode = .scaleAspectFit
         imageView.alpha = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false

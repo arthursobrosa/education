@@ -96,8 +96,6 @@ class NotificationServiceTests: XCTestCase {
         mockNotificationCenter.addRequestExpectation = expectation(description: "Weekly notification scheduled")
 
         let title = "Reminder"
-        let body = "Activity will start now"
-        let date = Date().addingTimeInterval(604_800)
         let subjectName = "Math"
         let startTime = Date().addingTimeInterval(60)
         let endTime = Date().addingTimeInterval(120)
@@ -108,18 +106,18 @@ class NotificationServiceTests: XCTestCase {
 
         sut.scheduleWeeklyNotification(
             title: title,
-            body: body,
-            date: date,
-            minutesBefore: 0,
+            alarm: 0,
             scheduleInfo: scheduleInfo
         )
+        
+        let expectedBody = String(format: NSLocalizedString("immediateEvent", comment: ""), subjectName)
 
         waitForExpectations(timeout: 1.0)
 
         XCTAssertEqual(mockNotificationCenter.pendingRequests.count, 1)
         let request = mockNotificationCenter.pendingRequests.first
         XCTAssertEqual(request?.content.title, title)
-        XCTAssertEqual(request?.content.body, body)
+        XCTAssertEqual(request?.content.body, expectedBody)
         XCTAssertNotNil(request?.content.userInfo["subjectName"] as? String)
         XCTAssertNotNil(request?.content.userInfo["startTime"] as? Date)
         XCTAssertNotNil(request?.content.userInfo["endTime"] as? Date)
@@ -137,23 +135,28 @@ class NotificationServiceTests: XCTestCase {
         mockNotificationCenter.addRequestExpectation = expectation(description: "Weekly notification scheduled")
 
         let title = "Reminder"
-        let body = "Activity starting in 5 min"
-        let date = Date().addingTimeInterval(604_800)
+        let subjectName = "Physics"
+        let startTime = Date().addingTimeInterval(60)
+        let endTime = Date().addingTimeInterval(120)
+        let scheduleInfo = ScheduleInfo(
+            subjectName: subjectName,
+            dates: (startTime, endTime)
+        )
 
         sut.scheduleWeeklyNotification(
             title: title,
-            body: body,
-            date: date,
-            minutesBefore: 5,
-            scheduleInfo: nil
+            alarm: 3,
+            scheduleInfo: scheduleInfo
         )
+        
+        let expectedBody = String(format: NSLocalizedString("comingEvent", comment: ""), subjectName)
 
         waitForExpectations(timeout: 1.0)
 
         XCTAssertEqual(mockNotificationCenter.pendingRequests.count, 1)
         let request = mockNotificationCenter.pendingRequests.first
         XCTAssertEqual(request?.content.title, title)
-        XCTAssertEqual(request?.content.body, body)
+        XCTAssertEqual(request?.content.body, expectedBody)
 
         guard let request else { return }
 
@@ -162,13 +165,19 @@ class NotificationServiceTests: XCTestCase {
 
     func testCancelAllNotifications() {
         sut.scheduleEndNotification(title: "Activity finished", subjectName: "Math", date: Date().addingTimeInterval(60))
+        
+        let subjectName = "Chemistry"
+        let startTime = Date().addingTimeInterval(60)
+        let endTime = Date().addingTimeInterval(120)
+        let scheduleInfo = ScheduleInfo(
+            subjectName: subjectName,
+            dates: (startTime, endTime)
+        )
 
         sut.scheduleWeeklyNotification(
             title: "Reminder",
-            body: "Activity starting in 5 min",
-            date: Date().addingTimeInterval(604_800),
-            minutesBefore: 5,
-            scheduleInfo: nil
+            alarm: 1,
+            scheduleInfo: scheduleInfo
         )
 
         XCTAssertEqual(mockNotificationCenter.pendingRequests.count, 2)
@@ -191,19 +200,23 @@ class NotificationServiceTests: XCTestCase {
     }
 
     func testCancelNoficationsForDate() {
-        let date = Date().addingTimeInterval(604_800)
+        let subjectName = "Physics"
+        let startTime = Date().addingTimeInterval(60)
+        let endTime = Date().addingTimeInterval(120)
+        let scheduleInfo = ScheduleInfo(
+            subjectName: subjectName,
+            dates: (startTime, endTime)
+        )
 
         sut.scheduleWeeklyNotification(
             title: "Reminder",
-            body: "Activity starting in 5 min",
-            date: date,
-            minutesBefore: 5,
-            scheduleInfo: nil
+            alarm: 0,
+            scheduleInfo: scheduleInfo
         )
 
         XCTAssertEqual(mockNotificationCenter.pendingRequests.count, 1)
 
-        sut.cancelNotifications(forDate: date)
+        sut.cancelNotifications(forDate: startTime)
 
         XCTAssertTrue(mockNotificationCenter.pendingRequests.isEmpty)
     }

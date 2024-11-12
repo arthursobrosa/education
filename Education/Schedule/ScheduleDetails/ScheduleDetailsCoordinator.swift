@@ -7,19 +7,21 @@
 
 import UIKit
 
-class ScheduleDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubjectCreation {
+class ScheduleDetailsCoordinator: Coordinator, Dismissing {
     
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
+    private let blockingManager: BlockingManager
     private let notificationService: NotificationServiceProtocol?
 
     private let schedule: Schedule?
     private let selectedDay: Int?
 
-    init(navigationController: UINavigationController, notificationService: NotificationServiceProtocol?, schedule: Schedule?, selectedDay: Int?) {
+    init(navigationController: UINavigationController, blockingManager: BlockingManager, notificationService: NotificationServiceProtocol?, schedule: Schedule?, selectedDay: Int?) {
         self.navigationController = navigationController
+        self.blockingManager = blockingManager
         self.notificationService = notificationService
         self.schedule = schedule
         self.selectedDay = selectedDay
@@ -27,23 +29,18 @@ class ScheduleDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubj
 
     func start() {
         let viewModel = ScheduleDetailsViewModel(notificationService: notificationService, schedule: schedule, selectedDay: selectedDay)
-        let viewController = ScheduleDetailsViewController(viewModel: viewModel)
+        let viewController = ScheduleDetailsViewController(viewModel: viewModel, blockingManager: blockingManager)
         viewController.coordinator = self
 
         let newNavigationController = UINavigationController(rootViewController: viewController)
         if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
             newNavigationController.transitioningDelegate = scheduleCoordinator
         }
+        
+        newNavigationController.setNavigationBarHidden(true, animated: false)
 
         newNavigationController.modalPresentationStyle = .pageSheet
         navigationController.present(newNavigationController, animated: true)
-    }
-    
-    func showSubjectCreation(viewModel: StudyTimeViewModel) {
-        let child = SubjectCreationCoordinator(navigationController: navigationController, viewModel: viewModel)
-        child.parentCoordinator = self
-        childCoordinators.append(child)
-        child.start()
     }
 
     func dismiss(animated: Bool) {
@@ -55,21 +52,5 @@ class ScheduleDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubj
             childCoordinators.remove(at: index)
             break
         }
-    }
-}
-
-extension ScheduleDetailsCoordinator: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        guard let nav = dismissed as? UINavigationController else { return nil }
-        
-        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
-            childDidFinish(subjectCreationVC.coordinator as? Coordinator)
-
-            if let scheduleDetailsVC = navigationController.viewControllers.first as? ScheduleDetailsViewController {
-                scheduleDetailsVC.reloadTable()
-            }
-        }
-
-        return nil
     }
 }

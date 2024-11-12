@@ -17,7 +17,6 @@
 "scheduleTab" = "Estudos";
 "subjectTab" = "Matérias";
 "themeTab" = "Provas";
-"settingsTab" = "Ajustes";
 
 // MARK: - Schedule
 "schedule" = "Cronograma";
@@ -43,21 +42,17 @@
 "addSubjectAlertMessage" = "Insira o nome da matéria:";
 "addSubjectAlertPlaceholder" = "Nome da Matéria";
 "invalidDateAlertTitle" = "Data inválida";
-"invalidDateAlertMessage1" = "Existe uma atividade para %@ com datas conflitantes";
-"invalidDateAlertMessage2" = "A data de início não pode ser maior ou igual à data de fim.";
+"invalidDateAlertMessage" = "A data de início não pode ser maior ou igual à data de fim.";
 "noSubjectAlertTitle" = "Atividade Inválida";
 "noSubjectAlertMessage" = "Você não pode criar uma atividade antes de atribuí-lo a uma matéria";
 "dayOfWeek" = "Dia da semana";
 "startDate" = "Começa";
 "endDate"= "Termina";
-"alarm5Min" = "Alerta 5 min. antes de iniciar";
-"alarmAtTime" = "Alerta ao iniciar";
+"scheduleAlarm" = "Alarme";
 "subject" = "Disciplina";
 "blockApps" = "Bloquear Apps";
 "daily" = "Dia";
 "weekly" = "Semana";
-"noSubjectTitle" = "Você não pode criar uma atividade";
-"noSubjectMessage" = "Você deve criar uma matéria antes de configurar uma atividade";
 "activityDeletionTitle" = "Deleção de Atividade";
 "activityDeletionMessage" = "Você tem certeza que deseja excluir essa atividade?";
 "emptyDaySchedule" = "Você ainda não tem atividades programadas para este dia";
@@ -67,6 +62,10 @@
 "startsIn" = "Em %@min";
 "deleteScheduleAlertTitle" = "Apagar Atividade";
 "deleteScheduleAlertBody" = "Tem certeza que deseja apagar a Atividade \"%@\" do seu Plano de Estudos?";
+"createNewSubject" = "Criar Nova";
+"noneAlarm" = "Nenhum";
+"timeBefore" = "%@ antes";
+"onTime" = "Na hora";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Você deseja vincular esta atividade a alguma das suas matérias?";
@@ -76,7 +75,7 @@
 "pomodoroSelectionTitle" = "Pomodoro";
 "stopwatchSelectionTitle" = "Livre \n (pare quando quiser)";
 "stopwatchSelectionBold" = "Livre";
-"alarm" = "Alarme ao finalizar";
+"focusAlarm" = "Alarme ao finalizar";
 "showTimeCount" = "Mostrar contagem de tempo";
 "paused" = "Pausado";
 "subjectActivity" = "Atividade de";
@@ -127,12 +126,12 @@
 "deleteSubjectTitle" = "Excluir Matéria";
 "deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades dentro do cronograma também serão excluídos.";
 "subjectCreationTitle" = "Matéria Inválida";
-"subjectCreationNoName" = "Por favor, insira um nome para a sua matéria.";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";
 "newSubject" = "Nova Matéria";
 "editSubject" = "Editar Matéria";
 "subjectName" = "Nome da Matéria";
+"emptySubjectDetails" = "Você não possui registros de estudos realizados para esta matéria.";
 
 // MARK: - Themes
 "themeAlertTitle" = "Adicionar prova";
@@ -157,18 +156,6 @@
 "description" = "Notas sobre o teste/ questões";
 "deleteThemeTitle" = "Deletar Prova";
 "deleteThemeBody" = "Você tem certeza que deseja deletar essa prova? Todo o histórico de testes e resultados serão perdidos";
-
-// MARK: - Settings
-"deactivateTitle" = "Desative no seu celular!";
-"deactivateMessage" = "Não é possível desabilitar notificações no app Planno. Para isso, acesse as Configurações do seu celular.";
-"activationTitle" = "Acompanhe os seus estudos!";
-"activationMessage" = "Vamos enviar o status das suas atividades e alertar quando estiver na hora de estudar uma matéria. Sem propagandas adicionadas.";
-"activateNow" = "Ativar agora";
-"activateLater" = "Ativar depois";
-"okAction" = "Ok, entendi";
-"notificationsAndAlerts" = "Notificações e Alertas";
-"blockApps" = "Bloqueio de Aplicativos";
-"firstWeekDay" = "Primeiro dia da semana";
 
 // MARK: - Modal
 "startButton" = "Iniciar Atividade";
@@ -205,12 +192,17 @@
 "endBlockAlertBody" = "Seus apps estão desbloqueados agora";
 
 // MARK: - TestDetails
-"questionsLable" = "Questões";
-"dateLable" = "Data";
-"notesLable" = "Notas";
+"questionsLabel" = "Questões";
+"dateLabel" = "Data";
+"notesLabel" = "Notas";
 
 // MARK: - Sync Monitor
 "noNetworkTitle" = "Conexão de internet indisponível";
 "noNetworkMessage" = "Você não está conectado à internet. Gostaria de prosseguir desconectado? Todas as alterações não serão salvas em sua conta do iCloud.";
 "accountNotAvailableTitle" = "Conta iCloud indisponível";
 "accountNotAvailableMessage" = "Você não está logado no iCloud. Gostaria de prosseguir desconectado? Todas as alterações não serão salvas em sua conta do iCloud.";
+
+// MARK: - Shield Configuration
+"shieldTitle" = "Seus estudos estão lhe esperando";
+"shieldSubtitle" = "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento”";
+"back" = "Voltar";

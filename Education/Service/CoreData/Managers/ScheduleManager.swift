@@ -11,7 +11,15 @@ import UIKit
 final class ScheduleManager: ObjectManager {
     // MARK: - Create
 
-    func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date, blocksApps: Bool, earlyAlarm: Bool, imediateAlarm: Bool, completed: Bool = false) {
+    func createSchedule(
+        subjectID: String,
+        dayOfTheWeek: Int,
+        startTime: Date,
+        endTime: Date,
+        blocksApps: Bool,
+        alarms: [Int],
+        completed: Bool = false) {
+            
         backgroundContext.performAndWait {
             guard let schedule = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: backgroundContext) as? Schedule else { return }
 
@@ -20,8 +28,10 @@ final class ScheduleManager: ObjectManager {
             schedule.startTime = startTime
             schedule.endTime = endTime
             schedule.blocksApps = blocksApps
-            schedule.earlyAlarm = earlyAlarm
-            schedule.imediateAlarm = imediateAlarm
+            
+            let scheduleAlarms = alarms.reduce(0) { $0 * 10 + $1 }
+            schedule.alarms = Int16(scheduleAlarms)
+            
             schedule.completed = completed
             schedule.id = UUID().uuidString
 

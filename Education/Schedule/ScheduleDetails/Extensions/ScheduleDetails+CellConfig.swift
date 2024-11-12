@@ -5,66 +5,48 @@
 //  Created by Arthur Sobrosa on 16/07/24.
 //
 
+import SwiftUI
 import UIKit
 
 extension ScheduleDetailsViewController {
-    func createCellTitle(for indexPath: IndexPath) -> String {
+    func createCellTitle(for indexPath: IndexPath, numberOfSections: Int) -> String {
         let section = indexPath.section
-        let row = indexPath.row
-
-        switch section {
-        case 0:
-            switch row {
-            case 0:
-                return String(localized: "dayOfWeek")
-            case 1:
-                return String(localized: "startDate")
-            case 2:
-                return String(localized: "endDate")
-            default:
-                return String()
-            }
-        case 1:
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
+        
+        // Subject section
+        if section == 0 {
             return String(localized: "subject")
-        case 2:
-            return row == 0 ? String(localized: "alarmAtTime") : String(localized: "alarm5Min")
-        case 3:
-            return String(localized: "blockApps")
-        default:
-            return String()
         }
+        
+        // App Blocking section
+        if section == numberOfSections - 1 {
+            return String(localized: "blockApps")
+        }
+        
+        // Alarm section
+        if section >= (numberOfSections - 1) - numberOfAlarmSections {
+            return String(localized: "scheduleAlarm")
+        }
+        
+        return String()
     }
 
     @objc 
     private func switchToggled(_ sender: UISwitch) {
-        switch sender.tag {
-        case 0:
-            viewModel.alarmInTime = sender.isOn
-
-            guard viewModel.alarmInTime else { return }
-
-            viewModel.requestNotificationsAuthorization()
-        case 1:
-            viewModel.alarmBefore = sender.isOn
-
-            guard viewModel.alarmBefore else { return }
-
-            viewModel.requestNotificationsAuthorization()
-        case 2:
-            viewModel.blocksApps = sender.isOn
-        default:
-            break
+        viewModel.blocksApps = sender.isOn
+        
+        if sender.isOn {
+            showFamilyActivityPicker()
         }
     }
 
     func createLabel(text: String, color: String?) -> UILabel {
         let label = UILabel()
-
         var labelText = text
-        let maxLenght = 22
+        let maxLength = 22
 
-        if text.count > maxLenght {
-            labelText = String(text.prefix(maxLenght)) + "..."
+        if text.count > maxLength {
+            labelText = String(text.prefix(maxLength)) + "..."
         }
 
         label.text = labelText
@@ -81,10 +63,9 @@ extension ScheduleDetailsViewController {
         return label
     }
 
-    private func createToggle(withTag tag: Int, isOn: Bool) -> UIView {
+    private func createToggle(isOn: Bool) -> UIView {
         let toggle = UISwitch()
         toggle.isOn = isOn
-        toggle.tag = tag
         toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .touchUpInside)
         toggle.onTintColor = UIColor(named: "bluePicker")
         toggle.translatesAutoresizingMaskIntoConstraints = false
@@ -98,43 +79,56 @@ extension ScheduleDetailsViewController {
 
         return containerView
     }
+    
+    private func showFamilyActivityPicker() {
+        // Create the hosting controller with the SwiftUI view
+        let hostingController = UIHostingController(rootView: swiftUIFamilyPickerView)
 
-    func createAccessoryView(for indexPath: IndexPath) -> UIView? {
+        let swiftuiView = hostingController.view
+        swiftuiView?.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add the hosting controller as a child view controller
+        addChild(hostingController)
+        hostingController.view.frame = view.bounds
+        view.addSubview(hostingController.view)
+        
+        guard let swiftuiView else { return }
+
+        NSLayoutConstraint.activate([
+            swiftuiView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            swiftuiView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+
+        hostingController.didMove(toParent: self)
+    }
+
+    func createAccessoryView(for indexPath: IndexPath, numberOfSections: Int) -> UIView? {
         let section = indexPath.section
-        let row = indexPath.row
-
-        switch section {
-        case 0:
-            if row == 0 {
-                let label = createLabel(text: viewModel.selectedDay, color: nil)
-
-                return label
-            }
-
-            let datePicker = FakeDatePicker()
-            datePicker.datePickerMode = .time
-            datePicker.date = row == 1 ? viewModel.selectedStartTime : viewModel.selectedEndTime
-            datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
-            datePicker.addTarget(self, action: #selector(datePickerEditionBegan(_:)), for: .editingDidBegin)
-            datePicker.addTarget(self, action: #selector(datePickerEditionEnded), for: .editingDidEnd)
-            datePicker.tag = row
-
-            return datePicker
-        case 1:
-            let label = createLabel(text: viewModel.selectedSubjectName, color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName))
-
+        let numberOfDaySections = viewModel.numberOfDaySections()
+        let numberOfAlarmSections = viewModel.numberOfAlarmSections()
+        
+        // Subject section
+        if section == 0 {
+            let color = viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName)
+            let subjectName = viewModel.getSubjectName()
+            let label = createLabel(text: subjectName, color: color)
             return label
-        case 2:
-            let isOn = row == 0 ? viewModel.alarmInTime : viewModel.alarmBefore
-            let toggle = createToggle(withTag: row, isOn: isOn)
-
-            return toggle
-        case 3:
-            let toggle = createToggle(withTag: 2, isOn: viewModel.blocksApps)
-
-            return toggle
-        default:
-            return nil
         }
+        
+        // App Blocking section
+        if section == numberOfSections - 1 {
+            let toggle = createToggle(isOn: viewModel.blocksApps)
+            return toggle
+        }
+        
+        // Alarms section
+        if section >= (numberOfSections - 1) - numberOfAlarmSections {
+            let index = section - 1 - numberOfDaySections
+            let text = viewModel.getAlarmText(forIndex: index)
+            let label = createLabel(text: text, color: nil)
+            return label
+        }
+        
+        return UIView()
     }
 }

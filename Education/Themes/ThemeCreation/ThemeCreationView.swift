@@ -37,7 +37,7 @@ class ThemeCreationView: UIView {
             .foregroundColor: placeholderColor as Any,
         ]
         
-        textField.attributedPlaceholder = NSAttributedString(string: placeholderText,attributes: attributes)
+        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         
         textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
 

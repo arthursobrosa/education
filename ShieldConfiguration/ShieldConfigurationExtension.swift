@@ -18,12 +18,14 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
-            icon: nil,
-            title: ShieldConfiguration.Label(text: "Shielded", color: .label),
-            subtitle: ShieldConfiguration.Label(text: "This app is shielded", color: .secondaryLabel),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Close", color: .label),
-            primaryButtonBackgroundColor: .cyan,
-            secondaryButtonLabel: ShieldConfiguration.Label(text: "Defer", color: .label)
+            icon: UIImage(named: "books"),
+            title: ShieldConfiguration.Label(text: String(localized: "shieldTitle"), color: .label),
+            subtitle: ShieldConfiguration.Label(
+                text: String(localized: "shieldSubtitle"),
+                color: .secondaryLabel
+            ),
+            primaryButtonLabel: ShieldConfiguration.Label(text: String(localized: "back"), color: .white),
+            primaryButtonBackgroundColor: .black
         )
     }
 
@@ -32,12 +34,14 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
-            icon: nil,
-            title: ShieldConfiguration.Label(text: "Shielded", color: .label),
-            subtitle: ShieldConfiguration.Label(text: "This app is shielded", color: .secondaryLabel),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Close", color: .label),
-            primaryButtonBackgroundColor: .cyan,
-            secondaryButtonLabel: ShieldConfiguration.Label(text: "Defer", color: .label)
+            icon: UIImage(named: "books"),
+            title: ShieldConfiguration.Label(text: String(localized: "shieldTitle"), color: .label),
+            subtitle: ShieldConfiguration.Label(
+                text: String(localized: "shieldSubtitle"),
+                color: .secondaryLabel
+            ),
+            primaryButtonLabel: ShieldConfiguration.Label(text: String(localized: "back"), color: .white),
+            primaryButtonBackgroundColor: .black
         )
     }
 

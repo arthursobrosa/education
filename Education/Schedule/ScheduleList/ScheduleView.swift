@@ -53,15 +53,10 @@ class ScheduleView: UIView {
     let dailyScheduleView = DailyScheduleView()
     let weeklyScheduleCollection = WeeklyScheduleCollectionView()
 
-    var noSchedulesView: NoSchedulesView = {
+    lazy var noSchedulesView: NoSchedulesView = {
         let view = NoSchedulesView()
         view.period = .day
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    let noSubjectsView: NoSubjectsView = {
-        let view = NoSubjectsView()
+        view.delegate = delegate
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -189,7 +184,7 @@ extension ScheduleView: ViewCodeProtocol {
             scheduleModeSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             scheduleModeSelector.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
-            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: 10),
+            contentView.topAnchor.constraint(equalTo: scheduleModeSelector.bottomAnchor, constant: 16),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),

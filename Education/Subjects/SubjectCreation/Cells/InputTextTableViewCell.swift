@@ -34,9 +34,7 @@ class InputTextTableViewCell: UITableViewCell {
         ]
 
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-
         textField.delegate = self
-
         textField.translatesAutoresizingMaskIntoConstraints = false
 
         return textField
@@ -51,9 +49,8 @@ extension InputTextTableViewCell: ViewCodeProtocol {
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
-            textField.heightAnchor.constraint(equalToConstant: 40),
+            textField.topAnchor.constraint(equalTo: contentView.topAnchor),
+            textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 }

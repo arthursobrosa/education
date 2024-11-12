@@ -31,18 +31,26 @@ class ScheduleManagerTest: XCTestCase {
 
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateStringA = "2023-11-13 09:12:22"
-        let dateStringB = "2023-11-13 10:12:22"
-        let dateA = format.date(from: dateStringA)!
-        let dateB = format.date(from: dateStringB)!
-
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false, completed: true)
+        let startTimeString = "2023-11-13 09:12:22"
+        let endTimeString = "2023-11-13 10:12:22"
+        let startTime = format.date(from: startTimeString)!
+        let endTime = format.date(from: endTimeString)!
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 4,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [1, 2, 3],
+            completed: true
+        )
 
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
 
         XCTAssertEqual(schedule.dayOfTheWeek, 4)
-        XCTAssertEqual(schedule.startTime, dateA)
-        XCTAssertEqual(schedule.endTime, dateB)
+        XCTAssertEqual(schedule.startTime, startTime)
+        XCTAssertEqual(schedule.endTime, endTime)
         XCTAssertEqual(schedule.completed, true)
     }
 
@@ -53,17 +61,22 @@ class ScheduleManagerTest: XCTestCase {
 
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateStringA = "2023-11-13 09:12:22"
-        let dateStringB = "2023-11-13 10:12:22"
-        let dateA = format.date(from: dateStringA)!
-        let dateB = format.date(from: dateStringB)!
-
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        let startTimeString = "2023-11-13 09:12:22"
+        let endTimeString = "2023-11-13 10:12:22"
+        let startTime = format.date(from: startTimeString)!
+        let endTime = format.date(from: endTimeString)!
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 4,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [1, 2, 3]
+        )
 
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
-
         let scheduleId = schedule.id!
-
         let individualSchedule = scheduleManager.fetchSchedule(from: scheduleId)!
 
         XCTAssertEqual(schedule.dayOfTheWeek, individualSchedule.dayOfTheWeek)
@@ -76,14 +89,37 @@ class ScheduleManagerTest: XCTestCase {
 
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateStringA = "2023-11-13 09:12:22"
-        let dateStringB = "2023-11-13 10:12:22"
-        let dateA = format.date(from: dateStringA)!
-        let dateB = format.date(from: dateStringB)!
-
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 6, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        let startTimeString = "2023-11-13 09:12:22"
+        let endTimeString = "2023-11-13 10:12:22"
+        let startTime = format.date(from: startTimeString)!
+        let endTime = format.date(from: endTimeString)!
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 4,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [0]
+        )
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 5,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [0]
+        )
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 6,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [0]
+        )
 
         var schedules = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!
 
@@ -104,12 +140,20 @@ class ScheduleManagerTest: XCTestCase {
 
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateStringA = "2023-11-13 09:12:22"
-        let dateStringB = "2023-11-13 10:12:22"
-        let dateA = format.date(from: dateStringA)!
-        let dateB = format.date(from: dateStringB)!
-
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false, completed: true)
+        let startTimeString = "2023-11-13 09:12:22"
+        let endTimeString = "2023-11-13 10:12:22"
+        let startTime = format.date(from: startTimeString)!
+        let endTime = format.date(from: endTimeString)!
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 4,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [0],
+            completed: true
+        )
 
         var schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
 
@@ -133,15 +177,46 @@ class ScheduleManagerTest: XCTestCase {
 
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateStringA = "2023-11-13 09:12:22"
-        let dateStringB = "2023-11-13 10:12:22"
-        let dateA = format.date(from: dateStringA)!
-        let dateB = format.date(from: dateStringB)!
-
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 3, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 4, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
-        scheduleManager.createSchedule(subjectID: subject.unwrappedID, dayOfTheWeek: 5, startTime: dateA, endTime: dateB, blocksApps: false, earlyAlarm: false, imediateAlarm: false)
+        let startTimeString = "2023-11-13 09:12:22"
+        let endTimeString = "2023-11-13 10:12:22"
+        let startTime = format.date(from: startTimeString)!
+        let endTime = format.date(from: endTimeString)!
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 3,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [0]
+        )
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 4,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [0]
+        )
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 4,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [1]
+        )
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: 5,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [2, 3]
+        )
 
         let wednesdaySchedules = scheduleManager.fetchSchedules(dayOfTheWeek: 3)!
         let thursdaySchedules = scheduleManager.fetchSchedules(dayOfTheWeek: 4)!

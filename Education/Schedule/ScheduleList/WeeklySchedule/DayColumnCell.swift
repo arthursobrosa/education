@@ -86,11 +86,11 @@ extension DayColumnCell: ViewCodeProtocol {
 
         NSLayoutConstraint.activate([
             dayView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            dayView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 58 / contentView.frame.height),
-            dayView.widthAnchor.constraint(equalTo: dayView.heightAnchor, multiplier: 35 / 58),
-            dayView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
+            dayView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 35 / contentView.frame.height),
+            dayView.widthAnchor.constraint(equalTo: dayView.heightAnchor),
+            dayView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
-            collection.topAnchor.constraint(equalTo: dayView.bottomAnchor, constant: 18),
+            collection.topAnchor.constraint(equalTo: dayView.bottomAnchor, constant: 21),
             collection.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             collection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             collection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
