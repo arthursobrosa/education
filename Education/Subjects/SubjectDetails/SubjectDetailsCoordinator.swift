@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SubjectDetailsCoordinator: Coordinator, Dismissing, ShowingSubjectCreation {
+class SubjectDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubjectCreation {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -37,5 +37,36 @@ class SubjectDetailsCoordinator: Coordinator, Dismissing, ShowingSubjectCreation
 
     func dismiss(animated: Bool) {
         navigationController.popViewController(animated: true)
+    }
+    
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
+        }
+    }
+}
+
+extension SubjectDetailsCoordinator: UIViewControllerTransitioningDelegate {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let nav = dismissed as? UINavigationController else { return nil }
+
+        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
+            childDidFinish(subjectCreationVC.coordinator as? Coordinator)
+
+            if let subjectDetailsVC = navigationController.viewControllers.last as? SubjectDetailsViewController {
+                subjectDetailsVC.viewModel.updateSubject()
+                
+                if subjectDetailsVC.viewModel.wasSubjectDeleted {
+                    dismiss(animated: true)
+                    return nil
+                }
+                
+                subjectDetailsVC.setNavigationItems()
+                subjectDetailsVC.reloadTable()
+            }
+        }
+
+        return nil
     }
 }

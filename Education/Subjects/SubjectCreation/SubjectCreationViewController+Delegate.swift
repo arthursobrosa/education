@@ -18,13 +18,7 @@ protocol SubjectCreationDelegate: AnyObject {
 extension SubjectCreationViewController: SubjectCreationDelegate {
     func textFieldDidChange(newText: String) {
         subjectName = newText
-        if newText.isEmpty {
-            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-off")
-            subjectCreationView.saveButton.isUserInteractionEnabled = false
-        } else {
-            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
-            subjectCreationView.saveButton.isUserInteractionEnabled = true
-        }
+        changeSaveButtonState(isEnabled: !newText.isEmpty)
     }
 
     func spaceRemover(string: String) -> String {

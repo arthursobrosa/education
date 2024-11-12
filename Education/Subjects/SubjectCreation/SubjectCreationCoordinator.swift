@@ -24,13 +24,17 @@ class SubjectCreationCoordinator: Coordinator, Dismissing {
         viewController.coordinator = self
 
         let newNavigationController = UINavigationController(rootViewController: viewController)
+        
+        if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
+            newNavigationController.transitioningDelegate = scheduleCoordinator
+        }
 
         if let studyTimeCoordinator = parentCoordinator as? StudyTimeCoordinator {
             newNavigationController.transitioningDelegate = studyTimeCoordinator
         }
-
-        if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
-            newNavigationController.transitioningDelegate = scheduleCoordinator
+        
+        if let subjectDetailsCoordinator = parentCoordinator as? SubjectDetailsCoordinator {
+            newNavigationController.transitioningDelegate = subjectDetailsCoordinator
         }
 
         newNavigationController.setNavigationBarHidden(true, animated: false)

@@ -15,7 +15,7 @@ class SubjectCreationViewController: UIViewController {
 
     // MARK: - Properties
 
-    lazy var subjectCreationView: SubjectCreationView = {
+    private lazy var subjectCreationView: SubjectCreationView = {
         let view = SubjectCreationView()
 
         view.layer.cornerRadius = 16
@@ -142,6 +142,13 @@ class SubjectCreationViewController: UIViewController {
             self.subjectCreationView.tableView.reloadData()
         }
     }
+    
+    func changeSaveButtonState(isEnabled: Bool) {
+        let color: UIColor = isEnabled ? .buttonSelected : .buttonOff
+        
+        subjectCreationView.saveButton.backgroundColor = color
+        subjectCreationView.saveButton.isUserInteractionEnabled = isEnabled
+    }
 }
 
 // MARK: - UI Setup
@@ -194,14 +201,24 @@ extension SubjectCreationViewController: UICollectionViewDelegate, UICollectionV
         let selectedCell = collectionView.cellForItem(at: indexPath)
         selectedCell?.layer.borderWidth = 2
         selectedCell?.layer.borderColor = UIColor.label.cgColor
-
+        
+        let previousColorName = viewModel.selectedSubjectColor.value
+        let newColorName = viewModel.subjectColors[indexPath.item]
+        let hasColorChanged = previousColorName != newColorName
         viewModel.selectedSubjectColor.value = viewModel.subjectColors[indexPath.item]
-
+        
         if let index = viewModel.subjectColors.firstIndex(where: { $0 == viewModel.selectedSubjectColor.value }) {
             selectedIndexPath = IndexPath(row: index, section: 0)
         }
-
+        
         dismiss(animated: true, completion: nil)
+        
+        if let subjectName,
+           !subjectName.isEmpty,
+           hasColorChanged {
+            
+            changeSaveButtonState(isEnabled: true)
+        }
     }
 }
 

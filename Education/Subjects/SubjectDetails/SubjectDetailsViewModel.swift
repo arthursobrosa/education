@@ -8,8 +8,9 @@
 import Foundation
 
 class SubjectDetailsViewModel {
-    // MARK: - FocusSession Manager
+    // MARK: - Subject and FocusSession Managers
     
+    private let subjectManager: SubjectManager
     private let focusSessionManager: FocusSessionManager
     
     // MARK: - Properties
@@ -18,10 +19,13 @@ class SubjectDetailsViewModel {
 
     var subject: Subject?
     var sessionsByMonth: [String: [FocusSession]] = [:]
+    
+    var wasSubjectDeleted: Bool = false
 
     // MARK: - Initializer
     
-    init(focusSessionManager: FocusSessionManager = FocusSessionManager(), subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
+    init(subjectManager: SubjectManager = SubjectManager(), focusSessionManager: FocusSessionManager = FocusSessionManager(), subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
+        self.subjectManager = subjectManager
         self.focusSessionManager = focusSessionManager
 
         self.subject = subject
@@ -33,7 +37,7 @@ class SubjectDetailsViewModel {
     func fetchFocusSessions() {
         var sessionsByMonth: [String: [FocusSession]] = [:]
 
-        if let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: self.subject?.unwrappedID) {
+        if let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: subject?.unwrappedID) {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM/yyyy"
             
@@ -51,6 +55,14 @@ class SubjectDetailsViewModel {
         }
 
         self.sessionsByMonth = sessionsByMonth
+    }
+    
+    func updateSubject() {
+        if let newSubject = subjectManager.fetchSubject(withID: subject?.unwrappedID) {
+            subject = newSubject
+        } else {
+            wasSubjectDeleted = true
+        }
     }
     
     func areSessionsEmpty() -> Bool {

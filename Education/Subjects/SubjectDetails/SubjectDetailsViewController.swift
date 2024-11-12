@@ -58,7 +58,7 @@ class SubjectDetailsViewController: UIViewController {
     
     // MARK: - Methods
     
-    private func setNavigationItems() {
+    func setNavigationItems() {
         subjectDetailsView.setNavigationBar(subject: viewModel.subject)
     }
     
@@ -84,6 +84,14 @@ class SubjectDetailsViewController: UIViewController {
             childSubview.trailingAnchor.constraint(equalTo: parentSubview.trailingAnchor),
             childSubview.bottomAnchor.constraint(equalTo: parentSubview.bottomAnchor),
         ])
+    }
+    
+    func reloadTable() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.subjectDetailsView.tableView.reloadData()
+        }
     }
     
     func showDeleteOtherAlert() {
