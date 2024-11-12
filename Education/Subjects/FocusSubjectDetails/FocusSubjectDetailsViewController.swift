@@ -40,6 +40,7 @@ class FocusSubjectDetailsViewController: UIViewController {
         view = focusSubjectDetails
         viewModel.getDateString()
         viewModel.getHourString()
+        
     }
 }
 

@@ -27,6 +27,11 @@ class FocusSubjectDetailsViewModel {
         
     }
     
+    func getSubjectName(subjectID: String) -> Subject? {
+        let subjectManager = SubjectManager()
+        return subjectManager.fetchSubject(withID: subjectID) ?? nil
+    }
+    
     func getDateString() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
