@@ -123,6 +123,10 @@ class FocusSessionView: UIView, TimerAnimation {
 
         bttn.layer.borderColor = UIColor.secondaryLabel.cgColor
         bttn.layer.borderWidth = 1
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
+            bttn.layer.borderColor = UIColor.secondaryLabel.cgColor
+        }
 
         bttn.alpha = 0
 
@@ -402,6 +406,11 @@ extension FocusSessionView: ViewCodeProtocol {
 
         timerTrackLayer.path = arcPath.cgPath
         timerTrackLayer.strokeColor = configuration.isTimerTrackerShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.timerTrackLayer.strokeColor = configuration.isTimerTrackerShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
+        }
+        
         timerTrackLayer.lineWidth = lineWidth
         timerTrackLayer.fillColor = UIColor.clear.cgColor
         timerTrackLayer.lineCap = .round

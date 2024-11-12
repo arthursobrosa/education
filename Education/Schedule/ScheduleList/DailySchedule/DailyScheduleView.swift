@@ -14,7 +14,6 @@ class DailyScheduleView: UIView {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .fillEqually
-        stack.alignment = .center
         stack.spacing = 19
         stack.backgroundColor = .systemBackground
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +57,7 @@ extension DailyScheduleView: ViewCodeProtocol {
             daysStack.topAnchor.constraint(equalTo: topAnchor),
             daysStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             daysStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            daysStack.heightAnchor.constraint(equalTo: daysStack.widthAnchor, multiplier: 58 / 359),
+            daysStack.heightAnchor.constraint(equalTo: daysStack.widthAnchor, multiplier: 35 / 355),
 
             contentView.topAnchor.constraint(equalTo: daysStack.bottomAnchor, constant: 18),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),

@@ -153,16 +153,6 @@ class ScheduleViewController: UIViewController {
             self.scheduleView.startActivityButton.alpha = 0
         }
     }
-
-    func showNoSubjectAlert() {
-        let alertController = UIAlertController(title: String(localized: "noSubjectTitle"), message: String(localized: "noSubjectMessage"), preferredStyle: .alert)
-
-        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-
-        alertController.addAction(okAction)
-
-        present(alertController, animated: true, completion: nil)
-    }
 }
 
 // MARK: - Sheet Delegate
@@ -192,19 +182,10 @@ extension ScheduleViewController {
         let isEmpty = contentViewInfo.isEmpty
 
         if isEmpty {
-            var childSubview = UIView()
+            scheduleView.setNoSchedulesView(isDaily: isDaily)
+            handleTip()
 
-            let hasSubjects = viewModel.hasSubjects()
-
-            if hasSubjects {
-                scheduleView.setNoSchedulesView(isDaily: isDaily)
-                handleTip()
-                childSubview = scheduleView.noSchedulesView
-            } else {
-                childSubview = scheduleView.noSubjectsView
-            }
-
-            addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: childSubview)
+            addContentSubview(parentSubview: scheduleView.dailyScheduleView.contentView, childSubview: scheduleView.noSchedulesView)
             addContentSubview(parentSubview: scheduleView.contentView, childSubview: scheduleView.dailyScheduleView)
         } else {
             if isDaily {

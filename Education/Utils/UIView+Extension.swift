@@ -42,6 +42,12 @@ extension UIView {
     }
 
     func createCurve(on roundedCurveCase: RoundedCurveCase, radius: CGFloat = 0, borderWidth: CGFloat, borderColor: UIColor) {
+        // Certifique-se de que os bounds estão definidos
+        layoutIfNeeded()
+
+        // Remover subcamadas anteriores relacionadas às bordas
+        layer.sublayers?.removeAll(where: { $0 is CAShapeLayer })
+        
         // Cria o path manualmente para desenhar as linhas que você precisa
         let arcPath = UIBezierPath()
         let vLinePath = UIBezierPath()

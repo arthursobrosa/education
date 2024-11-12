@@ -78,7 +78,7 @@ protocol TimerManaging {
 
 protocol SessionManaging {
     func handleDismissedActivity(didTapFinish: Bool)
-    func saveFocusSesssion()
+    func saveFocusSesssion(withNotes notes: String)
     func computeTimerTotalTime()
     func computePomodoroTotalTime()
     func finishSession()
@@ -521,22 +521,29 @@ extension ActivityManager: SessionManaging {
         didTapFinish ? resetTimer() : (isShowingActivityBar = true)
     }
 
-    func saveFocusSesssion() {
+    func saveFocusSesssion(withNotes notes: String = String()) {
         var timerCaseValue: Int
         
         switch timerCase {
-            case .timer:
-                timerCaseValue = 0
-            case .pomodoro:
-                timerCaseValue = 1
-            case .stopwatch:
-                timerCaseValue = 2
+        case .timer:
+            timerCaseValue = 0
+        case .pomodoro:
+            timerCaseValue = 1
+        case .stopwatch:
+            timerCaseValue = 2
         }
         
-        focusSessionManager.createFocusSession(date: date, totalTime: totalTime, subjectID: subject?.unwrappedID, timerCase: timerCaseValue)
+        focusSessionManager.createFocusSession(
+            date: date,
+            totalTime: totalTime,
+            subjectID: subject?.unwrappedID,
+            timerCase: timerCaseValue,
+            notes: notes
+        )
 
         if let scheduleID,
            let schedule = scheduleManager.fetchSchedule(from: scheduleID) {
+            
             schedule.completed = true
             scheduleManager.updateSchedule(schedule)
         }

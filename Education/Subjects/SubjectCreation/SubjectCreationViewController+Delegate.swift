@@ -5,9 +5,9 @@
 //  Created by Arthur Sobrosa on 22/08/24.
 //
 
-import Foundation
 import UIKit
 
+@objc
 protocol SubjectCreationDelegate: AnyObject {
     func textFieldDidChange(newText: String)
     func didTapSaveButton()
@@ -18,11 +18,7 @@ protocol SubjectCreationDelegate: AnyObject {
 extension SubjectCreationViewController: SubjectCreationDelegate {
     func textFieldDidChange(newText: String) {
         subjectName = newText
-        if newText.isEmpty {
-            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-off")
-        } else {
-            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
-        }
+        changeSaveButtonState(isEnabled: !newText.isEmpty)
     }
 
     func spaceRemover(string: String) -> String {
@@ -31,10 +27,8 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
     }
 
     func didTapSaveButton() {
-        guard let name = subjectName, !name.isEmpty else {
-            showAlert(message: String(localized: "subjectCreationNoName"))
-            return
-        }
+        guard let name = subjectName else { return }
+        
         let cleanName = spaceRemover(string: name)
         if viewModel.currentEditingSubject != nil {
             viewModel.updateSubject(name: cleanName, color: viewModel.selectedSubjectColor.value)
@@ -45,7 +39,7 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
                 return
             }
 
-            viewModel.createSubject(name: cleanName, color: viewModel.selectedSubjectColor.value)
+            viewModel.createSubject(name: cleanName)
         }
 
         coordinator?.dismiss(animated: true)
@@ -59,20 +53,5 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
         if let subject = viewModel.currentEditingSubject {
             showDeleteAlert(for: subject)
         }
-    }
-}
-
-extension SubjectCreationViewController: ViewCodeProtocol {
-    func setupUI() {
-        view.addSubview(subjectCreationView)
-
-        NSLayoutConstraint.activate([
-            subjectCreationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 366 / 390),
-            subjectCreationView.heightAnchor.constraint(equalTo: subjectCreationView.widthAnchor, multiplier: ((self.subjectName != nil) ? 350 : 280) / 366),
-            subjectCreationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            subjectCreationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-
-        
     }
 }

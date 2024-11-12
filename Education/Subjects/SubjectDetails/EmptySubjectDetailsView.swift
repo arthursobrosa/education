@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class EmptySubjectDetailsView: UIView {
     let emptyViewLabel: UILabel = {
         let label = UILabel()

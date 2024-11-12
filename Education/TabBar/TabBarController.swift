@@ -17,7 +17,6 @@ class TabBarController: UITabBarController {
     let schedule: ScheduleCoordinator
     private let studytime: StudyTimeCoordinator
     private let themeList: ThemeListCoordinator
-    let settings: SettingsCoordinator
 
     // MARK: - Live activity view
 
@@ -48,7 +47,6 @@ class TabBarController: UITabBarController {
         )
         studytime = StudyTimeCoordinator(navigationController: UINavigationController())
         themeList = ThemeListCoordinator(navigationController: UINavigationController())
-        settings = SettingsCoordinator(navigationController: UINavigationController(), blockingManager: viewModel.blockingManager, notificationService: viewModel.notificationService)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -69,7 +67,7 @@ class TabBarController: UITabBarController {
         setTabItems()
         startCoordinators()
 
-        viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController, settings.navigationController]
+        viewControllers = [schedule.navigationController, studytime.navigationController, themeList.navigationController]
     }
 
     // MARK: - Methods
@@ -88,16 +86,12 @@ class TabBarController: UITabBarController {
 
         themeList.navigationController.tabBarItem = UITabBarItem(title: TabCase.exams.title, image: TabCase.exams.image, tag: TabCase.exams.rawValue)
         themeList.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
-
-        settings.navigationController.tabBarItem = UITabBarItem(title: TabCase.settings.title, image: TabCase.settings.image, tag: TabCase.settings.rawValue)
-        settings.navigationController.tabBarItem.setTitleTextAttributes(titleAttributes, for: .normal)
     }
 
     private func startCoordinators() {
         schedule.start()
         studytime.start()
         themeList.start()
-        settings.start()
     }
 
     override func viewDidLayoutSubviews() {
@@ -116,7 +110,6 @@ enum TabCase: Int {
     case schedule = 0
     case subjects = 1
     case exams = 2
-    case settings = 3
 
     var title: String {
         switch self {
@@ -126,8 +119,6 @@ enum TabCase: Int {
             return String(localized: "subjectTab")
         case .exams:
             return String(localized: "themeTab")
-        case .settings:
-            return String(localized: "settingsTab")
         }
     }
 
@@ -141,8 +132,6 @@ enum TabCase: Int {
             caseImage = UIImage(systemName: "books.vertical")
         case .exams:
             caseImage = UIImage(systemName: "list.bullet.clipboard")
-        case .settings:
-            caseImage = UIImage(systemName: "gearshape")
         }
 
         return caseImage?.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 16)))

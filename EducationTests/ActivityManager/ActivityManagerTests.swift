@@ -701,6 +701,7 @@ class SessionTest: XCTestCase {
 
         // Arrange
         sut.isExtending = false
+        
         // Act
         sut.computePomodoroTotalTime()
         XCTAssertEqual(sut.extendedTime, 25)
