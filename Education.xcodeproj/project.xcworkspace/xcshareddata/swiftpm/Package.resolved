@@ -1,6 +1,15 @@
 {
-  "originHash" : "d0ca5661f566714725b4abdec985fec4caf2ee7338239ab36507e8d9bc3fdfe7",
+  "originHash" : "a6e340f0944ea8a9fd53cc5e54356e39f4f60dcd41f59fa157af098f16732fa0",
   "pins" : [
+    {
+      "identity" : "ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/uxcam/ios-sdk",
+      "state" : {
+        "revision" : "10f2de74e670221955d9c47fa574430d4ce3112f",
+        "version" : "3.6.8"
+      }
+    },
     {
       "identity" : "iqkeyboardcore",
       "kind" : "remoteSourceControl",

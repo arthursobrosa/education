@@ -10,7 +10,7 @@ import IQKeyboardManagerSwift
 import IQKeyboardToolbarManager
 import TipKit
 import UIKit
-
+import UXCam
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         IQKeyboardManager.shared.enable = true
         IQKeyboardToolbarManager.shared.isEnabled = true
+        
+        UXCam.optIntoSchematicRecordings()
+        let configuration = UXCamConfiguration(appKey: "p40ljalqy03uxcg")
+        configuration.enableAdvancedGestureRecognition = true
+        UXCam.start(with: configuration)
+        
         try? Tips.configure()
         return true
     }

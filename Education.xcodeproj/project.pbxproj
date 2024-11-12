@@ -194,6 +194,7 @@
 		68D47D552C2DDCD5000E011C /* Schedule+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDF9E2C2C8EC000A3F392 /* Schedule+Extension.swift */; };
 		68D47D562C2DDCD7000E011C /* FocusSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA02C2C947300A3F392 /* FocusSession+Extension.swift */; };
 		68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EDFA22C2CA0CA00A3F392 /* Test+Extension.swift */; };
+		68D670662CE3505100652806 /* UXCam in Frameworks */ = {isa = PBXBuildFile; productRef = 68D670652CE3505100652806 /* UXCam */; };
 		68D860192CD987320063CA76 /* NavigationBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D860182CD987320063CA76 /* NavigationBarComponent.swift */; };
 		68D8601B2CD9A6CB0063CA76 /* FocusEndSubjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D8601A2CD9A6CB0063CA76 /* FocusEndSubjectCell.swift */; };
 		68D8601D2CD9C0330063CA76 /* FocusEnd+Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D8601C2CD9C0330063CA76 /* FocusEnd+Popover.swift */; };
@@ -532,6 +533,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68D670662CE3505100652806 /* UXCam in Frameworks */,
 				31117F352CD2AF1100FF2701 /* IQKeyboardManagerSwift in Frameworks */,
 				68C125B42CDEE3BD00FA0C9F /* IQKeyboardToolbarManager in Frameworks */,
 			);
@@ -1312,6 +1314,7 @@
 			packageProductDependencies = (
 				31117F342CD2AF1100FF2701 /* IQKeyboardManagerSwift */,
 				68C125B32CDEE3BD00FA0C9F /* IQKeyboardToolbarManager */,
+				68D670652CE3505100652806 /* UXCam */,
 			);
 			productName = Education;
 			productReference = 683B45352C1B6F3A00663912 /* Education.app */;
@@ -1408,6 +1411,7 @@
 			packageReferences = (
 				31117F332CD2AF1100FF2701 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				68C125B22CDEE3BD00FA0C9F /* XCRemoteSwiftPackageReference "IQKeyboardToolbarManager" */,
+				68D670642CE3505100652806 /* XCRemoteSwiftPackageReference "ios-sdk" */,
 			);
 			productRefGroup = 683B45362C1B6F3A00663912 /* Products */;
 			projectDirPath = "";
@@ -1777,8 +1781,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_BUILD = 16;
-				APP_VERSION = 1.23;
+				APP_BUILD = 17;
+				APP_VERSION = 1.24;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1843,8 +1847,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_BUILD = 16;
-				APP_VERSION = 1.23;
+				APP_BUILD = 17;
+				APP_VERSION = 1.24;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2201,6 +2205,14 @@
 				minimumVersion = 1.1.2;
 			};
 		};
+		68D670642CE3505100652806 /* XCRemoteSwiftPackageReference "ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/uxcam/ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.6.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2213,6 +2225,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68C125B22CDEE3BD00FA0C9F /* XCRemoteSwiftPackageReference "IQKeyboardToolbarManager" */;
 			productName = IQKeyboardToolbarManager;
+		};
+		68D670652CE3505100652806 /* UXCam */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68D670642CE3505100652806 /* XCRemoteSwiftPackageReference "ios-sdk" */;
+			productName = UXCam;
 		};
 /* End XCSwiftPackageProductDependency section */
 

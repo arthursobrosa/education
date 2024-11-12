@@ -78,7 +78,7 @@ class FocusSessionViewController: UIViewController {
     }
     
     private func foo() {
-        liveActivity.endActivity()
+//        liveActivity.endActivity()
     }
 
     override func viewWillAppear(_ animated: Bool) {
