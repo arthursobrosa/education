@@ -49,6 +49,8 @@ class FocusSessionViewModel {
         self.audioService = audioServiceProtocol
 
         activityManager.date = Date.now
+        
+        liveActivity.startActivity(endTime: activityManager.totalSeconds, title: activityManager.subject?.unwrappedName, timerCase: activityManager.timerCase)
 
         bindActivityManagerProperties()
     }
@@ -208,8 +210,13 @@ extension FocusSessionViewModel {
     }
 
     func pauseResumeButtonTapped() {
-        liveActivity.endActivity(timerCase: activityManager.timerCase)
         activityManager.isPaused.toggle()
+        
+        if activityManager.isPaused {
+            liveActivity.endActivity(timerCase: activityManager.timerCase)
+        } else {
+            liveActivity.startActivity(endTime: activityManager.totalSeconds, title: activityManager.subject?.unwrappedName, timerCase: activityManager.timerCase)
+        }
 
         guard activityManager.isAtWorkTime else { return }
 
