@@ -7,16 +7,13 @@
 
 import Combine
 import Foundation
+import ActivityKit
 
 class FocusSessionViewModel {
     // MARK: - Service to manage timer and session
 
     let activityManager: ActivityManager
     
-    // MARK: - Service to use live activity
-    
-    let liveActivity: LiveActivityService = LiveActivityService.shared
-
     // MARK: - Service to block apps
 
     private let blockingManager: BlockingManager
@@ -49,9 +46,7 @@ class FocusSessionViewModel {
         self.audioService = audioServiceProtocol
 
         activityManager.date = Date.now
-        
-        liveActivity.startActivity(endTime: activityManager.totalSeconds, title: activityManager.subject?.unwrappedName, timerCase: activityManager.timerCase)
-
+        activityManager.startLiveActivity()
         bindActivityManagerProperties()
     }
 }
@@ -171,19 +166,19 @@ extension FocusSessionViewModel {
             minutes = timerSeconds / 60 % 60
             hours = timerSeconds / 3600
         }
-
+        
         let secondsText = seconds < 10 ? "0\(seconds)" : "\(seconds)"
         let minutesText = minutes < 10 ? "0\(minutes)" : "\(minutes)"
         let hoursText = hours < 10 ? "0\(hours)" : "\(hours)"
-
+        
         return "\(hoursText):\(minutesText):\(secondsText)"
     }
-
+    
     // MARK: - Title
-
+    
     func getFormatterSubjectName() -> String? {
         guard let subject = activityManager.subject else { return nil }
-
+        
         let maxLength = 22
         var subjectName = subject.unwrappedName
         if subjectName.count > maxLength {
@@ -197,7 +192,7 @@ extension FocusSessionViewModel {
 
 extension FocusSessionViewModel {
     // MARK: - Pause/Resume button
-
+    
     func changePauseStatus() {
         if !activityManager.isPaused {
             guard case .pomodoro = activityManager.timerCase,
@@ -208,16 +203,10 @@ extension FocusSessionViewModel {
             }
         }
     }
-
+    
     func pauseResumeButtonTapped() {
         activityManager.isPaused.toggle()
         
-        if activityManager.isPaused {
-            liveActivity.endActivity(timerCase: activityManager.timerCase)
-        } else {
-            liveActivity.startActivity(endTime: activityManager.totalSeconds, title: activityManager.subject?.unwrappedName, timerCase: activityManager.timerCase)
-        }
-
         guard activityManager.isAtWorkTime else { return }
 
         if activityManager.isPaused {
@@ -235,10 +224,10 @@ extension FocusSessionViewModel {
         guard activityManager.blocksApps,
               !activityManager.isPaused,
               activityManager.isAtWorkTime else { return }
-
+        
         blockingManager.applyShields()
     }
-
+    
     func unblockApps() {
         blockingManager.removeShields()
     }

@@ -5,6 +5,7 @@
 //  Created by Arthur Sobrosa on 14/08/24.
 //
 
+import ActivityKit
 import UIKit
 
 enum TimerCase: Equatable {
@@ -130,6 +131,10 @@ class ActivityManager {
     // MARK: - Notification Service
 
     private let notificationService: NotificationServiceProtocol?
+    
+    // MARK: - Live Activity
+    
+    private var liveActivity: Activity<TimerAttributes>?
 
     // MARK: - Timer properties
 
@@ -267,6 +272,7 @@ extension ActivityManager: TimerManaging {
 
             let remainingTime = max(self.totalSeconds - Int(elapsed), 0)
             self.timerSeconds = remainingTime
+            self.updateLiveActivity()
 
             if isProgressingActivityBar {
                 delegate?.updateTimerSeconds()
@@ -274,6 +280,7 @@ extension ActivityManager: TimerManaging {
 
             if elapsed >= Double(self.totalSeconds) {
                 self.handleTimerEnd()
+                self.endLiveActivity()
             }
 
             if self.updateAfterBackground {
@@ -308,6 +315,8 @@ extension ActivityManager: TimerManaging {
         if let startTime = startTime {
             pausedTime = currentDate().timeIntervalSince(startTime)
         }
+        
+        endLiveActivity()
     }
 
     func resetTimer() {
@@ -723,5 +732,28 @@ extension ActivityManager: SessionManaging {
         }
 
         updateAfterBackground = true
+    }
+}
+
+extension ActivityManager {
+    func startLiveActivity() {
+        let duration = TimeInterval(timerSeconds)
+        liveActivity = LiveActivityManager().startActivity(duration: duration, progress: progress)
+    }
+    
+    func updateLiveActivity() {
+        guard let id = liveActivity?.id else { return }
+        
+        let duration = TimeInterval(timerSeconds)
+        
+        LiveActivityManager().updateActivity(
+            activity: id,
+            duration: duration,
+            progress: progress
+        )
+    }
+    
+    func endLiveActivity() {
+        LiveActivityManager().endActivity()
     }
 }

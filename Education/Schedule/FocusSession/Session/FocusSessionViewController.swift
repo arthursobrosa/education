@@ -16,7 +16,7 @@ class FocusSessionViewController: UIViewController {
 
     weak var coordinator: (ShowingFocusEnd & Dismissing)?
     let viewModel: FocusSessionViewModel
-    let liveActivity: LiveActivityService = LiveActivityService.shared
+    //let liveActivity: LiveActivityService = LiveActivityService.shared
     
     private var timerSubscription: AnyCancellable?
 
@@ -96,7 +96,7 @@ class FocusSessionViewController: UIViewController {
     
     private func finishActivity() {
         if viewModel.activityManager.timerCase != .stopwatch{
-            liveActivity.endActivity(timerCase: viewModel.activityManager.timerCase)
+            //liveActivity.endActivity(timerCase: viewModel.activityManager.timerCase)
         }
         
     }
