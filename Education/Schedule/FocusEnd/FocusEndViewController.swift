@@ -128,7 +128,7 @@ extension FocusEndViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
         if section == 4 {
-            return tableView.bounds.height * (229 / 542)
+            return tableView.bounds.height * (219 / 542)
         }
 
         return 20
