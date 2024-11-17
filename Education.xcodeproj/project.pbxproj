@@ -118,6 +118,13 @@
 		6874A2622C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */; };
 		6874A2682C3F792800CAC9E4 /* ScheduleDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */; };
 		6881123E2C33388A003012D0 /* ShowingTestPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881123D2C33388A003012D0 /* ShowingTestPage.swift */; };
+		6881A5102CEA6C4A00061159 /* OnboardingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881A50F2CEA6C4A00061159 /* OnboardingBar.swift */; };
+		6881A5162CEA737800061159 /* Onboarding1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881A5152CEA737800061159 /* Onboarding1View.swift */; };
+		6881A5182CEA74F300061159 /* OnboardingManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881A5172CEA74F300061159 /* OnboardingManagerDelegate.swift */; };
+		6881A51A2CEA762A00061159 /* Onboarding2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881A5192CEA762900061159 /* Onboarding2View.swift */; };
+		6881A51C2CEA766500061159 /* Onboarding3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881A51B2CEA766500061159 /* Onboarding3View.swift */; };
+		6881A51E2CEA79E800061159 /* UIPageViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881A51D2CEA79E800061159 /* UIPageViewController+Extension.swift */; };
+		6881A5202CEA804C00061159 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881A51F2CEA804C00061159 /* OnboardingView.swift */; };
 		6881FA792C456101000FECAE /* FocusSessionViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6881FA782C456101000FECAE /* FocusSessionViewController+Delegate.swift */; };
 		68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BC42C2F256E00272451 /* CoreDataStack.swift */; };
 		68825BC72C2F281400272451 /* SubjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68825BC62C2F281400272451 /* SubjectManager.swift */; };
@@ -158,6 +165,13 @@
 		68B2CA9B2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */; };
 		68B2CA9D2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */; };
 		68B2CADC2C82529A00DF8069 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B2CADB2C82529A00DF8069 /* CustomTabBar.swift */; };
+		68B418202CE6795700421F92 /* OnboardingManagerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4181F2CE6795700421F92 /* OnboardingManagerCoordinator.swift */; };
+		68B418222CE6797800421F92 /* OnboardingManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B418212CE6797800421F92 /* OnboardingManagerViewController.swift */; };
+		68B418242CE67B5E00421F92 /* ShowingOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B418232CE67B5E00421F92 /* ShowingOnboarding.swift */; };
+		68B418262CE686E000421F92 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B418252CE686E000421F92 /* UserDefaults.swift */; };
+		68B418282CE689C700421F92 /* Onboarding1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B418272CE689C700421F92 /* Onboarding1ViewController.swift */; };
+		68B4182A2CE689CF00421F92 /* Onboarding2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B418292CE689CF00421F92 /* Onboarding2ViewController.swift */; };
+		68B4182C2CE689D700421F92 /* Onboarding3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4182B2CE689D700421F92 /* Onboarding3ViewController.swift */; };
 		68BAAC042CB9DF66003A3ECC /* FocusExtensionAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BAAC032CB9DF66003A3ECC /* FocusExtensionAlertView.swift */; };
 		68BBC96D2C35E13D00D82350 /* Dismissing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BBC96C2C35E13D00D82350 /* Dismissing.swift */; };
 		68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */; };
@@ -403,6 +417,13 @@
 		6874A2612C3F78B800CAC9E4 /* ScheduleDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsViewController.swift; sourceTree = "<group>"; };
 		6874A2672C3F792800CAC9E4 /* ScheduleDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDetailsView.swift; sourceTree = "<group>"; };
 		6881123D2C33388A003012D0 /* ShowingTestPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingTestPage.swift; sourceTree = "<group>"; };
+		6881A50F2CEA6C4A00061159 /* OnboardingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBar.swift; sourceTree = "<group>"; };
+		6881A5152CEA737800061159 /* Onboarding1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding1View.swift; sourceTree = "<group>"; };
+		6881A5172CEA74F300061159 /* OnboardingManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingManagerDelegate.swift; sourceTree = "<group>"; };
+		6881A5192CEA762900061159 /* Onboarding2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding2View.swift; sourceTree = "<group>"; };
+		6881A51B2CEA766500061159 /* Onboarding3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding3View.swift; sourceTree = "<group>"; };
+		6881A51D2CEA79E800061159 /* UIPageViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+Extension.swift"; sourceTree = "<group>"; };
+		6881A51F2CEA804C00061159 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		6881FA782C456101000FECAE /* FocusSessionViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSessionViewController+Delegate.swift"; sourceTree = "<group>"; };
 		68825BC42C2F256E00272451 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		68825BC62C2F281400272451 /* SubjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectManager.swift; sourceTree = "<group>"; };
@@ -444,6 +465,13 @@
 		68B2CA9A2C8108F500DF8069 /* DarkmodeOnTrial-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-SemiBold.ttf"; sourceTree = "<group>"; };
 		68B2CA9C2C8108FA00DF8069 /* DarkmodeOnTrial-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkmodeOnTrial-Bold.ttf"; sourceTree = "<group>"; };
 		68B2CADB2C82529A00DF8069 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		68B4181F2CE6795700421F92 /* OnboardingManagerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingManagerCoordinator.swift; sourceTree = "<group>"; };
+		68B418212CE6797800421F92 /* OnboardingManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingManagerViewController.swift; sourceTree = "<group>"; };
+		68B418232CE67B5E00421F92 /* ShowingOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingOnboarding.swift; sourceTree = "<group>"; };
+		68B418252CE686E000421F92 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		68B418272CE689C700421F92 /* Onboarding1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding1ViewController.swift; sourceTree = "<group>"; };
+		68B418292CE689CF00421F92 /* Onboarding2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding2ViewController.swift; sourceTree = "<group>"; };
+		68B4182B2CE689D700421F92 /* Onboarding3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding3ViewController.swift; sourceTree = "<group>"; };
 		68BAAC032CB9DF66003A3ECC /* FocusExtensionAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusExtensionAlertView.swift; sourceTree = "<group>"; };
 		68BBC96C2C35E13D00D82350 /* Dismissing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissing.swift; sourceTree = "<group>"; };
 		68BEF1662C5812700015AFC4 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
@@ -759,7 +787,9 @@
 				68833D992C46B28D00BA4850 /* DefaultCell.swift */,
 				68D218E32C60321C00FA5CD7 /* UIColor+Extension.swift */,
 				689388912C642133007EE922 /* UIView+Extension.swift */,
+				6881A51D2CEA79E800061159 /* UIPageViewController+Extension.swift */,
 				6852F3EC2C8AA175002450A3 /* PickerCase.swift */,
+				68B418252CE686E000421F92 /* UserDefaults.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -823,6 +853,7 @@
 				6833B2162C345670009EA63D /* App */,
 				6833B2192C3456B9009EA63D /* Coordinator */,
 				683812EC2C481A610062067A /* Splash */,
+				68B4181E2CE6794000421F92 /* Onboarding */,
 				689388972C642B13007EE922 /* TabBar */,
 				302E06972C3F142600FAD574 /* Schedule */,
 				317C112F2C3EF70500C5E7A5 /* Subjects */,
@@ -994,6 +1025,44 @@
 			path = ScheduleDetails;
 			sourceTree = "<group>";
 		};
+		6881A5112CEA734000061159 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				68B4181F2CE6795700421F92 /* OnboardingManagerCoordinator.swift */,
+				68B418212CE6797800421F92 /* OnboardingManagerViewController.swift */,
+				6881A5172CEA74F300061159 /* OnboardingManagerDelegate.swift */,
+				6881A51F2CEA804C00061159 /* OnboardingView.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		6881A5122CEA734900061159 /* Onboarding1 */ = {
+			isa = PBXGroup;
+			children = (
+				68B418272CE689C700421F92 /* Onboarding1ViewController.swift */,
+				6881A5152CEA737800061159 /* Onboarding1View.swift */,
+			);
+			path = Onboarding1;
+			sourceTree = "<group>";
+		};
+		6881A5132CEA734F00061159 /* Onboarding2 */ = {
+			isa = PBXGroup;
+			children = (
+				68B418292CE689CF00421F92 /* Onboarding2ViewController.swift */,
+				6881A5192CEA762900061159 /* Onboarding2View.swift */,
+			);
+			path = Onboarding2;
+			sourceTree = "<group>";
+		};
+		6881A5142CEA735500061159 /* Onboarding3 */ = {
+			isa = PBXGroup;
+			children = (
+				68B4182B2CE689D700421F92 /* Onboarding3ViewController.swift */,
+				6881A51B2CEA766500061159 /* Onboarding3View.swift */,
+			);
+			path = Onboarding3;
+			sourceTree = "<group>";
+		};
 		6887D5B42C38697400F037F2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1015,6 +1084,7 @@
 				688C2A692C933F7600E8EE81 /* FakeDatePicker.swift */,
 				30B2E4042C9206FB00383145 /* CustomSegmentedControl.swift */,
 				68D860182CD987320063CA76 /* NavigationBarComponent.swift */,
+				6881A50F2CEA6C4A00061159 /* OnboardingBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1118,6 +1188,7 @@
 		68A816802C770C0B001D5F1E /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				68B418232CE67B5E00421F92 /* ShowingOnboarding.swift */,
 				683812F32C481C580062067A /* ShowingTabBar.swift */,
 				68333DD72C3F95AD0064BF87 /* ShowingScheduleDetails.swift */,
 				CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */,
@@ -1163,6 +1234,17 @@
 				30C076802C80E2C2002BBE2C /* TipKit */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		68B4181E2CE6794000421F92 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				6881A5112CEA734000061159 /* Manager */,
+				6881A5122CEA734900061159 /* Onboarding1 */,
+				6881A5132CEA734F00061159 /* Onboarding2 */,
+				6881A5142CEA735500061159 /* Onboarding3 */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		68C2D0082C473F5800E2347A /* Extensions */ = {
@@ -1509,6 +1591,7 @@
 				68C2CFFF2C47233600E2347A /* ScheduleViewController+Delegate.swift in Sources */,
 				6833B2152C345467009EA63D /* ObjectManager.swift in Sources */,
 				688C25752C6670D700150F7F /* FocusImediateViewController.swift in Sources */,
+				68B4182C2CE689D700421F92 /* Onboarding3ViewController.swift in Sources */,
 				68825BCB2C2F2D3300272451 /* ScheduleManager.swift in Sources */,
 				30F216A42C2C885A00B7114F /* ThemeListViewController.swift in Sources */,
 				317C11312C3EF74C00C5E7A5 /* StudyTimeViewController.swift in Sources */,
@@ -1560,6 +1643,7 @@
 				68FF04E82CBE261100E8C48C /* ShowingFocusEnd.swift in Sources */,
 				31EB254B2C596883008F8893 /* NotificationService.swift in Sources */,
 				68C572412C8AC52B00B9D0A4 /* BorderedTableCell.swift in Sources */,
+				68B4182A2CE689CF00421F92 /* Onboarding2ViewController.swift in Sources */,
 				686CA4BF2CD6BFA500863790 /* ScheduleVC+TableView.swift in Sources */,
 				310B8A192C2F2694005339E8 /* TestPageViewController.swift in Sources */,
 				CE3B7D4B2C45992100EE5070 /* FamilyActivityPickerView.swift in Sources */,
@@ -1581,12 +1665,15 @@
 				68E0BA882C9A29F600C34BFE /* ThemeCreationViewModel.swift in Sources */,
 				68CA87E02C5D54CD006ED5FA /* ShowingFocusPicker.swift in Sources */,
 				68D47D572C2DDCD9000E011C /* Test+Extension.swift in Sources */,
+				6881A5162CEA737800061159 /* Onboarding1View.swift in Sources */,
 				680483842C922A9C007FC564 /* TestPageCoordinator.swift in Sources */,
 				68825BC52C2F256E00272451 /* CoreDataStack.swift in Sources */,
 				68BEF1672C5812700015AFC4 /* DeviceActivityMonitorExtension.swift in Sources */,
 				68E617A82C6D6F4E00488237 /* ActivityManager.swift in Sources */,
 				3017F0CA2CDAA4E5005036A6 /* SubjectDetailsCoordinator.swift in Sources */,
 				30F216B92C2DEF3B00B7114F /* ThemePageViewController.swift in Sources */,
+				68B418262CE686E000421F92 /* UserDefaults.swift in Sources */,
+				6881A5182CEA74F300061159 /* OnboardingManagerDelegate.swift in Sources */,
 				CE3010072C332A33007BCA07 /* FocusSessionViewController.swift in Sources */,
 				30B2E4052C9206FB00383145 /* CustomSegmentedControl.swift in Sources */,
 				301654C32CDC0709002BBD05 /* FocusSessionCell.swift in Sources */,
@@ -1600,6 +1687,7 @@
 				CE128FBB2C2C886B003C0D4A /* FocusSessionViewModel.swift in Sources */,
 				3017F0CC2CDAA509005036A6 /* SubjectDetailsViewController.swift in Sources */,
 				6833B21C2C3456D7009EA63D /* ViewCodeProtocol.swift in Sources */,
+				6881A51E2CEA79E800061159 /* UIPageViewController+Extension.swift in Sources */,
 				685265512C8B710A009D9678 /* ShowingThemeCreation.swift in Sources */,
 				68EDBFA92C8BB87D00F69710 /* ThemeListCell.swift in Sources */,
 				682927512C30AE4000FE29AA /* (null) in Sources */,
@@ -1618,6 +1706,7 @@
 				68A083ED2CBF195300B3272D /* SyncMonitor.swift in Sources */,
 				68C2D00A2C473F8000E2347A /* ScheduleDetails+Picker.swift in Sources */,
 				68FF04DE2CBE23FF00E8C48C /* FocusEndViewController.swift in Sources */,
+				6881A5102CEA6C4A00061159 /* OnboardingBar.swift in Sources */,
 				302E069D2C3F14AB00FAD574 /* ScheduleViewModel.swift in Sources */,
 				CE323B432C73C1AC004143E0 /* ShowingScheduleNotification.swift in Sources */,
 				3018A1C42CB5A54500AB3978 /* TestDetailsViewController.swift in Sources */,
@@ -1626,11 +1715,13 @@
 				68CA87E22C5D56DD006ED5FA /* FocusPickerView.swift in Sources */,
 				68CA87DA2C5D53A6006ED5FA /* FocusPickerCoordinator.swift in Sources */,
 				6852F3ED2C8AA175002450A3 /* PickerCase.swift in Sources */,
+				68B418282CE689C700421F92 /* Onboarding1ViewController.swift in Sources */,
 				68333DD82C3F95AD0064BF87 /* ShowingScheduleDetails.swift in Sources */,
 				688C257F2C667F9400150F7F /* ShowingFocusImediate.swift in Sources */,
 				68333DD22C3F81590064BF87 /* ScheduleDetailsViewModel.swift in Sources */,
 				302E06A92C45884C00FAD574 /* StudyTimeChartView.swift in Sources */,
 				68EC5BE12C66D31600805051 /* CustomPushTransition.swift in Sources */,
+				6881A51A2CEA762A00061159 /* Onboarding2View.swift in Sources */,
 				68FF04E02CBE242600E8C48C /* FocusEndCoordinator.swift in Sources */,
 				317C11332C3EF78200C5E7A5 /* StudyTimeViewModel.swift in Sources */,
 				6804837E2C920559007FC564 /* CustomChart.swift in Sources */,
@@ -1638,6 +1729,7 @@
 				68C2D0012C4723A100E2347A /* WeeklyScheduleCell.swift in Sources */,
 				30F216BB2C2DEF4800B7114F /* ThemePageView.swift in Sources */,
 				68C2D0072C473BF300E2347A /* TestPageViewController+Delegate.swift in Sources */,
+				6881A5202CEA804C00061159 /* OnboardingView.swift in Sources */,
 				68D3138D2C6AE4E000F63159 /* ScheduleDetailsCoordinator.swift in Sources */,
 				68C572692C8B493A00B9D0A4 /* ThemeListView.swift in Sources */,
 				68D47D542C2DDCD3000E011C /* Theme+Extension.swift in Sources */,
@@ -1652,7 +1744,9 @@
 				68C2CFF72C470B9800E2347A /* StudyTimeViewController+Delegate.swift in Sources */,
 				68D860192CD987320063CA76 /* NavigationBarComponent.swift in Sources */,
 				68A80B672C97785B00CC6D48 /* NoThemesView.swift in Sources */,
+				68B418222CE6797800421F92 /* OnboardingManagerViewController.swift in Sources */,
 				68EC5BE32C66D49800805051 /* CustomPopTransition.swift in Sources */,
+				68B418242CE67B5E00421F92 /* ShowingOnboarding.swift in Sources */,
 				68825BC72C2F281400272451 /* SubjectManager.swift in Sources */,
 				68833D9E2C46B69E00BA4850 /* ThemePageViewController+Delegate.swift in Sources */,
 				682376702C63F48100255143 /* ActivityButton.swift in Sources */,
@@ -1669,6 +1763,7 @@
 				68D3138B2C6ADFEE00F63159 /* FocusSessionModel.swift in Sources */,
 				68A8167D2C769296001D5F1E /* ColorPickerCell.swift in Sources */,
 				68C2CFFB2C47220000E2347A /* ScheduleView.swift in Sources */,
+				6881A51C2CEA766500061159 /* Onboarding3View.swift in Sources */,
 				31C102F42C6D1A67009D2751 /* SubjectCreationView.swift in Sources */,
 				688C257B2C66716600150F7F /* FocusImediateViewController+Delegate.swift in Sources */,
 				CE3B7D332C4591CE00EE5070 /* BlockAppsViewModel.swift in Sources */,
@@ -1695,6 +1790,7 @@
 				68FF04E22CBE244F00E8C48C /* FocusEndViewModel.swift in Sources */,
 				CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */,
 				68833D9A2C46B28D00BA4850 /* DefaultCell.swift in Sources */,
+				68B418202CE6795700421F92 /* OnboardingManagerCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2083,9 +2179,10 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WidgetConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WidgetConfiguration;
@@ -2097,8 +2194,10 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = "$(APP_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.WidgetConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.WidgetConfig;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = WidgetProfile;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2111,9 +2210,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
-				DEVELOPMENT_TEAM = N7QW85QF8V;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = N7QW85QF8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WidgetConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WidgetConfiguration;
@@ -2125,8 +2227,10 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = "$(APP_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.WidgetConfiguration;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arthursobrosa.Education.WidgetConfig;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = WidgetProfile;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
