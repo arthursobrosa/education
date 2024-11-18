@@ -53,7 +53,6 @@ class SubjectDetailsViewModel {
                 sessionsByMonth[month] = sessions.sorted(by: { $0.date ?? Date() > $1.date ?? Date() })
             }
         }
-
         self.sessionsByMonth = sessionsByMonth
     }
     

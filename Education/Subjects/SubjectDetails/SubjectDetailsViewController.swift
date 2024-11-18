@@ -10,8 +10,8 @@ import UIKit
 
 class SubjectDetailsViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
-    
-    weak var coordinator: (Dismissing & ShowingSubjectCreation)?
+
+    weak var coordinator: (Dismissing & ShowingFocusSubjectDetails & ShowingSubjectCreation)?
     let viewModel: SubjectDetailsViewModel
     
     // MARK: - Properties
@@ -153,6 +153,18 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let months = Array(self.viewModel.sessionsByMonth.keys).sorted(by: >)
+        let monthKey = months[indexPath.section]
+        
+        if let session = self.viewModel.sessionsByMonth[monthKey]?[indexPath.row] {
+            coordinator?.showFocusSubjectDetails(focusSession: session)
+        }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
     func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         60
     }
