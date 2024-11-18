@@ -22,12 +22,15 @@ class FocusSubjectDetailsCoordinator: Coordinator, Dismissing {
     func start() {
         let viewController = FocusSubjectDetailsViewController(viewModel: viewModel)
         viewController.coordinator = self
-
+        
+        if let subjectDetailsCoordinator = parentCoordinator as? SubjectDetailsCoordinator {
+            viewController.transitioningDelegate = subjectDetailsCoordinator
+        }
+        
         navigationController.present(viewController, animated: true)
     }
     
     func dismiss(animated: Bool) {
         navigationController.dismiss(animated: animated)
     }
-    
 }

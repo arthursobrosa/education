@@ -12,9 +12,12 @@ class FocusSubjectDetailsViewController: UIViewController {
     weak var coordinator: Dismissing?
     let viewModel: FocusSubjectDetailsViewModel
     
+    var placeholderText: String = ""
+    var originalNotesText: String = ""
+    
     lazy var focusSubjectDetails: FocusSubjectDetailsView = {
         let view = FocusSubjectDetailsView()
-        view.delegate =  self
+        view.delegate = self
         view.tableView.dataSource = self
         view.tableView.delegate = self
         view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
@@ -38,9 +41,29 @@ class FocusSubjectDetailsViewController: UIViewController {
 
     override func loadView() {
         view = focusSubjectDetails
+        viewModel.makeTitle(focusSession: viewModel.focusSession)
         viewModel.getDateString()
         viewModel.getHourString()
+        viewModel.getFocusNotes()
         
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        focusSubjectDetails.titleLabel.text = viewModel.titleLabel
+        focusSubjectDetails.notesView.delegate = self
+        
+        placeholderText = viewModel.focusSession.notes ?? ""
+        
+        if let notes = viewModel.focusSession.notes, !viewModel.notes.isEmpty {
+            focusSubjectDetails.notesView.text = notes
+            focusSubjectDetails.notesView.textColor = .systemText
+        } else {
+            focusSubjectDetails.notesView.text = placeholderText
+            focusSubjectDetails.notesView.textColor = .systemText
+        }
+        
+        originalNotesText = viewModel.focusSession.notes ?? ""
     }
 }
 
@@ -78,7 +101,7 @@ extension FocusSubjectDetailsViewController: UITableViewDataSource, UITableViewD
         
         NSLayoutConstraint.activate([
             label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
         
@@ -131,7 +154,7 @@ extension FocusSubjectDetailsViewController: UITableViewDataSource, UITableViewD
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.deactivate(textLabel.constraints)
         NSLayoutConstraint.activate([
-            textLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 4),
+            textLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
             textLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
             textLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
             textLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
