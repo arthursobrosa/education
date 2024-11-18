@@ -54,6 +54,7 @@ class OnboardingManagerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        addKeyboardOberservers()
     }
     
     // MARK: - Methods
@@ -61,6 +62,35 @@ class OnboardingManagerViewController: UIViewController {
     private func updateProgress() {
         let progress = Float(currentIndex + 1) / Float(pages.count)
         progressView.setProgress(progress, animated: true)
+    }
+    
+    private func addKeyboardOberservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc
+    private func keyboardChangedFirstResponder(notification: Notification) {
+        switch notification.name {
+        case UIResponder.keyboardWillShowNotification:
+            progressView.isHidden = true
+        case UIResponder.keyboardWillHideNotification:
+            progressView.isHidden = false
+        default:
+            break
+        }
+    }
+    
+    func showOnboarding3Alert() {
+        let title = String(localized: "onboarding3AlertTitle")
+        let message = String(localized: "onboarding3AlertMessage" )
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .cancel)
+
+        alertController.addAction(okAction)
+
+        present(alertController, animated: true)
     }
 }
 

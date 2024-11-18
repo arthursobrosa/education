@@ -26,7 +26,7 @@ extension UIPageViewController {
         setViewControllers([previousViewController], direction: .reverse, animated: animated) { [weak self] completed in
             guard let self else { return }
             
-            self.delegate?.pageViewController?(self, didFinishAnimating: true, previousViewControllers: [], transitionCompleted: completed)
+            self.delegate?.pageViewController?(self, didFinishAnimating: true, previousViewControllers: [previousViewController], transitionCompleted: completed)
         }
     }
 }

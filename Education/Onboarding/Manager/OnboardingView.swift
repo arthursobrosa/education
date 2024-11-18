@@ -53,6 +53,24 @@ class OnboardingView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Methods
+    
+    func changeNextButtonName() {
+        let titleName = String(localized: "start")
+        let titleFont: UIFont = .init(name: Fonts.darkModeOnRegular, size: 17) ?? .systemFont(ofSize: 17, weight: .regular)
+        let titleColor: UIColor = .systemText40
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: titleFont,
+            .foregroundColor: titleColor,
+        ]
+        let attributedTitle = NSAttributedString(string: titleName, attributes: attributes)
+        nextButton.setAttributedTitle(attributedTitle, for: .normal)
+    }
+    
+    func hideSkipButton() {
+        onboardingBar.hideSkipButton()
+    }
 }
 
 // MARK: - UI Setup

@@ -31,14 +31,18 @@ class OnboardingManagerCoordinator: Coordinator, ShowingTabBar {
     }
     
     func start() {
+        let viewModel = OnboardingManagerViewModel()
+        
         let onboarding1 = Onboarding1ViewController()
         let onboarding2 = Onboarding2ViewController()
-        let onboarding3 = Onboarding3ViewController()
+        let onboarding3 = Onboarding3ViewController(viewModel: viewModel)
+        let onboarding4 = Onboarding4ViewController(viewModel: viewModel)
         
         let pages: [UIViewController] = [
             onboarding1,
             onboarding2,
             onboarding3,
+            onboarding4,
         ]
         
         let onboardingManager = OnboardingManagerViewController(pages: pages)
@@ -46,6 +50,7 @@ class OnboardingManagerCoordinator: Coordinator, ShowingTabBar {
         onboarding1.delegate = onboardingManager
         onboarding2.delegate = onboardingManager
         onboarding3.delegate = onboardingManager
+        onboarding4.delegate = onboardingManager
         
         navigationController.setNavigationBarHidden(true, animated: true)
         navigationController.pushViewController(onboardingManager, animated: true)
@@ -57,7 +62,7 @@ class OnboardingManagerCoordinator: Coordinator, ShowingTabBar {
         tabBar.modalPresentationStyle = .fullScreen
 
         navigationController.setNavigationBarHidden(true, animated: false)
-        navigationController.pushViewController(tabBar, animated: false)
+        navigationController.pushViewController(tabBar, animated: true)
 
         guard let scheduleNotification else { return }
 

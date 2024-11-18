@@ -174,12 +174,6 @@
 "newTestTip" = "Crie um novo grupo de testes aqui";
 "explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
 
-//MARK: - EMPTY SUBJECTS VIEW
-"create" = "Criar Matéria";
-"createText" = "Para iniciar a montagem do seu cronograma, crie uma nova matéria";
-"welcomeText" = "Boas-vindas ao Planno! 👋";
-
-
 //MARK: - OTHER SUBJECT
 "deleteOther" = "Apagar tempo";
 "deleteOtherMessage" = "Você realmente deseja apagar o tempo de estudo?";
@@ -210,3 +204,31 @@
 // MARK: - Onboarding
 "skip" = "Pular";
 "next" = "Próximo";
+"welcomeText" = "Boas-vindas ao Planno";
+"appDescription" = "Um app feito para ajudar em jornadas de estudo";
+"simple" = "Simples.";
+"clear" = "Claro.";
+"straightforward" = "Direto.";
+"believeToBe" = "Como acreditamos que deve ser.";
+"letsStart" = "Vamos começar?";
+"addSubjects" = "Adicione as matérias dos seus estudos.";
+"onboarding3AlertTitle" = "Sem matéria";
+"onboarding3AlertMessage" = "Você não pode prosseguir sem nenhuma matéria selecionda.";
+"subjectsSuccess" = "Matérias adicionadas com sucesso!";
+"readyToStart" = "Tudo pronto para montar seu cronograma e focar nos estudos.";
+
+// MARK: - Default Subjects
+"subject_portuguese" = "Português";
+"subject_literature" = "Literatura";
+"subject_english" = "Inglês";
+"subject_arts" = "Artes";
+"subject_physical_education" = "Ed. Física";
+"subject_it" = "Tecnologia";
+"subject_history" = "História";
+"subject_geography" = "Geografia";
+"subject_philosophy" = "Filosofia";
+"subject_sociology" = "Sociologia";
+"subject_chemistry" = "Química";
+"subject_physics" = "Física";
+"subject_biology" = "Biologia";
+"subject_mathematics" = "Matemática";

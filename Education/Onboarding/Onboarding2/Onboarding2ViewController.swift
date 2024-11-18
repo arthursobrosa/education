@@ -25,4 +25,14 @@ class Onboarding2ViewController: UIViewController {
     override func loadView() {
         view = onboarding2View
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        onboarding2View.animate()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onboarding2View.reset()
+    }
 }

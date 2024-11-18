@@ -16,6 +16,22 @@ protocol OnboardingManagerDelegate: AnyObject {
 
 extension OnboardingManagerViewController: OnboardingManagerDelegate {
     func goToNextPage() {
+        if let onboarding3ViewController = pageViewController.viewControllers?.first(where: { $0 is Onboarding3ViewController }) as? Onboarding3ViewController {
+            
+            if onboarding3ViewController.viewModel.selectedSubjectNames.isEmpty {
+                showOnboarding3Alert()
+                return
+            }
+            
+            onboarding3ViewController.viewModel.createSubjects()
+        }
+        
+        if let _ = pageViewController.viewControllers?.first(where: { $0 is Onboarding4ViewController }) as? Onboarding4ViewController {
+            
+            skipAllPages()
+            return
+        }
+        
         pageViewController.goToNextPage()
     }
     
