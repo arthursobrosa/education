@@ -162,6 +162,4 @@ extension FocusSubjectDetailsViewController: UITableViewDataSource, UITableViewD
 
         return cell
     }
-    
-    
 }

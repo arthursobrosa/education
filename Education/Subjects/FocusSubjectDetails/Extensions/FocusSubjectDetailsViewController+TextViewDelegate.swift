@@ -23,7 +23,7 @@ extension FocusSubjectDetailsViewController: UITextViewDelegate {
             textView.text = placeholderText
             textView.textColor = .systemText
             focusSubjectDetails.notesView.isEditable = false
-        }else {
+        } else {
             viewModel.notes = textView.text
             focusSubjectDetails.showSaveButton()
         }

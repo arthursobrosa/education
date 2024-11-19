@@ -21,23 +21,23 @@ class FocusSubjectDetailsViewModel {
         self.focusSession = focusSession
     }
     
-    func updateFocusSessionComment(notes: String){
+    func updateFocusSessionComment(notes: String) {
         focusSession.notes = notes
         focusSessionManager.updateFocusSession(focusSession)
     }
     
-    func removeFocusSession(){
+    func removeFocusSession() {
         focusSessionManager.deleteFocusSession(focusSession)
     }
     
     func getSubjectName(subjectID: String) -> Subject? {
         let subjectManager = SubjectManager()
-        return subjectManager.fetchSubject(withID: subjectID) ?? nil
+        return subjectManager.fetchSubject(withID: subjectID)
     }
     
     func makeTitle(focusSession: FocusSession) {
         let subject = getSubjectName(subjectID: focusSession.unwrappedSubjectID)
-        if var subjectName = subject?.unwrappedName{
+        if var subjectName = subject?.unwrappedName {
             let maxLenght = 25
             var formattedSubjectName = subjectName
             if subjectName.count >= maxLenght {

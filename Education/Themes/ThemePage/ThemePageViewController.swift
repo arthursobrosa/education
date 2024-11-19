@@ -77,7 +77,7 @@ class ThemePageViewController: UIViewController {
     // MARK: - Methods
 
     private func setNavigationItems() {
-        guard let themeName = viewModel.theme?.unwrappedName else{return}
+        guard let themeName = viewModel.theme?.unwrappedName else { return }
         let navigationTitle = themeName
         themePageView.setNavigationBar(with: navigationTitle)
     }

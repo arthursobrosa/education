@@ -5,9 +5,9 @@
 //  Created by Lucas Cunha on 26/06/24.
 //
 
+import ActivityKit
 import Combine
 import Foundation
-import ActivityKit
 
 class FocusSessionViewModel {
     // MARK: - Service to manage timer and session

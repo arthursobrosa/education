@@ -12,7 +12,7 @@ final class LiveActivityManager {
     @discardableResult
     func startActivity(duration: Int, progress: Double, title: String, color: String, restTime: Bool) -> Activity<TimerAttributes>? {
         var activity: Activity<TimerAttributes>?
-        var attributes = TimerAttributes(name: title, color: color, restTime: restTime)
+        let attributes = TimerAttributes(name: title, color: color, restTime: restTime)
         
         do {
             let state = TimerAttributes.ContentState(
