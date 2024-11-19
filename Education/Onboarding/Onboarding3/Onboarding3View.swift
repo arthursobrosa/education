@@ -255,6 +255,8 @@ extension Onboarding3View: UITextFieldDelegate {
         }
         
         textField.resignFirstResponder()
+        textField.text = String()
+        
         return true
     }
 }
