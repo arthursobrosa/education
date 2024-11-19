@@ -157,6 +157,7 @@
 "description" = "Notas sobre o teste/ questões";
 "deleteThemeTitle" = "Deletar Prova";
 "deleteThemeBody" = "Você tem certeza que deseja deletar essa prova? Todo o histórico de testes e resultados serão perdidos";
+"name" = "Nome";
 
 // MARK: - Modal
 "startButton" = "Iniciar Atividade";

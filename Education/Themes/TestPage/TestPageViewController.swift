@@ -93,16 +93,22 @@ class TestPageViewController: UIViewController {
     func textFieldEditingDidEnd(_ sender: UITextField) {
         guard let text = sender.text else { return }
 
-        if text.isEmpty {
-            sender.text = "0"
-        }
-
-        guard let intText = Int(text) else { return }
-
         switch sender.tag {
         case 0:
-            viewModel.totalQuestions = intText
+            viewModel.themeName = text
+            
         case 1:
+            if text.isEmpty {
+                sender.text = "0"
+            }
+            guard let intText = Int(text) else { return }
+            viewModel.totalQuestions = intText
+            
+        case 2:
+            if text.isEmpty {
+                sender.text = "0"
+            }
+            guard let intText = Int(text) else { return }
             viewModel.rightQuestions = intText
         default:
             break
@@ -126,14 +132,6 @@ class TestPageViewController: UIViewController {
         }
     }
 
-//    @objc 
-//    func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
-//        guard let cell = testPageView.tableView.cellForRow(at: IndexPath(row: sender.tag, section: 1)),
-//              let textField = cell.accessoryView as? UITextField else { return }
-//
-//        textField.resignFirstResponder()
-//    }
-
     @objc 
     func datePickerChanged(_ sender: UIDatePicker) {
         viewModel.date = sender.date
@@ -147,18 +145,17 @@ extension TestPageViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func numberOfSections(in _: UITableView) -> Int {
-        return 2
+        viewModel.theme != nil ? 2 : 3
     }
 
-    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        case 1:
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let numberOfSections = tableView.numberOfSections
+        
+        if section == numberOfSections - 1 {
             return 2
-        default:
-            return 0
         }
+
+        return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -166,11 +163,11 @@ extension TestPageViewController: UITableViewDataSource, UITableViewDelegate {
             fatalError("Could not dequeue cell")
         }
 
-        cell.textLabel?.text = getCellTitle(for: indexPath)
+        cell.textLabel?.text = getCellTitle(for: indexPath, numberOfSections: tableView.numberOfSections)
         cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         cell.textLabel?.textColor = .systemText
 
-        cell.accessoryView = getAccessoryView(for: indexPath)
+        cell.accessoryView = getAccessoryView(for: indexPath, numberOfSections: tableView.numberOfSections)
 
         return cell
     }

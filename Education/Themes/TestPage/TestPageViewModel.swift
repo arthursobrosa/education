@@ -9,17 +9,20 @@ import Foundation
 
 class TestPageViewModel {
     private let testManager: TestManager
+    private let themeManager: ThemeManager
 
-    private let theme: Theme
+    let theme: Theme?
     let test: Test?
 
     var date = Date()
     var totalQuestions = Int()
     var rightQuestions = Int()
     var comment = String()
+    var themeName = ""
 
-    init(testManager: TestManager = TestManager(), theme: Theme, test: Test?) {
+    init(testManager: TestManager = TestManager(), themeManager: ThemeManager = ThemeManager(), theme: Theme?, test: Test?) {
         self.testManager = testManager
+        self.themeManager = themeManager
         self.theme = theme
         self.test = test
 
@@ -52,12 +55,16 @@ class TestPageViewModel {
 
     private func addNewTest() {
         testManager.createTest(
-            themeID: theme.unwrappedID,
+            themeID: themeName,
             date: date,
             rightQuestions: rightQuestions,
             totalQuestions: totalQuestions,
             comment: comment
         )
+    }
+    
+    func createTheme(name: String) {
+        themeManager.createTheme(name: name)
     }
 
     func removeTest() {

@@ -157,6 +157,7 @@
 "description" = "Notas sobre o teste/ questões";
 "deleteThemeTitle" = "Delete Theme";
 "deleteThemeBody" = "Are you sure you want to delete this theme? All its tests history and results will be discarded";
+"name" = "Name";
 
 // MARK: - Modal
 "startButton" = "Start Activity";

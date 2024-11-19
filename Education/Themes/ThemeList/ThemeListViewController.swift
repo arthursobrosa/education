@@ -11,7 +11,7 @@ import UIKit
 class ThemeListViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
 
-    weak var coordinator: (ShowingThemePage & ShowingThemeCreation)?
+    weak var coordinator: (ShowingThemePage & ShowingThemeCreation & ShowingTestPage)?
     let viewModel: ThemeListViewModel
 
     var createTestTip = CreateTestTip()

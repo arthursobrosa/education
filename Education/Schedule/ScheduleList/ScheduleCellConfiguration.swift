@@ -108,7 +108,7 @@ protocol ScheduleCellProtocol: AnyObject, ViewCodeProtocol {
     
     // MARK: - Methods
     
-    func configure(with passedInConfig: CellConfig)
+    func configure(with passedInConfig: CellConfig, traitCollection: UITraitCollection)
     func setupSubviews()
 }
 
@@ -149,7 +149,7 @@ extension ScheduleCellProtocol {
         }()
     }
     
-    func configure(with passedInConfig: CellConfig) {
+    func configure(with passedInConfig: CellConfig, traitCollection: UITraitCollection) {
         config = passedInConfig
         guard let config,
               let subject = config.subject else { return }
@@ -174,14 +174,14 @@ extension ScheduleCellProtocol {
 
 //        let subjectColor = traitCollection.userInterfaceStyle == .light ? color.darker(by: 0.6) : color.darker(by: 1)
         let subjectColor = color.darker(by: 0.6)
-        subjectNameLabel?.textColor = subjectColor
-        playButton?.playImageView.tintColor = subjectColor
-        playButton?.circleView.backgroundColor = color.withAlphaComponent(0.6)
+        subjectNameLabel?.textColor = traitCollection.userInterfaceStyle == .dark ? color : subjectColor
+        playButton?.playImageView.tintColor = color
+        playButton?.circleView.backgroundColor = color.withAlphaComponent(0.5)
 
         var stringColor: UIColor = color
 
         if case .ongoing = config.eventCase {
-            stringColor = color.darker(by: 0.6) ?? color
+            stringColor = traitCollection.userInterfaceStyle == .dark ? color : color.darker(by: 0.6) ?? color
         }
 
         if let attributedText = timeLeftLabel?.attributedText {

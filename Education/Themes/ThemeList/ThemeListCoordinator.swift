@@ -7,7 +7,8 @@
 
 import UIKit
 
-class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingThemeCreation {
+class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingThemeCreation, ShowingTestPage {
+    
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
@@ -35,6 +36,13 @@ class ThemeListCoordinator: NSObject, Coordinator, ShowingThemePage, ShowingThem
 
     func showThemeCreation(theme: Theme?) {
         let child = ThemeCreationCoordinator(navigationController: navigationController, theme: theme)
+        child.parentCoordinator = self
+        childCoordinators.append(child)
+        child.start()
+    }
+    
+    func showTestPage(theme: Theme?, test: Test?) {
+        let child = TestPageCoordinator(navigationController: navigationController, theme: theme, test: test)
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()

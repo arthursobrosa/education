@@ -77,7 +77,7 @@ class ScheduleView: UIView {
             fontSize: 17,
             cornerRadius: 25
         )
-        button.tintColor = UIColor(named: "system-text")
+        button.tintColor = .buttonSelected
         button.layer.masksToBounds = true
         button.alpha = 0
 
@@ -95,7 +95,7 @@ class ScheduleView: UIView {
             fontSize: 17,
             cornerRadius: 25
         )
-        button.tintColor = UIColor(named: "system-text")
+        button.tintColor = .buttonSelected
         button.layer.masksToBounds = true
         button.alpha = 0
 
