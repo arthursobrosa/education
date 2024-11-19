@@ -10,13 +10,13 @@ import Foundation
 
 final class LiveActivityManager {
     @discardableResult
-    func startActivity(duration: TimeInterval, progress: Double) -> Activity<TimerAttributes>? {
+    func startActivity(duration: Int, progress: Double, title: String, color: String, restTime: Bool) -> Activity<TimerAttributes>? {
         var activity: Activity<TimerAttributes>?
-        var attributes = TimerAttributes(name: "Timer")
+        var attributes = TimerAttributes(name: title, color: color, restTime: restTime)
         
         do {
             let state = TimerAttributes.ContentState(
-                duration: duration.formatted(),
+                duration: duration,
                 progress: progress
             )
             activity = try Activity<TimerAttributes>.request(
@@ -30,10 +30,10 @@ final class LiveActivityManager {
         return activity
     }
     
-    func updateActivity(activity: String, duration: TimeInterval, progress: Double) {
+    func updateActivity(activity: String, duration: Int, progress: Double) {
         Task {
             let contentState = TimerAttributes.ContentState(
-                duration: duration.formatted(),
+                duration: duration,
                 progress: progress
             )
             let activity = Activity<TimerAttributes>.activities.first(where: { $0.id == activity })
@@ -41,7 +41,7 @@ final class LiveActivityManager {
         }
     }
     
-    func endActivity() {
+    func endActivity(timerCase: TimerCase) {
         Task {
             for activity in Activity<TimerAttributes>.activities {
                 await activity.end(dismissalPolicy: .immediate)

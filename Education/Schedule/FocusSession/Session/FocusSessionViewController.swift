@@ -80,7 +80,6 @@ class FocusSessionViewController: UIViewController {
         // Set the event handler for the timer
         timer?.setEventHandler { [weak self] in
             guard let self else { return }
-            print("algo")
             self.finishActivity()
         }
 

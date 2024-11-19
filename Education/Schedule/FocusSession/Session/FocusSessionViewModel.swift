@@ -46,7 +46,6 @@ class FocusSessionViewModel {
         self.audioService = audioServiceProtocol
 
         activityManager.date = Date.now
-        activityManager.startLiveActivity()
         bindActivityManagerProperties()
     }
 }

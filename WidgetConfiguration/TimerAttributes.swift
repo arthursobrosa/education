@@ -12,9 +12,12 @@ struct TimerAttributes: ActivityAttributes {
     public typealias TimerStatus = ContentState
     
     public struct ContentState: Codable, Hashable {
-      var duration: String
+      var duration: Int
       var progress: Double
     }
 
     var name: String
+    var color: String
+    var restTime: Bool
+    
 }
