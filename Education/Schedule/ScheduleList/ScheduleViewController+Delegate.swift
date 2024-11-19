@@ -228,7 +228,7 @@ extension ScheduleViewController: ScheduleDelegate {
             color: color
         )
         
-        cell.configure(with: cellConfig)
+        cell.configure(with: cellConfig, traitCollection: self.traitCollection)
 
         return cell
     }
