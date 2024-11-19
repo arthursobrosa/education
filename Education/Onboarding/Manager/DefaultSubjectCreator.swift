@@ -18,7 +18,7 @@ class DefaultSubjectCreator {
         "redPicker",
         "turquoisePicker",
         "violetPicker",
-        "yellowPicker"
+        "yellowPicker",
     ]
     
     private var defaultSubjects = [
@@ -43,7 +43,9 @@ class DefaultSubjectCreator {
     }
     
     func addSubjectName(_ name: String) {
-        defaultSubjects.append(name)
+        if !defaultSubjects.contains(name) {
+            defaultSubjects.append(name)
+        }
     }
     
     func createDefaultSubjects(subjectNames: [String]) {

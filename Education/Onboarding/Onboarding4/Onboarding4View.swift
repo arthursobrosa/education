@@ -12,6 +12,7 @@ class Onboarding4View: OnboardingView {
     
     var subjects: [(name: String, colorName: String)] = [] {
         didSet {
+            setContentView()
             reloadTable()
         }
     }
@@ -33,7 +34,12 @@ class Onboarding4View: OnboardingView {
         return label
     }()
     
-    private var tableHeightConstraint: NSLayoutConstraint?
+    private let contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private lazy var subjectsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -43,6 +49,18 @@ class Onboarding4View: OnboardingView {
         tableView.register(OnboardingSubjectCell.self, forCellReuseIdentifier: OnboardingSubjectCell.identifer)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
+    }()
+    
+    private let emptyView: UILabel = {
+        let label = UILabel()
+        label.text = String(localized: "subjectsEmpty")
+        label.textColor = .systemText40
+        label.numberOfLines = -1
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .center
+        label.font = .init(name: Fonts.darkModeOnItalic, size: 18)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private let readyLabel: UILabel = {
@@ -76,13 +94,6 @@ class Onboarding4View: OnboardingView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Lifecycle
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        updateTableHeight()
-    }
-    
     // MARK: - Methods
     
     private func reloadTable() {
@@ -92,19 +103,6 @@ class Onboarding4View: OnboardingView {
             self.subjectsTableView.reloadData()
         }
     }
-    
-    private func updateTableHeight() {
-        let tableHeight = subjectsTableView.contentSize.height
-        let maxHeight = bounds.height * (300 / 844)
-        
-        if tableHeight <= maxHeight {
-            tableHeightConstraint?.constant = tableHeight
-        } else {
-            tableHeightConstraint?.constant = maxHeight
-        }
-        
-        layoutIfNeeded()
-    }
 }
 
 // MARK: - UI Setup
@@ -112,24 +110,51 @@ class Onboarding4View: OnboardingView {
 extension Onboarding4View {
     private func layoutContent() {
         addSubview(successLabel)
+        addSubview(contentView)
         addSubview(readyLabel)
-        addSubview(subjectsTableView)
-        
-        tableHeightConstraint = subjectsTableView.heightAnchor.constraint(equalToConstant: 0)
-        tableHeightConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
             successLabel.topAnchor.constraint(equalTo: topAnchor, constant: 195),
             successLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            subjectsTableView.topAnchor.constraint(equalTo: successLabel.bottomAnchor, constant: 74),
-            subjectsTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            subjectsTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            contentView.topAnchor.constraint(equalTo: successLabel.bottomAnchor, constant: 74),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            contentView.bottomAnchor.constraint(equalTo: readyLabel.topAnchor, constant: -50),
             
             readyLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -184),
             readyLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
             readyLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
         ])
+    }
+    
+    private func setContentView() {
+        let isEmpty = subjects.isEmpty
+        
+        contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        if isEmpty {
+            emptyView.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(emptyView)
+            
+            NSLayoutConstraint.activate([
+                emptyView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                emptyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                emptyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            ])
+        } else {
+            subjectsTableView.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(subjectsTableView)
+            
+            NSLayoutConstraint.activate([
+                subjectsTableView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                subjectsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                subjectsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                subjectsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            ])
+        }
     }
 }
 

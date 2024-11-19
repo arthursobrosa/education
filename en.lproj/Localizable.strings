@@ -213,10 +213,9 @@
 "believeToBe" = "The way we believe is should be.";
 "letsStart" = "Let's start?";
 "addSubjects" = "Add the subjects you want to study.";
-"onboarding3AlertTitle" = "No subjects";
-"onboarding3AlertMessage" = "You cannot proceed without selecting at least one subject.";
 "subjectsSuccess" = "Subjects added successfully!";
 "readyToStart" = "Everything is ready to set up your schedule and focus on your studies.";
+"subjectsEmpty" = "You haven't selected any subjects on the previous page.";
 
 // MARK: - Default Subjects
 "subject_portuguese" = "Portuguese";

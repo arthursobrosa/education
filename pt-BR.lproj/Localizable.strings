@@ -213,10 +213,9 @@
 "believeToBe" = "Como acreditamos que deve ser.";
 "letsStart" = "Vamos começar?";
 "addSubjects" = "Adicione as matérias dos seus estudos.";
-"onboarding3AlertTitle" = "Sem matéria";
-"onboarding3AlertMessage" = "Você não pode prosseguir sem nenhuma matéria selecionda.";
 "subjectsSuccess" = "Matérias adicionadas com sucesso!";
 "readyToStart" = "Tudo pronto para montar seu cronograma e focar nos estudos.";
+"subjectsEmpty" = "Você não selecionou nenhuma matéria na página anterior.";
 
 // MARK: - Default Subjects
 "subject_portuguese" = "Português";

@@ -80,18 +80,6 @@ class OnboardingManagerViewController: UIViewController {
             break
         }
     }
-    
-    func showOnboarding3Alert() {
-        let title = String(localized: "onboarding3AlertTitle")
-        let message = String(localized: "onboarding3AlertMessage" )
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "Ok", style: .cancel)
-
-        alertController.addAction(okAction)
-
-        present(alertController, animated: true)
-    }
 }
 
 // MARK: - UI Setup
@@ -138,6 +126,7 @@ extension OnboardingManagerViewController: UIPageViewControllerDataSource, UIPag
         
         return pages[index + 1]
     }
+    
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed, let visibleViewController = pageViewController.viewControllers?.first, let index = pages.firstIndex(of: visibleViewController) {
             currentIndex = index

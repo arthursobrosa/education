@@ -77,10 +77,10 @@ extension OnboardingBar: ViewCodeProtocol {
         addSubview(skipButton)
         
         NSLayoutConstraint.activate([
-            backButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 15 / 390),
+            backButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 30 / 390),
             backButton.heightAnchor.constraint(equalTo: backButton.heightAnchor),
             backButton.topAnchor.constraint(equalTo: topAnchor, constant: 57),
-            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 22),
+            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             
             skipButton.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
             skipButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),

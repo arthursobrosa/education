@@ -43,6 +43,7 @@ class Onboarding4ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.createSubjects()
         onboarding4View.subjects = viewModel.formattedSubjects()
     }
 }

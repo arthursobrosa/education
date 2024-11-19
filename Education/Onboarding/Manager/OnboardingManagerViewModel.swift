@@ -55,10 +55,8 @@ class OnboardingManagerViewModel {
     func isSelected(atIndex index: Int) -> Bool {
         let subjectName = subjectNames.value[index]
         
-        for selectedSubjectName in selectedSubjectNames {
-            if subjectName == selectedSubjectName {
-                return true
-            }
+        for selectedSubjectName in selectedSubjectNames where subjectName == selectedSubjectName {
+            return true
         }
         
         return false
