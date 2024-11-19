@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SubjectDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubjectCreation {
+class SubjectDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubjectCreation, ShowingFocusSubjectDetails {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -35,6 +35,15 @@ class SubjectDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubje
         child.start()
     }
 
+    
+    func showFocusSubjectDetails(focusSession: FocusSession) {
+        let viewModel = FocusSubjectDetailsViewModel(focusSession: focusSession)
+        let child = FocusSubjectDetailsCoordinator(navigationController: navigationController, viewModel: viewModel)
+        child.parentCoordinator = self
+        childCoordinators.append(child)
+        child.start()
+    }
+
     func dismiss(animated: Bool) {
         navigationController.popViewController(animated: true)
     }
@@ -49,24 +58,35 @@ class SubjectDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubje
 
 extension SubjectDetailsCoordinator: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let nav = dismissed as? UINavigationController else { return nil }
+        if let nav = dismissed as? UINavigationController {
+            if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
+                childDidFinish(subjectCreationVC.coordinator as? Coordinator)
 
-        if let subjectCreationVC = nav.viewControllers.first as? SubjectCreationViewController {
-            childDidFinish(subjectCreationVC.coordinator as? Coordinator)
-
-            if let subjectDetailsVC = navigationController.viewControllers.last as? SubjectDetailsViewController {
-                subjectDetailsVC.viewModel.updateSubject()
-                
-                if subjectDetailsVC.viewModel.wasSubjectDeleted {
-                    dismiss(animated: true)
-                    return nil
+                if let subjectDetailsVC = navigationController.viewControllers.last as? SubjectDetailsViewController {
+                    subjectDetailsVC.viewModel.updateSubject()
+                    
+                    if subjectDetailsVC.viewModel.wasSubjectDeleted {
+                        dismiss(animated: true)
+                        return nil
+                    }
+                    
+                    subjectDetailsVC.setNavigationItems()
+                    subjectDetailsVC.reloadTable()
                 }
+            }
+        } else {
+            if let focusSubjectDetailsVC = dismissed as? FocusSubjectDetailsViewController {
+                childDidFinish(focusSubjectDetailsVC.coordinator as? Coordinator)
                 
-                subjectDetailsVC.setNavigationItems()
-                subjectDetailsVC.reloadTable()
+                if let subjectDetailVC = navigationController.viewControllers.last as? SubjectDetailsViewController {
+                    subjectDetailVC.viewModel.updateSubject()
+                    subjectDetailVC.setNavigationItems()
+                    subjectDetailVC.reloadTable()
+                }
             }
         }
 
         return nil
     }
 }
+
