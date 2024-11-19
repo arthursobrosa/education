@@ -8,13 +8,15 @@
 import AVFoundation
 import Combine
 import UIKit
+import Foundation
 
 class FocusSessionViewController: UIViewController {
     // MARK: - Coordinator & ViewModel
+    var timer: DispatchSourceTimer?
 
     weak var coordinator: (ShowingFocusEnd & Dismissing)?
     let viewModel: FocusSessionViewModel
-    let liveActivity: LiveActivityService = LiveActivityService.shared
+    //let liveActivity: LiveActivityService = LiveActivityService.shared
     
     private var timerSubscription: AnyCancellable?
 
@@ -67,18 +69,35 @@ class FocusSessionViewController: UIViewController {
         bindActivity()
         setGestureRecognizer()
         viewModel.blockApps()
-        
-        timerSubscription = Timer.publish(every: TimeInterval(viewModel.activityManager.totalSeconds / 10), on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                guard let self else { return }
-                foo()
-            }
-        
+
+        let interval = TimeInterval(viewModel.activityManager.totalSeconds/10)
+        print(interval)
+
+        // Create the timer
+        timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+        timer?.schedule(deadline: .now() + interval, repeating: interval)
+
+        // Set the event handler for the timer
+        timer?.setEventHandler { [weak self] in
+            guard let self else { return }
+            self.finishActivity()
+        }
+
+        // Start the timer
+        timer?.resume()
     }
     
-    private func foo() {
-        liveActivity.endActivity()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.cancel()  // Cancel the timer when the view is about to disappear
+    }
+    
+    
+    private func finishActivity() {
+        if viewModel.activityManager.timerCase != .stopwatch{
+            //liveActivity.endActivity(timerCase: viewModel.activityManager.timerCase)
+        }
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {

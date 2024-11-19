@@ -207,3 +207,7 @@
 "shieldTitle" = "Seus estudos estão lhe esperando";
 "shieldSubtitle" = "“Lembre-se que as pessoas podem tirar tudo de você, menos o seu conhecimento”";
 "back" = "Voltar";
+
+// MARK: - Live Activity
+"studyTime" = "Estudando agora";
+"restTime" = "Tempo de pausa";

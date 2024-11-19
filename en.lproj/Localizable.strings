@@ -206,3 +206,7 @@
 "shieldTitle" = "Your studies are waiting for you";
 "shieldSubtitle" = "“Knowledge is the only power no one can take away from you”";
 "back" = "Back";
+
+// MARK: - Live Activity
+"studyTime" = "Study Time";
+"restTime" = "Rest Time";
