@@ -119,6 +119,7 @@
 "subject" = "Subject";
 "saveSubject" = "Save Subject";
 "addSubjectName" = "Insert the subject's name";
+"studyTimeLastDay" = "Day";
 "studyTimeLastWeek" = "Week";
 "studyTimeLastMonth" = "Month";
 "studyTimeLastYear" = "Year";
