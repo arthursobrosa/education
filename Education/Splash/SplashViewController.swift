@@ -10,7 +10,7 @@ import UIKit
 class SplashViewController: UIViewController {
     // MARK: - Coordinator
 
-    weak var coordinator: ShowingTabBar?
+    weak var coordinator: (ShowingOnboarding & ShowingTabBar)?
     private let viewModel: SplashViewModel
 
     // MARK: - Properties
@@ -73,7 +73,7 @@ class SplashViewController: UIViewController {
             guard let self,
                   isAvailable else { return }
 
-            self.showTab(after: self.viewModel.extraAnimationTime)
+            self.showNextView(after: self.viewModel.extraAnimationTime)
             print("Synced with iCloud")
         }
 
@@ -115,7 +115,7 @@ class SplashViewController: UIViewController {
             guard let self else { return }
 
             self.dismiss(animated: true)
-            self.showTab(after: 0)
+            self.showNextView(after: 0)
         }
 
         alertController.addAction(tryAgainAction)
@@ -124,11 +124,15 @@ class SplashViewController: UIViewController {
         present(alertController, animated: true)
     }
 
-    private func showTab(after interval: Double) {
+    private func showNextView(after interval: Double) {
         DispatchQueue.main.asyncAfter(deadline: .now() + interval) { [weak self] in
             guard let self else { return }
-
-            self.coordinator?.showTabBar()
+            
+            if UserDefaults.isFirstEntry {
+                self.coordinator?.showOnboarding()
+            } else {
+                self.coordinator?.showTabBar()
+            }
         }
     }
 

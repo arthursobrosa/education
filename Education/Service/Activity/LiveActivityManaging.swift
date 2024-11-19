@@ -8,7 +8,7 @@
 import Foundation
 
 protocol LiveActivityManaging {
-    func startActivity(endTime: Date, title: String)
+    func startActivity(endTime: Int, title: String?, timerCase: TimerCase)
     func updateActivity(addedTime: Date)
-    func endActivity()
+    func endActivity(timerCase: TimerCase)
 }

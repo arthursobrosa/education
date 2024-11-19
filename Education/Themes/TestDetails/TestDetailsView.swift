@@ -167,14 +167,14 @@ class TestDetailsView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
-    private let notesContent: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        label.textColor = .systemText
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    
+    private let notesContent: UITextView = {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        textView.textColor = .systemText
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
     }()
 
     // MARK: - Initializer
@@ -252,6 +252,7 @@ extension TestDetailsView: ViewCodeProtocol {
             notesContent.topAnchor.constraint(equalTo: notesLabel.bottomAnchor, constant: 4),
             notesContent.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             notesContent.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            notesContent.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 200 / 844),
 
             circularProgressView.topAnchor.constraint(equalTo: themeTitleLabel.bottomAnchor, constant: 64),
             circularProgressView.centerXAnchor.constraint(equalTo: centerXAnchor),

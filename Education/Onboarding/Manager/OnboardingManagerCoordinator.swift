@@ -1,16 +1,16 @@
 //
-//  SplashCoordinator.swift
+//  OnboardingManagerCoordinator.swift
 //  Education
 //
-//  Created by Arthur Sobrosa on 17/07/24.
+//  Created by Arthur Sobrosa on 14/11/24.
 //
 
 import UIKit
 
-class SplashCoordinator: Coordinator, ShowingOnboarding, ShowingTabBar {
-    var childCoordinators = [Coordinator]()
+class OnboardingManagerCoordinator: Coordinator, ShowingTabBar {
+    var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
-
+    
     private let activityManager: ActivityManager
     private let blockingManager: BlockingManager
     private let notificationService: NotificationServiceProtocol?
@@ -22,40 +22,47 @@ class SplashCoordinator: Coordinator, ShowingOnboarding, ShowingTabBar {
     }
 
     var scheduleNotification: ScheduleNotification?
-
+    
     init(navigationController: UINavigationController, activityManager: ActivityManager?, blockingManager: BlockingManager?, notificationService: NotificationServiceProtocol?) {
         self.navigationController = navigationController
         self.notificationService = notificationService
         self.activityManager = activityManager ?? ActivityManager(notificationService: notificationService)
         self.blockingManager = blockingManager ?? BlockAppsMonitor()
     }
-
+    
     func start() {
-        let viewModel = SplashViewModel()
-        let viewController = SplashViewController(viewModel: viewModel)
-        viewController.coordinator = self
-
-        navigationController.pushViewController(viewController, animated: false)
+        let viewModel = OnboardingManagerViewModel()
+        
+        let onboarding1 = Onboarding1ViewController()
+        let onboarding2 = Onboarding2ViewController()
+        let onboarding3 = Onboarding3ViewController(viewModel: viewModel)
+        let onboarding4 = Onboarding4ViewController(viewModel: viewModel)
+        
+        let pages: [UIViewController] = [
+            onboarding1,
+            onboarding2,
+            onboarding3,
+            onboarding4,
+        ]
+        
+        let onboardingManager = OnboardingManagerViewController(pages: pages)
+        onboardingManager.coordinator = self
+        onboarding1.delegate = onboardingManager
+        onboarding2.delegate = onboardingManager
+        onboarding3.delegate = onboardingManager
+        onboarding4.delegate = onboardingManager
+        
+        navigationController.setNavigationBarHidden(true, animated: true)
+        navigationController.pushViewController(onboardingManager, animated: true)
     }
     
-    func showOnboarding() {
-        let child = OnboardingManagerCoordinator(
-            navigationController: navigationController,
-            activityManager: activityManager,
-            blockingManager: blockingManager,
-            notificationService: notificationService
-        )
-        childCoordinators.append(child)
-        child.start()
-    }
-
     func showTabBar() {
         let viewModel = TabBarViewModel(activityManager: activityManager, blockingManager: blockingManager, notificationService: notificationService)
         let tabBar = TabBarController(viewModel: viewModel)
         tabBar.modalPresentationStyle = .fullScreen
 
         navigationController.setNavigationBarHidden(true, animated: false)
-        navigationController.pushViewController(tabBar, animated: false)
+        navigationController.pushViewController(tabBar, animated: true)
 
         guard let scheduleNotification else { return }
 
