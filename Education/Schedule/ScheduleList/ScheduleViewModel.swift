@@ -150,7 +150,11 @@ extension ScheduleViewModel {
 
             return .upcoming(hoursLeft: String(hoursLeft), minutesLeft: String(minutesLeft))
         } else if currentTimeInMinutes <= endTimeInMinutes {
-            return .ongoing
+            if schedule.completed {
+                return .completed
+            } else {
+                return .ongoing
+            }
         } else {
             if schedule.completed {
                 return .completed
