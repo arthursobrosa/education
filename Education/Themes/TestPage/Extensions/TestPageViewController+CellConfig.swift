@@ -8,14 +8,31 @@
 import UIKit
 
 extension TestPageViewController {
-    func getCellTitle(for indexPath: IndexPath) -> String {
+    func getCellTitle(for indexPath: IndexPath, numberOfSections: Int) -> String {
         let section = indexPath.section
         let row = indexPath.row
 
+        if numberOfSections == 2 {
+            switch section {
+            case 0:
+                return String(localized: "testDate")
+            case 1:
+                if row == 0 {
+                    return String(localized: "totalQuestions")
+                }
+
+                return String(localized: "rightQuestions")
+            default:
+                return String()
+            }
+        }
+        
         switch section {
         case 0:
-            return String(localized: "testDate")
+            return String(localized: "name")
         case 1:
+            return String(localized: "testDate")
+        case 2:
             if row == 0 {
                 return String(localized: "totalQuestions")
             }
@@ -26,12 +43,53 @@ extension TestPageViewController {
         }
     }
 
-    func getAccessoryView(for indexPath: IndexPath) -> UIView? {
+    func getAccessoryView(for indexPath: IndexPath, numberOfSections: Int) -> UIView? {
         let section = indexPath.section
         let row = indexPath.row
+        
+        if numberOfSections == 2 {
+            switch section {
+            case 0:
+                let datePicker = FakeDatePicker()
+                datePicker.maximumDate = Date()
+                datePicker.datePickerMode = .date
+                datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
+                datePicker.date = viewModel.date
+
+                return datePicker
+            case 1:
+                let textField = UITextField()
+                textField.tag = row + 1
+                textField.keyboardType = .numberPad
+                textField.placeholder = String(repeating: " ", count: 30)
+                textField.text = "\(row == 0 ? viewModel.totalQuestions : viewModel.rightQuestions)"
+                textField.textAlignment = .right
+                textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+                textField.textColor = .systemText50
+                textField.sizeToFit()
+
+                textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
+                textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
+
+                return textField
+            default:
+                return nil
+            }
+        }
 
         switch section {
         case 0:
+            let textField = UITextField()
+            textField.tag = 0
+            textField.textAlignment = .right
+            textField.placeholder = String("Ex: Simulado Geral")
+            textField.font = UIFont(name: Fonts.darkModeOnItalic, size: 15)
+            textField.textColor = .systemText40
+            textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
+            textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
+            return textField
+            
+        case 1:
             let datePicker = FakeDatePicker()
             datePicker.maximumDate = Date()
             datePicker.datePickerMode = .date
@@ -39,9 +97,9 @@ extension TestPageViewController {
             datePicker.date = viewModel.date
 
             return datePicker
-        case 1:
+        case 2:
             let textField = UITextField()
-            textField.tag = row
+            textField.tag = row + 1
             textField.keyboardType = .numberPad
             textField.placeholder = String(repeating: " ", count: 30)
             textField.text = "\(row == 0 ? viewModel.totalQuestions : viewModel.rightQuestions)"
@@ -49,9 +107,6 @@ extension TestPageViewController {
             textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
             textField.textColor = .systemText50
             textField.sizeToFit()
-
-//            let toolbar = createToolbar(withTag: row)
-//            textField.inputAccessoryView = toolbar
 
             textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
             textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
@@ -61,18 +116,4 @@ extension TestPageViewController {
             return nil
         }
     }
-
-//    private func createToolbar(withTag tag: Int) -> UIToolbar {
-//        let toolbar = UIToolbar()
-//        toolbar.sizeToFit()
-//
-//        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-//
-//        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
-//        doneButton.tag = tag
-//
-//        toolbar.setItems([flexSpace], animated: false)
-//
-//        return toolbar
-//    }
 }

@@ -13,10 +13,10 @@ class TestPageCoordinator: Coordinator, Dismissing, DismissingAll {
     var navigationController: UINavigationController
     var isRemovingTest: Bool = false
 
-    private let theme: Theme
+    private let theme: Theme?
     private let test: Test?
 
-    init(navigationController: UINavigationController, theme: Theme, test: Test?) {
+    init(navigationController: UINavigationController, theme: Theme?, test: Test?) {
         self.navigationController = navigationController
         self.theme = theme
         self.test = test
@@ -35,6 +35,10 @@ class TestPageCoordinator: Coordinator, Dismissing, DismissingAll {
 
         if let testDetailsCoordinator = parentCoordinator as? TestDetailsCoordinator {
             newNavigationController.transitioningDelegate = testDetailsCoordinator
+        }
+        
+        if let themeListCoordinator = parentCoordinator as? ThemeListCoordinator {
+            newNavigationController.transitioningDelegate = themeListCoordinator
         }
 
         newNavigationController.modalPresentationStyle = .pageSheet

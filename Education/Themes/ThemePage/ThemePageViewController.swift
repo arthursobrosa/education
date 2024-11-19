@@ -64,7 +64,7 @@ class ThemePageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationItem.title = viewModel.theme.unwrappedName
+        navigationItem.title = viewModel.theme?.unwrappedName
         viewModel.fetchTests()
     }
     
@@ -77,7 +77,8 @@ class ThemePageViewController: UIViewController {
     // MARK: - Methods
 
     private func setNavigationItems() {
-        let navigationTitle = viewModel.theme.unwrappedName
+        guard let themeName = viewModel.theme?.unwrappedName else{return}
+        let navigationTitle = themeName
         themePageView.setNavigationBar(with: navigationTitle)
     }
 
@@ -192,6 +193,7 @@ extension ThemePageViewController: UITableViewDataSource, UITableViewDelegate {
 
         let test = viewModel.tests.value[indexPath.row]
 
-        coordinator?.showTestDetails(theme: viewModel.theme, test: test)
+        guard let theme = viewModel.theme else {return}
+        coordinator?.showTestDetails(theme: theme, test: test)
     }
 }

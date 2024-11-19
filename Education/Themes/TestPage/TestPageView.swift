@@ -19,6 +19,8 @@ class TestPageView: UIView {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
+    
+    private var tableHeightConstraint: NSLayoutConstraint?
 
     let tableView: BorderedTableView = {
         let tableView = BorderedTableView()
@@ -110,6 +112,17 @@ class TestPageView: UIView {
     private func updateViewColor(_: UITraitCollection) {
         textView.layer.borderColor = UIColor(named: "button-normal")?.cgColor
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateTableHeight()
+    }
+    
+    private func updateTableHeight() {
+        let tableHeight = tableView.contentSize.height
+        tableHeightConstraint?.constant = tableHeight
+        layoutIfNeeded()
+    }
 }
 
 // MARK: - UI Setup
@@ -122,14 +135,17 @@ extension TestPageView: ViewCodeProtocol {
         addSubview(saveButton)
 
         let padding = 12.0
+        
+        tableHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
+        tableHeightConstraint?.isActive = true
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            tableView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
+//            tableView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
 
-            textView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: -60),
+            textView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 10),
             textView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             textView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             textView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),

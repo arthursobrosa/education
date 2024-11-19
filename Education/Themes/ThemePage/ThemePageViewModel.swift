@@ -17,7 +17,7 @@ class ThemePageViewModel: ObservableObject {
 
     var tests = Box([Test]())
 
-    var theme: Theme
+    var theme: Theme?
 
     var limits: [Int] = [10, 15, 20]
     var selectedLimit: Int = 10
@@ -33,7 +33,8 @@ class ThemePageViewModel: ObservableObject {
     // MARK: - Methods
 
     func fetchTests() {
-        if let tests = testManager.fetchTests(themeID: theme.unwrappedID) {
+        guard let themeID = theme?.unwrappedID else {return}
+        if let tests = testManager.fetchTests(themeID: themeID) {
             self.tests.value = tests.sorted { $0.unwrappedDate > $1.unwrappedDate }
         }
     }

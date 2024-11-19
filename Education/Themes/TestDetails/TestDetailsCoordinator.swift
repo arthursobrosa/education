@@ -29,7 +29,7 @@ class TestDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingTestPage
         navigationController.pushViewController(viewController, animated: true)
     }
 
-    func showTestPage(theme: Theme, test: Test?) {
+    func showTestPage(theme: Theme?, test: Test?) {
         let child = TestPageCoordinator(navigationController: navigationController, theme: theme, test: test)
         child.parentCoordinator = self
         childCoordinators.append(child)

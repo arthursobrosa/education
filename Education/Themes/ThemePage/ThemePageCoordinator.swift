@@ -8,6 +8,7 @@
 import UIKit
 
 class ThemePageCoordinator: NSObject, Coordinator, ShowingTestDetails, Dismissing, ShowingTestPage {
+    
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -33,7 +34,7 @@ class ThemePageCoordinator: NSObject, Coordinator, ShowingTestDetails, Dismissin
         child.start()
     }
 
-    func showTestPage(theme: Theme, test: Test?) {
+    func showTestPage(theme: Theme?, test: Test?) {
         let child = TestPageCoordinator(navigationController: navigationController, theme: theme, test: test)
         child.parentCoordinator = self
         childCoordinators.append(child)

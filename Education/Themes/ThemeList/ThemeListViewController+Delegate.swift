@@ -16,7 +16,7 @@ protocol ThemeListDelegate: AnyObject {
 
 extension ThemeListViewController: ThemeListDelegate {
     func addThemeButtonTapped() {
-        coordinator?.showThemeCreation(theme: nil)
+        coordinator?.showTestPage(theme: nil, test: nil)
     }
 
     func dismissDeleteAlert() {
