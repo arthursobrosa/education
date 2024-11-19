@@ -28,7 +28,7 @@ struct LiveActivityView: View {
         
         HStack {
             VStack (alignment: .leading){
-                Text(restTime ? "Tempo de pausa" : "Estudando agora")
+                Text(restTime ? String(localized: "restTime") :  String(localized: "studyTime"))
                     .font(Font(smallFont))
                     .foregroundColor(Color(UIColor(named: "system-text-40") ?? .gray))
                 

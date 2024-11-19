@@ -17,7 +17,6 @@
 "scheduleTab" = "Studies";
 "subjectTab" = "Subjects";
 "themeTab" = "Exams";
-"settingsTab" = "Settings";
 
 // MARK: - Schedule
 "schedule" = "Schedule";
@@ -43,15 +42,11 @@
 "addSubjectAlertMessage" = "Enter subject name:";
 "addSubjectAlertPlaceholder" = "Subject name";
 "invalidDateAlertTitle" = "Invalid Date";
-"invalidDateAlertMessage1" = "There is an existing activity at %@ with conflicting dates";
-"invalidDateAlertMessage2" = "Start date cannot be equal or greater than end date.";
-"noSubjectAlertTitle" = "Invalid Activity";
-"noSubjectAlertMessage" = "You cannot create an activity before assigning it to a subject";
+"invalidDateAlertMessage" = "Start date cannot be equal or greater than end date.";
 "dayOfWeek" = "Day of the week";
 "startDate" = "Starts";
 "endDate"= "Ends";
-"alarm5Min" = "Alert 5 min. before start time";
-"alarmAtTime" = "Alert at start time";
+"scheduleAlarm" = "Alarm";
 "subject" = "Subject";
 "blockApps" = "Block Apps";
 "daily" = "Day";
@@ -60,13 +55,17 @@
 "noSubjectMessage" = "You have to create a subject before setting an activity";
 "activityDeletionTitle" = "Activity Deletion";
 "activityDeletionMessage" = "Are you sure you want to delete this schedule?";
-"emptyDaySchedule" = "You still have no activities scheduled for this day";
-"emptyWeekSchedule" = "You still have no activities scheduled for this week";
+"emptyDaySchedule" = "You have no activities scheduled for this day";
+"emptyWeekSchedule" = "You have no activities scheduled for this week";
 "onTimeTitle" = "On time";
 "onTimeMessage" = "It's time for your activity!";
 "startsIn" = "In %@min";
 "deleteScheduleAlertTitle" = "Remove Activity";
 "deleteScheduleAlertBody" = "Are you sure you want to remove \"%@\" Activity from your Study Plan?";
+"createNewSubject" = "Create New";
+"noneAlarm" = "None";
+"timeBefore" = "%@ before";
+"onTime" = "On time";
 
 // MARK: - Focus
 "subjectAttributionQuestion" = "Would you like to link this activity to a subject?";
@@ -76,7 +75,7 @@
 "pomodoroSelectionTitle" = "Pomodoro";
 "stopwatchSelectionTitle" = "Free \n (stop when you want)";
 "stopwatchSelectionBold" = "Free";
-"alarm" = "Alarm when finished";
+"focusAlarm" = "Alarm when finished";
 "showTimeCount" = "Show time count";
 "paused" = "Paused";
 "subjectActivity" = "Activity";
@@ -120,6 +119,7 @@
 "subject" = "Subject";
 "saveSubject" = "Save Subject";
 "addSubjectName" = "Insert the subject's name";
+"studyTimeLastDay" = "Day";
 "studyTimeLastWeek" = "Week";
 "studyTimeLastMonth" = "Month";
 "studyTimeLastYear" = "Year";
@@ -127,12 +127,12 @@
 "deleteSubjectTitle" = "Delete Subject";
 "deleteSubjectMessage" = "Are you sure you want to delete %@? Your study time and schedule activities will also be deleted.";
 "subjectCreationTitle" = "Invalid Subject";
-"subjectCreationNoName" = "Please, insert a name for your subject.";
 "subjectCreationUsedName" = "There is an existing subject with this name.";
 "color" = "Color";
 "newSubject" = "New Subject";
 "editSubject" = "Edit Subject";
 "subjectName" = "Subject's Name";
+"emptySubjectDetails" = "You do not have records of studies carried out for this subject.";
 
 // MARK: - Themes
 "themeAlertTitle" = "Add Exam";
@@ -157,18 +157,6 @@
 "description" = "Notas sobre o teste/ questões";
 "deleteThemeTitle" = "Delete Theme";
 "deleteThemeBody" = "Are you sure you want to delete this theme? All its tests history and results will be discarded";
-
-// MARK: - Settings
-"deactivateTitle" = "Deactivate on your phone!";
-"deactivateMessage" = "It's not possible to disable notifications in the Planno app. To do so, access your phone's Settings.";
-"activationTitle" = "Keep track of your studies!";
-"activationMessage" = "We'll send you the status of your activities and alert you when it's time to study for a subject. No ads included.";
-"activateNow" = "Activate now";
-"activateLater" = "Activate later";
-"okAction" = "Ok, got it";
-"notificationsAndAlerts" = "Notifications and Alerts";
-"blockApps" = "Block Apps";
-"firstWeekDay" = "First day of the week";
 
 // MARK: - Modal
 "startButton" = "Start Activity";
@@ -204,12 +192,21 @@
 "endBlockAlertBody" = "Your apps are unblocked now";
 
 // MARK: - TestDetails
-"questionsLable" = "Questions";
-"dateLable" = "Date";
-"notesLable" = "Notes";
+"questionsLabel" = "Questions";
+"dateLabel" = "Date";
+"notesLabel" = "Notes";
 
 // MARK: - Sync Monitor
 "noNetworkTitle" = "No network available";
 "noNetworkMessage" = "You are not connected to the internet. Would you like to continue disconnected? All alterations will not be saved to your iCloud account.";
 "accountNotAvailableTitle" = "No iCloud account";
 "accountNotAvailableMessage" = "You are not logged to iCloud. Would you like to continue disconnected? All alterations will not be saved to your iCloud account.";
+
+// MARK: - Shield Configuration
+"shieldTitle" = "Your studies are waiting for you";
+"shieldSubtitle" = "“Knowledge is the only power no one can take away from you”";
+"back" = "Back";
+
+// MARK: - Live Activity
+"studyTime" = "Study Time";
+"restTime" = "Rest Time";

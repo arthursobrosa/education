@@ -63,11 +63,12 @@ class CustomTabBar: UITabBar {
     }
 
     private func getPath() -> CGPath {
-        let padding = 45.0
+        let width = bounds.width * (240 / 390)
+        
         let adjustedRect = CGRect(
-            x: padding,
+            x: bounds.midX - width / 2,
             y: bounds.origin.y - 8,
-            width: bounds.width - padding * 2,
+            width: width,
             height: bounds.height
         )
 

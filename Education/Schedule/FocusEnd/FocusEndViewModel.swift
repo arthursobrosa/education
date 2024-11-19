@@ -21,6 +21,8 @@ class FocusEndViewModel {
     var dateString: String = String()
     var hoursString: String = String()
     var timerModeString: String = String()
+    
+    var notes: String = String()
 
     // MARK: - Initializer
 

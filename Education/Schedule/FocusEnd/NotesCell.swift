@@ -11,6 +11,10 @@ class NotesCell: UITableViewCell {
     // MARK: - Identifier
 
     static let identifier = "notesCell"
+    
+    // MARK: - Delegate
+    
+    weak var delegate: FocusEndDelegate?
 
     // MARK: - Properties
 
@@ -33,8 +37,6 @@ class NotesCell: UITableViewCell {
         let textView = UITextView()
         textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         textView.textColor = .label
-        let toolbar = createToolbar()
-        textView.inputAccessoryView = toolbar
         textView.delegate = self
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
@@ -60,26 +62,6 @@ class NotesCell: UITableViewCell {
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Methods
-
-    private func createToolbar() -> UIToolbar {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
-
-        toolbar.setItems([flexSpace, doneButton], animated: false)
-
-        return toolbar
-    }
-
-    @objc 
-    private func doneKeyboardButtonTapped(_: UIBarButtonItem) {
-        textView.resignFirstResponder()
     }
 }
 
@@ -119,13 +101,10 @@ extension NotesCell: UITextViewDelegate {
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
-        if let text = textView.text,
-           !text.isEmpty {
-            
-            placeholderLabel.isHidden = true
-            
-        } else {
-            placeholderLabel.isHidden = false
-        }
+        guard let text = textView.text else { return }
+        
+        delegate?.updateNotes(with: text)
+        
+        placeholderLabel.isHidden = !text.isEmpty
     }
 }

@@ -7,8 +7,10 @@
 
 import UIKit
 
+@objc
 protocol StudyTimeDelegate: AnyObject {
     func setSegmentedControl(_ picker: UISegmentedControl)
+    func plusButtonTapped()
 }
 
 extension StudyTimeViewController: StudyTimeDelegate {
@@ -42,5 +44,11 @@ extension StudyTimeViewController: StudyTimeDelegate {
             .font: fontBold ?? UIFont.systemFont(ofSize: 13),
         ]
         segmentedControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
+    }
+    
+    func plusButtonTapped() {
+        viewModel.currentEditingSubject = nil
+        viewModel.selectedSubjectColor.value = viewModel.selectAvailableColor()
+        coordinator?.showSubjectCreation(viewModel: viewModel)
     }
 }

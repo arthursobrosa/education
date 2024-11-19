@@ -146,6 +146,7 @@ extension ActivityView: ViewCodeProtocol {
 
             activityTitle.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -11),
             activityTitle.leadingAnchor.constraint(equalTo: studyingNowLabel.leadingAnchor),
+            activityTitle.trailingAnchor.constraint(equalTo: activityTimer.leadingAnchor, constant: 11),
 
             activityTimer.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 80 / 366),
             activityTimer.centerYAnchor.constraint(equalTo: centerYAnchor),

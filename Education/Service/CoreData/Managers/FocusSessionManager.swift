@@ -11,15 +11,16 @@ import UIKit
 final class FocusSessionManager: ObjectManager {
     // MARK: - Create
 
-    func createFocusSession(date: Date, totalTime: Int, subjectID: String? = nil, timerCase: Int? = nil) {
+    func createFocusSession(date: Date, totalTime: Int, subjectID: String? = nil, timerCase: Int? = nil, notes: String) {
         backgroundContext.performAndWait {
             guard let focusSession = NSEntityDescription.insertNewObject(forEntityName: "FocusSession", into: backgroundContext) as? FocusSession else { return }
 
             focusSession.date = date
             focusSession.totalTime = Int16(totalTime)
             focusSession.subjectID = subjectID
-            focusSession.id = UUID().uuidString
             focusSession.timerCase = Int16(timerCase ?? 0)
+            focusSession.notes = notes
+            focusSession.id = UUID().uuidString
 
             try? backgroundContext.save()
             CoreDataStack.shared.saveMainContext()

@@ -8,25 +8,36 @@
 import Foundation
 
 class SubjectDetailsViewModel {
+    // MARK: - Subject and FocusSession Managers
+    
+    private let subjectManager: SubjectManager
     private let focusSessionManager: FocusSessionManager
-    let subjectManager: SubjectManager
+    
+    // MARK: - Properties
+    
     let studyTimeViewModel: StudyTimeViewModel
 
     var subject: Subject?
     var sessionsByMonth: [String: [FocusSession]] = [:]
+    
+    var wasSubjectDeleted: Bool = false
 
-    init(subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
+    // MARK: - Initializer
+    
+    init(subjectManager: SubjectManager = SubjectManager(), focusSessionManager: FocusSessionManager = FocusSessionManager(), subject: Subject?, studyTimeViewModel: StudyTimeViewModel) {
+        self.subjectManager = subjectManager
+        self.focusSessionManager = focusSessionManager
+
         self.subject = subject
         self.studyTimeViewModel = studyTimeViewModel
-       
-        focusSessionManager = FocusSessionManager()
-        subjectManager = SubjectManager()
     }
+    
+    // MARK: - Methods
     
     func fetchFocusSessions() {
         var sessionsByMonth: [String: [FocusSession]] = [:]
 
-        if let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: self.subject?.unwrappedID) {
+        if let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: subject?.unwrappedID) {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM/yyyy"
             
@@ -42,12 +53,23 @@ class SubjectDetailsViewModel {
                 sessionsByMonth[month] = sessions.sorted(by: { $0.date ?? Date() > $1.date ?? Date() })
             }
         }
-        
-        
-        
-        print(sessionsByMonth)
-        
         self.sessionsByMonth = sessionsByMonth
+    }
+    
+    func updateSubject() {
+        if let newSubject = subjectManager.fetchSubject(withID: subject?.unwrappedID) {
+            subject = newSubject
+        } else {
+            wasSubjectDeleted = true
+        }
+    }
+    
+    func areSessionsEmpty() -> Bool {
+        guard let focusSessions = focusSessionManager.fetchFocusSessions(subjectID: subject?.unwrappedID) else {
+            return true
+        }
+        
+        return focusSessions.isEmpty
     }
     
     func deleteOtherSessions() {
@@ -57,6 +79,20 @@ class SubjectDetailsViewModel {
             }
         }
     }
+    
+    func formattedMonthYear(_ monthYear: String) -> String? {
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/yyyy"
+        
+        guard let date = dateFormatter.date(from: monthYear) else {
+            return nil
+        }
+        
+        dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMMMyyyy")
 
-
+        let formattedDate = dateFormatter.string(from: date)
+        return formattedDate.prefix(1).uppercased() + formattedDate.dropFirst()
+    }
 }

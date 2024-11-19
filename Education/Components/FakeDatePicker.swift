@@ -17,11 +17,8 @@ class FakeDatePicker: UIDatePicker {
     private let dateContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
-
         view.isUserInteractionEnabled = false
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -29,9 +26,7 @@ class FakeDatePicker: UIDatePicker {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.textColor = .systemText50
-
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
 
@@ -39,7 +34,6 @@ class FakeDatePicker: UIDatePicker {
         super.init(frame: frame)
 
         addTarget(self, action: #selector(datePickerDidChange), for: .valueChanged)
-
         setupUI()
     }
 
@@ -75,6 +69,9 @@ class FakeDatePicker: UIDatePicker {
 
 extension FakeDatePicker: ViewCodeProtocol {
     func setupUI() {
+        dateContainerView.removeFromSuperview()
+        dateLabel.removeFromSuperview()
+        
         addSubview(dateContainerView)
         addSubview(dateLabel)
 

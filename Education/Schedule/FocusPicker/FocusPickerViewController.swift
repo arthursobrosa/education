@@ -170,7 +170,7 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
 
         switch section {
         case 0:
-            cellText = String(localized: "alarm")
+            cellText = String(localized: "focusAlarm")
             toggleIsOn = viewModel.focusSessionModel.isAlarmOn
         case 1:
             cellText = String(localized: "showTimeCount")

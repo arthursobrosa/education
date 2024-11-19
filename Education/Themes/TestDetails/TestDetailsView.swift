@@ -9,9 +9,71 @@ import Foundation
 import UIKit
 
 class TestDetailsView: UIView {
-    lazy var titleLabel: UILabel = {
+    // MARK: - Delegate to connect with VC
+    
+    weak var delegate: TestDetailsDelegate?
+    
+    // MARK: - Properties
+    
+    struct Config {
+        var titleText: String
+        var notesText: String
+        var questionsText: String
+        var themeTitleText: String
+        var progress: CGFloat
+        var dateText: String
+        var percentageText: String
+    }
+    
+    var config: Config? {
+        didSet {
+            guard let config else { return }
+            
+            titleLabel.text = config.titleText
+            notesContent.text = config.notesText
+            questionsLabel.text = config.questionsText
+            themeTitleLabel.text = config.themeTitleText
+            circularProgressView.progress = config.progress
+            dateLabel.text = config.dateText
+            percentageLabel.text = config.percentageText
+        }
+    }
+    
+    // MARK: - UI Properties
+    
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(systemName: "chevron.left")
+        button.setImage(image, for: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.tintColor = .systemText40
+        button.addTarget(delegate, action: #selector(TestDetailsDelegate.didTapBackButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Simulado Geral do ENEM"
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        label.textColor = .systemText
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var editButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(systemName: "square.and.pencil")
+        button.setImage(image, for: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: 20), forImageIn: .normal)
+        button.tintColor = .systemText
+        button.addTarget(delegate, action: #selector(TestDetailsDelegate.didTapEditButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let themeTitleLabel: UILabel = {
+        let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 18)
         label.textAlignment = .center
         label.textColor = .systemText
@@ -19,7 +81,7 @@ class TestDetailsView: UIView {
         return label
     }()
 
-    lazy var circularProgressView: CircularProgressView = {
+    private let circularProgressView: CircularProgressView = {
         let view = CircularProgressView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         view.progressColor = UIColor(named: "defaultColor") ?? .systemBlue
         view.trackColor = .label.withAlphaComponent(0.1)
@@ -29,93 +91,85 @@ class TestDetailsView: UIView {
         return view
     }()
 
-    lazy var percentageLabel: UILabel = {
+    private let percentageLabel: UILabel = {
         let label = UILabel()
-        label.text = "85%"
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    lazy var dateTitleLabel: UILabel = {
+    private let dateTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = String(localized: "dateLable")
+        label.text = String(localized: "dateLabel")
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
         label.textColor = .systemText50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    lazy var dateLabel: UILabel = {
+    private let dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "28/10/1997"
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 20)
         label.textColor = .systemText
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    lazy var questionsTitleLabel: UILabel = {
+    private let questionsTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = String(localized: "questionsLable")
+        label.text = String(localized: "questionsLabel")
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
         label.textColor = .systemText50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    lazy var questionsLabel: UILabel = {
+    private let questionsLabel: UILabel = {
         let label = UILabel()
-        label.text = "17/20"
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         label.textColor = .systemText50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    lazy var dateStack: UIStackView = {
+    private let dateStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fill
-//        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
         return stackView
     }()
 
-    lazy var questionsStack: UIStackView = {
+    private let questionsStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
         return stackView
     }()
 
-    lazy var horizontalStack: UIStackView = {
+    private let horizontalStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fill
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
         return stackView
     }()
 
-    lazy var notesLabel: UILabel = {
+    private let notesLabel: UILabel = {
         let label = UILabel()
-        label.text = String(localized: "notesLable")
+        label.text = String(localized: "notesLabel")
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
         label.textColor = .systemText50
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    lazy var notesContent: UILabel = {
+    private let notesContent: UILabel = {
         let label = UILabel()
-        label.text = "Questões erradas:\n3. Genética\n4. Álgebra\n5. História"
         label.numberOfLines = 0
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.textColor = .systemText
@@ -123,11 +177,11 @@ class TestDetailsView: UIView {
         return label
     }()
 
+    // MARK: - Initializer
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         backgroundColor = .systemBackground
-
         setupUI()
     }
 
@@ -135,9 +189,16 @@ class TestDetailsView: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
 
-    private func setupUI() {
+// MARK: - UI Setup
+
+extension TestDetailsView: ViewCodeProtocol {
+    func setupUI() {
+        addSubview(backButton)
         addSubview(titleLabel)
+        addSubview(editButton)
+        addSubview(themeTitleLabel)
         addSubview(circularProgressView)
         addSubview(horizontalStack)
         addSubview(percentageLabel)
@@ -158,10 +219,24 @@ class TestDetailsView: UIView {
         let padding = 24.0
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 0),
+            backButton.topAnchor.constraint(equalTo: topAnchor, constant: 56),
+            backButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 27 / 390),
+            backButton.heightAnchor.constraint(equalTo: backButton.widthAnchor),
+            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 11),
+            
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 60),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            editButton.topAnchor.constraint(equalTo: topAnchor, constant: 54),
+            editButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 27 / 390),
+            editButton.heightAnchor.constraint(equalTo: editButton.widthAnchor),
+            editButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -21),
+            
+            themeTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 11),
+            themeTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 11),
+            themeTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -11),
 
-            percentageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 64),
+            percentageLabel.topAnchor.constraint(equalTo: themeTitleLabel.bottomAnchor, constant: 64),
             percentageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             percentageLabel.widthAnchor.constraint(equalToConstant: 200),
             percentageLabel.heightAnchor.constraint(equalToConstant: 200),
@@ -178,64 +253,8 @@ class TestDetailsView: UIView {
             notesContent.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             notesContent.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
 
-            circularProgressView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 64),
+            circularProgressView.topAnchor.constraint(equalTo: themeTitleLabel.bottomAnchor, constant: 64),
             circularProgressView.centerXAnchor.constraint(equalTo: centerXAnchor),
-
         ])
-    }
-}
-
-class CircularProgressView: UIView {
-    private var progressLayer = CAShapeLayer()
-    private var trackLayer = CAShapeLayer()
-
-    var progressColor = UIColor.systemBlue {
-        didSet {
-            progressLayer.strokeColor = progressColor.cgColor
-        }
-    }
-
-    var trackColor = UIColor.lightGray {
-        didSet {
-            trackLayer.strokeColor = trackColor.cgColor
-        }
-    }
-
-    var progress: CGFloat = 0 {
-        didSet {
-            progressLayer.strokeEnd = progress
-        }
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupCircularPath()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupCircularPath()
-    }
-
-    private func setupCircularPath() {
-        let circularPath = UIBezierPath(arcCenter: CGPoint(x: 0, y: frame.size.height / 2.0), radius: (frame.size.width) / 2, startAngle: -CGFloat.pi / 2, endAngle: 1.5 * CGFloat.pi, clockwise: true)
-
-        // Track layer (background circle)
-        trackLayer.path = circularPath.cgPath
-        trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.strokeColor = trackColor.cgColor
-        trackLayer.lineWidth = 20.0
-        trackLayer.lineCap = .round
-        trackLayer.strokeEnd = 1.0
-        layer.addSublayer(trackLayer)
-
-        // Progress layer (progress circle)
-        progressLayer.path = circularPath.cgPath
-        progressLayer.fillColor = UIColor.clear.cgColor
-        progressLayer.strokeColor = progressColor.cgColor
-        progressLayer.lineWidth = 20.0
-        progressLayer.lineCap = .round
-        progressLayer.strokeEnd = progress
-        layer.addSublayer(progressLayer)
     }
 }

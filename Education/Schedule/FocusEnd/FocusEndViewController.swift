@@ -153,6 +153,7 @@ extension FocusEndViewController: UITableViewDataSource, UITableViewDelegate {
             }
 
             cell.selectionStyle = .none
+            cell.delegate = self
             return cell
         }
 
