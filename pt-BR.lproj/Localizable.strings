@@ -232,3 +232,7 @@
 "subject_physics" = "Física";
 "subject_biology" = "Biologia";
 "subject_mathematics" = "Matemática";
+
+// MARK: - Live Activity
+"studyTime" = "Estudando agora";
+"restTime" = "Tempo de pausa";

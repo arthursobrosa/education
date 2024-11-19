@@ -264,8 +264,9 @@
 		CE4D4C9C2C6D371200160F17 /* ScheduleNotificationNameCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9B2C6D371200160F17 /* ScheduleNotificationNameCard.swift */; };
 		CE4D4C9E2C6D39A500160F17 /* ScheduleNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D4C9D2C6D39A500160F17 /* ScheduleNotificationViewController.swift */; };
 		CE63E0E02C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63E0DF2C6FC0CA006367F4 /* ShowingScheduleDetailsModal.swift */; };
-		CEA19E522CDC0625004E3D12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
 		CEA19E542CDD39D3004E3D12 /* EmptySubjectDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19E532CDD39D3004E3D12 /* EmptySubjectDetailsView.swift */; };
+		CEB64A102CEBB16A002B9D85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 683B45412C1B6F3B00663912 /* Assets.xcassets */; };
+		CEB64A112CEBB7C4002B9D85 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E10AA92C7FCE39008AF82C /* Fonts.swift */; };
 		CEBFA82A2CC2DFB6005E1F24 /* TutorialLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA8292CC2DFB6005E1F24 /* TutorialLiveActivity.swift */; };
 		CEBFA83C2CC2F0D2005E1F24 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83B2CC2F0D2005E1F24 /* LiveActivityService.swift */; };
 		CEBFA83E2CC2F0D8005E1F24 /* LiveActivityManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFA83D2CC2F0D8005E1F24 /* LiveActivityManaging.swift */; };
@@ -275,6 +276,7 @@
 		CED3DB362C5BFD7E00297062 /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB352C5BFD7E00297062 /* SelectionButton.swift */; };
 		CED3DB382C5C171200297062 /* FocusSelectionViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB372C5C171200297062 /* FocusSelectionViewController+Delegate.swift */; };
 		CED3DB3A2C5C17EC00297062 /* FocusSelectionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED3DB392C5C17EC00297062 /* FocusSelectionCoordinator.swift */; };
+		CEE973FE2CED0CD900BE1A17 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C8D9A92C4987FF0092E80D /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1609,7 +1611,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEA19E522CDC0625004E3D12 /* Assets.xcassets in Resources */,
 				685371CD2CE2963E00667E43 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1618,6 +1619,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB64A102CEBB16A002B9D85 /* Assets.xcassets in Resources */,
+				CEE973FE2CED0CD900BE1A17 /* Localizable.strings in Resources */,
 				686B46F92CC2DE2700A5CB56 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1914,6 +1917,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB64A112CEBB7C4002B9D85 /* Fonts.swift in Sources */,
 				686B46F32CC2DE2600A5CB56 /* WidgetConfigurationBundle.swift in Sources */,
 				CEBFA82A2CC2DFB6005E1F24 /* TutorialLiveActivity.swift in Sources */,
 				CEBFA8402CC2F12D005E1F24 /* TimerAttributes.swift in Sources */,
@@ -2302,7 +2306,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD)";
