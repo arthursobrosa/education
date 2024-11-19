@@ -119,6 +119,7 @@
 "subject" = "Matéria";
 "saveSubject" = "Salvar Matéria";
 "addSubjectName" = "Insira o nome da matéria";
+"studyTimeLastDay" = "Dia";
 "studyTimeLastWeek" = "Semana";
 "studyTimeLastMonth" = "Mês";
 "studyTimeLastYear" = "Ano";

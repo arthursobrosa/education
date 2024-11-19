@@ -8,12 +8,15 @@
 import Foundation
 
 enum DateRange: String, CaseIterable {
+    case lastDay
     case lastWeek
     case lastMonth
     case lastYear
 
     var name: String {
         switch self {
+        case .lastDay:
+            return String(localized: "studyTimeLastDay")
         case .lastWeek:
             return String(localized: "studyTimeLastWeek")
         case .lastMonth:
@@ -25,6 +28,8 @@ enum DateRange: String, CaseIterable {
 
     var calendarComponent: Calendar.Component {
         switch self {
+        case .lastDay:
+            return .day
         case .lastWeek:
             return .weekOfYear
         case .lastMonth:
@@ -57,7 +62,7 @@ class StudyTimeViewModel: ObservableObject {
     // MARK: - Properties
 
     var dateRanges: [DateRange] = DateRange.allCases
-    @Published var selectedDateRange: DateRange = .lastWeek {
+    @Published var selectedDateRange: DateRange = .lastDay {
         didSet {
             fetchFocusSessions()
             fetchSubjects()
