@@ -22,7 +22,7 @@ class FocusImediateCoordinator: NSObject, Coordinator, ShowingFocusSelection, Di
 
     func start() {
         let viewModel = FocusImediateViewModel()
-        let viewController = FocusImediateViewController(viewModel: viewModel, color: .systemBackground)
+        let viewController = FocusImediateViewController(viewModel: viewModel)
         viewController.coordinator = self
 
         newNavigationController = UINavigationController(rootViewController: viewController)

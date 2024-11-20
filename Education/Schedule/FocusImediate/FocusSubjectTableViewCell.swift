@@ -38,6 +38,10 @@ class FocusSubjectTableViewCell: UITableViewCell {
             subjectButton.setTitle(String(localized: "none"), for: .normal)
             subjectButton.setTitleColor(.systemText80, for: .normal)
             subjectButton.layer.borderColor = UIColor.buttonNormal.cgColor
+            
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+                self.subjectButton.layer.borderColor = UIColor.buttonNormal.cgColor
+            }
         }
     }
 

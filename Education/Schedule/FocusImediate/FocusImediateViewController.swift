@@ -15,13 +15,12 @@ class FocusImediateViewController: UIViewController {
 
     // MARK: - Properties
     
-    let color: UIColor?
     var subjects = [Subject]()
 
     // MARK: - UI Properties
     
     private lazy var focusImediateView: FocusImediateView = {
-        let view = FocusImediateView(color: self.color)
+        let view = FocusImediateView()
         view.delegate = self
 
         view.subjectsTableView.dataSource = self
@@ -35,9 +34,8 @@ class FocusImediateViewController: UIViewController {
 
     // MARK: - Initializer
     
-    init(viewModel: FocusImediateViewModel, color: UIColor?) {
+    init(viewModel: FocusImediateViewModel) {
         self.viewModel = viewModel
-        self.color = color
 
         super.init(nibName: nil, bundle: nil)
 
@@ -61,17 +59,20 @@ class FocusImediateViewController: UIViewController {
         } else {
             view.backgroundColor = .label.withAlphaComponent(0.1)
         }
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, traitCollection: UITraitCollection) in
+            if traitCollection.userInterfaceStyle == .light {
+                self.view.backgroundColor = .label.withAlphaComponent(0.2)
+            } else {
+                self.view.backgroundColor = .label.withAlphaComponent(0.1)
+            }
+        }
 
         viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
-
+            
             self.subjects = subjects
             self.reloadTable()
-        }
-
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-            self.reloadTable()
-            self.focusImediateView.layer.borderColor = UIColor.label.cgColor
         }
 
         setGestureRecognizer()

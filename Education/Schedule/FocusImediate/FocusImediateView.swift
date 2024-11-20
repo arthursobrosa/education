@@ -8,7 +8,11 @@
 import UIKit
 
 class FocusImediateView: UIView {
+    // MARK: - Delegate to connect with VC
+    
     weak var delegate: FocusImediateDelegate?
+    
+    // MARK: - UI Properties
     
     private lazy var closeButton: UIButton = {
         let button = UIButton(configuration: .plain())
@@ -16,19 +20,18 @@ class FocusImediateView: UIView {
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.tintColor = .systemText40
-        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(FocusImediateDelegate.closeButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    private lazy var titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
         label.textColor = .label
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = String(localized: "imediateActivity")
-
         return label
     }()
 
@@ -54,12 +57,12 @@ class FocusImediateView: UIView {
         return table
     }()
 
-    init(color: UIColor?) {
-        super.init(frame: .zero)
-
-        backgroundColor = color
+    // MARK: - Initializer
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .systemBackground
         layer.cornerRadius = 24
-
         setupUI()
     }
 
@@ -67,12 +70,9 @@ class FocusImediateView: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    @objc 
-    private func cancelButtonTapped() {
-        delegate?.cancelButtonTapped()
-    }
 }
+
+// MARK: - UI Setup
 
 extension FocusImediateView: ViewCodeProtocol {
     func setupUI() {
