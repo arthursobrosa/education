@@ -7,6 +7,7 @@
 
 import UIKit
 
+@objc
 protocol FocusSelectionDelegate: AnyObject {
     func selectionButtonTapped(tag: Int)
     func continueButtonTapped()

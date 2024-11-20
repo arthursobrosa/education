@@ -111,7 +111,7 @@ extension FocusImediateViewController: ViewCodeProtocol {
 
         NSLayoutConstraint.activate([
             focusImediateView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 482 / 844),
-            focusImediateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 366 / 390),
+            focusImediateView.widthAnchor.constraint(equalTo: focusImediateView.heightAnchor, multiplier: 366 / 482),
             focusImediateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             focusImediateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
