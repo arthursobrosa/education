@@ -9,22 +9,16 @@ import UIKit
 
 class FocusImediateView: UIView {
     weak var delegate: FocusImediateDelegate?
-
-    private lazy var cancelButton: UIButton = {
-        var configuration = UIButton.Configuration.plain()
-        configuration.title = String(localized: "cancel")
-        configuration.baseForegroundColor = .secondaryLabel
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
-            return outgoing
-        }
-
-        let bttn = UIButton(configuration: configuration)
-        bttn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-
-        return bttn
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        let image = UIImage(systemName: "xmark")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 12))
+        button.setImage(image, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.tintColor = .systemText40
+        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
     private lazy var titleLabel: UILabel = {
@@ -55,10 +49,8 @@ class FocusImediateView: UIView {
     lazy var subjectsTableView: UITableView = {
         let table = UITableView()
         table.separatorStyle = .none
-        table.backgroundColor = self.backgroundColor
-
+        table.backgroundColor = backgroundColor
         table.translatesAutoresizingMaskIntoConstraints = false
-
         return table
     }()
 
@@ -66,7 +58,7 @@ class FocusImediateView: UIView {
         super.init(frame: .zero)
 
         backgroundColor = color
-        layer.cornerRadius = 12
+        layer.cornerRadius = 24
 
         setupUI()
     }
@@ -84,29 +76,28 @@ class FocusImediateView: UIView {
 
 extension FocusImediateView: ViewCodeProtocol {
     func setupUI() {
-        addSubview(cancelButton)
+        addSubview(closeButton)
         addSubview(topLabel)
         addSubview(titleLabel)
         addSubview(subjectsTableView)
 
-        let padding = 20.0
-
         NSLayoutConstraint.activate([
-            cancelButton.topAnchor.constraint(equalTo: topAnchor, constant: padding / 2),
-            cancelButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding / 2),
+            closeButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 27 / 366),
+            closeButton.heightAnchor.constraint(equalTo: closeButton.widthAnchor),
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 11),
+            closeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 11),
 
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: padding / 2),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor),
 
-            topLabel.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: padding / 2),
-            topLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            topLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 296 / 359),
+            topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            topLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50),
+            topLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50),
 
-            subjectsTableView.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: padding),
-            subjectsTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            subjectsTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            subjectsTableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -padding),
+            subjectsTableView.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 39),
+            subjectsTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
+            subjectsTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18),
+            subjectsTableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
         ])
     }
 }

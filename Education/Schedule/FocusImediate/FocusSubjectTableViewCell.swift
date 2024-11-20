@@ -25,14 +25,19 @@ class FocusSubjectTableViewCell: UITableViewCell {
             if let subject {
                 let formattedSubjectName = formattedText(subject.unwrappedName)
                 subjectButton.setTitle(formattedSubjectName, for: .normal)
-                subjectButton.setTitleColor(UIColor(named: subject.unwrappedColor), for: .normal)
-                subjectButton.layer.borderColor = UIColor(named: subject.unwrappedColor)?.cgColor
+                
+                let titleColor = UIColor(named: subject.unwrappedColor)?.darker(by: 0.8)
+                subjectButton.setTitleColor(titleColor, for: .normal)
+                
+                let borderColor = UIColor(named: subject.unwrappedColor)?.withAlphaComponent(0.6)
+                subjectButton.layer.borderColor = borderColor?.cgColor
+                
                 return
             }
 
             subjectButton.setTitle(String(localized: "none"), for: .normal)
-            subjectButton.setTitleColor(.label, for: .normal)
-            subjectButton.layer.borderColor = UIColor.label.cgColor
+            subjectButton.setTitleColor(.systemText80, for: .normal)
+            subjectButton.layer.borderColor = UIColor.buttonNormal.cgColor
         }
     }
 
@@ -42,14 +47,11 @@ class FocusSubjectTableViewCell: UITableViewCell {
         let bttn = UIButton()
         bttn.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         bttn.titleLabel?.textAlignment = .center
-        bttn.layer.cornerRadius = 26
+        bttn.layer.cornerRadius = 30
         bttn.backgroundColor = .clear
         bttn.layer.borderWidth = 1
-
         bttn.addTarget(self, action: #selector(subjectButtonTapped), for: .touchUpInside)
-
         bttn.translatesAutoresizingMaskIntoConstraints = false
-
         return bttn
     }()
 
@@ -91,13 +93,11 @@ extension FocusSubjectTableViewCell: ViewCodeProtocol {
     func setupUI() {
         contentView.addSubview(subjectButton)
 
-        let padding = 24.0
-
         NSLayoutConstraint.activate([
-            subjectButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding / 4),
-            subjectButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding / 4),
-            subjectButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            subjectButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            subjectButton.topAnchor.constraint(equalTo: contentView.topAnchor),
+            subjectButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            subjectButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            subjectButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
         ])
     }
 }
