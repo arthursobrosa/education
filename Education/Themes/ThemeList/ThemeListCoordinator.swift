@@ -82,6 +82,15 @@ extension ThemeListCoordinator: UIViewControllerTransitioningDelegate {
                 themeListVC.reloadTable()
             }
         }
+        
+        if let testPageVC = nav.viewControllers.first as? TestPageViewController {
+            childDidFinish(testPageVC.coordinator as? Coordinator)
+            
+            if let themeListVC = navigationController.viewControllers.first as? ThemeListViewController {
+                themeListVC.viewModel.fetchThemes()
+                themeListVC.reloadTable()
+            }
+        }
 
         return nil
     }

@@ -81,12 +81,15 @@ extension TestPageViewController {
         case 0:
             let textField = UITextField()
             textField.tag = 0
-            textField.textAlignment = .right
             textField.placeholder = String("Ex: Simulado Geral")
             textField.font = UIFont(name: Fonts.darkModeOnItalic, size: 15)
             textField.textColor = .systemText40
+            textField.textAlignment = .right
+            textField.sizeToFit()
+            
             textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
             textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
+            
             return textField
             
         case 1:

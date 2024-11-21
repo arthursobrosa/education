@@ -11,7 +11,7 @@ class TestPageViewModel {
     private let testManager: TestManager
     private let themeManager: ThemeManager
 
-    let theme: Theme?
+    var theme: Theme?
     let test: Test?
 
     var date = Date()
@@ -35,13 +35,17 @@ class TestPageViewModel {
     }
 
     func saveTest() {
-        if let test {
-            updateTest(test)
+        if theme == nil {
+            createTheme(name: themeName)
+            addNewTest()
+        } else {
+            if let test {
+                updateTest(test)
 
-            return
+                return
+            }
+            addNewTest()
         }
-
-        addNewTest()
     }
 
     private func updateTest(_ test: Test) {
@@ -54,8 +58,10 @@ class TestPageViewModel {
     }
 
     private func addNewTest() {
+        guard let newTheme = theme else {return}
+        
         testManager.createTest(
-            themeID: themeName,
+            themeID: newTheme.unwrappedID,
             date: date,
             rightQuestions: rightQuestions,
             totalQuestions: totalQuestions,
@@ -65,6 +71,7 @@ class TestPageViewModel {
     
     func createTheme(name: String) {
         themeManager.createTheme(name: name)
+        theme = themeManager.fetchTheme(withName: name)
     }
 
     func removeTest() {

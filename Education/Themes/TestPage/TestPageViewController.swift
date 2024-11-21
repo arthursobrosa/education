@@ -88,6 +88,17 @@ class TestPageViewController: UIViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
+    
+    @objc
+    func textFieldEditingDidBegin(_ sender: UITextField) {
+        if sender.tag == 0 {
+            sender.textColor = .systemText
+            sender.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+            sender.text = String()
+        } else {
+            sender.text = String()
+        }
+    }
 
     @objc 
     func textFieldEditingDidEnd(_ sender: UITextField) {
@@ -113,11 +124,6 @@ class TestPageViewController: UIViewController {
         default:
             break
         }
-    }
-
-    @objc 
-    func textFieldEditingDidBegin(_ sender: UITextField) {
-        sender.text = String()
     }
 
     func setupTextView() {
