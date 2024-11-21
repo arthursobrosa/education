@@ -9,9 +9,11 @@ import UIKit
 
 class InputTextTableViewCell: UITableViewCell {
     // MARK: - ID
+    
     static let identifier = "inputTextCell"
 
     // MARK: - Delegate to connect to subject creation
+    
     weak var delegate: SubjectCreationDelegate? {
         didSet {
             setupUI()
@@ -19,8 +21,19 @@ class InputTextTableViewCell: UITableViewCell {
     }
 
     // MARK: - UI Properties
+    
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = String(localized: "name")
+        label.textColor = .systemText80
+        label.font = .init(name: Fonts.darkModeOnMedium, size: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     lazy var textField: UITextField = {
         let textField = UITextField()
+        textField.textAlignment = .right
         textField.backgroundColor = .clear
         textField.textColor = UIColor(named: "system-text")
 
@@ -42,13 +55,18 @@ class InputTextTableViewCell: UITableViewCell {
 }
 
 // MARK: - UI Setup
+
 extension InputTextTableViewCell: ViewCodeProtocol {
     func setupUI() {
+        contentView.addSubview(nameLabel)
         contentView.addSubview(textField)
 
         NSLayoutConstraint.activate([
-            textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 17),
+            
+            textField.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 60),
+            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -17),
             textField.topAnchor.constraint(equalTo: contentView.topAnchor),
             textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
@@ -56,14 +74,8 @@ extension InputTextTableViewCell: ViewCodeProtocol {
 }
 
 // MARK: - TextField Delegate
+
 extension InputTextTableViewCell: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let characterLimit = 18
-        let currentText = textField.text ?? ""
-        let newLength = currentText.count + string.count - range.length
-        return newLength <= characterLimit
-    }
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text {
             delegate?.textFieldDidChange(newText: text)

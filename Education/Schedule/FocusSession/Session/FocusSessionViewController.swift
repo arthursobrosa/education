@@ -6,9 +6,8 @@
 //
 
 import AVFoundation
-import Combine
-import UIKit
 import Foundation
+import UIKit
 
 class FocusSessionViewController: UIViewController {
     // MARK: - Coordinator & ViewModel
@@ -16,9 +15,6 @@ class FocusSessionViewController: UIViewController {
 
     weak var coordinator: (ShowingFocusEnd & Dismissing)?
     let viewModel: FocusSessionViewModel
-    //let liveActivity: LiveActivityService = LiveActivityService.shared
-    
-    private var timerSubscription: AnyCancellable?
 
     // MARK: - Status bar hidden
 
@@ -51,10 +47,6 @@ class FocusSessionViewController: UIViewController {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    deinit {
-        timerSubscription?.cancel()
-    }
 
     // MARK: - Lifecycle
 
@@ -69,35 +61,6 @@ class FocusSessionViewController: UIViewController {
         bindActivity()
         setGestureRecognizer()
         viewModel.blockApps()
-
-        let interval = TimeInterval(viewModel.activityManager.totalSeconds/10)
-        print(interval)
-
-        // Create the timer
-        timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
-        timer?.schedule(deadline: .now() + interval, repeating: interval)
-
-        // Set the event handler for the timer
-        timer?.setEventHandler { [weak self] in
-            guard let self else { return }
-            self.finishActivity()
-        }
-
-        // Start the timer
-        timer?.resume()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        timer?.cancel()  // Cancel the timer when the view is about to disappear
-    }
-    
-    
-    private func finishActivity() {
-        if viewModel.activityManager.timerCase != .stopwatch{
-            //liveActivity.endActivity(timerCase: viewModel.activityManager.timerCase)
-        }
-        
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -35,7 +35,6 @@ class SubjectDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingSubje
         child.start()
     }
 
-    
     func showFocusSubjectDetails(focusSession: FocusSession) {
         let viewModel = FocusSubjectDetailsViewModel(focusSession: focusSession)
         let child = FocusSubjectDetailsCoordinator(navigationController: navigationController, viewModel: viewModel)
@@ -89,4 +88,3 @@ extension SubjectDetailsCoordinator: UIViewControllerTransitioningDelegate {
         return nil
     }
 }
-

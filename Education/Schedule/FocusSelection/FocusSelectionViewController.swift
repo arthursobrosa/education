@@ -72,8 +72,8 @@ extension FocusSelectionViewController: ViewCodeProtocol {
         view.addSubview(focusSelectionView)
 
         NSLayoutConstraint.activate([
-            focusSelectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 471 / 844),
-            focusSelectionView.widthAnchor.constraint(equalTo: focusSelectionView.heightAnchor, multiplier: 359 / 471),
+            focusSelectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 482 / 844),
+            focusSelectionView.widthAnchor.constraint(equalTo: focusSelectionView.heightAnchor, multiplier: 366 / 482),
             focusSelectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             focusSelectionView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])

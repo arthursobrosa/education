@@ -159,7 +159,7 @@ class BlockMonitorTests: XCTestCase {
 
     func testApplyShields_withoutTokens() {
         // Arrange
-        var testSelection = MockFamilyActivitySelection()
+        let testSelection = MockFamilyActivitySelection()
         let encodedData = try? JSONEncoder().encode(testSelection)
         UserDefaults.standard.set(encodedData, forKey: MockBlockAppsMonitor.appsKey)
 

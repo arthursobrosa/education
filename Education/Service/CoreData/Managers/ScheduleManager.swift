@@ -18,7 +18,9 @@ final class ScheduleManager: ObjectManager {
         endTime: Date,
         blocksApps: Bool,
         alarms: [Int],
-        completed: Bool = false) {
+        completed: Bool = false,
+        completionDate: Date = Date()
+    ) {
             
         backgroundContext.performAndWait {
             guard let schedule = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: backgroundContext) as? Schedule else { return }
@@ -33,6 +35,7 @@ final class ScheduleManager: ObjectManager {
             schedule.alarms = Int16(scheduleAlarms)
             
             schedule.completed = completed
+            schedule.completionDate = completionDate
             schedule.id = UUID().uuidString
 
             try? backgroundContext.save()
@@ -106,5 +109,26 @@ final class ScheduleManager: ObjectManager {
         }
 
         return schedules
+    }
+    
+    func refreshSchedules() {
+        guard let schedules = fetchSchedules() else { return }
+        
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: Date()) - 1
+        
+        for schedule in schedules where schedule.unwrappedDay == weekday && schedule.completed {
+            let scheduleDateComponents = calendar.dateComponents([.day], from: schedule.unwrappedCompletionDate)
+            let todayDateComponents = calendar.dateComponents([.day], from: Date())
+            
+            if let scheduleDay = scheduleDateComponents.day,
+               let today = todayDateComponents.day {
+                
+                if scheduleDay != today {
+                    schedule.completed = false
+                    updateSchedule(schedule)
+                }
+            }
+        }
     }
 }

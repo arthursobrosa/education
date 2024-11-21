@@ -8,13 +8,14 @@
 import Foundation
 import UIKit
 
+@objc
 protocol FocusImediateDelegate: AnyObject {
-    func cancelButtonTapped()
+    func closeButtonTapped()
     func subjectButtonTapped(indexPath: IndexPath?)
 }
 
 extension FocusImediateViewController: FocusImediateDelegate {
-    func cancelButtonTapped() {
+    func closeButtonTapped() {
         coordinator?.dismiss(animated: true)
     }
 

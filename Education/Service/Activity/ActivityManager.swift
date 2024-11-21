@@ -555,11 +555,15 @@ extension ActivityManager: SessionManaging {
             timerCase: timerCaseValue,
             notes: notes
         )
-
+        
+        let weekday = Calendar.current.component(.weekday, from: Date()) - 1
+        
         if let scheduleID,
-           let schedule = scheduleManager.fetchSchedule(from: scheduleID) {
+           let schedule = scheduleManager.fetchSchedule(from: scheduleID),
+           schedule.unwrappedDay == weekday {
             
             schedule.completed = true
+            schedule.completionDate = Date()
             scheduleManager.updateSchedule(schedule)
         }
     }

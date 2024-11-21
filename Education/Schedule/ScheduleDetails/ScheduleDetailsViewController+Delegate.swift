@@ -308,7 +308,7 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
                 for: viewModel.selectedSubjectName,
                 at: 0,
                 color: viewModel.getColorBySubjectName(name: viewModel.selectedSubjectName),
-                isDaySection: true
+                isDaySection: false
             )
         }
         
