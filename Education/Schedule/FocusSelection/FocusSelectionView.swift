@@ -163,6 +163,40 @@ class FocusSelectionView: UIView {
 
         lastSelected = sender
     }
+    
+    func changeContinueButtonText(isStarting: Bool) {
+        if isStarting {
+            let text = String(localized: "start")
+            let font: UIFont = .init(name: Fonts.darkModeOnMedium, size: 17) ?? .systemFont(ofSize: 17, weight: .medium)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.systemModalBg,
+                .font: font,
+            ]
+            let attributedText = NSMutableAttributedString(string: text, attributes: attributes)
+            
+            let symbolAttachment = NSTextAttachment()
+            let symbolImage = UIImage(systemName: "play.fill")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 17)).withTintColor(.systemModalBg)
+            symbolAttachment.image = symbolImage
+            symbolAttachment.bounds = CGRect(x: 0, y: -4, width: 20, height: 20)
+            
+            let symbolAttributedString = NSAttributedString(attachment: symbolAttachment)
+            
+            attributedText.append(NSAttributedString(string: "   "))
+            attributedText.append(symbolAttributedString)
+            
+            continueButton.setAttributedTitle(attributedText, for: .normal)
+        } else {
+            let text = String(localized: "continue")
+            let font: UIFont = .init(name: Fonts.darkModeOnMedium, size: 17) ?? .systemFont(ofSize: 17, weight: .medium)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.systemModalBg,
+                .font: font,
+            ]
+            let attributedText = NSMutableAttributedString(string: text, attributes: attributes)
+            
+            continueButton.setAttributedTitle(attributedText, for: .normal)
+        }
+    }
 }
 
 // MARK: - UI Setup
@@ -185,7 +219,8 @@ extension FocusSelectionView: ViewCodeProtocol {
             closeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 11),
 
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
 
             topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
             topLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50),

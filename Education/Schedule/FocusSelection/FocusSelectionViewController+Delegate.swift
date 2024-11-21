@@ -22,10 +22,16 @@ extension FocusSelectionViewController: FocusSelectionDelegate {
         switch tag {
         case 0:
             timerCase = .timer
+                
+            focusSelectionView.changeContinueButtonText(isStarting: false)
         case 1:
             timerCase = .pomodoro(workTime: 0, restTime: 0, numberOfLoops: 0)
+                
+            focusSelectionView.changeContinueButtonText(isStarting: false)
         case 2:
             timerCase = .stopwatch
+                
+            focusSelectionView.changeContinueButtonText(isStarting: true)
         default:
             break
         }
