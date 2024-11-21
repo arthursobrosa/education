@@ -78,7 +78,13 @@ extension InputTextTableViewCell: ViewCodeProtocol {
 extension InputTextTableViewCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text {
-            delegate?.textFieldDidChange(newText: text)
+            let cleanName = spaceRemover(string: text)
+            
+            if !cleanName.isEmpty {
+                delegate?.textFieldDidChange(newText: text)
+            } else {
+                textField.text = String()
+            }
         }
     }
 
@@ -86,5 +92,10 @@ extension InputTextTableViewCell: UITextFieldDelegate {
         textField.resignFirstResponder()
 
         return true
+    }
+    
+    private func spaceRemover(string: String) -> String {
+        let trimmedString = string.trimmingCharacters(in: .whitespaces)
+        return trimmedString
     }
 }

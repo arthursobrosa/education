@@ -21,25 +21,19 @@ extension SubjectCreationViewController: SubjectCreationDelegate {
         changeSaveButtonState(isEnabled: !newText.isEmpty)
     }
 
-    func spaceRemover(string: String) -> String {
-        let trimmedString = string.trimmingCharacters(in: .whitespaces)
-        return trimmedString
-    }
-
     func didTapSaveButton() {
-        guard let name = subjectName else { return }
+        guard let subjectName else { return }
         
-        let cleanName = spaceRemover(string: name)
         if viewModel.currentEditingSubject != nil {
-            viewModel.updateSubject(name: cleanName, color: viewModel.selectedSubjectColor.value)
+            viewModel.updateSubject(name: subjectName, color: viewModel.selectedSubjectColor.value)
         } else {
             let existingSubjects = viewModel.subjects.value
-            if existingSubjects.contains(where: { $0.name?.lowercased() == cleanName.lowercased() }) {
+            if existingSubjects.contains(where: { $0.name?.lowercased() == subjectName.lowercased() }) {
                 showAlert(message: String(localized: "subjectCreationUsedName"))
                 return
             }
 
-            viewModel.createSubject(name: cleanName)
+            viewModel.createSubject(name: subjectName)
         }
 
         coordinator?.dismiss(animated: true)

@@ -13,7 +13,7 @@ class FocusSelectionViewController: UIViewController {
 
     private let color: UIColor?
 
-    private lazy var focusSelectionView: FocusSelectionView = {
+    lazy var focusSelectionView: FocusSelectionView = {
         let view = FocusSelectionView(subjectName: self.viewModel.focusSessionModel.subject?.unwrappedName)
         view.delegate = self
 
