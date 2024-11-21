@@ -88,6 +88,25 @@ class TestPageViewController: UIViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
+    
+    func showInvalidNameAlert() {
+        let alertController = UIAlertController(title: String(localized: "invalidThemeName"), message: String(localized: "invalidThemeNameMessage"), preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc
+    func textFieldEditingDidBegin(_ sender: UITextField) {
+        if sender.tag == 0 {
+            sender.textColor = .systemText
+            sender.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+            sender.text = String()
+        } else {
+            sender.text = String()
+        }
+    }
 
     @objc 
     func textFieldEditingDidEnd(_ sender: UITextField) {
@@ -95,7 +114,13 @@ class TestPageViewController: UIViewController {
 
         switch sender.tag {
         case 0:
-            viewModel.themeName = text
+            let cleanName = spaceRemover(string: text)
+            
+            if cleanName.isEmpty {
+                viewModel.themeName = ""
+            } else {
+                viewModel.themeName = cleanName
+            }
             
         case 1:
             if text.isEmpty {
@@ -114,10 +139,10 @@ class TestPageViewController: UIViewController {
             break
         }
     }
-
-    @objc 
-    func textFieldEditingDidBegin(_ sender: UITextField) {
-        sender.text = String()
+    
+    func spaceRemover(string: String) -> String {
+        let trimmedString = string.trimmingCharacters(in: .whitespaces)
+        return trimmedString
     }
 
     func setupTextView() {

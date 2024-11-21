@@ -160,6 +160,8 @@
 "deleteThemeTitle" = "Delete Theme";
 "deleteThemeBody" = "Are you sure you want to delete this theme? All its tests history and results will be discarded";
 "name" = "Name";
+"invalidThemeName" = "Invalid registration name";
+"invalidThemeNameMessage" = "The name of this record is invalid.";
 
 // MARK: - Modal
 "startButton" = "Start Activity";

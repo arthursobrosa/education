@@ -80,11 +80,11 @@ extension InputTextTableViewCell: UITextFieldDelegate {
         if let text = textField.text {
             let cleanName = spaceRemover(string: text)
             
-            if !cleanName.isEmpty {
-                delegate?.textFieldDidChange(newText: text)
-            } else {
+            if cleanName.isEmpty {
                 textField.text = String()
             }
+            
+            delegate?.textFieldDidChange(newText: cleanName)
         }
     }
 
