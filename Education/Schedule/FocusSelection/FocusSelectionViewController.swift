@@ -43,12 +43,17 @@ class FocusSelectionViewController: UIViewController {
             view.backgroundColor = .label.withAlphaComponent(0.1)
         }
 
-        setupUI()
-
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, traitCollection: UITraitCollection) in
+            if traitCollection.userInterfaceStyle == .light {
+                self.view.backgroundColor = .label.withAlphaComponent(0.2)
+            } else {
+                self.view.backgroundColor = .label.withAlphaComponent(0.1)
+            }
+            
             self.focusSelectionView.layer.borderColor = UIColor.label.cgColor
         }
-
+        
+        setupUI()
         setGestureRecognizer()
     }
 

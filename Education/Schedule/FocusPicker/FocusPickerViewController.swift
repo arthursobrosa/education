@@ -8,9 +8,13 @@
 import UIKit
 
 class FocusPickerViewController: UIViewController {
+    // MARK: - Coordinator and ViewModel
+    
     weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
     let viewModel: FocusPickerViewModel
 
+    // MARK: - UI Properties
+    
     private lazy var focusPickerView: FocusPickerView = {
         let view = FocusPickerView(timerCase: viewModel.focusSessionModel.timerCase)
         view.delegate = self
@@ -32,6 +36,8 @@ class FocusPickerViewController: UIViewController {
         return view
     }()
 
+    // MARK: - Initializer
+    
     init(viewModel: FocusPickerViewModel) {
         self.viewModel = viewModel
 
@@ -43,6 +49,8 @@ class FocusPickerViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,6 +58,14 @@ class FocusPickerViewController: UIViewController {
             view.backgroundColor = .label.withAlphaComponent(0.2)
         } else {
             view.backgroundColor = .label.withAlphaComponent(0.1)
+        }
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, traitCollection: UITraitCollection) in
+            if traitCollection.userInterfaceStyle == .light {
+                self.view.backgroundColor = .label.withAlphaComponent(0.2)
+            } else {
+                self.view.backgroundColor = .label.withAlphaComponent(0.1)
+            }
         }
 
         setupUI()
@@ -63,6 +79,8 @@ class FocusPickerViewController: UIViewController {
         configurePomodoroPickers()
     }
 
+    // MARK: - Methods
+    
     private func setGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
         view.addGestureRecognizer(tapGesture)
@@ -119,6 +137,8 @@ class FocusPickerViewController: UIViewController {
     }
 }
 
+// MARK: - UI Setup
+
 extension FocusPickerViewController: ViewCodeProtocol {
     func setupUI() {
         view.addSubview(focusPickerView)
@@ -130,8 +150,8 @@ extension FocusPickerViewController: ViewCodeProtocol {
 
         switch timerCase {
         case .timer:
-            heightMultiplier = 542 / 844
-            widthMultiplier = 366 / 542
+            heightMultiplier = 550 / 844
+            widthMultiplier = 366 / 550
             focusPickerView.titleLabel.text = String(localized: "timerSelectionBold")
         case .pomodoro:
             heightMultiplier = 696 / 844
@@ -149,6 +169,8 @@ extension FocusPickerViewController: ViewCodeProtocol {
         ])
     }
 }
+
+// MARK: - TableView Data Source and Delegate
 
 extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in _: UITableView) -> Int {
@@ -182,10 +204,10 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         }
 
         cell.textLabel?.text = cellText
-        cell.textLabel?.textColor = .label
-        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        cell.backgroundColor = .systemBackground
-        cell.roundCorners(corners: .allCorners, radius: 14.0, borderWidth: 2.5, borderColor: .systemGray4)
+        cell.textLabel?.textColor = .systemText80
+        cell.textLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 16)
+        cell.backgroundColor = .systemModalBg
+        cell.roundCorners(corners: .allCorners, radius: 18.0, borderWidth: 2.5, borderColor: .buttonNormal)
 
         let toggle = UISwitch()
         toggle.isOn = toggleIsOn
@@ -227,6 +249,8 @@ extension FocusPickerViewController: UITableViewDataSource, UITableViewDelegate 
         return footerView
     }
 }
+
+// MARK: - Picker Data Source and Delegate
 
 extension FocusPickerViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in _: UIPickerView) -> Int {

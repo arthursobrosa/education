@@ -46,8 +46,8 @@ extension FocusSessionViewController: FocusSessionDelegate {
 
         let mediumFont: UIFont = UIFont(name: Fonts.darkModeOnMedium, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
         let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .semibold)
-        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font: mediumFont, .foregroundColor: UIColor.label.withAlphaComponent(0.7)])
-        let subjectString = NSAttributedString(string: subjectName, attributes: [.font: semiboldFont, .foregroundColor: UIColor.label.withAlphaComponent(0.85)])
+        let activityString = NSAttributedString(string: "\(String(localized: "subjectActivity"))\n", attributes: [.font: mediumFont, .foregroundColor: UIColor.systemText70])
+        let subjectString = NSAttributedString(string: subjectName, attributes: [.font: semiboldFont, .foregroundColor: UIColor.systemText80])
 
         attributedString.append(activityString)
         attributedString.append(subjectString)
@@ -66,7 +66,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
 
     func didTapRestartButton() {
         let alertCase: AlertCase = .restartingCase
-        let alertConfig = getAlertConfig(with: alertCase)
+        let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: focusSessionView)
         focusSessionView.statusAlertView.config = alertConfig
         focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
         focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
@@ -75,7 +75,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
 
     func didTapFinishButton() {
         let alertCase: AlertCase = .finishingEarlyCase
-        let alertConfig = getAlertConfig(with: alertCase)
+        let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: focusSessionView)
         focusSessionView.statusAlertView.config = alertConfig
         focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
         focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)

@@ -27,7 +27,7 @@ class FocusSessionViewController: UIViewController {
     let color: UIColor?
 
     lazy var focusSessionView: FocusSessionView = {
-        let view = FocusSessionView(color: self.color)
+        let view = FocusSessionView(color: color)
         view.delegate = self
         view.updatePauseResumeButton(isPaused: viewModel.activityManager.isPaused)
 
@@ -246,22 +246,11 @@ extension FocusSessionViewController {
             return
         }
         
-        let alertConfig = getAlertConfig(with: alertCase)
+        let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: focusSessionView)
         focusSessionView.statusAlertView.config = alertConfig
         focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
         focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
         focusSessionView.changeAlertVisibility(isShowing: true)
-    }
-    
-    func getAlertConfig(with alertCase: AlertCase) -> AlertView.AlertConfig {
-        AlertView.AlertConfig(
-            title: alertCase.title,
-            body: alertCase.body,
-            primaryButtonTitle: alertCase.primaryButtonTitle,
-            secondaryButtonTitle: alertCase.secondaryButtonTitle,
-            superView: focusSessionView,
-            position: alertCase.position
-        )
     }
 
     func updateViewLabels() {

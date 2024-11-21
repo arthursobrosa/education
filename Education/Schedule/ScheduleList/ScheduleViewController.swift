@@ -59,12 +59,10 @@ class ScheduleViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setNavigationItems()
 
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, traitCollection: UITraitCollection) in
             self.loadSchedules()
-        }
-
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-            if self.traitCollection.userInterfaceStyle == .light {
+            
+            if traitCollection.userInterfaceStyle == .light {
                 self.scheduleView.scheduleModeSelector.segmentImage = UIImage(color: UIColor.systemBackground)
             } else {
                 self.scheduleView.scheduleModeSelector.segmentImage = UIImage(color: UIColor.systemBackground)

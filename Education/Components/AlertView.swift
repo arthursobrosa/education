@@ -20,6 +20,8 @@ enum AlertCase {
     case finishingPomodoroCase(pomodoroString: String, isAtWorkTime: Bool)
     
     case deletingSchedule(subject: Subject)
+    
+    case discardingFocusSession
 
     var title: String {
         switch self {
@@ -33,6 +35,8 @@ enum AlertCase {
             String(format: NSLocalizedString("finishPomodoroAlertTitle", comment: ""), pomodoroString)
         case .deletingSchedule:
             String(localized: "deleteScheduleAlertTitle")
+        case .discardingFocusSession:
+            String(localized: "discardingFocusSessionAlertTitle")
         }
     }
 
@@ -48,6 +52,8 @@ enum AlertCase {
             getFinishPomodoroAlertBody()
         case .deletingSchedule(let subject):
             String(format: NSLocalizedString("deleteScheduleAlertBody", comment: ""), String(subject.unwrappedName.prefix(20)))
+        case .discardingFocusSession:
+            String(localized: "discardingFocusSessionAlertBody")
         }
     }
 
@@ -64,6 +70,8 @@ enum AlertCase {
                 String(localized: "startFocus")
             }
         case .deletingSchedule:
+            String(localized: "yes")
+        case .discardingFocusSession:
             String(localized: "yes")
         }
     }
@@ -82,6 +90,8 @@ enum AlertCase {
             }
         case .deletingSchedule:
             String(localized: "cancel")
+        case .discardingFocusSession:
+            String(localized: "cancel")
         }
     }
     
@@ -95,6 +105,8 @@ enum AlertCase {
             #selector(FocusSessionDelegate.didStartNextPomodoro)
         case .deletingSchedule:
             #selector(ScheduleDelegate.didDeleteSchedule)
+        case .discardingFocusSession:
+            #selector(FocusEndDelegate.didDiscard)
         }
     }
 
@@ -106,12 +118,14 @@ enum AlertCase {
             #selector(FocusSessionDelegate.didTapExtendButton)
         case .deletingSchedule:
             #selector(ScheduleDelegate.didCancelDeletion)
+        case .discardingFocusSession:
+            #selector(FocusEndDelegate.didCancel)
         }
     }
 
     var position: AlertPosition {
         switch self {
-        case .restartingCase, .finishingEarlyCase:
+        case .restartingCase, .finishingEarlyCase, .discardingFocusSession:
             .bottom
         case .finishingTimerCase, .finishingPomodoroCase:
             .mid
@@ -149,6 +163,17 @@ class AlertView: UIView {
         var secondaryButtonTitle: String
         var superView: UIView
         var position: AlertPosition
+        
+        static func getAlertConfig(with alertCase: AlertCase, superview: UIView) -> AlertView.AlertConfig {
+            AlertConfig(
+                title: alertCase.title,
+                body: alertCase.body,
+                primaryButtonTitle: alertCase.primaryButtonTitle,
+                secondaryButtonTitle: alertCase.secondaryButtonTitle,
+                superView: superview,
+                position: alertCase.position
+            )
+        }
     }
     
     var config: AlertConfig? {
@@ -192,7 +217,7 @@ class AlertView: UIView {
         super.init(frame: .zero)
 
         backgroundColor = .systemBackground
-        layer.cornerRadius = 12
+        layer.cornerRadius = 24
 
         translatesAutoresizingMaskIntoConstraints = false
     }
@@ -221,12 +246,16 @@ class AlertView: UIView {
     private func setSecondaryButton() {
         guard let config else { return }
         
-        secondaryButton = ButtonComponent(title: config.secondaryButtonTitle, textColor: .label, cornerRadius: 28)
+        secondaryButton = ButtonComponent(title: config.secondaryButtonTitle, textColor: .systemText80, cornerRadius: 28)
         secondaryButton?.backgroundColor = .clear
-        secondaryButton?.layer.borderColor = UIColor.label.cgColor
+        secondaryButton?.layer.borderColor = UIColor.buttonNormal.cgColor
         secondaryButton?.layer.borderWidth = 1
         secondaryButton?.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         secondaryButton?.translatesAutoresizingMaskIntoConstraints = false
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.secondaryButton?.layer.borderColor = UIColor.buttonNormal.cgColor
+        }
     }
     
     func setPrimaryButtonTarget(_ target: Any?, action: Selector) {

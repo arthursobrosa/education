@@ -113,6 +113,8 @@
 "timer" = "Temporizador";
 "notes"= "Notas";
 "discard" = "Descartar";
+"discardingFocusSessionAlertTitle" = "Descartar Atividade";
+"discardingFocusSessionAlertBody" = "Tem certeza que deseja descartar o registro da atividade?";
 "notesPlaceholder" = "Notas sobre a atividade";
 
 // MARK: - Subjects

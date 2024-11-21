@@ -113,6 +113,8 @@
 "timer" = "Timer";
 "notes"= "Notes";
 "discard" = "Discard";
+"discardingFocusSessionAlertTitle" = "Discard Activity";
+"discardingFocusSessionAlertBody" = "Are you sure you want to discard registering this activity?";
 "notesPlaceholder" = "Notes about the activity";
 
 // MARK: - Subjects

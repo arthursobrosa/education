@@ -78,6 +78,14 @@ class FocusSelectionView: UIView {
 
     private lazy var continueButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground, cornerRadius: 26)
+        let text = String(localized: "continue")
+        let font: UIFont = .init(name: Fonts.darkModeOnMedium, size: 17) ?? .systemFont(ofSize: 17, weight: .medium)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemModalBg,
+            .font: font,
+        ]
+        let attributedText = NSMutableAttributedString(string: text, attributes: attributes)
+        button.setAttributedTitle(attributedText, for: .normal)
         button.isEnabled = false
         button.backgroundColor = .systemGray4
         button.addTarget(delegate, action: #selector(FocusSelectionDelegate.continueButtonTapped), for: .touchUpInside)
@@ -87,7 +95,7 @@ class FocusSelectionView: UIView {
 
     private lazy var cancelButton: UIButton = {
         let button = UIButton(configuration: .plain())
-        let textColor: UIColor? = .secondaryLabel
+        let textColor: UIColor? = .tabIcons
         let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .regular)
         let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: textColor ?? .label])
         button.setAttributedTitle(attributedString, for: .normal)
@@ -112,7 +120,7 @@ class FocusSelectionView: UIView {
 
         super.init(frame: .zero)
 
-        backgroundColor = .systemBackground
+        backgroundColor = .systemModalBg
         layer.cornerRadius = 24
 
         setupUI()

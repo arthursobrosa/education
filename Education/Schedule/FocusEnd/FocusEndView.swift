@@ -63,6 +63,24 @@ class FocusEndView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    let statusAlertView: AlertView = {
+        let view = AlertView()
+        view.isHidden = true
+        view.layer.zPosition = 2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let overlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .label.withAlphaComponent(0.1)
+        view.alpha = 0
+        view.layer.zPosition = 1
+        view.isUserInteractionEnabled = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     // MARK: - Initializer
 
@@ -76,6 +94,17 @@ class FocusEndView: UIView {
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
+    func changeAlertVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+
+            self.statusAlertView.isHidden = !isShowing
+            self.overlayView.alpha = isShowing ? 1 : 0
+        }
     }
 }
 
@@ -106,6 +135,15 @@ extension FocusEndView: ViewCodeProtocol {
             discardButton.heightAnchor.constraint(equalTo: saveButton.heightAnchor),
             discardButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             discardButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -35),
+        ])
+        
+        addSubview(overlayView)
+
+        NSLayoutConstraint.activate([
+            overlayView.topAnchor.constraint(equalTo: topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
 }

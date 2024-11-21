@@ -38,8 +38,6 @@ class FocusImediateViewController: UIViewController {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
-
-        setupUI()
     }
 
     @available(*, unavailable)
@@ -75,6 +73,7 @@ class FocusImediateViewController: UIViewController {
             self.reloadTable()
         }
 
+        setupUI()
         setGestureRecognizer()
     }
 
