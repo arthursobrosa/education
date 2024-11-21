@@ -158,6 +158,8 @@
 "deleteThemeTitle" = "Deletar Prova";
 "deleteThemeBody" = "Você tem certeza que deseja deletar essa prova? Todo o histórico de testes e resultados serão perdidos";
 "name" = "Nome";
+"invalidThemeName" = "Nome de registro inválido";
+"invalidThemeNameMessage" = "O nome deste registro é inválido.";
 
 // MARK: - Modal
 "startButton" = "Iniciar Atividade";
