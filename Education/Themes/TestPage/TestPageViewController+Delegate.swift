@@ -23,6 +23,12 @@ extension TestPageViewController: TestDelegate {
     func didTapSaveButton() {
         let totalQuestions = viewModel.totalQuestions
         let rightQuestions = viewModel.rightQuestions
+        let notes = viewModel.themeName
+        
+        if notes.isEmpty {
+            showInvalidNameAlert()
+            return
+        }
 
         guard rightQuestions <= totalQuestions else {
             showWrongQuestionsAlert()
