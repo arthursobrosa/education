@@ -90,7 +90,6 @@ class FocusSubjectDetailsView: UIView {
         return textView
     }()
     
-    
     private lazy var saveButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 28)
         button.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapSaveButton), for: .touchUpInside)
