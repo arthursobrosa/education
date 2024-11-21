@@ -42,4 +42,8 @@ extension Schedule {
         
         return true
     }
+    
+    var unwrappedCompletionDate: Date {
+        completionDate ?? Date()
+    }
 }

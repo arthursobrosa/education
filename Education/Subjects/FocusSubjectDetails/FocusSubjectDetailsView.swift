@@ -135,13 +135,16 @@ class FocusSubjectDetailsView: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    //MARK: - Methods hide and show
     
-    @objc private func editButtonTapped() {
+    // MARK: - Methods hide and show
+    
+    @objc 
+    private func editButtonTapped() {
         delegate?.didTapEditButton()
     }
     
-    @objc private func cancelButtonTapped() {
+    @objc 
+    private func cancelButtonTapped() {
         delegate?.didTapCancelButton()
     }
     
@@ -154,11 +157,11 @@ class FocusSubjectDetailsView: UIView {
     }
     
     func hideCancelButton() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.3) {
             self.cancelButton.alpha = 0
-        }, completion: { _ in
+        } completion: { _ in
             self.cancelButton.isHidden = true
-        })
+        }
     }
     
     func showEditButton() {
@@ -170,11 +173,11 @@ class FocusSubjectDetailsView: UIView {
     }
     
     func hideEditButton() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.3) {
             self.editCommentImage.alpha = 0
-        }, completion: { _ in
+        } completion: { _ in
             self.editCommentImage.isHidden = true
-        })
+        }
     }
     
     func showSaveButton() {
@@ -186,11 +189,11 @@ class FocusSubjectDetailsView: UIView {
     }
     
     func hideSabeButton() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.3) {
             self.saveButton.alpha = 0
-        }, completion: { _ in
+        } completion: { _ in
             self.saveButton.isHidden = true
-        })
+        }
     }
 }
 
@@ -209,15 +212,12 @@ extension FocusSubjectDetailsView: ViewCodeProtocol {
         addSubview(discardButton)
 
         NSLayoutConstraint.activate([
-            //start nav
             chevronButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             chevronButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 11),
             
             cancelButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             cancelButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -18),
-            //end nav
             
-            //start content
             titleLabel.topAnchor.constraint(equalTo: chevronButton.bottomAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 23),
 
@@ -233,13 +233,10 @@ extension FocusSubjectDetailsView: ViewCodeProtocol {
             editCommentImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
             
             notesView.topAnchor.constraint(equalTo: notesTitle.bottomAnchor, constant: 5),
-            notesView.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 23),
+            notesView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23),
             notesView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
             notesView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
-
-            //end content
             
-            //start action buttons
             saveButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 334 / 390),
             saveButton.heightAnchor.constraint(equalTo: saveButton.widthAnchor, multiplier: 55 / 334),
             saveButton.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -252,4 +249,3 @@ extension FocusSubjectDetailsView: ViewCodeProtocol {
         ])
     }
 }
-

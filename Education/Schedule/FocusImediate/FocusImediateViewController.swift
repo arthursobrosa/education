@@ -8,14 +8,19 @@
 import UIKit
 
 class FocusImediateViewController: UIViewController {
+    // MARK: - Coordinator and ViewModel
+    
     weak var coordinator: (ShowingFocusSelection & Dismissing)?
     private let viewModel: FocusImediateViewModel
 
-    let color: UIColor?
+    // MARK: - Properties
+    
     var subjects = [Subject]()
 
+    // MARK: - UI Properties
+    
     private lazy var focusImediateView: FocusImediateView = {
-        let view = FocusImediateView(color: self.color)
+        let view = FocusImediateView()
         view.delegate = self
 
         view.subjectsTableView.dataSource = self
@@ -27,9 +32,10 @@ class FocusImediateViewController: UIViewController {
         return view
     }()
 
-    init(viewModel: FocusImediateViewModel, color: UIColor?) {
+    // MARK: - Initializer
+    
+    init(viewModel: FocusImediateViewModel) {
         self.viewModel = viewModel
-        self.color = color
 
         super.init(nibName: nil, bundle: nil)
 
@@ -41,6 +47,8 @@ class FocusImediateViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,22 +59,27 @@ class FocusImediateViewController: UIViewController {
         } else {
             view.backgroundColor = .label.withAlphaComponent(0.1)
         }
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, traitCollection: UITraitCollection) in
+            if traitCollection.userInterfaceStyle == .light {
+                self.view.backgroundColor = .label.withAlphaComponent(0.2)
+            } else {
+                self.view.backgroundColor = .label.withAlphaComponent(0.1)
+            }
+        }
 
         viewModel.subjects.bind { [weak self] subjects in
             guard let self else { return }
-
+            
             self.subjects = subjects
             self.reloadTable()
-        }
-
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-            self.reloadTable()
-            self.focusImediateView.layer.borderColor = UIColor.label.cgColor
         }
 
         setGestureRecognizer()
     }
 
+    // MARK: - Methods
+    
     private func reloadTable() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -90,13 +103,15 @@ class FocusImediateViewController: UIViewController {
     }
 }
 
+// MARK: - UI Setup
+
 extension FocusImediateViewController: ViewCodeProtocol {
     func setupUI() {
         view.addSubview(focusImediateView)
 
         NSLayoutConstraint.activate([
-            focusImediateView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 471 / 844),
-            focusImediateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 366 / 390),
+            focusImediateView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 482 / 844),
+            focusImediateView.widthAnchor.constraint(equalTo: focusImediateView.heightAnchor, multiplier: 366 / 482),
             focusImediateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             focusImediateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
@@ -124,6 +139,6 @@ extension FocusImediateViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return 52 + 12
+        return 68
     }
 }

@@ -51,12 +51,18 @@ class ScheduleViewModel {
     init(subjectManager: SubjectManager = SubjectManager(), scheduleManager: ScheduleManager = ScheduleManager()) {
         self.subjectManager = subjectManager
         self.scheduleManager = scheduleManager
+        
+        refreshSchedules()
     }
 }
 
 // MARK: - Schedule Handling
 
 extension ScheduleViewModel {
+    func refreshSchedules() {
+        scheduleManager.refreshSchedules()
+    }
+    
     func fetchSchedules() {
         if let schedules = scheduleManager.fetchSchedules(dayOfTheWeek: selectedWeekday) {
             let orderedSchedules = schedules.sorted {
@@ -124,7 +130,7 @@ extension ScheduleViewModel {
         let calendar = Calendar.current
         let today = calendar.component(.weekday, from: Date()) - 1
 
-        guard schedule.dayOfTheWeek == today else { return .notToday }
+        guard schedule.unwrappedDay == today else { return .notToday }
 
         let components: Set<Calendar.Component> = [.hour, .minute]
 
@@ -150,7 +156,11 @@ extension ScheduleViewModel {
 
             return .upcoming(hoursLeft: String(hoursLeft), minutesLeft: String(minutesLeft))
         } else if currentTimeInMinutes <= endTimeInMinutes {
-            return .ongoing
+            if schedule.completed {
+                return .completed
+            } else {
+                return .ongoing
+            }
         } else {
             if schedule.completed {
                 return .completed

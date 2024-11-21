@@ -32,7 +32,7 @@ class FocusSubjectDetailsViewModel {
     
     func getSubjectName(subjectID: String) -> Subject? {
         let subjectManager = SubjectManager()
-        return subjectManager.fetchSubject(withID: subjectID) ?? nil
+        return subjectManager.fetchSubject(withID: subjectID)
     }
     
     func makeTitle(focusSession: FocusSession) {

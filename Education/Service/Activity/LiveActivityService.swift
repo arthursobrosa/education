@@ -8,39 +8,44 @@
 import ActivityKit
 import Foundation
 
-final class LiveActivityService: LiveActivityManaging {
-    private var activity: Activity<TimerAttributes>?
-    
-    static let shared = LiveActivityService()
-
-    // Function to start the Live Activity
-    func startActivity(endTime: Date, title: String) {
-        let attributes = TimerAttributes(timerName: title)
-        let state = TimerAttributes.TimerStatus(endTime: endTime)
-
+final class LiveActivityManager {
+    @discardableResult
+    func startActivity(duration: Int, progress: Double, title: String, color: String, restTime: Bool) -> Activity<TimerAttributes>? {
+        var activity: Activity<TimerAttributes>?
+        let attributes = TimerAttributes(name: title, color: color, restTime: restTime)
+        
         do {
-            activity = try Activity<TimerAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
-            print("Live Activity started successfully!")
+            let state = TimerAttributes.ContentState(
+                duration: duration,
+                progress: progress
+            )
+            activity = try Activity<TimerAttributes>.request(
+                attributes: attributes,
+                contentState: state,
+                pushType: nil
+            )
         } catch {
-            print("Failed to start Live Activity: \(error.localizedDescription)")
+            print(error.localizedDescription)
+        }
+        return activity
+    }
+    
+    func updateActivity(activity: String, duration: Int, progress: Double) {
+        Task {
+            let contentState = TimerAttributes.ContentState(
+                duration: duration,
+                progress: progress
+            )
+            let activity = Activity<TimerAttributes>.activities.first(where: { $0.id == activity })
+            await activity?.update(using: contentState)
         }
     }
-
-    // Function to update the Live Activity
-    func updateActivity(addedTime: Date) {
-        let state = TimerAttributes.TimerStatus(endTime: addedTime)
-
+    
+    func endActivity(timerCase: TimerCase) {
         Task {
-            await activity?.update(using: state)
-        }
-    }
-
-    // Function to end the Live Activity
-    func endActivity() {
-        let state = TimerAttributes.TimerStatus(endTime: .now)
-
-        Task {
-            await activity?.end(using: state, dismissalPolicy: .immediate)
+            for activity in Activity<TimerAttributes>.activities {
+                await activity.end(dismissalPolicy: .immediate)
+            }
         }
     }
 }

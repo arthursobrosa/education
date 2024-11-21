@@ -6,17 +6,15 @@
 //
 
 import AVFoundation
-import Combine
+import Foundation
 import UIKit
 
 class FocusSessionViewController: UIViewController {
     // MARK: - Coordinator & ViewModel
+    var timer: DispatchSourceTimer?
 
     weak var coordinator: (ShowingFocusEnd & Dismissing)?
     let viewModel: FocusSessionViewModel
-    let liveActivity: LiveActivityService = LiveActivityService.shared
-    
-    private var timerSubscription: AnyCancellable?
 
     // MARK: - Status bar hidden
 
@@ -49,10 +47,6 @@ class FocusSessionViewController: UIViewController {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    deinit {
-        timerSubscription?.cancel()
-    }
 
     // MARK: - Lifecycle
 
@@ -67,18 +61,6 @@ class FocusSessionViewController: UIViewController {
         bindActivity()
         setGestureRecognizer()
         viewModel.blockApps()
-        
-        timerSubscription = Timer.publish(every: TimeInterval(viewModel.activityManager.totalSeconds / 10), on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                guard let self else { return }
-                foo()
-            }
-        
-    }
-    
-    private func foo() {
-        liveActivity.endActivity()
     }
 
     override func viewWillAppear(_ animated: Bool) {

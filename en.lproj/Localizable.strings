@@ -176,11 +176,6 @@
 "newTestTip" = "Create a new test group here";
 "explainTestTip" = "In each test group, you can add results and track your progress over time.";
 
-//MARK: - EMPTY SUBJECTS VIEW
-"create" = "Create Subject";
-"createText" = "To start putting together your schedule, create a new subject";
-"welcomeText" = "Welcome to Planno! 👋";
-
 //MARK: - OTHER SUBJECT
 "deleteOther" = "Erase time";
 "deleteOtherMessage" = "Do you really want to erase your study time?";
@@ -207,3 +202,38 @@
 "shieldTitle" = "Your studies are waiting for you";
 "shieldSubtitle" = "“Knowledge is the only power no one can take away from you”";
 "back" = "Back";
+
+// MARK: - Onboarding
+"skip" = "Skip";
+"next" = "Next";
+"welcomeText" = "Welcome to Planno";
+"appDescription" = "An app made to help you on your study journeys";
+"simple" = "Simple.";
+"clear" = "Clear.";
+"straightforward" = "Straightforward.";
+"believeToBe" = "The way we believe is should be.";
+"letsStart" = "Let's start?";
+"addSubjects" = "Add the subjects you want to study.";
+"subjectsSuccess" = "Subjects added successfully!";
+"readyToStart" = "Everything is ready to set up your schedule and focus on your studies.";
+"subjectsEmpty" = "You haven't selected any subjects on the previous page.";
+
+// MARK: - Default Subjects
+"subject_portuguese" = "Portuguese";
+"subject_literature" = "Literature";
+"subject_english" = "English";
+"subject_arts" = "Arts";
+"subject_physical_education" = "Phys. Ed.";
+"subject_it" = "Technology";
+"subject_history" = "History";
+"subject_geography" = "Geography";
+"subject_philosophy" = "Philosophy";
+"subject_sociology" = "Sociology";
+"subject_chemistry" = "Chemistry";
+"subject_physics" = "Physics";
+"subject_biology" = "Biology";
+"subject_mathematics" = "Mathematics";
+
+// MARK: - Live Activity
+"studyTime" = "Study Time";
+"restTime" = "Rest Time";

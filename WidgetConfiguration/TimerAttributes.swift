@@ -10,11 +10,14 @@ import SwiftUI
 
 struct TimerAttributes: ActivityAttributes {
     typealias TimerStatus = ContentState
-
-    struct ContentState: Codable, Hashable {
-        var endTime: Date
+    
+    public struct ContentState: Codable, Hashable {
+      var duration: Int
+      var progress: Double
     }
 
-    var timerName: String
-    var timerStart: Date = .now
+    var name: String
+    var color: String
+    var restTime: Bool
+    
 }

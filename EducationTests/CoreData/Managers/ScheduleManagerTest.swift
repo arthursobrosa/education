@@ -35,6 +35,7 @@ class ScheduleManagerTest: XCTestCase {
         let endTimeString = "2023-11-13 10:12:22"
         let startTime = format.date(from: startTimeString)!
         let endTime = format.date(from: endTimeString)!
+        let completionDate = Date()
         
         scheduleManager.createSchedule(
             subjectID: subject.unwrappedID,
@@ -43,7 +44,8 @@ class ScheduleManagerTest: XCTestCase {
             endTime: endTime,
             blocksApps: false,
             alarms: [1, 2, 3],
-            completed: true
+            completed: true,
+            completionDate: completionDate
         )
 
         let schedule = scheduleManager.fetchSchedules(subjectID: subject.unwrappedID)!.first!
@@ -52,6 +54,7 @@ class ScheduleManagerTest: XCTestCase {
         XCTAssertEqual(schedule.startTime, startTime)
         XCTAssertEqual(schedule.endTime, endTime)
         XCTAssertEqual(schedule.completed, true)
+        XCTAssertEqual(schedule.completionDate, completionDate)
     }
 
     func test_fetch_single_schedule() {
@@ -226,6 +229,62 @@ class ScheduleManagerTest: XCTestCase {
 
         XCTAssertEqual(wednesdaySchedules.first?.dayOfTheWeek, 3)
         XCTAssertEqual(thursdaySchedules.first?.dayOfTheWeek, 4)
+    }
+    
+    func testRefreshSchedules() {
+        let calendar = Calendar.current
+        let weekDay = calendar.component(.weekday, from: Date()) - 1
+        
+        subjectManager.createSubject(name: "Math", color: "FocusSelectionColor")
+        let subject = subjectManager.fetchSubject(withName: "Math")!
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let startTimeString = "2023-11-13 09:12:22"
+        let endTimeString = "2023-11-13 10:12:22"
+        let startTime = format.date(from: startTimeString)!
+        let endTime = format.date(from: endTimeString)!
+        
+        let todayDate = Date()
+        let lastWeekDate = calendar.date(byAdding: .day, value: -7, to: todayDate)!
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: weekDay,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [0],
+            completed: true,
+            completionDate: todayDate
+        )
+        
+        scheduleManager.createSchedule(
+            subjectID: subject.unwrappedID,
+            dayOfTheWeek: weekDay,
+            startTime: startTime,
+            endTime: endTime,
+            blocksApps: false,
+            alarms: [0],
+            completed: true,
+            completionDate: lastWeekDate
+        )
+        
+        let schedules = scheduleManager.fetchSchedules()!.sorted { $0.unwrappedCompletionDate < $1.unwrappedCompletionDate }
+        
+        XCTAssertEqual(schedules.count, 2)
+        XCTAssertEqual(schedules[0].unwrappedCompletionDate, lastWeekDate)
+        XCTAssertEqual(schedules[0].completed, true)
+        XCTAssertEqual(schedules[1].unwrappedCompletionDate, todayDate)
+        XCTAssertEqual(schedules[1].completed, true)
+        
+        scheduleManager.refreshSchedules()
+        
+        XCTAssertEqual(schedules.count, 2)
+        XCTAssertEqual(schedules[0].unwrappedCompletionDate, lastWeekDate)
+        XCTAssertEqual(schedules[0].completed, false)
+        XCTAssertEqual(schedules[1].unwrappedCompletionDate, todayDate)
+        XCTAssertEqual(schedules[1].completed, true)
     }
 }
 // swiftlint:enable force_unwrapping

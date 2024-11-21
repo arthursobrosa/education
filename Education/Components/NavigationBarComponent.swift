@@ -32,7 +32,7 @@ class NavigationBarComponent: UIView {
             if isDestructive {
                 .focusColorRed
             } else {
-                .systemText
+                .buttonSelected
             }
         }
         

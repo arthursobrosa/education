@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SplashCoordinator: Coordinator, ShowingTabBar {
+class SplashCoordinator: Coordinator, ShowingOnboarding, ShowingTabBar {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
@@ -36,6 +36,17 @@ class SplashCoordinator: Coordinator, ShowingTabBar {
         viewController.coordinator = self
 
         navigationController.pushViewController(viewController, animated: false)
+    }
+    
+    func showOnboarding() {
+        let child = OnboardingManagerCoordinator(
+            navigationController: navigationController,
+            activityManager: activityManager,
+            blockingManager: blockingManager,
+            notificationService: notificationService
+        )
+        childCoordinators.append(child)
+        child.start()
     }
 
     func showTabBar() {

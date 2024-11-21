@@ -10,7 +10,6 @@ import UIKit
 class FocusPickerViewController: UIViewController {
     weak var coordinator: (ShowingTimer & Dismissing & DismissingAll)?
     let viewModel: FocusPickerViewModel
-    let liveActivity: LiveActivityService = LiveActivityService.shared
 
     private lazy var focusPickerView: FocusPickerView = {
         let view = FocusPickerView(timerCase: viewModel.focusSessionModel.timerCase)
