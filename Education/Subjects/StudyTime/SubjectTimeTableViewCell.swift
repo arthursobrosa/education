@@ -14,13 +14,14 @@ class SubjectTimeTableViewCell: UITableViewCell {
         didSet {
             if let subject {
                 subjectName.text = subject.unwrappedName
-                containerView.layer.borderColor = UIColor(named: subject.unwrappedColor)?.cgColor
+                let borderColor = UIColor(named: subject.unwrappedColor)?.withAlphaComponent(0.6)
+                containerView.layer.borderColor = borderColor?.cgColor
             } else {
                 subjectName.text = String(localized: "other")
-                containerView.layer.borderColor = UIColor(named: "button-normal")?.cgColor
+                containerView.layer.borderColor = UIColor.buttonNormal.cgColor
                 
                 registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-                    self.containerView.layer.borderColor = UIColor(named: "button-normal")?.cgColor
+                    self.containerView.layer.borderColor = UIColor.buttonNormal.cgColor
                 }
             }
         }
