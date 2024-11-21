@@ -38,7 +38,7 @@ class TestPageViewModel {
         if theme == nil {
             createTheme(name: themeName)
             addNewTest()
-        }else {
+        } else {
             if let test {
                 updateTest(test)
 

@@ -95,7 +95,7 @@ class TestPageViewController: UIViewController {
             sender.textColor = .systemText
             sender.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
             sender.text = String()
-        }else{
+        } else {
             sender.text = String()
         }
     }
