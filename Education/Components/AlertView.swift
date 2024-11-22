@@ -26,6 +26,8 @@ enum AlertCase {
     case deletingOtherFocusSession
     
     case deletingSubject(subjectName: String)
+    
+    case deletingTheme
 
     var title: String {
         switch self {
@@ -47,6 +49,8 @@ enum AlertCase {
             String(localized: "deletingOtherFocusSessionAlertTitle")
         case .deletingSubject:
             String(localized: "deleteSubjectTitle")
+        case .deletingTheme:
+            String(localized: "deletingThemeAlertTitle")
         }
     }
 
@@ -76,6 +80,8 @@ enum AlertCase {
                 format: NSLocalizedString("deleteSubjectMessage", comment: ""),
                 String(subjectName.prefix(20))
             )
+        case .deletingTheme:
+            String(localized: "deletingThemeAlertMessage")
         }
     }
 
@@ -102,6 +108,8 @@ enum AlertCase {
         case .deletingOtherFocusSession:
             String(localized: "yes")
         case .deletingSubject:
+            String(localized: "yes")
+        case .deletingTheme:
             String(localized: "yes")
         }
     }
@@ -130,6 +138,8 @@ enum AlertCase {
             String(localized: "cancel")
         case .deletingSubject:
             String(localized: "cancel")
+        case .deletingTheme:
+            String(localized: "cancel")
         }
     }
     
@@ -153,6 +163,8 @@ enum AlertCase {
             #selector(SubjectDetailsDelegate.didDelete)
         case .deletingSubject:
             #selector(SubjectCreationDelegate.didDelete)
+        case .deletingTheme:
+            #selector(ThemeListDelegate.didDeleteTheme)
         }
     }
 
@@ -176,6 +188,8 @@ enum AlertCase {
             #selector(SubjectDetailsDelegate.didCancel)
         case .deletingSubject:
             #selector(SubjectCreationDelegate.didCancel)
+        case .deletingTheme:
+            #selector(ThemeListDelegate.didCancel)
         }
     }
     
@@ -199,6 +213,8 @@ enum AlertCase {
             .mid
         case .deletingSubject:
             .bottom
+        case .deletingTheme:
+            .mid
         }
     }
 

@@ -123,11 +123,6 @@ class ThemeListViewController: UIViewController {
             self.themeListView.tableView.reloadData()
         }
     }
-
-    func didTapTrashButton() {
-        themeListView.deleteAlertView.configure(atSuperview: themeListView)
-        themeListView.changeAlertVisibility(isShowing: true)
-    }
 }
 
 // MARK: - UITableViewDataSource and UITableViewDelegate
@@ -239,7 +234,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         let deleteButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
             guard let self else { return }
 
-            self.didTapTrashButton()
+            self.trashButtonTapped()
         }
 
         deleteButton.backgroundColor = .systemBackground

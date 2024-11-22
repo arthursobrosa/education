@@ -161,8 +161,8 @@
 "dayLabel" = "Data";
 "questionLabel" = "Questões";
 "description" = "Notas sobre o teste/ questões";
-"deleteThemeTitle" = "Deletar Prova";
-"deleteThemeBody" = "Você tem certeza que deseja deletar essa prova? Todo o histórico de testes e resultados serão perdidos";
+"deletingThemeAlertTitle" = "Deletar Prova";
+"deletingThemeAlertMessage" = "Você tem certeza que deseja deletar essa prova?";
 "name" = "Nome";
 "invalidThemeName" = "Nome de registro inválido";
 "invalidThemeNameMessage" = "O nome deste registro é inválido.";

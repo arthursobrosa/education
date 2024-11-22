@@ -11,7 +11,7 @@ class ThemeListView: UIView {
     // MARK: - Delegate to connect to VC
     weak var delegate: ThemeListDelegate?
     
-    // MARK: - Properties
+    // MARK: - UI Properties
     
     private let navigationBar: NavigationBarComponent = {
         let navigationBar = NavigationBarComponent()
@@ -58,8 +58,8 @@ class ThemeListView: UIView {
         return view
     }()
 
-    let deleteAlertView: DeleteAlertView = {
-        let view = DeleteAlertView()
+    let deleteAlertView: AlertView = {
+        let view = AlertView()
         view.isHidden = true
         view.layer.zPosition = 2
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -88,6 +88,13 @@ class ThemeListView: UIView {
     }
 
     // MARK: - Methods
+    
+    func setNavigationBar() {
+        let titleText = String(localized: "themeTab")
+        let buttonImage = UIImage(systemName: "plus.circle.fill")
+        navigationBar.configure(titleText: titleText, rightButtonImage: buttonImage)
+        navigationBar.addRightButtonTarget(delegate, action: #selector(ThemeListDelegate.addThemeButtonTapped))
+    }
 
     private func updateTableViewColor(_: UITraitCollection) {
         tableView.layer.borderColor = UIColor.buttonNormal.cgColor
@@ -100,13 +107,30 @@ class ThemeListView: UIView {
             self.deleteAlertView.isHidden = !isShowing
             self.overlayView.alpha = isShowing ? 1 : 0
         }
+        
+        if isShowing {
+            setGestureRecognizer()
+        } else {
+            gestureRecognizers = nil
+        }
+        
+        for subview in subviews where !(subview is AlertView) {
+            subview.isUserInteractionEnabled = !isShowing
+        }
     }
     
-    func setNavigationBar() {
-        let titleText = String(localized: "themeTab")
-        let buttonImage = UIImage(systemName: "plus.circle.fill")
-        navigationBar.configure(titleText: titleText, rightButtonImage: buttonImage)
-        navigationBar.addRightButtonTarget(delegate, action: #selector(ThemeListDelegate.addThemeButtonTapped))
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self)
+        
+        guard !deleteAlertView.frame.contains(tapLocation) else { return }
+        
+        changeAlertVisibility(isShowing: false)
     }
 }
 
