@@ -13,12 +13,15 @@ class TestPageViewController: UIViewController {
     weak var coordinator: (Dismissing & DismissingAll)?
     let viewModel: TestPageViewModel
 
-    // MARK: - Properties
+    // MARK: - UI Properties
 
-    private lazy var testPageView: TestPageView = {
-        let view = TestPageView()
+    lazy var testPageView: TestPageView = {
+        let title = viewModel.getTitle()
+        let showsDeleteButton = viewModel.test != nil
+        let view = TestPageView(title: title, showsDeleteButton: showsDeleteButton)
 
         view.delegate = self
+        view.textView.delegate = self
 
         view.tableView.dataSource = self
         view.tableView.delegate = self
@@ -26,7 +29,7 @@ class TestPageViewController: UIViewController {
         return view
     }()
 
-    // MARK: - Initialization
+    // MARK: - Initializer
 
     init(viewModel: TestPageViewModel) {
         self.viewModel = viewModel
@@ -39,7 +42,7 @@ class TestPageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - View Lifecycle
+    // MARK: - Lifecycle
 
     override func loadView() {
         view = testPageView
@@ -48,38 +51,10 @@ class TestPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setNavigationItems()
-
-        if viewModel.test == nil {
-            testPageView.hideDeleteButton()
-        }
-        testPageView.textView.delegate = self
-        setupTextView()
+        testPageView.setUpTextView(withComment: viewModel.comment)
     }
 
     // MARK: - Methods
-
-    private func setNavigationItems() {
-        navigationItem.title = viewModel.getTitle()
-        navigationController?.navigationBar.tintColor = .systemText
-
-        navigationController?.navigationBar.titleTextAttributes = [.font: UIFont(name: Fonts.darkModeOnSemiBold, size: 14) ?? .systemFont(ofSize: 14, weight: .semibold)]
-
-        let cancelButton = UIButton(configuration: .plain())
-        let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
-        let cancelAttributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: UIColor.systemText50])
-        cancelButton.setAttributedTitle(cancelAttributedString, for: .normal)
-        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
-
-        let cancelItem = UIBarButtonItem(customView: cancelButton)
-
-        navigationItem.leftBarButtonItems = [cancelItem]
-    }
-
-    @objc 
-    private func didTapCancelButton() {
-        coordinator?.dismiss(animated: true)
-    }
 
     func showWrongQuestionsAlert() {
         let alertController = UIAlertController(title: String(localized: "wrongQuestionsTitle"), message: String(localized: "wrongQuestionsMessage"), preferredStyle: .alert)
@@ -126,13 +101,14 @@ class TestPageViewController: UIViewController {
             if text.isEmpty {
                 sender.text = "0"
             }
+                
             guard let intText = Int(text) else { return }
             viewModel.totalQuestions = intText
-            
         case 2:
             if text.isEmpty {
                 sender.text = "0"
             }
+                
             guard let intText = Int(text) else { return }
             viewModel.rightQuestions = intText
         default:
@@ -145,24 +121,13 @@ class TestPageViewController: UIViewController {
         return trimmedString
     }
 
-    func setupTextView() {
-        if viewModel.comment.isEmpty {
-            testPageView.textView.text = String(localized: "description")
-            testPageView.textView.font = UIFont(name: Fonts.darkModeOnItalic, size: 16)
-            testPageView.textView.textColor = .systemText40
-        } else {
-            testPageView.textView.text = viewModel.comment
-            testPageView.textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-            testPageView.textView.textColor = .systemText
-        }
-    }
-
     @objc 
     func datePickerChanged(_ sender: UIDatePicker) {
         viewModel.date = sender.date
     }
 }
 
+// MARK: - Table View Data Source and Delegate
 extension TestPageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? BorderedTableCell else { return }

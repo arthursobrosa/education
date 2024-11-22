@@ -72,26 +72,26 @@ extension ThemeListCoordinator: UINavigationControllerDelegate {
 
 extension ThemeListCoordinator: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        guard let nav = dismissed as? UINavigationController else { return nil }
+        if let nav = dismissed as? UINavigationController {
+            if let themeCreationVC = nav.viewControllers.first as? ThemeCreationViewController {
+                childDidFinish(themeCreationVC.coordinator as? Coordinator)
 
-        if let themeCreationVC = nav.viewControllers.first as? ThemeCreationViewController {
-            childDidFinish(themeCreationVC.coordinator as? Coordinator)
-
-            if let themeListVC = navigationController.viewControllers.first as? ThemeListViewController {
-                themeListVC.viewModel.fetchThemes()
-                themeListVC.reloadTable()
+                if let themeListVC = navigationController.viewControllers.first as? ThemeListViewController {
+                    themeListVC.viewModel.fetchThemes()
+                    themeListVC.reloadTable()
+                }
+            }
+        } else {
+            if let testPageVC = dismissed as? TestPageViewController {
+                childDidFinish(testPageVC.coordinator as? Coordinator)
+                
+                if let themeListVC = navigationController.viewControllers.first as? ThemeListViewController {
+                    themeListVC.viewModel.fetchThemes()
+                    themeListVC.reloadTable()
+                }
             }
         }
         
-        if let testPageVC = nav.viewControllers.first as? TestPageViewController {
-            childDidFinish(testPageVC.coordinator as? Coordinator)
-            
-            if let themeListVC = navigationController.viewControllers.first as? ThemeListViewController {
-                themeListVC.viewModel.fetchThemes()
-                themeListVC.reloadTable()
-            }
-        }
-
         return nil
     }
 }

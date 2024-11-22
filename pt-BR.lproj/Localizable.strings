@@ -16,7 +16,7 @@
 // MARK: - TabBar
 "scheduleTab" = "Estudos";
 "subjectTab" = "Matérias";
-"themeTab" = "Provas";
+"themeTab" = "Resultados";
 
 // MARK: - Schedule
 "schedule" = "Cronograma";
@@ -144,11 +144,10 @@
 "themeAlertTitle" = "Adicionar prova";
 "themeAlertMessage" = "Insira o nome da prova:";
 "themeAlertPlaceholder" = "Nome da prova";
-"newTest" = "Novo Teste";
-"editTest" = "Editar Teste";
+"newResult" = "Novo Registro de Resultado";
+"editResult" = "Editar Registro de Resultado";
 "newTheme" = "Nova prova";
 "editTheme" = "Editar prova";
-"newTest" = "Novo Teste";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior que o número total de questões. Por favor revise os dados inseridos.";
@@ -159,12 +158,15 @@
 "emptyTheme" = "Você não possui resultados de testes ou questões.";
 "dayLabel" = "Data";
 "questionLabel" = "Questões";
-"description" = "Notas sobre o teste/ questões";
+"testNotesPlaceholder" = "Notas sobre o teste / questões";
 "deletingThemeAlertTitle" = "Deletar Prova";
 "deletingThemeAlertMessage" = "Você tem certeza que deseja deletar essa prova?";
 "name" = "Nome";
 "invalidThemeName" = "Nome de registro inválido";
 "invalidThemeNameMessage" = "O nome deste registro é inválido.";
+"themePlaceholder" = "Ex: Simulado Geral ENEM";
+"deletingThemeAlertTitle" = "Apagar Registro";
+"deletingThemeAlertMessage" = "Tem certeza que deseja apagar este registro de resultado?";
 
 // MARK: - Modal
 "startButton" = "Iniciar Atividade";

@@ -147,9 +147,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         chevronImageView.tintColor = .systemText80
 
         cell.accessoryView = chevronImageView
-
         cell.backgroundColor = .systemBackground
-
         cell.roundCorners(corners: .allCorners, radius: 18, borderWidth: 2, borderColor: .buttonNormal)
 
         let cellContent = getCellContent(from: theme)

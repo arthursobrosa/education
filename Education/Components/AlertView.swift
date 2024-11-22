@@ -28,6 +28,8 @@ enum AlertCase {
     case deletingSubject(subjectName: String)
     
     case deletingTheme
+    
+    case deletingTest
 
     var title: String {
         switch self {
@@ -50,6 +52,8 @@ enum AlertCase {
         case .deletingSubject:
             String(localized: "deleteSubjectTitle")
         case .deletingTheme:
+            String(localized: "deletingThemeAlertTitle")
+        case .deletingTest:
             String(localized: "deletingThemeAlertTitle")
         }
     }
@@ -82,6 +86,8 @@ enum AlertCase {
             )
         case .deletingTheme:
             String(localized: "deletingThemeAlertMessage")
+        case .deletingTest:
+            String(localized: "deletingThemeAlertMessage")
         }
     }
 
@@ -110,6 +116,8 @@ enum AlertCase {
         case .deletingSubject:
             String(localized: "yes")
         case .deletingTheme:
+            String(localized: "yes")
+        case .deletingTest:
             String(localized: "yes")
         }
     }
@@ -140,6 +148,8 @@ enum AlertCase {
             String(localized: "cancel")
         case .deletingTheme:
             String(localized: "cancel")
+        case .deletingTest:
+            String(localized: "cancel")
         }
     }
     
@@ -165,6 +175,8 @@ enum AlertCase {
             #selector(SubjectCreationDelegate.didDelete)
         case .deletingTheme:
             #selector(ThemeListDelegate.didDeleteTheme)
+        case .deletingTest:
+            #selector(TestDelegate.didDelete)
         }
     }
 
@@ -190,6 +202,8 @@ enum AlertCase {
             #selector(SubjectCreationDelegate.didCancel)
         case .deletingTheme:
             #selector(ThemeListDelegate.didCancel)
+        case .deletingTest:
+            #selector(TestDelegate.didCancelDeletion)
         }
     }
     
@@ -215,6 +229,8 @@ enum AlertCase {
             .bottom
         case .deletingTheme:
             .mid
+        case .deletingTest:
+                .bottom
         }
     }
 

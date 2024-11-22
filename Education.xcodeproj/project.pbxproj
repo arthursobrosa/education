@@ -704,8 +704,8 @@
 				30F216A22C2C884400B7114F /* ThemeList */,
 				685265492C8B6FED009D9678 /* ThemeCreation */,
 				30F216B72C2DEF2200B7114F /* ThemePage */,
-				6833B2172C34567E009EA63D /* TestPage */,
 				3018A1BB2CB5A40B00AB3978 /* TestDetails */,
+				6833B2172C34567E009EA63D /* TestPage */,
 			);
 			path = Themes;
 			sourceTree = "<group>";

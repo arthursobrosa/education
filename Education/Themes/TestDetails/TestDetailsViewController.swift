@@ -10,7 +10,8 @@ class TestDetailsViewController: UIViewController {
 
     private lazy var testDetailsView: TestDetailsView = {
         let view = TestDetailsView()
-
+        view.config = viewModel.getTestDetailsConfig()
+        view.delegate = self
         return view
     }()
 
