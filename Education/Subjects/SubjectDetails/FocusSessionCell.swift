@@ -23,13 +23,21 @@ class FocusSessionCell: UITableViewCell {
     
     var colorName: String? {
         didSet {
-            guard let colorName else { return }
-            
-            let borderColor = UIColor(named: colorName)?.withAlphaComponent(0.6)
-            containerView.layer.borderColor = borderColor?.cgColor
-            dateLabel.textColor = UIColor(named: colorName)
-            commentImageView.tintColor = borderColor
-            totalTimeLabel.textColor = .systemText80
+            if let colorName {
+                let borderColor = UIColor(named: colorName)?.withAlphaComponent(0.6)
+                containerView.layer.borderColor = borderColor?.cgColor
+                dateLabel.textColor = UIColor(named: colorName)
+                commentImageView.tintColor = borderColor
+            } else {
+                containerView.layer.borderColor = UIColor.buttonNormal.cgColor
+                
+                registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+                    self.containerView.layer.borderColor = UIColor.buttonNormal.cgColor
+                }
+                
+                dateLabel.textColor = .systemText40
+                commentImageView.tintColor = .buttonNormal
+            }
         }
     }
     
@@ -62,9 +70,10 @@ class FocusSessionCell: UITableViewCell {
 
     private let totalTimeLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .right
+        label.textColor = .systemText80
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 15)
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     

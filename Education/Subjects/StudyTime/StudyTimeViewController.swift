@@ -213,7 +213,7 @@ extension StudyTimeViewController: UITableViewDataSource, UITableViewDelegate {
             
             cell.subject = subject
             cell.backgroundColor = .clear
-            let textColor = subject != nil ? UIColor(named: subject?.unwrappedColor ?? "button-normal") : UIColor.buttonNormal
+            let textColor = subject != nil ? UIColor(named: subject?.unwrappedColor ?? "systemText40") : UIColor.systemText40
             cell.subjectName.textColor = textColor
             cell.totalHours.textColor = .systemText80
             cell.totalTime = totalTime

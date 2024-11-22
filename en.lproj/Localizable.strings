@@ -137,6 +137,8 @@
 "editSubject" = "Edit Subject";
 "subjectName" = "Subject's Name";
 "emptySubjectDetails" = "You do not have records of studies carried out for this subject.";
+"deletingFocusSessionAlertTitle" = "Delete Record";
+"deletingFocusSessionAlertMessage" = "Are you sure you want to delete the activity record?";
 
 // MARK: - Themes
 "themeAlertTitle" = "Add Exam";
@@ -169,12 +171,12 @@
 "startButton" = "Start Activity";
 "startNowButton" = "Start now";
 
-//MARK: - ACTIVITY
+// MARK: - ACTIVITY
 "newActivity" = "New Activity";
 "editActivity" = "Edit Activity";
 "studyingNow" = "Studying now";
 
-//MARK: - TIPS
+// MARK: - TIPS
 "newActivityTip" = "Create a new activity here";
 "explainActivityTip" = "You can create a recurring activity and add it to the schedule or create an immediate activity where you start a study timer right away.";
 "newSubjectTip" = "Create a subject here";
@@ -182,10 +184,9 @@
 "newTestTip" = "Create a new test group here";
 "explainTestTip" = "In each test group, you can add results and track your progress over time.";
 
-//MARK: - OTHER SUBJECT
-"deleteOther" = "Erase time";
-"deleteOtherMessage" = "Do you really want to erase your study time?";
-"deleteOtherBodyText" = "This item gathers all the study times you have recorded that are not tied to any particular subject. Although it cannot be deleted, you have the option to erase the study times linked to it.";
+// MARK: - OTHER SUBJECT
+"deletingOtherFocusSessionAlertTitle" = "Delete Records";
+"deletingOtherFocusSessionAlertMessage" = "Are you sure you want to delete your activity records not linked to any subject?";
 
 // MARK: - Block
 "startBlockAlertTitle" = "Starting app block";

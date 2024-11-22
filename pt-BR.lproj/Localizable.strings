@@ -137,6 +137,8 @@
 "editSubject" = "Editar Matéria";
 "subjectName" = "Nome da Matéria";
 "emptySubjectDetails" = "Você não possui registros de estudos realizados para esta matéria.";
+"deletingFocusSessionAlertTitle" = "Apagar Registro";
+"deletingFocusSessionAlertMessage" = "Tem certeza que deseja apagar o registro de atividade?";
 
 // MARK: - Themes
 "themeAlertTitle" = "Adicionar prova";
@@ -169,12 +171,12 @@
 "startButton" = "Iniciar Atividade";
 "startNowButton" = "Iniciar agora";
 
-//MARK: - ACTIVITY
+// MARK: - ACTIVITY
 "newActivity" = "Nova atividade";
 "editActivity" = "Editar atividade";
 "studyingNow" = "Estudando agora";
 
-//MARK: - TIPS
+// MARK: - TIPS
 "newActivityTip" = "Crie uma nova atividade aqui";
 "explainActivityTip" = "Você pode criar uma atividade recorrente e adicioná-la ao cronograma ou criar uma atividade imediata, onde você já inicia um temporizador de estudo.";
 "newSubjectTip" = "Crie uma matéria aqui";
@@ -182,10 +184,9 @@
 "newTestTip" = "Crie um novo grupo de testes aqui";
 "explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
 
-//MARK: - OTHER SUBJECT
-"deleteOther" = "Apagar tempo";
-"deleteOtherMessage" = "Você realmente deseja apagar o tempo de estudo?";
-"deleteOtherBodyText" = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele.";
+// MARK: - OTHER SUBJECT
+"deletingOtherFocusSessionAlertTitle" = "Apagar Registros";
+"deletingOtherFocusSessionAlertMessage" = "Tem certeza que deseja apagar os seus registros de atividades não vinculadas a alguma matéria?";
 
 // MARK: - Block
 "startBlockAlertTitle" = "Iniciando o bloqueio de apps";

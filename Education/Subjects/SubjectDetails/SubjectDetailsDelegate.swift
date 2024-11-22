@@ -11,6 +11,8 @@ import Foundation
 protocol SubjectDetailsDelegate: AnyObject {
     func editButtonTapped()
     func deleteButtonTapped()
+    func didCancel()
+    func didDelete()
     func dismiss()
 }
 
@@ -20,7 +22,23 @@ extension SubjectDetailsViewController: SubjectDetailsDelegate {
     }
     
     func deleteButtonTapped() {
-        showDeleteOtherAlert()
+        let alertCase: AlertCase = .deletingOtherFocusSession
+        let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: subjectDetailsView)
+        subjectDetailsView.statusAlertView.config = alertConfig
+        subjectDetailsView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        subjectDetailsView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
+        subjectDetailsView.changeAlertVisibility(isShowing: true)
+    }
+    
+    func didCancel() {
+        subjectDetailsView.changeAlertVisibility(isShowing: false)
+    }
+    
+    func didDelete() {
+        viewModel.deleteOtherSessions()
+        viewModel.fetchFocusSessions()
+        reloadTable()
+        coordinator?.dismiss(animated: true)
     }
     
     func dismiss() {

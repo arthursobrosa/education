@@ -74,8 +74,12 @@ class SubjectDetailsViewController: UIViewController {
     
     private func addContentSubview(childSubview: UIView) {
         let parentSubview = subjectDetailsView.contentView
+        
+        parentSubview.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
         parentSubview.addSubview(childSubview)
-
         childSubview.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -91,6 +95,7 @@ class SubjectDetailsViewController: UIViewController {
             guard let self else { return }
             
             self.subjectDetailsView.tableView.reloadData()
+            self.setContentView()
         }
     }
     
@@ -102,8 +107,8 @@ class SubjectDetailsViewController: UIViewController {
             
             self.viewModel.deleteOtherSessions()
             self.viewModel.fetchFocusSessions()
-            self.subjectDetailsView.tableView.reloadData()
-            self.setContentView()
+            self.reloadTable()
+            self.coordinator?.dismiss(animated: true)
         }
         
         let cancelAction = UIAlertAction(title: String(localized: "cancel"), style: .cancel, handler: nil)
@@ -146,12 +151,7 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
         let monthKey = months[indexPath.section]
         if let session = viewModel.sessionsByMonth[monthKey]?[indexPath.row] {
             cell.configure(with: session)
-            cell.colorName = viewModel.subject?.unwrappedColor ?? "button-normal"
-            
-            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-                cell.colorName = self.viewModel.subject?.unwrappedColor ?? "button-normal"
-            }
-            
+            cell.colorName = viewModel.subject?.unwrappedColor
             cell.hasNotes = session.hasNotes()
         }
         

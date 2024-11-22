@@ -85,7 +85,7 @@ class ScheduleViewController: UIViewController {
         scheduleView.setNavigationBar()
     }
 
-    func setTapGesture() {
+    func setGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         view.addGestureRecognizer(tapGesture)
     }

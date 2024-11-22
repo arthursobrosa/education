@@ -22,6 +22,8 @@ enum AlertCase {
     case deletingSchedule(subject: Subject)
     
     case discardingFocusSession
+    case deletingFocusSession
+    case deletingOtherFocusSession
     
     case deletingSubject(subjectName: String)
 
@@ -39,6 +41,10 @@ enum AlertCase {
             String(localized: "deleteScheduleAlertTitle")
         case .discardingFocusSession:
             String(localized: "discardingFocusSessionAlertTitle")
+        case .deletingFocusSession:
+            String(localized: "deletingFocusSessionAlertTitle")
+        case .deletingOtherFocusSession:
+            String(localized: "deletingOtherFocusSessionAlertTitle")
         case .deletingSubject:
             String(localized: "deleteSubjectTitle")
         }
@@ -61,6 +67,10 @@ enum AlertCase {
             )
         case .discardingFocusSession:
             String(localized: "discardingFocusSessionAlertBody")
+        case .deletingFocusSession:
+            String(localized: "deletingFocusSessionAlertMessage")
+        case .deletingOtherFocusSession:
+            String(localized: "deletingOtherFocusSessionAlertMessage")
         case .deletingSubject(let subjectName):
             String(
                 format: NSLocalizedString("deleteSubjectMessage", comment: ""),
@@ -71,11 +81,13 @@ enum AlertCase {
 
     var primaryButtonTitle: String {
         switch self {
-        case .restartingCase, .finishingEarlyCase:
+        case .restartingCase:
+            String(localized: "yes")
+        case .finishingEarlyCase:
             String(localized: "yes")
         case .finishingTimerCase:
             String(localized: "focusFinish")
-        case let .finishingPomodoroCase(_, isAtWorkTime):
+        case .finishingPomodoroCase(_, let isAtWorkTime):
             if isAtWorkTime {
                 String(localized: "startInterval")
             } else {
@@ -85,6 +97,10 @@ enum AlertCase {
             String(localized: "yes")
         case .discardingFocusSession:
             String(localized: "yes")
+        case .deletingFocusSession:
+            String(localized: "yes")
+        case .deletingOtherFocusSession:
+            String(localized: "yes")
         case .deletingSubject:
             String(localized: "yes")
         }
@@ -92,7 +108,9 @@ enum AlertCase {
     
     var secondaryButtonTitle: String {
         switch self {
-        case .restartingCase, .finishingEarlyCase:
+        case .restartingCase:
+            String(localized: "cancel")
+        case .finishingEarlyCase:
             String(localized: "cancel")
         case .finishingTimerCase:
             String(localized: "extendTime")
@@ -106,6 +124,10 @@ enum AlertCase {
             String(localized: "cancel")
         case .discardingFocusSession:
             String(localized: "cancel")
+        case .deletingFocusSession:
+            String(localized: "cancel")
+        case .deletingOtherFocusSession:
+            String(localized: "cancel")
         case .deletingSubject:
             String(localized: "cancel")
         }
@@ -115,7 +137,9 @@ enum AlertCase {
         switch self {
         case .restartingCase:
             #selector(FocusSessionDelegate.didRestart)
-        case .finishingEarlyCase, .finishingTimerCase:
+        case .finishingEarlyCase:
+            #selector(FocusSessionDelegate.didFinish)
+        case .finishingTimerCase:
             #selector(FocusSessionDelegate.didFinish)
         case .finishingPomodoroCase:
             #selector(FocusSessionDelegate.didStartNextPomodoro)
@@ -123,6 +147,10 @@ enum AlertCase {
             #selector(ScheduleDelegate.didDeleteSchedule)
         case .discardingFocusSession:
             #selector(FocusEndDelegate.didDiscard)
+        case .deletingFocusSession:
+            #selector(FocusSubjectDetailsDelegate.didDelete)
+        case .deletingOtherFocusSession:
+            #selector(SubjectDetailsDelegate.didDelete)
         case .deletingSubject:
             #selector(SubjectCreationDelegate.didDelete)
         }
@@ -130,27 +158,47 @@ enum AlertCase {
 
     var secondaryButtonAction: Selector {
         switch self {
-        case .restartingCase, .finishingEarlyCase:
+        case .restartingCase:
             #selector(FocusSessionDelegate.didCancel)
-        case .finishingTimerCase, .finishingPomodoroCase:
+        case .finishingEarlyCase:
+            #selector(FocusSessionDelegate.didCancel)
+        case .finishingTimerCase:
+            #selector(FocusSessionDelegate.didTapExtendButton)
+        case .finishingPomodoroCase:
             #selector(FocusSessionDelegate.didTapExtendButton)
         case .deletingSchedule:
             #selector(ScheduleDelegate.didCancelDeletion)
         case .discardingFocusSession:
             #selector(FocusEndDelegate.didCancel)
+        case .deletingFocusSession:
+            #selector(FocusSubjectDetailsDelegate.didCancelDeletion)
+        case .deletingOtherFocusSession:
+            #selector(SubjectDetailsDelegate.didCancel)
         case .deletingSubject:
             #selector(SubjectCreationDelegate.didCancel)
         }
     }
-
+    
     var position: AlertPosition {
         switch self {
-        case .restartingCase, .finishingEarlyCase, .discardingFocusSession, .deletingSubject:
+        case .restartingCase:
             .bottom
-        case .finishingTimerCase, .finishingPomodoroCase:
+        case .finishingEarlyCase:
+            .bottom
+        case .finishingTimerCase:
+            .mid
+        case .finishingPomodoroCase:
             .mid
         case .deletingSchedule:
             .mid
+        case .discardingFocusSession:
+            .bottom
+        case .deletingFocusSession:
+            .bottom
+        case .deletingOtherFocusSession:
+            .mid
+        case .deletingSubject:
+            .bottom
         }
     }
 

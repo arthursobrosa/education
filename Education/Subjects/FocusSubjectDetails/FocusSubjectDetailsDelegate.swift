@@ -8,25 +8,17 @@ import Foundation
 
 @objc
 protocol FocusSubjectDetailsDelegate: AnyObject {
-    func didTapSaveButton()
-    func didTapDeleteButton()
     func didTapChevronButton()
     func didTapEditButton()
     func didTapCancelButton()
+    func didTapSaveButton()
+    func didTapDeleteButton()
+    func didCancelDeletion()
+    func didDelete()
 }
 
 extension FocusSubjectDetailsViewController: FocusSubjectDetailsDelegate {
     func didTapChevronButton() {
-        coordinator?.dismiss(animated: true)
-    }
-    
-    func didTapSaveButton() {
-        coordinator?.dismiss(animated: true)
-        viewModel.updateFocusSession()
-    }
-
-    func didTapDeleteButton() {
-        viewModel.removeFocusSession()
         coordinator?.dismiss(animated: true)
     }
     
@@ -44,5 +36,28 @@ extension FocusSubjectDetailsViewController: FocusSubjectDetailsDelegate {
         let originalNotes = viewModel.focusSession.unwrappedNotes
         focusSubjectDetails.updateNotesTextViewText(originalNotes)
         focusSubjectDetails.changeNotesPlaceholderVisibility(isShowing: originalNotes.isEmpty)
+    }
+    
+    func didTapSaveButton() {
+        coordinator?.dismiss(animated: true)
+        viewModel.updateFocusSession()
+    }
+
+    func didTapDeleteButton() {
+        let alertCase: AlertCase = .deletingFocusSession
+        let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: focusSubjectDetails)
+        focusSubjectDetails.statusAlertView.config = alertConfig
+        focusSubjectDetails.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        focusSubjectDetails.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
+        focusSubjectDetails.changeAlertVisibility(isShowing: true)
+    }
+    
+    func didCancelDeletion() {
+        focusSubjectDetails.changeAlertVisibility(isShowing: false)
+    }
+    
+    func didDelete() {
+        viewModel.removeFocusSession()
+        coordinator?.dismiss(animated: true)
     }
 }

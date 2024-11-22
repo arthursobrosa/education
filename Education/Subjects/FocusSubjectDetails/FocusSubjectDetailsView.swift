@@ -143,6 +143,24 @@ class FocusSubjectDetailsView: UIView {
         return button
     }()
     
+    let statusAlertView: AlertView = {
+        let view = AlertView()
+        view.isHidden = true
+        view.layer.zPosition = 2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let overlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .label.withAlphaComponent(0.1)
+        view.alpha = 0
+        view.layer.zPosition = 1
+        view.isUserInteractionEnabled = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // MARK: - Initializer
     
     init(title: String, notes: String) {
@@ -243,6 +261,39 @@ class FocusSubjectDetailsView: UIView {
         notesPlaceholderLabel.font = .init(name: Fonts.darkModeOnItalic, size: 16)
         notesPlaceholderLabel.textColor = textColor
     }
+    
+    func changeAlertVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+
+            self.statusAlertView.isHidden = !isShowing
+            self.overlayView.alpha = isShowing ? 1 : 0
+        }
+        
+        if isShowing {
+            setGestureRecognizer()
+        } else {
+            gestureRecognizers = nil
+        }
+        
+        for subview in subviews where !(subview is AlertView) {
+            subview.isUserInteractionEnabled = !isShowing
+        }
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self)
+        
+        guard !statusAlertView.frame.contains(tapLocation) else { return }
+        
+        changeAlertVisibility(isShowing: false)
+    }
 }
 
 // MARK: - UI Setup
@@ -306,6 +357,15 @@ extension FocusSubjectDetailsView: ViewCodeProtocol {
         textViewLeadingConstraint?.isActive = true
         
         layoutNotesPlaceholder()
+        
+        addSubview(overlayView)
+
+        NSLayoutConstraint.activate([
+            overlayView.topAnchor.constraint(equalTo: topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        ])
     }
     
     private func layoutNotesPlaceholder() {
