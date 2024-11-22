@@ -143,7 +143,7 @@ class FocusSubjectDetailsView: UIView {
         return button
     }()
     
-    let statusAlertView: AlertView = {
+    let deleteAlertView: AlertView = {
         let view = AlertView()
         view.isHidden = true
         view.layer.zPosition = 2
@@ -266,7 +266,7 @@ class FocusSubjectDetailsView: UIView {
         UIView.animate(withDuration: 0.5) { [weak self] in
             guard let self else { return }
 
-            self.statusAlertView.isHidden = !isShowing
+            self.deleteAlertView.isHidden = !isShowing
             self.overlayView.alpha = isShowing ? 1 : 0
         }
         
@@ -290,7 +290,7 @@ class FocusSubjectDetailsView: UIView {
     private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: self)
         
-        guard !statusAlertView.frame.contains(tapLocation) else { return }
+        guard !deleteAlertView.frame.contains(tapLocation) else { return }
         
         changeAlertVisibility(isShowing: false)
     }

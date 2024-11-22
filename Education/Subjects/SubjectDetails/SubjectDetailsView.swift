@@ -43,7 +43,7 @@ class SubjectDetailsView: UIView {
         return emptyView
     }()
     
-    let statusAlertView: AlertView = {
+    let deleteOtherAlertView: AlertView = {
         let view = AlertView()
         view.isHidden = true
         view.layer.zPosition = 2
@@ -115,7 +115,7 @@ class SubjectDetailsView: UIView {
         UIView.animate(withDuration: 0.5) { [weak self] in
             guard let self else { return }
 
-            self.statusAlertView.isHidden = !isShowing
+            self.deleteOtherAlertView.isHidden = !isShowing
             self.overlayView.alpha = isShowing ? 1 : 0
         }
         
@@ -139,7 +139,7 @@ class SubjectDetailsView: UIView {
     private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: self)
         
-        guard !statusAlertView.frame.contains(tapLocation) else { return }
+        guard !deleteOtherAlertView.frame.contains(tapLocation) else { return }
         
         changeAlertVisibility(isShowing: false)
     }

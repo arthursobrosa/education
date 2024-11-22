@@ -46,9 +46,9 @@ extension FocusSubjectDetailsViewController: FocusSubjectDetailsDelegate {
     func didTapDeleteButton() {
         let alertCase: AlertCase = .deletingFocusSession
         let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: focusSubjectDetails)
-        focusSubjectDetails.statusAlertView.config = alertConfig
-        focusSubjectDetails.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
-        focusSubjectDetails.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
+        focusSubjectDetails.deleteAlertView.config = alertConfig
+        focusSubjectDetails.deleteAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        focusSubjectDetails.deleteAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
         focusSubjectDetails.changeAlertVisibility(isShowing: true)
     }
     

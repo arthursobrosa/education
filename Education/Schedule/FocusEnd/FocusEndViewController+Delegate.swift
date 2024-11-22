@@ -27,9 +27,9 @@ extension FocusEndViewController: FocusEndDelegate {
     func didTapDiscardButton() {
         let alertCase: AlertCase = .discardingFocusSession
         let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: focusEndView)
-        focusEndView.statusAlertView.config = alertConfig
-        focusEndView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
-        focusEndView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
+        focusEndView.discardAlertView.config = alertConfig
+        focusEndView.discardAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        focusEndView.discardAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
         focusEndView.changeAlertVisibility(isShowing: true)
     }
     
