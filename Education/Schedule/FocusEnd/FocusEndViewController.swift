@@ -15,7 +15,7 @@ class FocusEndViewController: UIViewController {
 
     // MARK: - Properties
 
-    private lazy var focusEndView: FocusEndView = {
+    lazy var focusEndView: FocusEndView = {
         let view = FocusEndView()
         view.delegate = self
         view.activityTableView.dataSource = self

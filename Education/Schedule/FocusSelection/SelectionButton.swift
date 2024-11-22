@@ -13,7 +13,7 @@ class SelectionButton: UIButton {
         super.init(frame: .zero)
 
         layer.borderWidth = 1.2
-        layer.borderColor = UIColor.systemGray4.cgColor
+        layer.borderColor = UIColor.buttonNormal.cgColor
         setTitleColor(.label, for: .normal)
 
         let attributedText = attributedText(

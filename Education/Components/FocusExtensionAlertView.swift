@@ -81,7 +81,7 @@ class FocusExtensionAlertView: UIView {
         super.init(frame: frame)
 
         backgroundColor = .systemBackground
-        layer.cornerRadius = 12
+        layer.cornerRadius = 24
         translatesAutoresizingMaskIntoConstraints = false
         configurePicker()
     }

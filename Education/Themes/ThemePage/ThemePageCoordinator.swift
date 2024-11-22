@@ -55,9 +55,7 @@ class ThemePageCoordinator: NSObject, Coordinator, ShowingTestDetails, Dismissin
 
 extension ThemePageCoordinator: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
-        guard let nav = dismissed as? UINavigationController else { return nil }
-
-        if let testPageVC = nav.viewControllers.first as? TestPageViewController {
+        if let testPageVC = dismissed as? TestPageViewController {
             childDidFinish(testPageVC.coordinator as? Coordinator)
 
             if let themePageVC = navigationController.viewControllers.last as? ThemePageViewController {

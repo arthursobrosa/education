@@ -8,9 +8,13 @@
 import Foundation
 
 class TestPageViewModel {
+    // MARK: - Test and Theme Managers
+    
     private let testManager: TestManager
     private let themeManager: ThemeManager
 
+    // MARK: - Properties
+    
     var theme: Theme?
     let test: Test?
 
@@ -18,8 +22,10 @@ class TestPageViewModel {
     var totalQuestions = Int()
     var rightQuestions = Int()
     var comment = String()
-    var themeName = ""
+    lazy var themeName: String? = theme?.unwrappedName
 
+    // MARK: - Initializer
+    
     init(testManager: TestManager = TestManager(), themeManager: ThemeManager = ThemeManager(), theme: Theme?, test: Test?) {
         self.testManager = testManager
         self.themeManager = themeManager
@@ -34,7 +40,17 @@ class TestPageViewModel {
         }
     }
 
+    // MARK: - Methods
+    
+    func isThemeNameEmpty() -> Bool {
+        guard let themeName else { return true }
+        
+        return themeName.isEmpty
+    }
+    
     func saveTest() {
+        guard let themeName else { return }
+        
         if theme == nil {
             createTheme(name: themeName)
             addNewTest()
@@ -44,6 +60,7 @@ class TestPageViewModel {
 
                 return
             }
+            
             addNewTest()
         }
     }
@@ -58,7 +75,7 @@ class TestPageViewModel {
     }
 
     private func addNewTest() {
-        guard let newTheme = theme else {return}
+        guard let newTheme = theme else { return }
         
         testManager.createTest(
             themeID: newTheme.unwrappedID,
@@ -81,10 +98,10 @@ class TestPageViewModel {
     }
 
     func getTitle() -> String {
-        if let _ = test {
-            return String(localized: "editTest")
+        if test != nil {
+            String(localized: "editResult")
+        } else {
+            String(localized: "newResult")
         }
-
-        return String(localized: "newTest")
     }
 }

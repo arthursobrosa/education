@@ -26,24 +26,23 @@ class TestPageCoordinator: Coordinator, Dismissing, DismissingAll {
         let viewModel = TestPageViewModel(theme: theme, test: test)
         let viewController = TestPageViewController(viewModel: viewModel)
         viewController.coordinator = self
-
-        let newNavigationController = UINavigationController(rootViewController: viewController)
+        
+        if let themeListCoordinator = parentCoordinator as? ThemeListCoordinator {
+            viewController.transitioningDelegate = themeListCoordinator
+        }
 
         if let themePageCoordinator = parentCoordinator as? ThemePageCoordinator {
-            newNavigationController.transitioningDelegate = themePageCoordinator
+            viewController.transitioningDelegate = themePageCoordinator
         }
 
         if let testDetailsCoordinator = parentCoordinator as? TestDetailsCoordinator {
-            newNavigationController.transitioningDelegate = testDetailsCoordinator
-        }
-        
-        if let themeListCoordinator = parentCoordinator as? ThemeListCoordinator {
-            newNavigationController.transitioningDelegate = themeListCoordinator
+            viewController.transitioningDelegate = testDetailsCoordinator
         }
 
-        newNavigationController.modalPresentationStyle = .pageSheet
+        viewController.modalPresentationStyle = .pageSheet
+        navigationController.setNavigationBarHidden(true, animated: false)
 
-        navigationController.present(newNavigationController, animated: true)
+        navigationController.present(viewController, animated: true)
     }
 
     func dismiss(animated: Bool) {

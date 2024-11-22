@@ -9,35 +9,45 @@ import Foundation
 import UIKit
 
 class FocusSubjectDetailsView: UIView {
+    // MARK: - Delegates to connect with VC
     
     weak var delegate: FocusSubjectDetailsDelegate?
+    weak var textViewDelegate: (any UITextViewDelegate)? {
+        didSet {
+            notesTextView.delegate = textViewDelegate
+        }
+    }
     
     // MARK: - Properties
     
+    private let title: String
+    private let notes: String
+    
+    // MARK: - UI Properties
+    
     private lazy var chevronButton: UIButton = {
-        let chevronButton = UIButton()
-        chevronButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        chevronButton.tintColor = .systemText50
-        chevronButton.translatesAutoresizingMaskIntoConstraints = false
-        chevronButton.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapChevronButton), for: .touchUpInside)
-        return chevronButton
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.tintColor = .systemText40
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapChevronButton), for: .touchUpInside)
+        return button
     }()
     
     private lazy var cancelButton: UIButton = {
-        let cancelButton = UIButton()
-        cancelButton.setTitle(String(localized: "cancel"), for: .normal)
-        cancelButton.titleLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
-        cancelButton.setTitleColor(UIColor.systemText50, for: .normal)
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.isHidden = true
-        cancelButton.alpha = 0
-        cancelButton.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapCancelButton), for: .touchUpInside)
-        
-        return cancelButton
+        let button = UIButton()
+        button.setTitle(String(localized: "cancel"), for: .normal)
+        button.titleLabel?.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
+        button.setTitleColor(UIColor.systemText50, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0
+        button.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapCancelButton), for: .touchUpInside)
+        return button
     }()
     
-    let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.text = title
         label.font = UIFont(name: Fonts.coconRegular, size: 26)
         label.textColor = .systemText
         label.textAlignment = .center
@@ -55,7 +65,7 @@ class FocusSubjectDetailsView: UIView {
         return tableView
     }()
     
-    let notesTitle: UILabel = {
+    let notesTitleLabel: UILabel = {
         let label = UILabel()
         label.text = String(localized: "notes")
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
@@ -64,47 +74,58 @@ class FocusSubjectDetailsView: UIView {
         return label
     }()
     
-    private lazy var editCommentImage: UIButton = {
-        let editButton = UIButton()
-        editButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-        editButton.tintColor = .systemText50
-        editButton.translatesAutoresizingMaskIntoConstraints = false
-        editButton.isHidden = false
-        editButton.alpha = 1
-        editButton.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapEditButton), for: .touchUpInside)
-        return editButton
-    }()
-    
-    let notesView: UITextView = {
+    private lazy var notesTextView: UITextView = {
         let textView = UITextView()
-        textView.layer.borderWidth = 0.7
-        textView.layer.borderColor = UIColor.buttonNormal.cgColor
-        textView.layer.cornerRadius = 18
-        textView.textContainerInset = UIEdgeInsets(top: 12, left: 17, bottom: 12, right: 17)
-        textView.isScrollEnabled = true
-        textView.backgroundColor = .systemBackground
-        textView.isEditable = false
+        textView.text = notes
         textView.textColor = .systemText
-        textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        
+        textView.layer.borderColor = UIColor.buttonNormal.cgColor
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
+            textView.layer.borderColor = UIColor.buttonNormal.cgColor
+        }
+        
+        textView.font = .init(name: Fonts.darkModeOnRegular, size: 16)
+        textView.backgroundColor = .clear
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
+    }()
+    
+    private var textViewTopConstraint: NSLayoutConstraint?
+    private var textViewLeadingConstraint: NSLayoutConstraint?
+    
+    private lazy var notesPlaceholderLabel: UILabel = {
+        let label = UILabel()
+        label.isHidden = !notes.isEmpty
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var editCommentButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+        button.tintColor = .systemText50
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = false
+        button.alpha = 1
+        button.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapEditButton), for: .touchUpInside)
+        return button
     }()
     
     private lazy var saveButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 28)
         button.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapSaveButton), for: .touchUpInside)
-        button.isHidden = true
         button.alpha = 0
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private lazy var discardButton: ButtonComponent = {
+    private lazy var deleteButton: ButtonComponent = {
         let color: UIColor = UIColor(named: "FocusSettingsColor") ?? UIColor.red
         let attachmentImage = UIImage(systemName: "trash")?.applyingSymbolConfiguration(.init(pointSize: 17))?.withTintColor(color)
         let attachment = NSTextAttachment(image: attachmentImage ?? UIImage())
         let attachmentString = NSAttributedString(attachment: attachment)
-        let title = String(localized: "discard") + String(repeating: " ", count: 4)
+        let title = String(localized: "erase") + String(repeating: " ", count: 4)
         let titleFont: UIFont = UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium)
         let attributedString = NSAttributedString(string: title, attributes: [.font: titleFont, .foregroundColor: color])
         let mutableAttrString = NSMutableAttributedString()
@@ -117,18 +138,41 @@ class FocusSubjectDetailsView: UIView {
         button.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         button.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
         button.layer.borderWidth = 1
-        button.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapDiscardButton), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(FocusSubjectDetailsDelegate.didTapDeleteButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
+    let deleteAlertView: AlertView = {
+        let view = AlertView()
+        view.isHidden = true
+        view.layer.zPosition = 2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let overlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .label.withAlphaComponent(0.1)
+        view.alpha = 0
+        view.layer.zPosition = 1
+        view.isUserInteractionEnabled = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // MARK: - Initializer
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
+    
+    init(title: String, notes: String) {
+        self.title = title
+        self.notes = notes
+        
+        super.init(frame: .zero)
+        
         backgroundColor = .systemBackground
+        updateNotesTextViewUI(isEditable: false)
         setupUI()
+        setNotesPlaceholder()
     }
 
     @available(*, unavailable)
@@ -136,66 +180,123 @@ class FocusSubjectDetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Methods hide and show
+    // MARK: - Methods
     
-    @objc 
-    private func editButtonTapped() {
-        delegate?.didTapEditButton()
+    func changeButtonsVisibility(isEditing: Bool) {
+        changeCancelButtonVisibility(isShowing: isEditing)
+        changeEditButtonVisibility(isShowing: !isEditing)
     }
     
-    @objc 
-    private func cancelButtonTapped() {
-        delegate?.didTapCancelButton()
-    }
-    
-    func showCancelButton() {
-        cancelButton.isHidden = false
-        cancelButton.alpha = 0
-        UIView.animate(withDuration: 0.3) {
-            self.cancelButton.alpha = 1
+    private func changeCancelButtonVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            
+            self.cancelButton.alpha = isShowing ? 1 : 0
         }
     }
     
-    func hideCancelButton() {
-        UIView.animate(withDuration: 0.3) {
-            self.cancelButton.alpha = 0
-        } completion: { _ in
-            self.cancelButton.isHidden = true
+    private func changeEditButtonVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            
+            self.editCommentButton.alpha = isShowing ? 1 : 0
         }
     }
     
-    func showEditButton() {
-        editCommentImage.isHidden = false
-        editCommentImage.alpha = 0
-        UIView.animate(withDuration: 0.3) {
-            self.editCommentImage.alpha = 1
+    func changeSaveButtonVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            
+            self.saveButton.alpha = isShowing ? 1 : 0
         }
     }
     
-    func hideEditButton() {
-        UIView.animate(withDuration: 0.3) {
-            self.editCommentImage.alpha = 0
-        } completion: { _ in
-            self.editCommentImage.isHidden = true
+    func changeNotesPlaceholderVisibility(isShowing: Bool) {
+        notesPlaceholderLabel.isHidden = !isShowing
+    }
+    
+    func changeNotesTextViewState(isEditable: Bool) {
+        notesTextView.isEditable = isEditable
+        layoutNotesPlaceholder()
+        updateNotesTextViewUI(isEditable: isEditable)
+        setNotesPlaceholder()
+        
+        if let notes = notesTextView.text {
+            notesPlaceholderLabel.isHidden = !notes.isEmpty
         }
     }
     
-    func showSaveButton() {
-        saveButton.isHidden = false
-        saveButton.alpha = 0
-        UIView.animate(withDuration: 0.3) {
-            self.saveButton.alpha = 1
+    private func updateNotesTextViewUI(isEditable: Bool) {
+        if isEditable {
+            notesTextView.layer.cornerRadius = 18
+            notesTextView.layer.borderWidth = 0.7
+            notesTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+            notesTextView.isEditable = true
+        } else {
+            notesTextView.layer.cornerRadius = 0
+            notesTextView.layer.borderWidth = 0
+            notesTextView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            notesTextView.isEditable = false
         }
     }
     
-    func hideSabeButton() {
-        UIView.animate(withDuration: 0.3) {
-            self.saveButton.alpha = 0
-        } completion: { _ in
-            self.saveButton.isHidden = true
+    func updateNotesTextViewText(_ text: String) {
+        notesTextView.text = text
+    }
+    
+    func setNotesPlaceholder() {
+        let isEditable = notesTextView.isEditable
+        var text: String
+        var textColor: UIColor
+        
+        if isEditable {
+            text = String(localized: "notesPlaceholder")
+            textColor = .buttonNormal
+        } else {
+            text = String(localized: "emptyNotes")
+            textColor = .systemText
         }
+        
+        notesPlaceholderLabel.text = text
+        notesPlaceholderLabel.font = .init(name: Fonts.darkModeOnItalic, size: 16)
+        notesPlaceholderLabel.textColor = textColor
+    }
+    
+    func changeAlertVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+
+            self.deleteAlertView.isHidden = !isShowing
+            self.overlayView.alpha = isShowing ? 1 : 0
+        }
+        
+        if isShowing {
+            setGestureRecognizer()
+        } else {
+            gestureRecognizers = nil
+        }
+        
+        for subview in subviews where !(subview is AlertView) {
+            subview.isUserInteractionEnabled = !isShowing
+        }
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self)
+        
+        guard !deleteAlertView.frame.contains(tapLocation) else { return }
+        
+        changeAlertVisibility(isShowing: false)
     }
 }
+
+// MARK: - UI Setup
 
 extension FocusSubjectDetailsView: ViewCodeProtocol {
     func setupUI() {
@@ -203,16 +304,19 @@ extension FocusSubjectDetailsView: ViewCodeProtocol {
         addSubview(cancelButton)
         
         addSubview(titleLabel)
+        
         addSubview(tableView)
-        addSubview(notesTitle)
-        addSubview(editCommentImage)
-        addSubview(notesView)
+        
+        addSubview(notesTitleLabel)
+        addSubview(notesTextView)
+        
+        addSubview(editCommentButton)
         
         addSubview(saveButton)
-        addSubview(discardButton)
+        addSubview(deleteButton)
 
         NSLayoutConstraint.activate([
-            chevronButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            chevronButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 12),
             chevronButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 11),
             
             cancelButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -226,26 +330,64 @@ extension FocusSubjectDetailsView: ViewCodeProtocol {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
             tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             
-            notesTitle.topAnchor.constraint(equalTo: tableView.bottomAnchor),
-            notesTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23),
+            notesTitleLabel.topAnchor.constraint(equalTo: tableView.bottomAnchor),
+            notesTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23),
             
-            editCommentImage.topAnchor.constraint(equalTo: tableView.bottomAnchor),
-            editCommentImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
+            notesTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
+            notesTextView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
             
-            notesView.topAnchor.constraint(equalTo: notesTitle.bottomAnchor, constant: 5),
-            notesView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 23),
-            notesView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
-            notesView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3),
+            editCommentButton.topAnchor.constraint(equalTo: tableView.bottomAnchor),
+            editCommentButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -23),
             
             saveButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 334 / 390),
             saveButton.heightAnchor.constraint(equalTo: saveButton.widthAnchor, multiplier: 55 / 334),
             saveButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            saveButton.bottomAnchor.constraint(equalTo: discardButton.topAnchor, constant: -11),
+            saveButton.bottomAnchor.constraint(equalTo: deleteButton.topAnchor, constant: -11),
 
-            discardButton.widthAnchor.constraint(equalTo: saveButton.widthAnchor),
-            discardButton.heightAnchor.constraint(equalTo: saveButton.heightAnchor),
-            discardButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            discardButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -35),
+            deleteButton.widthAnchor.constraint(equalTo: saveButton.widthAnchor),
+            deleteButton.heightAnchor.constraint(equalTo: saveButton.heightAnchor),
+            deleteButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            deleteButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -35),
+        ])
+        
+        textViewTopConstraint = notesTextView.topAnchor.constraint(equalTo: notesTitleLabel.bottomAnchor)
+        textViewTopConstraint?.isActive = true
+        
+        textViewLeadingConstraint = notesTextView.leadingAnchor.constraint(equalTo: leadingAnchor)
+        textViewLeadingConstraint?.isActive = true
+        
+        layoutNotesPlaceholder()
+        
+        addSubview(overlayView)
+
+        NSLayoutConstraint.activate([
+            overlayView.topAnchor.constraint(equalTo: topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        ])
+    }
+    
+    private func layoutNotesPlaceholder() {
+        notesPlaceholderLabel.removeFromSuperview()
+        notesTextView.addSubview(notesPlaceholderLabel)
+        
+        let isEditing = notesTextView.isEditable
+        
+        if isEditing {
+            textViewTopConstraint?.constant = 5
+            textViewLeadingConstraint?.constant = 23
+        } else {
+            textViewTopConstraint?.constant = 2
+            textViewLeadingConstraint?.constant = 18
+        }
+        
+        let topPadding: Double = isEditing ? 12 : 0
+        let leadingPadding: Double = isEditing ? 12 : 0
+        
+        NSLayoutConstraint.activate([
+            notesPlaceholderLabel.topAnchor.constraint(equalTo: notesTitleLabel.bottomAnchor, constant: topPadding + 5),
+            notesPlaceholderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: leadingPadding + 23),
         ])
     }
 }

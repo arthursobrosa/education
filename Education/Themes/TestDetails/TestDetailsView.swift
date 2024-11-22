@@ -30,7 +30,7 @@ class TestDetailsView: UIView {
             guard let config else { return }
             
             titleLabel.text = config.titleText
-            notesContent.text = config.notesText
+            configureTextView(withNotes: config.notesText)
             questionsLabel.text = config.questionsText
             themeTitleLabel.text = config.themeTitleText
             circularProgressView.progress = config.progress
@@ -85,8 +85,6 @@ class TestDetailsView: UIView {
         let view = CircularProgressView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         view.progressColor = UIColor(named: "defaultColor") ?? .systemBlue
         view.trackColor = .label.withAlphaComponent(0.1)
-        view.progress = 0.85 // 85% progresso
-        view.backgroundColor = .red
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -168,10 +166,9 @@ class TestDetailsView: UIView {
         return label
     }()
     
-    private let notesContent: UITextView = {
+    private let notesTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
-        textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         textView.textColor = .systemText
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
@@ -189,6 +186,24 @@ class TestDetailsView: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Methods
+    
+    private func configureTextView(withNotes notes: String) {
+        var text: String
+        var font: UIFont?
+        
+        if notes.isEmpty {
+            text = String(localized: "emptyNotes")
+            font = .init(name: Fonts.darkModeOnItalic, size: 16)
+        } else {
+            text = notes
+            font = .init(name: Fonts.darkModeOnRegular, size: 16)
+        }
+        
+        notesTextView.text = text
+        notesTextView.font = font
+    }
 }
 
 // MARK: - UI Setup
@@ -203,7 +218,7 @@ extension TestDetailsView: ViewCodeProtocol {
         addSubview(horizontalStack)
         addSubview(percentageLabel)
         addSubview(notesLabel)
-        addSubview(notesContent)
+        addSubview(notesTextView)
 
         dateStack.addArrangedSubview(dateTitleLabel)
         dateStack.addArrangedSubview(dateLabel)
@@ -215,8 +230,6 @@ extension TestDetailsView: ViewCodeProtocol {
         let spacer = UIView()
         horizontalStack.addArrangedSubview(spacer)
         horizontalStack.addArrangedSubview(questionsStack)
-
-        let padding = 24.0
 
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: topAnchor, constant: 56),
@@ -242,17 +255,17 @@ extension TestDetailsView: ViewCodeProtocol {
             percentageLabel.heightAnchor.constraint(equalToConstant: 200),
 
             horizontalStack.topAnchor.constraint(equalTo: percentageLabel.bottomAnchor, constant: 48),
-            horizontalStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            horizontalStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            horizontalStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            horizontalStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
 
             notesLabel.topAnchor.constraint(equalTo: horizontalStack.bottomAnchor, constant: 32),
-            notesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            notesLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            notesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            notesLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
 
-            notesContent.topAnchor.constraint(equalTo: notesLabel.bottomAnchor, constant: 4),
-            notesContent.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-            notesContent.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-            notesContent.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 200 / 844),
+            notesTextView.topAnchor.constraint(equalTo: notesLabel.bottomAnchor),
+            notesTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            notesTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            notesTextView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 200 / 844),
 
             circularProgressView.topAnchor.constraint(equalTo: themeTitleLabel.bottomAnchor, constant: 64),
             circularProgressView.centerXAnchor.constraint(equalTo: centerXAnchor),

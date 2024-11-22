@@ -198,6 +198,27 @@ class StudyTimeViewModel: ObservableObject {
         let subject = subjectManager.fetchSubject(withID: subjectId)
         return subject?.unwrappedName ?? String(localized: "other")
     }
+    
+    func canSaveSubject(withName name: String) -> Bool {
+        if currentEditingSubject != nil {
+            return true
+        }
+        
+        let existingSubjects = subjects.value
+        if existingSubjects.contains(where: { $0.name?.lowercased() == name.lowercased() }) {
+            return false
+        }
+        
+        return true
+    }
+    
+    func saveSubject(withName name: String) {
+        if currentEditingSubject != nil {
+            updateSubject(name: name, color: selectedSubjectColor.value)
+        } else {
+            createSubject(name: name)
+        }
+    }
 
     func createSubject(name: String) {
         subjectManager.createSubject(name: name, color: selectedSubjectColor.value)

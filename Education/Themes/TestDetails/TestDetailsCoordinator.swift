@@ -50,9 +50,7 @@ class TestDetailsCoordinator: NSObject, Coordinator, Dismissing, ShowingTestPage
 
 extension TestDetailsCoordinator: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let nav = dismissed as? UINavigationController else { return nil }
-
-        if let testPageVC = nav.viewControllers.first as? TestPageViewController {
+        if let testPageVC = dismissed as? TestPageViewController {
             guard let testPageCoordinator = childCoordinators.first as? TestPageCoordinator else { return nil }
 
             let isRemovingTest = testPageCoordinator.isRemovingTest

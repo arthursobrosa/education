@@ -84,15 +84,30 @@ class SubjectDetailsViewModel {
         var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/yyyy"
         
-        guard let date = dateFormatter.date(from: monthYear) else {
+        guard let sessionDate = dateFormatter.date(from: monthYear) else {
+            return nil
+        }
+        
+        let calendar = Calendar.current
+        let sessionDateComponents = calendar.dateComponents([.year], from: sessionDate)
+        let currentDateComponents = calendar.dateComponents([.year], from: Date())
+        
+        guard let sessionYear = sessionDateComponents.year,
+              let currentYear = currentDateComponents.year else {
+            
             return nil
         }
         
         dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
-        dateFormatter.setLocalizedDateFormatFromTemplate("MMMMyyyy")
-
-        let formattedDate = dateFormatter.string(from: date)
+        
+        if sessionYear == currentYear {
+            dateFormatter.setLocalizedDateFormatFromTemplate("MMMM")
+        } else {
+            dateFormatter.setLocalizedDateFormatFromTemplate("MMMMyyyy")
+        }
+        
+        let formattedDate = dateFormatter.string(from: sessionDate)
         return formattedDate.prefix(1).uppercased() + formattedDate.dropFirst()
     }
 }

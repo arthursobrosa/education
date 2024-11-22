@@ -8,6 +8,8 @@
 import UIKit
 
 class FocusSessionView: UIView, TimerAnimation {
+    // MARK: - Delegate to connect with VC
+    
     weak var delegate: FocusSessionDelegate? {
         didSet {
             setupUI()
@@ -18,17 +20,15 @@ class FocusSessionView: UIView, TimerAnimation {
 
     private let color: UIColor?
 
+    // MARK: - UI Properties
+    
     private lazy var dismissButton: UIButton = {
         let button = UIButton(configuration: .plain())
         button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
-        button.tintColor = .label
-
+        button.tintColor = .systemText40
         button.addTarget(delegate, action: #selector(FocusSessionDelegate.dismissButtonTapped), for: .touchUpInside)
-
         button.alpha = 0
-
         button.translatesAutoresizingMaskIntoConstraints = false
-
         return button
     }()
 
@@ -36,33 +36,24 @@ class FocusSessionView: UIView, TimerAnimation {
         let label = UILabel()
         label.numberOfLines = 2
         label.textAlignment = .center
-
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
 
     private let pomodoroLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
-        lbl.textColor = .label.withAlphaComponent(0.4)
-
-        lbl.isHidden = true
-
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-
-        return lbl
+        let label = UILabel()
+        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 15)
+        label.textColor = .systemText30
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     private lazy var eyeButton: UIButton = {
         let button = UIButton(configuration: .plain())
-
         button.addTarget(delegate, action: #selector(FocusSessionDelegate.eyeButtonTapped), for: .touchUpInside)
-
         button.alpha = 0
-
         button.translatesAutoresizingMaskIntoConstraints = false
-
         return button
     }()
 
@@ -77,9 +68,7 @@ class FocusSessionView: UIView, TimerAnimation {
         lbl.textAlignment = .center
         lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 37)
         lbl.textColor = .label.withAlphaComponent(0.8)
-
         lbl.translatesAutoresizingMaskIntoConstraints = false
-
         return lbl
     }()
 
@@ -95,14 +84,12 @@ class FocusSessionView: UIView, TimerAnimation {
     }()
 
     private lazy var pauseResumeButton: UIButton = {
-        let bttn = UIButton(configuration: .plain())
-        bttn.tintColor = color
-        bttn.setImage(UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 48, weight: .regular, scale: .default)), for: .normal)
-        bttn.addTarget(delegate, action: #selector(FocusSessionDelegate.pauseResumeButtonTapped), for: .touchUpInside)
-
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-
-        return bttn
+        let button = UIButton(configuration: .plain())
+        button.tintColor = color?.darker(by: 0.8)
+        button.setImage(UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 48, weight: .regular, scale: .default)), for: .normal)
+        button.addTarget(delegate, action: #selector(FocusSessionDelegate.pauseResumeButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
     private lazy var restartButton: ButtonComponent = {
@@ -115,65 +102,50 @@ class FocusSessionView: UIView, TimerAnimation {
         attributedString.append(NSAttributedString(string: "  "))
         attributedString.append(restartImage)
         let mediumFont = UIFont(name: Fonts.darkModeOnMedium, size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium)
-        attributedString.addAttributes([.font: mediumFont, .foregroundColor: UIColor.label.withAlphaComponent(0.8)], range: .init(location: 0, length: attributedString.length))
+        let color: UIColor = .systemText80
+        attributedString.addAttributes([.font: mediumFont, .foregroundColor: color], range: .init(location: 0, length: attributedString.length))
 
-        let bttn = ButtonComponent(title: String(), textColor: nil, cornerRadius: 28)
-        bttn.setAttributedTitle(attributedString, for: .normal)
-        bttn.backgroundColor = .clear
-
-        bttn.layer.borderColor = UIColor.secondaryLabel.cgColor
-        bttn.layer.borderWidth = 1
+        let button = ButtonComponent(title: String(), textColor: nil, cornerRadius: 28)
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.backgroundColor = .clear
+        button.layer.borderColor = UIColor.buttonNormal.cgColor
+        button.layer.borderWidth = 1
         
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
-            bttn.layer.borderColor = UIColor.secondaryLabel.cgColor
+            button.layer.borderColor = UIColor.buttonNormal.cgColor
         }
 
-        bttn.alpha = 0
-
-        bttn.addTarget(delegate, action: #selector(FocusSessionDelegate.didTapRestartButton), for: .touchUpInside)
-
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-
-        return bttn
+        button.alpha = 0
+        button.addTarget(delegate, action: #selector(FocusSessionDelegate.didTapRestartButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
     private lazy var finishButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 28)
-        bttn.backgroundColor = .clear
-
-        bttn.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
-
-        bttn.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
-        bttn.layer.borderWidth = 1
-
-        bttn.alpha = 0
-
-        bttn.addTarget(delegate, action: #selector(FocusSessionDelegate.didTapFinishButton), for: .touchUpInside)
-
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-
-        return bttn
+        let button = ButtonComponent(title: String(localized: "focusFinish"), textColor: UIColor(named: "FocusSettingsColor"), cornerRadius: 28)
+        button.backgroundColor = .clear
+        button.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
+        button.layer.borderColor = UIColor(named: "destructiveColor")?.cgColor
+        button.layer.borderWidth = 1
+        button.alpha = 0
+        button.addTarget(delegate, action: #selector(FocusSessionDelegate.didTapFinishButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
     let statusAlertView: AlertView = {
         let view = AlertView()
-
         view.isHidden = true
         view.layer.zPosition = 2
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
     let extensionAlertView: FocusExtensionAlertView = {
         let view = FocusExtensionAlertView()
-
         view.isHidden = true
         view.layer.zPosition = 2
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -182,11 +154,8 @@ class FocusSessionView: UIView, TimerAnimation {
         view.backgroundColor = .label.withAlphaComponent(0.1)
         view.alpha = 0
         view.layer.zPosition = 1
-
         view.isUserInteractionEnabled = false
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -256,13 +225,13 @@ extension FocusSessionView {
     func setEyeButton(isActive: Bool) {
         let imageName = isActive ? "eye" : "eye.slash"
         eyeButton.setImage(UIImage(systemName: imageName), for: .normal)
-        eyeButton.tintColor = .label
+        eyeButton.tintColor = .systemText30
 
         addSubview(eyeButton)
 
         NSLayoutConstraint.activate([
-            eyeButton.topAnchor.constraint(equalTo: dismissButton.topAnchor),
-            eyeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            eyeButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 52),
+            eyeButton.centerXAnchor.constraint(equalTo: centerXAnchor),
         ])
     }
 }
@@ -321,13 +290,37 @@ extension FocusSessionView {
 // MARK: - Alerts
 
 extension FocusSessionView {
-    func changeAlertVisibility(isShowing: Bool) {
+    func changeStatusAlertVisibility(isShowing: Bool) {
         UIView.animate(withDuration: 0.5) { [weak self] in
             guard let self else { return }
 
             self.statusAlertView.isHidden = !isShowing
             self.overlayView.alpha = isShowing ? 1 : 0
         }
+        
+        if isShowing {
+            setGestureRecognizer()
+        } else {
+            gestureRecognizers = nil
+        }
+        
+        for subview in subviews where !(subview is AlertView) {
+            subview.isUserInteractionEnabled = !isShowing
+        }
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self)
+        
+        guard !statusAlertView.frame.contains(tapLocation) else { return }
+        
+        changeStatusAlertVisibility(isShowing: false)
     }
 }
 
@@ -417,7 +410,7 @@ extension FocusSessionView: ViewCodeProtocol {
         timerTrackLayer.strokeEnd = 1
 
         timerCircleFillLayer.path = arcPath.cgPath
-        timerCircleFillLayer.strokeColor = color?.cgColor
+        timerCircleFillLayer.strokeColor = color?.darker(by: 0.8)?.cgColor
         timerCircleFillLayer.lineWidth = lineWidth
         timerCircleFillLayer.fillColor = UIColor.clear.cgColor
         timerCircleFillLayer.lineCap = .round

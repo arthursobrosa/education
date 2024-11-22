@@ -53,7 +53,7 @@ extension ScheduleViewController: ScheduleDelegate {
         if isShowingButtons {
             dismissButtons()
         } else {
-            setTapGesture()
+            setGestureRecognizer()
             
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let self else { return }

@@ -9,15 +9,19 @@ import Foundation
 import UIKit
 
 class FocusSubjectDetailsViewController: UIViewController {
+    // MARK: - Coordinator and ViewModel
+    
     weak var coordinator: Dismissing?
     let viewModel: FocusSubjectDetailsViewModel
     
-    var placeholderText: String = ""
-    var originalNotesText: String = ""
+    // MARK: - UI Properties
     
     lazy var focusSubjectDetails: FocusSubjectDetailsView = {
-        let view = FocusSubjectDetailsView()
+        let title = viewModel.getTitle()
+        let notes = viewModel.focusSession.unwrappedNotes
+        let view = FocusSubjectDetailsView(title: title, notes: notes)
         view.delegate = self
+        view.textViewDelegate = self
         view.tableView.dataSource = self
         view.tableView.delegate = self
         view.tableView.register(UITableViewCell.self, forCellReuseIdentifier: DefaultCell.identifier)
@@ -41,29 +45,6 @@ class FocusSubjectDetailsViewController: UIViewController {
 
     override func loadView() {
         view = focusSubjectDetails
-        viewModel.makeTitle(focusSession: viewModel.focusSession)
-        viewModel.getDateString()
-        viewModel.getHourString()
-        viewModel.getFocusNotes()
-        
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        focusSubjectDetails.titleLabel.text = viewModel.titleLabel
-        focusSubjectDetails.notesView.delegate = self
-        
-        placeholderText = viewModel.focusSession.notes ?? ""
-        
-        if let notes = viewModel.focusSession.notes, !viewModel.notes.isEmpty {
-            focusSubjectDetails.notesView.text = notes
-            focusSubjectDetails.notesView.textColor = .systemText
-        } else {
-            focusSubjectDetails.notesView.text = placeholderText
-            focusSubjectDetails.notesView.textColor = .systemText
-        }
-        
-        originalNotesText = viewModel.focusSession.notes ?? ""
     }
 }
 
@@ -132,15 +113,16 @@ extension FocusSubjectDetailsViewController: UITableViewDataSource, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: DefaultCell.identifier, for: indexPath)
 
         var text = String()
+        
         switch section {
         case 0:
-            text = viewModel.dateString
+            text = viewModel.getDateString()
         case 1:
-            text = viewModel.hoursString
+            text = viewModel.getHourString()
         case 2:
             text = viewModel.focusSession.unwrappedTimerCase.text
         default:
-            text = String()
+            break
         }
 
         cell.selectionStyle = .none

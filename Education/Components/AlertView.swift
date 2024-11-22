@@ -20,6 +20,16 @@ enum AlertCase {
     case finishingPomodoroCase(pomodoroString: String, isAtWorkTime: Bool)
     
     case deletingSchedule(subject: Subject)
+    
+    case discardingFocusSession
+    case deletingFocusSession
+    case deletingOtherFocusSession
+    
+    case deletingSubject(subjectName: String)
+    
+    case deletingTheme
+    
+    case deletingTest
 
     var title: String {
         switch self {
@@ -33,6 +43,18 @@ enum AlertCase {
             String(format: NSLocalizedString("finishPomodoroAlertTitle", comment: ""), pomodoroString)
         case .deletingSchedule:
             String(localized: "deleteScheduleAlertTitle")
+        case .discardingFocusSession:
+            String(localized: "discardingFocusSessionAlertTitle")
+        case .deletingFocusSession:
+            String(localized: "deletingFocusSessionAlertTitle")
+        case .deletingOtherFocusSession:
+            String(localized: "deletingOtherFocusSessionAlertTitle")
+        case .deletingSubject:
+            String(localized: "deleteSubjectTitle")
+        case .deletingTheme:
+            String(localized: "deletingThemeAlertTitle")
+        case .deletingTest:
+            String(localized: "deletingThemeAlertTitle")
         }
     }
 
@@ -47,17 +69,37 @@ enum AlertCase {
         case .finishingPomodoroCase:
             getFinishPomodoroAlertBody()
         case .deletingSchedule(let subject):
-            String(format: NSLocalizedString("deleteScheduleAlertBody", comment: ""), String(subject.unwrappedName.prefix(20)))
+            String(
+                format: NSLocalizedString("deleteScheduleAlertBody", comment: ""),
+                String(subject.unwrappedName.prefix(20))
+            )
+        case .discardingFocusSession:
+            String(localized: "discardingFocusSessionAlertBody")
+        case .deletingFocusSession:
+            String(localized: "deletingFocusSessionAlertMessage")
+        case .deletingOtherFocusSession:
+            String(localized: "deletingOtherFocusSessionAlertMessage")
+        case .deletingSubject(let subjectName):
+            String(
+                format: NSLocalizedString("deleteSubjectMessage", comment: ""),
+                String(subjectName.prefix(20))
+            )
+        case .deletingTheme:
+            String(localized: "deletingThemeAlertMessage")
+        case .deletingTest:
+            String(localized: "deletingThemeAlertMessage")
         }
     }
 
     var primaryButtonTitle: String {
         switch self {
-        case .restartingCase, .finishingEarlyCase:
+        case .restartingCase:
+            String(localized: "yes")
+        case .finishingEarlyCase:
             String(localized: "yes")
         case .finishingTimerCase:
             String(localized: "focusFinish")
-        case let .finishingPomodoroCase(_, isAtWorkTime):
+        case .finishingPomodoroCase(_, let isAtWorkTime):
             if isAtWorkTime {
                 String(localized: "startInterval")
             } else {
@@ -65,12 +107,26 @@ enum AlertCase {
             }
         case .deletingSchedule:
             String(localized: "yes")
+        case .discardingFocusSession:
+            String(localized: "yes")
+        case .deletingFocusSession:
+            String(localized: "yes")
+        case .deletingOtherFocusSession:
+            String(localized: "yes")
+        case .deletingSubject:
+            String(localized: "yes")
+        case .deletingTheme:
+            String(localized: "yes")
+        case .deletingTest:
+            String(localized: "yes")
         }
     }
     
     var secondaryButtonTitle: String {
         switch self {
-        case .restartingCase, .finishingEarlyCase:
+        case .restartingCase:
+            String(localized: "cancel")
+        case .finishingEarlyCase:
             String(localized: "cancel")
         case .finishingTimerCase:
             String(localized: "extendTime")
@@ -82,6 +138,18 @@ enum AlertCase {
             }
         case .deletingSchedule:
             String(localized: "cancel")
+        case .discardingFocusSession:
+            String(localized: "cancel")
+        case .deletingFocusSession:
+            String(localized: "cancel")
+        case .deletingOtherFocusSession:
+            String(localized: "cancel")
+        case .deletingSubject:
+            String(localized: "cancel")
+        case .deletingTheme:
+            String(localized: "cancel")
+        case .deletingTest:
+            String(localized: "cancel")
         }
     }
     
@@ -89,34 +157,80 @@ enum AlertCase {
         switch self {
         case .restartingCase:
             #selector(FocusSessionDelegate.didRestart)
-        case .finishingEarlyCase, .finishingTimerCase:
+        case .finishingEarlyCase:
+            #selector(FocusSessionDelegate.didFinish)
+        case .finishingTimerCase:
             #selector(FocusSessionDelegate.didFinish)
         case .finishingPomodoroCase:
             #selector(FocusSessionDelegate.didStartNextPomodoro)
         case .deletingSchedule:
             #selector(ScheduleDelegate.didDeleteSchedule)
+        case .discardingFocusSession:
+            #selector(FocusEndDelegate.didDiscard)
+        case .deletingFocusSession:
+            #selector(FocusSubjectDetailsDelegate.didDelete)
+        case .deletingOtherFocusSession:
+            #selector(SubjectDetailsDelegate.didDelete)
+        case .deletingSubject:
+            #selector(SubjectCreationDelegate.didDelete)
+        case .deletingTheme:
+            #selector(ThemeListDelegate.didDeleteTheme)
+        case .deletingTest:
+            #selector(TestDelegate.didDelete)
         }
     }
 
     var secondaryButtonAction: Selector {
         switch self {
-        case .restartingCase, .finishingEarlyCase:
+        case .restartingCase:
             #selector(FocusSessionDelegate.didCancel)
-        case .finishingTimerCase, .finishingPomodoroCase:
+        case .finishingEarlyCase:
+            #selector(FocusSessionDelegate.didCancel)
+        case .finishingTimerCase:
+            #selector(FocusSessionDelegate.didTapExtendButton)
+        case .finishingPomodoroCase:
             #selector(FocusSessionDelegate.didTapExtendButton)
         case .deletingSchedule:
             #selector(ScheduleDelegate.didCancelDeletion)
+        case .discardingFocusSession:
+            #selector(FocusEndDelegate.didCancel)
+        case .deletingFocusSession:
+            #selector(FocusSubjectDetailsDelegate.didCancelDeletion)
+        case .deletingOtherFocusSession:
+            #selector(SubjectDetailsDelegate.didCancel)
+        case .deletingSubject:
+            #selector(SubjectCreationDelegate.didCancel)
+        case .deletingTheme:
+            #selector(ThemeListDelegate.didCancel)
+        case .deletingTest:
+            #selector(TestDelegate.didCancelDeletion)
         }
     }
-
+    
     var position: AlertPosition {
         switch self {
-        case .restartingCase, .finishingEarlyCase:
+        case .restartingCase:
             .bottom
-        case .finishingTimerCase, .finishingPomodoroCase:
+        case .finishingEarlyCase:
+            .bottom
+        case .finishingTimerCase:
+            .mid
+        case .finishingPomodoroCase:
             .mid
         case .deletingSchedule:
             .mid
+        case .discardingFocusSession:
+            .bottom
+        case .deletingFocusSession:
+            .bottom
+        case .deletingOtherFocusSession:
+            .mid
+        case .deletingSubject:
+            .bottom
+        case .deletingTheme:
+            .mid
+        case .deletingTest:
+                .bottom
         }
     }
 
@@ -149,6 +263,17 @@ class AlertView: UIView {
         var secondaryButtonTitle: String
         var superView: UIView
         var position: AlertPosition
+        
+        static func getAlertConfig(with alertCase: AlertCase, superview: UIView) -> AlertConfig {
+            AlertConfig(
+                title: alertCase.title,
+                body: alertCase.body,
+                primaryButtonTitle: alertCase.primaryButtonTitle,
+                secondaryButtonTitle: alertCase.secondaryButtonTitle,
+                superView: superview,
+                position: alertCase.position
+            )
+        }
     }
     
     var config: AlertConfig? {
@@ -192,7 +317,7 @@ class AlertView: UIView {
         super.init(frame: .zero)
 
         backgroundColor = .systemBackground
-        layer.cornerRadius = 12
+        layer.cornerRadius = 24
 
         translatesAutoresizingMaskIntoConstraints = false
     }
@@ -221,12 +346,16 @@ class AlertView: UIView {
     private func setSecondaryButton() {
         guard let config else { return }
         
-        secondaryButton = ButtonComponent(title: config.secondaryButtonTitle, textColor: .label, cornerRadius: 28)
+        secondaryButton = ButtonComponent(title: config.secondaryButtonTitle, textColor: .systemText80, cornerRadius: 28)
         secondaryButton?.backgroundColor = .clear
-        secondaryButton?.layer.borderColor = UIColor.label.cgColor
+        secondaryButton?.layer.borderColor = UIColor.buttonNormal.cgColor
         secondaryButton?.layer.borderWidth = 1
         secondaryButton?.titleLabel?.font = UIFont(name: Fonts.darkModeOnMedium, size: 17)
         secondaryButton?.translatesAutoresizingMaskIntoConstraints = false
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.secondaryButton?.layer.borderColor = UIColor.buttonNormal.cgColor
+        }
     }
     
     func setPrimaryButtonTarget(_ target: Any?, action: Selector) {

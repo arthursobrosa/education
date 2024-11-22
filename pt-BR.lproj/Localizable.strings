@@ -16,7 +16,7 @@
 // MARK: - TabBar
 "scheduleTab" = "Estudos";
 "subjectTab" = "Matérias";
-"themeTab" = "Provas";
+"themeTab" = "Resultados";
 
 // MARK: - Schedule
 "schedule" = "Cronograma";
@@ -112,8 +112,12 @@
 "hour" = "Hora";
 "timer" = "Temporizador";
 "notes"= "Notas";
-"discard" = "Descartar";
+"emptyNotes" = "Sem notas";
 "notesPlaceholder" = "Notas sobre a atividade";
+"discard" = "Descartar";
+"erase" = "Apagar";
+"discardingFocusSessionAlertTitle" = "Descartar Atividade";
+"discardingFocusSessionAlertBody" = "Tem certeza que deseja descartar o registro da atividade?";
 
 // MARK: - Subjects
 "subject" = "Matéria";
@@ -124,8 +128,8 @@
 "studyTimeLastMonth" = "Mês";
 "studyTimeLastYear" = "Ano";
 "emptySubject" = "matéria";
-"deleteSubjectTitle" = "Excluir Matéria";
-"deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades dentro do cronograma também serão excluídos.";
+"deleteSubjectTitle" = "Apagar Matéria";
+"deleteSubjectMessage" = "Tem certeza que deseja apagar a matéria \"%@\"?";
 "subjectCreationTitle" = "Matéria Inválida";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";
@@ -133,16 +137,17 @@
 "editSubject" = "Editar Matéria";
 "subjectName" = "Nome da Matéria";
 "emptySubjectDetails" = "Você não possui registros de estudos realizados para esta matéria.";
+"deletingFocusSessionAlertTitle" = "Apagar Registro";
+"deletingFocusSessionAlertMessage" = "Tem certeza que deseja apagar o registro de atividade?";
 
 // MARK: - Themes
 "themeAlertTitle" = "Adicionar prova";
 "themeAlertMessage" = "Insira o nome da prova:";
 "themeAlertPlaceholder" = "Nome da prova";
-"newTest" = "Novo Teste";
-"editTest" = "Editar Teste";
+"newResult" = "Novo Registro de Resultado";
+"editResult" = "Editar Registro de Resultado";
 "newTheme" = "Nova prova";
 "editTheme" = "Editar prova";
-"newTest" = "Novo Teste";
 "addTest" = "Adicionar Teste";
 "wrongQuestionsTitle" = "Número de Acertos Inválido!";
 "wrongQuestionsMessage" = "O número de respostas corretas não pode ser maior que o número total de questões. Por favor revise os dados inseridos.";
@@ -150,27 +155,29 @@
 "testDate" = "Data";
 "totalQuestions" = "Total de questões";
 "deleteTest" = "Apagar teste";
-"emptyTheme" = "Você ainda não tem nenhuma prova registrada aqui";
-"emptyTest" = "Você ainda não tem nenhum registro de teste";
+"emptyTheme" = "Você não possui resultados de testes ou questões.";
 "dayLabel" = "Data";
 "questionLabel" = "Questões";
-"description" = "Notas sobre o teste/ questões";
-"deleteThemeTitle" = "Deletar Prova";
-"deleteThemeBody" = "Você tem certeza que deseja deletar essa prova? Todo o histórico de testes e resultados serão perdidos";
+"testNotesPlaceholder" = "Notas sobre o teste / questões";
+"deletingThemeAlertTitle" = "Deletar Prova";
+"deletingThemeAlertMessage" = "Você tem certeza que deseja deletar essa prova?";
 "name" = "Nome";
 "invalidThemeName" = "Nome de registro inválido";
 "invalidThemeNameMessage" = "O nome deste registro é inválido.";
+"themePlaceholder" = "Ex: Simulado Geral ENEM";
+"deletingThemeAlertTitle" = "Apagar Registro";
+"deletingThemeAlertMessage" = "Tem certeza que deseja apagar este registro de resultado?";
 
 // MARK: - Modal
 "startButton" = "Iniciar Atividade";
 "startNowButton" = "Iniciar agora";
 
-//MARK: - ACTIVITY
+// MARK: - ACTIVITY
 "newActivity" = "Nova atividade";
 "editActivity" = "Editar atividade";
 "studyingNow" = "Estudando agora";
 
-//MARK: - TIPS
+// MARK: - TIPS
 "newActivityTip" = "Crie uma nova atividade aqui";
 "explainActivityTip" = "Você pode criar uma atividade recorrente e adicioná-la ao cronograma ou criar uma atividade imediata, onde você já inicia um temporizador de estudo.";
 "newSubjectTip" = "Crie uma matéria aqui";
@@ -178,10 +185,9 @@
 "newTestTip" = "Crie um novo grupo de testes aqui";
 "explainTestTip" = "Em cada grupo de testes você pode adicionar resultados e acompanhar seu progresso ao longo do tempo.";
 
-//MARK: - OTHER SUBJECT
-"deleteOther" = "Apagar tempo";
-"deleteOtherMessage" = "Você realmente deseja apagar o tempo de estudo?";
-"deleteOtherBodyText" = "Este item reúne todos os tempos de estudo que você registrou sem associar a nenhuma matéria específica. Embora ele não possa ser deletado, você tem a opção de zerar os tempos de estudo vinculados a ele.";
+// MARK: - OTHER SUBJECT
+"deletingOtherFocusSessionAlertTitle" = "Apagar Registros";
+"deletingOtherFocusSessionAlertMessage" = "Tem certeza que deseja apagar os seus registros de atividades não vinculadas a alguma matéria?";
 
 // MARK: - Block
 "startBlockAlertTitle" = "Iniciando o bloqueio de apps";

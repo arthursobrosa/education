@@ -9,30 +9,23 @@ import UIKit
 
 extension TestPageViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if viewModel.comment.isEmpty {
-            textView.text = viewModel.comment
-            textView.textColor = .systemText
-            textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        }
-
         if textView.textColor == UIColor(named: "system-text-40") {
             textView.text = nil
-            textView.textColor = .systemText
-            textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         }
+        
+        textView.textColor = .systemText
+        textView.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = String(localized: "description")
+        guard let text = textView.text else { return }
+        
+        if text.isEmpty {
+            textView.text = String(localized: "testNotesPlaceholder")
             textView.textColor = .systemText40
             textView.font = UIFont(name: Fonts.darkModeOnItalic, size: 16)
         }
-    }
-
-    func textViewDidChange(_ textView: UITextView) {
-        if textView.textColor != UIColor.lightGray {
-            viewModel.comment = textView.text
-        }
+        
+        viewModel.comment = text
     }
 }

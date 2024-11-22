@@ -81,8 +81,8 @@ extension TestPageViewController {
         case 0:
             let textField = UITextField()
             textField.tag = 0
-            textField.placeholder = String("Ex: Simulado Geral")
-            textField.font = UIFont(name: Fonts.darkModeOnItalic, size: 15)
+            textField.placeholder = String(localized: "themePlaceholder")
+            textField.font = UIFont(name: Fonts.darkModeOnItalic, size: 16)
             textField.textColor = .systemText40
             textField.textAlignment = .right
             textField.sizeToFit()

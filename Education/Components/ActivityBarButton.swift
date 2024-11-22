@@ -111,6 +111,11 @@ extension ActivityBarButton: ViewCodeProtocol {
 
         timerTrackLayer.path = arcPath.cgPath
         timerTrackLayer.strokeColor = configuration.isTimerTrackerShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.timerTrackLayer.strokeColor = configuration.isTimerTrackerShowing ? UIColor.systemGray5.cgColor : UIColor.clear.cgColor
+        }
+        
         timerTrackLayer.lineWidth = lineWidth
         timerTrackLayer.fillColor = UIColor.clear.cgColor
         timerTrackLayer.lineCap = .round

@@ -271,13 +271,12 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
 }
 
 extension ScheduleDetailsViewController: SubjectCreationDelegate {
+    func didCancel() {}
+    func didDelete() {}
+    
     func textFieldDidChange(newText: String) {
         scheduleDetailsView.newSubjectName = newText
-        if newText.isEmpty {
-            scheduleDetailsView.changeSaveButtonState(isEnabled: false)
-        } else {
-            scheduleDetailsView.changeSaveButtonState(isEnabled: true)
-        }
+        scheduleDetailsView.subjectCreationView.changeSaveButtonState(isEnabled: !newText.isEmpty)
     }
     
     func didTapSaveButton() {
@@ -299,10 +298,9 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
         viewModel.createSubject(name: cleanName)
         viewModel.setSubjectNames()
         
-        if viewModel.selectedSubjectName.isEmpty,
-           let firstSubjectName = viewModel.subjectsNames.first {
-            
-            viewModel.selectedSubjectName = firstSubjectName
+        if let subjectNameIndex = viewModel.subjectsNames.firstIndex(where: { $0 == cleanName }) {
+            let selectedSubjectName = viewModel.subjectsNames[subjectNameIndex]
+            viewModel.selectedSubjectName = selectedSubjectName
             
             updateCellAccessory(
                 for: viewModel.selectedSubjectName,
@@ -346,7 +344,7 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
         showSubjectsPopover()
         scheduleDetailsView.changeSubjectCreationView(isShowing: false)
         scheduleDetailsView.newSubjectName = nil
-        scheduleDetailsView.changeSaveButtonState(isEnabled: false)
+        scheduleDetailsView.subjectCreationView.changeSaveButtonState(isEnabled: false)
         scheduleDetailsView.reloadSubjectTable()
     }
 }

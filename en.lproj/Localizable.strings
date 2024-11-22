@@ -16,7 +16,7 @@
 // MARK: - TabBar
 "scheduleTab" = "Studies";
 "subjectTab" = "Subjects";
-"themeTab" = "Exams";
+"themeTab" = "Results";
 
 // MARK: - Schedule
 "schedule" = "Schedule";
@@ -112,8 +112,12 @@
 "hour" = "Hour";
 "timer" = "Timer";
 "notes"= "Notes";
-"discard" = "Discard";
+"emptyNotes" = "No notes";
 "notesPlaceholder" = "Notes about the activity";
+"discard" = "Discard";
+"erase" = "Delete";
+"discardingFocusSessionAlertTitle" = "Discard Activity";
+"discardingFocusSessionAlertBody" = "Are you sure you want to discard registering this activity?";
 
 // MARK: - Subjects
 "subject" = "Subject";
@@ -125,7 +129,7 @@
 "studyTimeLastYear" = "Year";
 "emptySubject" = "subject";
 "deleteSubjectTitle" = "Delete Subject";
-"deleteSubjectMessage" = "Are you sure you want to delete %@? Your study time and schedule activities will also be deleted.";
+"deleteSubjectMessage" = "Are you sure you want to delete \"%@\" subject?";
 "subjectCreationTitle" = "Invalid Subject";
 "subjectCreationUsedName" = "There is an existing subject with this name.";
 "color" = "Color";
@@ -133,16 +137,17 @@
 "editSubject" = "Edit Subject";
 "subjectName" = "Subject's Name";
 "emptySubjectDetails" = "You do not have records of studies carried out for this subject.";
+"deletingFocusSessionAlertTitle" = "Delete Record";
+"deletingFocusSessionAlertMessage" = "Are you sure you want to delete the activity record?";
 
 // MARK: - Themes
 "themeAlertTitle" = "Add Exam";
 "themeAlertMessage" = "Enter exam name:";
 "themeAlertPlaceholder" = "Exam name";
-"newTest" = "New Test";
-"editTest" = "Edit Test";
+"newResult" = "New Result Record";
+"editResult" = "Edit Result Record";
 "newTheme" = "New Exam";
 "editTheme" = "Edit exam";
-"newTest" = "New Test";
 "addTest" = "Add Test";
 "wrongQuestionsTitle" = "Invalid Number of Hits.";
 "wrongQuestionsMessage" = "The number of correct answers cannot be greater than the total number of questions. Please review your entry.";
@@ -150,27 +155,29 @@
 "rightQuestions" = "Right questions";
 "totalQuestions" = "Total questions";
 "deleteTest" = "Delete Test";
-"emptyTheme" = "You haven't recorded any exams yet";
-"emptyTest" = "You haven't recorded any tests yet";
+"emptyTheme" = "You have no test results or questions.";
 "dayLabel" = "Day";
 "questionLabel" = "Questions";
-"description" = "Notas sobre o teste/ questões";
-"deleteThemeTitle" = "Delete Theme";
-"deleteThemeBody" = "Are you sure you want to delete this theme? All its tests history and results will be discarded";
+"testNotesPlaceholder" = "Tests / Questions notes";
+"deletingThemeAlertTitle" = "Delete Theme";
+"deletingThemeAlertMessage" = "Are you sure you want to delete this theme?";
 "name" = "Name";
 "invalidThemeName" = "Invalid registration name";
 "invalidThemeNameMessage" = "The name of this record is invalid.";
+"themePlaceholder" = "e.g.: Physics Results";
+"deletingThemeAlertTitle" = "Delete Record";
+"deletingThemeAlertMessage" = "Are you sure you want to delete this result record?";
 
 // MARK: - Modal
 "startButton" = "Start Activity";
 "startNowButton" = "Start now";
 
-//MARK: - ACTIVITY
+// MARK: - ACTIVITY
 "newActivity" = "New Activity";
 "editActivity" = "Edit Activity";
 "studyingNow" = "Studying now";
 
-//MARK: - TIPS
+// MARK: - TIPS
 "newActivityTip" = "Create a new activity here";
 "explainActivityTip" = "You can create a recurring activity and add it to the schedule or create an immediate activity where you start a study timer right away.";
 "newSubjectTip" = "Create a subject here";
@@ -178,10 +185,9 @@
 "newTestTip" = "Create a new test group here";
 "explainTestTip" = "In each test group, you can add results and track your progress over time.";
 
-//MARK: - OTHER SUBJECT
-"deleteOther" = "Erase time";
-"deleteOtherMessage" = "Do you really want to erase your study time?";
-"deleteOtherBodyText" = "This item gathers all the study times you have recorded that are not tied to any particular subject. Although it cannot be deleted, you have the option to erase the study times linked to it.";
+// MARK: - OTHER SUBJECT
+"deletingOtherFocusSessionAlertTitle" = "Delete Records";
+"deletingOtherFocusSessionAlertMessage" = "Are you sure you want to delete your activity records not linked to any subject?";
 
 // MARK: - Block
 "startBlockAlertTitle" = "Starting app block";

@@ -23,26 +23,25 @@ class FocusSessionCell: UITableViewCell {
     
     var colorName: String? {
         didSet {
-            guard let colorName else { return }
-            
-            containerView.layer.borderColor = UIColor(named: colorName)?.cgColor
-            subjectName.textColor = UIColor(named: colorName)
-            commentImageView.tintColor = UIColor(named: colorName)
-            totalHours.textColor = UIColor(named: colorName)?.darker(by: 0.8)
-            
-            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-                self.containerView.layer.borderColor = UIColor(named: colorName)?.cgColor
-                self.subjectName.textColor = UIColor(named: colorName)
-                self.commentImageView.tintColor = UIColor(named: colorName)
-                self.totalHours.textColor = UIColor(named: colorName)?.darker(by: 0.8)
+            if let colorName {
+                let borderColor = UIColor(named: colorName)?.withAlphaComponent(0.6)
+                containerView.layer.borderColor = borderColor?.cgColor
+                dateLabel.textColor = UIColor(named: colorName)
+                commentImageView.tintColor = borderColor
+            } else {
+                containerView.layer.borderColor = UIColor.buttonNormal.cgColor
+                
+                registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+                    self.containerView.layer.borderColor = UIColor.buttonNormal.cgColor
+                }
+                
+                dateLabel.textColor = .systemText40
+                commentImageView.tintColor = .buttonNormal
             }
         }
     }
     
     // MARK: - UI Properties
-    
-    let dateLabel = UILabel()
-    let totalTimeLabel = UILabel()
     
     private let containerView: UIView = {
         let view = UIView()
@@ -52,7 +51,7 @@ class FocusSessionCell: UITableViewCell {
         return view
     }()
 
-    private let subjectName: UILabel = {
+    private let dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -69,11 +68,12 @@ class FocusSessionCell: UITableViewCell {
         return imageView
     }()
 
-    private let totalHours: UILabel = {
+    private let totalTimeLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .right
+        label.textColor = .systemText80
         label.font = UIFont(name: Fonts.darkModeOnMedium, size: 15)
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -93,8 +93,8 @@ class FocusSessionCell: UITableViewCell {
     func configure(with session: FocusSession) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM"
-        subjectName.text = dateFormatter.string(from: session.date ?? Date())
-        totalHours.text = formatTime(from: Int(session.totalTime))
+        dateLabel.text = dateFormatter.string(from: session.date ?? Date())
+        totalTimeLabel.text = formatTime(from: Int(session.totalTime))
     }
     
      private func formatTime(from time: Int) -> String {
@@ -118,9 +118,9 @@ class FocusSessionCell: UITableViewCell {
 extension FocusSessionCell: ViewCodeProtocol {
     func setupUI() {
         contentView.addSubview(containerView)
-        containerView.addSubview(subjectName)
+        containerView.addSubview(dateLabel)
         containerView.addSubview(commentImageView)
-        containerView.addSubview(totalHours)
+        containerView.addSubview(totalTimeLabel)
 
         let padding = 18.0
 
@@ -131,16 +131,16 @@ extension FocusSessionCell: ViewCodeProtocol {
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
 
-            subjectName.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            subjectName.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
+            dateLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             
             commentImageView.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 26 / 344),
             commentImageView.heightAnchor.constraint(equalTo: commentImageView.widthAnchor),
             commentImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            commentImageView.trailingAnchor.constraint(equalTo: totalHours.leadingAnchor, constant: -14),
+            commentImageView.trailingAnchor.constraint(equalTo: totalTimeLabel.leadingAnchor, constant: -14),
 
-            totalHours.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            totalHours.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
+            totalTimeLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            totalTimeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
         ])
     }
 }

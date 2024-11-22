@@ -5,24 +5,31 @@
 //  Created by Leandro Silva on 07/11/24.
 //
 
-import UIKit
+import Foundation
 
 class FocusSubjectDetailsViewModel {
-    private let focusSessionManager: FocusSessionManager
-    var focusSession: FocusSession
+    // MARK: - Focus Session Manager
     
-    var titleLabel: String = String()
-    var dateString: String = String()
-    var hoursString: String = String()
-    var notes: String = String()
+    private let focusSessionManager: FocusSessionManager
+    
+    // MARK: - Properties
+    
+    var focusSession: FocusSession
+    var currentNotes: String = String()
+    
+    // MARK: - Initializer
     
     init(focusSession: FocusSession) {
         focusSessionManager = FocusSessionManager()
         self.focusSession = focusSession
     }
     
-    func updateFocusSessionComment(notes: String) {
-        focusSession.notes = notes
+    // MARK: - Methods
+    
+    func updateFocusSession() {
+        guard currentNotes != focusSession.unwrappedNotes else { return }
+        
+        focusSession.notes = currentNotes
         focusSessionManager.updateFocusSession(focusSession)
     }
     
@@ -35,20 +42,25 @@ class FocusSubjectDetailsViewModel {
         return subjectManager.fetchSubject(withID: subjectID)
     }
     
-    func makeTitle(focusSession: FocusSession) {
+    func getTitle() -> String {
         let subject = getSubjectName(subjectID: focusSession.unwrappedSubjectID)
+        
         if var subjectName = subject?.unwrappedName {
-            let maxLenght = 25
             var formattedSubjectName = subjectName
-            if subjectName.count >= maxLenght {
+            
+            let maxLength = 25
+            if subjectName.count >= maxLength {
                 formattedSubjectName = String(subjectName.prefix(25)) + "..."
             }
+            
             subjectName = String(format: NSLocalizedString("activityOf", comment: ""), formattedSubjectName)
-            titleLabel = subjectName
+            return subjectName
         }
+        
+        return String()
     }
     
-    func getDateString() {
+    func getDateString() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
         dateFormatter.timeStyle = .none
@@ -56,16 +68,10 @@ class FocusSubjectDetailsViewModel {
         let formattedDate = dateFormatter.string(from: focusSession.date ?? .now)
         let capitalizedDate = formattedDate.prefix(1).uppercased() + formattedDate.dropFirst()
 
-        dateString = capitalizedDate
+        return capitalizedDate
     }
     
-    func getFocusNotes() {
-        if let currentNotes = focusSession.notes {
-            notes = currentNotes
-        }
-    }
-    
-    func getHourString() {
+    func getHourString() -> String {
         let startDate = focusSession.date ?? .now
         
         let endDate = getEndDate(from: startDate, adding: TimeInterval(focusSession.unwrappedTotalTime))
@@ -75,7 +81,7 @@ class FocusSubjectDetailsViewModel {
 
         let passedTime = formatTime(from: focusSession.unwrappedTotalTime)
         
-        hoursString = startTime + " - " + endTime + " (\(passedTime))"
+        return startTime + " - " + endTime + " (\(passedTime))"
     }
     
     private func getEndDate(from startDate: Date, adding interval: TimeInterval) -> Date {

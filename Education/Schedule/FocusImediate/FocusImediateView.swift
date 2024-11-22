@@ -61,7 +61,7 @@ class FocusImediateView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemBackground
+        backgroundColor = .systemModalBg
         layer.cornerRadius = 24
         setupUI()
     }

@@ -8,16 +8,20 @@
 import UIKit
 
 class ThemeListCell: UITableViewCell {
+    // MARK: - ID
+    
     static let identifier = "themeListCell"
 
+    // MARK: - UI Properties
+    
     private let customContentView: UIView = {
         let view = UIView()
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
+    // MARK: - Initializer
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -28,7 +32,19 @@ class ThemeListCell: UITableViewCell {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Lifecycle
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
 
+        for subview in customContentView.subviews {
+            subview.removeFromSuperview()
+        }
+    }
+
+    // MARK: - Methods
+    
     func configureContentView(with view: UIView) {
         customContentView.addSubview(view)
 
@@ -37,15 +53,9 @@ class ThemeListCell: UITableViewCell {
             view.centerYAnchor.constraint(equalTo: customContentView.centerYAnchor),
         ])
     }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        for subview in customContentView.subviews {
-            subview.removeFromSuperview()
-        }
-    }
 }
+
+// MARK: - UI Setup
 
 extension ThemeListCell: ViewCodeProtocol {
     func setupUI() {
