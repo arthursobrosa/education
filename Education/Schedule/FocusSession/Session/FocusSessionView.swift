@@ -290,13 +290,37 @@ extension FocusSessionView {
 // MARK: - Alerts
 
 extension FocusSessionView {
-    func changeAlertVisibility(isShowing: Bool) {
+    func changeStatusAlertVisibility(isShowing: Bool) {
         UIView.animate(withDuration: 0.5) { [weak self] in
             guard let self else { return }
 
             self.statusAlertView.isHidden = !isShowing
             self.overlayView.alpha = isShowing ? 1 : 0
         }
+        
+        if isShowing {
+            setGestureRecognizer()
+        } else {
+            gestureRecognizers = nil
+        }
+        
+        for subview in subviews where !(subview is AlertView) {
+            subview.isUserInteractionEnabled = !isShowing
+        }
+    }
+    
+    private func setGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func viewWasTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self)
+        
+        guard !statusAlertView.frame.contains(tapLocation) else { return }
+        
+        changeStatusAlertVisibility(isShowing: false)
     }
 }
 

@@ -157,7 +157,7 @@ extension FocusSessionViewController {
                     self.removeTapGestureRecognizer()
                 }
             } else {
-                self.focusSessionView.changeAlertVisibility(isShowing: false)
+                self.focusSessionView.changeStatusAlertVisibility(isShowing: false)
                 self.focusSessionView.updatePauseResumeButton(isPaused: false)
                 self.focusSessionView.enablePauseResumeButton()
                 self.setGestureRecognizer()
@@ -250,7 +250,7 @@ extension FocusSessionViewController {
         focusSessionView.statusAlertView.config = alertConfig
         focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
         focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
-        focusSessionView.changeAlertVisibility(isShowing: true)
+        focusSessionView.changeStatusAlertVisibility(isShowing: true)
     }
 
     func updateViewLabels() {

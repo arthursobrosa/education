@@ -70,7 +70,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
         focusSessionView.statusAlertView.config = alertConfig
         focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
         focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
-        focusSessionView.changeAlertVisibility(isShowing: true)
+        focusSessionView.changeStatusAlertVisibility(isShowing: true)
     }
 
     func didTapFinishButton() {
@@ -79,7 +79,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
         focusSessionView.statusAlertView.config = alertConfig
         focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
         focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
-        focusSessionView.changeAlertVisibility(isShowing: true)
+        focusSessionView.changeStatusAlertVisibility(isShowing: true)
     }
 
     func didRestart() {
@@ -100,7 +100,7 @@ extension FocusSessionViewController: FocusSessionDelegate {
     }
 
     func didCancel() {
-        focusSessionView.changeAlertVisibility(isShowing: false)
+        focusSessionView.changeStatusAlertVisibility(isShowing: false)
     }
 
     func didTapExtendButton() {
