@@ -22,7 +22,7 @@ extension FocusSubjectDetailsViewController: FocusSubjectDetailsDelegate {
     
     func didTapSaveButton() {
         coordinator?.dismiss(animated: true)
-        viewModel.updateFocusSessionComment(notes: viewModel.notes)
+        viewModel.updateFocusSessionComment()
     }
 
     func didTapDiscardButton() {
@@ -39,8 +39,8 @@ extension FocusSubjectDetailsViewController: FocusSubjectDetailsDelegate {
     }
     
     func didTapCancelButton() {
-        focusSubjectDetails.notesView.text = originalNotesText
-        viewModel.notes = originalNotesText
+//        focusSubjectDetails.notesView.text = originalNotesText
+//        viewModel.notes = originalNotesText
         focusSubjectDetails.notesView.isEditable = false
         focusSubjectDetails.notesView.resignFirstResponder()
         
