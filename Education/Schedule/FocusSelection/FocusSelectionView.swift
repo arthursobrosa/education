@@ -126,8 +126,14 @@ class FocusSelectionView: UIView {
         setupUI()
 
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-            guard let selected = self.lastSelected else { return }
-            self.didTapSelectionButton(selected)
+            if let selected = self.lastSelected {
+                self.didTapSelectionButton(selected)
+            } else {
+                var selectionButtons = self.subviews.compactMap { $0 as? SelectionButton }
+                for selectionButton in selectionButtons {
+                    selectionButton.layer.borderColor = UIColor.buttonNormal.cgColor
+                }
+            }
         }
     }
 
@@ -139,7 +145,7 @@ class FocusSelectionView: UIView {
     // MARK: - Methods
 
     private func changeButtonColors(_ button: UIButton, isSelected: Bool) {
-        let color: UIColor = isSelected ? .label : .systemGray4
+        let color: UIColor = isSelected ? .buttonSelected : .buttonNormal
         button.layer.borderColor = color.cgColor
 
         continueButton.backgroundColor = .label

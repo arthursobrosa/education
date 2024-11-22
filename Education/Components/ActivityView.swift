@@ -45,31 +45,25 @@ class ActivityView: UIView {
     // MARK: - UI Properties
 
     private let studyingNowLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.text = String(localized: "studyingNow")
-        lbl.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
-
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-
-        return lbl
+        let label = UILabel()
+        label.text = String(localized: "studyingNow")
+        label.font = UIFont(name: Fonts.darkModeOnMedium, size: 13)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     private let activityTitle: UILabel = {
-        let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 17)
-
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-
-        return lbl
+        let label = UILabel()
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 17)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     private let activityTimer: UILabel = {
-        let lbl = UILabel()
-        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 17)
-
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-
-        return lbl
+        let label = UILabel()
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 17)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     lazy var activityBarButton: ActivityBarButton = {
@@ -83,16 +77,23 @@ class ActivityView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        backgroundColor = traitCollection.userInterfaceStyle == .dark ? .tabBg : .systemBackground
+        layer.shadowColor = traitCollection.userInterfaceStyle == .dark ? UIColor.tabShadow.cgColor : UIColor.label.cgColor
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, traitCollection: UITraitCollection) in
+            if traitCollection.userInterfaceStyle == .dark {
+                self.backgroundColor = .systemBackground
+                self.layer.shadowColor = UIColor.label.cgColor
+            } else {
+                self.backgroundColor = .tabBg
+                self.layer.shadowColor = UIColor.tabShadow.cgColor
+            }
+        }
 
-        backgroundColor = .systemBackground
-        layer.shadowColor = UIColor.label.cgColor
         layer.shadowOffset = CGSize(width: 0, height: -4)
         layer.shadowOpacity = 0.1
         layer.shadowRadius = 20
-
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
-            self.layer.shadowColor = UIColor.label.cgColor
-        }
 
         setupUI()
     }

@@ -298,10 +298,9 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
         viewModel.createSubject(name: cleanName)
         viewModel.setSubjectNames()
         
-        if viewModel.selectedSubjectName.isEmpty,
-           let firstSubjectName = viewModel.subjectsNames.first {
-            
-            viewModel.selectedSubjectName = firstSubjectName
+        if let subjectNameIndex = viewModel.subjectsNames.firstIndex(where: { $0 == cleanName }) {
+            let selectedSubjectName = viewModel.subjectsNames[subjectNameIndex]
+            viewModel.selectedSubjectName = selectedSubjectName
             
             updateCellAccessory(
                 for: viewModel.selectedSubjectName,
