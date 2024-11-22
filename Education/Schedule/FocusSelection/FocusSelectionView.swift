@@ -129,7 +129,7 @@ class FocusSelectionView: UIView {
             if let selected = self.lastSelected {
                 self.didTapSelectionButton(selected)
             } else {
-                var selectionButtons = self.subviews.compactMap { $0 as? SelectionButton }
+                let selectionButtons = self.subviews.compactMap { $0 as? SelectionButton }
                 for selectionButton in selectionButtons {
                     selectionButton.layer.borderColor = UIColor.buttonNormal.cgColor
                 }

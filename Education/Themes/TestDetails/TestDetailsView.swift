@@ -231,8 +231,6 @@ extension TestDetailsView: ViewCodeProtocol {
         horizontalStack.addArrangedSubview(spacer)
         horizontalStack.addArrangedSubview(questionsStack)
 
-        let padding = 24.0
-
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: topAnchor, constant: 56),
             backButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 27 / 390),

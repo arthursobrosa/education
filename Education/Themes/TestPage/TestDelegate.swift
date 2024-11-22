@@ -25,7 +25,6 @@ extension TestPageViewController: TestDelegate {
     func didTapSaveButton() {
         let totalQuestions = viewModel.totalQuestions
         let rightQuestions = viewModel.rightQuestions
-        let themeName = viewModel.themeName
         
         if viewModel.theme == nil {
             if viewModel.isThemeNameEmpty() {
