@@ -8,38 +8,44 @@
 import UIKit
 
 class SubjectCreationCoordinator: Coordinator, Dismissing {
-    
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
 
     var navigationController: UINavigationController
-    private var newNavigationController = UINavigationController()
     private let viewModel: StudyTimeViewModel
-    
+
     init(navigationController: UINavigationController, viewModel: StudyTimeViewModel) {
         self.navigationController = navigationController
         self.viewModel = viewModel
     }
-    
+
     func start() {
-        let vc = SubjectCreationViewController(viewModel: self.viewModel)
-        vc.coordinator = self
+        let viewController = SubjectCreationViewController(viewModel: viewModel)
+        viewController.coordinator = self
+
+        let newNavigationController = UINavigationController(rootViewController: viewController)
         
-        self.newNavigationController = UINavigationController(rootViewController: vc)
-        
-        if let studyTimeCoordinator = self.parentCoordinator as? StudyTimeCoordinator {
-            self.newNavigationController.transitioningDelegate = studyTimeCoordinator
+        if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
+            newNavigationController.transitioningDelegate = scheduleCoordinator
+        }
+
+        if let studyTimeCoordinator = parentCoordinator as? StudyTimeCoordinator {
+            newNavigationController.transitioningDelegate = studyTimeCoordinator
         }
         
-        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
-            self.newNavigationController.transitioningDelegate = scheduleCoordinator
+        if let subjectDetailsCoordinator = parentCoordinator as? SubjectDetailsCoordinator {
+            newNavigationController.transitioningDelegate = subjectDetailsCoordinator
         }
-        
-        self.newNavigationController.modalPresentationStyle = .pageSheet
-        self.navigationController.present(self.newNavigationController, animated: true)
+
+        newNavigationController.setNavigationBarHidden(true, animated: false)
+
+        newNavigationController.modalPresentationStyle = .overFullScreen
+        newNavigationController.modalTransitionStyle = .crossDissolve
+
+        navigationController.present(newNavigationController, animated: true)
     }
-    
+
     func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+        navigationController.dismiss(animated: animated)
     }
 }

@@ -5,31 +5,46 @@
 //  Created by Arthur Sobrosa on 28/06/24.
 //
 
-import UIKit
 import CoreData
+import UIKit
 
 final class ScheduleManager: ObjectManager {
     // MARK: - Create
-    func createSchedule(subjectID: String, dayOfTheWeek: Int, startTime: Date, endTime: Date, blocksApps: Bool, earlyAlarm: Bool, imediateAlarm: Bool) {
+
+    func createSchedule(
+        subjectID: String,
+        dayOfTheWeek: Int,
+        startTime: Date,
+        endTime: Date,
+        blocksApps: Bool,
+        alarms: [Int],
+        completed: Bool = false,
+        completionDate: Date = Date()
+    ) {
+            
         backgroundContext.performAndWait {
             guard let schedule = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: backgroundContext) as? Schedule else { return }
-            
+
             schedule.subjectID = subjectID
             schedule.dayOfTheWeek = Int16(dayOfTheWeek)
             schedule.startTime = startTime
             schedule.endTime = endTime
             schedule.blocksApps = blocksApps
-            schedule.earlyAlarm = earlyAlarm
-            schedule.imediateAlarm = imediateAlarm
+            
+            let scheduleAlarms = alarms.reduce(0) { $0 * 10 + $1 }
+            schedule.alarms = Int16(scheduleAlarms)
+            
+            schedule.completed = completed
+            schedule.completionDate = completionDate
             schedule.id = UUID().uuidString
-            
-            
+
             try? backgroundContext.save()
             CoreDataStack.shared.saveMainContext()
         }
     }
-    
+
     // MARK: - Deletion
+
     func deleteSchedule(_ schedule: Schedule) {
         let objectID = schedule.objectID
         backgroundContext.performAndWait {
@@ -40,26 +55,28 @@ final class ScheduleManager: ObjectManager {
             }
         }
     }
-    
+
     // MARK: - Update
-    func updateSchedule(_ schedule: Schedule) {
+
+    func updateSchedule(_: Schedule) {
         backgroundContext.performAndWait {
             do {
                 try backgroundContext.save()
-            } catch let error {
+            } catch {
                 print("Failed to update \(error)")
             }
         }
     }
-    
+
     // MARK: - Fetch
+
     func fetchSchedule(from id: String) -> Schedule? {
         let fetchRequest = NSFetchRequest<Schedule>(entityName: "Schedule")
         fetchRequest.predicate = NSPredicate(format: "id == %@", id)
         fetchRequest.fetchLimit = 1
-        
+
         var schedule: Schedule?
-        
+
         mainContext.performAndWait {
             do {
                 let schedules = try mainContext.fetch(fetchRequest)
@@ -68,21 +85,21 @@ final class ScheduleManager: ObjectManager {
                 print("Failed to fetch companies: \(fetchError)")
             }
         }
-        
+
         return schedule
     }
-    
+
     func fetchSchedules(subjectID: String? = nil, dayOfTheWeek: Int? = nil) -> [Schedule]? {
         let fetchRequest = NSFetchRequest<Schedule>(entityName: "Schedule")
-        
+
         if let subjectID {
             fetchRequest.predicate = NSPredicate(format: "subjectID == %@", subjectID)
         } else if let dayOfTheWeek {
             fetchRequest.predicate = NSPredicate(format: "dayOfTheWeek == %d", dayOfTheWeek)
-        } 
-        
+        }
+
         var schedules: [Schedule]?
-        
+
         mainContext.performAndWait {
             do {
                 schedules = try mainContext.fetch(fetchRequest)
@@ -90,7 +107,28 @@ final class ScheduleManager: ObjectManager {
                 print("Failed to fetch companies: \(fetchError)")
             }
         }
-        
+
         return schedules
+    }
+    
+    func refreshSchedules() {
+        guard let schedules = fetchSchedules() else { return }
+        
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: Date()) - 1
+        
+        for schedule in schedules where schedule.unwrappedDay == weekday && schedule.completed {
+            let scheduleDateComponents = calendar.dateComponents([.day], from: schedule.unwrappedCompletionDate)
+            let todayDateComponents = calendar.dateComponents([.day], from: Date())
+            
+            if let scheduleDay = scheduleDateComponents.day,
+               let today = todayDateComponents.day {
+                
+                if scheduleDay != today {
+                    schedule.completed = false
+                    updateSchedule(schedule)
+                }
+            }
+        }
     }
 }

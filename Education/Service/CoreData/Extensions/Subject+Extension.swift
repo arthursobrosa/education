@@ -9,14 +9,14 @@ import Foundation
 
 extension Subject {
     var unwrappedID: String {
-        return id ?? String()
+        id ?? String()
     }
-    
+
     var unwrappedName: String {
-        return name ?? String()
+        name ?? String()
     }
-    
+
     var unwrappedColor: String {
-        return color ?? String()
+        color ?? String()
     }
 }

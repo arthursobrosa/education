@@ -9,7 +9,7 @@ import UIKit
 
 extension UIColor {
     func darker(by percentage: CGFloat) -> UIColor? {
-        guard let components = self.cgColor.components else { return nil }
+        guard let components = cgColor.components else { return nil }
 
         let red = components[0] * percentage
         let green = components[1] * percentage

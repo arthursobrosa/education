@@ -9,6 +9,7 @@
 		<string>DarkmodeOnTrial-Medium.ttf</string>
 		<string>DarkmodeOnTrial-SemiBold.ttf</string>
 		<string>DarkmodeOnTrial-Bold.ttf</string>
+		<string>DarkmodeOnTrial-Italic.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -29,6 +30,7 @@
 	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 </dict>

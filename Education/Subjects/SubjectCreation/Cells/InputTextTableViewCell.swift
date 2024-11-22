@@ -7,78 +7,95 @@
 
 import UIKit
 
-class InputTextTableViewCell: UITableViewCell, UITextFieldDelegate {
+class InputTextTableViewCell: UITableViewCell {
+    // MARK: - ID
+    
     static let identifier = "inputTextCell"
+
+    // MARK: - Delegate to connect to subject creation
     
     weak var delegate: SubjectCreationDelegate? {
         didSet {
-            self.setupUI()
+            setupUI()
         }
     }
+
+    // MARK: - UI Properties
+    
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = String(localized: "name")
+        label.textColor = .systemText80
+        label.font = .init(name: Fonts.darkModeOnMedium, size: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     lazy var textField: UITextField = {
         let textField = UITextField()
+        textField.textAlignment = .right
         textField.backgroundColor = .clear
-        textField.placeholder = String(localized: "subjectName")
-        
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        let toolbar = self.createToolbar(withTag: 0)
-        textField.inputAccessoryView = toolbar
+        textField.textColor = UIColor(named: "system-text")
+
+        let placeholderText = String(localized: "subjectName")
+        let placeholderFont = UIFont(name: Fonts.darkModeOnItalic, size: 16)
+        let placeholderColor = UIColor(named: "system-text-40")
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: placeholderFont ?? UIFont.systemFont(ofSize: 16),
+            .foregroundColor: placeholderColor as Any,
+        ]
+
+        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         textField.delegate = self
-        
         textField.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return textField
     }()
-    
-    // MARK: - Methods
-    @objc private func doneKeyboardButtonTapped(_ sender: UIBarButtonItem) {
-        switch sender.tag {
-        case 0:
-            self.textField.resignFirstResponder()
-        default:
-            break
-        }
-    }
-    
-    @objc private func textFieldDidChange() {
-        guard let text = self.textField.text else { return }
-        
-        self.delegate?.textFieldDidChange(newText: text)
-    }
 }
+
+// MARK: - UI Setup
 
 extension InputTextTableViewCell: ViewCodeProtocol {
     func setupUI() {
-        self.contentView.addSubview(textField)
-        
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(textField)
+
         NSLayoutConstraint.activate([
-            textField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -8),
-            textField.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 0),
-            textField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0),
-            textField.heightAnchor.constraint(equalToConstant: 40)
+            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 17),
+            
+            textField.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 60),
+            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -17),
+            textField.topAnchor.constraint(equalTo: contentView.topAnchor),
+            textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
-    
-    private func createToolbar(withTag tag: Int) -> UIToolbar {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneKeyboardButtonTapped(_:)))
-        doneButton.tag = tag
-        
-        toolbar.setItems([flexSpace, doneButton], animated: false)
-        
-        return toolbar
+}
+
+// MARK: - TextField Delegate
+
+extension InputTextTableViewCell: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text {
+            let cleanName = spaceRemover(string: text)
+            
+            if cleanName.isEmpty {
+                textField.text = String()
+            }
+            
+            delegate?.textFieldDidChange(newText: cleanName)
+        }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+
+        return true
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let characterLimit = 15
-        let currentText = textField.text ?? ""
-        let newLength = currentText.count + string.count - range.length
-        return newLength <= characterLimit
+    private func spaceRemover(string: String) -> String {
+        let trimmedString = string.trimmingCharacters(in: .whitespaces)
+        return trimmedString
     }
 }

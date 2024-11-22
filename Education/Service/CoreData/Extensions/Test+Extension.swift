@@ -9,22 +9,26 @@ import Foundation
 
 extension Test {
     var unwrappedID: String {
-        return id ?? String()
+        id ?? String()
     }
-    
+
     var unwrappedRightQuestions: Int {
-        return Int(rightQuestions)
+        Int(rightQuestions)
     }
-    
+
     var unwrappedTotalQuestions: Int {
-        return Int(totalQuestions)
+        Int(totalQuestions)
     }
-    
+
     var unwrappedThemeID: String {
-        return themeID ?? String()
+        themeID ?? String()
     }
-    
+
     var unwrappedDate: Date {
-        return date ?? Date()
+        date ?? Date()
+    }
+
+    var unwrappedComment: String {
+        comment ?? String()
     }
 }

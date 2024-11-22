@@ -7,59 +7,102 @@
 
 import UIKit
 
-class FocusSessionCoordinator: Coordinator, Dismissing {
+class FocusSessionCoordinator: NSObject, Coordinator, ShowingFocusEnd, Dismissing {
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var newNavigationController = UINavigationController()
-    
-    init(navigationController: UINavigationController) {
+
+    private let activityManager: ActivityManager
+    private let blockingManager: BlockingManager
+
+    init(navigationController: UINavigationController, activityManager: ActivityManager, blockingManager: BlockingManager) {
         self.navigationController = navigationController
+        self.activityManager = activityManager
+        self.blockingManager = blockingManager
     }
-    
+
     func start() {
-        let viewModel = FocusSessionViewModel()
-        let vc = FocusSessionViewController(viewModel: viewModel, color: ActivityManager.shared.color)
-        vc.coordinator = self
-        
-        self.newNavigationController = UINavigationController(rootViewController: vc)
-        
-        if let delegateCoordinator = self.getTransitioningDelegate() as? UIViewControllerTransitioningDelegate {
-            self.newNavigationController.transitioningDelegate = delegateCoordinator
+        let viewModel = FocusSessionViewModel(activityManager: activityManager, blockingManager: blockingManager)
+        let viewController = FocusSessionViewController(viewModel: viewModel, color: activityManager.color)
+        viewController.coordinator = self
+
+        newNavigationController = UINavigationController(rootViewController: viewController)
+
+        if let delegateCoordinator = getTransitioningDelegate() as? UIViewControllerTransitioningDelegate {
+            newNavigationController.transitioningDelegate = delegateCoordinator
         }
 
-        self.newNavigationController.modalPresentationStyle = .fullScreen
-        
+        newNavigationController.modalPresentationStyle = .fullScreen
+
         // This will cause the status bar to be hidden
-        self.newNavigationController.setNavigationBarHidden(true, animated: false)
-        
-        self.navigationController.present(self.newNavigationController, animated: true)
+        newNavigationController.setNavigationBarHidden(true, animated: false)
+
+        navigationController.present(newNavigationController, animated: true)
     }
-    
+
     private func getTransitioningDelegate() -> Coordinator? {
         var delegateCoordinator: Coordinator?
-        
-        if let focusPickerCoordinator = self.parentCoordinator as? FocusPickerCoordinator {
-            delegateCoordinator = focusPickerCoordinator
+
+        if let focusPickerCoordinator = parentCoordinator as? FocusPickerCoordinator {
             
+            delegateCoordinator = focusPickerCoordinator
             focusPickerCoordinator.dismissAll()
-        } else if let focusSelectionCoordinator = self.parentCoordinator as? FocusSelectionCoordinator {
+            
+        } else if let focusSelectionCoordinator = parentCoordinator as? FocusSelectionCoordinator {
+            
             if let focusImediateCoordinator = focusSelectionCoordinator.parentCoordinator as? FocusImediateCoordinator,
                let scheduleCoordinator = focusImediateCoordinator.parentCoordinator as? ScheduleCoordinator {
+                
                 delegateCoordinator = scheduleCoordinator
+                
             } else if let scheduleCoordinator = focusSelectionCoordinator.parentCoordinator as? ScheduleCoordinator {
+                
                 delegateCoordinator = scheduleCoordinator
+                
             }
-            
+
             focusSelectionCoordinator.dismissAll()
-        } else if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
+            
+        } else if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
+            
             delegateCoordinator = scheduleCoordinator
+            
         }
-        
+
         return delegateCoordinator
     }
-    
+
+    func showFocusEnd(activityManager: ActivityManager) {
+        newNavigationController.delegate = self
+        let child = FocusEndCoordinator(navigationController: newNavigationController, activityManager: activityManager)
+        childCoordinators.append(child)
+        child.parentCoordinator = self
+        child.start()
+    }
+
     func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+        navigationController.dismiss(animated: animated)
+    }
+
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
+        }
+    }
+}
+
+extension FocusSessionCoordinator: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, didShow _: UIViewController, animated _: Bool) {
+        guard let fromVC = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
+
+        if navigationController.viewControllers.contains(fromVC) {
+            return
+        }
+
+        if let focusEndVC = fromVC as? FocusEndViewController {
+            childDidFinish(focusEndVC.coordinator as? Coordinator)
+        }
     }
 }

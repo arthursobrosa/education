@@ -9,15 +9,15 @@ import Foundation
 
 class FocusImediateViewModel {
     private let subjectManager: SubjectManager
-    
+
     var subjects = Box([Subject]())
-    
+
     init(subjectManager: SubjectManager = SubjectManager()) {
         self.subjectManager = subjectManager
     }
-    
+
     func fetchSubjects() {
-        if let subjects = self.subjectManager.fetchSubjects() {
+        if let subjects = subjectManager.fetchSubjects() {
             self.subjects.value = subjects
         }
     }

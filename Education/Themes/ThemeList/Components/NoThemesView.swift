@@ -8,124 +8,101 @@
 import UIKit
 
 class NoThemesView: UIView {
-    // MARK: - Properties
-    weak var themeDelegate: (any ThemeListDelegate)?
-    weak var testDelegate: (any ThemePageDelegate)?
-    
-    enum NoThemesCase {
-        case theme
-        case test
-        
-        var icon: String {
-            switch self {
-                case .theme:
-                    "🫧"
-                case .test:
-                    "🪁"
-            }
-        }
-        
-        var message: String {
-            switch self {
-                case .theme:
-                    String(localized: "emptyTheme")
-                case .test:
-                    String(localized: "emptyTest")
-            }
-        }
-        
-        var buttonTitle: String {
-            switch self {
-                case .theme:
-                    String(localized: "newTheme")
-                case .test:
-                    String(localized: "newTest")
-            }
-        }
-        
-        var action: Selector {
-            switch self {
-                case .theme:
-                    #selector(ThemeListDelegate.addThemeButtonTapped)
-                case .test:
-                    #selector(ThemePageDelegate.addTestButtonTapped)
-            }
-        }
-    }
-    
-    var noThemesCase: NoThemesCase? {
+    // MARK: - Delegates
+
+    weak var themeListDelegate: (any ThemeListDelegate)? {
         didSet {
-            guard let noThemesCase else { return }
-            
-            self.messageLabel.text = "\(noThemesCase.icon)\n\n\(noThemesCase.message)"
-            self.setButton()
-            
-            self.setupUI()
+            setButtonTarget(themeListDelegate, action: #selector(ThemeListDelegate.addThemeButtonTapped))
         }
     }
     
-    // MARK: - UI Components
-    private let stack: UIView = {
+    weak var themePageDelegate: (any ThemePageDelegate)? {
+        didSet {
+            setButtonTarget(themePageDelegate, action: #selector(ThemePageDelegate.addTestButtonTapped))
+        }
+    }
+
+    // MARK: - UI Properties
+    
+    private let contentView: UIView = {
         let view = UIView()
-        
+        view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         return view
     }()
-    
+
     private let messageLabel: UILabel = {
         let label = UILabel()
+        label.text = String(localized: "emptyTheme")
         label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        label.textColor = .label.withAlphaComponent(0.5)
+        label.textColor = .systemText50
         label.textAlignment = .center
         label.numberOfLines = -1
         label.lineBreakMode = .byWordWrapping
-        
         label.translatesAutoresizingMaskIntoConstraints = false
-        
         return label
     }()
     
-    private var button: ButtonComponent?
+    private lazy var addButton: ButtonComponent = {
+        let button = ButtonComponent(
+            title: String(localized: "add"),
+            textColor: .systemText80,
+            cornerRadius: 27
+        )
+        
+        button.backgroundColor = .clear
+        
+        button.layer.borderColor = UIColor.buttonNormal.cgColor
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
+            button.layer.borderColor = UIColor.buttonNormal.cgColor
+        }
+        
+        button.layer.borderWidth = 1
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    // MARK: - Initializer
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Methods
-    private func setButton() {
-        guard let noThemesCase else { return }
-        
-        self.button = ButtonComponent(title: noThemesCase.buttonTitle, textColor: .label, cornerRadius: 27)
-        self.button?.backgroundColor = .clear
-        self.button?.layer.borderColor = UIColor.label.withAlphaComponent(0.2).cgColor
-        self.button?.layer.borderWidth = 1
-        
-        self.button?.addTarget(noThemesCase == .theme ? self.themeDelegate : self.testDelegate, action: noThemesCase.action, for: .touchUpInside)
-        
-        self.button?.translatesAutoresizingMaskIntoConstraints = false
+    
+    private func setButtonTarget(_ target: Any?, action: Selector) {
+        addButton.addTarget(target, action: action, for: .touchUpInside)
     }
 }
 
 // MARK: - UI Setup
+
 extension NoThemesView: ViewCodeProtocol {
     func setupUI() {
-        guard let button else { return }
-        
-        self.addSubview(stack)
-        self.addSubview(messageLabel)
-        self.addSubview(button)
-        
+        addSubview(contentView)
+        contentView.addSubview(messageLabel)
+        contentView.addSubview(addButton)
+
         NSLayoutConstraint.activate([
-            stack.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 245/390),
-            stack.heightAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 170/245),
-            stack.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            stack.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 245 / 390),
+            contentView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 143 / 245),
+            contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            contentView.centerYAnchor.constraint(equalTo: centerYAnchor),
             
-            messageLabel.topAnchor.constraint(equalTo: stack.topAnchor),
-            messageLabel.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            messageLabel.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+            messageLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 171/390),
-            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 55/171),
-            button.centerXAnchor.constraint(equalTo: stack.centerXAnchor),
-            button.bottomAnchor.constraint(equalTo: stack.bottomAnchor)
+            addButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 40),
+            addButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 37),
+            addButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -37),
+            addButton.heightAnchor.constraint(equalTo: addButton.widthAnchor, multiplier: 55 / 171),
         ])
     }
 }

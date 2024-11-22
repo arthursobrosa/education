@@ -7,43 +7,61 @@
 
 import UIKit
 
-class SplashCoordinator: Coordinator, ShowingTabBar {
+class SplashCoordinator: Coordinator, ShowingOnboarding, ShowingTabBar {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    let themeListViewModel: ThemeListViewModel
-    
+
+    private let activityManager: ActivityManager
+    private let blockingManager: BlockingManager
+    private let notificationService: NotificationServiceProtocol?
+
     struct ScheduleNotification {
         var subjectName: String
         var startTime: Date
         var endTime: Date
     }
-    
+
     var scheduleNotification: ScheduleNotification?
-    
-    init(navigationController: UINavigationController, themeListViewModel: ThemeListViewModel) {
+
+    init(navigationController: UINavigationController, activityManager: ActivityManager?, blockingManager: BlockingManager?, notificationService: NotificationServiceProtocol?) {
         self.navigationController = navigationController
-        self.themeListViewModel = themeListViewModel
+        self.notificationService = notificationService
+        self.activityManager = activityManager ?? ActivityManager(notificationService: notificationService)
+        self.blockingManager = blockingManager ?? BlockAppsMonitor()
     }
-    
+
     func start() {
-        let vc = SplashViewController()
-        vc.coordinator = self
-        
-        self.navigationController.pushViewController(vc, animated: false)
+        let viewModel = SplashViewModel()
+        let viewController = SplashViewController(viewModel: viewModel)
+        viewController.coordinator = self
+
+        navigationController.pushViewController(viewController, animated: false)
     }
     
+    func showOnboarding() {
+        let child = OnboardingManagerCoordinator(
+            navigationController: navigationController,
+            activityManager: activityManager,
+            blockingManager: blockingManager,
+            notificationService: notificationService
+        )
+        childCoordinators.append(child)
+        child.start()
+    }
+
     func showTabBar() {
-        let tabBar = TabBarController()
+        let viewModel = TabBarViewModel(activityManager: activityManager, blockingManager: blockingManager, notificationService: notificationService)
+        let tabBar = TabBarController(viewModel: viewModel)
         tabBar.modalPresentationStyle = .fullScreen
-        
-        self.navigationController.setNavigationBarHidden(true, animated: false)
-        self.navigationController.pushViewController(tabBar, animated: false)
-        
+
+        navigationController.setNavigationBarHidden(true, animated: false)
+        navigationController.pushViewController(tabBar, animated: false)
+
         guard let scheduleNotification else { return }
-        
+
         tabBar.selectedIndex = 0
         tabBar.schedule.showScheduleNotification(subjectName: scheduleNotification.subjectName, startTime: scheduleNotification.startTime, endTime: scheduleNotification.endTime)
-        
+
         self.scheduleNotification = nil
     }
 }

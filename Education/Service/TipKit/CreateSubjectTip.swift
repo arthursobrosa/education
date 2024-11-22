@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import TipKit
 import SwiftUI
+import TipKit
 import UIKit
 
 struct CreateSubjectTip: Tip {
@@ -15,9 +15,8 @@ struct CreateSubjectTip: Tip {
         Text(String(localized: "newSubjectTip"))
             .bold()
     }
-    
+
     var message: Text? {
         Text(String(localized: "explainSubjectTip"))
     }
-    
 }

@@ -8,37 +8,49 @@
 import UIKit
 
 class ScheduleDetailsCoordinator: Coordinator, Dismissing {
+    
     weak var parentCoordinator: Coordinator?
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    private var newNavigationController = UINavigationController()
-    
+
+    private let blockingManager: BlockingManager
+    private let notificationService: NotificationServiceProtocol?
+
     private let schedule: Schedule?
     private let selectedDay: Int?
-    
-    init(navigationController: UINavigationController, schedule: Schedule?, selectedDay: Int?) {
+
+    init(navigationController: UINavigationController, blockingManager: BlockingManager, notificationService: NotificationServiceProtocol?, schedule: Schedule?, selectedDay: Int?) {
         self.navigationController = navigationController
+        self.blockingManager = blockingManager
+        self.notificationService = notificationService
         self.schedule = schedule
         self.selectedDay = selectedDay
     }
-    
+
     func start() {
-        let viewModel = ScheduleDetailsViewModel(schedule: self.schedule, selectedDay: self.selectedDay)
-        let vc = ScheduleDetailsViewController(viewModel: viewModel)
-        vc.coordinator = self
-        
-        
-        self.newNavigationController = UINavigationController(rootViewController: vc)
-        if let scheduleCoordinator = self.parentCoordinator as? ScheduleCoordinator {
-            self.newNavigationController.transitioningDelegate = scheduleCoordinator
+        let viewModel = ScheduleDetailsViewModel(notificationService: notificationService, schedule: schedule, selectedDay: selectedDay)
+        let viewController = ScheduleDetailsViewController(viewModel: viewModel, blockingManager: blockingManager)
+        viewController.coordinator = self
+
+        let newNavigationController = UINavigationController(rootViewController: viewController)
+        if let scheduleCoordinator = parentCoordinator as? ScheduleCoordinator {
+            newNavigationController.transitioningDelegate = scheduleCoordinator
         }
         
-        self.newNavigationController.modalPresentationStyle = .pageSheet
-        
-        self.navigationController.present(self.newNavigationController, animated: true)
+        newNavigationController.setNavigationBarHidden(true, animated: false)
+
+        newNavigationController.modalPresentationStyle = .pageSheet
+        navigationController.present(newNavigationController, animated: true)
+    }
+
+    func dismiss(animated: Bool) {
+        navigationController.dismiss(animated: animated)
     }
     
-    func dismiss(animated: Bool) {
-        self.navigationController.dismiss(animated: animated)
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+            childCoordinators.remove(at: index)
+            break
+        }
     }
 }

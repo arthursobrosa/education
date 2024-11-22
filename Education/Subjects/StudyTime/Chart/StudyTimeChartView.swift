@@ -1,14 +1,16 @@
-
 //
 //  Created by Eduardo Dalencon on 11/07/24.
 //
 
-import SwiftUI
 import Charts
+import SwiftUI
 
 struct StudyTimeChartView: View {
-    @StateObject var viewModel: StudyTimeViewModel = StudyTimeViewModel()
+    @StateObject var viewModel: StudyTimeViewModel = .init()
     
+    @Environment(\.colorScheme) 
+    var colorScheme
+
     var body: some View {
         ZStack {
             VStack {
@@ -17,7 +19,7 @@ struct StudyTimeChartView: View {
                     .foregroundStyle(Color(uiColor: UIColor.label))
                     .opacity(viewModel.focusSessions.value.isEmpty ? 0.5 : 0.8)
             }
-            
+
             if viewModel.aggregatedTimes.isEmpty {
                 Chart {
                     SectorMark(
@@ -26,8 +28,8 @@ struct StudyTimeChartView: View {
                         angularInset: 1.5
                     )
                     .cornerRadius(12)
-                    .foregroundStyle(Color(uiColor: UIColor.label))
-                    .opacity(0.06)
+                    .foregroundStyle(colorScheme == .dark ? .white : .black)
+                    .opacity(colorScheme == .dark ? 0.15 : 0.06)
                 }
                 .chartLegend(.hidden)
             } else {

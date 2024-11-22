@@ -1,66 +1,78 @@
 //
-//  BlockAppsMonitor.swift
+//  BlockAppsViewModel.swift
 //  Education
 //
 //  Created by Lucas Cunha on 10/07/24.
 //
 
-import FamilyControls
-import ManagedSettingsUI
-import ManagedSettings
 import DeviceActivity
+import FamilyControls
+import ManagedSettings
+import ManagedSettingsUI
 import SwiftUI
 
-class BlockAppsMonitor: ObservableObject {
-    static let shared = BlockAppsMonitor()
+protocol BlockingManager {
+    var selectionToDiscourage: FamilyActivitySelection { get set }
+
+    func applyShields()
+    func removeShields()
+}
+
+class BlockAppsMonitor: ObservableObject, BlockingManager {
+    static let appsKey = "applications"
+
     let store = ManagedSettingsStore()
-    let center = AuthorizationCenter.shared
-    
-    func requestAuthorization() {
-        let isAuthorized = center.authorizationStatus.description
-        print(isAuthorized)
-    }
-    
-    func apllyShields() {
+    private var isBlocked = false
+
+    func applyShields() {
         do {
-            guard let data = UserDefaults.standard.data(forKey: "applications") else { return }
+            guard let data = UserDefaults.standard.data(forKey: Self.appsKey) else { return }
             let decoded = try JSONDecoder().decode(FamilyActivitySelection.self, from: data)
-            print("tudo ok \(decoded)")
-            
+
             let applications = decoded.applicationTokens
             let categories = decoded.categoryTokens
-            
-            //MyShieldConfiguration().configuration(shielding: Application(token: applications.first!))
+
             store.shield.applications = applications.isEmpty ? nil : applications
             store.shield.applicationCategories = ShieldSettings.ActivityCategoryPolicy.specific(categories, except: Set())
             store.shield.webDomainCategories = ShieldSettings.ActivityCategoryPolicy.specific(categories, except: Set())
         } catch {
             print("error to decode: \(error)")
         }
-        
-        let content = UNMutableNotificationContent()
-        content.title = String(localized: "endBlockAlertTitle")
-        content.body = String(localized: "endBlockAlertBody")
-        content.categoryIdentifier = "alarm"
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-        let request = UNNotificationRequest(identifier: "end", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request)
+
+        isBlocked = true
+        createBlockAppsNotification(isStarting: true)
     }
-    
+
     func removeShields() {
-        store.shield.applications =  nil
+        guard isBlocked else { return }
+
+        store.shield.applications = nil
         store.shield.applicationCategories = nil
         store.shield.webDomainCategories = nil
+
+        isBlocked = false
+        createBlockAppsNotification(isStarting: false)
     }
-    
+
+    private func createBlockAppsNotification(isStarting: Bool) {
+        let content = UNMutableNotificationContent()
+        content.title = isStarting ? String(localized: "startBlockAlertTitle") : String(localized: "endBlockAlertTitle")
+        content.body = isStarting ? String(localized: "startBlockAlertBody") : String(localized: "endBlockAlertBody")
+        content.categoryIdentifier = "alarm"
+
+        let identifier = isStarting ? "start" : "end"
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request)
+    }
+
     @Published var selectionToDiscourage: FamilyActivitySelection {
         didSet {
             do {
                 let encoded = try JSONEncoder().encode(selectionToDiscourage)
-                UserDefaults.standard.set(encoded, forKey: "applications")
-                print("saved selection")
+                UserDefaults.standard.set(encoded, forKey: Self.appsKey)
             } catch {
                 print("error to encode data: \(error)")
             }
@@ -68,87 +80,16 @@ class BlockAppsMonitor: ObservableObject {
     }
 
     init() {
-        if let savedData = UserDefaults.standard.data(forKey: "applications") {
+        if let savedData = UserDefaults.standard.data(forKey: Self.appsKey) {
             do {
                 let decodedSelection = try JSONDecoder().decode(FamilyActivitySelection.self, from: savedData)
-                self.selectionToDiscourage = decodedSelection
+                selectionToDiscourage = decodedSelection
             } catch {
                 print("error to decode data: \(error)")
-                self.selectionToDiscourage = FamilyActivitySelection()
+                selectionToDiscourage = FamilyActivitySelection()
             }
         } else {
-            self.selectionToDiscourage = FamilyActivitySelection()
-        }
-    }
-    
-    func monitorSchedule() {
-        let schedule = DeviceActivitySchedule(
-            intervalStart: DateComponents(hour: 15, minute: 19),
-            intervalEnd: DateComponents(hour: 15, minute: 55),
-            repeats: true,
-            warningTime: nil
-        )
-        
-        print("Schedule set: \(schedule)")
-        
-        
-        let center = DeviceActivityCenter()
-        do {
-            try center.startMonitoring(.daily, during: schedule)
-            print("Monitoring started")
-            print(schedule)
-        } catch {
-            print("Error starting monitoring: \(error.localizedDescription)")
-        }
-        
-        //        store.dateAndTime.requireAutomaticDateAndTime = true
-        //        store.account.lockAccounts = true
-        //        store.passcode.lockPasscode = true
-        //        store.siri.denySiri = true
-        //        store.appStore.denyInAppPurchases = true
-        //        store.appStore.maximumRating = 5
-        //        store.appStore.requirePasswordForPurchases = true
-        //        store.media.denyExplicitContent = true
-        //        store.gameCenter.denyMultiplayerGaming = true
-        //        store.media.denyMusicService = false
-    }
-}
-
-// Implement Threshold Function
-class MyMonitorExtension: DeviceActivityMonitor {
-    let store = ManagedSettingsStore()
-    
-    override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
-        super.eventDidReachThreshold(event, activity: activity)
-        store.shield.applications = nil
-    }
-}
-
-// Create a personalized shield
-class MyShieldConfiguration: ShieldConfigurationDataSource {
-    override func configuration(shielding: Application) -> ShieldConfiguration {
-        return ShieldConfiguration(
-            backgroundBlurStyle: .extraLight,
-            backgroundColor: .blue,
-            icon: UIImage(systemName: "globe"),
-            title: ShieldConfiguration.Label(text: "algo", color: .green),
-            subtitle: ShieldConfiguration.Label(text: "some daqui!", color: .red),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Sair", color: .blue),
-            primaryButtonBackgroundColor: .cyan,
-            secondaryButtonLabel: ShieldConfiguration.Label(text: "Lutar", color: .darkGray)
-        )
-    }
-}
-
-class MyShieldActionExtension: ShieldActionDelegate {
-    override func handle(action: ShieldAction, for application: ManagedSettings.ApplicationToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
-        switch action {
-            case .primaryButtonPressed:
-                completionHandler(.defer)
-            case .secondaryButtonPressed:
-                completionHandler(.close)
-            @unknown default:
-                fatalError()
+            selectionToDiscourage = FamilyActivitySelection()
         }
     }
 }
@@ -158,35 +99,16 @@ extension DeviceActivityName {
 }
 
 class Observer: NSObject, UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    func userNotificationCenter(_: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         switch response.notification.request.identifier {
-            case "start":
-                NotificationCenter.default.post(name: Notification.Name("start"), object: nil)
-            case "end":
-                NotificationCenter.default.post(name: Notification.Name("end"), object: nil)
-            default:
-                break
+        case "start":
+            NotificationCenter.default.post(name: Notification.Name("start"), object: nil)
+        case "end":
+            NotificationCenter.default.post(name: Notification.Name("end"), object: nil)
+        default:
+            break
         }
-        completionHandler()
-    }
-}
 
-func createBlockNotification() {
-    print("Firing notifications:")
-    
-    let content = UNMutableNotificationContent()
-    content.title = "Beginning add block"
-    content.body = "😱"
-    content.categoryIdentifier = "alarm"
-    
-    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-    let request = UNNotificationRequest(identifier: "start", content: content, trigger: trigger)
-    
-    UNUserNotificationCenter.current().add(request) { error in
-        if let error {
-            print("Error adding notification: \(error.localizedDescription)")
-        } else {
-            print("Notification scheduled successfully")
-        }
+        completionHandler()
     }
 }

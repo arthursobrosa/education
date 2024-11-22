@@ -5,14 +5,19 @@
 //  Created by Arthur Sobrosa on 13/06/24.
 //
 
-import UIKit
 import CoreData
+import IQKeyboardManagerSwift
+import IQKeyboardToolbarManager
 import TipKit
+import UIKit
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardToolbarManager.shared.isEnabled = true
         try? Tips.configure()
         return true
     }

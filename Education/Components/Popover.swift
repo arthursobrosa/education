@@ -10,20 +10,21 @@ import UIKit
 class Popover: UIViewController {
     init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil, contentSize: CGSize) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        
-        self.modalPresentationStyle = .popover
-        self.preferredContentSize = contentSize
+
+        modalPresentationStyle = .popover
+        preferredContentSize = contentSize
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setPresentationVC(sourceView: UIView?, permittedArrowDirections: UIPopoverArrowDirection, sourceRect: CGRect, delegate: (any UIPopoverPresentationControllerDelegate)?) {
-        guard let presentationVC = self.popoverPresentationController else { return }
-        
+        guard let presentationVC = popoverPresentationController else { return }
+
         presentationVC.sourceView = sourceView
-        presentationVC.permittedArrowDirections = permittedArrowDirections
+        presentationVC.permittedArrowDirections = []
         presentationVC.sourceRect = sourceRect
         presentationVC.delegate = delegate
     }

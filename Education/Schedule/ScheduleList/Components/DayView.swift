@@ -9,126 +9,105 @@ import UIKit
 
 struct DayOfWeek {
     let day: String
-    let date: String
     let isSelected: Bool
     let isToday: Bool
 }
 
 class DayView: UIView {
     // MARK: - Delegate
+
     weak var delegate: ScheduleDelegate?
-    
+
     // MARK: - Properties
+
     var dayOfWeek: DayOfWeek? {
         didSet {
             guard let dayOfWeek else { return }
-            
-            self.dayLabel.text = dayOfWeek.day.lowercased()
-            self.dateLabel.text = dayOfWeek.date
-            
-            self.handleDayColors()
+
+            dateLabel.text = dayOfWeek.day.prefix(1).uppercased()
+
+            handleDayColors()
         }
     }
-    
+
     // MARK: - UI Components
-    private let dayLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 13)
-        
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
-    }()
-    
+
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
-        
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-        
         return label
     }()
-    
-    let circleView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 18
-        view.layer.masksToBounds = true
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
+
     // MARK: - Initializer
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+
+        setTapGesture()
+        setupUI()
         
-        self.setupUI()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dayViewTapped))
-        self.addGestureRecognizer(tapGesture)
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            self.handleDayColors()
+        }
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
+    
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        self.circleView.layer.cornerRadius = self.circleView.bounds.width / 2
+
+        layer.cornerRadius = bounds.width / 2
+    }
+
+    // MARK: - Methods
+
+    @objc 
+    private func dayViewTapped() {
+        delegate?.dayTapped(self)
     }
     
-    // MARK: - Methods
-    @objc private func dayViewTapped() {
-        self.delegate?.dayTapped(self)
+    private func setTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dayViewTapped))
+        addGestureRecognizer(tapGesture)
     }
 }
 
 // MARK: UI Setup
+
 extension DayView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(dayLabel)
-        circleView.addSubview(dateLabel)
-        self.addSubview(circleView)
-        
-        let padding = 4.0
-        
+        addSubview(dateLabel)
+
         NSLayoutConstraint.activate([
-            dayLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
-            dayLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            dayLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
-            circleView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: padding),
-            circleView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            circleView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            circleView.widthAnchor.constraint(equalTo: self.widthAnchor),
-            circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
-            
-            dateLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            dateLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
+            dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
-    
-    func handleDayColors() {
+
+    private func handleDayColors() {
         guard let dayOfWeek else { return }
-        
+
         let isSelected = dayOfWeek.isSelected
         let isToday = dayOfWeek.isToday
-        
-        let dayLabelFontName = (isSelected || isToday) ? Fonts.darkModeOnRegular : Fonts.darkModeOnMedium
-        
-        self.dayLabel.font = UIFont(name: dayLabelFontName, size: 13)
-        self.dayLabel.textColor = (isSelected || isToday) ? .label : .secondaryLabel
-        
+
         let dateLabelFontName = isSelected ? Fonts.darkModeOnSemiBold : Fonts.darkModeOnMedium
-        
-        self.dateLabel.font = UIFont(name: dateLabelFontName, size: 15)
-        self.dateLabel.textColor = isSelected ? .systemBackground : (isToday ? .label : .secondaryLabel)
-        
-        self.circleView.layer.borderColor = isToday ? UIColor.label.cgColor : UIColor.secondaryLabel.cgColor
-        self.circleView.layer.borderWidth = isSelected ? 0 : 1
-        self.circleView.backgroundColor = isSelected ? .label : .clear
+
+        dateLabel.font = UIFont(name: dateLabelFontName, size: 15)
+        dateLabel.textColor = isSelected ? .systemBackground : (isToday ? UIColor(named: "system-text") : UIColor(named: "system-text-50"))
+
+        if let systemTextColor = UIColor(named: "system-text")?.cgColor,
+           let systemText50Color = UIColor(named: "system-text-50")?.cgColor {
+            layer.borderColor = isToday ? systemTextColor : systemText50Color
+        }
+
+        layer.borderWidth = isSelected ? 0 : 1
+        backgroundColor = isSelected ? UIColor(named: "system-text") : .clear
     }
 }

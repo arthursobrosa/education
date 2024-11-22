@@ -8,224 +8,261 @@
 import UIKit
 
 class FocusSelectionView: UIView {
+    // MARK: - Delegate to connect with VC
+    
     weak var delegate: FocusSelectionDelegate?
-    var lastSelected: UIButton?
-    var subjectName: String
     
     // MARK: - Properties
-    private lazy var backButton: UIButton = {
-        let bttn = UIButton()
-        bttn.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        bttn.tintColor = .label
-        
-        bttn.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return bttn
-    }()
     
-    private lazy var nameLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.text = subjectName
-        lbl.textAlignment = .center
-        lbl.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
-        lbl.textColor = .label
-        
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        
-        return lbl
-    }()
-    
-    private let topLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.text = String(localized: "timeCountingQuestion")
-        lbl.textAlignment = .center
-        lbl.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-        lbl.textColor = .label
-        lbl.numberOfLines = -1
-        lbl.lineBreakMode = .byWordWrapping
-        
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        
-        return lbl
-    }()
-    
-    private lazy var timerButton: SelectionButton = {
-        let bttn = SelectionButton(title: String(localized: "timerSelectionTitle"), bold: String(localized: "timerSelectionBold"), color: self.backgroundColor)
-        bttn.tag = 0
-        
-        bttn.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return bttn
-    }()
-    
-    private lazy var pomodoroButton: SelectionButton = {
-        let bttn = SelectionButton(title: String(localized: "pomodoroSelectionTitle"), bold: String(localized: "pomodoroSelectionTitle"), color: self.backgroundColor)
-        bttn.tag = 1
-        
-        bttn.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return bttn
-    }()
-    
-    private lazy var stopwatchButton: SelectionButton = {
-        let bttn = SelectionButton(title: String(localized: "stopwatchSelectionTitle"), bold: String(localized: "stopwatchSelectionBold"), color: self.backgroundColor)
-        bttn.tag = 2
-        
-        bttn.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return bttn
-    }()
-    
-    private lazy var continueButton: ButtonComponent = {
-        let bttn = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground, cornerRadius: 26)
-        bttn.isEnabled = false
-        bttn.backgroundColor = .systemGray4
-        
-        bttn.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return bttn
-    }()
-    
-    private lazy var cancelButton: UIButton = {
-        let bttn = UIButton(configuration: .plain())
-        
-        let textColor: UIColor? = .secondaryLabel
-        
-        let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font : UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? .systemFont(ofSize: 18), .foregroundColor : textColor ?? .label])
-        bttn.setAttributedTitle(attributedString, for: .normal)
-        
-        bttn.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
-        
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-        
-        return bttn
-    }()
-    
-    // MARK: - Initializer
-    init(subjectName: String?) {
-        
-        self.subjectName = subjectName != nil ? String(format: NSLocalizedString("activityOf", comment: ""),subjectName!) : "\(String(localized: "subjectActivityImediate"))"
-        
-        super.init(frame: .zero)
-        
-        self.backgroundColor = UIColor.systemBackground
-        self.layer.cornerRadius = 12
+    var lastSelected: UIButton?
+    var subjectName: String
 
-        self.setupUI()
-        
-        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, previousTraitCollection: UITraitCollection) in
-            guard let selected = self.lastSelected else { return }
-                self.didTapSelectionButton(selected)
+    // MARK: - UI Properties
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        let image = UIImage(systemName: "xmark")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 12))
+        button.setImage(image, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.tintColor = .systemText40
+        button.addTarget(delegate, action: #selector(FocusSelectionDelegate.dismiss), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = subjectName
+        label.textAlignment = .center
+        label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
+        label.textColor = .label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private let topLabel: UILabel = {
+        let label = UILabel()
+        label.text = String(localized: "timeCountingQuestion")
+        label.textAlignment = .center
+        label.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
+        label.textColor = .label
+        label.numberOfLines = -1
+        label.lineBreakMode = .byWordWrapping
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private lazy var timerButton: SelectionButton = {
+        let button = SelectionButton(title: String(localized: "timerSelectionTitle"), bold: String(localized: "timerSelectionBold"), color: backgroundColor)
+        button.tag = 0
+        button.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var pomodoroButton: SelectionButton = {
+        let button = SelectionButton(title: String(localized: "pomodoroSelectionTitle"), bold: String(localized: "pomodoroSelectionTitle"), color: backgroundColor)
+        button.tag = 1
+        button.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var stopwatchButton: SelectionButton = {
+        let button = SelectionButton(title: String(localized: "stopwatchSelectionTitle"), bold: String(localized: "stopwatchSelectionBold"), color: self.backgroundColor)
+        button.tag = 2
+        button.addTarget(self, action: #selector(didTapSelectionButton(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var continueButton: ButtonComponent = {
+        let button = ButtonComponent(title: String(localized: "continue"), textColor: .systemBackground, cornerRadius: 26)
+        let text = String(localized: "continue")
+        let font: UIFont = .init(name: Fonts.darkModeOnMedium, size: 17) ?? .systemFont(ofSize: 17, weight: .medium)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.systemModalBg,
+            .font: font,
+        ]
+        let attributedText = NSMutableAttributedString(string: text, attributes: attributes)
+        button.setAttributedTitle(attributedText, for: .normal)
+        button.isEnabled = false
+        button.backgroundColor = .systemGray4
+        button.addTarget(delegate, action: #selector(FocusSelectionDelegate.continueButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private lazy var cancelButton: UIButton = {
+        let button = UIButton(configuration: .plain())
+        let textColor: UIColor? = .tabIcons
+        let regularFont: UIFont = UIFont(name: Fonts.darkModeOnRegular, size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .regular)
+        let attributedString = NSAttributedString(string: String(localized: "cancel"), attributes: [.font: regularFont, .foregroundColor: textColor ?? .label])
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.addTarget(delegate, action: #selector(FocusSelectionDelegate.dismissAll), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    // MARK: - Initializer
+
+    init(subjectName: String?) {
+        if let subjectName {
+            let maxLenght = 25
+            var formattedSubjectName = subjectName
+            if subjectName.count >= maxLenght {
+                formattedSubjectName = String(subjectName.prefix(25)) + "..."
+            }
+            self.subjectName = String(format: NSLocalizedString("activityOf", comment: ""), formattedSubjectName)
+        } else {
+            self.subjectName = String(localized: "subjectActivityImediate")
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Auxiliar methods
-    private func changeButtonColors(_ button: UIButton, isSelected: Bool) {
-        let color: UIColor = isSelected ? .label : .systemGray4
-        button.layer.borderColor = color.cgColor
-        
-        continueButton.backgroundColor = .label
-        let attributedString = NSAttributedString(string: continueButton.titleLabel!.text!, attributes: [.font : UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? .systemFont(ofSize: 18), .foregroundColor : UIColor.systemBackground])
-        continueButton.setAttributedTitle(attributedString, for: .normal)
-    }
-    
-    @objc private func didTapSelectionButton(_ sender: UIButton) {
-        self.continueButton.isEnabled = true
-        
-        var selectionButtons = self.subviews.compactMap { $0 as? SelectionButton }
-        
-        if let buttonIndex = selectionButtons.firstIndex(where: { $0.tag == sender.tag }) {
-            selectionButtons.remove(at: buttonIndex)
-            
-            self.changeButtonColors(sender, isSelected: true)
-            
-            for selectionButton in selectionButtons {
-                self.changeButtonColors(selectionButton, isSelected: false)
+
+        super.init(frame: .zero)
+
+        backgroundColor = .systemModalBg
+        layer.cornerRadius = 24
+
+        setupUI()
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+            if let selected = self.lastSelected {
+                self.didTapSelectionButton(selected)
+            } else {
+                let selectionButtons = self.subviews.compactMap { $0 as? SelectionButton }
+                for selectionButton in selectionButtons {
+                    selectionButton.layer.borderColor = UIColor.buttonNormal.cgColor
+                }
             }
         }
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Methods
+
+    private func changeButtonColors(_ button: UIButton, isSelected: Bool) {
+        let color: UIColor = isSelected ? .buttonSelected : .buttonNormal
+        button.layer.borderColor = color.cgColor
+
+        continueButton.backgroundColor = .label
+        let semiboldFont: UIFont = UIFont(name: Fonts.darkModeOnSemiBold, size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .semibold)
         
-        self.delegate?.selectionButtonTapped(tag: sender.tag)
-        
+        if let continueButtonText = continueButton.titleLabel?.text {
+            let attributedString = NSAttributedString(string: continueButtonText, attributes: [.font: semiboldFont, .foregroundColor: UIColor.systemBackground])
+            continueButton.setAttributedTitle(attributedString, for: .normal)
+        }
+    }
+
+    @objc 
+    private func didTapSelectionButton(_ sender: UIButton) {
+        continueButton.isEnabled = true
+
+        var selectionButtons = subviews.compactMap { $0 as? SelectionButton }
+
+        if let buttonIndex = selectionButtons.firstIndex(where: { $0.tag == sender.tag }) {
+            selectionButtons.remove(at: buttonIndex)
+
+            changeButtonColors(sender, isSelected: true)
+
+            for selectionButton in selectionButtons {
+                changeButtonColors(selectionButton, isSelected: false)
+            }
+        }
+
+        delegate?.selectionButtonTapped(tag: sender.tag)
+
         lastSelected = sender
     }
     
-    @objc private func didTapContinueButton() {
-        self.delegate?.continueButtonTapped()
-    }
-    
-    @objc private func didTapCancelButton() {
-        self.delegate?.dismissAll()
-    }
-    
-    @objc private func didTapBackButton() {
-        self.delegate?.dismiss()
+    func changeContinueButtonText(isStarting: Bool) {
+        if isStarting {
+            let text = String(localized: "start")
+            let font: UIFont = .init(name: Fonts.darkModeOnMedium, size: 17) ?? .systemFont(ofSize: 17, weight: .medium)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.systemModalBg,
+                .font: font,
+            ]
+            let attributedText = NSMutableAttributedString(string: text, attributes: attributes)
+            
+            let symbolAttachment = NSTextAttachment()
+            let symbolImage = UIImage(systemName: "play.fill")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 17)).withTintColor(.systemModalBg)
+            symbolAttachment.image = symbolImage
+            symbolAttachment.bounds = CGRect(x: 0, y: -4, width: 20, height: 20)
+            
+            let symbolAttributedString = NSAttributedString(attachment: symbolAttachment)
+            
+            attributedText.append(NSAttributedString(string: "   "))
+            attributedText.append(symbolAttributedString)
+            
+            continueButton.setAttributedTitle(attributedText, for: .normal)
+        } else {
+            let text = String(localized: "continue")
+            let font: UIFont = .init(name: Fonts.darkModeOnMedium, size: 17) ?? .systemFont(ofSize: 17, weight: .medium)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.systemModalBg,
+                .font: font,
+            ]
+            let attributedText = NSMutableAttributedString(string: text, attributes: attributes)
+            
+            continueButton.setAttributedTitle(attributedText, for: .normal)
+        }
     }
 }
 
 // MARK: - UI Setup
+
 extension FocusSelectionView: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(backButton)
-        addSubview(nameLabel)
-        self.addSubview(topLabel)
-        self.addSubview(timerButton)
-        self.addSubview(pomodoroButton)
-        self.addSubview(stopwatchButton)
-        self.addSubview(continueButton)
-        self.addSubview(cancelButton)
-        
-        let padding = 20.0
-        
+        addSubview(closeButton)
+        addSubview(titleLabel)
+        addSubview(topLabel)
+        addSubview(timerButton)
+        addSubview(pomodoroButton)
+        addSubview(stopwatchButton)
+        addSubview(continueButton)
+        addSubview(cancelButton)
+
         NSLayoutConstraint.activate([
-            backButton.topAnchor.constraint(equalTo: self.topAnchor),
-            backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            
-            nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
-            nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            
-            topLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor),
-            topLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            topLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (270/366)),
-            
-            timerButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: padding * 1.5),
-            timerButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (334/366)),
-            timerButton.heightAnchor.constraint(equalTo: timerButton.widthAnchor, multiplier: (68/334)),
-            timerButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            
-            pomodoroButton.topAnchor.constraint(equalTo: timerButton.bottomAnchor, constant: padding / 2),
+            closeButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 27 / 366),
+            closeButton.heightAnchor.constraint(equalTo: closeButton.widthAnchor),
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 11),
+            closeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 11),
+
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
+
+            topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            topLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50),
+            topLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50),
+
+            timerButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 39),
+            timerButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 330 / 366),
+            timerButton.heightAnchor.constraint(equalTo: timerButton.widthAnchor, multiplier: 72 / 330),
+            timerButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            pomodoroButton.topAnchor.constraint(equalTo: timerButton.bottomAnchor, constant: 8),
             pomodoroButton.widthAnchor.constraint(equalTo: timerButton.widthAnchor),
             pomodoroButton.heightAnchor.constraint(equalTo: timerButton.heightAnchor),
-            pomodoroButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            
-            stopwatchButton.topAnchor.constraint(equalTo: pomodoroButton.bottomAnchor, constant: padding / 2),
+            pomodoroButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            stopwatchButton.topAnchor.constraint(equalTo: pomodoroButton.bottomAnchor, constant: 8),
             stopwatchButton.widthAnchor.constraint(equalTo: timerButton.widthAnchor),
             stopwatchButton.heightAnchor.constraint(equalTo: timerButton.heightAnchor),
-            stopwatchButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            
-            continueButton.topAnchor.constraint(equalTo: stopwatchButton.bottomAnchor, constant: padding),
-            continueButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: (334/366)),
-            continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor, multiplier: (55/334)),
-            continueButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            
-            cancelButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: padding * 0.5),
-            cancelButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding)
+            stopwatchButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            continueButton.topAnchor.constraint(equalTo: stopwatchButton.bottomAnchor, constant: 21),
+            continueButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 330 / 366),
+            continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor, multiplier: 55 / 330),
+            continueButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            cancelButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: 16),
+            cancelButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            cancelButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -28),
         ])
     }
 }
-

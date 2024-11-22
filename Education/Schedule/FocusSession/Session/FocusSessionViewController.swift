@@ -5,254 +5,258 @@
 //  Created by Lucas Cunha on 01/07/24.
 //
 
-import UIKit
 import AVFoundation
-import Combine
+import Foundation
+import UIKit
 
 class FocusSessionViewController: UIViewController {
     // MARK: - Coordinator & ViewModel
-    weak var coordinator: Dismissing?
+    var timer: DispatchSourceTimer?
+
+    weak var coordinator: (ShowingFocusEnd & Dismissing)?
     let viewModel: FocusSessionViewModel
-    
-    // MARK: - Combine storage
-    private var cancellables = Set<AnyCancellable>()
-    
+
     // MARK: - Status bar hidden
+
     override var prefersStatusBarHidden: Bool {
-        return self.viewModel.prefersStatusBarHidden
+        return viewModel.prefersStatusBarHidden
     }
-    
+
     // MARK: - Properties
+
     let color: UIColor?
-    
+
     lazy var focusSessionView: FocusSessionView = {
-        let view = FocusSessionView(color: self.color)
+        let view = FocusSessionView(color: color)
         view.delegate = self
-        view.isPaused = ActivityManager.shared.isPaused
-        
+        view.updatePauseResumeButton(isPaused: viewModel.activityManager.isPaused)
+
         return view
     }()
-    
+
     // MARK: - Initializer
+
     init(viewModel: FocusSessionViewModel, color: UIColor?) {
         self.viewModel = viewModel
         self.color = color
-        
+
         super.init(nibName: nil, bundle: nil)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Lifecycle
+
     override func loadView() {
-        super.loadView()
-        
-        self.view = self.focusSessionView
+        view = focusSessionView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.setCustomNavigationItems()
-        self.bindActivity()
-        self.setGestureRecognizer()
-        self.blockApps()
-        
-        self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
-            (self: Self, previousTraitCollection: UITraitCollection) in
-            
-            self.focusSessionView.updateTimerTracker()
-        }
+
+        setCustomNavigationItems()
+        bindActivity()
+        setGestureRecognizer()
+        viewModel.blockApps()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        ActivityManager.shared.isShowingActivity = false
-        
-        switch ActivityManager.shared.timerCase {
-            case .pomodoro:
-                self.focusSessionView.showPomodoroLabel()
-            default:
-                break
+
+        viewModel.activityManager.isShowingActivityBar = false
+
+        let timerCase = viewModel.activityManager.timerCase
+
+        switch timerCase {
+        case .pomodoro:
+            focusSessionView.showPomodoroLabel()
+        default:
+            break
         }
-        
+
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            
-            let strokeEnd = self.viewModel.getStrokeEnd()
-            self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
-            
-            self.focusSessionView.setTitleLabel(for: ActivityManager.shared.subject)
+
+            self.setTitle()
+            self.setupViewLayers()
+            self.updateViewLabels()
+
+            if case .stopwatch = timerCase { return }
+
+            let isPaused = viewModel.activityManager.isPaused
+            guard !isPaused else { return }
+
+            let timerSeconds = viewModel.activityManager.timerSeconds
+            self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
         }
     }
-    
+}
+
+// MARK: - Navigation Items
+
+extension FocusSessionViewController {
     private func setCustomNavigationItems() {
-        switch ActivityManager.shared.timerCase {
-            case .timer, .pomodoro:
-                self.focusSessionView.setVisibilityButton(isActive: ActivityManager.shared.isTimeCountOn)
-            default:
-                break
+        let timerCase = viewModel.activityManager.timerCase
+
+        switch timerCase {
+        case .timer, .pomodoro:
+            let isTimerVisible = viewModel.activityManager.isTimeCountOn
+            focusSessionView.setEyeButton(isActive: isTimerVisible)
+        default:
+            break
         }
-        
-        self.focusSessionView.setTitleLabel(for: ActivityManager.shared.subject)
     }
-    
+
+    private func setTitle() {
+        focusSessionView.setTitleLabel()
+    }
+}
+
+// MARK: - View Model Binding
+
+extension FocusSessionViewController {
     private func bindActivity() {
-        ActivityManager.shared.$isPaused
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isPaused in
-                guard let self else { return }
-                
-                switch ActivityManager.shared.timerCase {
-                    case .stopwatch:
-                        return
-                    default:
-                        break
-                }
-                
-                if isPaused {
-                    self.focusSessionView.resetAnimations()
-                    
-                    let timerSeconds = ActivityManager.shared.timerSeconds
-                    
-                    let timerDuration = Double(timerSeconds)
-                    let strokeEnd = self.viewModel.getStrokeEnd()
-                    
-                    self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
-                } else {
-                    let timerSeconds = ActivityManager.shared.timerSeconds
-                    self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
-                    
-                    self.updateViewLabels()
-                }
+        viewModel.pauseStatusDidChange = { [weak self] isPaused in
+            guard let self else { return }
+
+            let timerSeconds = viewModel.activityManager.timerSeconds
+
+            if isPaused {
+                self.focusSessionView.resetAnimations()
+
+                let timerDuration = Double(timerSeconds)
+                let strokeEnd = self.viewModel.activityManager.progress
+
+                self.focusSessionView.redefineAnimation(timerDuration: timerDuration, strokeEnd: strokeEnd)
+            } else {
+                self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
             }
-            .store(in: &self.cancellables)
-        
-        ActivityManager.shared.$timerSeconds
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] timerSeconds in
-                guard let self,
-                      !self.viewModel.didTapFinish else { return }
-                
-                self.updateViewLabels()
-                
-                self.focusSessionView.setTitleLabel(for: ActivityManager.shared.subject)
-            }
-            .store(in: &self.cancellables)
-        
-        ActivityManager.shared.$timerDidFinish
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] timerDidFinish in
-                guard let self else { return }
-                
-                guard timerDidFinish else { return }
-                
+        }
+
+        viewModel.timerSecondsDidChange = { [weak self] in
+            guard let self else { return }
+
+            self.updateViewLabels()
+
+            self.setTitle()
+        }
+
+        viewModel.timerFinishedPropertyChanged = { [weak self] timerFinished in
+            guard let self else { return }
+
+            if timerFinished {
                 self.focusSessionView.redefineAnimation(timerDuration: 0, strokeEnd: 0)
                 self.focusSessionView.resetAnimations()
-                
+                self.focusSessionView.disablePauseResumeButton()
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.showEndTimeAlert()
                     self.removeTapGestureRecognizer()
                 }
-            }
-            .store(in: &self.cancellables)
-        
-        ActivityManager.shared.$isAtWorkTime
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isAtWorkTime in
-                guard let self else { return }
-                
-                isAtWorkTime ? self.blockApps() : BlockAppsMonitor.shared.removeShields()
-                
-                let strokeEnd = self.viewModel.getStrokeEnd()
-                self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
-            }
-            .store(in: &self.cancellables)
-        
-        ActivityManager.shared.$updateAfterBackground
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] updateAfterBackground in
-                guard let self else { return }
-                
-                guard updateAfterBackground else { return }
-                
-                switch ActivityManager.shared.timerCase {
-                    case .stopwatch:
-                        return
-                    default:
-                        break
-                }
-                
-                let strokeEnd = self.viewModel.getStrokeEnd()
-                self.focusSessionView.setupLayers(strokeEnd: strokeEnd)
-                
-                let timerSeconds = ActivityManager.shared.timerSeconds
-                self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
-                
-                self.focusSessionView.setTitleLabel(for: ActivityManager.shared.subject)
-            }
-            .store(in: &self.cancellables)
-    }
-    
-    private func setGestureRecognizer() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
-        self.view.addGestureRecognizer(tapGesture)
-    }
-    
-    private func removeTapGestureRecognizer() {
-            if let gestureRecognizers = self.view.gestureRecognizers {
-                for gesture in gestureRecognizers {
-                    if gesture is UITapGestureRecognizer {
-                        self.view.removeGestureRecognizer(gesture)
-                    }
-                }
+            } else {
+                self.focusSessionView.changeStatusAlertVisibility(isShowing: false)
+                self.focusSessionView.updatePauseResumeButton(isPaused: false)
+                self.focusSessionView.enablePauseResumeButton()
+                self.setGestureRecognizer()
             }
         }
-    
-    @objc func viewWasTapped() {
-        self.viewModel.prefersStatusBarHidden.toggle()
-        self.focusSessionView.changeButtonsIsHidden(self.viewModel.prefersStatusBarHidden)
-        
-        self.setNeedsStatusBarAppearanceUpdate()
+
+        viewModel.isAtWorkTimeDidChange = { [weak self] isAtWorkTime in
+            guard let self else { return }
+            
+            if isAtWorkTime {
+                self.viewModel.blockApps()
+            } else {
+                self.viewModel.unblockApps()
+            }
+
+            self.setupViewLayers()
+        }
+
+        viewModel.updatePropertyDidChange = { [weak self] in
+            guard let self else { return }
+
+            self.setupViewLayers()
+
+            let timerSeconds = self.viewModel.activityManager.timerSeconds
+            self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
+
+            self.setTitle()
+        }
     }
-    
-    func blockApps() {
-        guard ActivityManager.shared.blocksApps,
-              !ActivityManager.shared.isPaused,
-              ActivityManager.shared.isAtWorkTime else { return }
-        
-        BlockAppsMonitor.shared.apllyShields()
+}
+
+// MARK: - View Tapping
+
+extension FocusSessionViewController {
+    func setGestureRecognizer() {
+        guard view.gestureRecognizers == nil else { return }
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    private func removeTapGestureRecognizer() {
+        view.gestureRecognizers = nil
+    }
+
+    @objc 
+    func viewWasTapped() {
+        viewModel.prefersStatusBarHidden.toggle()
+        focusSessionView.changeButtonsVisibility(isHidden: viewModel.prefersStatusBarHidden)
+
+        setNeedsStatusBarAppearanceUpdate()
     }
 }
 
 // MARK: - Auxiliar Methods
+
 extension FocusSessionViewController {
+    private func setupViewLayers() {
+        let layersConfig = viewModel.activityManager.getLayersConfig()
+
+        focusSessionView.setupLayers(with: layersConfig)
+    }
+
     private func showEndTimeAlert() {
-        self.focusSessionView.showEndNotification(true)
-    }
-    
-    public func updateViewLabels() {
-        let timerString = ActivityManager.shared.isTimeCountOn ? self.viewModel.getTimerString() : String()
+        viewModel.playAlarm()
         
-        self.focusSessionView.updateLabels(timerString: timerString)
-    }
-    
-    private func handleTimerEnd() {
-        self.focusSessionView.disablePauseResumeButton()
-        
-        if ActivityManager.shared.isAlarmOn {
-            let audioService = AudioService()
-            if let url = Bundle.main.url(forResource: "alarm", withExtension: "mp3") {
-                audioService.playAudio(from: url)
+        let timerCase = viewModel.activityManager.timerCase
+        var alertCase: AlertCase
+
+        switch timerCase {
+        case .timer:
+            let subject = viewModel.activityManager.subject
+            alertCase = .finishingTimerCase(subject: subject)
+        case .pomodoro:
+            let isLastPomodoro = viewModel.activityManager.isLastPomodoro()
+
+            if isLastPomodoro {
+                let subject = viewModel.activityManager.subject
+                alertCase = .finishingTimerCase(subject: subject)
+            } else {
+                let pomodoroString = viewModel.getPomodoroString()
+                let isAtWorkTime = viewModel.activityManager.isAtWorkTime
+                alertCase = .finishingPomodoroCase(pomodoroString: pomodoroString, isAtWorkTime: isAtWorkTime)
             }
+        case .stopwatch:
+            return
         }
         
-        self.focusSessionView.resetAnimations()
-        
-        self.showEndTimeAlert()
-        self.removeTapGestureRecognizer()
+        let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: focusSessionView)
+        focusSessionView.statusAlertView.config = alertConfig
+        focusSessionView.statusAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        focusSessionView.statusAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
+        focusSessionView.changeStatusAlertVisibility(isShowing: true)
+    }
+
+    func updateViewLabels() {
+        let isTimerVisible = viewModel.activityManager.isTimeCountOn
+        let timerString = isTimerVisible ? viewModel.getTimerString() : String()
+        let pomodoroString = viewModel.getPomodoroString()
+        focusSessionView.updateTimerLabels(timerString: timerString, pomodoroString: pomodoroString)
     }
 }

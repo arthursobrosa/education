@@ -9,22 +9,41 @@ import Foundation
 
 extension Schedule {
     var unwrappedID: String {
-        return id ?? String()
+        id ?? String()
     }
-    
+
     var unwrappedSubjectID: String {
-        return subjectID ?? String()
+        subjectID ?? String()
     }
-    
+
     var unwrappedDay: Int {
-        return Int(dayOfTheWeek)
+        Int(dayOfTheWeek)
     }
-    
+
     var unwrappedStartTime: Date {
-        return startTime ?? Date()
+        startTime ?? Date()
+    }
+
+    var unwrappedEndTime: Date {
+        endTime ?? Date()
     }
     
-    var unwrappedEndTime: Date {
-        return endTime ?? Date()
+    var unwrappedAlarms: [Int] {
+        String(alarms).compactMap { $0.wholeNumberValue }
+    }
+    
+    func isAlarmOn() -> Bool {
+        guard unwrappedAlarms.count == 1,
+              let alarm = unwrappedAlarms.first,
+              alarm == 0 else {
+            
+            return false
+        }
+        
+        return true
+    }
+    
+    var unwrappedCompletionDate: Date {
+        completionDate ?? Date()
     }
 }

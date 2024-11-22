@@ -8,58 +8,106 @@
 import UIKit
 
 class ActivityButton: UIButton {
+    // MARK: - Properties
+
+    enum PlayButtonCase {
+        case fill
+        case stroke
+
+        var imageName: String {
+            switch self {
+            case .fill:
+                "play.fill"
+            case .stroke:
+                "play.circle"
+            }
+        }
+
+        var hasCircleView: Bool {
+            switch self {
+            case .fill:
+                true
+            case .stroke:
+                false
+            }
+        }
+    }
+
+    var styleCase: PlayButtonCase? {
+        didSet {
+            guard let styleCase else { return }
+
+            let imageName = styleCase.imageName
+            let image = UIImage(systemName: imageName)
+            playImageView.image = image
+
+            setupUI()
+        }
+    }
+    
+    var focusConfig: (indexPath: IndexPath?, color: UIColor?, isDaily: Bool)?
+
+    // MARK: - UI Properties
+
     let circleView: UIView = {
         let view = UIView()
         view.isUserInteractionEnabled = false
-        
+
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return view
     }()
-    
-    lazy var playImageView: UIImageView = {
-        let imageName = "play.fill"
-        let actionImage = UIImage(systemName: imageName)
-        
-        let actionImageView = UIImageView(image: actionImage)
-        actionImageView.contentMode = .scaleAspectFit
-        
-        actionImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return actionImageView
+
+    let playImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
+    // MARK: - Lifecycle
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        self.circleView.layer.cornerRadius = self.circleView.bounds.width / 2
+
+        circleView.layer.cornerRadius = circleView.bounds.width / 2
     }
 }
 
-private extension ActivityButton {
+// MARK: - UI Setup
+
+extension ActivityButton: ViewCodeProtocol {
     func setupUI() {
-        self.addSubview(circleView)
-        self.addSubview(playImageView)
-        
-        NSLayoutConstraint.activate([
-            circleView.widthAnchor.constraint(equalTo: self.widthAnchor),
-            circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
-            circleView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            circleView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            
-            playImageView.widthAnchor.constraint(equalTo: circleView.widthAnchor, multiplier: 0.4),
-            playImageView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            playImageView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor)
-        ])
+        guard let styleCase else { return }
+
+        for subview in subviews {
+            subview.removeFromSuperview()
+        }
+
+        if styleCase.hasCircleView {
+            addSubview(circleView)
+            addSubview(playImageView)
+
+            NSLayoutConstraint.activate([
+                circleView.widthAnchor.constraint(equalTo: widthAnchor),
+                circleView.heightAnchor.constraint(equalTo: circleView.widthAnchor),
+                circleView.centerXAnchor.constraint(equalTo: centerXAnchor),
+                circleView.centerYAnchor.constraint(equalTo: centerYAnchor),
+
+                playImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.4),
+                playImageView.heightAnchor.constraint(equalTo: playImageView.heightAnchor),
+                playImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+                playImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            ])
+        } else {
+            addSubview(playImageView)
+
+            NSLayoutConstraint.activate([
+                playImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.2),
+                playImageView.heightAnchor.constraint(equalTo: playImageView.heightAnchor),
+                playImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+                playImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            ])
+        }
     }
 }
