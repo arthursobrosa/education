@@ -9,7 +9,12 @@ import UIKit
 
 class ThemeListView: UIView {
     // MARK: - Delegate to connect to VC
-    weak var delegate: ThemeListDelegate?
+    
+    weak var delegate: ThemeListDelegate? {
+        didSet {
+            emptyView.themeListDelegate = delegate
+        }
+    }
     
     // MARK: - UI Properties
     
@@ -22,9 +27,7 @@ class ThemeListView: UIView {
     let contentView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -38,10 +41,7 @@ class ThemeListView: UIView {
 
     let emptyView: NoThemesView = {
         let view = NoThemesView()
-        view.noThemesCase = .theme
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
@@ -50,11 +50,8 @@ class ThemeListView: UIView {
         view.backgroundColor = .label.withAlphaComponent(0.1)
         view.alpha = 0
         view.layer.zPosition = 1
-
         view.isUserInteractionEnabled = false
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 

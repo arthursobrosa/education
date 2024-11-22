@@ -17,9 +17,10 @@ class ThemePageViewController: UIViewController {
     // MARK: - Properties
     
     private lazy var themePageView: ThemePageView = {
-        let themeView = ThemePageView()
-        themeView.delegate = self
-        return themeView
+        let view = ThemePageView()
+        view.delegate = self
+        view.emptyView.themePageDelegate = self
+        return view
     }()
 
     // MARK: - Initialization

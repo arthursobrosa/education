@@ -88,10 +88,7 @@ class ThemePageView: UIView {
 
     let emptyView: NoThemesView = {
         let view = NoThemesView()
-        view.noThemesCase = .test
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 

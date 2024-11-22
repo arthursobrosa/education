@@ -248,7 +248,7 @@ class AlertView: UIView {
         var superView: UIView
         var position: AlertPosition
         
-        static func getAlertConfig(with alertCase: AlertCase, superview: UIView) -> AlertView.AlertConfig {
+        static func getAlertConfig(with alertCase: AlertCase, superview: UIView) -> AlertConfig {
             AlertConfig(
                 title: alertCase.title,
                 body: alertCase.body,

@@ -156,8 +156,7 @@
 "rightQuestions" = "Right questions";
 "totalQuestions" = "Total questions";
 "deleteTest" = "Delete Test";
-"emptyTheme" = "You haven't recorded any exams yet";
-"emptyTest" = "You haven't recorded any tests yet";
+"emptyTheme" = "You have no test results or questions.";
 "dayLabel" = "Day";
 "questionLabel" = "Questions";
 "description" = "Notas sobre o teste/ questões";
