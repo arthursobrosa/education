@@ -112,10 +112,12 @@
 "hour" = "Hora";
 "timer" = "Temporizador";
 "notes"= "Notas";
+"emptyNotes" = "Sem notas";
+"notesPlaceholder" = "Notas sobre a atividade";
 "discard" = "Descartar";
+"erase" = "Apagar";
 "discardingFocusSessionAlertTitle" = "Descartar Atividade";
 "discardingFocusSessionAlertBody" = "Tem certeza que deseja descartar o registro da atividade?";
-"notesPlaceholder" = "Notas sobre a atividade";
 
 // MARK: - Subjects
 "subject" = "Matéria";

@@ -9,7 +9,7 @@ import Foundation
 @objc
 protocol FocusSubjectDetailsDelegate: AnyObject {
     func didTapSaveButton()
-    func didTapDiscardButton()
+    func didTapDeleteButton()
     func didTapChevronButton()
     func didTapEditButton()
     func didTapCancelButton()
@@ -22,30 +22,27 @@ extension FocusSubjectDetailsViewController: FocusSubjectDetailsDelegate {
     
     func didTapSaveButton() {
         coordinator?.dismiss(animated: true)
-        viewModel.updateFocusSessionComment()
+        viewModel.updateFocusSession()
     }
 
-    func didTapDiscardButton() {
+    func didTapDeleteButton() {
         viewModel.removeFocusSession()
         coordinator?.dismiss(animated: true)
     }
     
     func didTapEditButton() {
-        focusSubjectDetails.notesView.isEditable = true
-        focusSubjectDetails.notesView.becomeFirstResponder()
-        
-        focusSubjectDetails.showCancelButton()
-        focusSubjectDetails.hideEditButton()
+        focusSubjectDetails.changeNotesTextViewState(isEditable: true)
+        focusSubjectDetails.changeButtonsVisibility(isEditing: true)
+        focusSubjectDetails.changeSaveButtonVisibility(isShowing: true)
     }
     
     func didTapCancelButton() {
-//        focusSubjectDetails.notesView.text = originalNotesText
-//        viewModel.notes = originalNotesText
-        focusSubjectDetails.notesView.isEditable = false
-        focusSubjectDetails.notesView.resignFirstResponder()
+        focusSubjectDetails.changeNotesTextViewState(isEditable: false)
+        focusSubjectDetails.changeButtonsVisibility(isEditing: false)
+        focusSubjectDetails.changeSaveButtonVisibility(isShowing: false)
         
-        focusSubjectDetails.hideCancelButton()
-        focusSubjectDetails.showEditButton()
-        focusSubjectDetails.hideSabeButton()
+        let originalNotes = viewModel.focusSession.unwrappedNotes
+        focusSubjectDetails.updateNotesTextViewText(originalNotes)
+        focusSubjectDetails.changeNotesPlaceholderVisibility(isShowing: originalNotes.isEmpty)
     }
 }
