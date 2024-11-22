@@ -12,40 +12,56 @@ protocol SubjectCreationDelegate: AnyObject {
     func textFieldDidChange(newText: String)
     func didTapSaveButton()
     func didTapDeleteButton()
+    func didCancel()
+    func didDelete()
     func didTapCloseButton()
 }
 
 extension SubjectCreationViewController: SubjectCreationDelegate {
     func textFieldDidChange(newText: String) {
         subjectName = newText
-        changeSaveButtonState(isEnabled: !newText.isEmpty)
+        subjectCreationView.changeSaveButtonState(isEnabled: !newText.isEmpty)
     }
 
     func didTapSaveButton() {
         guard let subjectName else { return }
         
-        if viewModel.currentEditingSubject != nil {
-            viewModel.updateSubject(name: subjectName, color: viewModel.selectedSubjectColor.value)
+        let canSaveSubject = viewModel.canSaveSubject(withName: subjectName)
+        
+        if canSaveSubject {
+            viewModel.saveSubject(withName: subjectName)
+            coordinator?.dismiss(animated: true)
         } else {
-            let existingSubjects = viewModel.subjects.value
-            if existingSubjects.contains(where: { $0.name?.lowercased() == subjectName.lowercased() }) {
-                showAlert(message: String(localized: "subjectCreationUsedName"))
-                return
-            }
-
-            viewModel.createSubject(name: subjectName)
+            showUsedSubjectNameAlert(message: String(localized: "subjectCreationUsedName"))
         }
+    }
 
+    func didTapDeleteButton() {
+        guard let subjectName else { return }
+        
+        let alertCase: AlertCase = .deletingSubject(subjectName: subjectName)
+        let alertConfig = AlertView.AlertConfig.getAlertConfig(with: alertCase, superview: view)
+        deleteAlertView.config = alertConfig
+        deleteAlertView.setPrimaryButtonTarget(self, action: alertCase.primaryButtonAction)
+        deleteAlertView.setSecondaryButtonTarget(self, action: alertCase.secondaryButtonAction)
+        
+        if viewModel.currentEditingSubject != nil {
+            changeDeleteAlertVisibility(isShowing: true)
+        }
+    }
+    
+    func didCancel() {
+        changeDeleteAlertVisibility(isShowing: false)
+    }
+    
+    func didDelete() {
+        guard let subject = viewModel.currentEditingSubject else { return }
+        
+        viewModel.removeSubject(subject: subject)
         coordinator?.dismiss(animated: true)
     }
     
     func didTapCloseButton() {
         coordinator?.dismiss(animated: true)
-    }
-
-    func didTapDeleteButton() {
-        if let subject = viewModel.currentEditingSubject {
-            showDeleteAlert(for: subject)
-        }
     }
 }

@@ -126,8 +126,8 @@
 "studyTimeLastMonth" = "Mês";
 "studyTimeLastYear" = "Ano";
 "emptySubject" = "matéria";
-"deleteSubjectTitle" = "Excluir Matéria";
-"deleteSubjectMessage" = "Você tem certeza que deseja excluir %@? Seu tempo de estudo e atividades dentro do cronograma também serão excluídos.";
+"deleteSubjectTitle" = "Apagar Matéria";
+"deleteSubjectMessage" = "Tem certeza que deseja apagar a matéria \"%@\"?";
 "subjectCreationTitle" = "Matéria Inválida";
 "subjectCreationUsedName" = "Já existe uma matéria com este nome.";
 "color" = "Cor";

@@ -11,10 +11,23 @@ class SubjectCreationView: UIView {
     // MARK: - Delegate to connect with VC
     
     weak var delegate: SubjectCreationDelegate?
-
-    // MARK: - UI Components
     
-    lazy var titleLabel: UILabel = {
+    // MARK: - Properties
+    
+    var hasSubject: Bool = false {
+        didSet {
+            if hasSubject {
+                titleLabel.text = String(localized: "editSubject")
+            } else {
+                deleteButton.isHidden = true
+                titleLabel.text = String(localized: "newSubject")
+            }
+        }
+    }
+
+    // MARK: - UI Properties
+    
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
@@ -23,20 +36,16 @@ class SubjectCreationView: UIView {
         return label
     }()
     
-    lazy var closeButton: UIButton = {
-        let btn = UIButton()
-
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
         let img = UIImage(systemName: "xmark")
-        btn.setImage(img, for: .normal)
-        btn.imageView?.contentMode = .scaleAspectFit
-        btn.imageView?.tintColor = UIColor(named: "system-text-40")
-        btn.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
-
-        btn.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapCloseButton), for: .touchUpInside)
-
-        btn.translatesAutoresizingMaskIntoConstraints = false
-
-        return btn
+        button.setImage(img, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageView?.tintColor = UIColor(named: "system-text-40")
+        button.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
+        button.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapCloseButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
     let tableView: UITableView = {
@@ -50,7 +59,6 @@ class SubjectCreationView: UIView {
     private lazy var deleteButton: ButtonComponent = {
         let attributedText = NSMutableAttributedString()
 
-        // Adicionar o ícone de lixo antes do texto
         let symbolAttachment = NSTextAttachment()
         let symbolImage = UIImage(systemName: "trash")?.withRenderingMode(.alwaysTemplate)
         symbolAttachment.image = symbolImage
@@ -58,26 +66,19 @@ class SubjectCreationView: UIView {
         
         let symbolAttributedString = NSAttributedString(attachment: symbolAttachment)
         attributedText.append(symbolAttributedString)
-        
-        // Espaçamento entre o ícone e o texto
         attributedText.append(NSAttributedString(string: "   "))
-        
-        // Adicionar o texto após o ícone
         attributedText.append(NSAttributedString(string: String(localized: "deleteSubjectTitle")))
 
-        let bttn = ButtonComponent(attrString: attributedText, textColor: UIColor(named: "focus-color-red"), cornerRadius: 26)
-        
-        bttn.backgroundColor = .clear
-        bttn.layer.borderColor = UIColor(named: "focus-color-red")?.cgColor
-        bttn.layer.borderWidth = 1
-
-        bttn.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapDeleteButton), for: .touchUpInside)
-        bttn.translatesAutoresizingMaskIntoConstraints = false
-
-        return bttn
+        let button = ButtonComponent(attrString: attributedText, textColor: UIColor(named: "focus-color-red"), cornerRadius: 26)
+        button.backgroundColor = .clear
+        button.layer.borderColor = UIColor(named: "focus-color-red")?.cgColor
+        button.layer.borderWidth = 1
+        button.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapDeleteButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
-    lazy var saveButton: ButtonComponent = {
+    private lazy var saveButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "save"), cornerRadius: 27)
         button.isUserInteractionEnabled = false
         button.addTarget(delegate, action: #selector(SubjectCreationDelegate.didTapSaveButton), for: .touchUpInside)
@@ -95,13 +96,11 @@ class SubjectCreationView: UIView {
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
-
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-
         return collectionView
     }()
 
-    // MARK: - Initialization
+    // MARK: - Initializer
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -115,11 +114,17 @@ class SubjectCreationView: UIView {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Methods
-
-    func hideDeleteButton() {
-        deleteButton.isHidden = true
+    
+    func changeSaveButtonState(isEnabled: Bool) {
+        if isEnabled {
+            saveButton.backgroundColor = .buttonSelected
+            saveButton.isUserInteractionEnabled = true
+        } else {
+            saveButton.backgroundColor = .buttonOff
+            saveButton.isUserInteractionEnabled = false
+        }
     }
 }
 

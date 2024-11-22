@@ -16,7 +16,7 @@ class SubjectDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
-    private lazy var subjectDetailsView: SubjectDetailsView = {
+    lazy var subjectDetailsView: SubjectDetailsView = {
         let view = SubjectDetailsView()
         
         view.tableView.register(FocusSessionCell.self, forCellReuseIdentifier: FocusSessionCell.identifier)
@@ -147,6 +147,11 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
         if let session = viewModel.sessionsByMonth[monthKey]?[indexPath.row] {
             cell.configure(with: session)
             cell.colorName = viewModel.subject?.unwrappedColor ?? "button-normal"
+            
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+                cell.colorName = self.viewModel.subject?.unwrappedColor ?? "button-normal"
+            }
+            
             cell.hasNotes = session.hasNotes()
         }
         
@@ -154,7 +159,6 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let months = Array(self.viewModel.sessionsByMonth.keys).sorted(by: >)
         let monthKey = months[indexPath.section]
         
@@ -178,8 +182,8 @@ extension SubjectDetailsViewController: UITableViewDataSource, UITableViewDelega
         
         let headerLabel = UILabel()
         headerLabel.text = title
-        headerLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 13)
-        headerLabel.textColor = .secondaryLabel
+        headerLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 14)
+        headerLabel.textColor = .systemText80
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         
         headerView.addSubview(headerLabel)

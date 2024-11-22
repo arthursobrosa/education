@@ -271,13 +271,12 @@ extension ScheduleDetailsViewController: ScheduleDetailsDelegate {
 }
 
 extension ScheduleDetailsViewController: SubjectCreationDelegate {
+    func didCancel() {}
+    func didDelete() {}
+    
     func textFieldDidChange(newText: String) {
         scheduleDetailsView.newSubjectName = newText
-        if newText.isEmpty {
-            scheduleDetailsView.changeSaveButtonState(isEnabled: false)
-        } else {
-            scheduleDetailsView.changeSaveButtonState(isEnabled: true)
-        }
+        scheduleDetailsView.subjectCreationView.changeSaveButtonState(isEnabled: !newText.isEmpty)
     }
     
     func didTapSaveButton() {
@@ -346,7 +345,7 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
         showSubjectsPopover()
         scheduleDetailsView.changeSubjectCreationView(isShowing: false)
         scheduleDetailsView.newSubjectName = nil
-        scheduleDetailsView.changeSaveButtonState(isEnabled: false)
+        scheduleDetailsView.subjectCreationView.changeSaveButtonState(isEnabled: false)
         scheduleDetailsView.reloadSubjectTable()
     }
 }

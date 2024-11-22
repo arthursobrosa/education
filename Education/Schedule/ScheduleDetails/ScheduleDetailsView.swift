@@ -77,7 +77,7 @@ class ScheduleDetailsView: UIView {
         view.layer.cornerRadius = 16
         view.titleLabel.text = String(localized: "newSubject")
         view.delegate = subjectDelegate
-        view.hideDeleteButton()
+        view.hasSubject = false
         
         view.tableView.dataSource = self
         view.tableView.delegate = self
@@ -159,16 +159,6 @@ class ScheduleDetailsView: UIView {
             guard let self else { return }
             
             subjectCreationView.tableView.reloadData()
-        }
-    }
-    
-    func changeSaveButtonState(isEnabled: Bool) {
-        if isEnabled {
-            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-selected")
-            subjectCreationView.saveButton.isUserInteractionEnabled = true
-        } else {
-            subjectCreationView.saveButton.backgroundColor = UIColor(named: "button-off")
-            subjectCreationView.saveButton.isUserInteractionEnabled = false
         }
     }
 }

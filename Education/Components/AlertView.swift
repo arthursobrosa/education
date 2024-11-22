@@ -22,6 +22,8 @@ enum AlertCase {
     case deletingSchedule(subject: Subject)
     
     case discardingFocusSession
+    
+    case deletingSubject(subjectName: String)
 
     var title: String {
         switch self {
@@ -37,6 +39,8 @@ enum AlertCase {
             String(localized: "deleteScheduleAlertTitle")
         case .discardingFocusSession:
             String(localized: "discardingFocusSessionAlertTitle")
+        case .deletingSubject:
+            String(localized: "deleteSubjectTitle")
         }
     }
 
@@ -51,9 +55,17 @@ enum AlertCase {
         case .finishingPomodoroCase:
             getFinishPomodoroAlertBody()
         case .deletingSchedule(let subject):
-            String(format: NSLocalizedString("deleteScheduleAlertBody", comment: ""), String(subject.unwrappedName.prefix(20)))
+            String(
+                format: NSLocalizedString("deleteScheduleAlertBody", comment: ""),
+                String(subject.unwrappedName.prefix(20))
+            )
         case .discardingFocusSession:
             String(localized: "discardingFocusSessionAlertBody")
+        case .deletingSubject(let subjectName):
+            String(
+                format: NSLocalizedString("deleteSubjectMessage", comment: ""),
+                String(subjectName.prefix(20))
+            )
         }
     }
 
@@ -72,6 +84,8 @@ enum AlertCase {
         case .deletingSchedule:
             String(localized: "yes")
         case .discardingFocusSession:
+            String(localized: "yes")
+        case .deletingSubject:
             String(localized: "yes")
         }
     }
@@ -92,6 +106,8 @@ enum AlertCase {
             String(localized: "cancel")
         case .discardingFocusSession:
             String(localized: "cancel")
+        case .deletingSubject:
+            String(localized: "cancel")
         }
     }
     
@@ -107,6 +123,8 @@ enum AlertCase {
             #selector(ScheduleDelegate.didDeleteSchedule)
         case .discardingFocusSession:
             #selector(FocusEndDelegate.didDiscard)
+        case .deletingSubject:
+            #selector(SubjectCreationDelegate.didDelete)
         }
     }
 
@@ -120,12 +138,14 @@ enum AlertCase {
             #selector(ScheduleDelegate.didCancelDeletion)
         case .discardingFocusSession:
             #selector(FocusEndDelegate.didCancel)
+        case .deletingSubject:
+            #selector(SubjectCreationDelegate.didCancel)
         }
     }
 
     var position: AlertPosition {
         switch self {
-        case .restartingCase, .finishingEarlyCase, .discardingFocusSession:
+        case .restartingCase, .finishingEarlyCase, .discardingFocusSession, .deletingSubject:
             .bottom
         case .finishingTimerCase, .finishingPomodoroCase:
             .mid

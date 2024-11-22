@@ -12,10 +12,15 @@ class SubjectCreationViewController: UIViewController {
 
     weak var coordinator: Dismissing?
     let viewModel: StudyTimeViewModel
-
+    
     // MARK: - Properties
+    
+    var subjectName: String?
+    private var selectedIndexPath: IndexPath?
 
-    private lazy var subjectCreationView: SubjectCreationView = {
+    // MARK: - UI Properties
+
+    lazy var subjectCreationView: SubjectCreationView = {
         let view = SubjectCreationView()
 
         view.layer.cornerRadius = 16
@@ -34,9 +39,24 @@ class SubjectCreationViewController: UIViewController {
 
         return view
     }()
-
-    var subjectName: String?
-    private var selectedIndexPath: IndexPath?
+    
+    let deleteAlertView: AlertView = {
+        let view = AlertView()
+        view.isHidden = true
+        view.layer.zPosition = 2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let overlayView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .label.withAlphaComponent(0.1)
+        view.alpha = 0
+        view.layer.zPosition = 1
+        view.isUserInteractionEnabled = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     // MARK: - Initialization
 
@@ -59,57 +79,38 @@ class SubjectCreationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupUI()
-        setGestureRecognizer()
 
         viewModel.selectedSubjectColor.bind { [weak self] _ in
             guard let self else { return }
 
             self.reloadTable()
         }
-
-        if viewModel.currentEditingSubject == nil {
-            subjectCreationView.hideDeleteButton()
-            subjectCreationView.titleLabel.text = String(localized: "newSubject")
-        } else {
-            subjectCreationView.titleLabel.text = String(localized: "editSubject")
-        }
+        
+        subjectCreationView.hasSubject = viewModel.currentEditingSubject != nil
         
         if traitCollection.userInterfaceStyle == .light {
             view.backgroundColor = .label.withAlphaComponent(0.2)
         } else {
             view.backgroundColor = .label.withAlphaComponent(0.1)
         }
-    }
-
-    func showDeleteAlert(for subject: Subject) {
-        let title = String(localized: "deleteSubjectTitle")
-
-        let message = String(format: NSLocalizedString("deleteSubjectMessage", comment: ""), subject.unwrappedName)
-
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let confirmTitle = String(localized: "confirm")
-        let cancelTitle = String(localized: "cancel")
-
-        let deleteAction = UIAlertAction(title: confirmTitle, style: .destructive) { [weak self] _ in
-            guard let self else { return }
-            
-            self.viewModel.removeSubject(subject: subject)
-            self.coordinator?.dismiss(animated: true)
+        
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, traitCollection: UITraitCollection) in
+            if traitCollection.userInterfaceStyle == .light {
+                self.view.backgroundColor = .label.withAlphaComponent(0.2)
+            } else {
+                self.view.backgroundColor = .label.withAlphaComponent(0.1)
+            }
         }
         
-        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
-
-        alert.addAction(deleteAction)
-        alert.addAction(cancelAction)
-
-        present(alert, animated: true, completion: nil)
+        setupUI()
+        setGestureRecognizer()
     }
 
     // MARK: - Methods
 
     private func setGestureRecognizer() {
+        view.gestureRecognizers = nil
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
@@ -118,18 +119,19 @@ class SubjectCreationViewController: UIViewController {
     @objc
     private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: view)
+        
+        if deleteAlertView.isHidden {
+            guard !subjectCreationView.frame.contains(tapLocation) else { return }
 
-        guard !subjectCreationView.frame.contains(tapLocation) else { return }
-
-        coordinator?.dismiss(animated: true)
+            coordinator?.dismiss(animated: true)
+        } else {
+            guard !deleteAlertView.frame.contains(tapLocation) else { return }
+            
+            changeDeleteAlertVisibility(isShowing: false)
+        }
     }
-    
-    @objc
-    func cancelButtonTapped() {
-        coordinator?.dismiss(animated: true)
-    }
 
-    func showAlert(message: String) {
+    func showUsedSubjectNameAlert(message: String) {
         let alert = UIAlertController(title: String(localized: "subjectCreationTitle"), message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -143,11 +145,15 @@ class SubjectCreationViewController: UIViewController {
         }
     }
     
-    func changeSaveButtonState(isEnabled: Bool) {
-        let color: UIColor = isEnabled ? .buttonSelected : .buttonOff
-        
-        subjectCreationView.saveButton.backgroundColor = color
-        subjectCreationView.saveButton.isUserInteractionEnabled = isEnabled
+    func changeDeleteAlertVisibility(isShowing: Bool) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let self else { return }
+            
+            self.subjectCreationView.isUserInteractionEnabled = !isShowing
+            self.deleteAlertView.isHidden = !isShowing
+            self.overlayView.alpha = isShowing ? 1 : 0
+            setGestureRecognizer()
+        }
     }
 }
 
@@ -162,6 +168,15 @@ extension SubjectCreationViewController: ViewCodeProtocol {
             subjectCreationView.heightAnchor.constraint(equalTo: subjectCreationView.widthAnchor, multiplier: ((subjectName != nil) ? 350 : 280) / 366),
             subjectCreationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             subjectCreationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+        
+        view.addSubview(overlayView)
+
+        NSLayoutConstraint.activate([
+            overlayView.topAnchor.constraint(equalTo: view.topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
 }
@@ -217,7 +232,7 @@ extension SubjectCreationViewController: UICollectionViewDelegate, UICollectionV
            !subjectName.isEmpty,
            hasColorChanged {
             
-            changeSaveButtonState(isEnabled: true)
+            subjectCreationView.changeSaveButtonState(isEnabled: true)
         }
     }
 }

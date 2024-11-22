@@ -127,7 +127,7 @@
 "studyTimeLastYear" = "Year";
 "emptySubject" = "subject";
 "deleteSubjectTitle" = "Delete Subject";
-"deleteSubjectMessage" = "Are you sure you want to delete %@? Your study time and schedule activities will also be deleted.";
+"deleteSubjectMessage" = "Are you sure you want to delete \"%@\" subject?";
 "subjectCreationTitle" = "Invalid Subject";
 "subjectCreationUsedName" = "There is an existing subject with this name.";
 "color" = "Color";
