@@ -55,7 +55,6 @@ extension TestPageViewController {
                 datePicker.datePickerMode = .date
                 datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
                 datePicker.date = viewModel.date
-
                 return datePicker
             case 1:
                 let textField = UITextField()
@@ -67,10 +66,8 @@ extension TestPageViewController {
                 textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
                 textField.textColor = .systemText50
                 textField.sizeToFit()
-
                 textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
                 textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
-
                 return textField
             default:
                 return nil
@@ -81,15 +78,23 @@ extension TestPageViewController {
         case 0:
             let textField = UITextField()
             textField.tag = 0
+            textField.font = .init(name: Fonts.darkModeOnRegular, size: 16)
+            textField.textColor = .systemText50
+                
+            let placeholderTitle = String(localized: "themePlaceholder")
+            let placeholderColor: UIColor = .systemText40
+            let placeholderFont: UIFont = .init(name: Fonts.darkModeOnItalic, size: 16) ?? .italicSystemFont(ofSize: 16)
+            let placeholderAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: placeholderColor,
+                .font: placeholderFont,
+            ]
+            let attributedPlaceholder = NSAttributedString(string: placeholderTitle, attributes: placeholderAttributes)
+            textField.attributedPlaceholder = attributedPlaceholder
             textField.placeholder = String(localized: "themePlaceholder")
-            textField.font = UIFont(name: Fonts.darkModeOnItalic, size: 16)
-            textField.textColor = .systemText40
+                
             textField.textAlignment = .right
             textField.sizeToFit()
-            
-            textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
             textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
-            
             return textField
             
         case 1:
@@ -98,7 +103,6 @@ extension TestPageViewController {
             datePicker.datePickerMode = .date
             datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
             datePicker.date = viewModel.date
-
             return datePicker
         case 2:
             let textField = UITextField()
@@ -110,10 +114,8 @@ extension TestPageViewController {
             textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
             textField.textColor = .systemText50
             textField.sizeToFit()
-
             textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
             textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
-
             return textField
         default:
             return nil

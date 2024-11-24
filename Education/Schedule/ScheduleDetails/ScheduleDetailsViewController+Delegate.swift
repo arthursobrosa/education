@@ -286,7 +286,7 @@ extension ScheduleDetailsViewController: SubjectCreationDelegate {
     
     private func saveNewSubject() {
         guard let newSubjectName = scheduleDetailsView.newSubjectName else { return }
-        let cleanName = spaceRemover(string: newSubjectName)
+        let cleanName = newSubjectName.trimmed()
         
         if let existingSubjects = viewModel.getSubjects(),
            existingSubjects.contains(where: { $0.name?.lowercased() == cleanName.lowercased() }) {

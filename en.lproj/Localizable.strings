@@ -59,7 +59,7 @@
 "emptyWeekSchedule" = "You have no activities scheduled for this week";
 "onTimeTitle" = "On time";
 "onTimeMessage" = "It's time for your activity!";
-"startsIn" = "In %@min";
+"startsIn" = "In %@%@";
 "deleteScheduleAlertTitle" = "Remove Activity";
 "deleteScheduleAlertBody" = "Are you sure you want to remove \"%@\" Activity from your Study Plan?";
 "createNewSubject" = "Create New";

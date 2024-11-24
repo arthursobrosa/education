@@ -59,7 +59,7 @@
 "emptyWeekSchedule" = "Você ainda não tem atividades programadas para esta semana";
 "onTimeTitle" = "Na hora";
 "onTimeMessage" = "Está na hora da sua atividade!";
-"startsIn" = "Em %@min";
+"startsIn" = "Em %@%@";
 "deleteScheduleAlertTitle" = "Apagar Atividade";
 "deleteScheduleAlertBody" = "Tem certeza que deseja apagar a Atividade \"%@\" do seu Plano de Estudos?";
 "createNewSubject" = "Criar Nova";

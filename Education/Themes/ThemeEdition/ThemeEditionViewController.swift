@@ -1,5 +1,5 @@
 //
-//  ThemeCreationViewController.swift
+//  ThemeEditionViewController.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 06/09/24.
@@ -7,22 +7,26 @@
 
 import UIKit
 
-class ThemeCreationViewController: UIViewController {
+class ThemeEditionViewController: UIViewController {
+    // MARK: - Coordinator and ViewModel
+    
     weak var coordinator: Dismissing?
-    let viewModel: ThemeCreationViewModel
+    let viewModel: ThemeEditionViewModel
 
-    private lazy var themeCreationView: ThemeCreationView = {
-        let view = ThemeCreationView()
+    // MARK: - UI Components
+    
+    private lazy var themeEditionView: ThemeEditionView = {
+        let view = ThemeEditionView()
         view.delegate = self
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
     private var centerYConstraint: NSLayoutConstraint!
 
-    init(viewModel: ThemeCreationViewModel) {
+    // MARK: - Initializer
+    
+    init(viewModel: ThemeEditionViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
@@ -33,6 +37,8 @@ class ThemeCreationViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -55,7 +61,7 @@ class ThemeCreationViewController: UIViewController {
         setupUI()
         setGestureRecognizer()
 
-        themeCreationView.setTitleLabel(theme: viewModel.theme)
+        themeEditionView.setTitleLabel(theme: viewModel.theme)
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardChangedFirstResponder), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -67,6 +73,8 @@ class ThemeCreationViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
+    // MARK: - Methods
+    
     private func setGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped(_:)))
         view.addGestureRecognizer(tapGesture)
@@ -76,7 +84,7 @@ class ThemeCreationViewController: UIViewController {
     private func viewWasTapped(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: view)
 
-        guard !themeCreationView.frame.contains(tapLocation) else { return }
+        guard !themeEditionView.frame.contains(tapLocation) else { return }
 
         coordinator?.dismiss(animated: true)
     }
@@ -105,27 +113,26 @@ class ThemeCreationViewController: UIViewController {
     }
 }
 
-extension ThemeCreationViewController: ViewCodeProtocol {
+// MARK: - UI Setup
+
+extension ThemeEditionViewController: ViewCodeProtocol {
     func setupUI() {
-        view.addSubview(themeCreationView)
+        view.addSubview(themeEditionView)
 
         NSLayoutConstraint.activate([
-            themeCreationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 366 / 390),
-            themeCreationView.heightAnchor.constraint(equalTo: themeCreationView.widthAnchor, multiplier: 228 / 366),
-            themeCreationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            themeEditionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 366 / 390),
+            themeEditionView.heightAnchor.constraint(equalTo: themeEditionView.widthAnchor, multiplier: 228 / 366),
+            themeEditionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
 
-        centerYConstraint = themeCreationView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        centerYConstraint = themeEditionView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         centerYConstraint.isActive = true
     }
 }
 
-func spaceRemover(string: String) -> String {
-    let trimmedString = string.trimmingCharacters(in: .whitespaces)
-    return trimmedString
-}
+// MARK: - Text Field Delegate
 
-extension ThemeCreationViewController: UITextFieldDelegate {
+extension ThemeEditionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
@@ -134,6 +141,6 @@ extension ThemeCreationViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        viewModel.currentThemeName = spaceRemover(string: text)
+        viewModel.currentThemeName = text.trimmed()
     }
 }

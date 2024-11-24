@@ -11,7 +11,7 @@ import UIKit
 class ThemeListViewController: UIViewController {
     // MARK: - Coordinator and ViewModel
 
-    weak var coordinator: (ShowingThemePage & ShowingThemeCreation & ShowingTestPage)?
+    weak var coordinator: (ShowingThemePage & ShowingThemeEdition & ShowingTestPage)?
     let viewModel: ThemeListViewModel
 
     var createTestTip = CreateTestTip()
@@ -222,7 +222,7 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         let editButton = UIContextualAction(style: .normal, title: "") { [weak self] _, _, _ in
             guard let self else { return }
 
-            self.coordinator?.showThemeCreation(theme: theme)
+            self.coordinator?.showThemeEdition(theme: theme)
         }
 
         editButton.backgroundColor = .systemBackground
