@@ -57,13 +57,14 @@ class CustomTabBar: UITabBar {
 
     private func getPath() -> CGPath {
         let width = bounds.width * (240 / 390)
-        let yOffset = bounds.height * (6 / 65)
+        let height = width * (65 / 240)
+        let yOffset = height * (6 / 65)
         
         let adjustedRect = CGRect(
             x: bounds.midX - width / 2,
             y: bounds.origin.y - yOffset,
             width: width,
-            height: bounds.height
+            height: height
         )
 
         return UIBezierPath(roundedRect: adjustedRect, cornerRadius: 50).cgPath
