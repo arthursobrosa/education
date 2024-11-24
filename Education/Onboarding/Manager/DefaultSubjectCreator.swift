@@ -38,13 +38,17 @@ class DefaultSubjectCreator {
         String(localized: "subject_mathematics"),
     ]
     
+    private var subjectsAddedByUser: [String] = []
+    
     func fetchSubjectNames() -> [String] {
-        return defaultSubjects.sorted()
+        var subjectNames: [String] = defaultSubjects.sorted()
+        subjectNames.append(contentsOf: subjectsAddedByUser)
+        return subjectNames
     }
     
     func addSubjectName(_ name: String) {
         if !defaultSubjects.contains(name) {
-            defaultSubjects.append(name)
+            subjectsAddedByUser.append(name)
         }
     }
     

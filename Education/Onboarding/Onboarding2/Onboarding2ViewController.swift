@@ -16,6 +16,10 @@ class Onboarding2ViewController: UIViewController {
         }
     }
     
+    // MARK: - Properties
+    
+    private var isFirstTimeShowing: Bool = true
+    
     // MARK: - UI Properties
     
     private let onboarding2View = Onboarding2View()
@@ -28,11 +32,10 @@ class Onboarding2ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        onboarding2View.animate()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        onboarding2View.reset()
+        if isFirstTimeShowing {
+            isFirstTimeShowing = false
+            onboarding2View.animate()
+            return
+        }
     }
 }
