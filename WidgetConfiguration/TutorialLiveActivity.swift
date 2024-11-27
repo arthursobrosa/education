@@ -65,7 +65,6 @@ func zeroAdder(time: Int) -> String {
 }
 
 struct WidgetCircleTimerView: View {
-    
     var progress: Double
     var duration: String
     let color: String
@@ -76,24 +75,18 @@ struct WidgetCircleTimerView: View {
             Circle()
                 .stroke(lineWidth: 8)
                 .opacity(0.25)
-                .foregroundColor(Color(UIColor(named: "system-activity-10") ?? .gray))
+                .foregroundColor(Color(UIColor.systemGray3))
                 .frame(width: 60, height: 60)
             
-            if restTime {
-                Circle()
-                    .trim(from: 1.0 - progress, to: 1.0)
-                    .stroke(style: StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
-                    .rotationEffect(.degrees(270.0))
-                    .foregroundColor(Color(UIColor(named: color) ?? .blue))
-                    .frame(width: 60, height: 60)
-            } else {
-                Circle()
-                    .trim(from: 0.0, to: progress)
-                    .stroke(style: StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
-                    .rotationEffect(.degrees(270.0))
-                    .foregroundColor(Color(UIColor(named: color) ?? .blue))
-                    .frame(width: 60, height: 60)
-            }
+            let startFraction: CGFloat = restTime ? (1.0 - progress) : 0.0
+            let endFraction: CGFloat = restTime ? 1.0 : progress
+            
+            Circle()
+                .trim(from: startFraction, to: endFraction)
+                .stroke(style: StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
+                .rotationEffect(.degrees(270.0))
+                .foregroundColor(Color(UIColor(named: color) ?? .blue))
+                .frame(width: 60, height: 60)
         }
     }
 }
@@ -101,7 +94,13 @@ struct WidgetCircleTimerView: View {
 struct TutorialLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: TimerAttributes.self) { context in
-            LiveActivityView(state: context.state, title: context.attributes.name, color: context.attributes.color, restTime: context.attributes.restTime).activitySystemActionForegroundColor(.blue)
+            LiveActivityView(
+                state: context.state,
+                title: context.attributes.name,
+                color: context.attributes.color,
+                restTime: context.attributes.restTime
+            )
+            .activitySystemActionForegroundColor(.blue)
         } dynamicIsland: { context in
             DynamicIsland {
                 expandedContent(context: context)

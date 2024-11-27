@@ -19,5 +19,4 @@ struct TimerAttributes: ActivityAttributes {
     var name: String
     var color: String
     var restTime: Bool
-    
 }

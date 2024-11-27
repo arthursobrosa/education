@@ -18,7 +18,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
-            icon: UIImage(named: "books"),
+            icon: UIImage.books,
             title: ShieldConfiguration.Label(text: String(localized: "shieldTitle"), color: .label),
             subtitle: ShieldConfiguration.Label(
                 text: String(localized: "shieldSubtitle"),
@@ -34,7 +34,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .light,
             backgroundColor: .systemBackground,
-            icon: UIImage(named: "books"),
+            icon: UIImage.books,
             title: ShieldConfiguration.Label(text: String(localized: "shieldTitle"), color: .label),
             subtitle: ShieldConfiguration.Label(
                 text: String(localized: "shieldSubtitle"),
