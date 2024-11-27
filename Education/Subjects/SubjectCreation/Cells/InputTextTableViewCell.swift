@@ -8,7 +8,7 @@
 import UIKit
 
 class InputTextTableViewCell: UITableViewCell {
-    // MARK: - ID
+    // MARK: - Identifier
     
     static let identifier = "inputTextCell"
 
@@ -35,11 +35,12 @@ class InputTextTableViewCell: UITableViewCell {
         let textField = UITextField()
         textField.textAlignment = .right
         textField.backgroundColor = .clear
-        textField.textColor = UIColor(named: "system-text")
+        textField.textColor = .systemText50
+        textField.font = .init(name: Fonts.darkModeOnMedium, size: 16)
 
         let placeholderText = String(localized: "subjectName")
         let placeholderFont = UIFont(name: Fonts.darkModeOnItalic, size: 16)
-        let placeholderColor = UIColor(named: "system-text-40")
+        let placeholderColor: UIColor = .systemText40
 
         let attributes: [NSAttributedString.Key: Any] = [
             .font: placeholderFont ?? UIFont.systemFont(ofSize: 16),
@@ -77,15 +78,15 @@ extension InputTextTableViewCell: ViewCodeProtocol {
 
 extension InputTextTableViewCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let text = textField.text {
-            let cleanName = spaceRemover(string: text)
-            
-            if cleanName.isEmpty {
-                textField.text = String()
-            }
-            
-            delegate?.textFieldDidChange(newText: cleanName)
+        guard let text = textField.text else { return }
+        
+        let cleanName = spaceRemover(string: text)
+        
+        if cleanName.isEmpty {
+            textField.text = String()
         }
+        
+        delegate?.textFieldDidChange(newText: cleanName)
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

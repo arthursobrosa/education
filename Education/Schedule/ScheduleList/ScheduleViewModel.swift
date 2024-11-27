@@ -148,6 +148,10 @@ extension ScheduleViewModel {
         let startTimeInMinutes = startHour * 60 + startMinute
         let endTimeInMinutes = endHour * 60 + endMinute
         let currentTimeInMinutes = currentHour * 60 + currentMinute
+        
+        if schedule.completed {
+            return .completed
+        }
 
         if currentTimeInMinutes < startTimeInMinutes {
             let differenceInMinutes = startTimeInMinutes - currentTimeInMinutes
@@ -156,17 +160,9 @@ extension ScheduleViewModel {
 
             return .upcoming(hoursLeft: String(hoursLeft), minutesLeft: String(minutesLeft))
         } else if currentTimeInMinutes <= endTimeInMinutes {
-            if schedule.completed {
-                return .completed
-            } else {
-                return .ongoing
-            }
+            return .ongoing
         } else {
-            if schedule.completed {
-                return .completed
-            } else {
-                return .late
-            }
+            return .late
         }
     }
     

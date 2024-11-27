@@ -64,13 +64,24 @@ enum EventCase {
     }
 
     private func getUpcomingString() -> String {
-        guard case let .upcoming(hoursLeft, minutesLeft) = self else {
+        guard case let .upcoming(hoursLeft, minutesLeft) = self,
+              let hours = Int(hoursLeft),
+              let minutes = Int(minutesLeft) else {
+            
             return String()
         }
 
-        if Int(hoursLeft) == 0 {
-            return String(format: NSLocalizedString("startsIn", comment: ""), minutesLeft)
+        if hours == 0 {
+            return String(format: NSLocalizedString("startsIn", comment: ""), minutesLeft, "min")
         } else {
+            if minutes == 0 {
+                return String(format: NSLocalizedString("startsIn", comment: ""), hoursLeft, "h")
+            }
+            
+            if minutes < 10 {
+                return String(format: NSLocalizedString("startsIn", comment: ""), "0" + minutesLeft, "min")
+            }
+            
             return String(format: NSLocalizedString("timeLeft", comment: ""), hoursLeft, minutesLeft)
         }
     }

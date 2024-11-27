@@ -74,13 +74,7 @@ class TestPageViewController: UIViewController {
     
     @objc
     func textFieldEditingDidBegin(_ sender: UITextField) {
-        if sender.tag == 0 {
-            sender.textColor = .systemText
-            sender.font = UIFont(name: Fonts.darkModeOnRegular, size: 16)
-            sender.text = String()
-        } else {
-            sender.text = String()
-        }
+        sender.text = String()
     }
 
     @objc 
@@ -89,14 +83,13 @@ class TestPageViewController: UIViewController {
 
         switch sender.tag {
         case 0:
-            let cleanName = spaceRemover(string: text)
-            
+            let cleanName = text.trimmed()
+
             if cleanName.isEmpty {
                 viewModel.themeName = ""
             } else {
                 viewModel.themeName = cleanName
             }
-            
         case 1:
             if text.isEmpty {
                 sender.text = "0"
@@ -114,11 +107,6 @@ class TestPageViewController: UIViewController {
         default:
             break
         }
-    }
-    
-    func spaceRemover(string: String) -> String {
-        let trimmedString = string.trimmingCharacters(in: .whitespaces)
-        return trimmedString
     }
 
     @objc 

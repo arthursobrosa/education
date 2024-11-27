@@ -35,6 +35,7 @@ class OnboardingManagerViewModel {
     
     func createNewSubjectName(_ name: String) {
         defaultSubjectCreator.addSubjectName(name)
+        selectedSubjectNames.append(name)
         fetchSubjectNames()
     }
     

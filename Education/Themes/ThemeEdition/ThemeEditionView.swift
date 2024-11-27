@@ -1,5 +1,5 @@
 //
-//  ThemeCreationView.swift
+//  ThemeEditionView.swift
 //  Education
 //
 //  Created by Arthur Sobrosa on 06/09/24.
@@ -7,13 +7,17 @@
 
 import UIKit
 
-class ThemeCreationView: UIView {
-    weak var delegate: ThemeCreationDelegate? {
+class ThemeEditionView: UIView {
+    // MARK: - Delegate to connect with VC
+    
+    weak var delegate: ThemeEditionDelegate? {
         didSet {
             delegate?.setTextFieldDelegate(textField)
         }
     }
 
+    // MARK: - UI Properties
+    
     private let themeTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 14)
@@ -27,6 +31,7 @@ class ThemeCreationView: UIView {
     lazy var textField: PaddedTextField = {
         let textField = PaddedTextField()
         textField.textInsets = .init(top: 0, left: 15, bottom: 0, right: 15)
+        textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
         
         let placeholderColor = UIColor.systemText40
         let placeholderFont = UIFont(name: Fonts.darkModeOnItalic, size: 15)
@@ -39,17 +44,11 @@ class ThemeCreationView: UIView {
         
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         
-        textField.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
-
         textField.layer.borderColor = UIColor(named: "button-normal")?.cgColor
         textField.layer.borderWidth = 1
-
         textField.layer.cornerRadius = 18
-
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-
         textField.translatesAutoresizingMaskIntoConstraints = false
-
         return textField
     }()
 
@@ -62,27 +61,25 @@ class ThemeCreationView: UIView {
             fontSize: 17,
             cornerRadius: 28
         )
-        button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
-
+        
         button.tintColor = .systemModalBg
-
         button.layer.borderColor = UIColor(named: "button-normal")?.cgColor
         button.layer.borderWidth = 1
-
+        button.addTarget(delegate, action: #selector(ThemeEditionDelegate.didTapCancelButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-
         return button
     }()
 
     lazy var continueButton: ButtonComponent = {
         let button = ButtonComponent(title: String(localized: "continue"), textColor: .systemModalBg, cornerRadius: 28)
-        button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
+        button.addTarget(delegate, action: #selector(ThemeEditionDelegate.didTapContinueButton), for: .touchUpInside)
         button.backgroundColor = .buttonSelected
         button.translatesAutoresizingMaskIntoConstraints = false
-
         return button
     }()
 
+    // MARK: - Initializer
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -102,21 +99,12 @@ class ThemeCreationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc 
+    // MARK: - Methods
+    
+    @objc
     private func textFieldDidChange(_ sender: UITextField) {
         guard let text = sender.text else { return }
-
         delegate?.textFieldDidChange(newText: text)
-    }
-
-    @objc 
-    private func didTapCancelButton() {
-        delegate?.didTapCancelButton()
-    }
-
-    @objc 
-    private func didTapContinueButton() {
-        delegate?.didTapContinueButton()
     }
 
     func setTitleLabel(theme: Theme?) {
@@ -138,7 +126,9 @@ class ThemeCreationView: UIView {
     }
 }
 
-extension ThemeCreationView: ViewCodeProtocol {
+// MARK: - UI Setup
+
+extension ThemeEditionView: ViewCodeProtocol {
     func setupUI() {
         addSubview(themeTitleLabel)
         addSubview(textField)

@@ -8,8 +8,12 @@
 import UIKit
 
 class ColorPickerCell: UITableViewCell {
+    // MARK: - Identifier
+    
     static let identifier = "colorPickerCell"
 
+    // MARK: - Properties
+    
     var color: String? {
         didSet {
             guard let color else { return }
@@ -18,13 +22,14 @@ class ColorPickerCell: UITableViewCell {
         }
     }
 
+    // MARK: - UI Properties
+    
     private let colorLabel: UILabel = {
         let label = UILabel()
         label.text = String(localized: "color")
-        label.textColor = UIColor(named: "button-selected")
-
+        label.textColor = .systemText80
+        label.font = .init(name: Fonts.darkModeOnMedium, size: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
 
@@ -36,9 +41,10 @@ class ColorPickerCell: UITableViewCell {
         return view
     }()
 
+    // MARK: - Initializer
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         setupUI()
     }
 
@@ -46,6 +52,8 @@ class ColorPickerCell: UITableViewCell {
         super.init(coder: coder)
     }
 }
+
+// MARK: - UI Setup
 
 extension ColorPickerCell: ViewCodeProtocol {
     func setupUI() {
@@ -63,6 +71,8 @@ extension ColorPickerCell: ViewCodeProtocol {
         ])
     }
 }
+
+// MARK: - Subviews
 
 class RainbowCircle: UIView {
     private var radius: CGFloat {
