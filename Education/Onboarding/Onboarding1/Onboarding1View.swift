@@ -34,7 +34,7 @@ class Onboarding1View: OnboardingView {
     }
     
     func reset() {
-        welcomingView.restartAnimation()
+        welcomingView.resetView()
     }
 }
 

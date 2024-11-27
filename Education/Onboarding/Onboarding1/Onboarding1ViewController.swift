@@ -32,18 +32,15 @@ class Onboarding1ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if isFirstTimeShowing {
-            isFirstTimeShowing = false
-            return
-        }
-        
         onboarding1View.reset()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        onboarding1View.animate()
+        if isFirstTimeShowing {
+            isFirstTimeShowing = false
+            onboarding1View.animate()
+        }
     }
     
     // MARK: - Methods

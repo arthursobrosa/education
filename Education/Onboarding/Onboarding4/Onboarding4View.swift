@@ -117,10 +117,10 @@ extension Onboarding4View {
             successLabel.topAnchor.constraint(equalTo: topAnchor, constant: 195),
             successLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            contentView.topAnchor.constraint(equalTo: successLabel.bottomAnchor, constant: 74),
+            contentView.topAnchor.constraint(equalTo: successLabel.bottomAnchor, constant: 44),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            contentView.bottomAnchor.constraint(equalTo: readyLabel.topAnchor, constant: -50),
+            contentView.bottomAnchor.constraint(equalTo: readyLabel.topAnchor, constant: -20),
             
             readyLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -184),
             readyLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),

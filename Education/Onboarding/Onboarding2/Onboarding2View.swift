@@ -32,10 +32,6 @@ class Onboarding2View: OnboardingView {
     func animate() {
         welcomingView.startAnimation()
     }
-    
-    func reset() {
-        welcomingView.restartAnimation()
-    }
 }
 
 // MARK: - UI Setup

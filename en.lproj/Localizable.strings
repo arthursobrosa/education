@@ -59,7 +59,7 @@
 "emptyWeekSchedule" = "You have no activities scheduled for this week";
 "onTimeTitle" = "On time";
 "onTimeMessage" = "It's time for your activity!";
-"startsIn" = "In %@min";
+"startsIn" = "In %@%@";
 "deleteScheduleAlertTitle" = "Remove Activity";
 "deleteScheduleAlertBody" = "Are you sure you want to remove \"%@\" Activity from your Study Plan?";
 "createNewSubject" = "Create New";
@@ -215,11 +215,11 @@
 "skip" = "Skip";
 "next" = "Next";
 "welcomeText" = "Welcome to Planno";
-"appDescription" = "An app made to help you on your study journeys";
+"appDescription" = "An app made to help you on your study journey";
 "simple" = "Simple.";
 "clear" = "Clear.";
 "straightforward" = "Straightforward.";
-"believeToBe" = "The way we believe is should be.";
+"believeToBe" = "The way we believe it should be.";
 "letsStart" = "Let's start?";
 "addSubjects" = "Add the subjects you want to study.";
 "subjectsSuccess" = "Subjects added successfully!";

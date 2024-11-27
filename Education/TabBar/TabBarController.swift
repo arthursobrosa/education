@@ -102,7 +102,6 @@ class TabBarController: UITabBarController {
         let lateralPadding = (view.bounds.width - width) / 2
 
         activityView.frame = CGRect(x: lateralPadding, y: view.bounds.height - tabBar.frame.height - (height + 15), width: width, height: height)
-        customTabBar.frame = CGRect(x: 0, y: view.bounds.height - customTabBar.frame.height, width: view.bounds.width, height: view.bounds.height * (65 / 844))
     }
 }
 

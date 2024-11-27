@@ -191,6 +191,10 @@ extension ScheduleDetailsViewModel {
             cancelNotifications()
         }
         
+        if editingScheduleStartTime > schedule.unwrappedStartTime {
+            schedule.completed = false
+        }
+        
         schedule.startTime = editingScheduleStartTime
         schedule.endTime = editingScheduleEndTime
         schedule.blocksApps = blocksApps

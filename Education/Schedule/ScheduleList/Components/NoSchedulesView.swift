@@ -107,7 +107,7 @@ extension NoSchedulesView: ViewCodeProtocol {
         addSubview(createActivityButton)
 
         NSLayoutConstraint.activate([
-            messageLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 245 / 390),
+            messageLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 260 / 390),
             messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             messageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 150),
             
