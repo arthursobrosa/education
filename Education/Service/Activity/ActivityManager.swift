@@ -134,7 +134,7 @@ class ActivityManager {
     
     // MARK: - Live Activity
     
-    private var liveActivity: Activity<TimerAttributes>?
+    private let liveActivityManager: LiveActivityManager
     
     // MARK: - Timer properties
     
@@ -219,6 +219,7 @@ class ActivityManager {
     init(focusSessionManager: FocusSessionManager = FocusSessionManager(),
          notificationService: NotificationServiceProtocol?,
          scheduleManager: ScheduleManager = ScheduleManager(),
+         liveActivityManager: LiveActivityManager = LiveActivityManager(),
          timerCase: TimerCase = .timer,
          totalSeconds: Int = 1,
          timerSeconds: Int = 1,
@@ -234,6 +235,7 @@ class ActivityManager {
         self.focusSessionManager = focusSessionManager
         self.scheduleManager = scheduleManager
         self.notificationService = notificationService
+        self.liveActivityManager = liveActivityManager
         
         self.timerCase = timerCase
         self.totalSeconds = totalSeconds
@@ -766,26 +768,24 @@ extension ActivityManager {
             duration = timerSeconds
         }
         
-        liveActivity = LiveActivityManager().startActivity(duration: duration,
-                                                           progress: progress,
-                                                           title: subject?.unwrappedName ?? String(localized: "immediateActivity"),
-                                                           color: subject?.unwrappedColor ?? "redPicker",
-                                                           restTime: restTime)
+        liveActivityManager.startActivity(duration: duration,
+                                          progress: progress,
+                                          title: subject?.unwrappedName ?? String(localized: "activity"),
+                                          color: subject?.unwrappedColor ?? "redPicker",
+                                          restTime: restTime
+        )
     }
     
     func updateLiveActivity(timerCase: TimerCase) {
-        guard let id = liveActivity?.id else { return }
-        
         let duration = timerSeconds
         
-        LiveActivityManager().updateActivity(
-            activity: id,
+        liveActivityManager.updateActivity(
             duration: duration,
             progress: progress
         )
     }
     
     func endLiveActivity() {
-        LiveActivityManager().endActivity(timerCase: timerCase)
+        liveActivityManager.endActivities()
     }
 }
