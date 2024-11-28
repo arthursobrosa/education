@@ -142,64 +142,26 @@ extension ThemeListViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ThemeListCell.identifier, for: indexPath) as? ThemeListCell else {
             fatalError("Could not dequeue cell")
         }
-
-        let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
-        chevronImageView.tintColor = .systemText80
-
-        cell.accessoryView = chevronImageView
-        cell.backgroundColor = .systemBackground
-        cell.roundCorners(corners: .allCorners, radius: 18, borderWidth: 2, borderColor: .buttonNormal)
-
-        let cellContent = getCellContent(from: theme)
-        cell.configureContentView(with: cellContent)
+        
+        cell.selectionStyle = .none
+        
+        cell.titleName = theme.unwrappedName
+        
+        if let test = viewModel.getMostRecentTest(from: theme) {
+            cell.dateName = viewModel.getThemeDescription(with: test)
+        } else {
+            cell.dateName = nil
+        }
 
         return cell
     }
 
-    private func getCellContent(from theme: Theme) -> UIView {
-        let nameLabel = UILabel()
-        nameLabel.text = theme.unwrappedName
-        nameLabel.font = UIFont(name: Fonts.darkModeOnSemiBold, size: 16)
-        nameLabel.textColor = .systemText80
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        if let test = viewModel.getMostRecentTest(from: theme) {
-            let dateLabel = UILabel()
-            dateLabel.text = viewModel.getThemeDescription(with: test)
-            dateLabel.font = UIFont(name: Fonts.darkModeOnRegular, size: 15)
-            dateLabel.textColor = .systemText50
-            dateLabel.translatesAutoresizingMaskIntoConstraints = false
-
-            let stack = UIStackView()
-            stack.axis = .vertical
-            stack.spacing = 4
-            stack.translatesAutoresizingMaskIntoConstraints = false
-
-            stack.addArrangedSubview(nameLabel)
-            stack.addArrangedSubview(dateLabel)
-
-            return stack
-        }
-
-        return nameLabel
-    }
-
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return 77
-    }
-
-    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        return 0
+        view.bounds.height * (72 / 844)
     }
 
     func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-        return 11
-    }
-
-    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
+        view.bounds.height * (11 / 844)
     }
 
     func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
