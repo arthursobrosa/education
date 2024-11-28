@@ -79,7 +79,8 @@ enum EventCase {
             }
             
             if minutes < 10 {
-                return String(format: NSLocalizedString("startsIn", comment: ""), "0" + minutesLeft, "min")
+                let minutesString = "0" + minutesLeft
+                return String(format: NSLocalizedString("timeLeft", comment: ""), hoursLeft, minutesString)
             }
             
             return String(format: NSLocalizedString("timeLeft", comment: ""), hoursLeft, minutesLeft)

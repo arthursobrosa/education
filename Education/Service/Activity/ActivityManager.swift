@@ -134,7 +134,7 @@ class ActivityManager {
     
     // MARK: - Live Activity
     
-    private let liveActivityManager: LiveActivityManager
+//    private let liveActivityManager: LiveActivityManager
     
     // MARK: - Timer properties
     
@@ -161,7 +161,7 @@ class ActivityManager {
         didSet {
             if isPaused {
                 stopTimer()
-                endLiveActivity()
+//                endLiveActivity()
             } else {
                 startTimer()
             }
@@ -219,7 +219,7 @@ class ActivityManager {
     init(focusSessionManager: FocusSessionManager = FocusSessionManager(),
          notificationService: NotificationServiceProtocol?,
          scheduleManager: ScheduleManager = ScheduleManager(),
-         liveActivityManager: LiveActivityManager = LiveActivityManager(),
+//         liveActivityManager: LiveActivityManager = LiveActivityManager(),
          timerCase: TimerCase = .timer,
          totalSeconds: Int = 1,
          timerSeconds: Int = 1,
@@ -235,7 +235,7 @@ class ActivityManager {
         self.focusSessionManager = focusSessionManager
         self.scheduleManager = scheduleManager
         self.notificationService = notificationService
-        self.liveActivityManager = liveActivityManager
+//        self.liveActivityManager = liveActivityManager
         
         self.timerCase = timerCase
         self.totalSeconds = totalSeconds
@@ -256,7 +256,7 @@ class ActivityManager {
 
 extension ActivityManager: TimerManaging {
     func startTimer(timer: TimerProtocol = TimerWrapper(), currentDate: @escaping () -> Date = Date.init) {
-        startLiveActivity(restTime: !isAtWorkTime)
+//        startLiveActivity(restTime: !isAtWorkTime)
         
         switch timerCase {
         case .stopwatch:
@@ -281,7 +281,7 @@ extension ActivityManager: TimerManaging {
             
             let remainingTime = max(self.totalSeconds - Int(elapsed), 0)
             self.timerSeconds = remainingTime
-            self.updateLiveActivity(timerCase: timerCase)
+//            self.updateLiveActivity(timerCase: timerCase)
             
             if isProgressingActivityBar {
                 delegate?.updateTimerSeconds()
@@ -306,7 +306,7 @@ extension ActivityManager: TimerManaging {
             guard let self else { return }
             
             self.timerSeconds += 1
-            self.updateLiveActivity(timerCase: timerCase)
+//            self.updateLiveActivity(timerCase: timerCase)
         }
     }
     
@@ -358,7 +358,7 @@ extension ActivityManager: TimerManaging {
         switch timerCase {
         case .timer, .pomodoro:
             stopTimer()
-            endLiveActivity()
+//            endLiveActivity()
             timerFinished = true
             
             if isExtending {
@@ -745,7 +745,7 @@ extension ActivityManager: SessionManaging {
             handlePomodoro(lastTimerSeconds: lastTimerSeconds, timeInBackground: timeInBackground)
             startTimer()
         case .stopwatch:
-            timerSeconds += Int(timeInBackground)
+            timerSeconds = lastTimerSeconds + Int(timeInBackground)
             
             return
         }
@@ -755,37 +755,37 @@ extension ActivityManager: SessionManaging {
 }
 
 extension ActivityManager {
-    func startLiveActivity(restTime: Bool) {
-        let duration: Int
-        
-        switch timerCase {
-        case .timer:
-            duration = timerSeconds
-        case .pomodoro:
-            duration = timerSeconds
-        case .stopwatch:
-            // TODO: - Change this
-            duration = timerSeconds
-        }
-        
-        liveActivityManager.startActivity(duration: duration,
-                                          progress: progress,
-                                          title: subject?.unwrappedName ?? String(localized: "activity"),
-                                          color: subject?.unwrappedColor ?? "redPicker",
-                                          restTime: restTime
-        )
-    }
+//    func startLiveActivity(restTime: Bool) {
+//        let duration: Int
+//        
+//        switch timerCase {
+//        case .timer:
+//            duration = timerSeconds
+//        case .pomodoro:
+//            duration = timerSeconds
+//        case .stopwatch:
+//            // TODO: - Change this
+//            duration = timerSeconds
+//        }
+//        
+//        liveActivityManager.startActivity(duration: duration,
+//                                          progress: progress,
+//                                          title: subject?.unwrappedName ?? String(localized: "activity"),
+//                                          color: subject?.unwrappedColor ?? "redPicker",
+//                                          restTime: restTime
+//        )
+//    }
     
-    func updateLiveActivity(timerCase: TimerCase) {
-        let duration = timerSeconds
-        
-        liveActivityManager.updateActivity(
-            duration: duration,
-            progress: progress
-        )
-    }
-    
-    func endLiveActivity() {
-        liveActivityManager.endActivities()
-    }
+//    func updateLiveActivity(timerCase: TimerCase) {
+//        let duration = timerSeconds
+//        
+//        liveActivityManager.updateActivity(
+//            duration: duration,
+//            progress: progress
+//        )
+//    }
+//    
+//    func endLiveActivity() {
+//        liveActivityManager.endActivities()
+//    }
 }

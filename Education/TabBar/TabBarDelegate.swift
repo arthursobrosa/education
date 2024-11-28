@@ -85,9 +85,5 @@ extension TabBarController: TabBarDelegate {
         viewModel.activityManager.isProgressingActivityBar = false
         stopAnimation()
         schedule.showTimer(focusSessionModel: nil)
-
-        if viewModel.activityManager.timerFinished {
-            viewModel.activityManager.timerFinished = true
-        }
     }
 }

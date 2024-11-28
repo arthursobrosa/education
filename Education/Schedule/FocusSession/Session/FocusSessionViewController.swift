@@ -80,9 +80,10 @@ class FocusSessionViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
 
-            self.setTitle()
-            self.setupViewLayers()
-            self.updateViewLabels()
+            setTitle()
+            setupViewLayers()
+            updateViewLabels()
+            focusSessionView.updatePauseResumeButton(isPaused: viewModel.activityManager.isPaused)
 
             if case .stopwatch = timerCase { return }
 
@@ -90,7 +91,7 @@ class FocusSessionViewController: UIViewController {
             guard !isPaused else { return }
 
             let timerSeconds = viewModel.activityManager.timerSeconds
-            self.focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
+            focusSessionView.startAnimation(timerDuration: Double(timerSeconds))
         }
     }
 }
@@ -193,7 +194,7 @@ extension FocusSessionViewController {
 
 extension FocusSessionViewController {
     func setGestureRecognizer() {
-        guard view.gestureRecognizers == nil else { return }
+        removeTapGestureRecognizer()
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
         view.addGestureRecognizer(tapGesture)
