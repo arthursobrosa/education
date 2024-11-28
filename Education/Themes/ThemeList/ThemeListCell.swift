@@ -74,6 +74,15 @@ class ThemeListCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private let chevronImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "chevron.right")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 14))
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .systemText80
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
 
     // MARK: - Initializer
     
@@ -97,17 +106,6 @@ class ThemeListCell: UITableViewCell {
             subview.removeFromSuperview()
         }
     }
-
-    // MARK: - Methods
-    
-    func configureContentView(with view: UIView) {
-        cardView.addSubview(view)
-
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
-            view.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
-        ])
-    }
 }
 
 // MARK: - UI Setup
@@ -117,6 +115,7 @@ extension ThemeListCell: ViewCodeProtocol {
         contentView.addSubview(cardView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(dateLabel)
+        contentView.addSubview(chevronImageView)
 
         NSLayoutConstraint.activate([
             cardView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -125,9 +124,16 @@ extension ThemeListCell: ViewCodeProtocol {
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 18),
+            titleLabel.trailingAnchor.constraint(equalTo: chevronImageView.leadingAnchor, constant: 14),
             
             dateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
             dateLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            dateLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            
+            chevronImageView.widthAnchor.constraint(equalTo: cardView.widthAnchor, multiplier: 20 / 366),
+            chevronImageView.heightAnchor.constraint(equalTo: chevronImageView.heightAnchor),
+            chevronImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
+            chevronImageView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -18),
         ])
         
         titleCenterYConstraint = titleLabel.centerYAnchor.constraint(equalTo: cardView.centerYAnchor)
