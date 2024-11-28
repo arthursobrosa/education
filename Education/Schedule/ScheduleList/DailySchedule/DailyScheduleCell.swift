@@ -77,8 +77,8 @@ extension DailyScheduleCell: ViewCodeProtocol {
         
         NSLayoutConstraint.activate([
             cardView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             timeLabel.leadingAnchor.constraint(equalTo: subjectNameLabel.leadingAnchor),
