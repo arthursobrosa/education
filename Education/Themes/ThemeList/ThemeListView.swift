@@ -32,9 +32,9 @@ class ThemeListView: UIView {
     }()
 
     let tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .insetGrouped)
+        let table = UITableView()
+        table.separatorStyle = .none
         table.backgroundColor = .systemBackground
-        table.layer.borderColor = UIColor.buttonNormal.cgColor
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()

@@ -24,13 +24,19 @@ class SubjectCollectionCell: UICollectionViewCell {
     
     var isSelectedSubject: Bool = false {
         didSet {
-            let borderColor: UIColor = isSelectedSubject ? .bluePicker : .bluePicker.withAlphaComponent(0.4)
+            let borderColor: UIColor = isSelectedSubject ? .bluePicker : .bluePicker.withAlphaComponent(0.4).opaqueColor()
+            
             let textColor: UIColor? = isSelectedSubject ? .bluePicker.darker(by: 0.6) : .bluePicker
             let borderWidth: Double = isSelectedSubject ? 1.5 : 1.0
             
             contentView.layer.borderColor = borderColor.cgColor
             contentView.layer.borderWidth = borderWidth
             titleLabel.textColor = textColor
+            
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _: UITraitCollection) in
+                let borderColor: UIColor = self.isSelectedSubject ? .bluePicker : .bluePicker.withAlphaComponent(0.4).opaqueColor()
+                self.contentView.layer.borderColor = borderColor.cgColor
+            }
         }
     }
     
