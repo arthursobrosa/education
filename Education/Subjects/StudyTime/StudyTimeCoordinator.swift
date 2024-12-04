@@ -16,6 +16,7 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
     }
 
     func start() {
+        navigationController.delegate = self
         navigationController.setNavigationBarHidden(true, animated: false)
 
         let viewModel = StudyTimeViewModel()
@@ -43,6 +44,20 @@ class StudyTimeCoordinator: NSObject, Coordinator, ShowingSubjectCreation, Showi
         for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
             childCoordinators.remove(at: index)
             break
+        }
+    }
+}
+
+extension StudyTimeCoordinator: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        guard let fromVC = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
+
+        if navigationController.viewControllers.contains(fromVC) {
+            return
+        }
+
+        if let subjectDetailsVC = fromVC as? SubjectDetailsViewController {
+            childDidFinish(subjectDetailsVC.coordinator as? Coordinator)
         }
     }
 }
