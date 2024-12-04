@@ -51,8 +51,8 @@
 "blockApps" = "Block Apps";
 "daily" = "Day";
 "weekly" = "Week";
-"noSubjectTitle" = "You cannot create an activity";
-"noSubjectMessage" = "You have to create a subject before setting an activity";
+"noSubjectAlertTitle" = "You cannot create an activity";
+"noSubjectAlertMessage" = "You have to create a subject before setting an activity";
 "activityDeletionTitle" = "Activity Deletion";
 "activityDeletionMessage" = "Are you sure you want to delete this schedule?";
 "emptyDaySchedule" = "You have no activities scheduled for this day";
